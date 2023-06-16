@@ -574,7 +574,7 @@ function Auth() {
             <a href="https://cinny.in" target="_blank" rel="noreferrer">About</a>
           </Text>
           <Text variant="b2">
-            <a href="https://github.com/Pony-House/Puddy-Cinny/releases" target="_blank" rel="noreferrer">{`v${cons.version}`}</a>
+            <a href="https://github.com/Pony-House/Client/releases" target="_blank" rel="noreferrer">{`v${cons.version}`}</a>
           </Text>
           <Text variant="b2">
             <a href="https://twitter.com/JasminDreasond" target="_blank" rel="noreferrer">Twitter</a>
