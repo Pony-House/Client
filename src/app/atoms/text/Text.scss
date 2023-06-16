@@ -1,0 +1,43 @@
+@mixin font($type) {
+  font-size: var(--fs-#{$type});
+  letter-spacing: var(--ls-#{$type});
+  line-height: var(--lh-#{$type});
+}
+
+.text {
+  margin: 0;
+  padding: 0;
+  color: var(--tc-surface-high);
+
+  & img.emoji,
+  & img[data-mx-emoticon] {
+    margin: 0 !important;
+    margin-right: 2px !important;
+    padding: 0 !important;
+    position: relative;
+    top: -0.1rem;
+    vertical-align: middle;
+  }
+}
+
+.text-h1 {
+  @include font(h1);
+}
+.text-h2 {
+  @include font(h2);
+}
+.text-s1 {
+  @include font(s1);
+}
+.text-b1 {
+  @include font(b1);
+  color: var(--tc-surface-normal);
+}
+.text-b2 {
+  @include font(b2);
+  color: var(--tc-surface-normal);
+}
+.text-b3 {
+  @include font(b3);
+  color: var(--tc-surface-low);
+}

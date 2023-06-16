@@ -1,0 +1,56 @@
+@use '../../partials/flex';
+@use '../../partials/screen';
+@use '../../partials/dir';
+
+.room-view {
+  @extend .cp-fx__column;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 999;
+  box-shadow: none;
+
+  transition: transform 200ms var(--fluid-slide-down);
+
+  & .room-view__content-wrapper {
+    background: var(--bg-surface);
+    background: var(--bg-surface-gradient);
+  }
+
+  &--dropped {
+    top: 1px;
+    transform: translateY(calc(100% - var(--header-height)));
+    border-radius: var(--bo-radius) var(--bo-radius) 0 0;
+    box-shadow: var(--bs-popup);
+  }
+
+  & .header {
+    @media screen and (max-width: 750px) {
+      background-color: var(--bg-surface-low) !important;
+    }
+  }
+
+  & .header {
+    background-color: var(--bg-surface);
+    @include screen.smallerThan(mobileBreakpoint) {
+      padding: 0 var(--sp-tight);
+    }
+  }
+
+  &__content-wrapper {
+    @extend .cp-fx__item-one;
+    @extend .cp-fx__column;
+  }
+
+  &__scrollable {
+    @extend .cp-fx__item-one;
+    position: relative;
+  }
+
+  &__sticky {
+    min-height: 85px;
+    position: relative;
+    border-top: 1px solid var(--bg-surface-border);
+  }
+}

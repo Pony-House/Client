@@ -1,0 +1,67 @@
+.btn-bg {
+  color: var(--tc-surface-normal) !important;
+  text-decoration: none !important;
+}
+
+.btn-bg:hover {
+  color: var(--tc-surface-high) !important;
+  background-color: var(--bg-surface-hover);
+}
+
+.btn-text-primary,
+.btn-text-primary:hover,
+.btn-text-primary i,
+.btn-text-primary:hover i {
+  color: var(--bs-primary) !important;
+}
+
+.btn-text-secondary,
+.btn-text-secondary:hover,
+.btn-text-secondary i,
+.btn-text-secondary:hover i {
+  color: var(--bs-secondary) !important;
+}
+
+.btn-text-success,
+.btn-text-success:hover,
+.btn-text-success i,
+.btn-text-success:hover i,
+.btn-text-success span,
+.btn-text-success:hover span {
+  color: var(--bs-success) !important;
+}
+
+.btn-text-danger,
+.btn-text-danger:hover,
+.btn-text-danger i,
+.btn-text-danger:hover i {
+  color: var(--bs-danger) !important;
+}
+
+.btn-text-warning,
+.btn-text-warning:hover,
+.btn-text-warning i,
+.btn-text-warning:hover i {
+  color: var(--bs-warning) !important;
+}
+
+.btn-text-info,
+.btn-text-info:hover i,
+.btn-text-info i,
+.btn-text-info:hover i {
+  color: var(--bs-info) !important;
+}
+
+.btn-text-light,
+.btn-text-light:hover,
+.btn-text-light i,
+.btn-text-light:hover i {
+  color: var(--bs-light) !important;
+}
+
+.btn-text-dark,
+.btn-text-dark:hover,
+.btn-text-light i,
+.btn-text-dark:hover i {
+  color: var(--bs-dark) !important;
+}

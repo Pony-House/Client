@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>Error Pony 404</title>
+<style>
+  body {
+    overflow: hidden;
+    margin: 0;
+    background-color: black;
+  }
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
+  }
+</style>
+
+<body>
+  <canvas id="canvas" width="800" height="600"></canvas>
+  <script type="module">
+    import Matrix from './matrix.js';
+    window.matrix = new Matrix({
+      canvas: document.getElementById('canvas'),
+      imageUrl: './public/img/404/annie_green.png',
+      fullscreen: true,
+    });
+  </script>
+</body>

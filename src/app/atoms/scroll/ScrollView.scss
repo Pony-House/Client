@@ -1,0 +1,31 @@
+@use '../../partials/dir';
+@use '_scrollbar';
+
+@mixin paddingForSafari($padding) {
+  @media not all and (min-resolution: 0.001dpcm) {
+    @include dir.side(padding, 0, $padding);
+  }
+}
+
+.scrollbar {
+  width: 100%;
+  height: 100%;
+  @include scrollbar.scroll;
+  @include paddingForSafari(var(--sp-extra-tight));
+
+  &__h {
+    @include scrollbar.scroll__h;
+  }
+
+  &__v {
+    @include scrollbar.scroll__v;
+  }
+
+  &--auto-hide {
+    @include scrollbar.scroll--auto-hide;
+  }
+  &--invisible {
+    @include scrollbar.scroll--invisible;
+    @include paddingForSafari(0);
+  }
+}

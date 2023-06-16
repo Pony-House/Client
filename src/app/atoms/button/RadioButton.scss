@@ -1,0 +1,28 @@
+@use '../../partials/flex';
+@use './state';
+
+.radio-btn {
+  @extend .cp-fx__row--c-c;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--bg-surface-border);
+  border: 2px solid var(--bg-surface-border);
+  cursor: pointer;
+  @include state.disabled;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-color: var(--bg-surface-border);
+    border-radius: 50%;
+  }
+  &--active {
+    border: 2px solid var(--bg-positive);
+    &::before {
+      background-color: var(--bg-positive);
+    }
+  }
+}

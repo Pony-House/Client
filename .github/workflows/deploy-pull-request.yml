@@ -1,0 +1,56 @@
+name: Deploy PR to Netlify
+
+on:
+  workflow_run:
+      workflows: ["Build pull request"]
+      types: [completed]
+
+jobs:
+  deploy-pull-request:
+    name: Deploy pull request
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Download pr number
+        uses: dawidd6/action-download-artifact@e6e25ac3a2b93187502a8be1ef9e9603afc34925
+        with:
+          workflow: ${{ github.event.workflow.id }}
+          run_id: ${{ github.event.workflow_run.id }}
+          name: pr
+      - name: Output pr number
+        id: pr
+        run: echo "id=$(<pr.txt)" >> $GITHUB_OUTPUT
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@e6e25ac3a2b93187502a8be1ef9e9603afc34925
+        with:
+          workflow: ${{ github.event.workflow.id }}
+          run_id: ${{ github.event.workflow_run.id }}
+          name: preview
+          path: dist
+      - name: Deploy to Netlify
+        id: netlify
+        uses: nwtgck/actions-netlify@5da65c9f74c7961c5501a3ba329b8d0912f39c03
+        with:
+          publish-dir: dist
+          deploy-message: "Deploy PR ${{ steps.pr.outputs.id }}"
+          alias: ${{ steps.pr.outputs.id }}
+          # These don't work because we're in workflow_run
+          enable-pull-request-comment: false
+          enable-commit-comment: false
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_PR_CINNY }}
+        timeout-minutes: 1
+      - name: Comment preview on PR
+        uses: thollander/actions-comment-pull-request@c22fb302208b7b170d252a61a505d2ea27245eff
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          pr_number: ${{ steps.pr.outputs.id }}
+          comment_tag: ${{ steps.pr.outputs.id }}
+          message: |
+              Preview: ${{ steps.netlify.outputs.deploy-url }}
+              ⚠️ Exercise caution. Use test accounts. ⚠️

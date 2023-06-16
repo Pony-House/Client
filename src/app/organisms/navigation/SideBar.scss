@@ -1,0 +1,95 @@
+.sidebar,
+.sidebar-1,
+.sidebar-2 {
+  height: 100%;
+}
+
+.sidebar-1 {
+  width: 80px;
+  position: absolute;
+  background: var(--bg-surface-extra-low);
+  background: var(--bg-surface-gradient-3);
+}
+
+.sidebar-2 {
+  display: inline-block;
+  width: 100%;
+  padding-left: 80px;
+  padding-bottom: 49px;
+}
+
+.sidebar-item-1 {
+  padding-bottom: 69px;
+}
+
+.sidebar-item-2 {
+  margin-top: -69px;
+}
+
+.space-container > button,
+.featured-container > button,
+.sticky-container > button {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.featured-container,
+.space-container,
+.sticky-container {
+  padding: var(--sp-ultra-tight) 0;
+
+  & > .sidebar-avatar,
+  & > .avatar-container {
+    margin: calc(var(--sp-tight) / 2) 0;
+  }
+}
+.sidebar-divider {
+  margin: auto;
+  width: 24px;
+  height: 1px;
+  background-color: var(--bg-surface-border);
+}
+
+.sidebar__cross-signin-alert .avatar-container {
+  box-shadow: var(--bs-danger-border);
+  animation-name: pushRight;
+  animation-duration: 400ms;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes pushRight {
+  from {
+    transform: translateX(4px) scale(1);
+  }
+  to {
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Profile Sidebar */
+
+#profile-sidebar {
+  position: relative;
+  top: -60px;
+  margin-left: 80px;
+  border-top: 1px solid #fff;
+
+  .sidebar-photo,
+  .sidebar-photo button {
+    height: 45px !important;
+    width: 150px;
+  }
+
+  .sidebar-photo button {
+    margin-top: 7px;
+    margin-bottom: 7px;
+  }
+
+  .avatar-container,
+  .avatar-container img,
+  .avatar-container canvas {
+    height: 35px !important;
+    width: 35px !important;
+  }
+}

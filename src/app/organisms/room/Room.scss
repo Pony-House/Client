@@ -1,0 +1,21 @@
+@use '../../partials/flex';
+@use '../../partials/screen';
+
+.room {
+  @extend .cp-fx__row;
+  height: 100%;
+
+  &__content {
+    background: var(--bg-surface);
+    background: var(--bg-surface-gradient);
+    @extend .cp-fx__item-one;
+    position: relative;
+    overflow: hidden;
+  }
+}
+
+.room .people-drawer {
+  @include screen.smallerThan(tabletBreakpoint) {
+    display: none;
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "defaultHomeserver": 0,
+  "homeserverList": [
+    "matrix.org",
+    "mozilla.org"
+  ],
+  "allowCustomHomeservers": true
+}

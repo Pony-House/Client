@@ -1,0 +1,51 @@
+@mixin icSize($size) {
+  width: $size;
+  height: $size;
+}
+
+@mixin icFaSize($size) {
+  font-size: $size;
+  height: $size;
+}
+
+.ic-base {
+  display: inline-block;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.ic-raw {
+  background-color: var(--ic-surface-normal);
+}
+.ic-raw-large {
+  @include icSize(var(--ic-large));
+}
+.ic-raw-normal {
+  @include icSize(var(--ic-normal));
+}
+.ic-raw-small {
+  @include icSize(var(--ic-small));
+}
+.ic-raw-extra-small {
+  @include icSize(var(--ic-extra-small));
+}
+
+.ic-fa {
+  color: var(--ic-surface-normal);
+}
+.ic-fa-large {
+  @include icFaSize(var(--ic-fa-large));
+}
+.ic-fa-normal {
+  @include icFaSize(var(--ic-fa-normal));
+}
+.ic-fa-small {
+  @include icFaSize(var(--ic-fa-small));
+}
+.ic-fa-extra-small {
+  @include icFaSize(var(--ic-fa-extra-small));
+}

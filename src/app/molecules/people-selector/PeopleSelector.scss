@@ -1,0 +1,45 @@
+@use '../../partials/text';
+
+.people-selector {
+  i {
+    margin-left: -11px;
+    font-size: 13px;
+    position: relative;
+    top: 12px;
+    left: 1px;
+  }
+
+  width: 100%;
+  padding: var(--sp-extra-tight) var(--sp-normal);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &__container {
+    display: flex;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--bg-surface-hover);
+    }
+  }
+  &:focus {
+    outline: none;
+    background-color: var(--bg-surface-hover);
+  }
+  &:active {
+    background-color: var(--bg-surface-active);
+  }
+
+  &__name {
+    @extend .cp-txt__ellipsis;
+    flex: 1;
+    min-width: 0;
+    margin: 0 var(--sp-tight);
+    color: var(--tc-surface-normal);
+  }
+  &__role {
+    color: var(--tc-surface-low);
+  }
+}
