@@ -261,7 +261,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         if (emoji.hexcode) {
             addRecentEmoji({ isCustom: false, unicode: emoji.unicode, mxc: null });
         } else {
-            addRecentEmoji({ isCustom: true, unicode: null, mxc: emoji.getAttribute('data-mx-emoticon') });
+            addRecentEmoji({ isCustom: true, unicode: null, mxc: e.target.getAttribute('data-mx-emoticon') });
         }
     }
 
