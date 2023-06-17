@@ -33,6 +33,8 @@ Made by Me
 
     mx.getUrlPreview(url, ts)
 
+    Criar favoritador de emojis
+
     Criar novo ícone de avatares padrões
     Criar Video Chamada e Chamada de Voz
 
