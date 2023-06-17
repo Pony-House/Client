@@ -173,6 +173,10 @@
 }
 
 @media (max-width: 576px) {
+  .emoji-board-base {
+    border-radius: 0px !important;
+  }
+
   .emoji-board-tippy {
     top: auto !important;
     bottom: 85px !important;
