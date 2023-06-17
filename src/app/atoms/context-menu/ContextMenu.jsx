@@ -10,7 +10,7 @@ import ScrollView from '../scroll/ScrollView';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
 function ContextMenu({
-  content, placement, maxWidth, render, afterToggle,
+  content, placement, maxWidth, render, afterToggle, className
 }) {
   const [isVisible, setVisibility] = useState(false);
   const showMenu = () => setVisibility(true);
@@ -23,7 +23,7 @@ function ContextMenu({
   return (
     <Tippy
       animation="scale-extreme"
-      className="context-menu"
+      className={`context-menu${className ? ` ${className}` : ''}`}
       visible={isVisible}
       onClickOutside={hideMenu}
       content={<ScrollView invisible>{typeof content === 'function' ? content(hideMenu) : content}</ScrollView>}
@@ -39,12 +39,14 @@ function ContextMenu({
 }
 
 ContextMenu.defaultProps = {
+  className: null,
   maxWidth: 'unset',
   placement: 'right',
   afterToggle: null,
 };
 
 ContextMenu.propTypes = {
+  className: PropTypes.string,
   content: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.func,

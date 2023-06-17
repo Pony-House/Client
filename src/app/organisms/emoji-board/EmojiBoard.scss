@@ -171,3 +171,21 @@
     min-height: 87px;
   }
 }
+
+@media (max-width: 576px) {
+  .emoji-board-tippy {
+    top: auto !important;
+    bottom: 85px !important;
+    left: 0px !important;
+    transform: none !important;
+    width: 100%;
+
+    #emoji-board {
+      max-width: none;
+
+      .emoji-row {
+        display: contents;
+      }
+    }
+  }
+}
