@@ -184,8 +184,20 @@
       max-width: none;
 
       .emoji-row {
+        align-items: center;
+        justify-content: center;
+        > span {
+          margin-left: 10px;
+          margin-right: 10px;
+        }
+      }
+
+      /*
+        Don't touch this. c:
+      .emoji-row {
         display: contents;
       }
+      */
     }
   }
 }

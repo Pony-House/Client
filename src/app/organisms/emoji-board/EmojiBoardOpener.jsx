@@ -57,10 +57,6 @@ function EmojiBoardOpener() {
     };
   }, []);
 
-  setTimeout(() => {
-    document.querySelector('#emoji-board').parentElement.parentElement.parentElement.parentElement.parentElement.classList.add('emoji-board-tippy');
-  }, 1);
-
   return (
     <ContextMenu
       className='emoji-board-base'

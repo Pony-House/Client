@@ -377,6 +377,10 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         />
     );
 
+    setTimeout(() => {
+        document.querySelector('#emoji-board').parentElement.parentElement.parentElement.parentElement.parentElement.classList.add('emoji-board-tippy');
+    }, 500);
+
     resetEmojisList();
     if (boardType === 'getEmojis') addDefaultEmojisToList();
 
