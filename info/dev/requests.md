@@ -31,12 +31,6 @@ Made by Me
 
 
 
-    user.on('user.status', (data) => {
-      console.log('user.status', data);
-    });
-
-    user.emit('user.status', { presence: 'online' });
-
     mx.getUrlPreview(url, ts)
 
     Criar novo ícone de avatares padrões
@@ -57,9 +51,8 @@ Made by Me
 
     Criar detector de inatividade
 
+    Fazer os emojis se encaixar melhor no modo mobile
 
-
-    Falha na sincronização de emojis
     Concertar envio de notificação. A notificação precisa apitar quando o usuário está na mesma página, mas está com a janela minimizada
 
 
