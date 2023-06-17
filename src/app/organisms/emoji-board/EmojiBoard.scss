@@ -212,3 +212,39 @@
     }
   }
 }
+
+@media (max-width: 420px) {
+  .emoji-board-tippy {
+    #emoji-board {
+      .emoji-row > span {
+        margin-left: 3px;
+        margin-right: 3px;
+      }
+    }
+
+    [board-type='sticker'] {
+      .emoji-row > span {
+        margin-left: 7px !important;
+        margin-right: 7px !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 370px) {
+  .emoji-board-tippy {
+    #emoji-board {
+      .emoji-row > span {
+        margin-left: 0px;
+        margin-right: 0px;
+      }
+    }
+
+    [board-type='sticker'] {
+      .emoji-row > span {
+        margin-left: 3px !important;
+        margin-right: 3px !important;
+      }
+    }
+  }
+}
