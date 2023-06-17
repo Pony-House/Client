@@ -51,8 +51,6 @@ Made by Me
 
     Criar detector de inatividade
 
-    Fazer os emojis se encaixar melhor no modo mobile
-
     Concertar envio de notificação. A notificação precisa apitar quando o usuário está na mesma página, mas está com a janela minimizada
 
 
