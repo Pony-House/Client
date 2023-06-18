@@ -4,12 +4,12 @@ import { emojis } from './emoji';
 const eventType = 'io.pony.house.recent_emoji';
 
 function getRecentEmojisRaw() {
-  return initMatrix.matrixClient.getAccountData(eventType)?.getContent().recent_emoji ?? [];
+  return initMatrix.matrixClient.getAccountData(eventType)?.getContent() ?? { recent_emoji: [], fav_emoji: [] };
 }
 
-export function getRecentEmojis(limit) {
+export function getRecentEmojis(limit, where = 'recent_emoji') {
   const res = [];
-  getRecentEmojisRaw()
+  getRecentEmojisRaw()[where]
     .sort((a, b) => b[1] - a[1])
     .find(([emojiData]) => {
 
@@ -29,10 +29,10 @@ export function getRecentEmojis(limit) {
   return res;
 }
 
-export function addRecentEmoji(emojiData) {
+export function addRecentEmoji(emojiData, where = 'recent_emoji') {
 
   const recent = getRecentEmojisRaw();
-  const i = recent.findIndex(([u]) => u && u.isCustom === emojiData.isCustom && u.mxc === emojiData.mxc && u.unicode === emojiData.unicode);
+  const i = recent[where].findIndex(([u]) => u && u.isCustom === emojiData.isCustom && u.mxc === emojiData.mxc && u.unicode === emojiData.unicode);
 
   let entry;
 
@@ -42,10 +42,9 @@ export function addRecentEmoji(emojiData) {
     [entry] = recent.splice(i, 1);
     entry[1] += 1;
   }
-  recent.unshift(entry);
+  recent[where].unshift(entry);
 
-  initMatrix.matrixClient.setAccountData(eventType, {
-    recent_emoji: recent.slice(0, 100),
-  });
+  recent[where] = recent[where].slice(0, 100);
+  initMatrix.matrixClient.setAccountData(eventType, recent);
 
 }
