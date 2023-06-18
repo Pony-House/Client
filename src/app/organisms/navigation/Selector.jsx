@@ -123,7 +123,6 @@ Selector.propTypes = {
   roomId: PropTypes.string.isRequired,
   isDM: PropTypes.bool,
 
-  // eslint-disable-next-line react/forbid-prop-types
   roomObject: PropTypes.object,
 
   drawerPostie: PropTypes.shape({}).isRequired,
