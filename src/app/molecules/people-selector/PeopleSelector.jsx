@@ -114,7 +114,7 @@ PeopleSelector.defaultProps = {
 
 PeopleSelector.propTypes = {
   disableStatus: PropTypes.bool,
-  user: PropTypes.node,
+  user: PropTypes.object,
   avatarSrc: PropTypes.string,
   name: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,

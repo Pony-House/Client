@@ -4,12 +4,12 @@ import './Media.scss';
 
 import encrypt from 'browser-encrypt-attachment';
 
+import FileSaver from 'file-saver';
 import PhotoSwipeLightbox from 'photoswipe';
 import { BlurhashCanvas } from 'react-blurhash';
 import Text from '../../atoms/text/Text';
 import IconButton from '../../atoms/button/IconButton';
 import Spinner from '../../atoms/spinner/Spinner';
-import FileSaver from 'file-saver';
 
 import { getBlobSafeMimeType } from '../../../util/mimetypes';
 

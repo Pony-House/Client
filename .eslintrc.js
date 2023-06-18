@@ -57,6 +57,7 @@ module.exports = {
       },
     ],
 
+    'react/forbid-prop-types': 0,
     'react/jsx-no-bind': 0,
     'react-hooks/exhaustive-deps': 0,
     'react/prop-types': 0,
