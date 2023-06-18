@@ -181,7 +181,7 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent }) {
         const parentIds = initMatrix.roomList.getAllParentSpaces(roomId);
         const parentRooms = [...parentIds].map((id) => mx.getRoom(id));
         const emojis = getEmojiForCompletion(mx, [mx.getRoom(roomId), ...parentRooms]);
-        const recentEmoji = getRecentEmojis(20);
+        const recentEmoji = getRecentEmojis(20, 'recent_emoji');
         asyncSearch.setup(emojis, { keys: ['shortcode'], isContain: true, limit: 20 });
         setCmd({
           prefix,
@@ -220,9 +220,9 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent }) {
 
     if (myCmd.prefix === ':') {
       if (!myCmd.result.mxc) {
-        addRecentEmoji({ isCustom: false, unicode: myCmd.result.unicode, mxc: null });
+        addRecentEmoji({ isCustom: false, unicode: myCmd.result.unicode, mxc: null }, 'recent_emoji');
       } else {
-        addRecentEmoji({ isCustom: true, unicode: null, mxc: myCmd.result.mxc });
+        addRecentEmoji({ isCustom: true, unicode: null, mxc: myCmd.result.mxc }, 'recent_emoji');
       }
       viewEvent.emit('cmd_fired', {
         replace: myCmd.result.mxc ? `:${myCmd.result.shortcode}: ` : myCmd.result.unicode,

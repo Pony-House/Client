@@ -259,9 +259,9 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         const emoji = getEmojiDataFromTarget(e.target);
         onSelect(emoji);
         if (emoji.hexcode) {
-            addRecentEmoji({ isCustom: false, unicode: emoji.unicode, mxc: null });
+            addRecentEmoji({ isCustom: false, unicode: emoji.unicode, mxc: null }, 'recent_emoji');
         } else {
-            addRecentEmoji({ isCustom: true, unicode: null, mxc: e.target.getAttribute('data-mx-emoticon') });
+            addRecentEmoji({ isCustom: true, unicode: null, mxc: e.target.getAttribute('data-mx-emoticon') }, 'recent_emoji');
         }
     }
 
@@ -345,7 +345,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             handleSearchChange();
 
             // only update when board is getting opened to prevent shifting UI
-            setRecentEmojis(getRecentEmojis(3 * ROW_EMOJIS_COUNT));
+            setRecentEmojis(getRecentEmojis(3 * ROW_EMOJIS_COUNT, 'recent_emoji'));
         };
 
         navigation.on(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);

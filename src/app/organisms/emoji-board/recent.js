@@ -7,7 +7,7 @@ function getRecentEmojisRaw() {
   return initMatrix.matrixClient.getAccountData(eventType)?.getContent() ?? { recent_emoji: [], fav_emoji: [] };
 }
 
-export function getRecentEmojis(limit, where = 'recent_emoji') {
+export function getRecentEmojis(limit, where) {
   const res = [];
   getRecentEmojisRaw()[where]
     .sort((a, b) => b[1] - a[1])
@@ -29,7 +29,7 @@ export function getRecentEmojis(limit, where = 'recent_emoji') {
   return res;
 }
 
-export function addRecentEmoji(emojiData, where = 'recent_emoji') {
+export function addRecentEmoji(emojiData, where) {
 
   const recent = getRecentEmojisRaw();
   const i = recent[where].findIndex(([u]) => u && u.isCustom === emojiData.isCustom && u.mxc === emojiData.mxc && u.unicode === emojiData.unicode);
