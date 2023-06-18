@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './RawIcon.scss';
 
-function RawIcon({ color, size, src, isImage, fa }) {
+function RawIcon({ color, size, src, isImage, fa, className }) {
 
   const style = {};
   if (!fa) {
@@ -16,16 +16,17 @@ function RawIcon({ color, size, src, isImage, fa }) {
       style.maskImage = `url("${src}")`;
     }
 
-    return <span className={`ic-base ic-raw ic-raw-${size}`} style={style} />;
+    return <span className={`ic-base ic-raw ic-raw-${size}${className ? ` ${className}` : ''}`} style={style} />;
 
   }
 
   if (color !== null) style.fontColor = color;
-  return <i className={`ic-base ic-fa ic-fa-${size} ${fa}`} style={style} />;
+  return <i className={`ic-base ic-fa ic-fa-${size} ${fa}${className ? ` ${className}` : ''}`} style={style} />;
 
 }
 
 RawIcon.defaultProps = {
+  className: null,
   fa: null,
   color: null,
   size: 'normal',
@@ -33,6 +34,7 @@ RawIcon.defaultProps = {
 };
 
 RawIcon.propTypes = {
+  className: PropTypes.string,
   fa: PropTypes.string,
   color: PropTypes.string,
   size: PropTypes.oneOf(['large', 'normal', 'small', 'extra-small']),
