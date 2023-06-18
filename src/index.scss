@@ -346,7 +346,7 @@ a {
                                     supported by Chrome, Edge, Opera and Firefox */
 }
 
-@-webkit-keyframes fadeInFromNone {
+@keyframes fadeInFromNone {
   0% {
     opacity: 0;
   }
