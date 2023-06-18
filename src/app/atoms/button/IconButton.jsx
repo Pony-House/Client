@@ -78,7 +78,7 @@ IconButton.propTypes = {
   type: PropTypes.oneOf(['button', 'submit', 'reset']),
   tooltip: PropTypes.string,
   tooltipPlacement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
-  src: PropTypes.string.isRequired,
+  src: PropTypes.string,
   onClick: PropTypes.func,
   tabIndex: PropTypes.number,
   disabled: PropTypes.bool,

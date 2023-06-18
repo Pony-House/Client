@@ -36,7 +36,7 @@ RawIcon.propTypes = {
   fa: PropTypes.string,
   color: PropTypes.string,
   size: PropTypes.oneOf(['large', 'normal', 'small', 'extra-small']),
-  src: PropTypes.string.isRequired,
+  src: PropTypes.string,
   isImage: PropTypes.bool,
 };
 
