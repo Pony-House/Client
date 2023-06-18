@@ -50,7 +50,7 @@ const EmojiGroup = React.memo(({ name, groupEmojis, className }) => {
                     <span key={emojiIndex}>
                         {emoji.hexcode ? (
                             // This is a unicode emoji, and should be rendered with twemoji
-                            <emoji
+                            <span
 
                                 className="emoji"
                                 draggable="false"
@@ -65,7 +65,7 @@ const EmojiGroup = React.memo(({ name, groupEmojis, className }) => {
                             />
                         ) : (
                             // This is a custom emoji, and should be render as an mxc
-                            <emoji
+                            <span
 
                                 className="emoji"
                                 draggable="false"
