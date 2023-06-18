@@ -1,5 +1,11 @@
 const arrayItems = [
 
+    'bg',
+    'bg2',
+
+    'outline-bg',
+    'outline-bg2',
+
     'primary',
     'secondary',
     'success',

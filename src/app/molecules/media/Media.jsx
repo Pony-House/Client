@@ -37,7 +37,11 @@ async function getUrl(link, type, decryptData) {
 
 function getNativeHeight(width, height, maxWidth = 296) {
   const scale = maxWidth / width;
-  return scale * height;
+  const result = scale * height;
+  if (typeof result === 'number' && !Number.isNaN(result)) {
+    return scale * height;
+  }
+  return '';
 }
 
 function FileHeader({

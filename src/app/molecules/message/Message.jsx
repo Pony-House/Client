@@ -717,8 +717,8 @@ function genMediaContent(mE) {
       return (
         <Media.Sticker
           name={mContent.body}
-          width={typeof mContent.info?.w === 'number' ? mContent.info?.w : null}
-          height={typeof mContent.info?.h === 'number' ? mContent.info?.h : null}
+          width={typeof mContent.info?.w === 'number' && !Number.isNaN(mContent.info?.w) ? mContent.info?.w : null}
+          height={typeof mContent.info?.h === 'number' && !Number.isNaN(mContent.info?.h) ? mContent.info?.h : null}
           link={mx.mxcUrlToHttp(mediaMXC)}
           file={isEncryptedFile ? mContent.file : null}
           type={mContent.info?.mimetype}
