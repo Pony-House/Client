@@ -5,7 +5,7 @@ import { updateName, sortName } from '../../../util/roomName';
 import initMatrix from '../../../client/initMatrix';
 import { selectSpace, selectRoom, openReusableContextMenu } from '../../../client/action/navigation';
 import { getEventCords } from '../../../util/common';
-import { getSpaceItem, setSpaceItem, removeSpaceItem } from '../../../util/selectedRoom';
+import { getSpaceItem, setSpaceItem } from '../../../util/selectedRoom';
 
 import RawIcon from '../../atoms/system-icons/RawIcon';
 import IconButton from '../../atoms/button/IconButton';

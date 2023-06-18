@@ -1,5 +1,3 @@
-/* eslint-disable prefer-destructuring */
-
 import initMatrix from '../client/initMatrix';
 
 // Status Builder

@@ -34,6 +34,7 @@ module.exports = {
     'no-plusplus': 0,
     'no-minusminus': 0,
     'no-param-reassign': 0,
+    'prefer-destructuring': 0,
     "no-shadow": "off",
 
     "import/prefer-default-export": "off",
