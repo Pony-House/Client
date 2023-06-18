@@ -378,7 +378,21 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     );
 
     setTimeout(() => {
-        document.querySelector('#emoji-board').parentElement.parentElement.parentElement.parentElement.parentElement.classList.add('emoji-board-tippy');
+
+        const emojiBoard = document.querySelector('#emoji-board');
+
+        if (
+            emojiBoard &&
+            emojiBoard.parentElement &&
+            emojiBoard.parentElement.parentElement &&
+            emojiBoard.parentElement.parentElement.parentElement &&
+            emojiBoard.parentElement.parentElement.parentElement.parentElement &&
+            emojiBoard.parentElement.parentElement.parentElement.parentElement.parentElement &&
+            emojiBoard.parentElement.parentElement.parentElement.parentElement.parentElement.classList
+        ) {
+            emojiBoard.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add('emoji-board-tippy');
+        }
+
     }, 500);
 
     resetEmojisList();
