@@ -1,15 +1,15 @@
 import initMatrix from '../../../client/initMatrix';
 import { emojis } from './emoji';
 
-const eventType = 'io.pony.house.recent_emoji';
+const eventType = 'io.pony.house.fav_emoji';
 
-function getRecentEmojisRaw() {
+function getFavEmojisRaw() {
   return initMatrix.matrixClient.getAccountData(eventType)?.getContent().recent_emoji ?? [];
 }
 
-export function getRecentEmojis(limit) {
+export function getFavEmojis(limit) {
   const res = [];
-  getRecentEmojisRaw()
+  getFavEmojisRaw()
     .sort((a, b) => b[1] - a[1])
     .find(([emojiData]) => {
 
@@ -29,9 +29,9 @@ export function getRecentEmojis(limit) {
   return res;
 }
 
-export function addRecentEmoji(emojiData) {
+export function addFavEmoji(emojiData) {
 
-  const recent = getRecentEmojisRaw();
+  const recent = getFavEmojisRaw();
   const i = recent.findIndex(([u]) => u && u.isCustom === emojiData.isCustom && u.mxc === emojiData.mxc && u.unicode === emojiData.unicode);
 
   let entry;
