@@ -4,7 +4,7 @@ import { emojis } from './emoji';
 const eventType = 'io.pony.house.fav_emoji';
 
 function getFavEmojisRaw() {
-  return initMatrix.matrixClient.getAccountData(eventType)?.getContent().recent_emoji ?? [];
+  return initMatrix.matrixClient.getAccountData(eventType)?.getContent().fav_emoji ?? [];
 }
 
 export function getFavEmojis(limit) {
@@ -45,7 +45,7 @@ export function addFavEmoji(emojiData) {
   recent.unshift(entry);
 
   initMatrix.matrixClient.setAccountData(eventType, {
-    recent_emoji: recent.slice(0, 100),
+    fav_emoji: recent.slice(0, 100),
   });
 
 }
