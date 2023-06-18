@@ -12,6 +12,7 @@ import navigation from '../../../client/state/navigation';
 import { bytesToSize, getEventCords } from '../../../util/common';
 import { getUsername } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
+import { shiftNuller } from '../../../util/shortcut';
 
 import Text from '../../atoms/text/Text';
 import RawIcon from '../../atoms/system-icons/RawIcon';
@@ -498,7 +499,7 @@ function RoomViewInput({
                   mxc: data.mxc
                 });
 
-                e.target.click();
+                shiftNuller(() => e.target.click());
 
               });
 
@@ -523,7 +524,7 @@ function RoomViewInput({
               openEmojiBoard(cords, 'emoji', emoji => {
 
                 addEmoji(emoji);
-                e.target.click();
+                shiftNuller(() => e.target.click());
 
               });
 

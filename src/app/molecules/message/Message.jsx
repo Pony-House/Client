@@ -18,6 +18,7 @@ import {
 } from '../../../client/action/navigation';
 import { sanitizeCustomHtml } from '../../../util/sanitize';
 
+import { shiftNuller } from '../../../util/shortcut';
 import Text from '../../atoms/text/Text';
 import RawIcon from '../../atoms/system-icons/RawIcon';
 import Button from '../../atoms/button/Button';
@@ -378,7 +379,7 @@ function pickEmoji(e, roomId, eventId, roomTimeline, extraX = 0, extraX2 = 0) {
   // Open the Emoji Board
   openEmojiBoard(cords, 'emoji', (emoji) => {
     toggleEmoji(roomId, eventId, emoji.mxc ?? emoji.unicode, emoji.shortcodes[0], roomTimeline);
-    e.target.click();
+    shiftNuller(() => e.target.click());
   });
 
 }
