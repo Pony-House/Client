@@ -6,7 +6,6 @@ import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import { markAsRead } from '../../../client/action/notifications';
 
-import Text from '../../atoms/text/Text';
 import Button from '../../atoms/button/Button';
 
 import { getUsersActionJsx } from './common';
