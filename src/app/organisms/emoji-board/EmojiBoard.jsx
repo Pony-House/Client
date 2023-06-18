@@ -12,7 +12,7 @@ import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import AsyncSearch from '../../../util/AsyncSearch';
-import { addRecentEmoji, getRecentEmojis } from './recent';
+import { addToEmojiList, getEmojisList } from './recent';
 import { TWEMOJI_BASE_URL } from '../../../util/twemojify';
 import { checkVisible } from '../../../util/tools';
 
@@ -259,9 +259,9 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         const emoji = getEmojiDataFromTarget(e.target);
         onSelect(emoji);
         if (emoji.hexcode) {
-            addRecentEmoji({ isCustom: false, unicode: emoji.unicode, mxc: null }, 'recent_emoji');
+            addToEmojiList({ isCustom: false, unicode: emoji.unicode, mxc: null }, 'recent_emoji');
         } else {
-            addRecentEmoji({ isCustom: true, unicode: null, mxc: e.target.getAttribute('data-mx-emoticon') }, 'recent_emoji');
+            addToEmojiList({ isCustom: true, unicode: null, mxc: e.target.getAttribute('data-mx-emoticon') }, 'recent_emoji');
         }
     }
 
@@ -345,7 +345,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             handleSearchChange();
 
             // only update when board is getting opened to prevent shifting UI
-            setRecentEmojis(getRecentEmojis(3 * ROW_EMOJIS_COUNT, 'recent_emoji'));
+            setRecentEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji'));
         };
 
         navigation.on(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);

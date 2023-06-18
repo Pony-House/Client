@@ -3,13 +3,13 @@ import { emojis } from './emoji';
 
 const eventType = 'io.pony.house.recent_emoji';
 
-function getRecentEmojisRaw() {
+function getEmojisListRaw() {
   return initMatrix.matrixClient.getAccountData(eventType)?.getContent() ?? { recent_emoji: [], fav_emoji: [] };
 }
 
-export function getRecentEmojis(limit, where) {
+export function getEmojisList(limit, where) {
   const res = [];
-  getRecentEmojisRaw()[where]
+  getEmojisListRaw()[where]
     .sort((a, b) => b[1] - a[1])
     .find(([emojiData]) => {
 
@@ -29,9 +29,9 @@ export function getRecentEmojis(limit, where) {
   return res;
 }
 
-export function addRecentEmoji(emojiData, where) {
+export function addToEmojiList(emojiData, where) {
 
-  const recent = getRecentEmojisRaw();
+  const recent = getEmojisListRaw();
   const i = recent[where].findIndex(([u]) => u && u.isCustom === emojiData.isCustom && u.mxc === emojiData.mxc && u.unicode === emojiData.unicode);
 
   let entry;

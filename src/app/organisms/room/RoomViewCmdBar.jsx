@@ -13,7 +13,7 @@ import AsyncSearch from '../../../util/AsyncSearch';
 import Text from '../../atoms/text/Text';
 import ScrollView from '../../atoms/scroll/ScrollView';
 import FollowingMembers from '../../molecules/following-members/FollowingMembers';
-import { addRecentEmoji, getRecentEmojis } from '../emoji-board/recent';
+import { addToEmojiList, getEmojisList } from '../emoji-board/recent';
 import commands from './commands';
 
 function CmdItem({ onClick, children }) {
@@ -181,7 +181,7 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent }) {
         const parentIds = initMatrix.roomList.getAllParentSpaces(roomId);
         const parentRooms = [...parentIds].map((id) => mx.getRoom(id));
         const emojis = getEmojiForCompletion(mx, [mx.getRoom(roomId), ...parentRooms]);
-        const recentEmoji = getRecentEmojis(20, 'recent_emoji');
+        const recentEmoji = getEmojisList(20, 'recent_emoji');
         asyncSearch.setup(emojis, { keys: ['shortcode'], isContain: true, limit: 20 });
         setCmd({
           prefix,
@@ -220,9 +220,9 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent }) {
 
     if (myCmd.prefix === ':') {
       if (!myCmd.result.mxc) {
-        addRecentEmoji({ isCustom: false, unicode: myCmd.result.unicode, mxc: null }, 'recent_emoji');
+        addToEmojiList({ isCustom: false, unicode: myCmd.result.unicode, mxc: null }, 'recent_emoji');
       } else {
-        addRecentEmoji({ isCustom: true, unicode: null, mxc: myCmd.result.mxc }, 'recent_emoji');
+        addToEmojiList({ isCustom: true, unicode: null, mxc: myCmd.result.mxc }, 'recent_emoji');
       }
       viewEvent.emit('cmd_fired', {
         replace: myCmd.result.mxc ? `:${myCmd.result.shortcode}: ` : myCmd.result.unicode,
