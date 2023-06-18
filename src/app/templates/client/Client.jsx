@@ -166,7 +166,7 @@ function Client() {
       <div className="navigation-wrapper">
         <Navigation />
       </div>
-      <div className={`room-wrapper`}>
+      <div className='room-wrapper'>
         <Room />
       </div>
       <Windows />
