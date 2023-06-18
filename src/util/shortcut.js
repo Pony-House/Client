@@ -47,6 +47,13 @@ document.addEventListener('keyup', keyPressDetect);
 document.addEventListener('keypress', keyPressDetect);
 
 // Shift Nuller
-export function shiftNuller(callback) {
+export function shiftNuller(callback, isInverse = false) {
     if (!isShift) callback();
+    if (isInverse && isShift) callback();
+}
+
+// Ctrl Nuller
+export function ctrlNuller(callback, isInverse = false) {
+    if (!isCtrl) callback();
+    if (isInverse && isCtrl) callback();
 }
