@@ -39,7 +39,7 @@ export function addToEmojiList(emojiData, where) {
   if (i < 0) {
     entry = [emojiData, 1];
   } else {
-    [entry] = recent.splice(i, 1);
+    [entry] = recent[where].splice(i, 1);
     entry[1] += 1;
   }
   recent[where].unshift(entry);
