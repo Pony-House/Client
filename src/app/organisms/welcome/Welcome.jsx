@@ -1,8 +1,5 @@
 import React from 'react';
 
-import Text from '../../atoms/text/Text';
-
-
 function Welcome() {
   return (
     <div className="tiny-welcome p-3 border-0 rounded d-flex justify-content-center w-100 h-100 noselect" style={{ alignItems: 'center' }}>
