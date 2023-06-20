@@ -46,7 +46,7 @@ const copyFiles = {
     },
     {
       src: 'public/res/png',
-      dest: 'public/res/png/',
+      dest: 'public/res/',
     },
     {
       src: 'public/favicon.ico',
