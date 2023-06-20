@@ -9,7 +9,7 @@ function Welcome() {
       <center>
         <img className="app-welcome__logo noselect" src="./public/favicon.ico" alt="Cinny logo" />
 
-        <h2>Welcome to Pony House</h2>
+        <h2 className='mt-3'>Welcome to Pony House</h2>
 
         <h6>The tiny Pony House matrix client</h6>
 
