@@ -33,6 +33,8 @@ Made by Me
 
     mx.getUrlPreview(url, ts)
 
+    A lista de rooms da home do aplcativo vai aparecer os ícones da mesma forma como a lista de DM faz.
+
     Criar favoritador de emojis
 
     Criar novo ícone de avatares padrões
