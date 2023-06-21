@@ -54,7 +54,7 @@ const MessageAvatar = React.memo(({
   roomId, avatarSrc, avatarAnimSrc, userId, username,
 }) => (
   <button type="button" onClick={() => openProfileViewer(userId, roomId)}>
-    <Avatar imgClass='' imageAnimSrc={avatarAnimSrc} imageSrc={avatarSrc} text={username} bgColor={colorMXID(userId)} />
+    <Avatar imgClass='' imageAnimSrc={avatarAnimSrc} imageSrc={avatarSrc} text={username} bgColor={colorMXID(userId)} isDefaultImage />
   </button>
 ));
 

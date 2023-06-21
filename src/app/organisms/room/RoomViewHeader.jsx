@@ -72,7 +72,7 @@ function RoomViewHeader({ roomId }) {
             onClick={() => toggleRoomSettings()}
             type="button"
           >
-            <Avatar className='d-inline-block me-2' imageSrc={avatarSrc} text={roomName} bgColor={colorMXID(roomId)} size="small" />
+            <Avatar className='d-inline-block me-2' imageSrc={avatarSrc} text={roomName} bgColor={colorMXID(roomId)} size="small" isDefaultImage />
             <span className='me-2'>{twemojify(roomName)}</span>
             <RawIcon fa="fa-solid fa-chevron-down" />
           </button>

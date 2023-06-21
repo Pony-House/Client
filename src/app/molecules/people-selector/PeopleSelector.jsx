@@ -90,7 +90,7 @@ function PeopleSelector({
       type="button"
     >
 
-      <Avatar imageSrc={avatarSrc} text={name} bgColor={color} size="small" />
+      <Avatar imageSrc={avatarSrc} text={name} bgColor={color} size="small" isDefaultImage />
       {!disableStatus ? <i ref={statusRef} className={getUserStatus(user)} /> : ''}
 
       <div className="small people-selector__name emoji-size-fix text-start">

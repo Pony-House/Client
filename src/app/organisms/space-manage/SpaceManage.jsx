@@ -104,6 +104,7 @@ function SpaceManageItem({
           : joinRuleToIconSrc((roomInfo.join_rules || roomInfo.join_rule), isSpace)
       }
       size="extra-small"
+      isDefaultImage
     />
   );
   const roomNameJSX = (

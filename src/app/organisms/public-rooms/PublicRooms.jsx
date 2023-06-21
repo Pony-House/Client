@@ -207,6 +207,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
                 imageSrc={typeof room.avatar_url === 'string' ? initMatrix.matrixClient.mxcUrlToHttp(room.avatar_url, 42, 42, 'crop') : null}
                 bgColor={colorMXID(alias)}
                 text={name}
+                isDefaultImage
               />
             </h4>
 

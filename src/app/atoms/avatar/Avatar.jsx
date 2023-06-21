@@ -33,7 +33,7 @@ const Avatar = React.forwardRef(({
           ? (!imageAnimSrc ?
 
             <img
-              className={imgClass}
+              className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
               draggable="false"
               src={imageSrc !== null ? imageSrc : `./public/img/default_avatar/${colorCode}.jpg`}
               onLoad={(e) => { e.target.style.backgroundColor = 'transparent'; }}
@@ -44,6 +44,7 @@ const Avatar = React.forwardRef(({
             :
 
             <img
+              className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
               draggable="false"
               src={imageAnimSrc !== null ? imageAnimSrc : `./public/img/default_avatar/${colorCode}.jpg`}
               onLoad={(e) => {
