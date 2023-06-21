@@ -52,7 +52,7 @@ RoomSelectorWrapper.propTypes = {
 function RoomSelector({
   name, parentName, roomId, imageSrc, iconSrc,
   isSelected, isMuted, isUnread, notificationCount, isAlert,
-  options, onClick, onContextMenu, isProfile,
+  options, onClick, onContextMenu, isProfile, notSpace,
 }) {
   return (
     <RoomSelectorWrapper
@@ -69,7 +69,7 @@ function RoomSelector({
             iconSrc={!isProfile ? iconSrc : null}
             faSrc={isProfile ? 'bi bi-person-badge-fill profile-icon-fa' : null}
             size="extra-small"
-            isDefaultImage={(!iconSrc)}
+            isDefaultImage={(!iconSrc || notSpace)}
           />
           <Text variant="b1" weight={isUnread ? 'medium' : 'normal'}>
             {twemojify(name)}
@@ -95,6 +95,7 @@ function RoomSelector({
   );
 }
 RoomSelector.defaultProps = {
+  notSpace: false,
   isProfile: false,
   parentName: null,
   isSelected: false,
@@ -105,6 +106,7 @@ RoomSelector.defaultProps = {
   onContextMenu: null,
 };
 RoomSelector.propTypes = {
+  notSpace: PropTypes.bool,
   isProfile: PropTypes.bool,
   name: PropTypes.string.isRequired,
   parentName: PropTypes.string,

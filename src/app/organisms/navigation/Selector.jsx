@@ -18,7 +18,7 @@ import { useForceUpdate } from '../../hooks/useForceUpdate';
 
 // Selector Function
 function Selector({
-  roomId, isDM, drawerPostie, onClick, roomObject, isProfile
+  roomId, isDM, drawerPostie, onClick, roomObject, isProfile, notSpace,
 }) {
 
   // Base Script
@@ -84,11 +84,12 @@ function Selector({
   // Complete Data
   return (
     <RoomSelector
+      notSpace={notSpace}
       key={roomId}
       isProfile={isProfile}
       name={room.name}
       roomId={roomId}
-      imageSrc={isDM ? imageSrc : null}
+      imageSrc={isDM || notSpace ? imageSrc : null}
       iconSrc={isDM ? null : joinRuleToIconSrc(room.getJoinRule(), room.isSpaceRoom())}
       isSelected={navigation.selectedRoomId === roomId}
       isMuted={isMuted}
@@ -115,10 +116,12 @@ function Selector({
 Selector.defaultProps = {
   isDM: true,
   isProfile: false,
+  notSpace: false,
 };
 
 Selector.propTypes = {
 
+  notSpace: PropTypes.bool,
   isProfile: PropTypes.bool,
   roomId: PropTypes.string.isRequired,
   isDM: PropTypes.bool,

@@ -47,7 +47,7 @@ setCategoryOpen.propTypes = {
 };
 
 function RoomsCategory({
-  spaceId, name, hideHeader, roomIds, drawerPostie,
+  spaceId, name, hideHeader, roomIds, drawerPostie, notSpace,
 }) {
 
   // Prepare Code Base
@@ -88,6 +88,7 @@ function RoomsCategory({
 
     return (
       <Selector
+        notSpace={notSpace}
         isProfile={isProfile}
         roomReady={roomReady}
         key={roomId}
@@ -202,10 +203,12 @@ function RoomsCategory({
   );
 }
 RoomsCategory.defaultProps = {
+  notSpace: false,
   spaceId: null,
   hideHeader: false,
 };
 RoomsCategory.propTypes = {
+  notSpace: PropTypes.bool,
   spaceId: PropTypes.string,
   name: PropTypes.string.isRequired,
   hideHeader: PropTypes.bool,

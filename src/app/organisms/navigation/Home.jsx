@@ -72,13 +72,13 @@ function Home({ spaceId }) {
   return (
     <>
       {!isCategorized && spaceIds.length !== 0 && (
-        <RoomsCategory name="Spaces" roomIds={spaceIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
+        <RoomsCategory notSpace={(!spaceId)} name="Spaces" roomIds={spaceIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
       )}
 
       {
         (
           roomIds.length !== 0 && (
-            <RoomsCategory name="Rooms" roomIds={roomIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
+            <RoomsCategory notSpace={(!spaceId)} name="Rooms" roomIds={roomIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
           )
         ) ||
         <center className='p-3 small text-warning'>
@@ -88,7 +88,7 @@ function Home({ spaceId }) {
       }
 
       {directIds.length !== 0 && (
-        <RoomsCategory name="People" roomIds={directIds.sort(roomIdByActivity)} drawerPostie={drawerPostie} />
+        <RoomsCategory notSpace={(!spaceId)} name="People" roomIds={directIds.sort(roomIdByActivity)} drawerPostie={drawerPostie} />
       )}
 
       {isCategorized && [...categories.keys()].sort(roomIdByAtoZ).map((catId) => {
@@ -102,6 +102,7 @@ function Home({ spaceId }) {
         dms.sort(roomIdByActivity);
         return (
           <RoomsCategory
+            notSpace={(!spaceId)}
             key={catId}
             spaceId={catId}
             name={mx.getRoom(catId).name}
