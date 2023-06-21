@@ -61,6 +61,10 @@ const copyFiles = {
       dest: 'public/img/',
     },
     {
+      src: 'public/img/default_avatar',
+      dest: 'public/img/',
+    },
+    {
       src: 'public/img/404',
       dest: 'public/img/',
     }
