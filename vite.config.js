@@ -62,7 +62,7 @@ const copyFiles = {
     },
     {
       src: 'public/img/404',
-      dest: 'public/img/404/',
+      dest: 'public/img/',
     }
   ],
 }
