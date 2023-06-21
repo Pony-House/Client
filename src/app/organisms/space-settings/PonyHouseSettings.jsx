@@ -64,14 +64,28 @@ function PonyHouseSettings({ roomId, room }) {
 
     // Pony Config
     const canPonyHouse = room.currentState.maySendStateEvent('pony.house.settings', userId);
-    const bannerCfg = room.currentState.getStateEvents('pony.house.settings', 'banner')?.getContent();
+    const bannerCfg = room.currentState.getStateEvents('pony.house.settings', 'banner')?.getContent() ?? {};
+    const roomIconCfg = room.currentState.getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ?? {};
     let avatarSrc;
 
-    if (bannerCfg && typeof bannerCfg?.url === 'string' && bannerCfg?.url.length > 0) {
+    if (typeof bannerCfg?.url === 'string' && bannerCfg?.url.length > 0) {
         avatarSrc = mx.mxcUrlToHttp(bannerCfg.url, 400, 227);
     }
 
     return (<>
+
+        <SettingTile
+            title="Display room avatars"
+            content={<div className="very-small text-gray">Instead of showing the traditional room icons of this space, you can click here for this sace to show room avatars instead.</div>}
+            options={(
+                <Toggle
+                    className='d-inline-flex'
+                    isActive={roomIconCfg.isActive}
+                    // onToggle={toggleDirectoryVisibility}
+                    disabled={!canPonyHouse}
+                />
+            )}
+        />
 
         <li className="list-group-item small">
 
@@ -92,23 +106,6 @@ function PonyHouseSettings({ roomId, room }) {
                     onRequestRemove={() => handleBannerUpload(null)}
                 />
             )}
-
-        </li>
-
-        <li className="list-group-item small">
-
-            <SettingTile
-                title="Publish to room directory"
-                content={<div className="very-small text-gray">{`Publish this ${room.isSpaceRoom() ? 'space' : 'room'} to the's public room directory?`}</div>}
-                options={(
-                    <Toggle
-                        className='d-inline-flex'
-                        // isActive={isPublic}
-                        // onToggle={toggleDirectoryVisibility}
-                        disabled={!canPonyHouse}
-                    />
-                )}
-            />
 
         </li>
 
