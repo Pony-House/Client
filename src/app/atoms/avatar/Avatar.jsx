@@ -12,7 +12,7 @@ import { avatarInitials } from '../../../util/common';
 import { getFileContentType } from '../../../util/fileMime';
 
 const Avatar = React.forwardRef(({
-  text, bgColor, iconSrc, faSrc, iconColor, imageSrc, size, className, imgClass, imageAnimSrc
+  text, bgColor, iconSrc, faSrc, iconColor, imageSrc, size, className, imgClass, imageAnimSrc, isDefaultImage
 }, ref) => {
   let textSize = 's1';
   if (size === 'large') textSize = 'h1';
@@ -20,17 +20,22 @@ const Avatar = React.forwardRef(({
   if (size === 'extra-small') textSize = 'b3';
   let imageLoaded = false;
 
+  let colorCode = Number(bgColor.substring(0, bgColor.length - 1).replace('var(--mx-uc-', ''));
+  if (typeof colorCode !== 'number' || Number.isNaN(colorCode) || !Number.isFinite(colorCode) || colorCode < 1) {
+    colorCode = 1;
+  }
+
   return (
     <div ref={ref} className={`avatar-container avatar-container__${size} ${className} noselect`}>
       {
         // eslint-disable-next-line no-nested-ternary
-        imageSrc !== null
+        imageSrc !== null || isDefaultImage
           ? (!imageAnimSrc ?
 
             <img
               className={imgClass}
               draggable="false"
-              src={imageSrc}
+              src={imageSrc !== null ? imageSrc : `./public/img/default_avatar/${colorCode}.jpg`}
               onLoad={(e) => { e.target.style.backgroundColor = 'transparent'; }}
               onError={(e) => { e.target.src = ImageBrokenSVG; }}
               alt=""
@@ -40,7 +45,7 @@ const Avatar = React.forwardRef(({
 
             <img
               draggable="false"
-              src={imageAnimSrc}
+              src={imageAnimSrc !== null ? imageAnimSrc : `./public/img/default_avatar/${colorCode}.jpg`}
               onLoad={(e) => {
                 if (!imageLoaded) {
                   imageLoaded = true;
@@ -108,6 +113,7 @@ const Avatar = React.forwardRef(({
 });
 
 Avatar.defaultProps = {
+  isDefaultImage: false,
   imageAnimSrc: null,
   imgClass: 'img-fluid',
   text: null,
@@ -121,6 +127,7 @@ Avatar.defaultProps = {
 };
 
 Avatar.propTypes = {
+  isDefaultImage: PropTypes.bool,
   imageAnimSrc: PropTypes.string,
   text: PropTypes.string,
   imgClass: PropTypes.string,
