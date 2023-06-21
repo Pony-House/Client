@@ -169,7 +169,7 @@ function RoomsCategory({
     }
 
     rooms.push((
-      <div>
+      <div className='category-button'>
         <button className="py-2" id={roomIdB1} onClick={() => { setCategoryOpen({ roomName: roomDivId }) }} type="button">
           <RawIcon fa={tinyIsOpen ? "fa-solid fa-chevron-down" : "fa-solid fa-chevron-right"} size="extra-small" />
           <span className="text-gray very-small text-uppercase ms-2">{roomCategory[item].name}</span>
@@ -189,14 +189,14 @@ function RoomsCategory({
   return (
     <div className="p-3 pe-2">
       {!hideHeader && (
-        <>
+        <div className='category-button'>
           <button className="py-2" onClick={() => setIsOpen(!isOpen)} type="button">
             <RawIcon fa={isOpen ? "fa-solid fa-chevron-down" : "fa-solid fa-chevron-right"} size="extra-small" />
             <span className="text-gray very-small text-uppercase ms-2" >{name}</span>
           </button>
           {spaceId && <IconButton onClick={openSpaceOptions} tooltip="Space options" fa="bi bi-three-dots" size="extra-small" />}
           {spaceId && <IconButton onClick={openHomeSpaceOptions} tooltip="Add rooms/spaces" fa="fa-solid fa-plus" size="extra-small" />}
-        </>
+        </div>
       )}
       {(isOpen || hideHeader) && rooms}
     </div>

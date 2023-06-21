@@ -662,3 +662,12 @@ a {
     font-size: 13px;
   }
 }
+
+/* Room Button */
+
+.category-button:hover span,
+.category-button:hover i,
+.room-selector:hover p,
+.room-selector.room-selector--selected p {
+  color: var(--tc-primary-high) !important;
+}
