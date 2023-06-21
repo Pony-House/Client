@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import ImageUpload from '../../molecules/image-upload/ImageUpload';
@@ -16,6 +16,12 @@ function PonyHouseSettings({ roomId, room }) {
     const mx = initMatrix.matrixClient;
     const userId = mx.getUserId();
     const roomName = room?.name;
+    const [isRoomIconsVisible, setRoomIconsVisible] = useState(false);
+
+    const toggleShowRoomIcons = async data => {
+        await mx.sendStateEvent(roomId, 'pony.house.settings', { isActive: data }, 'roomIcons');
+        setRoomIconsVisible(data);
+    };
 
     const handleBannerUpload = async url => {
 
@@ -64,13 +70,19 @@ function PonyHouseSettings({ roomId, room }) {
 
     // Pony Config
     const canPonyHouse = room.currentState.maySendStateEvent('pony.house.settings', userId);
-    const bannerCfg = room.currentState.getStateEvents('pony.house.settings', 'banner')?.getContent() ?? {};
-    const roomIconCfg = room.currentState.getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ?? {};
     let avatarSrc;
 
+    const bannerCfg = room.currentState.getStateEvents('pony.house.settings', 'banner')?.getContent() ?? {};
     if (typeof bannerCfg?.url === 'string' && bannerCfg?.url.length > 0) {
         avatarSrc = mx.mxcUrlToHttp(bannerCfg.url, 400, 227);
     }
+
+    useEffect(() => {
+
+        const roomIconCfg = room.currentState.getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ?? {};
+        setRoomIconsVisible((roomIconCfg.isActive === true));
+
+    }, [room]);
 
     return (<>
 
@@ -80,8 +92,8 @@ function PonyHouseSettings({ roomId, room }) {
             options={(
                 <Toggle
                     className='d-inline-flex'
-                    isActive={roomIconCfg.isActive}
-                    // onToggle={toggleDirectoryVisibility}
+                    isActive={isRoomIconsVisible}
+                    onToggle={toggleShowRoomIcons}
                     disabled={!canPonyHouse}
                 />
             )}
