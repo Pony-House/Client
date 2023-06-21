@@ -13,7 +13,7 @@ function RoomIntro({
     <tr className="welcome-msg">
       <td colSpan="2">
         <div className='ps-5 pt-5 pb-3'>
-          <Avatar imageSrc={avatarSrc} text={name} bgColor={colorMXID(roomId)} size="large" />
+          <Avatar imageSrc={avatarSrc} text={name} bgColor={colorMXID(roomId)} size="large" isDefaultImage />
           <div className="pt-4 text-bg emoji-size-fix">
             <h3>{heading}</h3>
             <div className="small">{desc}</div>

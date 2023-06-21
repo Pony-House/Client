@@ -210,6 +210,7 @@ function DraggableSpaceShortcut({
           bgColor={colorMXID(room.roomId)}
           size="normal"
           imageSrc={room.getAvatarUrl(initMatrix.matrixClient.baseUrl, 42, 42, 'crop') || null}
+          isDefaultImage
         />
       )}
       notificationBadge={notifications.hasNoti(spaceId) ? (

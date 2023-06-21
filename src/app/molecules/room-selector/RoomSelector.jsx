@@ -69,6 +69,7 @@ function RoomSelector({
             iconSrc={!isProfile ? iconSrc : null}
             faSrc={isProfile ? 'bi bi-person-badge-fill profile-icon-fa' : null}
             size="extra-small"
+            isDefaultImage={(!iconSrc)}
           />
           <Text variant="b1" weight={isUnread ? 'medium' : 'normal'}>
             {twemojify(name)}

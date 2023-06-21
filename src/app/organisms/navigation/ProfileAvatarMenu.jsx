@@ -120,6 +120,7 @@ function ProfileAvatarMenu() {
                                 bgColor={colorMXID(mx.getUserId())}
                                 size="normal"
                                 imageSrc={profile.avatarUrl !== null ? mx.mxcUrlToHttp(profile.avatarUrl, 42, 42, 'crop') : null}
+                                isDefaultImage
                             />
                             <i ref={statusRef} className={newStatus} />
                             <div className="very-small ps-2 text-truncate emoji-size-fix-2" id='display-name' >{profile.displayName}</div>

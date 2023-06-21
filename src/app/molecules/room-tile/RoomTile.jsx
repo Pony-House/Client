@@ -20,6 +20,7 @@ function RoomTile({
           imageSrc={avatarSrc}
           bgColor={colorMXID(id)}
           text={name}
+          isDefaultImage
         />
       </div>
       <div className="room-tile__content emoji-size-fix">
