@@ -303,7 +303,7 @@ function AboutSection() {
           </li>
 
           <li className="list-group-item border-0">
-            <div className='small'>The Pony House is a private fork from the <a href="https://github.com/cinnyapp/cinny" target="_blank" rel="noreferrer noopener">Cinny</a>. All source code base credits go to this group.</div>
+            <div className='small'>The Pony House is a fork from the <a href="https://github.com/cinnyapp/cinny" target="_blank" rel="noreferrer noopener">Cinny</a>. All source code base credits go to this group.</div>
           </li>
 
         </ul>
