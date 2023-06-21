@@ -26,6 +26,7 @@ function Home({ spaceId }) {
   let spaceIds = [];
   let roomIds = [];
   let directIds = [];
+  const roomSettings = { notSpace: (!spaceId) };
 
   if (spaceId) {
     const spaceChildIds = roomList.getSpaceChildren(spaceId) ?? [];
@@ -67,18 +68,26 @@ function Home({ spaceId }) {
       notifications.removeListener(cons.events.notifications.NOTI_CHANGED, notiChanged);
       notifications.removeListener(cons.events.notifications.MUTE_TOGGLED, notiChanged);
     };
+
   }, []);
+
+  const room = mx.getRoom(spaceId);
+
+  if (room) {
+    const roomIconCfg = room.currentState.getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ?? {};
+    roomSettings.notSpace = (roomIconCfg.isActive === true);
+  }
 
   return (
     <>
       {!isCategorized && spaceIds.length !== 0 && (
-        <RoomsCategory notSpace={(!spaceId)} name="Spaces" roomIds={spaceIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
+        <RoomsCategory notSpace={roomSettings.notSpace} name="Spaces" roomIds={spaceIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
       )}
 
       {
         (
           roomIds.length !== 0 && (
-            <RoomsCategory notSpace={(!spaceId)} name="Rooms" roomIds={roomIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
+            <RoomsCategory notSpace={roomSettings.notSpace} name="Rooms" roomIds={roomIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
           )
         ) ||
         <center className='p-3 small text-warning'>
@@ -88,7 +97,7 @@ function Home({ spaceId }) {
       }
 
       {directIds.length !== 0 && (
-        <RoomsCategory notSpace={(!spaceId)} name="People" roomIds={directIds.sort(roomIdByActivity)} drawerPostie={drawerPostie} />
+        <RoomsCategory notSpace={roomSettings.notSpace} name="People" roomIds={directIds.sort(roomIdByActivity)} drawerPostie={drawerPostie} />
       )}
 
       {isCategorized && [...categories.keys()].sort(roomIdByAtoZ).map((catId) => {
@@ -102,7 +111,7 @@ function Home({ spaceId }) {
         dms.sort(roomIdByActivity);
         return (
           <RoomsCategory
-            notSpace={(!spaceId)}
+            notSpace={roomSettings.notSpace}
             key={catId}
             spaceId={catId}
             name={mx.getRoom(catId).name}
