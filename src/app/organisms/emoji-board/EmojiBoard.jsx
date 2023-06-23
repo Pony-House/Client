@@ -12,7 +12,7 @@ import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import AsyncSearch from '../../../util/AsyncSearch';
-import { addToEmojiList, getEmojisList } from './recent';
+import { addToEmojiList, getEmojisList, removeToEmojiList } from './recent';
 import { TWEMOJI_BASE_URL } from '../../../util/twemojify';
 import { checkVisible } from '../../../util/tools';
 
@@ -254,6 +254,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     }
 
     function selectEmoji(e) {
+
         if (isTargetNotEmoji(e.target)) return;
 
         const emoji = getEmojiDataFromTarget(e.target);
@@ -263,6 +264,45 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         } else {
             addToEmojiList({ isCustom: true, unicode: null, mxc: e.target.getAttribute('data-mx-emoticon') }, 'recent_emoji', emojiBoardRef.current.getAttribute('board-type'));
         }
+
+    }
+
+    function contextEmoji(e) {
+
+        e.preventDefault();
+        if (isTargetNotEmoji(e.target)) return false;
+
+        const emoji = getEmojiDataFromTarget(e.target);
+
+        const typesAdd = {
+            custom: { isCustom: true, unicode: null, mxc: e.target.getAttribute('data-mx-emoticon') },
+            noCustom: { isCustom: false, unicode: emoji.unicode, mxc: null }
+        };
+
+        if (!e.target.classList.contains('fav-emoji')) {
+
+            e.target.classList.add('fav-emoji');
+
+            if (emoji.hexcode) {
+                addToEmojiList(typesAdd.noCustom, 'fav_emoji', emojiBoardRef.current.getAttribute('board-type'));
+            } else {
+                addToEmojiList(typesAdd.custom, 'fav_emoji', emojiBoardRef.current.getAttribute('board-type'));
+            }
+
+        } else {
+
+            e.target.classList.remove('fav-emoji');
+
+            if (emoji.hexcode) {
+                removeToEmojiList(typesAdd.noCustom, 'fav_emoji', emojiBoardRef.current.getAttribute('board-type'));
+            } else {
+                removeToEmojiList(typesAdd.custom, 'fav_emoji', emojiBoardRef.current.getAttribute('board-type'));
+            }
+
+        }
+
+        return false;
+
     }
 
     function setEmojiInfo(emoji) {
@@ -473,7 +513,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                 </div>
                 <div className="emoji-board__content__emojis">
                     <ScrollView ref={scrollEmojisRef} onScroll={onScroll} autoHide>
-                        <div onMouseMove={hoverEmoji} onClick={selectEmoji}>
+                        <div onMouseMove={hoverEmoji} onContextMenu={contextEmoji} onClick={selectEmoji}>
 
                             <SearchedEmoji scrollEmojisRef={scrollEmojisRef} />
 
