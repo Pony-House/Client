@@ -31,7 +31,7 @@ export function getEmojisList(limit, where, type) {
 
 export function addToEmojiList(emojiData, where, type) {
 
-  const recent = getEmojisListRaw();
+  const recent = getEmojisListRaw(type);
   const i = recent[where].findIndex(([u]) => u && u.isCustom === emojiData.isCustom && u.mxc === emojiData.mxc && u.unicode === emojiData.unicode);
 
   let entry;
