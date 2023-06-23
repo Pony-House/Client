@@ -308,8 +308,10 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
     const [availableEmojis, setAvailableEmojis] = useState([]);
     const [recentEmojis, setRecentEmojis] = useState([]);
+    const [favEmojis, setFavEmojis] = useState([]);
 
     const recentOffset = recentEmojis.length > 0 ? 1 : 0;
+    const favOffset = favEmojis.length > 0 ? 1 : 0;
 
     useEffect(() => {
         const updateAvailableEmoji = (selectedRoomId) => {
@@ -346,6 +348,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
             // only update when board is getting opened to prevent shifting UI
             setRecentEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', emojiBoardRef.current.getAttribute('board-type')));
+            setFavEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji', emojiBoardRef.current.getAttribute('board-type')));
         };
 
         navigation.on(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
@@ -361,7 +364,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         const $emojiContent = scrollEmojisRef.current.firstElementChild;
         const groupCount = $emojiContent.childElementCount;
         if (groupCount > emojiGroups.length) {
-            tabIndex += groupCount - emojiGroups.length - availableEmojis.length - recentOffset;
+            tabIndex += groupCount - emojiGroups.length - availableEmojis.length - recentOffset - favOffset;
         }
         $emojiContent.children[tabIndex].scrollIntoView();
     }
@@ -369,7 +372,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     const boardType = getFunctionEmoji();
     const categoryReader = ([indx, ico, name]) => (
         <IconButton
-            onClick={() => openGroup(recentOffset + availableEmojis.length + indx)}
+            onClick={() => openGroup(recentOffset + favOffset + availableEmojis.length + indx)}
             key={indx}
             fa={ico}
             tooltip={name}
@@ -437,7 +440,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                             return (
                                 <IconButton
                                     className='emoji-group-button'
-                                    onClick={() => openGroup(recentOffset + pack.packIndex)}
+                                    onClick={() => openGroup(recentOffset + favOffset + pack.packIndex)}
                                     src={src}
                                     key={pack.packIndex}
                                     tooltip={pack.displayName ?? 'Unknown'}
