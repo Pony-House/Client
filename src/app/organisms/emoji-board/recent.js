@@ -48,3 +48,19 @@ export function addToEmojiList(emojiData, where, type) {
   initMatrix.matrixClient.setAccountData(eventType + type, recent);
 
 }
+
+export function removeToEmojiList(emojiData, where, type) {
+
+  const recent = getEmojisListRaw(type);
+
+  let index = 0;
+  while (index > -1) {
+    index = recent[where].findIndex(([u]) => u && u.isCustom === emojiData.isCustom && u.mxc === emojiData.mxc && u.unicode === emojiData.unicode);
+    if (index > -1) {
+      recent[where] = recent[where].splice(index, 1);
+    }
+  }
+
+  initMatrix.matrixClient.setAccountData(eventType + type, recent);
+
+}
