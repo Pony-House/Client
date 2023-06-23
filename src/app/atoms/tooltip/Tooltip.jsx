@@ -7,11 +7,11 @@ function Tooltip({
 }) {
 
   const tooltip = (
-    <BootstrapTooltip bsClass={bsClass} className={className ? `noselect ${className}` : 'noselect'}>{content}</BootstrapTooltip>
+    <BootstrapTooltip className={className ? `noselect ${className}` : 'noselect'}>{content}</BootstrapTooltip>
   );
 
   return (
-    <OverlayTrigger delayShow={delay[0]} delayHide={delay[1]} placement={placement} overlay={tooltip}>
+    <OverlayTrigger bsClass={bsClass} delayShow={delay[0]} delayHide={delay[1]} placement={placement} overlay={tooltip}>
       {children}
     </OverlayTrigger>
   );
