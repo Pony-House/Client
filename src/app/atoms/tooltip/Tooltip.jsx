@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { OverlayTrigger, Tooltip as BootstrapTooltip } from 'react-bootstrap';
 
 function Tooltip({
-  className, placement, content, delay, children,
+  className, placement, content, delay, children, bsClass,
 }) {
 
   const tooltip = (
-    <BootstrapTooltip className={className ? `noselect ${className}` : 'noselect'}>{content}</BootstrapTooltip>
+    <BootstrapTooltip bsClass={bsClass} className={className ? `noselect ${className}` : 'noselect'}>{content}</BootstrapTooltip>
   );
 
   return (
@@ -19,12 +19,14 @@ function Tooltip({
 }
 
 Tooltip.defaultProps = {
+  bsClass: 'tooltip',
   placement: 'top',
-  className: '',
+  className: null,
   delay: [200, 0],
 };
 
 Tooltip.propTypes = {
+  bsClass: PropTypes.string,
   className: PropTypes.string,
   placement: PropTypes.string,
   content: PropTypes.node.isRequired,
