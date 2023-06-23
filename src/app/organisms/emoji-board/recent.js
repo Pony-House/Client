@@ -1,15 +1,15 @@
 import initMatrix from '../../../client/initMatrix';
 import { emojis } from './emoji';
 
-const eventType = 'io.pony.house.recent_emoji';
+const eventType = 'io.pony.house.recent_';
 
-function getEmojisListRaw() {
-  return initMatrix.matrixClient.getAccountData(eventType)?.getContent() ?? { recent_emoji: [], fav_emoji: [] };
+function getEmojisListRaw(type) {
+  return initMatrix.matrixClient.getAccountData(eventType + type)?.getContent() ?? { recent_emoji: [], fav_emoji: [] };
 }
 
-export function getEmojisList(limit, where) {
+export function getEmojisList(limit, where, type) {
   const res = [];
-  getEmojisListRaw()[where]
+  getEmojisListRaw(type)[where]
     .sort((a, b) => b[1] - a[1])
     .find(([emojiData]) => {
 
@@ -29,7 +29,7 @@ export function getEmojisList(limit, where) {
   return res;
 }
 
-export function addToEmojiList(emojiData, where) {
+export function addToEmojiList(emojiData, where, type) {
 
   const recent = getEmojisListRaw();
   const i = recent[where].findIndex(([u]) => u && u.isCustom === emojiData.isCustom && u.mxc === emojiData.mxc && u.unicode === emojiData.unicode);
@@ -45,6 +45,6 @@ export function addToEmojiList(emojiData, where) {
   recent[where].unshift(entry);
 
   recent[where] = recent[where].slice(0, 100);
-  initMatrix.matrixClient.setAccountData(eventType, recent);
+  initMatrix.matrixClient.setAccountData(eventType + type, recent);
 
 }
