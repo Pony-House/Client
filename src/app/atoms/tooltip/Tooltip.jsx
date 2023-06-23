@@ -1,25 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Tooltip.scss';
-import Tippy from '@tippyjs/react';
+import { OverlayTrigger, Tooltip as BootstrapTooltip } from 'react-bootstrap';
 
 function Tooltip({
   className, placement, content, delay, children,
 }) {
-  return (
-    <Tippy
-      content={content}
-      className={`tooltip ${className}`}
-      touch="hold"
-      arrow={false}
-      maxWidth={250}
-      placement={placement}
-      delay={delay}
-      duration={[100, 0]}
-    >
-      {children}
-    </Tippy>
+
+  const tooltip = (
+    <BootstrapTooltip className={className}>{content}</BootstrapTooltip>
   );
+
+  return (
+    <OverlayTrigger placement={placement} overlay={tooltip}>
+      {children}
+    </OverlayTrigger>
+  );
+
 }
 
 Tooltip.defaultProps = {
