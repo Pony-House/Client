@@ -15,7 +15,9 @@ function Directs({ size }) {
   const { roomList, notifications } = initMatrix;
   const [directIds, setDirectIds] = useState([]);
 
-  useEffect(() => setDirectIds([...roomList.directs].sort(roomIdByActivity)), [size]);
+  useEffect(() => {
+    setDirectIds([...roomList.directs].sort(roomIdByActivity));
+  }, [size]);
 
   useEffect(() => {
     const handleTimeline = (event, room, toStartOfTimeline, removed, data) => {

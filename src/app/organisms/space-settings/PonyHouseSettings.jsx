@@ -126,7 +126,7 @@ function PonyHouseSettings({ roomId, room }) {
 }
 
 PonyHouseSettings.propTypes = {
-    room: PropTypes.node,
+    room: PropTypes.object,
     roomId: PropTypes.string.isRequired,
 };
 
