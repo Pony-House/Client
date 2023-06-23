@@ -7,7 +7,7 @@ function Tooltip({
 }) {
 
   const tooltip = (
-    <BootstrapTooltip className={className}>{content}</BootstrapTooltip>
+    <BootstrapTooltip className={className ? `noselect ${className}` : 'noselect'}>{content}</BootstrapTooltip>
   );
 
   return (

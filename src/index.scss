@@ -675,6 +675,7 @@ a {
 /* Tooltip */
 
 .tooltip {
+  pointer-events: none;
   .tooltip-inner,
   .tooltip-inner * {
     color: #fff;
