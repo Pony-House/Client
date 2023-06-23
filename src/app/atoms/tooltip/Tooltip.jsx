@@ -11,7 +11,7 @@ function Tooltip({
   );
 
   return (
-    <OverlayTrigger placement={placement} overlay={tooltip}>
+    <OverlayTrigger delayShow={delay[0]} delayHide={delay[1]} placement={placement} overlay={tooltip}>
       {children}
     </OverlayTrigger>
   );
