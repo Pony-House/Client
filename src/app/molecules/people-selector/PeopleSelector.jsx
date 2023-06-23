@@ -93,9 +93,9 @@ function PeopleSelector({
       <Avatar imageSrc={avatarSrc} text={name} bgColor={color} size="small" isDefaultImage />
       {!disableStatus ? <i ref={statusRef} className={getUserStatus(user)} /> : ''}
 
-      <div className="small people-selector__name emoji-size-fix text-start">
-        {twemojify(name)}
-        <div ref={customStatusRef} className='very-small text-gray text-truncate' />
+      <div className="small people-selector__name text-start">
+        <span className='emoji-size-fix'>{twemojify(name)}</span>
+        <div ref={customStatusRef} className='very-small text-gray text-truncate emoji-size-fix-2' />
       </div>
 
       {peopleRole !== null && <Text className="people-selector__role" variant="b3">{peopleRole}</Text>}
