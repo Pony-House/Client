@@ -259,9 +259,9 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         const emoji = getEmojiDataFromTarget(e.target);
         onSelect(emoji);
         if (emoji.hexcode) {
-            addToEmojiList({ isCustom: false, unicode: emoji.unicode, mxc: null }, 'recent_emoji', 'emoji');
+            addToEmojiList({ isCustom: false, unicode: emoji.unicode, mxc: null }, 'recent_emoji', emojiBoardRef.current.getAttribute('board-type'));
         } else {
-            addToEmojiList({ isCustom: true, unicode: null, mxc: e.target.getAttribute('data-mx-emoticon') }, 'recent_emoji', 'emoji');
+            addToEmojiList({ isCustom: true, unicode: null, mxc: e.target.getAttribute('data-mx-emoticon') }, 'recent_emoji', emojiBoardRef.current.getAttribute('board-type'));
         }
     }
 
@@ -345,7 +345,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             handleSearchChange();
 
             // only update when board is getting opened to prevent shifting UI
-            setRecentEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', 'emoji'));
+            setRecentEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', emojiBoardRef.current.getAttribute('board-type')));
         };
 
         navigation.on(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
@@ -402,14 +402,14 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         <div id="emoji-board" className="emoji-board" ref={emojiBoardRef}>
             <ScrollView invisible>
                 <div className="emoji-board__nav">
-                    {boardType === 'getEmojis' ? (recentEmojis.length > 0 && (
+                    {recentEmojis.length > 0 && (
                         <IconButton
                             onClick={() => openGroup(0)}
                             fa='fa-solid fa-clock-rotate-left'
                             tooltip="Recent"
                             tooltipPlacement="left"
                         />
-                    )) : ''}
+                    )}
                     <div className="emoji-board__nav-custom">
                         {availableEmojis.map((pack) => {
 
@@ -461,9 +461,9 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                     <ScrollView ref={scrollEmojisRef} onScroll={onScroll} autoHide>
                         <div onMouseMove={hoverEmoji} onClick={selectEmoji}>
                             <SearchedEmoji scrollEmojisRef={scrollEmojisRef} />
-                            {boardType === 'getEmojis' ? (recentEmojis.length > 0 && (
+                            {recentEmojis.length > 0 && (
                                 <EmojiGroup name="Recently used" groupEmojis={recentEmojis} />
-                            )) : ''}
+                            )}
                             {availableEmojis.map((pack) => (
                                 <EmojiGroup
                                     name={pack.displayName ?? 'Unknown'}
