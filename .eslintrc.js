@@ -35,7 +35,10 @@ module.exports = {
     'no-minusminus': 0,
     'no-param-reassign': 0,
     'prefer-destructuring': 0,
+    'consistent-return': 0,
     "no-shadow": "off",
+
+    'jsx-a11y/anchor-is-valid': 0,
 
     "import/prefer-default-export": "off",
     "import/extensions": "off",

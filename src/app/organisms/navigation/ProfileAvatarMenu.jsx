@@ -33,7 +33,7 @@ function ProfileAvatarMenu() {
     useEffect(() => {
 
         // Get User and update data
-        const user = mx.getUser(mx.getUserId());
+        const user2 = mx.getUser(mx.getUserId());
 
         // Set New User Status
         const onProfileUpdate = (event = {}) => {
@@ -42,7 +42,7 @@ function ProfileAvatarMenu() {
                 const tinyEvent = event;
                 const eventJSON = JSON.stringify(tinyEvent);
 
-                if (eventJSON.length > 0 /* && (typeof user.presenceStatusMsg !== 'string' || user.presenceStatusMsg !== eventJSON) */) {
+                if (eventJSON.length > 0 /* && (typeof user2.presenceStatusMsg !== 'string' || user2.presenceStatusMsg !== eventJSON) */) {
 
                     let presenceStatus = 'online';
                     if (typeof tinyEvent.status === 'string') {
@@ -60,13 +60,13 @@ function ProfileAvatarMenu() {
                 if (customStatusRef && customStatusRef.current && typeof event.msg === 'string' && event.msg.length > 0) {
                     customStatusRef.current.innerHTML = ReactDOMServer.renderToStaticMarkup(twemojify(event.msg.substring(0, 100)));
                 } else {
-                    customStatusRef.current.innerHTML = ReactDOMServer.renderToStaticMarkup(twemojify(user.userId));
+                    customStatusRef.current.innerHTML = ReactDOMServer.renderToStaticMarkup(twemojify(user2.userId));
                 }
 
                 if (statusRef && statusRef.current && typeof event.status === 'string' && event.status.length > 0) {
                     const tinyUser = mx.getUser(mx.getUserId());
                     tinyUser.presenceStatusMsg = JSON.stringify(event);
-                    statusRef.current.className = getUserStatus(user);
+                    statusRef.current.className = getUserStatus(user2);
                 }
 
             }
@@ -88,10 +88,10 @@ function ProfileAvatarMenu() {
         });
 
         // Socket
-        user.on('User.avatarUrl', onAvatarChange);
+        user2.on('User.avatarUrl', onAvatarChange);
         navigation.on(cons.events.navigation.PROFILE_UPDATED, onProfileUpdate);
         return () => {
-            user.removeListener('User.avatarUrl', onAvatarChange);
+            user2.removeListener('User.avatarUrl', onAvatarChange);
             navigation.removeListener(
                 cons.events.navigation.PROFILE_UPDATED,
                 onProfileUpdate,
