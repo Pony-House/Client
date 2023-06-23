@@ -406,20 +406,20 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             <ScrollView invisible>
                 <div className="emoji-board__nav">
 
-                    {recentEmojis.length > 0 && (
-                        <IconButton
-                            onClick={() => openGroup(0)}
-                            fa='fa-solid fa-clock-rotate-left'
-                            tooltip="Recent"
-                            tooltipPlacement="left"
-                        />
-                    )}
-
                     {favEmojis.length > 0 && (
                         <IconButton
                             onClick={() => openGroup(1)}
                             fa='fa-solid fa-star'
                             tooltip="Favorites"
+                            tooltipPlacement="left"
+                        />
+                    )}
+
+                    {recentEmojis.length > 0 && (
+                        <IconButton
+                            onClick={() => openGroup(0)}
+                            fa='fa-solid fa-clock-rotate-left'
+                            tooltip="Recent"
                             tooltipPlacement="left"
                         />
                     )}
@@ -477,12 +477,12 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
                             <SearchedEmoji scrollEmojisRef={scrollEmojisRef} />
 
-                            {recentEmojis.length > 0 && (
-                                <EmojiGroup name="Recently used" groupEmojis={recentEmojis} />
-                            )}
-
                             {favEmojis.length > 0 && (
                                 <EmojiGroup name="Favorites" groupEmojis={favEmojis} />
+                            )}
+
+                            {recentEmojis.length > 0 && (
+                                <EmojiGroup name="Recently used" groupEmojis={recentEmojis} />
                             )}
 
                             {availableEmojis.map((pack) => (
