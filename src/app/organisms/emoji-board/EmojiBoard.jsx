@@ -405,6 +405,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         <div id="emoji-board" className="emoji-board" ref={emojiBoardRef}>
             <ScrollView invisible>
                 <div className="emoji-board__nav">
+
                     {recentEmojis.length > 0 && (
                         <IconButton
                             onClick={() => openGroup(0)}
@@ -413,6 +414,16 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                             tooltipPlacement="left"
                         />
                     )}
+
+                    {favEmojis.length > 0 && (
+                        <IconButton
+                            onClick={() => openGroup(1)}
+                            fa='fa-solid fa-star'
+                            tooltip="Favorites"
+                            tooltipPlacement="left"
+                        />
+                    )}
+
                     <div className="emoji-board__nav-custom">
                         {availableEmojis.map((pack) => {
 
@@ -463,10 +474,17 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                 <div className="emoji-board__content__emojis">
                     <ScrollView ref={scrollEmojisRef} onScroll={onScroll} autoHide>
                         <div onMouseMove={hoverEmoji} onClick={selectEmoji}>
+
                             <SearchedEmoji scrollEmojisRef={scrollEmojisRef} />
+
                             {recentEmojis.length > 0 && (
                                 <EmojiGroup name="Recently used" groupEmojis={recentEmojis} />
                             )}
+
+                            {favEmojis.length > 0 && (
+                                <EmojiGroup name="Favorites" groupEmojis={favEmojis} />
+                            )}
+
                             {availableEmojis.map((pack) => (
                                 <EmojiGroup
                                     name={pack.displayName ?? 'Unknown'}
@@ -475,9 +493,11 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                                     className="custom-emoji-group"
                                 />
                             ))}
+
                             {emojiGroups.map((group) => (
                                 <EmojiGroup className={boardType === 'getStickers' ? 'd-none' : null} key={group.name} name={group.name} groupEmojis={group.emojis} />
                             ))}
+
                         </div>
                     </ScrollView>
                 </div>
