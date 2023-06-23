@@ -199,7 +199,7 @@ function Image({
                   });
 
                   pswp.init();
-                  lightbox.loadAndOpen(0);
+                  if (lightbox && lightbox.loadAndOpen) lightbox.loadAndOpen(0);
 
                 };
 
