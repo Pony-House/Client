@@ -104,7 +104,6 @@ export default defineConfig({
     sourcemap: true,
     copyPublicDir: false,
     rollupOptions: {
-      fallback: '/404.html',
       plugins: [
         inject({ Buffer: ['buffer', 'Buffer'] })
       ]
