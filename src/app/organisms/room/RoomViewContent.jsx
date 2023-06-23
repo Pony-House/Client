@@ -432,7 +432,7 @@ function RoomViewContent({ eventId, roomTimeline }) {
 
   // when active timeline changes
   useEffect(() => {
-    if (!roomTimeline.initialized) return undefined;
+    if (!roomTimeline.initialized) return;
     const timelineScroll = timelineScrollRef.current;
 
     if (timeline.length > 0) {
