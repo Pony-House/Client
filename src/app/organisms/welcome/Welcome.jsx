@@ -8,7 +8,7 @@ function Welcome() {
 
         <h2 className='mt-3'>Welcome to Pony House</h2>
 
-        <h6>The tiny Pony House matrix client</h6>
+        <h6>The open source house, your house, the house for all ponies.</h6>
 
       </center>
     </div>
