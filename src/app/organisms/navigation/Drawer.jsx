@@ -85,7 +85,7 @@ function Drawer() {
 
       <DrawerHeader selectedTab={selectedTab} spaceId={spaceId} banner={avatarSrc} room={room} />
 
-      <ScrollView ref={scrollRef} autoHide>
+      <ScrollView className={`space-drawer-body${avatarSrc ? ' drawer-with-banner' : ''}`} ref={scrollRef} autoHide>
 
         {navigation.selectedSpacePath.length > 1 && selectedTab !== cons.tabs.DIRECTS && (
           <DrawerBreadcrumb spaceId={spaceId} />
