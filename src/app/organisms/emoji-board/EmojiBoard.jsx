@@ -47,12 +47,12 @@ const EmojiGroup = React.memo(({ name, groupEmojis, className, isFav, }) => {
                 if (emojiIndex >= totalEmojis) break;
                 const emoji = groupEmojis[emojiIndex];
                 emojiRow.push(
-                    <span className={emoji.isFav || isFav ? 'fav-emoji' : ''} key={emojiIndex}>
+                    <span key={emojiIndex}>
                         {emoji.hexcode ? (
                             // This is a unicode emoji, and should be rendered with twemoji
                             <span
 
-                                className="emoji"
+                                className={`emoji${emoji.isFav || isFav ? ' fav-emoji' : ''}`}
                                 draggable="false"
 
                                 alt={emoji.shortcodes?.toString()}
@@ -67,7 +67,7 @@ const EmojiGroup = React.memo(({ name, groupEmojis, className, isFav, }) => {
                             // This is a custom emoji, and should be render as an mxc
                             <span
 
-                                className="emoji"
+                                className={`emoji${emoji.isFav || isFav ? ' fav-emoji' : ''}`}
                                 draggable="false"
 
 

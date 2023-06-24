@@ -57,7 +57,7 @@ export function removeToEmojiList(emojiData, where, type) {
   while (index > -1) {
     index = recent[where].findIndex(([u]) => u && u.isCustom === emojiData.isCustom && u.mxc === emojiData.mxc && u.unicode === emojiData.unicode);
     if (index > -1) {
-      recent[where] = recent[where].splice(index, 1);
+      recent[where].splice(index, 1);
     }
   }
 
