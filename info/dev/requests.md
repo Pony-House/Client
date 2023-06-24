@@ -63,20 +63,25 @@ Made by Me
 
     protocols:
 
-    Crypto:
+    Bitcoin: (https://bitcoin.org/)
     bitcoin://
+
+    Dogecoin: (https://dogecoin.com/)
     dogecoin://
 
-    Arweave:
+    Web3: (https://w3url.w3eth.io/#/)
+    web3://
+
+    Arweave: (https://arweave.app/welcome)
     ar://
 
-    IPFS
+    IPFS: (https://ipfs.io/)
     ipfs://
 
-    LBRY Crypto File
+    LBRY Crypto File: (https://lbry.com/)
     lbry://
 
-    Steam
+    Steam: (https://developer.valvesoftware.com/wiki/Steam_browser_protocol)
 
     steam://
 
