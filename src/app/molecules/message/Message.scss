@@ -59,12 +59,6 @@
       margin: 0 var(--sp-ultra-tight);
       color: var(--tc-surface-normal);
     }
-    &-tooltip .react-emoji {
-      width: 16px;
-      height: 16px;
-      margin: 0 var(--sp-ultra-tight);
-      margin-bottom: -2px;
-    }
 
     @media (hover: hover) {
       &:hover {

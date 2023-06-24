@@ -390,7 +390,7 @@ function genReactionMsg(userIds, reaction, shortcode) {
     <>
       {userIds.map((userId, index) => (
         <React.Fragment key={userId}>
-          {twemojify(getUsername(userId))}
+          <span className='emoji-size-fix-2'>{twemojify(getUsername(userId))}</span>
           {index < userIds.length - 1 && (
             <span style={{ opacity: '.6' }}>
               {index === userIds.length - 2 ? ' and ' : ', '}
@@ -399,7 +399,7 @@ function genReactionMsg(userIds, reaction, shortcode) {
         </React.Fragment>
       ))}
       <span style={{ opacity: '.6' }}>{' reacted with '}</span>
-      {twemojify(shortcode ? `:${shortcode}:` : reaction, { className: 'react-emoji' })}
+      <span className='emoji-size-fix-2'>{twemojify(shortcode ? `:${shortcode}:` : reaction, { className: 'react-emoji' })}</span>
     </>
   );
 }
@@ -415,7 +415,7 @@ function MessageReaction({
   return (
     <Tooltip
       className="msg__reaction-tooltip"
-      content={<Text variant="b2">{users.length > 0 ? genReactionMsg(users, reaction, shortcode) : 'Unable to load who has reacted'}</Text>}
+      content={<div className='small'>{users.length > 0 ? genReactionMsg(users, reaction, shortcode) : 'Unable to load who has reacted'}</div>}
     >
       <button
         onClick={onClick}
