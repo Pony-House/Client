@@ -157,6 +157,10 @@
   }
 }
 
+.fav-emoji.emoji:hover {
+  background-color: var(--bg-ping-hover) !important;
+}
+
 [board-type='emoji'] .emoji-group {
   & .emoji {
     max-width: 38px;
