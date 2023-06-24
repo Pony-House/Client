@@ -7,7 +7,7 @@ function Tooltip({
 }) {
 
   const tooltip = (
-    <BootstrapTooltip className={className ? `noselect ${className}` : 'noselect'}>{content}</BootstrapTooltip>
+    <BootstrapTooltip className={`noselect emoji-size-fix-2${className ? ` ${className}` : ''}`}>{content}</BootstrapTooltip>
   );
 
   return (
