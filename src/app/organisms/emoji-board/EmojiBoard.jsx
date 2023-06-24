@@ -35,7 +35,7 @@ const cateogoryList = [
 ];
 
 // Emoji Groups
-const EmojiGroup = React.memo(({ name, groupEmojis, className }) => {
+const EmojiGroup = React.memo(({ name, groupEmojis, className, isFav, }) => {
     function getEmojiBoard() {
         const emojiBoard = [];
         const totalEmojis = groupEmojis.length;
@@ -47,7 +47,7 @@ const EmojiGroup = React.memo(({ name, groupEmojis, className }) => {
                 if (emojiIndex >= totalEmojis) break;
                 const emoji = groupEmojis[emojiIndex];
                 emojiRow.push(
-                    <span key={emojiIndex}>
+                    <span className={emoji.isFav || isFav ? 'fav-emoji' : ''} key={emojiIndex}>
                         {emoji.hexcode ? (
                             // This is a unicode emoji, and should be rendered with twemoji
                             <span
@@ -104,6 +104,7 @@ const EmojiGroup = React.memo(({ name, groupEmojis, className }) => {
 });
 
 EmojiGroup.propTypes = {
+    isFav: PropTypes.bool,
     className: PropTypes.string,
     name: PropTypes.string.isRequired,
     groupEmojis: PropTypes.arrayOf(
@@ -439,7 +440,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     }, 500);
 
     resetEmojisList();
-    if (boardType === 'getEmojis') addDefaultEmojisToList();
+    if (boardType === 'getEmojis') addDefaultEmojisToList(favEmojis);
 
     return (
         <div id="emoji-board" className="emoji-board" ref={emojiBoardRef}>
@@ -448,7 +449,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
                     {favEmojis.length > 0 && (
                         <IconButton
-                            onClick={() => openGroup(1)}
+                            onClick={() => openGroup(0)}
                             fa='fa-solid fa-star'
                             tooltip="Favorites"
                             tooltipPlacement="left"
@@ -457,7 +458,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
                     {recentEmojis.length > 0 && (
                         <IconButton
-                            onClick={() => openGroup(0)}
+                            onClick={() => openGroup(1)}
                             fa='fa-solid fa-clock-rotate-left'
                             tooltip="Recent"
                             tooltipPlacement="left"
@@ -470,6 +471,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                             const packItems = pack[boardType]();
                             for (const item in packItems) {
                                 addEmojiToList({
+                                    isFav: (favEmojis.findIndex(u => u.mxc === packItems[item].mxc) > -1),
                                     group: null,
                                     hexcode: null,
                                     label: packItems[item].shortcode,
@@ -518,7 +520,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                             <SearchedEmoji scrollEmojisRef={scrollEmojisRef} />
 
                             {favEmojis.length > 0 && (
-                                <EmojiGroup name="Favorites" groupEmojis={favEmojis} />
+                                <EmojiGroup name="Favorites" groupEmojis={favEmojis} isFav />
                             )}
 
                             {recentEmojis.length > 0 && (

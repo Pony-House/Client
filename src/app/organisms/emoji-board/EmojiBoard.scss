@@ -130,6 +130,7 @@
     margin: var(--sp-extra-tight);
     @include dir.side(margin, var(--left-margin), var(--right-margin));
   }
+
   & .emoji {
     background-position: center;
     background-repeat: no-repeat;
@@ -141,7 +142,9 @@
     object-fit: contain;
     padding: var(--emoji-padding);
     cursor: pointer;
+
     &:hover {
+      cursor: pointer;
       background-color: var(--bg-surface-hover);
       border-radius: var(--bo-radius);
     }

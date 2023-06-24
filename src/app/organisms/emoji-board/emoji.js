@@ -83,8 +83,9 @@ const resetEmojisList = () => {
   }
 };
 
-const addDefaultEmojisToList = () => {
+const addDefaultEmojisToList = (favEmojis = []) => {
   defaultEmojis.map(emoji => {
+    emoji.isFav = (favEmojis.findIndex(u => u.unicode === emoji.unicode) > -1);
     emojis.push(emoji);
     return emoji;
   });
