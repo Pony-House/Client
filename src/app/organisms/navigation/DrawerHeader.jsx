@@ -99,31 +99,14 @@ HomeSpaceOptions.propTypes = {
   afterOptionSelect: PropTypes.func.isRequired,
 };
 
-function DrawerHeader({ selectedTab, spaceId }) {
-  const mx = initMatrix.matrixClient;
+function DrawerHeader({ selectedTab, spaceId, room, banner }) {
+
   const tabName = selectedTab !== cons.tabs.DIRECTS ? 'Home' : 'Direct messages';
 
   const isDMTab = selectedTab === cons.tabs.DIRECTS;
-  const room = mx.getRoom(spaceId);
-
-  let bannerCfg;
-  if (room) {
-    bannerCfg = room.currentState.getStateEvents('pony.house.settings', 'banner')?.getContent();
-  }
 
   const spaceName = isDMTab ? null : (room?.name || null);
   setSelectSpace(room);
-
-  let avatarSrc = '';
-  if (bannerCfg && typeof bannerCfg?.url === 'string' && bannerCfg?.url.length > 0) {
-    avatarSrc = mx.mxcUrlToHttp(bannerCfg.url, 960, 540);
-  } else {
-    const spaceHeader = document.querySelector('#space-header > .navbar');
-    if (spaceHeader) {
-      spaceHeader.classList.remove('banner-mode');
-      spaceHeader.style.backgroundImage = '';
-    }
-  }
 
   const openSpaceOptions = (e) => {
     e.preventDefault();
@@ -144,7 +127,7 @@ function DrawerHeader({ selectedTab, spaceId }) {
   };
 
   return (
-    <Header banner={avatarSrc}>
+    <Header banner={banner}>
 
       <ul className='navbar-nav mr-auto w-100 space-menu-1'>
 
@@ -176,10 +159,14 @@ function DrawerHeader({ selectedTab, spaceId }) {
 
 DrawerHeader.defaultProps = {
   spaceId: null,
+  banner: null,
+  room: null,
 };
 DrawerHeader.propTypes = {
   selectedTab: PropTypes.string.isRequired,
   spaceId: PropTypes.string,
+  banner: PropTypes.string,
+  room: PropTypes.object,
 };
 
 export default DrawerHeader;
