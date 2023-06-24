@@ -66,11 +66,12 @@ function Drawer() {
 
       <DrawerHeader selectedTab={selectedTab} spaceId={spaceId} />
 
-      {navigation.selectedSpacePath.length > 1 && selectedTab !== cons.tabs.DIRECTS && (
-        <DrawerBreadcrumb spaceId={spaceId} />
-      )}
-
       <ScrollView ref={scrollRef} autoHide>
+
+        {navigation.selectedSpacePath.length > 1 && selectedTab !== cons.tabs.DIRECTS && (
+          <DrawerBreadcrumb spaceId={spaceId} />
+        )}
+
         {
           selectedTab !== cons.tabs.DIRECTS
             ? <Home spaceId={spaceId} />
