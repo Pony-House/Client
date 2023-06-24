@@ -60,3 +60,34 @@ Made by Me
 
     https://staffordwilliams.com/blog/2023/03/06/ionic-capacitor-vite/
     https://github.com/electron-vite/electron-vite-react
+
+    protocols:
+
+    Crypto:
+    bitcoin://
+    dogecoin://
+
+    Arweave:
+    ar://
+
+    IPFS
+    ipfs://
+
+    LBRY Crypto File
+    lbry://
+
+    Steam
+
+    steam://
+
+    steam://store/<id>
+
+    steam://install/<id>
+    steam://uninstall/<id>
+
+    steam://launch/<id>
+
+    steam://publisher/<name>
+
+    steam://installaddon/<addon>
+    steam://removeaddon/<addon>
