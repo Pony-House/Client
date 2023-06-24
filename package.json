@@ -1,7 +1,7 @@
 {
   "name": "client-pony-house",
   "version": "1.3.13",
-  "description": "The tiny Pony House matrix client",
+  "description": "The open source house, your house, the house for all matrix ponies",
   "main": "index.js",
   "engines": {
     "node": ">=16.0.0"

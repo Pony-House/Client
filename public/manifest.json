@@ -1,7 +1,7 @@
 {
   "name": "Pony House",
   "short_name": "Pony House",
-  "description": "The tiny Pony House matrix client.",
+  "description": "The open source house, your house, the house for all matrix ponies.",
   "dir": "auto",
   "lang": "en-US",
   "display_override": [

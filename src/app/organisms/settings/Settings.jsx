@@ -266,7 +266,7 @@ function AboutSection() {
                   <span className="very-small text-gray" style={{ margin: '0 var(--sp-extra-tight)' }}>{`v${cons.version}`}</span>
                 </h4>
 
-                <div>The tiny Pony House matrix client</div>
+                <div>The open source house, your house, the house for all matrix ponies</div>
 
                 <div className="mt-3">
                   <Button className='me-1' onClick={() => window.open('https://github.com/Pony-House/Client')}>Source code</Button>
