@@ -1,10 +1,21 @@
-# Pony House
+<center>
+
+<img align="center" src="https://github.com/Pony-House/Client/blob/dev/krita/banner/github.jpg?raw=true" height="380">
+
+<br/>
+
 <p>
-    <a href="https://github.com/Pony-House/Client/releases">
-        <img alt="GitHub release downloads" src="https://img.shields.io/github/downloads/JasminDreasond/Puddy-Cinny/total?logo=github&style=social"></a>
-    <a href="https://twitter.com/intent/follow?screen_name=Pony-House">
-        <img alt="Follow on Twitter" src="https://img.shields.io/twitter/follow/JasminDreasond?logo=twitter&style=social"></a>
+    <a rel="me" href="https://equestria.social/@JasminDreasond"><img src="https://img.shields.io/badge/Equestria-Social-2b90d9.svg?style=for-the-badge" alt="Equestria Social" /></a>
+    <a href="https://www.patreon.com/JasminDreasond"><img src="https://img.shields.io/badge/donate-patreon-F96854.svg?logo=patreon&style=for-the-badge" alt="Patreon" /></a>
+    <a href="https://ud.me/jasmindreasond.wallet"><img src="https://img.shields.io/badge/-Wallet-ecf0f1?style=for-the-badge&logo=Ethereum&logoColor=black" alt="Wallet" /></a>
+    <a href="https://ko-fi.com/JasminDreasond"><img src="https://img.shields.io/badge/-Buy%20me%20a%20coffee-F16061?style=for-the-badge&logo=Ko-fi&logoColor=white" /></a>
+    <a href="https://ko-fi.com/jasmindreasond"><img src="https://img.shields.io/badge/donate-ko%20fi-29ABE0.svg?logo=ko-fi&style=for-the-badge" alt="Ko-Fi" /></a>
+    <a href="https://twitter.com/JasminDreasond"><img src="https://img.shields.io/twitter/follow/JasminDreasond?color=00acee&style=for-the-badge&logo=twitter" alt="Twitter" /></a>
 </p>
+
+</center>
+
+# Pony House
 
 A Matrix client focusing primarily on simple, elegant and secure interface. The main goal is to have an instant messaging application that is easy on people and has a modern touch.
 
