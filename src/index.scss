@@ -585,9 +585,17 @@ a {
     }
   }
 
-  padding-bottom: 198px !important;
   background: var(--bg-surface);
   background: var(--bg-surface-gradient-2);
+}
+
+.space-drawer-body {
+  padding-bottom: 63px !important;
+  height: 100%;
+}
+
+.drawer-with-banner {
+  padding-bottom: 149px !important;
 }
 
 .tiny-welcome {

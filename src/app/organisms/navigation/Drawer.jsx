@@ -81,11 +81,11 @@ function Drawer() {
   }
 
   return (
-    <>
+    <div className={`space-drawer-body${avatarSrc ? ' drawer-with-banner' : ''}`}>
 
       <DrawerHeader selectedTab={selectedTab} spaceId={spaceId} banner={avatarSrc} room={room} />
 
-      <ScrollView className={`space-drawer-body${avatarSrc ? ' drawer-with-banner' : ''}`} ref={scrollRef} autoHide>
+      <ScrollView ref={scrollRef} autoHide>
 
         {navigation.selectedSpacePath.length > 1 && selectedTab !== cons.tabs.DIRECTS && (
           <DrawerBreadcrumb spaceId={spaceId} />
@@ -104,7 +104,7 @@ function Drawer() {
         </div>
       )}
 
-    </>
+    </div>
   );
 }
 
