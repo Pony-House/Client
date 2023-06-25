@@ -74,7 +74,7 @@ function RoomViewHeader({ roomId }) {
             type="button"
           >
             <Avatar className='d-inline-block me-2' imageSrc={avatarSrc} text={roomName} bgColor={colorMXID(roomId)} size="small" isDefaultImage />
-            <span className='me-2'>{twemojify(roomName)}</span>
+            <span className='me-2 text-truncate d-inline-block room-name'>{twemojify(roomName)}</span>
             <RawIcon fa="fa-solid fa-chevron-down" />
           </button>
         </li>
