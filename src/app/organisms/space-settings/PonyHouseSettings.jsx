@@ -25,6 +25,7 @@ function PonyHouseSettings({ roomId, room }) {
 
     const handleBannerUpload = async url => {
 
+        const spaceHeaderBody = document.querySelector('.space-drawer-body');
         const spaceHeader = document.querySelector('#space-header > .navbar');
         const bannerPlace = document.querySelector('.space-banner .avatar__border');
         const bannerImg = document.querySelector('.space-banner img');
@@ -42,6 +43,8 @@ function PonyHouseSettings({ roomId, room }) {
 
                 await mx.sendStateEvent(roomId, 'pony.house.settings', { url }, 'banner');
 
+                if (spaceHeaderBody) spaceHeaderBody.classList.remove('drawer-with-banner');
+
                 if (spaceHeader) {
                     spaceHeader.classList.remove('banner-mode');
                     spaceHeader.style.backgroundImage = '';
@@ -55,6 +58,8 @@ function PonyHouseSettings({ roomId, room }) {
         } else {
 
             await mx.sendStateEvent(roomId, 'pony.house.settings', { url }, 'banner');
+
+            if (spaceHeaderBody) spaceHeaderBody.classList.add('drawer-with-banner');
 
             if (spaceHeader) {
                 spaceHeader.classList.add('banner-mode');
