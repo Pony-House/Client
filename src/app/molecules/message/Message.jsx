@@ -854,7 +854,7 @@ function Message({
     return (
       <tr className={className.join(' ')}>
 
-        <td className='p-0 ps-4 py-1 pe-2 align-top text-center chat-base'>
+        <td className='p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base'>
 
           {
             // User Avatar
@@ -954,7 +954,7 @@ function Message({
   return (
     <tr className={className.join(' ')}>
 
-      <td className='p-0 ps-4 py-1 pe-2 align-top text-center chat-base'>
+      <td className='p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base'>
 
         {
           // User Avatar

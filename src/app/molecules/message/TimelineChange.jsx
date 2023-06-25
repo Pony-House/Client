@@ -34,7 +34,7 @@ function TimelineChange({
   return (
     <tr onClick={onClick} style={{ cursor: onClick === null ? 'default' : 'pointer' }} className="emoji-size-fix chat-status">
 
-      <td className='p-0 ps-4 py-1 pe-2 align-top text-center chat-base'>
+      <td className='p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base'>
         <RawIcon fa={faSrc} size="extra-small" />
       </td>
 
