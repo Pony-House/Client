@@ -20,7 +20,6 @@ const Button = React.forwardRef(({
       className={`btn ${className ? `${className} ` : ''}btn-${variant} btn-${size} ${iconClass} noselect`}
       onMouseUp={(e) => blurOnBubbling(e, `.btn-${variant}`)}
       onClick={onClick}
-      // eslint-disable-next-line react/button-has-type
       type={type}
       disabled={disabled}
     >

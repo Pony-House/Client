@@ -19,7 +19,6 @@ import {
 import { sanitizeCustomHtml } from '../../../util/sanitize';
 
 import { shiftNuller } from '../../../util/shortcut';
-import Text from '../../atoms/text/Text';
 import RawIcon from '../../atoms/system-icons/RawIcon';
 import Button from '../../atoms/button/Button';
 import Tooltip from '../../atoms/tooltip/Tooltip';

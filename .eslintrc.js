@@ -63,6 +63,7 @@ module.exports = {
       },
     ],
 
+    'react/button-has-type': 0,
     'react/forbid-prop-types': 0,
     'react/jsx-no-bind': 0,
     'react-hooks/exhaustive-deps': 0,

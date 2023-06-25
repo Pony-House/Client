@@ -33,7 +33,6 @@ const IconButton = React.forwardRef(({
       ref={ref}
       className={`btn ic-btn ic-btn-${variant} btn-link btn-bg ${textColor} ${className}`}
       onClick={onClick}
-      // eslint-disable-next-line react/button-has-type
       type={type}
       tabIndex={tabIndex}
       disabled={disabled}

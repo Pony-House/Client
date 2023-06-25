@@ -11,7 +11,6 @@ import {
 } from '../../../client/action/navigation';
 import { getEventCords } from '../../../util/common';
 
-import Text from '../../atoms/text/Text';
 import RawIcon from '../../atoms/system-icons/RawIcon';
 import { Header } from '../../atoms/header/Header';
 import IconButton from '../../atoms/button/IconButton';
@@ -148,8 +147,8 @@ function DrawerHeader({ selectedTab, spaceId, room, banner }) {
 
       <ul className='navbar-nav ms-auto mt-0 mt-md-1 small space-menu-2'>
 
-        {isDMTab && <IconButton className='nav-link' onClick={() => openInviteUser()} tooltip="Start DM" fa="fa-solid fa-plus" size="small" />}
-        {!isDMTab && <IconButton className='nav-link' onClick={openHomeSpaceOptions} tooltip="Add rooms/spaces" fa="fa-solid fa-plus" size="small" />}
+        {isDMTab && <IconButton className='nav-link' onClick={() => openInviteUser()} tooltipPlacement='bottom' tooltip="Start DM" fa="fa-solid fa-plus" size="small" />}
+        {!isDMTab && <IconButton className='nav-link' onClick={openHomeSpaceOptions} tooltipPlacement='bottom' tooltip="Add rooms/spaces" fa="fa-solid fa-plus" size="small" />}
 
       </ul >
 
