@@ -598,9 +598,10 @@ a {
   padding-bottom: 149px !important;
 }
 
-.tiny-welcome {
-  background: var(--bg-surface);
-  background: var(--bg-surface-gradient);
+@media (max-width: 768px) {
+  .space-drawer-body:not(.drawer-with-banner) {
+    padding-bottom: 59px !important;
+  }
 }
 
 .space-banner .avatar__border {
@@ -611,6 +612,12 @@ a {
 
 .space-banner .banner-added > * {
   display: none;
+}
+
+/* Welcome */
+.tiny-welcome {
+  background: var(--bg-surface);
+  background: var(--bg-surface-gradient);
 }
 
 /* Presence */
