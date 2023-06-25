@@ -704,66 +704,70 @@ a {
 }
 
 /* Title Room */
-.room-view .room-name {
-  max-width: 500px;
-}
-
-@media (max-width: 1500px) {
-  .room-view .room-name {
-    max-width: 360px;
+.room-view {
+  .room-name {
+    max-width: 500px;
+    top: 7px;
+    position: relative;
   }
-}
 
-@media (max-width: 1320px) {
-  .room-view .room-name {
-    max-width: 280px;
+  @media (max-width: 1500px) {
+    .room-name {
+      max-width: 360px;
+    }
   }
-}
 
-@media (max-width: 1200px) {
-  .room-view .room-name {
-    max-width: 160px;
+  @media (max-width: 1320px) {
+    .room-name {
+      max-width: 280px;
+    }
   }
-}
 
-@media (max-width: 1124px) {
-  .room-view .room-name {
-    max-width: 250px;
+  @media (max-width: 1200px) {
+    .room-name {
+      max-width: 160px;
+    }
   }
-}
 
-@media (max-width: 940px) {
-  .room-view .room-name {
-    max-width: 150px;
+  @media (max-width: 1124px) {
+    .room-name {
+      max-width: 250px;
+    }
   }
-}
 
-@media (max-width: 768px) {
-  .room-view .room-name {
-    max-width: 350px;
+  @media (max-width: 940px) {
+    .room-name {
+      max-width: 150px;
+    }
   }
-}
 
-@media (max-width: 650px) {
-  .room-view .room-name {
-    max-width: 290px;
+  @media (max-width: 768px) {
+    .room-name {
+      max-width: 350px;
+    }
   }
-}
 
-@media (max-width: 595px) {
-  .room-view .room-name {
-    max-width: 250px;
+  @media (max-width: 650px) {
+    .room-name {
+      max-width: 290px;
+    }
   }
-}
 
-@media (max-width: 576px) {
-  .room-view .room-name {
-    max-width: 232px;
+  @media (max-width: 595px) {
+    .room-name {
+      max-width: 250px;
+    }
   }
-}
 
-@media (max-width: 470px) {
-  .room-view .room-name {
-    max-width: 152px;
+  @media (max-width: 576px) {
+    .room-name {
+      max-width: 232px;
+    }
+  }
+
+  @media (max-width: 470px) {
+    .room-name {
+      max-width: 152px;
+    }
   }
 }
