@@ -705,6 +705,11 @@ a {
 
 /* Title Room */
 .room-view {
+  .room-icon {
+    top: 2px;
+    position: relative;
+  }
+
   .room-name {
     max-width: 500px;
     top: 7px;
