@@ -142,7 +142,7 @@ function PeopleDrawer({ roomId }) {
 
         <ul className='navbar-nav ms-auto mb-0 small'>
           <li className="nav-item">
-            <IconButton onClick={() => openInviteUser(roomId)} tooltip="Invite" fa="fa-solid fa-user-plus" disabled={!canInvite} />
+            <IconButton onClick={() => openInviteUser(roomId)} tooltipPlacement="bottom" tooltip="Invite" fa="fa-solid fa-user-plus" disabled={!canInvite} />
           </li>
         </ul>
 

@@ -62,6 +62,7 @@ function RoomViewHeader({ roomId }) {
             className="nav-link"
             fa="fa-solid fa-chevron-left"
             tooltip="Return to navigation"
+            tooltipPlacement="bottom"
             onClick={() => openNavigation()}
           />
         </li>
@@ -84,15 +85,16 @@ function RoomViewHeader({ roomId }) {
 
         {mx.isRoomEncrypted(roomId) === false && (
           <li className="nav-item">
-            <IconButton className="nav-link btn btn-bg border-0" onClick={() => toggleRoomSettings(tabText.SEARCH)} tooltip="Search" fa="fa-solid fa-magnifying-glass" />
+            <IconButton className="nav-link btn btn-bg border-0" onClick={() => toggleRoomSettings(tabText.SEARCH)} tooltipPlacement="bottom" tooltip="Search" fa="fa-solid fa-magnifying-glass" />
           </li>
         )}
 
-        <li className="nav-item"><IconButton className="nav-link border-0" onClick={togglePeopleDrawer} tooltip="People" fa="fa-solid fa-user" /></li>
-        <li className="nav-item"><IconButton className="nav-link border-0" onClick={() => toggleRoomSettings(tabText.MEMBERS)} tooltip="Members" fa="fa-solid fa-users" /></li>
+        <li className="nav-item"><IconButton className="nav-link border-0" onClick={togglePeopleDrawer} tooltipPlacement="bottom" tooltip="People" fa="fa-solid fa-user" /></li>
+        <li className="nav-item"><IconButton className="nav-link border-0" onClick={() => toggleRoomSettings(tabText.MEMBERS)} tooltipPlacement="bottom" tooltip="Members" fa="fa-solid fa-users" /></li>
 
         <li className="nav-item">
           <IconButton
+            tooltipPlacement="bottom"
             className="nav-link border-0"
             onClick={openRoomOptions}
             tooltip="Options"
