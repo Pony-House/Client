@@ -306,10 +306,10 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
 
   // Complete
   return (
-    <div className="p-3">
+    <div className="p-3 room-info">
       <div className="row">
 
-        <div className='col-md-1 p-0'>
+        <div className='col-sm-2 col-md-4 col-lg-1 p-0'>
           {!canChangeAvatar && <center>
             <Avatar imageSrc={avatarSrc} text={roomName} bgColor={colorMXID(roomId)} size="large" />
           </center>}
@@ -324,7 +324,7 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
           )}
         </div>
 
-        <div className='col-md-11'>
+        <div className='col-sm-10 col-md-8 col-lg-11'>
           {!isEditing && renderNameAndTopic()}
           {isEditing && renderEditNameAndTopic()}
         </div>
