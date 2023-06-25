@@ -73,11 +73,17 @@ function Drawer() {
   if (bannerCfg && typeof bannerCfg?.url === 'string' && bannerCfg?.url.length > 0) {
     avatarSrc = mx.mxcUrlToHttp(bannerCfg.url, 960, 540);
   } else {
+
+    const spaceHeaderBody = document.querySelector('.space-drawer-body');
     const spaceHeader = document.querySelector('#space-header > .navbar');
+
+    if (spaceHeaderBody) spaceHeaderBody.classList.remove('drawer-with-banner');
+
     if (spaceHeader) {
       spaceHeader.classList.remove('banner-mode');
       spaceHeader.style.backgroundImage = '';
     }
+
   }
 
   return (
