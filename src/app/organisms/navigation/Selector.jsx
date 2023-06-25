@@ -102,7 +102,7 @@ function Selector({
         <IconButton
           size="extra-small"
           tooltip="Options"
-          tooltipPlacement="right"
+          tooltipPlacement="left"
           fa="bi bi-three-dots-vertical"
           onClick={openOptions}
         />
