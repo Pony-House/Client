@@ -67,7 +67,7 @@ function RoomViewHeader({ roomId }) {
           />
         </li>
 
-        <li className="nav-item">
+        <li className="nav-item avatar-base">
           <button
             className="nav-link btn btn-bg border-0 p-1"
             onClick={() => toggleRoomSettings()}
