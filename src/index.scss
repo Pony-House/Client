@@ -590,7 +590,7 @@ a {
 }
 
 .space-drawer-body {
-  padding-bottom: 63px !important;
+  padding-bottom: 62px !important;
   height: 100%;
 }
 
@@ -600,7 +600,7 @@ a {
 
 @media (max-width: 768px) {
   .space-drawer-body:not(.drawer-with-banner) {
-    padding-bottom: 59px !important;
+    padding-bottom: 62px !important;
   }
 }
 
@@ -704,6 +704,10 @@ a {
 }
 
 /* Title Room */
+.people-drawer > .navbar,
+.space-drawer-body > .navbar {
+  height: 51px;
+}
 
 .header-room {
   .avatar-base > .nav-link {
