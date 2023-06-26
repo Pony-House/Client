@@ -16,16 +16,16 @@
     "typecheck": "tsc --noEmit",
     "open:android": "npx cap open android",
     "open:ios": "npx cap open ios",
-    "run:android": "tsc && cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build && npx cap run android",
+    "run:android": "tsc && cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build && export ANDROID_SDK_ROOT=$HOME/Android/Sdk && npx cap run android",
     "run:ios": "tsc && cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build && npx cap run ios"
   },
   "keywords": [],
   "author": "JasminDreasond (Yasmin Seidel)",
   "license": "AGPL-3.0-only",
   "dependencies": {
-    "@capacitor/android": "^4.7.0",
-    "@capacitor/core": "^4.7.0",
-    "@capacitor/ios": "^4.7.0",
+    "@capacitor/android": "^5.0.5",
+    "@capacitor/core": "^5.0.5",
+    "@capacitor/ios": "^5.0.5",
     "@cryptofonts/cryptofont": "1.3.5",
     "@fortawesome/fontawesome-free": "6.4.0",
     "@jitsi/react-sdk": "1.3.0",
@@ -65,7 +65,7 @@
     "web3": "4.0.1"
   },
   "devDependencies": {
-    "@capacitor/cli": "^4.7.0",
+    "@capacitor/cli": "^5.0.5",
     "@esbuild-plugins/node-globals-polyfill": "0.2.3",
     "@rollup/plugin-inject": "5.0.3",
     "@rollup/plugin-wasm": "6.1.1",
