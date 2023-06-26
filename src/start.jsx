@@ -18,7 +18,7 @@ function startApp() {
     startWeb3();
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
+    return root.render(<App />);
 
 }
 
