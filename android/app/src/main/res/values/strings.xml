@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">react-vite-capacitor</string>
-    <string name="title_activity_main">react-vite-capacitor</string>
-    <string name="package_name">com.pony-house-matrix.app</string>
-    <string name="custom_url_scheme">com.pony-house-matrix.app</string>
-</resources>
