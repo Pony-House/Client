@@ -47,6 +47,8 @@ Made by Me
 
     =======================================================
 
+    --> Abrir imagem em anexo em uma nova guia
+
     --> Marcar mensagens como lidas quando a pessoa abre o chat de conversa. (aisa - 1)
     --> Ajeitar o ícone das configurações do chat quando não é um avatar
 
