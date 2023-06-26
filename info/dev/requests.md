@@ -27,12 +27,6 @@ Made by Me
 
     ]
 
-
-    <Text>{systemState.status}</Text>
-
-    mx.getUrlPreview(url, ts)
-
-    Criar novo ícone de avatares padrões
     Criar Video Chamada e Chamada de Voz
 
     Criar sistema de titulos (Algo parecido com cargos)
@@ -48,10 +42,18 @@ Made by Me
 
     Criar i18
 
-    Criar detector de inatividade
+    =======================================================
 
-    Concertar envio de notificação. A notificação precisa apitar quando o usuário está na mesma página, mas está com a janela minimizada
+    --> Marcar mensagens como lidas quando a pessoa abre o chat de conversa.
+    --> Ajeitar o ícone das configurações do chat quando não é um avatar
 
+    --> <Text>{systemState.status}</Text>
+
+    --> mx.getUrlPreview(url, ts)
+
+    --> Concertar envio de notificação. A notificação precisa apitar quando o usuário está na mesma página, mas está com a janela minimizada
+
+    --> Criar detector de inatividade
 
     Fazer o sistema web3
     O banco de dados vai guarda a chave de assinatura, a chave publica da web3, e a sessão que foi usada para fazer a integração.
