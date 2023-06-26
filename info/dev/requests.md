@@ -47,6 +47,7 @@ Made by Me
 
     =======================================================
 
+    --> Script de alerta bugou de novo
     --> Abrir imagem em anexo em uma nova guia
 
     --> Marcar mensagens como lidas quando a pessoa abre o chat de conversa. (aisa - 1)
