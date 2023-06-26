@@ -27,7 +27,8 @@ Made by Me
 
     ]
 
-    import { selectRoomMode } from '../../../client/action/navigation';
+
+    <Text>{systemState.status}</Text>
 
     mx.getUrlPreview(url, ts)
 

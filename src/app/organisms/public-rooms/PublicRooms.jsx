@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
-import { selectRoom, selectTab } from '../../../client/action/navigation';
+import { selectRoom, selectTab, selectRoomMode } from '../../../client/action/navigation';
 import * as roomActions from '../../../client/action/room';
 
 import Text from '../../atoms/text/Text';
@@ -71,7 +71,7 @@ function TryJoinWithAlias({ alias, onRequestClose }) {
         </>
       )}
       {status.roomId !== null && (
-        <Button onClick={() => { onRequestClose(); selectRoom(status.roomId); }}>Open</Button>
+        <Button onClick={() => { onRequestClose(); selectRoomMode('room'); selectRoom(status.roomId); }}>Open</Button>
       )}
       {status.error !== null && <div className='small'><span style={{ color: 'var(--bg-danger)' }}>{status.error}</span></div>}
     </div>
@@ -180,7 +180,10 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
   function handleViewRoom(roomId) {
     const room = initMatrix.matrixClient.getRoom(roomId);
     if (room.isSpaceRoom()) selectTab(roomId);
-    else selectRoom(roomId);
+    else {
+      selectRoomMode('room');
+      selectRoom(roomId);
+    }
     onRequestClose();
   }
 

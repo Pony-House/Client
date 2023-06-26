@@ -8,7 +8,7 @@ import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import { colorMXID } from '../../../util/colorMXID';
-import { selectRoom, selectTab } from '../../../client/action/navigation';
+import { selectRoom, selectTab, selectRoomMode } from '../../../client/action/navigation';
 import RoomsHierarchy from '../../../client/state/RoomsHierarchy';
 import { joinRuleToIconSrc } from '../../../util/matrixUtil';
 import { join } from '../../../client/action/room';
@@ -82,7 +82,10 @@ function SpaceManageItem({
 
   const handleOpen = () => {
     if (isSpace) selectTab(roomId);
-    else selectRoom(roomId);
+    else {
+      selectRoomMode('room');
+      selectRoom(roomId);
+    }
     requestClose();
   };
   const handleJoin = () => {

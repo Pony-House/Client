@@ -6,7 +6,7 @@ import { twemojify } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
-import { toggleRoomSettings, openReusableContextMenu, openNavigation } from '../../../client/action/navigation';
+import { toggleRoomSettings, openReusableContextMenu, openNavigation, selectRoomMode } from '../../../client/action/navigation';
 import { togglePeopleDrawer /* , startVoiceChat */ } from '../../../client/action/settings';
 import { colorMXID } from '../../../util/colorMXID';
 import { getEventCords } from '../../../util/common';
@@ -63,7 +63,10 @@ function RoomViewHeader({ roomId }) {
             fa="fa-solid fa-chevron-left"
             tooltip="Return to navigation"
             tooltipPlacement="bottom"
-            onClick={() => openNavigation()}
+            onClick={() => {
+              selectRoomMode('navigation');
+              openNavigation();
+            }}
           />
         </li>
 

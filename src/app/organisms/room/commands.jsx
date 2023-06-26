@@ -4,7 +4,7 @@ import './commands.scss';
 import initMatrix from '../../../client/initMatrix';
 import * as roomActions from '../../../client/action/room';
 import { hasDMWith, hasDevices } from '../../../util/matrixUtil';
-import { selectRoom, openReusableDialog } from '../../../client/action/navigation';
+import { selectRoom, openReusableDialog, selectRoomMode } from '../../../client/action/navigation';
 
 import Text from '../../atoms/text/Text';
 import SettingTile from '../../molecules/setting-tile/SettingTile';
@@ -75,6 +75,7 @@ const commands = {
       if (userIds.length === 1) {
         const dmRoomId = hasDMWith(userIds[0]);
         if (dmRoomId) {
+          selectRoomMode('room');
           selectRoom(dmRoomId);
           return;
         }
@@ -82,6 +83,7 @@ const commands = {
       const devices = await Promise.all(userIds.map(hasDevices));
       const isEncrypt = devices.every((hasDevice) => hasDevice);
       const result = await roomActions.createDM(userIds, isEncrypt);
+      selectRoomMode('room');
       selectRoom(result.room_id);
     },
   },

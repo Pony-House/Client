@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { updateName, sortName } from '../../../util/roomName';
 import initMatrix from '../../../client/initMatrix';
-import { selectSpace, selectRoom, openReusableContextMenu } from '../../../client/action/navigation';
+import { selectSpace, selectRoom, openReusableContextMenu, selectRoomMode } from '../../../client/action/navigation';
 import { getEventCords } from '../../../util/common';
 import { getSpaceItem, setSpaceItem } from '../../../util/selectedRoom';
 
@@ -96,7 +96,10 @@ function RoomsCategory({
         roomObject={room}
         isDM={isDM}
         drawerPostie={drawerPostie}
-        onClick={() => (isSpace ? selectSpace(roomId) : selectRoom(roomId))}
+        onClick={() => {
+          selectRoomMode('room');
+          return (isSpace ? selectSpace(roomId) : selectRoom(roomId));
+        }}
       />
     );
 

@@ -6,7 +6,7 @@ import { twemojify } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
-import { selectRoom, openReusableContextMenu } from '../../../client/action/navigation';
+import { selectRoom, openReusableContextMenu, selectRoomMode } from '../../../client/action/navigation';
 import * as roomActions from '../../../client/action/room';
 import { isRoomAliasAvailable, getIdServer } from '../../../util/matrixUtil';
 import { getEventCords } from '../../../util/common';
@@ -54,6 +54,7 @@ function CreateRoomContent({ isSpace, parentId, onRequestClose }) {
       setAddressValue(undefined);
 
       if (!mx.getRoom(roomId)?.isSpaceRoom()) {
+        selectRoomMode('room');
         selectRoom(roomId);
       }
       onRequestClose();

@@ -6,7 +6,7 @@ import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import { join } from '../../../client/action/room';
-import { selectRoom, selectTab } from '../../../client/action/navigation';
+import { selectRoom, selectTab, selectRoomMode } from '../../../client/action/navigation';
 
 import Text from '../../atoms/text/Text';
 import Button from '../../atoms/button/Button';
@@ -30,7 +30,10 @@ function JoinAliasContent({ term, requestClose }) {
     const room = mx.getRoom(roomId);
     if (!room) return;
     if (room.isSpaceRoom()) selectTab(roomId);
-    else selectRoom(roomId);
+    else {
+      selectRoomMode('room');
+      selectRoom(roomId);
+    }
     requestClose();
   };
 

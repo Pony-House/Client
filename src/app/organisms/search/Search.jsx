@@ -5,7 +5,7 @@ import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import AsyncSearch from '../../../util/AsyncSearch';
-import { selectRoom, selectTab } from '../../../client/action/navigation';
+import { selectRoom, selectTab, selectRoomMode } from '../../../client/action/navigation';
 import { joinRuleToIconSrc } from '../../../util/matrixUtil';
 import { roomIdByActivity } from '../../../util/sort';
 
@@ -152,7 +152,10 @@ function Search() {
 
   const openItem = (roomId, type) => {
     if (type === 'space') selectTab(roomId);
-    else selectRoom(roomId);
+    else {
+      selectRoomMode('room');
+      selectRoom(roomId);
+    }
     requestClose();
   };
 

@@ -8,7 +8,7 @@ import { getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus'
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
-import { selectRoom, openReusableContextMenu } from '../../../client/action/navigation';
+import { selectRoom, openReusableContextMenu, selectRoomMode } from '../../../client/action/navigation';
 import * as roomActions from '../../../client/action/room';
 
 import {
@@ -170,6 +170,7 @@ function ProfileFooter({ roomId, userId, onRequestClose }) {
   const onCreated = (dmRoomId) => {
     if (isMountedRef.current === false) return;
     setIsCreatingDM(false);
+    selectRoomMode('room');
     selectRoom(dmRoomId);
     onRequestClose();
   };
@@ -192,6 +193,7 @@ function ProfileFooter({ roomId, userId, onRequestClose }) {
     // Check and open if user already have a DM with userId.
     const dmRoomId = hasDMWith(userId);
     if (dmRoomId) {
+      selectRoomMode('room');
       selectRoom(dmRoomId);
       onRequestClose();
       return;
