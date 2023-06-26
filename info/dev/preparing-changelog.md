@@ -1,5 +1,0 @@
-- Tooltips for top bottom is fixed now.
-- Banner spacing issue fixed
-- Chatbox space fixed
-- Room title spacing fixed
-- Mobile Navigator fixed
