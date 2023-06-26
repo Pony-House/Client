@@ -56,21 +56,3 @@
     margin: 0 10px;
   }
 }
-
-.space-add-existing__footer {
-  width: 100%;
-  padding: var(--sp-normal);
-  background-color: var(--bg-surface);
-  border-top: 1px solid var(--bg-surface-border);
-  display: flex;
-  align-items: center;
-
-  & > .text {
-    @extend .cp-fx__item-one;
-    padding: 0 var(--sp-tight);
-  }
-
-  & > button {
-    @include dir.side(margin, var(--sp-normal), 0);
-  }
-}
