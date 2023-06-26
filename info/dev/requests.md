@@ -5,7 +5,7 @@ Made by aisa
 
 noctabrat
 
-    Being able to see pfp fullscreen when we click them the same way we can see images
+    --> Being able to see pfp fullscreen when we click them the same way we can see images
 
 Made by Me
 
@@ -47,7 +47,7 @@ Made by Me
 
     =======================================================
 
-    --> Marcar mensagens como lidas quando a pessoa abre o chat de conversa.
+    --> Marcar mensagens como lidas quando a pessoa abre o chat de conversa. (aisa - 1)
     --> Ajeitar o ícone das configurações do chat quando não é um avatar
 
     --> <Text>{systemState.status}</Text>
