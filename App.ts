@@ -1,3 +1,3 @@
 import startApp from './src/start';
 
-startApp();
+startApp('expo');

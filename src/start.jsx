@@ -8,11 +8,13 @@ import { getPWADisplayMode } from "./util/PWA.js"
 
 import App from './app/pages/App';
 
-function startApp() {
+function startApp(appProtocol) {
 
     getPWADisplayMode();
     settings.applyTheme();
     startWeb3();
+
+    console.log(`Starting app using the protocol "${appProtocol}" mode.`);
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
     return root.render(<App />);
