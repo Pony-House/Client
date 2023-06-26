@@ -1,6 +1,5 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import './scss/default.scss';
 
 import { startWeb3 } from './util/web3';
 
