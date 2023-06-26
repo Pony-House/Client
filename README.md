@@ -16,7 +16,7 @@
 
 # Pony House
 
-A Matrix client focusing primarily on simple, elegant and secure interface. The main goal is to have an instant messaging application that is easy on people and has a modern touch.
+A Cinny fork Matrix client focusing primarily on simple, elegant and secure interface. The main goal is to have an instant messaging application that is easy on people and has a modern touch.
 
 <img align="center" src="https://github.com/Pony-House/Client/blob/dev/public/img/assets/preview-1.png?raw=true" height="380">
 
