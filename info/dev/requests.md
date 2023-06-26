@@ -42,6 +42,9 @@ Made by Me
 
     Criar i18
 
+    https://staffordwilliams.com/blog/2023/03/06/ionic-capacitor-vite/
+    https://github.com/electron-vite/electron-vite-react
+
     =======================================================
 
     --> Marcar mensagens como lidas quando a pessoa abre o chat de conversa.
@@ -58,9 +61,6 @@ Made by Me
     Fazer o sistema web3
     O banco de dados vai guarda a chave de assinatura, a chave publica da web3, e a sessão que foi usada para fazer a integração.
     Esses dados são usados para fazer uma validação rápida da conexão do usuário.
-
-    https://staffordwilliams.com/blog/2023/03/06/ionic-capacitor-vite/
-    https://github.com/electron-vite/electron-vite-react
 
     protocols:
 
