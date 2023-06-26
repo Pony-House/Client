@@ -33,6 +33,7 @@ const cons = {
   },
   actions: {
     navigation: {
+      SELECT_ROOM_MODE: 'SELECT_ROOM_MODE',
       SELECT_TAB: 'SELECT_TAB',
       SELECT_SPACE: 'SELECT_SPACE',
       SELECT_ROOM: 'SELECT_ROOM',
@@ -83,6 +84,7 @@ const cons = {
   },
   events: {
     navigation: {
+      SELECTED_ROOM_MODE: 'SELECTED_ROOM_MODE',
       TAB_SELECTED: 'TAB_SELECTED',
       SPACE_SELECTED: 'SPACE_SELECTED',
       ROOM_SELECTED: 'ROOM_SELECTED',

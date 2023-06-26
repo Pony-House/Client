@@ -28,22 +28,20 @@ function Client() {
 
   const navWrapperRef = useRef(null);
 
-  function onRoomSelected() {
-    navWrapperRef.current?.classList.add('room-mode');
-    navWrapperRef.current?.classList.remove('navigation-mode');
-  }
-  function onNavigationSelected() {
+  function onRoomModeSelected(roomType) {
+
     navWrapperRef.current?.classList.remove('room-mode');
-    navWrapperRef.current?.classList.add('navigation-mode');
+    navWrapperRef.current?.classList.remove('navigation-mode');
+
+    if (roomType === 'room') navWrapperRef.current?.classList.add('room-mode');
+    if (roomType === 'navigation') navWrapperRef.current?.classList.add('navigation-mode');
+
   }
 
   useEffect(() => {
-    navigation.on(cons.events.navigation.ROOM_SELECTED, onRoomSelected);
-    navigation.on(cons.events.navigation.NAVIGATION_OPENED, onNavigationSelected);
-
+    navigation.on(cons.events.navigation.SELECTED_ROOM_MODE, onRoomModeSelected);
     return (() => {
-      navigation.removeListener(cons.events.navigation.ROOM_SELECTED, onRoomSelected);
-      navigation.removeListener(cons.events.navigation.NAVIGATION_OPENED, onNavigationSelected);
+      navigation.removeListener(cons.events.navigation.SELECTED_ROOM_MODE, onRoomModeSelected);
     });
   }, []);
 

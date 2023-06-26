@@ -7,9 +7,7 @@ import cons from '../../../client/state/cons';
 import * as roomActions from '../../../client/action/room';
 import { selectRoom, selectTab } from '../../../client/action/navigation';
 
-import Text from '../../atoms/text/Text';
 import Button from '../../atoms/button/Button';
-import IconButton from '../../atoms/button/IconButton';
 import Spinner from '../../atoms/spinner/Spinner';
 import PopupWindow from '../../molecules/popup-window/PopupWindow';
 import RoomTile from '../../molecules/room-tile/RoomTile';

@@ -8,6 +8,13 @@ export function selectTab(tabId) {
   });
 }
 
+export function selectRoomMode(roomType) {
+  appDispatcher.dispatch({
+    type: cons.actions.navigation.SELECT_ROOM_MODE,
+    roomType,
+  });
+}
+
 export function selectSpace(roomId) {
   appDispatcher.dispatch({
     type: cons.actions.navigation.SELECT_SPACE,
