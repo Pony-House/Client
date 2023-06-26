@@ -20,7 +20,7 @@
     "run:ios": "tsc && cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build && npx cap run ios"
   },
   "keywords": [],
-  "author": "JasminDreasond (Fork from Cinny by Ajay Bura)",
+  "author": "JasminDreasond (Yasmin Seidel)",
   "license": "AGPL-3.0-only",
   "dependencies": {
     "@capacitor/android": "^4.7.0",
