@@ -1,6 +1,5 @@
 import React, { useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import './RoomEmojis.scss';
 
 import initMatrix from '../../../client/initMatrix';
 import { suffixRename } from '../../../util/common';

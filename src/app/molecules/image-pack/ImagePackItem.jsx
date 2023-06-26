@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './ImagePackItem.scss';
 
 import { openReusableContextMenu } from '../../../client/action/navigation';
 import { getEventCords } from '../../../util/common';

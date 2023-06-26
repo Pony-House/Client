@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import './SecretStorageAccess.scss';
 import { deriveKey } from 'matrix-js-sdk/lib/crypto/key_passphrase';
 
 import initMatrix from '../../../client/initMatrix';

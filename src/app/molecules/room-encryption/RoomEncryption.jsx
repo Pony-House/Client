@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import './RoomEncryption.scss';
 
 import initMatrix from '../../../client/initMatrix';
 

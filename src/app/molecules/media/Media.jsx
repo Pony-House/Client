@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import './Media.scss';
 
 import encrypt from 'browser-encrypt-attachment';
 
@@ -12,8 +11,6 @@ import IconButton from '../../atoms/button/IconButton';
 import Spinner from '../../atoms/spinner/Spinner';
 
 import { getBlobSafeMimeType } from '../../../util/mimetypes';
-
-import 'photoswipe/style.css';
 
 async function getDecryptedBlob(response, type, decryptData) {
   const arrayBuffer = await response.arrayBuffer();

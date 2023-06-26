@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { twemojify } from '../../../util/twemojify';
@@ -11,27 +9,8 @@ import IconButton from '../../atoms/button/IconButton';
 import Button from '../../atoms/button/Button';
 import ImageUpload from '../../molecules/image-upload/ImageUpload';
 import Input from '../../atoms/input/Input';
-import { leave } from '../../../client/action/room';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
-import { openSpaceSettings, emitUpdateProfile } from '../../../client/action/navigation';
-
-import './ProfileEditor.scss';
-
-/*
-
-const getProfileID = () => {
-
-  const profileSetting = initMatrix.matrixClient.getAccountData('pony.house.profile');
-  if (profileSetting && profileSetting.event && profileSetting.event.type === 'pony.house.profile') {
-    return profileSetting.event.content;
-  }
-
-  return null;
-
-};
-
-*/
 
 function ProfileEditor({ userId }) {
 
@@ -45,7 +24,6 @@ function ProfileEditor({ userId }) {
   const [avatarSrc, setAvatarSrc] = useState(user.avatarUrl ? mx.mxcUrlToHttp(user.avatarUrl) : null);
   const [username, setUsername] = useState(user.displayName);
   const [disabled, setDisabled] = useState(true);
-  // const [profileId, setProfileId] = useState(null);
 
   // User Effect
   useEffect(() => {
@@ -56,17 +34,6 @@ function ProfileEditor({ userId }) {
       setAvatarSrc(info.avatar_url ? mx.mxcUrlToHttp(info.avatar_url) : null);
       setUsername(info.displayname);
     });
-
-    if (user) {
-      /*
-      const profileSetting = getProfileID();
-      if (profileSetting && typeof profileSetting.roomId === 'string') {
-        setProfileId(profileSetting.roomId);
-      } else {
-        setProfileId(null);
-      }
-      */
-    }
 
     return () => {
       isMounted = false;

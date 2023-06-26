@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './ImportE2ERoomKeys.scss';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';

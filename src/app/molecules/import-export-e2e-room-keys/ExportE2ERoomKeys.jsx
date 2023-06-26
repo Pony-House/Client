@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './ExportE2ERoomKeys.scss';
 
 import FileSaver from 'file-saver';
 

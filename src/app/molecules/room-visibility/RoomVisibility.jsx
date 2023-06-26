@@ -1,19 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import './RoomVisibility.scss';
 
 import initMatrix from '../../../client/initMatrix';
 
-import Text from '../../atoms/text/Text';
 import RadioButton from '../../atoms/button/RadioButton';
 import { MenuItem } from '../../atoms/context-menu/ContextMenu';
-
-import HashIC from '../../../../public/res/ic/outlined/hash.svg';
-import HashLockIC from '../../../../public/res/ic/outlined/hash-lock.svg';
-import HashGlobeIC from '../../../../public/res/ic/outlined/hash-globe.svg';
-import SpaceIC from '../../../../public/res/ic/outlined/space.svg';
-import SpaceLockIC from '../../../../public/res/ic/outlined/space-lock.svg';
-import SpaceGlobeIC from '../../../../public/res/ic/outlined/space-globe.svg';
 
 const visibility = {
   INVITE: 'invite',
@@ -67,7 +58,6 @@ function RoomVisibility({ roomId }) {
   const [activeType, setVisibility] = useVisibility(roomId);
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
-  const isSpace = room.isSpaceRoom();
   const { currentState } = room;
 
   const noSpaceParent = currentState.getStateEvents('m.space.parent').length === 0;
@@ -79,19 +69,16 @@ function RoomVisibility({ roomId }) {
 
   const items = [{
     className: 'text-start',
-    // iconSrc: isSpace ? SpaceLockIC : HashLockIC,
     text: 'Private (invite only)',
     type: visibility.INVITE,
     unsupported: false,
   }, {
     className: 'text-start',
-    // iconSrc: isSpace ? SpaceIC : HashIC,
     text: roomVersion < 8 ? 'Restricted (unsupported: required room upgrade)' : 'Restricted (space member can join)',
     type: visibility.RESTRICTED,
     unsupported: roomVersion < 8 || noSpaceParent,
   }, {
     className: 'text-start',
-    // iconSrc: isSpace ? SpaceGlobeIC : HashGlobeIC,
     text: 'Public (anyone can join)',
     type: visibility.PUBLIC,
     unsupported: false,

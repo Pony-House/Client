@@ -2,7 +2,6 @@ import React, {
   useState, useEffect, useLayoutEffect, useCallback, useRef,
 } from 'react';
 import PropTypes from 'prop-types';
-import './RoomViewContent.scss';
 
 import moment from 'moment-timezone';
 import { twemojify } from '../../../util/twemojify';

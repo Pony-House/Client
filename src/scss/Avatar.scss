@@ -1,0 +1,70 @@
+@use './partials/flex';
+
+.avatar-container {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--bo-radius);
+
+  &__large {
+    width: var(--av-large);
+    height: var(--av-large);
+  }
+  &__normal {
+    width: var(--av-normal);
+    height: var(--av-normal);
+  }
+
+  &__small {
+    width: var(--av-small);
+    height: var(--av-small);
+  }
+
+  &__extra-small {
+    width: var(--av-extra-small);
+    height: var(--av-extra-small);
+  }
+
+  > img,
+  > canvas {
+    border-radius: inherit;
+    background-color: var(--bg-surface-hover);
+  }
+
+  .avatar__border {
+    @extend .cp-fx__row--c-c;
+
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+
+    .text {
+      color: white;
+    }
+    &--active {
+      @extend .avatar__border;
+      box-shadow: var(--bs-surface-border);
+    }
+  }
+}
+
+#chatbox > tbody {
+  > tr {
+    .avatar-container {
+      .anim-avatar {
+        display: none;
+      }
+    }
+  }
+
+  > tr:hover {
+    .avatar-container {
+      .anim-avatar {
+        display: inherit;
+      }
+
+      .normal-avatar {
+        display: none;
+      }
+    }
+  }
+}

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import './Auth.scss';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Formik } from 'formik';
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './PowerLevelSelector.scss';
 
 import IconButton from '../../atoms/button/IconButton';
 import { MenuHeader, MenuItem } from '../../atoms/context-menu/ContextMenu';

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './DragDrop.scss';
 
 import RawModal from '../../atoms/modal/RawModal';
 import Text from '../../atoms/text/Text';

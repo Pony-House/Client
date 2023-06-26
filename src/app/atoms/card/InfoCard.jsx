@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './InfoCard.scss';
 
 import Text from '../text/Text';
 import RawIcon from '../system-icons/RawIcon';

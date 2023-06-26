@@ -1,8 +1,6 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import 'highlight.js/styles/github.css';
-import './default.scss';
-import './index.scss';
+import './scss/default.scss';
 
 import { startWeb3 } from './util/web3';
 

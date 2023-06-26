@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './Search.scss';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';

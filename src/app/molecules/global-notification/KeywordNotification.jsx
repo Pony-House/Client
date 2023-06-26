@@ -1,5 +1,4 @@
 import React from 'react';
-import './KeywordNotification.scss';
 
 import initMatrix from '../../../client/initMatrix';
 import { openReusableContextMenu } from '../../../client/action/navigation';

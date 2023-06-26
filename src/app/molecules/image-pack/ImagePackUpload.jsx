@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import './ImagePackUpload.scss';
 
 import initMatrix from '../../../client/initMatrix';
 import { scaleDownImage } from '../../../util/common';

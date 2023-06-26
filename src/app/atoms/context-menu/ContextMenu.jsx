@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import './ContextMenu.scss';
 
 import Tippy from '@tippyjs/react';
-import 'tippy.js/animations/scale-extreme.css';
 
 import Button from '../button/Button';
 import ScrollView from '../scroll/ScrollView';

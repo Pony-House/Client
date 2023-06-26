@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './RoomTile.scss';
 
 import { twemojify } from '../../../util/twemojify';
 

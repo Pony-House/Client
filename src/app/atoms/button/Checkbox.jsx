@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Checkbox.scss';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
 function Checkbox({

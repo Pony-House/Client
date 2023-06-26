@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './ScrollView.scss';
 
 const ScrollView = React.forwardRef(({
   horizontal, vertical, autoHide, invisible, onScroll, children, className

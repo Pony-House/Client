@@ -1,5 +1,4 @@
 import React from 'react';
-import './IgnoreUserList.scss';
 
 import initMatrix from '../../../client/initMatrix';
 import * as roomActions from '../../../client/action/room';

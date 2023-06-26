@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './PeopleSelector.scss';
 
 import ReactDOMServer from 'react-dom/server';
 import { twemojify } from '../../../util/twemojify';

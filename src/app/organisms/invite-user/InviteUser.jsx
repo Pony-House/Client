@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import './InviteUser.scss';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -10,7 +9,6 @@ import { hasDMWith, hasDevices } from '../../../util/matrixUtil';
 
 import Text from '../../atoms/text/Text';
 import Button from '../../atoms/button/Button';
-import IconButton from '../../atoms/button/IconButton';
 import Spinner from '../../atoms/spinner/Spinner';
 import Input from '../../atoms/input/Input';
 import PopupWindow from '../../molecules/popup-window/PopupWindow';

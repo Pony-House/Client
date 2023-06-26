@@ -2,7 +2,6 @@ import React, {
   useState, useMemo, useReducer, useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
-import './ImagePack.scss';
 
 import initMatrix from '../../../client/initMatrix';
 import { openReusableDialog } from '../../../client/action/navigation';

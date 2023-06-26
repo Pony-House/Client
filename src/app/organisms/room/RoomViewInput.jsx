@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import './RoomViewInput.scss';
 
 import TextareaAutosize from 'react-autosize-textarea';
 

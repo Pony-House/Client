@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './ConfirmDialog.scss';
 
 import { openReusableDialog } from '../../../client/action/navigation';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';

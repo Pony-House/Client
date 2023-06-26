@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './ShortcutSpaces.scss';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';

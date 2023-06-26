@@ -1,0 +1,56 @@
+@use './partials/flex';
+@use './button/state';
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+
+  border-radius: calc(var(--bo-radius) / 2);
+  background-color: var(--bg-surface-border);
+  box-shadow: var(--bs-surface-border);
+  cursor: pointer;
+  @include state.disabled;
+  @extend .cp-fx__row--c-c;
+
+  &--active {
+    background-color: black;
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 6px;
+      border: 6px solid white;
+      border-width: 0 0 3px 3px;
+      transform: rotateZ(-45deg) translate(1px, -1px);
+    }
+  }
+}
+
+.checkbox-primary.checkbox--active {
+  background-color: var(--bs-primary);
+}
+
+.checkbox-success.checkbox--active {
+  background-color: var(--bs-success);
+}
+
+.checkbox-warning.checkbox--active {
+  background-color: var(--bs-warning);
+}
+
+.checkbox-danger.checkbox--active {
+  background-color: var(--bs-danger);
+}
+
+.checkbox-secondary.checkbox--active {
+  background-color: var(--bs-secondary);
+}
+.checkbox-info.checkbox--active {
+  background-color: var(--bs-info);
+}
+.checkbox-light.checkbox--active {
+  background-color: var(--bs-light);
+}
+.checkbox-dark.checkbox--active {
+  background-color: var(--bs-dark);
+}

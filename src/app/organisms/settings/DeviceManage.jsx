@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './DeviceManage.scss';
 import moment from 'moment-timezone';
 
 import initMatrix from '../../../client/initMatrix';

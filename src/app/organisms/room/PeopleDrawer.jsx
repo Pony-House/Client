@@ -2,7 +2,6 @@ import React, {
   useState, useEffect, useCallback, useRef,
 } from 'react';
 import PropTypes from 'prop-types';
-import './PeopleDrawer.scss';
 
 import initMatrix from '../../../client/initMatrix';
 import { getPowerLabel, getUsernameOfRoomMember } from '../../../util/matrixUtil';

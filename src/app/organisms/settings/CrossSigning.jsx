@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useState } from 'react';
-import './CrossSigning.scss';
 import FileSaver from 'file-saver';
 import { Formik } from 'formik';
 import { twemojify } from '../../../util/twemojify';

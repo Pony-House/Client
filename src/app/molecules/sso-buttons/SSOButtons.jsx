@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './SSOButtons.scss';
 
 import { createTemporaryClient, startSsoLogin } from '../../../client/action/auth';
 
