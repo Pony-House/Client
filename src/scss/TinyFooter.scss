@@ -6,6 +6,14 @@
   }
 }
 
+.space-add-existing-modal.pin-spaces,
+.space-add-existing-modal.add-existing-rooms {
+  .room-selector__options .checkbox {
+    position: relative;
+    right: 7px;
+  }
+}
+
 /* Tiny Footer */
 .space-add-existing__footer,
 .space-manage__footer,

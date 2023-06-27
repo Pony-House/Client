@@ -208,7 +208,7 @@ function SpaceAddExisting() {
 
   return (
     <Dialog
-      bodyClass='space-add-existing-modal'
+      bodyClass='space-add-existing-modal add-existing-rooms'
       isOpen={roomId !== null}
       className="modal-dialog-scrollable noselect"
       title={(
