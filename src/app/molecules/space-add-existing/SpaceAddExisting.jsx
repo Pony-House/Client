@@ -111,7 +111,6 @@ function SpaceAddExistingContent({ roomId }) {
   return (
     <>
       <form onSubmit={(ev) => { ev.preventDefault(); }}>
-        <RawIcon size="small" fa="fa-solid fa-magnifying-glass" />
         <div>
           <Input
             name="searchInput"
@@ -120,52 +119,56 @@ function SpaceAddExistingContent({ roomId }) {
             autoFocus
           />
         </div>
-        <IconButton size="small" type="button" onClick={handleSearchClear} fa="fa-solid fa-xmark" />
+        {
+          // <IconButton size="small" type="button" onClick={handleSearchClear} fa="fa-solid fa-xmark" /> 
+        }
       </form>
-      {searchIds?.length === 0 && <Text>No results found</Text>}
-      {
-        (searchIds || allRoomIds).map((rId) => {
-          const room = mx.getRoom(rId);
-          let imageSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
-          if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
+      <div className='my-3'>
+        {searchIds?.length === 0 && <Text>No results found</Text>}
+        {
+          (searchIds || allRoomIds).map((rId) => {
+            const room = mx.getRoom(rId);
+            let imageSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
+            if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
 
-          const parentSet = roomIdToParents.get(rId);
-          const parentNames = parentSet
-            ? [...parentSet].map((parentId) => mx.getRoom(parentId).name)
-            : undefined;
-          const parents = parentNames ? parentNames.join(', ') : null;
+            const parentSet = roomIdToParents.get(rId);
+            const parentNames = parentSet
+              ? [...parentSet].map((parentId) => mx.getRoom(parentId).name)
+              : undefined;
+            const parents = parentNames ? parentNames.join(', ') : null;
 
-          const handleSelect = () => toggleSelection(rId);
+            const handleSelect = () => toggleSelection(rId);
 
-          return (
-            <RoomSelector
-              key={rId}
-              name={room.name}
-              parentName={parents}
-              roomId={rId}
-              imageSrc={directs.has(rId) ? imageSrc : null}
-              iconSrc={
-                directs.has(rId)
-                  ? null
-                  : joinRuleToIconSrc(room.getJoinRule(), room.isSpaceRoom())
-              }
-              isUnread={false}
-              notificationCount={0}
-              isAlert={false}
-              onClick={handleSelect}
-              options={(
-                <Checkbox
-                  isActive={selected.includes(rId)}
-                  variant="success"
-                  onToggle={handleSelect}
-                  tabIndex={-1}
-                  disabled={process !== null}
-                />
-              )}
-            />
-          );
-        })
-      }
+            return (
+              <RoomSelector
+                key={rId}
+                name={room.name}
+                parentName={parents}
+                roomId={rId}
+                imageSrc={directs.has(rId) ? imageSrc : null}
+                iconSrc={
+                  directs.has(rId)
+                    ? null
+                    : joinRuleToIconSrc(room.getJoinRule(), room.isSpaceRoom())
+                }
+                isUnread={false}
+                notificationCount={0}
+                isAlert={false}
+                onClick={handleSelect}
+                options={(
+                  <Checkbox
+                    isActive={selected.includes(rId)}
+                    variant="success"
+                    onToggle={handleSelect}
+                    tabIndex={-1}
+                    disabled={process !== null}
+                  />
+                )}
+              />
+            );
+          })
+        }
+      </div>
       {selected.length !== 0 && (
         <div className="space-add-existing__footer">
           {process && <Spinner size="small" />}
@@ -205,6 +208,7 @@ function SpaceAddExisting() {
 
   return (
     <Dialog
+      bodyClass='space-add-existing-modal'
       isOpen={roomId !== null}
       className="modal-dialog-scrollable noselect"
       title={(

@@ -1,5 +1,11 @@
 @use './partials/dir';
 
+.space-add-existing-modal {
+  .room-selector__options {
+    display: flex !important;
+  }
+}
+
 /* Tiny Footer */
 .space-add-existing__footer,
 .space-manage__footer,
