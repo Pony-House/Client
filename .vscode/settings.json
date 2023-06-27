@@ -4,5 +4,6 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "[javascriptreact]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
-  }
+  },
+  "java.configuration.updateBuildConfiguration": "interactive"
 }
