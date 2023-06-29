@@ -11,12 +11,15 @@ function DragDrop({ children, navWrapperRef, }) {
     const dropZone = useRef(null);
 
     function dragContainsFiles(e) {
+
         if (!e.dataTransfer.types) return false;
 
         for (let i = 0; i < e.dataTransfer.types.length; i += 1) {
             if (e.dataTransfer.types[i] === 'Files') return true;
         }
+
         return false;
+
     }
 
     function dropAllowed() {
@@ -27,8 +30,6 @@ function DragDrop({ children, navWrapperRef, }) {
 
         if (!dragContainsFiles(e)) return;
 
-        e.preventDefault();
-
         if (!navigation.selectedRoomId) {
             e.dataTransfer.dropEffect = 'none';
         }
@@ -37,19 +38,19 @@ function DragDrop({ children, navWrapperRef, }) {
 
     function handleDragEnter(e) {
 
-        e.preventDefault();
-
-        if (navigation.selectedRoomId && dragContainsFiles(e)) {
+        if (navigation.selectedRoomId) {
             dropZone.current.classList.add('drag-enabled');
+        } else {
+            dropZone.current.classList.remove('drag-enabled');
         }
 
     }
 
     function handleDragLeave(e) {
 
-        e.preventDefault();
-
-        if (navigation.selectedRoomId && dragContainsFiles(e)) {
+        if (navigation.selectedRoomId) {
+            dropZone.current.classList.remove('drag-enabled');
+        } else {
             dropZone.current.classList.remove('drag-enabled');
         }
 
@@ -58,10 +59,7 @@ function DragDrop({ children, navWrapperRef, }) {
     function handleDrop(e) {
 
         e.preventDefault();
-        if (!dropAllowed()) {
-            console.log('Cancel!');
-            return;
-        }
+        if (!dropAllowed()) return;
 
         const roomId = navigation.selectedRoomId;
         if (!roomId) return;
