@@ -143,6 +143,8 @@ export function getPresence(user, canStatus = true, canPresence = true) {
 
             }
 
+            if (typeof content.presenceStatusMsg.afk !== 'undefined') delete content.presenceStatusMsg.afk;
+
         }
 
         if (content.presence !== 'offline' && content.presence !== 'unavailable') {

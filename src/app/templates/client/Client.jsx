@@ -20,6 +20,7 @@ import cons from '../../../client/state/cons';
 import Alert from './Alert';
 import DragDrop from './DragDrop';
 import { resizeWindowChecker } from '../../../util/tools';
+import { startUserAfk, stopUserAfk } from '../../../util/userStatusEffects';
 
 function Client() {
   const [isLoading, changeLoading] = useState(true);
@@ -39,9 +40,11 @@ function Client() {
   }
 
   useEffect(() => {
+    startUserAfk();
     navigation.on(cons.events.navigation.SELECTED_ROOM_MODE, onRoomModeSelected);
     window.addEventListener('resize', resizeWindowChecker, true);
     return (() => {
+      stopUserAfk();
       window.removeEventListener('resize', resizeWindowChecker, true);
       navigation.removeListener(cons.events.navigation.SELECTED_ROOM_MODE, onRoomModeSelected);
     });

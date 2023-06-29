@@ -20,7 +20,7 @@ const lastTimestampUpdate = () => {
 
 // Interval
 const intervalTimestamp = () => {
-
+    // console.log(getUserAfk());
 };
 
 // Get
