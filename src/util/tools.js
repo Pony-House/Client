@@ -11,13 +11,13 @@ export function checkVisible(elm) {
 export function hljsFixer(element, where) {
     if (where === 'MessageBody') {
 
-        element.innerHTML = `<table class="table table-borderless align-middle m-0"><tbody><tr><td class="code-line">1</td><td>${element.innerHTML}</tbody></table>`;
+        element.innerHTML = `<table class="table table-borderless align-middle m-0"><tbody><tr><td class="code-line noselect">1</td><td>${element.innerHTML}</tbody></table>`;
         element.classList.add('fixhl');
         let countBr = 1;
 
         element.innerHTML = element.innerHTML.replace(/(?:\r\n|\r|\n)/g, data => {
             countBr++;
-            return `</td></tr><tr><td class="code-line">${countBr}</td><td>`;
+            return `</td></tr><tr><td class="code-line noselect">${countBr}</td><td>`;
         });
 
     }

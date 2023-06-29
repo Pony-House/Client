@@ -847,6 +847,9 @@ a {
     color: var(--tc-surface-normal);
     padding: 0px;
   }
+  .code-line {
+    color: var(--tc-surface-low);
+  }
 }
 
 .message-body {
