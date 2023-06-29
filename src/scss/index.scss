@@ -858,3 +858,14 @@ a {
     max-height: 300px;
   }
 }
+
+/* DropDrag */
+
+.drag-enabled {
+  min-height: 100%;
+  min-width: 100%;
+  position: fixed;
+  z-index: 99999;
+  background-color: rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}

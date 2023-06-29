@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 
 import navigation from '../../../client/state/navigation';
 import cons from '../../../client/state/cons';
@@ -8,7 +8,7 @@ import initMatrix from '../../../client/initMatrix';
 
 function DragDrop({ children, navWrapperRef, }) {
 
-    const [dragCounter, setDragCounter] = useState(0);
+    const dropZone = useRef(null);
 
     function dragContainsFiles(e) {
         if (!e.dataTransfer.types) return false;
@@ -19,8 +19,8 @@ function DragDrop({ children, navWrapperRef, }) {
         return false;
     }
 
-    function modalOpen() {
-        return navigation.isRawModalVisible && dragCounter <= 0;
+    function dropAllowed() {
+        return !navigation.isRawModalVisible && dropZone.current && dropZone.current.classList.contains('drag-enabled');
     }
 
     function handleDragOver(e) {
@@ -29,7 +29,7 @@ function DragDrop({ children, navWrapperRef, }) {
 
         e.preventDefault();
 
-        if (!navigation.selectedRoomId || modalOpen()) {
+        if (!navigation.selectedRoomId) {
             e.dataTransfer.dropEffect = 'none';
         }
 
@@ -39,8 +39,8 @@ function DragDrop({ children, navWrapperRef, }) {
 
         e.preventDefault();
 
-        if (navigation.selectedRoomId && !modalOpen() && dragContainsFiles(e)) {
-            setDragCounter(dragCounter + 1);
+        if (navigation.selectedRoomId && dragContainsFiles(e)) {
+            dropZone.current.classList.add('drag-enabled');
         }
 
     }
@@ -49,8 +49,8 @@ function DragDrop({ children, navWrapperRef, }) {
 
         e.preventDefault();
 
-        if (navigation.selectedRoomId && !modalOpen() && dragContainsFiles(e)) {
-            setDragCounter(dragCounter - 1);
+        if (navigation.selectedRoomId && dragContainsFiles(e)) {
+            dropZone.current.classList.remove('drag-enabled');
         }
 
     }
@@ -58,10 +58,10 @@ function DragDrop({ children, navWrapperRef, }) {
     function handleDrop(e) {
 
         e.preventDefault();
-
-        setDragCounter(0);
-
-        if (modalOpen()) return;
+        if (!dropAllowed()) {
+            console.log('Cancel!');
+            return;
+        }
 
         const roomId = navigation.selectedRoomId;
         if (!roomId) return;
@@ -72,12 +72,13 @@ function DragDrop({ children, navWrapperRef, }) {
         const file = files[0];
         initMatrix.roomsInput.setAttachment(roomId, file);
         initMatrix.roomsInput.emit(cons.events.roomsInput.ATTACHMENT_SET, file);
+        if (dropZone.current) dropZone.current.classList.remove('drag-enabled');
 
     }
 
     return (
         <>
-            <div id='dropzone' />
+            <div ref={dropZone} id='dropzone' />
             <div
                 ref={navWrapperRef}
                 className="client-container"
