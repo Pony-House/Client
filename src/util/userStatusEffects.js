@@ -20,7 +20,16 @@ const intervalTimestamp = () => {
 
 };
 
-export function getLastTimestamp() { return userInteractions.lastTimestamp; };
+export function getUserAfkTime(type = 'seconds') {
+
+    if (typeof userInteractions.lastTimestamp.value === 'number') {
+        return moment().diff(userInteractions.lastTimestamp.value, type);
+    }
+
+    return null;
+
+};
+
 export function startLastTimestamp() {
 
     if (userInteractions.lastTimestamp.interval) {
