@@ -27,6 +27,8 @@ Made by Me
 
     ]
 
+    Criar sistema de alterar o tamanho da fonte do aplicativo.
+
     Criar Video Chamada e Chamada de Voz
 
     Criar sistema de titulos (Algo parecido com cargos)
