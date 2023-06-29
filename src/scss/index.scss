@@ -841,6 +841,10 @@ a {
   padding: 14px !important;
 }
 
+.hljs.fixhl {
+  white-space: pre;
+}
+
 .message-body {
   .hljs {
     max-height: 300px;

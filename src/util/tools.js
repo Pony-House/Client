@@ -9,7 +9,10 @@ export function checkVisible(elm) {
 }
 
 export function hljsFixer(element, where) {
-    console.log(where, element);
+    if (where === 'MessageBody') {
+        element.classList.add('fixhl');
+        element.innerHTML = element.innerHTML.replace(/(?:\r\n|\r|\n)/g, '</br>');
+    }
 };
 
 // Check Resize css Fixer
