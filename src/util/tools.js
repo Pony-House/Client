@@ -54,7 +54,6 @@ export function resizeWindowChecker(timeout = 500) {
 
         // Room View
         const roomView = document.querySelector('.room-view');
-        console.log(roomView);
         if (roomView) {
 
             let removeValue = 130;

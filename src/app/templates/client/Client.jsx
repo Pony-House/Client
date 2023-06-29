@@ -17,7 +17,6 @@ import EmojiBoardOpener from '../../organisms/emoji-board/EmojiBoardOpener';
 import initMatrix from '../../../client/initMatrix';
 import navigation from '../../../client/state/navigation';
 import cons from '../../../client/state/cons';
-import DragDrop from '../../organisms/drag-drop/DragDrop';
 import Alert from './Alert';
 import { resizeWindowChecker } from '../../../util/tools';
 
@@ -160,10 +159,6 @@ function Client() {
     <div
       ref={navWrapperRef}
       className="client-container"
-      onDragOver={handleDragOver}
-      onDragEnter={handleDragEnter}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
     >
       <div className="navigation-wrapper">
         <Navigation />
@@ -176,7 +171,6 @@ function Client() {
       <EmojiBoardOpener />
       <ReusableContextMenu />
       <Alert />
-      <DragDrop isOpen={dragCounter !== 0} />
     </div>
   );
 }

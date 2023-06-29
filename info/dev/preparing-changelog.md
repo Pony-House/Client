@@ -1,2 +1,6 @@
 - SCSS files migration
 - src/start.jsx is the main start app now. src/index.jsx is to start the app using the Vite.
+- New resizeWindowChecker added.
+- hljs size box issues fixed.
+- OLD DragDrop removed
+- OLD RawModal removed

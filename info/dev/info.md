@@ -32,3 +32,8 @@ If you are a developer interested in contributing to the project, I'll let the P
     scrollToBottom
     src/app/organisms/room/TimelineScroll.js
     ROOM_SELECTED
+
+## Modal Detector
+
+    setIsRawModalVisible
+    isRawModalVisible
