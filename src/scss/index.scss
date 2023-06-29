@@ -866,7 +866,7 @@ a {
 }
 
 .drag-enabled {
-  display: flex;
+  display: flex !important;
   position: fixed;
   z-index: 99999;
   background-color: rgba(0, 0, 0, 0.8);

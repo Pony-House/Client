@@ -27,8 +27,6 @@ Made by Me
 
     ]
 
-    Criar sistema de alterar o tamanho da fonte do aplicativo.
-
     Criar Video Chamada e Chamada de Voz
 
     Criar sistema de titulos (Algo parecido com cargos)
@@ -49,8 +47,7 @@ Made by Me
 
     =======================================================
 
-    --> Fazer uma opção para os códigos de script no chat não serem cortados pelo bloco da mensagem de forma inativa igual ao Visual Studio Code.
-
+    --> Criar sistema de alterar o tamanho da fonte do aplicativo
     --> Script de alerta bugou de novo
     --> Abrir imagem em anexo em uma nova guia
 
