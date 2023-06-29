@@ -1,4 +1,5 @@
 let resizePlace = null;
+let resizeTimeout = null;
 let head;
 
 // Check DOM Visible
@@ -25,7 +26,8 @@ export function hljsFixer(element, where) {
 
 // Check Resize css Fixer
 export function resizeWindowChecker(timeout = 500) {
-    setTimeout(() => {
+    if (resizeTimeout) clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
 
         // Insert Style into head
         if (!resizePlace) {
@@ -47,11 +49,12 @@ export function resizeWindowChecker(timeout = 500) {
                     resizePlace = resizePlaceDOM;
                 }
 
-            } else { setTimeout(() => resizeWindowChecker(), 1); }
+            } else { setTimeout(() => resizeWindowChecker(), 1); return; }
         }
 
         // Room View
         const roomView = document.querySelector('.room-view');
+        console.log(roomView);
         if (roomView) {
 
             let removeValue = 130;
@@ -65,7 +68,7 @@ export function resizeWindowChecker(timeout = 500) {
                 }
             `;
 
-        }
+        } else { setTimeout(() => resizeWindowChecker(), 1); }
 
     }, timeout);
 }
