@@ -16,7 +16,7 @@ export function hljsFixer(element, where) {
         element.classList.add('fixhl');
         let countBr = 1;
 
-        element.innerHTML = element.innerHTML.replace(/(?:\r\n|\r|\n)/g, data => {
+        element.innerHTML = element.innerHTML.replace(/(?:\r\n|\r|\n)/g, () => {
             countBr++;
             return `</td></tr><tr><td class="code-line noselect">${countBr}</td><td>`;
         });

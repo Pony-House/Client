@@ -18,12 +18,12 @@ import initMatrix from '../../../client/initMatrix';
 import navigation from '../../../client/state/navigation';
 import cons from '../../../client/state/cons';
 import Alert from './Alert';
+import DragDrop from './DragDrop';
 import { resizeWindowChecker } from '../../../util/tools';
 
 function Client() {
   const [isLoading, changeLoading] = useState(true);
   const [loadingMsg, setLoadingMsg] = useState('Heating up');
-  const [dragCounter, setDragCounter] = useState(0);
 
   const navWrapperRef = useRef(null);
 
@@ -98,68 +98,9 @@ function Client() {
     );
   }
 
-  function dragContainsFiles(e) {
-    if (!e.dataTransfer.types) return false;
-
-    for (let i = 0; i < e.dataTransfer.types.length; i += 1) {
-      if (e.dataTransfer.types[i] === 'Files') return true;
-    }
-    return false;
-  }
-
-  function modalOpen() {
-    return navigation.isRawModalVisible && dragCounter <= 0;
-  }
-
-  function handleDragOver(e) {
-    if (!dragContainsFiles(e)) return;
-
-    e.preventDefault();
-
-    if (!navigation.selectedRoomId || modalOpen()) {
-      e.dataTransfer.dropEffect = 'none';
-    }
-  }
-
-  function handleDragEnter(e) {
-    e.preventDefault();
-
-    if (navigation.selectedRoomId && !modalOpen() && dragContainsFiles(e)) {
-      setDragCounter(dragCounter + 1);
-    }
-  }
-
-  function handleDragLeave(e) {
-    e.preventDefault();
-
-    if (navigation.selectedRoomId && !modalOpen() && dragContainsFiles(e)) {
-      setDragCounter(dragCounter - 1);
-    }
-  }
-
-  function handleDrop(e) {
-    e.preventDefault();
-
-    setDragCounter(0);
-
-    if (modalOpen()) return;
-
-    const roomId = navigation.selectedRoomId;
-    if (!roomId) return;
-
-    const { files } = e.dataTransfer;
-    if (!files?.length) return;
-    const file = files[0];
-    initMatrix.roomsInput.setAttachment(roomId, file);
-    initMatrix.roomsInput.emit(cons.events.roomsInput.ATTACHMENT_SET, file);
-  }
-
   resizeWindowChecker();
   return (
-    <div
-      ref={navWrapperRef}
-      className="client-container"
-    >
+    <DragDrop navWrapperRef={navWrapperRef} >
       <div className="navigation-wrapper">
         <Navigation />
       </div>
@@ -171,7 +112,7 @@ function Client() {
       <EmojiBoardOpener />
       <ReusableContextMenu />
       <Alert />
-    </div>
+    </DragDrop>
   );
 }
 
