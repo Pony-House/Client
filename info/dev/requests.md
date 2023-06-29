@@ -47,6 +47,7 @@ Made by Me
 
     =======================================================
 
+    --> Status ocupado não envia notificação
     --> Criar sistema de alterar o tamanho da fonte do aplicativo
     --> Script de alerta bugou de novo
     --> Abrir imagem em anexo em uma nova guia
