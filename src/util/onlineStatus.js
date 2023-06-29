@@ -74,6 +74,7 @@ export function parsePresenceStatus(presence) {
                     tinyResult.msg = tinyParse.msg.substring(0, 100);
                 }
 
+                // User Banner
                 if (typeof tinyParse.banner === 'string' && tinyParse.banner.length > 0) {
                     tinyResult.banner = mx.mxcUrlToHttp(tinyParse.banner);
                 }
@@ -81,6 +82,13 @@ export function parsePresenceStatus(presence) {
                 // Profile Bio
                 if (typeof tinyParse.bio === 'string' && tinyParse.bio.length > 0) {
                     tinyResult.bio = tinyParse.bio.substring(0, 190);
+                }
+
+                // User AFK
+                if (typeof tinyParse.afk === 'boolean' && tinyParse.afk) {
+                    tinyResult.afk = true;
+                } else {
+                    tinyResult.afk = false;
                 }
 
             }
@@ -122,11 +130,19 @@ export function getPresence(user, canStatus = true, canPresence = true) {
         }
 
         if (typeof content.presenceStatusMsg === 'string') {
+
             content.presenceStatusMsg = parsePresenceStatus(content.presenceStatusMsg);
             if (content.presence !== 'offline' && content.presence !== 'unavailable' && content.presenceStatusMsg.status) {
+
                 content.presence = content.presenceStatusMsg.status;
                 delete content.presenceStatusMsg.status;
-            };
+
+                if (content.presenceStatusMsg.afk) {
+                    content.presence = 'idle';
+                }
+
+            }
+
         }
 
         if (content.presence !== 'offline' && content.presence !== 'unavailable') {
