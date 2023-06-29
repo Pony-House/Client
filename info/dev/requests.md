@@ -49,6 +49,8 @@ Made by Me
 
     =======================================================
 
+    --> Fazer uma opção para os códigos de script no chat não serem cortados pelo bloco da mensagem de forma inativa igual ao Visual Studio Code.
+
     --> Script de alerta bugou de novo
     --> Abrir imagem em anexo em uma nova guia
 
