@@ -35,6 +35,7 @@ function Client() {
 
     if (roomType === 'room') navWrapperRef.current?.classList.add('room-mode');
     if (roomType === 'navigation') navWrapperRef.current?.classList.add('navigation-mode');
+    resizeWindowChecker();
 
   }
 

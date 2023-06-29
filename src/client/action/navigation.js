@@ -1,6 +1,5 @@
 import appDispatcher from '../dispatcher';
 import cons from '../state/cons';
-import { resizeWindowChecker } from '../../util/tools';
 
 export function selectTab(tabId) {
   appDispatcher.dispatch({
@@ -10,7 +9,6 @@ export function selectTab(tabId) {
 }
 
 export function selectRoomMode(roomType) {
-  resizeWindowChecker();
   appDispatcher.dispatch({
     type: cons.actions.navigation.SELECT_ROOM_MODE,
     roomType,
