@@ -72,7 +72,12 @@ function DragDrop({ children, navWrapperRef, }) {
 
     return (
         <>
-            <div ref={dropZone} id='dropzone' />
+            <div ref={dropZone} className='justify-content-center w-100 h-100 noselect' id='dropzone'>
+                <center>
+                    <img className="app-welcome__logo noselect" src="./public/favicon.ico" alt="Cinny logo" />
+                    <h2 className='mt-3'>Drop file to upload</h2>
+                </center>
+            </div>
             <div
                 ref={navWrapperRef}
                 className="client-container"

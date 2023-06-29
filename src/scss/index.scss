@@ -861,11 +861,15 @@ a {
 
 /* DropDrag */
 
+#dropzone {
+  display: none;
+}
+
 .drag-enabled {
-  min-height: 100%;
-  min-width: 100%;
+  display: flex;
   position: fixed;
   z-index: 99999;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.8);
   pointer-events: none;
+  align-items: center;
 }
