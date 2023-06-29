@@ -18,7 +18,7 @@ export function resizeWindowChecker(timeout = 500) {
             if (head) {
 
                 // Exist DOM
-                const resizePlaceDOM = head.querySelector('#resize-place');
+                const resizePlaceDOM = head.querySelector('style#resize-place');
 
                 // Create One
                 if (!resizePlaceDOM) {
