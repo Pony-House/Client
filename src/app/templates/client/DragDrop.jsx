@@ -32,13 +32,15 @@ function DragDrop({ children, navWrapperRef, }) {
 
         if (!navigation.selectedRoomId) {
             e.dataTransfer.dropEffect = 'none';
+        } else {
+            dropZone.current.classList.add('drag-enabled');
         }
 
     }
 
     function handleDragEnter(e) {
 
-        if (navigation.selectedRoomId) {
+        if (navigation.selectedRoomId && dragContainsFiles(e)) {
             dropZone.current.classList.add('drag-enabled');
         } else {
             dropZone.current.classList.remove('drag-enabled');
@@ -46,14 +48,8 @@ function DragDrop({ children, navWrapperRef, }) {
 
     }
 
-    function handleDragLeave(e) {
-
-        if (navigation.selectedRoomId) {
-            dropZone.current.classList.remove('drag-enabled');
-        } else {
-            dropZone.current.classList.remove('drag-enabled');
-        }
-
+    function handleDragLeave() {
+        dropZone.current.classList.remove('drag-enabled');
     }
 
     function handleDrop(e) {
