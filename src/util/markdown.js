@@ -202,14 +202,14 @@ const markdownRules = {
 
       const autoCode = () => {
         const tinyCode = hljs.highlightAuto(node.content);
-        return `<pre class="hljs-base"><code class='language-${tinyCode.language} hljs'>${tinyCode.value}</code></pre>`;
+        return `<pre class="hljs-base"><code class='chatbox-size-fix language-${tinyCode.language} hljs'>${tinyCode.value}</code></pre>`;
       };
 
       if (!node.lang) { return autoCode(); }
 
       const langs = hljs.listLanguages();
       if (langs.indexOf(node.lang) > -1) {
-        return `<pre class="hljs-base"><code class='language-${node.lang} hljs'>${hljs.highlight(node.content, { language: node.lang }).value}</code></pre>`;
+        return `<pre class="hljs-base"><code class='chatbox-size-fix language-${node.lang} hljs'>${hljs.highlight(node.content, { language: node.lang }).value}</code></pre>`;
       }
 
       return autoCode();

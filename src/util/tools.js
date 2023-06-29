@@ -39,7 +39,16 @@ export function resizeWindowChecker(timeout = 500) {
         const roomView = document.querySelector('.room-view');
         if (roomView) {
 
-            console.log(roomView.offsetWidth);
+            let removeValue = 130;
+            if (window.matchMedia('screen and (max-width: 768px)').matches) {
+                removeValue -= 30;
+            }
+
+            resizePlace.innerHTML = `
+                .chatbox-size-fix {
+                    width: ${roomView.offsetWidth - removeValue}px!important;
+                }
+            `;
 
         }
 

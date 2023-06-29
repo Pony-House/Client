@@ -111,7 +111,7 @@ export function sanitizeCustomHtml(matrixClient, body) {
     allowProtocolRelative: false,
     allowedClasses: {
       pre: ['hljs-base'],
-      code: ['language-*', 'hljs'],
+      code: ['language-*', 'hljs', 'chatbox-size-fix'],
       span: ['hljs-*'],
     },
     allowedStyles: {
