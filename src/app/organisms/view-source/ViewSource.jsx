@@ -15,7 +15,7 @@ function ViewSourceBlock({ title, json, className }) {
     document.querySelectorAll('.insert-hljs').forEach((el) => {
       hljs.highlightElement(el);
       el.classList.remove('insert-hljs');
-      hljsFixer(el);
+      hljsFixer(el, 'ViewSource');
     });
   }, []);
 

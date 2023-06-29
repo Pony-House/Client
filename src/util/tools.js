@@ -8,8 +8,8 @@ export function checkVisible(elm) {
     return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
 }
 
-export function hljsFixer(element) {
-
+export function hljsFixer(element, where) {
+    console.log(where, element);
 };
 
 // Check Resize css Fixer

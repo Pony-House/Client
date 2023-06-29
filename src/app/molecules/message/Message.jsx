@@ -211,7 +211,7 @@ const MessageBody = React.memo(({
           hljs.highlightElement(el);
           el.classList.add('chatbox-size-fix');
 
-          hljsFixer(el);
+          hljsFixer(el, 'MessageBody');
 
         }
       });
