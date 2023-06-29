@@ -30,6 +30,10 @@
   }
 }
 
+.hljs::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
 @mixin scroll {
   overflow: hidden;
   // Below code stop scroll when x-scrollable content come in timeline
