@@ -129,6 +129,14 @@ export function getPresence(user, canStatus = true, canPresence = true) {
             };
         }
 
+        if (content.presence !== 'offline' && content.presence !== 'unavailable') {
+
+            if (!content.currentlyActive /* || (typeof content.lastActiveAgo === 'number' && !Number.isNaN(content.lastActiveAgo) && Number.isFinite(content.lastActiveAgo) && content.lastActiveAgo > 600000) */) {
+                content.presence = 'idle';
+            }
+
+        }
+
         return content;
 
     }
