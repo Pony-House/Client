@@ -206,14 +206,17 @@ const MessageBody = React.memo(({
       const msgBody = messageBody.current;
 
       msgBody.querySelectorAll('pre code').forEach((el) => {
-        if (!el.classList.contains('hljs')) {
 
+        if (!el.classList.contains('hljs')) {
           hljs.highlightElement(el);
           el.classList.add('chatbox-size-fix');
-
-          hljsFixer(el, 'MessageBody');
-
         }
+
+        if (!el.classList.contains('hljs-fix')) {
+          el.classList.add('hljs-fix');
+          hljsFixer(el, 'MessageBody');
+        }
+
       });
 
     }

@@ -843,6 +843,10 @@ a {
 
 .hljs.fixhl {
   white-space: pre;
+  td {
+    color: var(--tc-surface-normal);
+    padding: 0px;
+  }
 }
 
 .message-body {
