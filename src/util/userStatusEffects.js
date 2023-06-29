@@ -4,54 +4,60 @@ import initMatrix from '../client/initMatrix';
 // Cache Data
 const userInteractions = {
 
-    lastTimestamp: {
+    afkTime: {
         value: null,
         interval: null
     },
 
 };
 
-// Last Timestamp
+// User AFK
+
+// Update
 const lastTimestampUpdate = () => {
-    userInteractions.lastTimestamp.value = moment().valueOf();
+    userInteractions.afkTime.value = moment().valueOf();
 };
 
+// Interval
 const intervalTimestamp = () => {
 
 };
 
-export function getUserAfkTime(type = 'seconds') {
+// Get
+export function getUserAfk(type = 'seconds') {
 
-    if (typeof userInteractions.lastTimestamp.value === 'number') {
-        return moment().diff(userInteractions.lastTimestamp.value, type);
+    if (typeof userInteractions.afkTime.value === 'number') {
+        return moment().diff(userInteractions.afkTime.value, type);
     }
 
     return null;
 
 };
 
-export function startLastTimestamp() {
+// Start
+export function startUserAfk() {
 
-    if (userInteractions.lastTimestamp.interval) {
-        clearInterval(userInteractions.lastTimestamp.interval);
-        userInteractions.lastTimestamp.interval = null;
+    if (userInteractions.afkTime.interval) {
+        clearInterval(userInteractions.afkTime.interval);
+        userInteractions.afkTime.interval = null;
     }
 
     window.addEventListener("mousemove", lastTimestampUpdate, true);
-    userInteractions.lastTimestamp.value = moment().valueOf();
-    userInteractions.lastTimestamp.interval = setInterval(intervalTimestamp, 1000);
+    userInteractions.afkTime.value = moment().valueOf();
+    userInteractions.afkTime.interval = setInterval(intervalTimestamp, 1000);
 
 };
 
-export function stopLastTimestamp() {
+// Stop
+export function stopUserAfk() {
 
     window.removeEventListener("mousemove", lastTimestampUpdate, true);
-    if (userInteractions.lastTimestamp.interval) {
-        clearInterval(userInteractions.lastTimestamp.interval);
-        userInteractions.lastTimestamp.interval = null;
+    if (userInteractions.afkTime.interval) {
+        clearInterval(userInteractions.afkTime.interval);
+        userInteractions.afkTime.interval = null;
     }
 
-    userInteractions.lastTimestamp.value = null;
+    userInteractions.afkTime.value = null;
 
 };
 
