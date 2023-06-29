@@ -155,6 +155,7 @@ function Client() {
     initMatrix.roomsInput.emit(cons.events.roomsInput.ATTACHMENT_SET, file);
   }
 
+  resizeWindowChecker();
   return (
     <div
       ref={navWrapperRef}

@@ -4,9 +4,13 @@ export function checkVisible(elm) {
     return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
 }
 
-export function resizeWindowChecker() {
-    const roomView = document.querySelector('.room-view');
-    if (roomView) {
-        console.log(roomView.offsetWidth);
-    }
+export function resizeWindowChecker(timeout = 500) {
+    setTimeout(() => {
+        const roomView = document.querySelector('.room-view');
+        if (roomView) {
+
+            console.log(roomView.offsetWidth);
+
+        }
+    }, timeout);
 }
