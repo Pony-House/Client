@@ -13,25 +13,27 @@ export function resizeWindowChecker(timeout = 500) {
     setTimeout(() => {
 
         // Insert Style into head
-        if (!head) head = document.head || document.getElementsByTagName('head')[0];
-        if (head) {
+        if (!resizePlace) {
+            if (!head) head = document.head || document.getElementsByTagName('head')[0];
+            if (head) {
 
-            // Exist DOM
-            const resizePlaceDOM = head.querySelector('#resize-place');
+                // Exist DOM
+                const resizePlaceDOM = head.querySelector('#resize-place');
 
-            // Create One
-            if (!resizePlaceDOM) {
-                resizePlace = document.createElement('style');
-                resizePlace.id = 'resize-place';
-                head.appendChild(resizePlace);
-            }
+                // Create One
+                if (!resizePlaceDOM) {
+                    resizePlace = document.createElement('style');
+                    resizePlace.id = 'resize-place';
+                    head.appendChild(resizePlace);
+                }
 
-            // Update Value
-            else {
-                resizePlace = resizePlaceDOM;
-            }
+                // Update Value
+                else {
+                    resizePlace = resizePlaceDOM;
+                }
 
-        } else { setTimeout(() => resizeWindowChecker(), 1); }
+            } else { setTimeout(() => resizeWindowChecker(), 1); }
+        }
 
         // Room View
         const roomView = document.querySelector('.room-view');
