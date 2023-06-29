@@ -835,12 +835,9 @@ a {
 }
 
 /* Code Editor */
-.hljs-base {
+.hljs {
   white-space: break-spaces;
-
-  .hljs {
-    overflow-y: auto;
-    max-height: 300px;
-    padding: 14px !important;
-  }
+  overflow-y: auto;
+  max-height: 300px;
+  padding: 14px !important;
 }

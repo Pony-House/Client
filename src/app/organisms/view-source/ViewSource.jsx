@@ -18,7 +18,7 @@ function ViewSourceBlock({ title, json, className }) {
     <div className={`card ${className}`}>
       <ul className="list-group list-group-flush">
         <li className="list-group-item very-small text-gray noselect">{title}</li>
-        <pre className='hljs-base'>
+        <pre>
           <code className='language-json bg-bg3'>
             {JSON.stringify(json, null, 2)}
           </code>
