@@ -60,7 +60,6 @@
     "react-dnd-html5-backend": "16.0.1",
     "react-dom": "18.2.0",
     "react-google-recaptcha": "3.1.0",
-    "react-modal": "3.16.1",
     "sanitize-html": "2.10.0",
     "tippy.js": "6.3.7",
     "twemoji": "14.0.2",
