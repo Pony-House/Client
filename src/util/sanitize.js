@@ -110,6 +110,7 @@ export function sanitizeCustomHtml(matrixClient, body) {
     allowedSchemesAppliedToAttributes: ['href'],
     allowProtocolRelative: false,
     allowedClasses: {
+      pre: ['hljs-base'],
       code: ['language-*', 'hljs'],
       span: ['hljs-*'],
     },

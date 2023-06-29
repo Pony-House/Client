@@ -833,3 +833,11 @@ a {
     }
   }
 }
+
+/* Code Editor */
+.hljs {
+  overflow-y: auto;
+  max-height: 300px;
+  padding: 14px !important;
+  white-space: break-spaces;
+}
