@@ -11,7 +11,10 @@ import PopupWindow from '../../molecules/popup-window/PopupWindow';
 function ViewSourceBlock({ title, json, className }) {
 
   useEffect(() => {
-    hljs.highlightAll();
+    document.querySelectorAll('.insert-hljs').forEach((el) => {
+      hljs.highlightElement(el);
+      el.classList.remove('insert-hljs');
+    });
   }, []);
 
   return (
@@ -19,7 +22,7 @@ function ViewSourceBlock({ title, json, className }) {
       <ul className="list-group list-group-flush">
         <li className="list-group-item very-small text-gray noselect">{title}</li>
         <pre>
-          <code className='language-json bg-bg3'>
+          <code className='insert-hljs language-json bg-bg3'>
             {JSON.stringify(json, null, 2)}
           </code>
         </pre>
