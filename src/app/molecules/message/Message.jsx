@@ -3,6 +3,8 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
+import hljs from 'highlight.js';
+import { hljsFixer } from '../../../util/tools';
 import { twemojify } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
@@ -195,6 +197,28 @@ const MessageBody = React.memo(({
   isEdited,
   msgType,
 }) => {
+
+  const messageBody = useRef(null);
+
+  useEffect(() => {
+    if (messageBody.current) {
+
+      const msgBody = messageBody.current;
+
+      msgBody.querySelectorAll('pre code').forEach((el) => {
+        if (!el.classList.contains('hljs')) {
+
+          hljs.highlightElement(el);
+          el.classList.add('chatbox-size-fix');
+
+          hljsFixer(el);
+
+        }
+      });
+
+    }
+  });
+
   // if body is not string it is a React element.
   if (typeof body !== 'string') return <div className="message__body">{body}</div>;
 
@@ -244,7 +268,9 @@ const MessageBody = React.memo(({
   if (!isCustomHTML) {
     // If this is a plaintext message, wrap it in a <p> element (automatically applying
     // white-space: pre-wrap) in order to preserve newlines
-    content = (<p className="m-0">{content}</p>);
+    content = (<p ref={messageBody} className="m-0">{content}</p>);
+  } else {
+    content = (<span ref={messageBody} className="custom-html">{content}</span>);
   }
 
   return (

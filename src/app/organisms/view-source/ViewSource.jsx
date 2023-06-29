@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import hljs from 'highlight.js';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
+import { hljsFixer } from '../../../util/tools';
 
 import PopupWindow from '../../molecules/popup-window/PopupWindow';
 
@@ -14,6 +15,7 @@ function ViewSourceBlock({ title, json, className }) {
     document.querySelectorAll('.insert-hljs').forEach((el) => {
       hljs.highlightElement(el);
       el.classList.remove('insert-hljs');
+      hljsFixer(el);
     });
   }, []);
 

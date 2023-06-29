@@ -8,6 +8,10 @@ export function checkVisible(elm) {
     return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
 }
 
+export function hljsFixer(element) {
+
+};
+
 // Check Resize css Fixer
 export function resizeWindowChecker(timeout = 500) {
     setTimeout(() => {
