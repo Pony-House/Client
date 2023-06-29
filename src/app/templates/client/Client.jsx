@@ -19,6 +19,7 @@ import navigation from '../../../client/state/navigation';
 import cons from '../../../client/state/cons';
 import DragDrop from '../../organisms/drag-drop/DragDrop';
 import Alert from './Alert';
+import { resizeWindowChecker } from '../../../util/tools';
 
 function Client() {
   const [isLoading, changeLoading] = useState(true);
@@ -39,7 +40,9 @@ function Client() {
 
   useEffect(() => {
     navigation.on(cons.events.navigation.SELECTED_ROOM_MODE, onRoomModeSelected);
+    window.addEventListener('resize', resizeWindowChecker, true);
     return (() => {
+      window.removeEventListener('resize', resizeWindowChecker, true);
       navigation.removeListener(cons.events.navigation.SELECTED_ROOM_MODE, onRoomModeSelected);
     });
   }, []);

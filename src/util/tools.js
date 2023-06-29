@@ -3,3 +3,10 @@ export function checkVisible(elm) {
     const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
     return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
 }
+
+export function resizeWindowChecker() {
+    const roomView = document.querySelector('.room-view');
+    if (roomView) {
+        console.log(roomView.offsetWidth);
+    }
+}
