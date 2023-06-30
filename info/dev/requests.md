@@ -85,6 +85,11 @@ Made by Me
 
     protocols:
 
+    Validador de DNS
+
+    Twitter: (https://twitter.com)
+    twitter://
+
     Bitcoin: (https://bitcoin.org/)
     bitcoin://
 
