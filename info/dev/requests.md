@@ -47,6 +47,8 @@ Made by Me
 
     =======================================================
 
+    --> Ao passar o mouse em cima de um emoji ou figurinha, exibir informação.
+
     --> Expandir o tamanho da tela do visualizador de vídeo
     --> Fazer um botão para expandir a lista do código
     --> Resolver uma falha que acontece quando o modo subcategorias mostram as salas dar uma falha de design.
