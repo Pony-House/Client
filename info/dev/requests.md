@@ -47,6 +47,7 @@ Made by Me
 
     =======================================================
 
+    --> Confiador de URL
     --> Ao passar o mouse em cima de um emoji ou figurinha, exibir informação.
 
     --> Expandir o tamanho da tela do visualizador de vídeo
