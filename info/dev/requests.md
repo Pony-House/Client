@@ -47,6 +47,8 @@ Made by Me
 
     =======================================================
 
+    --> Resolver uma falha que acontece quando o modo subcategorias mostram as salas dar uma falha de design.
+
     --> Depois de um determinado tempo de inatividade, o usuário que estiver com status online vai trocar para Afk.
     --> Se o usuário colocar o status afk propositalmente, apenas o presence vai definir o afk value para questões de privacidade do usuário.
     --> Status ocupado não pode enviar notificação
