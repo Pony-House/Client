@@ -46,8 +46,6 @@ Made by Me
 
     =======================================================
 
-    --> Sistema de categoria de subspace ainda está com defeito. precisa colocar um limite de tamanho de texto para corrigir isso.
-
     --> Galeria de gifs e memes
     --> Enviar gravação de voz
     --> Adicionar opção de colocar um ícone do lado do status (Com compatibilidade com emojis)
