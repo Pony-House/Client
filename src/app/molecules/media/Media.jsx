@@ -185,9 +185,19 @@ function Image({
 
                   pswp.on('uiRegister', () => {
                     pswp.ui.registerElement({
+                      name: 'new-window-button',
+                      ariaLabel: 'Open Url',
+                      order: 9,
+                      isButton: true,
+                      html: '<i class="fa-solid fa-arrow-up-right-from-square pswp__icn" height="32" width="32"></i>',
+                      onClick: () => {
+                        window.open(url, '_blank').focus();
+                      }
+                    });
+                    pswp.ui.registerElement({
                       name: 'download-button',
                       ariaLabel: 'Download Image',
-                      order: 9,
+                      order: 10,
                       isButton: true,
                       html: '<i class="fa-solid fa-floppy-disk pswp__icn" height="32" width="32"></i>',
                       onClick: () => {
