@@ -53,9 +53,7 @@ Made by Me
 
     --> Confiador de URL
 
-    --> Expandir o tamanho da tela do visualizador de vídeo
     --> Fazer um botão para expandir a lista do código
-    --> Resolver uma falha que acontece quando o modo subcategorias mostram as salas dar uma falha de design.
 
     --> Depois de um determinado tempo de inatividade, o usuário que estiver com status online vai trocar para Afk.
     --> Se o usuário colocar o status afk propositalmente, apenas o presence vai definir o afk value para questões de privacidade do usuário.

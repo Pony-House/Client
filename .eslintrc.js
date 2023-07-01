@@ -38,6 +38,7 @@ module.exports = {
     'consistent-return': 0,
     "no-shadow": "off",
 
+    'jsx-a11y/media-has-caption': 0,
     'jsx-a11y/anchor-is-valid': 0,
     'jsx-a11y/click-events-have-key-events': 0,
     'jsx-a11y/no-static-element-interactions': 0,

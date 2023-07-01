@@ -309,7 +309,6 @@ function Audio({
         {url === null && isLoading && <Spinner size="small" />}
         {url === null && !isLoading && <IconButton onClick={handlePlayAudio} tooltip="Play audio" fa="fa-solid fa-circle-play" />}
         {url !== null && (
-          /* eslint-disable-next-line jsx-a11y/media-has-caption */
           <audio autoPlay controls>
             <source src={url} type={getBlobSafeMimeType(type)} />
           </audio>
@@ -363,26 +362,35 @@ function Video({
   };
 
   return (
-    <div className="file-container">
-      <FileHeader name={name} link={file !== null ? url : url || link} type={type} external />
-      <div className="video-container">
-        {url === null ? (
-          <>
-            {!isLoading && <IconButton onClick={handlePlayVideo} tooltip="Play video" fa="fa-solid fa-circle-play" />}
-            {blurhash && blur && <BlurhashCanvas hash={blurhash} punch={1} />}
-            {thumbUrl !== null && (
-              <img style={{ display: blur ? 'none' : 'unset' }} src={thumbUrl} onLoad={() => setBlur(false)} alt={name} />
-            )}
-            {isLoading && <Spinner size="small" />}
-          </>
-        ) : (
-          /* eslint-disable-next-line jsx-a11y/media-has-caption */
-          <video autoPlay controls poster={thumbUrl}>
-            <source src={url} type={getBlobSafeMimeType(type)} />
-          </video>
-        )}
+    url === null ? (
+      <div className="file-container">
+        <FileHeader name={name} link={file !== null ? url : url || link} type={type} external />
+        <div className="video-container">
+
+          {!isLoading && <IconButton onClick={handlePlayVideo} tooltip="Play video" fa="fa-solid fa-circle-play" />}
+          {blurhash && blur && <BlurhashCanvas hash={blurhash} punch={1} />}
+          {thumbUrl !== null && (
+            <img style={{ display: blur ? 'none' : 'unset' }} src={thumbUrl} onLoad={() => setBlur(false)} alt={name} />
+          )}
+          {isLoading && <Spinner size="small" />}
+
+        </div>
       </div>
-    </div>
+    ) : (
+
+      <div className="file-container file-open">
+        <FileHeader name={name} link={file !== null ? url : url || link} type={type} external />
+        <div className="video-container">
+
+          <div class="ratio ratio-16x9 video-base">
+            <video autoPlay controls poster={thumbUrl}>
+              <source src={url} type={getBlobSafeMimeType(type)} />
+            </video>
+          </div>
+
+        </div>
+      </div>
+    )
   );
 }
 Video.defaultProps = {

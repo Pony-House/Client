@@ -27,6 +27,13 @@
   white-space: initial;
 }
 
+.file-container.file-open {
+  max-width: 800px;
+  .video-base {
+    max-width: 800px;
+  }
+}
+
 .sticker-container {
   display: inline-flex;
   max-width: 170px;
