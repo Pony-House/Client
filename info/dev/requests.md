@@ -52,7 +52,6 @@ Made by Me
     --> Adicionar opção de colocar um ícone do lado do status (Com compatibilidade com emojis)
 
     --> Confiador de URL
-    --> Ao passar o mouse em cima de um emoji ou figurinha, exibir informação.
 
     --> Expandir o tamanho da tela do visualizador de vídeo
     --> Fazer um botão para expandir a lista do código
@@ -63,7 +62,6 @@ Made by Me
     --> Status ocupado não pode enviar notificação
     --> Criar sistema de alterar o tamanho da fonte do aplicativo
     --> Script de alerta bugou de novo
-    --> Abrir imagem em anexo em uma nova guia
 
     --> Marcar mensagens como lidas quando a pessoa abre o chat de conversa. (aisa - 1)
     --> Ajeitar o ícone das configurações do chat quando não é um avatar
