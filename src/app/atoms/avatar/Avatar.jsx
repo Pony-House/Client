@@ -11,7 +11,7 @@ import { avatarInitials } from '../../../util/common';
 import { getFileContentType } from '../../../util/fileMime';
 
 const Avatar = React.forwardRef(({
-  text, bgColor, iconSrc, faSrc, iconColor, imageSrc, size, className, imgClass, imageAnimSrc, isDefaultImage
+  text, bgColor, iconSrc, faSrc, iconColor, imageSrc, size, className, imgClass, imageAnimSrc, isDefaultImage, animParentsCount
 }, ref) => {
   let textSize = 's1';
   if (size === 'large') textSize = 'h1';
@@ -56,11 +56,16 @@ const Avatar = React.forwardRef(({
 
                         if (data.type[1] === 'gif') {
 
-                          e.target.parentNode.parentNode.parentNode.parentNode.addEventListener('mouseover', () => {
+                          let tinyNode = e.target;
+                          for (let i = 0; i < animParentsCount; i++) {
+                            tinyNode = tinyNode.parentNode;
+                          }
+
+                          tinyNode.addEventListener('mouseover', () => {
                             e.target.src = imageAnimSrc;
                           }, false);
 
-                          e.target.parentNode.parentNode.parentNode.parentNode.addEventListener('mouseout', () => {
+                          tinyNode.addEventListener('mouseout', () => {
                             e.target.src = imageSrc;
                           }, false);
 
@@ -113,6 +118,7 @@ const Avatar = React.forwardRef(({
 });
 
 Avatar.defaultProps = {
+  animParentsCount: 4,
   isDefaultImage: false,
   imageAnimSrc: null,
   imgClass: 'img-fluid',
@@ -127,6 +133,7 @@ Avatar.defaultProps = {
 };
 
 Avatar.propTypes = {
+  animParentsCount: PropTypes.number,
   isDefaultImage: PropTypes.bool,
   imageAnimSrc: PropTypes.string,
   text: PropTypes.string,
