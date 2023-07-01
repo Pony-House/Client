@@ -59,7 +59,6 @@ Made by Me
     --> Se o usuário colocar o status afk propositalmente, apenas o presence vai definir o afk value para questões de privacidade do usuário.
     --> Status ocupado não pode enviar notificação
     --> Criar sistema de alterar o tamanho da fonte do aplicativo
-    --> Script de alerta bugou de novo
 
     --> Marcar mensagens como lidas quando a pessoa abre o chat de conversa. (aisa - 1)
     --> Ajeitar o ícone das configurações do chat quando não é um avatar
