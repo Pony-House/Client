@@ -296,7 +296,7 @@ a {
 /* Fix Emoji Size */
 .emoji-size-fix img.emoji,
 .message-body.emoji-size-fix [data-mx-emoticon] {
-  max-height: 21px !important;
+  max-height: 20px !important;
 }
 
 .emoji-size-fix-2 img.emoji,
@@ -679,6 +679,13 @@ a {
 }
 
 /* Room Button */
+
+.category-button {
+  .space-buttons {
+    top: 1px;
+    position: relative;
+  }
+}
 
 .category-button:hover span,
 .category-button:hover i,

@@ -5,3 +5,5 @@
 - OLD DragDrop removed.
 - OLD RawModal removed.
 - Drag drop file fixed.
+- Emoji limite size fix
+- Some parts from the space category css is fixed
