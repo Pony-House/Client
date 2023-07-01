@@ -378,18 +378,22 @@ function Video({
       </div>
     ) : (
 
-      <div className="file-container file-open">
-        <FileHeader name={name} link={file !== null ? url : url || link} type={type} external />
-        <div className="video-container">
+      <Tooltip
+        placement='top'
+        content={<Text variant="b2">{name}</Text>}
+      >
+        <div className="file-container file-open">
+          <div className="video-container">
 
-          <div class="ratio ratio-16x9 video-base">
-            <video autoPlay controls poster={thumbUrl}>
-              <source src={url} type={getBlobSafeMimeType(type)} />
-            </video>
+            <div class="ratio ratio-16x9 video-base">
+              <video autoPlay controls poster={thumbUrl}>
+                <source src={url} type={getBlobSafeMimeType(type)} />
+              </video>
+            </div>
+
           </div>
-
         </div>
-      </div>
+      </Tooltip>
     )
   );
 }

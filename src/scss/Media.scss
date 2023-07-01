@@ -91,8 +91,14 @@
   }
   button {
     position: relative;
-    left: 166px;
-    margin-left: -45px;
+    left: 185px;
+    margin-left: -68px;
+
+    i,
+    i:before,
+    i:after {
+      font-size: 31pt;
+    }
   }
 }
 .audio-container {
