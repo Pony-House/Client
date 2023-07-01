@@ -42,7 +42,6 @@ Made by Me
 
     Criar i18
 
-    https://staffordwilliams.com/blog/2023/03/06/ionic-capacitor-vite/
     https://github.com/electron-vite/electron-vite-react
 
     =======================================================
