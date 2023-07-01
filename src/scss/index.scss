@@ -680,13 +680,76 @@ a {
 
 /* Room Button */
 
-.category-button {
-  .space-buttons {
-    top: 1px;
-    position: relative;
+.space-buttons {
+  .menu {
+    width: 77px;
+  }
+
+  .text > button {
+    width: 156px;
+  }
+
+  @media (max-width: 1124px) {
+    .text > button {
+      width: 116px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .text > button {
+      width: 416px;
+    }
+  }
+
+  @media (max-width: 607px) {
+    .text > button {
+      width: 380px;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .text > button {
+      width: 350px;
+    }
+  }
+
+  @media (max-width: 545px) {
+    .text > button {
+      width: 300px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .text > button {
+      width: 250px;
+    }
+  }
+
+  @media (max-width: 445px) {
+    .text > button {
+      width: 200px;
+    }
+  }
+
+  @media (max-width: 390px) {
+    .text > button {
+      width: 150px;
+    }
+  }
+  @media (max-width: 350px) {
+    .text > button {
+      width: 100px;
+    }
   }
 }
 
+.category-button span,
+.category-button button {
+  color: var(--tc-surface-low);
+}
+
+.category-button:hover span,
+.category-button:hover button,
 .category-button:hover span,
 .category-button:hover i,
 .room-selector:hover p,

@@ -188,25 +188,37 @@ function RoomsCategory({
 
   }
 
+  const buttonData = (
+    <button className="py-2 text-truncate" onClick={() => setIsOpen(!isOpen)} type="button">
+      <RawIcon fa={isOpen ? "fa-solid fa-chevron-down" : "fa-solid fa-chevron-right"} size="extra-small" />
+      <span className="text-gray very-small text-uppercase text-truncate ms-2" >{name}</span>
+    </button>
+  );
+
   // Complete
   return (
     <div className="p-3 pe-2">
       {!hideHeader && (
-        <div className='category-button'>
+        <table className='category-button space-buttons w-100 m-0 p-0'>
+          <tbody>
+            <tr>
 
-          <button className="py-2" onClick={() => setIsOpen(!isOpen)} type="button">
-            <RawIcon fa={isOpen ? "fa-solid fa-chevron-down" : "fa-solid fa-chevron-right"} size="extra-small" />
-            <span className="text-gray very-small text-uppercase ms-2" >{name}</span>
-          </button>
+              {!spaceId ? (
+                <td colSpan="2" className='text-truncate'>{buttonData}</td>
+              ) : (
+                <td className='text-truncate text'>{buttonData}</td>
+              )}
 
-          {spaceId && (
-            <span className='float-end d-inline-block space-buttons'>
-              <IconButton onClick={openSpaceOptions} tooltip="Space options" fa="bi bi-three-dots" size="extra-small" />
-              <IconButton onClick={openHomeSpaceOptions} tooltip="Add rooms/spaces" fa="fa-solid fa-plus" size="extra-small" />
-            </span>
-          )}
+              {spaceId && (
+                <td className='menu'>
+                  <IconButton onClick={openSpaceOptions} tooltip="Space options" fa="bi bi-three-dots" size="extra-small" />
+                  <IconButton onClick={openHomeSpaceOptions} tooltip="Add rooms/spaces" fa="fa-solid fa-plus" size="extra-small" />
+                </td>
+              )}
 
-        </div>
+            </tr>
+          </tbody>
+        </table>
       )}
       {(isOpen || hideHeader) && rooms}
     </div>

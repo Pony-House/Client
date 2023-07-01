@@ -1,13 +1,14 @@
-- SCSS files migration
+- SCSS files migration.
 - src/start.jsx is the main start app now. src/index.jsx is to start the app using the Vite.
 - New resizeWindowChecker added.
 - hljs size box issues fixed.
 - OLD DragDrop removed.
 - OLD RawModal removed.
 - Drag drop file fixed.
-- Emoji limite size fix
-- Some parts from the space category css is fixed
+- Emoji limite size fix.
+- Some parts from the space category css is fixed.
 - No Room messages view fixed. Now the message will not appear if the space has at least a category or room.
-- Open Url to image viewer added
-- Video media - CSS and HTML update
-- global.alert - function fixed
+- Open Url to image viewer added.
+- Video and audio media - CSS and HTML update.
+- global.alert - function fixed.
+- room category button issue size fixed.
