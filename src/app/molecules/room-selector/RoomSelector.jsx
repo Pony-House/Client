@@ -49,7 +49,7 @@ RoomSelectorWrapper.propTypes = {
 };
 
 function RoomSelector({
-  name, parentName, roomId, imageSrc, imageAnimSrc, iconSrc,
+  name, parentName, roomId, imageSrc, imageAnimSrc, animParentsCount, iconSrc,
   isSelected, isMuted, isUnread, notificationCount, isAlert,
   options, onClick, onContextMenu, isProfile, notSpace,
 }) {
@@ -64,6 +64,7 @@ function RoomSelector({
             text={name}
             bgColor={colorMXID(roomId)}
             imageSrc={imageSrc}
+            animParentsCount={animParentsCount}
             imageAnimSrc={imageAnimSrc}
             iconColor="var(--ic-surface-low)"
             iconSrc={!isProfile ? iconSrc : null}
@@ -95,6 +96,7 @@ function RoomSelector({
   );
 }
 RoomSelector.defaultProps = {
+  animParentsCount: 4,
   notSpace: false,
   isProfile: false,
   parentName: null,
@@ -107,6 +109,7 @@ RoomSelector.defaultProps = {
   onContextMenu: null,
 };
 RoomSelector.propTypes = {
+  animParentsCount: PropTypes.number,
   notSpace: PropTypes.bool,
   isProfile: PropTypes.bool,
   name: PropTypes.string.isRequired,

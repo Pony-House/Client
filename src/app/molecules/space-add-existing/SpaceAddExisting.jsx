@@ -150,6 +150,7 @@ function SpaceAddExistingContent({ roomId }) {
                 name={room.name}
                 parentName={parents}
                 roomId={rId}
+                animParentsCount={2}
                 imageSrc={directs.has(rId) ? imageSrc : null}
                 imageAnimSrc={directs.has(rId) ? imageAnimSrc : null}
                 iconSrc={
