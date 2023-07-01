@@ -168,10 +168,14 @@ function Search() {
 
   const noti = initMatrix.notifications;
   const renderRoomSelector = (item) => {
+
     let imageSrc = null;
+    let imageAnimSrc = null;
     let iconSrc = null;
+
     if (item.type === 'direct') {
       imageSrc = item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
+      imageAnimSrc = item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) || null;
     } else {
       iconSrc = joinRuleToIconSrc(item.room.getJoinRule(), item.type === 'space');
     }
@@ -182,6 +186,7 @@ function Search() {
         name={item.name}
         parentName={item.parents}
         roomId={item.roomId}
+        imageAnimSrc={imageAnimSrc}
         imageSrc={imageSrc}
         iconSrc={iconSrc}
         isUnread={noti.hasNoti(item.roomId)}
@@ -190,6 +195,7 @@ function Search() {
         onClick={() => openItem(item.roomId, item.type)}
       />
     );
+
   };
 
   return (

@@ -43,6 +43,9 @@ function Selector({
   let imageSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
   if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
 
+  let imageAnimSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) || null;
+  if (imageAnimSrc === null) imageAnimSrc = room.getAvatarUrl(mx.baseUrl) || null;
+
   // Is Muted
   const isMuted = noti.getNotiType(roomId) === cons.notifs.MUTE;
 
@@ -89,6 +92,7 @@ function Selector({
       isProfile={isProfile}
       name={room.name}
       roomId={roomId}
+      imageAnimSrc={isDM || notSpace ? imageAnimSrc : null}
       imageSrc={isDM || notSpace ? imageSrc : null}
       iconSrc={isDM ? null : joinRuleToIconSrc(room.getJoinRule(), room.isSpaceRoom())}
       isSelected={navigation.selectedRoomId === roomId}

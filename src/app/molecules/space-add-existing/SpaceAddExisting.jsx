@@ -127,9 +127,14 @@ function SpaceAddExistingContent({ roomId }) {
         {searchIds?.length === 0 && <Text>No results found</Text>}
         {
           (searchIds || allRoomIds).map((rId) => {
+
             const room = mx.getRoom(rId);
+
             let imageSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
             if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
+
+            let imageAnimSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) || null;
+            if (imageAnimSrc === null) imageAnimSrc = room.getAvatarUrl(mx.baseUrl) || null;
 
             const parentSet = roomIdToParents.get(rId);
             const parentNames = parentSet
@@ -146,6 +151,7 @@ function SpaceAddExistingContent({ roomId }) {
                 parentName={parents}
                 roomId={rId}
                 imageSrc={directs.has(rId) ? imageSrc : null}
+                imageAnimSrc={directs.has(rId) ? imageAnimSrc : null}
                 iconSrc={
                   directs.has(rId)
                     ? null
