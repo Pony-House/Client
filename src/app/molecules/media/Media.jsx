@@ -6,6 +6,7 @@ import encrypt from 'browser-encrypt-attachment';
 import FileSaver from 'file-saver';
 import PhotoSwipeLightbox from 'photoswipe';
 import { BlurhashCanvas } from 'react-blurhash';
+import Tooltip from '../../atoms/tooltip/Tooltip';
 import Text from '../../atoms/text/Text';
 import IconButton from '../../atoms/button/IconButton';
 import Spinner from '../../atoms/spinner/Spinner';
@@ -250,9 +251,14 @@ function Sticker({
   }, []);
 
   return (
-    <div className="sticker-container" style={{ height: width !== null ? getNativeHeight(width, height, 170) : 'unset' }}>
-      {url !== null && <img src={url || link} title={name} alt={name} />}
-    </div>
+    <Tooltip
+      placement='top'
+      content={<Text variant="b2">{name}</Text>}
+    >
+      <div className="sticker-container" style={{ height: width !== null ? getNativeHeight(width, height, 170) : 'unset' }}>
+        {url !== null && <img src={url || link} alt={name} />}
+      </div>
+    </Tooltip>
   );
 }
 Sticker.defaultProps = {
