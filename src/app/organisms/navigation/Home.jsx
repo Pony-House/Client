@@ -89,11 +89,14 @@ function Home({ spaceId }) {
           roomIds.length !== 0 && (
             <RoomsCategory notSpace={roomSettings.notSpace} name="Rooms" roomIds={roomIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
           )
-        ) ||
-        <center className='p-3 small text-warning'>
-          <div className='mb-3'>No rooms were found. Please enable some room.</div>
-          {spaceId && <Button variant='primary' onClick={() => { openSpaceManage(spaceId); }}>Manage rooms</Button>}
-        </center>
+        ) || (!categories &&
+          (
+            <center className='p-3 small text-warning'>
+              <div className='mb-3'>No rooms were found. Please enable some room.</div>
+              {spaceId && <Button variant='primary' onClick={() => { openSpaceManage(spaceId); }}>Manage rooms</Button>}
+            </center>
+          )
+        )
       }
 
       {directIds.length !== 0 && (
