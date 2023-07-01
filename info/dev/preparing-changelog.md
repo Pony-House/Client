@@ -10,3 +10,4 @@
 - No Room messages view fixed. Now the message will not appear if the space has at least a category or room.
 - Open Url to image viewer added
 - Video media - CSS and HTML update
+- global.alert - function fixed
