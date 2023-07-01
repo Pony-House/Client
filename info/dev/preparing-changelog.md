@@ -8,3 +8,4 @@
 - Emoji limite size fix
 - Some parts from the space category css is fixed
 - No Room messages view fixed. Now the message will not appear if the space has at least a category or room.
+- Open Url to image viewer added
