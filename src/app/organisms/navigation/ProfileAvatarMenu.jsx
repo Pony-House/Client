@@ -119,6 +119,7 @@ function ProfileAvatarMenu() {
                                 text={profile.displayName}
                                 bgColor={colorMXID(mx.getUserId())}
                                 size="normal"
+                                imageAnimSrc={profile.avatarUrl !== null ? mx.mxcUrlToHttp(profile.avatarUrl) : null}
                                 imageSrc={profile.avatarUrl !== null ? mx.mxcUrlToHttp(profile.avatarUrl, 42, 42, 'crop') : null}
                                 isDefaultImage
                             />

@@ -12,7 +12,7 @@ import { getUserStatus, updateUserStatusIcon, getPresence } from '../../../util/
 import initMatrix from '../../../client/initMatrix';
 
 function PeopleSelector({
-  avatarSrc, name, color, peopleRole, onClick, user, disableStatus
+  avatarSrc, avatarAnimSrc, name, color, peopleRole, onClick, user, disableStatus
 }) {
 
   const statusRef = React.useRef(null);
@@ -89,7 +89,7 @@ function PeopleSelector({
       type="button"
     >
 
-      <Avatar imageSrc={avatarSrc} text={name} bgColor={color} size="small" isDefaultImage />
+      <Avatar imageAnimSrc={avatarAnimSrc} imageSrc={avatarSrc} text={name} bgColor={color} size="small" isDefaultImage />
       {!disableStatus ? <i ref={statusRef} className={getUserStatus(user)} /> : ''}
 
       <div className="small people-selector__name text-start">
@@ -105,6 +105,7 @@ function PeopleSelector({
 }
 
 PeopleSelector.defaultProps = {
+  avatarAnimSrc: null,
   avatarSrc: null,
   peopleRole: null,
   user: null,
@@ -114,6 +115,7 @@ PeopleSelector.defaultProps = {
 PeopleSelector.propTypes = {
   disableStatus: PropTypes.bool,
   user: PropTypes.object,
+  avatarAnimSrc: PropTypes.string,
   avatarSrc: PropTypes.string,
   name: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,

@@ -9,13 +9,14 @@ import Text from '../../atoms/text/Text';
 import Avatar from '../../atoms/avatar/Avatar';
 
 function RoomTile({
-  avatarSrc, name, id,
+  avatarSrc, avatarAnimSrc, name, id,
   inviterName, memberCount, desc, options,
 }) {
   return (
     <div className="room-tile">
       <div className="room-tile__avatar">
         <Avatar
+          imageAnimSrc={avatarAnimSrc}
           imageSrc={avatarSrc}
           bgColor={colorMXID(id)}
           text={name}
@@ -48,6 +49,7 @@ function RoomTile({
 
 RoomTile.defaultProps = {
   avatarSrc: null,
+  avatarAnimSrc: null,
   inviterName: null,
   options: null,
   desc: null,
@@ -55,6 +57,7 @@ RoomTile.defaultProps = {
 };
 RoomTile.propTypes = {
   avatarSrc: PropTypes.string,
+  avatarAnimSrc: PropTypes.string,
   name: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   inviterName: PropTypes.string,

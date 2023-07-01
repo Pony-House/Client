@@ -10,5 +10,6 @@
 - No Room messages view fixed. Now the message will not appear if the space has at least a category or room.
 - Open Url to image viewer added.
 - Video and audio media - CSS and HTML update.
-- global.alert - function fixed.
-- room category button issue size fixed.
+- Function global.alert - function fixed.
+- Room category button issue size fixed.
+- New imageAnimSrc values added

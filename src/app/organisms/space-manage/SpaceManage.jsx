@@ -72,11 +72,19 @@ function SpaceManageItem({
   const room = mx.getRoom(roomId);
   const isJoined = !!(room?.getMyMembership() === 'join' || null);
   const name = room?.name || roomInfo.name || roomInfo.canonical_alias || roomId;
+
   let imageSrc = mx.mxcUrlToHttp(roomInfo.avatar_url, 24, 24, 'crop') || null;
   if (!imageSrc && room) {
     imageSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
     if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
   }
+
+  let imageAnimSrc = mx.mxcUrlToHttp(roomInfo.avatar_url) || null;
+  if (!imageAnimSrc && room) {
+    imageAnimSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) || null;
+    if (imageAnimSrc === null) imageAnimSrc = room.getAvatarUrl(mx.baseUrl) || null;
+  }
+
   const isDM = directs.has(roomId);
 
   const handleOpen = () => {
@@ -98,6 +106,7 @@ function SpaceManageItem({
     <Avatar
       text={name}
       bgColor={colorMXID(roomId)}
+      imageAnimSrc={isDM ? imageAnimSrc : null}
       imageSrc={isDM ? imageSrc : null}
       iconColor="var(--ic-surface-low)"
       iconSrc={
