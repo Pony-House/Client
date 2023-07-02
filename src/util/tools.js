@@ -11,17 +11,15 @@ export function checkVisible(elm) {
     return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
 }
 
-export function hljsFixer(element, where) {
-
-    const tinyEl = $(element);
+export function hljsFixer(el, where) {
 
     if (where === 'MessageBody') {
 
-        tinyEl.html(`<table class="table table-borderless align-middle m-0"><tbody><tr><td class="code-line noselect">1</td><td class="code-text">${tinyEl.html()}</tbody></table>`);
-        tinyEl.addClass('fixhl');
+        el.html(`<table class="table table-borderless align-middle m-0"><tbody><tr><td class="code-line noselect">1</td><td class="code-text">${el.html()}</tbody></table>`);
+        el.addClass('fixhl');
         let countBr = 1;
 
-        tinyEl.html(tinyEl.html().replace(/(?:\r\n|\r|\n)/g, () => {
+        el.html(el.html().replace(/(?:\r\n|\r|\n)/g, () => {
             countBr++;
             return `</td></tr><tr><td class="code-line noselect">${countBr}</td><td class="code-text">`;
         }));

@@ -213,7 +213,7 @@ const MessageBody = React.memo(({
 
       if (!el.hasClass('hljs-fix')) {
         el.addClass('hljs-fix');
-        hljsFixer(value, 'MessageBody');
+        hljsFixer(el, 'MessageBody');
       }
 
     });

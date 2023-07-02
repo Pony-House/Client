@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
+import $ from 'jquery';
 import hljs from 'highlight.js';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
@@ -12,10 +13,15 @@ import PopupWindow from '../../molecules/popup-window/PopupWindow';
 function ViewSourceBlock({ title, json, className }) {
 
   useEffect(() => {
-    document.querySelectorAll('.insert-hljs').forEach((el) => {
-      hljs.highlightElement(el);
-      el.classList.remove('insert-hljs');
+    $('.insert-hljs').each((index, element) => {
+
+      hljs.highlightElement(element);
+
+      const el = $(element);
+
+      el.removeClass('insert-hljs');
       hljsFixer(el, 'ViewSource');
+
     });
   }, []);
 
