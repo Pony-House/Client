@@ -44,7 +44,7 @@
     "flux": "4.0.4",
     "formik": "2.2.9",
     "highlight.js": "11.8.0",
-    "html-react-parser": "3.0.4",
+    "html-react-parser": "4.0.0",
     "jquery": "3.7.0",
     "katex": "0.16.4",
     "linkify-html": "4.1.1",
