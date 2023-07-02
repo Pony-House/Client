@@ -403,7 +403,9 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
         navigation.on(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
         navigation.on(cons.events.navigation.EMOJIBOARD_OPENED, onOpen);
+        $(scrollEmojisRef.current).on('scroll', onScroll);
         return () => {
+            $(scrollEmojisRef.current).off('scroll', onScroll);
             navigation.removeListener(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
             navigation.removeListener(cons.events.navigation.EMOJIBOARD_OPENED, onOpen);
         };
@@ -515,7 +517,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                     <Input onChange={handleSearchChange} forwardRef={searchRef} placeholder="Search" />
                 </div>
                 <div className="emoji-board__content__emojis">
-                    <ScrollView ref={scrollEmojisRef} onScroll={onScroll} autoHide>
+                    <ScrollView ref={scrollEmojisRef} autoHide>
                         <div onMouseMove={hoverEmoji} onContextMenu={contextEmoji} onClick={selectEmoji}>
 
                             <SearchedEmoji scrollEmojisRef={scrollEmojisRef} />

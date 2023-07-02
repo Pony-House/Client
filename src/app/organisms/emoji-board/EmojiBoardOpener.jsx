@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
+import $ from 'jquery';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import settings from '../../../client/state/settings';
@@ -17,33 +18,35 @@ function EmojiBoardOpener() {
 
   function openEmojiBoard(cords, requestEmojiCallback, dom) {
 
-    emojiBoardRef.current.setAttribute('board-type', dom);
+    const opener = $(openerRef.current);
+    $(emojiBoardRef.current).attr('board-type', dom);
 
     if (requestCallback !== null || isEmojiBoardVisible) {
       requestCallback = null;
-      if (cords.detail === 0) openerRef.current.click();
+      if (cords.detail === 0) opener.trigger('click');
       return;
     }
 
-    openerRef.current.style.transform = `translate(${cords.x}px, ${cords.y}px)`;
+    opener.css('transform', `translate(${cords.x}px, ${cords.y}px)`);
     requestCallback = requestEmojiCallback;
-    openerRef.current.click();
 
-    if (scrollEmojisRef.current) {
-      setTimeout(() => { scrollEmojisRef.current.dispatchEvent(new CustomEvent('scroll')); }, 500);
-    }
+    opener.trigger('click');
+    setTimeout(() => { $(scrollEmojisRef.current).trigger('scroll'); }, 500);
 
   }
 
   function afterEmojiBoardToggle(isVisible) {
+
     isEmojiBoardVisible = isVisible;
+
     if (isVisible) {
-      if (!settings.isTouchScreenDevice) searchRef.current.focus();
+      if (!settings.isTouchScreenDevice) $(searchRef.current).focus();
     } else {
       setTimeout(() => {
         if (!isEmojiBoardVisible) requestCallback = null;
       }, 500);
     }
+
   }
 
   function addEmoji(emoji) {
