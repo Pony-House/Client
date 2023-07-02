@@ -1,6 +1,7 @@
 
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
+import $ from 'jquery';
 import navigation from '../../../client/state/navigation';
 import cons from '../../../client/state/cons';
 import initMatrix from '../../../client/initMatrix';
@@ -26,34 +27,36 @@ function DragDrop({ children, navWrapperRef, }) {
         return !navigation.isRawModalVisible && dropZone.current && dropZone.current.classList.contains('drag-enabled');
     }
 
-    function handleDragOver(e) {
+    function handleDragOver(event) {
 
+        const e = event.originalEvent;
         if (!dragContainsFiles(e)) return;
 
         if (!navigation.selectedRoomId) {
             e.dataTransfer.dropEffect = 'none';
         } else {
-            dropZone.current.classList.add('drag-enabled');
+            $(dropZone.current).addClass('drag-enabled');
         }
 
     }
 
-    function handleDragEnter(e) {
+    function handleDragEnter(event) {
 
-        if (navigation.selectedRoomId && dragContainsFiles(e)) {
-            dropZone.current.classList.add('drag-enabled');
+        if (navigation.selectedRoomId && dragContainsFiles(event.originalEvent)) {
+            $(dropZone.current).addClass('drag-enabled');
         } else {
-            dropZone.current.classList.remove('drag-enabled');
+            $(dropZone.current).removeClass('drag-enabled');
         }
 
     }
 
     function handleDragLeave() {
-        dropZone.current.classList.remove('drag-enabled');
+        $(dropZone.current).removeClass('drag-enabled');
     }
 
-    function handleDrop(e) {
+    function handleDrop(event) {
 
+        const e = event.originalEvent;
         e.preventDefault();
         if (!dropAllowed()) return;
 
@@ -66,9 +69,26 @@ function DragDrop({ children, navWrapperRef, }) {
         const file = files[0];
         initMatrix.roomsInput.setAttachment(roomId, file);
         initMatrix.roomsInput.emit(cons.events.roomsInput.ATTACHMENT_SET, file);
-        if (dropZone.current) dropZone.current.classList.remove('drag-enabled');
+        if (dropZone.current) $(dropZone.current).removeClass('drag-enabled');
 
     }
+
+    useEffect(() => {
+
+        const clientContainer = $(navWrapperRef.current);
+
+        clientContainer.on('dragenter', handleDragEnter)
+            .on('dragover', handleDragOver)
+            .on('dragleave', handleDragLeave)
+            .on('drop', handleDrop);
+
+        return () => {
+            clientContainer.off('dragenter', handleDragEnter)
+                .off('dragover', handleDragOver)
+                .off('dragleave', handleDragLeave)
+                .off('drop', handleDrop);
+        };
+    }, [navWrapperRef]);
 
     return (
         <>
@@ -81,10 +101,6 @@ function DragDrop({ children, navWrapperRef, }) {
             <div
                 ref={navWrapperRef}
                 className="client-container"
-                onDragOver={handleDragOver}
-                onDragEnter={handleDragEnter}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
             >
                 {children}
             </div>
