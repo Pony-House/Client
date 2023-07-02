@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 let key;
 let isShift;
 let isCtrl;
@@ -42,9 +44,9 @@ const keyPressDetect = (ev) => {
 };
 
 // Shift Hold Detector
-document.addEventListener('keydown', keyPressDetect);
-document.addEventListener('keyup', keyPressDetect);
-document.addEventListener('keypress', keyPressDetect);
+$(document).on('keydown', keyPressDetect);
+$(document).on('keyup', keyPressDetect);
+$(document).on('keypress', keyPressDetect);
 
 // Shift Nuller
 export function shiftNuller(callback, isInverse = false) {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import $ from 'jquery';
 import encrypt from 'browser-encrypt-attachment';
 
 import FileSaver from 'file-saver';
@@ -168,7 +169,7 @@ function Image({
               if (!imageLoaded && event.target) {
 
                 imageLoaded = true;
-                const img = event.target;
+                const img = $(event.target);
                 const imgAction = () => {
 
                   const pswp = new PhotoSwipeLightbox({
@@ -176,8 +177,8 @@ function Image({
                       {
                         src: url,
                         alt: name,
-                        width: img.naturalWidth,
-                        height: img.naturalHeight,
+                        width: img.get(0).naturalWidth,
+                        height: img.get(0).naturalHeight,
                       },
                     ],
                     padding: { top: 40, bottom: 40, left: 100, right: 100 },
@@ -211,8 +212,8 @@ function Image({
 
                 };
 
-                img.removeEventListener('click', imgAction);
-                img.addEventListener('click', imgAction);
+                img.on('click', imgAction);
+                img.off('click', imgAction);
 
               }
 

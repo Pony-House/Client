@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import moment from 'moment-timezone';
 import initMatrix from '../client/initMatrix';
 
@@ -42,7 +43,7 @@ export function startUserAfk() {
         userInteractions.afkTime.interval = null;
     }
 
-    window.addEventListener("mousemove", lastTimestampUpdate, true);
+    $(window).on("mousemove", lastTimestampUpdate);
     userInteractions.afkTime.value = moment().valueOf();
     userInteractions.afkTime.interval = setInterval(intervalTimestamp, 1000);
 
@@ -51,7 +52,7 @@ export function startUserAfk() {
 // Stop
 export function stopUserAfk() {
 
-    window.removeEventListener("mousemove", lastTimestampUpdate, true);
+    $(window).on("mousemove", lastTimestampUpdate);
     if (userInteractions.afkTime.interval) {
         clearInterval(userInteractions.afkTime.interval);
         userInteractions.afkTime.interval = null;

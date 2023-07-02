@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 
+import $ from 'jquery';
+
 import { twemojify, TWEMOJI_BASE_URL } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
@@ -265,11 +267,11 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent }) {
   }, [roomId]);
 
   useEffect(() => {
-    if (cmd !== null) document.body.addEventListener('keydown', listenKeyboard);
+    if (cmd !== null) $('body').on('keydown', listenKeyboard);
     viewEvent.on('cmd_process', processCmd);
     asyncSearch.on(asyncSearch.RESULT_SENT, displaySuggestions);
     return () => {
-      if (cmd !== null) document.body.removeEventListener('keydown', listenKeyboard);
+      if (cmd !== null) $('body').off('keydown', listenKeyboard);
 
       viewEvent.removeListener('cmd_process', processCmd);
       asyncSearch.removeListener(asyncSearch.RESULT_SENT, displaySuggestions);

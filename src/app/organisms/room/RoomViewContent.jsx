@@ -3,6 +3,8 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
+import $ from 'jquery';
+
 import moment from 'moment-timezone';
 import { twemojify } from '../../../util/twemojify';
 
@@ -512,9 +514,9 @@ function RoomViewContent({ eventId, roomTimeline }) {
   }, [roomTimeline]);
 
   useEffect(() => {
-    document.body.addEventListener('keydown', listenKeyboard);
+    $('body').on('keydown', listenKeyboard);
     return () => {
-      document.body.removeEventListener('keydown', listenKeyboard);
+      $('body').off('keydown', listenKeyboard);
     };
   }, [listenKeyboard]);
 

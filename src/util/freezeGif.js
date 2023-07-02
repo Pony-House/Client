@@ -1,4 +1,6 @@
 /* freezeGif(e.target, 42); */
+import $ from 'jquery';
+
 export function freezeGif(img, wantedWidth) {
 
     function createElement(type, callback) {
@@ -52,7 +54,7 @@ export function freezeGif(img, wantedWidth) {
     if (img.complete) {
         freeze();
     } else {
-        img.addEventListener('load', freeze, true);
+        $(img).on('load', freeze, true);
     }
 
 };

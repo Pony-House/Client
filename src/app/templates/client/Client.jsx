@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+import $ from 'jquery';
+
 import { initHotkeys } from '../../../client/event/hotkeys';
 import { initRoomListListener } from '../../../client/event/roomList';
 
@@ -42,10 +44,10 @@ function Client() {
   useEffect(() => {
     startUserAfk();
     navigation.on(cons.events.navigation.SELECTED_ROOM_MODE, onRoomModeSelected);
-    window.addEventListener('resize', resizeWindowChecker, true);
+    $(window).on('resize', resizeWindowChecker);
     return (() => {
       stopUserAfk();
-      window.removeEventListener('resize', resizeWindowChecker, true);
+      $(window).off('resize', resizeWindowChecker);
       navigation.removeListener(cons.events.navigation.SELECTED_ROOM_MODE, onRoomModeSelected);
     });
   }, []);

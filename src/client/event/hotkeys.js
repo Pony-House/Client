@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import { openSearch, toggleRoomSettings } from '../action/navigation';
 import navigation from '../state/navigation';
 import { markAsRead } from '../action/notifications';
@@ -77,11 +78,11 @@ function listenKeyboard(event) {
 }
 
 function initHotkeys() {
-  document.body.addEventListener('keydown', listenKeyboard);
+  $('body').on('keydown', listenKeyboard);
 }
 
 function removeHotkeys() {
-  document.body.removeEventListener('keydown', listenKeyboard);
+  $('body').off('keydown', listenKeyboard);
 }
 
 export { initHotkeys, removeHotkeys };
