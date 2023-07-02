@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
+import $ from 'jquery';
 import hljs from 'highlight.js';
 import { hljsFixer } from '../../../util/tools';
 import { twemojify } from '../../../util/twemojify';
@@ -201,25 +202,21 @@ const MessageBody = React.memo(({
   const messageBody = useRef(null);
 
   useEffect(() => {
-    if (messageBody.current) {
+    $(messageBody.current).find('pre code').each((index, value) => {
 
-      const msgBody = messageBody.current;
+      const el = $(value);
 
-      msgBody.querySelectorAll('pre code').forEach((el) => {
+      if (!el.hasClass('hljs')) {
+        hljs.highlightElement(value);
+        el.addClass('chatbox-size-fix');
+      }
 
-        if (!el.classList.contains('hljs')) {
-          hljs.highlightElement(el);
-          el.classList.add('chatbox-size-fix');
-        }
+      if (!el.hasClass('hljs-fix')) {
+        el.addClass('hljs-fix');
+        hljsFixer(value, 'MessageBody');
+      }
 
-        if (!el.classList.contains('hljs-fix')) {
-          el.classList.add('hljs-fix');
-          hljsFixer(el, 'MessageBody');
-        }
-
-      });
-
-    }
+    });
   });
 
   // if body is not string it is a React element.

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
+import $ from 'jquery';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 import { emojiGroups, emojis, addDefaultEmojisToList, resetEmojisList, addEmojiToList } from './emoji';
@@ -128,15 +129,16 @@ function SearchedEmoji({ scrollEmojisRef }) {
 
     // Set Search
     function handleSearchEmoji(resultEmojis, term) {
+
         if (term === '' || resultEmojis.length === 0) {
             if (term === '') setSearchedEmojis(null);
             else setSearchedEmojis({ emojis: [] });
             return;
         }
+
         setSearchedEmojis({ emojis: resultEmojis });
-        if (scrollEmojisRef.current) {
-            setTimeout(() => { scrollEmojisRef.current.dispatchEvent(new CustomEvent('scroll')); }, 500);
-        }
+        setTimeout(() => { $(scrollEmojisRef.current).trigger('scroll'); }, 500);
+
     }
 
     // Effect
@@ -177,7 +179,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     const getFunctionEmoji = () => {
 
         if (emojiBoardRef.current) {
-            const boardType = emojiBoardRef.current.getAttribute('board-type');
+            const boardType = $(emojiBoardRef.current).attr('board-type');
             if (boardType === 'emoji') {
                 ROW_EMOJIS_COUNT = 7;
                 return 'getEmojis';
@@ -197,8 +199,6 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     function onScroll(event) {
 
         // Read Data
-        // if (tinyTimeoutEmoji) clearTimeout(tinyTimeoutEmoji);
-
         for (let i = 0; i < tinyTimeoutCollection.length; i++) {
             if (tinyTimeoutCollection.length > 0) {
                 const tinyTimeoutLoad = tinyTimeoutCollection.shift();
@@ -206,63 +206,62 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             }
         }
 
-        // tinyTimeoutEmoji = 
+        const target = $(event.target.childNodes[0]).find('.emoji-row');
+        const existEmojiBoard = ($('#emoji-board').length > 0);
 
-        // setTimeout(() => {
+        if (existEmojiBoard) {
+            target.each((index, element) => {
 
-        const target = event.target.childNodes[0].querySelectorAll('.emoji-row');
-        const elements = Array.from(target);
-
-        if (document.getElementById('emoji-board')) {
-            elements.map(emojiGroup => {
-
+                const emojiGroup = $(element);
                 tinyTimeoutCollection.push(setTimeout(() => {
 
                     // Is Visible
-                    if (document.getElementById('emoji-board') && checkVisible(emojiGroup)) {
-                        emojiGroup.classList.remove('hide-emoji');
+                    if (existEmojiBoard && checkVisible(element)) {
+                        emojiGroup.removeClass('hide-emoji');
                     }
 
                 }, 500));
 
-                return emojiGroup;
-
             });
         }
-
-        // }, 500);
-
 
     }
 
     function isTargetNotEmoji(target) {
-        return target.classList.contains('emoji') === false;
+        return target.hasClass('emoji') === false;
     }
+
     function getEmojiDataFromTarget(target) {
-        const unicode = target.getAttribute('unicode');
-        const hexcode = target.getAttribute('hexcode');
-        const mxc = target.getAttribute('data-mx-emoticon');
-        let shortcodes = target.getAttribute('shortcodes');
+
+        const unicode = target.attr('unicode');
+        const hexcode = target.attr('hexcode');
+        const mxc = target.attr('data-mx-emoticon');
+        let shortcodes = target.attr('shortcodes');
+
         if (typeof shortcodes === 'undefined') shortcodes = undefined;
         else shortcodes = shortcodes.split(',');
+
         return {
             unicode,
             hexcode,
             shortcodes,
             mxc,
         };
+
     }
 
     function selectEmoji(e) {
 
-        if (isTargetNotEmoji(e.target)) return;
+        const el = $(e.target);
+        if (isTargetNotEmoji(el)) return;
 
-        const emoji = getEmojiDataFromTarget(e.target);
+        const emoji = getEmojiDataFromTarget(el);
         onSelect(emoji);
+
         if (emoji.hexcode) {
-            addToEmojiList({ isCustom: false, unicode: emoji.unicode, mxc: null }, 'recent_emoji', emojiBoardRef.current.getAttribute('board-type'));
+            addToEmojiList({ isCustom: false, unicode: emoji.unicode, mxc: null }, 'recent_emoji', $(emojiBoardRef.current).attr('board-type'));
         } else {
-            addToEmojiList({ isCustom: true, unicode: null, mxc: e.target.getAttribute('data-mx-emoticon') }, 'recent_emoji', emojiBoardRef.current.getAttribute('board-type'));
+            addToEmojiList({ isCustom: true, unicode: null, mxc: el.attr('data-mx-emoticon') }, 'recent_emoji', $(emojiBoardRef.current).attr('board-type'));
         }
 
     }
@@ -270,33 +269,35 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     function contextEmoji(e) {
 
         e.preventDefault();
-        if (isTargetNotEmoji(e.target)) return false;
 
-        const emoji = getEmojiDataFromTarget(e.target);
+        const el = $(e.target);
+        if (isTargetNotEmoji(el)) return false;
+
+        const emoji = getEmojiDataFromTarget(el);
 
         const typesAdd = {
-            custom: { isCustom: true, unicode: null, mxc: e.target.getAttribute('data-mx-emoticon') },
+            custom: { isCustom: true, unicode: null, mxc: el.attr('data-mx-emoticon') },
             noCustom: { isCustom: false, unicode: emoji.unicode, mxc: null }
         };
 
-        if (!e.target.classList.contains('fav-emoji')) {
+        if (!el.hasClass('fav-emoji')) {
 
-            e.target.classList.add('fav-emoji');
+            el.addClass('fav-emoji');
 
             if (emoji.hexcode) {
-                addToEmojiList(typesAdd.noCustom, 'fav_emoji', emojiBoardRef.current.getAttribute('board-type'));
+                addToEmojiList(typesAdd.noCustom, 'fav_emoji', $(emojiBoardRef.current).attr('board-type'));
             } else {
-                addToEmojiList(typesAdd.custom, 'fav_emoji', emojiBoardRef.current.getAttribute('board-type'));
+                addToEmojiList(typesAdd.custom, 'fav_emoji', $(emojiBoardRef.current).attr('board-type'));
             }
 
         } else {
 
-            e.target.classList.remove('fav-emoji');
+            el.removeClass('fav-emoji');
 
             if (emoji.hexcode) {
-                removeToEmojiList(typesAdd.noCustom, 'fav_emoji', emojiBoardRef.current.getAttribute('board-type'));
+                removeToEmojiList(typesAdd.noCustom, 'fav_emoji', $(emojiBoardRef.current).attr('board-type'));
             } else {
-                removeToEmojiList(typesAdd.custom, 'fav_emoji', emojiBoardRef.current.getAttribute('board-type'));
+                removeToEmojiList(typesAdd.custom, 'fav_emoji', $(emojiBoardRef.current).attr('board-type'));
             }
 
         }
@@ -306,28 +307,33 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     }
 
     function setEmojiInfo(emoji) {
-        const infoEmoji = emojiInfo.current.firstElementChild.firstElementChild;
-        const infoShortcode = emojiInfo.current.lastElementChild;
 
-        infoEmoji.src = emoji.src;
-        infoEmoji.alt = emoji.unicode;
-        infoShortcode.textContent = `:${emoji.shortcode}:`;
+        const el = $(emojiInfo.current);
+        const infoEmoji = el.find('>:first-child >:first-child');
+        const infoShortcode = el.find('>:last-child');
+
+        infoEmoji.attr('src', emoji.src);
+        infoEmoji.attr('alt', emoji.unicode);
+        infoShortcode.text(`:${emoji.shortcode}:`);
+
     }
 
     function hoverEmoji(e) {
-        if (isTargetNotEmoji(e.target)) return;
 
-        const emoji = e.target;
-        const { shortcodes, unicode } = getEmojiDataFromTarget(emoji);
+        const el = $(e.target);
+        const searchEl = $(searchRef.current);
+        if (isTargetNotEmoji(el)) return;
+
+        const { shortcodes, unicode } = getEmojiDataFromTarget(el);
 
         let src;
 
-        if (e.target.style.backgroundImage) {
-            src = e.target.style.backgroundImage.substring(5, e.target.style.backgroundImage.length - 2);
+        if (el.css('background-image')) {
+            src = el.css('background-image').substring(5, e.target.style.backgroundImage.length - 2);
         }
 
         if (!src || typeof shortcodes === 'undefined') {
-            searchRef.current.placeholder = 'Search';
+            searchEl.attr('placeholder', 'Search');
             setEmojiInfo({
                 unicode: '🙂',
                 shortcode: 'slight_smile',
@@ -335,15 +341,17 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             });
             return;
         }
-        if (searchRef.current.placeholder === shortcodes[0]) return;
-        searchRef.current.setAttribute('placeholder', shortcodes[0]);
+
+        if (searchEl.attr('placeholder') === shortcodes[0]) return;
+        searchEl.attr('placeholder', shortcodes[0]);
         setEmojiInfo({ shortcode: shortcodes[0], src, unicode });
+
     }
 
     function handleSearchChange() {
-        const term = searchRef.current.value;
+        const term = $(searchRef.current).val();
         asyncSearch.search(term);
-        scrollEmojisRef.current.scrollTop = 0;
+        $(scrollEmojisRef.current).scrollTop(0);
     }
 
     const [availableEmojis, setAvailableEmojis] = useState([]);
@@ -383,12 +391,14 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         };
 
         const onOpen = () => {
-            searchRef.current.value = '';
+
+            $(searchRef.current).val('');
             handleSearchChange();
 
             // only update when board is getting opened to prevent shifting UI
-            setRecentEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', emojiBoardRef.current.getAttribute('board-type')));
-            setFavEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji', emojiBoardRef.current.getAttribute('board-type')));
+            setRecentEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', $(emojiBoardRef.current).attr('board-type')));
+            setFavEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji', $(emojiBoardRef.current).attr('board-type')));
+
         };
 
         navigation.on(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
@@ -397,16 +407,21 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             navigation.removeListener(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
             navigation.removeListener(cons.events.navigation.EMOJIBOARD_OPENED, onOpen);
         };
+
     }, []);
 
     function openGroup(groupOrder) {
+
         let tabIndex = groupOrder;
-        const $emojiContent = scrollEmojisRef.current.firstElementChild;
-        const groupCount = $emojiContent.childElementCount;
+        const $emojiContent = $(scrollEmojisRef.current).find('>:first-child');
+
+        const groupCount = $emojiContent.length;
         if (groupCount > emojiGroups.length) {
             tabIndex += groupCount - emojiGroups.length - availableEmojis.length - recentOffset - favOffset;
         }
-        $emojiContent.children[tabIndex].scrollIntoView();
+
+        $emojiContent.children().get(tabIndex).scrollIntoView();
+
     }
 
     const boardType = getFunctionEmoji();
@@ -421,21 +436,8 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     );
 
     setTimeout(() => {
-
-        const emojiBoard = document.querySelector('#emoji-board');
-
-        if (
-            emojiBoard &&
-            emojiBoard.parentElement &&
-            emojiBoard.parentElement.parentElement &&
-            emojiBoard.parentElement.parentElement.parentElement &&
-            emojiBoard.parentElement.parentElement.parentElement.parentElement &&
-            emojiBoard.parentElement.parentElement.parentElement.parentElement.parentElement &&
-            emojiBoard.parentElement.parentElement.parentElement.parentElement.parentElement.classList
-        ) {
-            emojiBoard.parentElement.parentElement.parentElement.parentElement.parentElement.classList.add('emoji-board-tippy');
-        }
-
+        $('#emoji-board').parent().parent().parent().parent().parent()
+            .addClass('emoji-board-tippy');
     }, 500);
 
     resetEmojisList();
