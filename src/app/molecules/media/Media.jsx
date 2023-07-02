@@ -212,8 +212,8 @@ function Image({
 
                 };
 
-                img.on('click', imgAction);
                 img.off('click', imgAction);
+                img.on('click', imgAction);
 
               }
 
