@@ -3,10 +3,12 @@ import { getFileContentType } from '../../../util/fileMime';
 
 import ImageBrokenSVG from '../../../../public/res/svg/image-broken.svg';
 
-export default function loadAvatar(imageAnimSrc, animParentsCount, e) {
+export default function loadAvatar(e) {
 
     // Prepare Data
     const img = $(e.target);
+    let animParentsCount = Number(img.attr('animparentscount'));
+    if (Number.isNaN(animParentsCount) || !Number.isFinite(animParentsCount) || animParentsCount < 0 || animParentsCount > 20) animParentsCount = 0;
 
     const avatars = {
         animate: img.attr('animsrc'),
@@ -14,7 +16,7 @@ export default function loadAvatar(imageAnimSrc, animParentsCount, e) {
     };
 
     // Load Data
-    getFileContentType(e, imageAnimSrc).then(data => {
+    getFileContentType(e, avatars.animate).then(data => {
 
         // Set background e prepare data validator
         img.css('background-color', 'transparent');

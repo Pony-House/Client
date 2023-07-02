@@ -17,7 +17,6 @@ const Avatar = React.forwardRef(({
 }, ref) => {
 
   // Prepare Data
-  const avatarRef = useRef(null);
   let textSize = 's1';
   if (size === 'large') textSize = 'h1';
   if (size === 'small') textSize = 'b1';
@@ -31,16 +30,6 @@ const Avatar = React.forwardRef(({
 
   // Default Avatar
   const defaultAvatar = `./public/img/default_avatar/${colorCode}.jpg`;
-  const loadAvatarDetecot = (e) => { loadAvatar(imageAnimSrc, animParentsCount, e); };
-
-  // Load Avatar Detector
-  useEffect(() => {
-    const avatar = $(avatarRef.current);
-    avatar.on('load', loadAvatarDetecot);
-    return () => {
-      avatar.off('load', loadAvatarDetecot);
-    };
-  }, [avatarRef]);
 
   // Render
   return (
@@ -71,11 +60,19 @@ const Avatar = React.forwardRef(({
 
               className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
               draggable="false"
+              loadedimg='false'
+              animparentscount={animParentsCount}
               animsrc={imageAnimSrc}
               normalsrc={imageSrc}
-              defaultAvatar={defaultAvatar}
+              defaultavatar={defaultAvatar}
               src={defaultAvatar}
-              ref={avatarRef}
+              onLoad={(e) => {
+                const avatar = $(e.target);
+                if (avatar.attr('loadedimg') === 'false') {
+                  avatar.attr('loadedimg', '');
+                  loadAvatar(e);
+                }
+              }}
 
               onError={(e) => { e.target.src = ImageBrokenSVG; }}
               alt='avatar'
