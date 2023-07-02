@@ -25,6 +25,7 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
+    'max-classes-per-file': 0,
     'guard-for-in': 0,
     'no-restricted-syntax': 0,
     'linebreak-style': 0,
@@ -74,6 +75,7 @@ module.exports = {
     "react-hooks/rules-of-hooks": "error",
 
     "react/no-unknown-property": 0,
+    '@typescript-eslint/no-this-alias': 0,
     "@typescript-eslint/no-shadow": "error",
     "@typescript-eslint/no-unused-vars": "error",
   },
