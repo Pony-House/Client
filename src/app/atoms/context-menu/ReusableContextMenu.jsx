@@ -19,7 +19,7 @@ function ReusableContextMenu() {
 
   useEffect(() => {
 
-    const opener = $(openerRef);
+    const opener = $(openerRef.current);
 
     if (data) {
 

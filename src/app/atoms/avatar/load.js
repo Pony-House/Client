@@ -7,7 +7,6 @@ export default function loadAvatar(e) {
 
     // Prepare Data
     const img = $(e.target);
-
     const avatars = {
         parents: Number(img.attr('animparentscount')),
         animate: img.attr('animsrc'),
@@ -62,6 +61,6 @@ export default function loadAvatar(e) {
         });
     });
 
-    img.trigger('load');
+    if (avatars.animate !== null) img.attr(avatars.animate);
 
 };
