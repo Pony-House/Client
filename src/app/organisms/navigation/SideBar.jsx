@@ -208,6 +208,8 @@ function DraggableSpaceShortcut({
           text={room.name}
           bgColor={colorMXID(room.roomId)}
           size="normal"
+          animParentsCount={2}
+          imageAnimSrc={room.getAvatarUrl(initMatrix.matrixClient.baseUrl) || null}
           imageSrc={room.getAvatarUrl(initMatrix.matrixClient.baseUrl, 42, 42, 'crop') || null}
           isDefaultImage
         />

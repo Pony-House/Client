@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
 
 import { twemojify } from '../../../util/twemojify';
 
@@ -61,13 +62,23 @@ const Avatar = React.forwardRef(({
                             tinyNode = tinyNode.parentNode;
                           }
 
-                          tinyNode.addEventListener('mouseover', () => {
-                            e.target.src = imageAnimSrc;
-                          }, false);
+                          tinyNode = $(tinyNode);
 
-                          tinyNode.addEventListener('mouseout', () => {
+                          tinyNode.hover(
+                            () => {
+                              e.target.src = imageAnimSrc;
+                            }, () => {
+                              e.target.src = imageSrc;
+                            }
+                          );
+
+                          tinyNode.focus(() => {
+                            e.target.src = imageAnimSrc;
+                          });
+
+                          tinyNode.blur(() => {
                             e.target.src = imageSrc;
-                          }, false);
+                          });
 
                         }
 
