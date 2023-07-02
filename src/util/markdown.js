@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
+import $ from 'jquery';
 import hljs from 'highlight.js';
 import moment from 'moment-timezone';
 import SimpleMarkdown from '@khanacademy/simple-markdown';
@@ -48,14 +49,15 @@ setInterval(() => {
   if (timestamps.length > 0) {
     timestamps.map(item => {
 
+      const tinyItem = $(item);
       const type = item.getAttribute('timestamp-type');
       const timestamp = Number(item.getAttribute('data-mx-timestamp'));
 
       if (!Number.isNaN(timestamp) && typeof type === 'string') {
         if (type !== 'R') {
-          item.innerHTML = moment(timestamp).format(timestampFormats[type]);
+          tinyItem.text(moment(timestamp).format(timestampFormats[type]));
         } else {
-          item.innerHTML = moment(timestamp).fromNow();
+          tinyItem.text(moment(timestamp).fromNow());
         }
       }
 

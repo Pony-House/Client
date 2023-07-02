@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOMServer from 'react-dom/server';
 
+import $ from 'jquery';
+
 import IconButton from '../../atoms/button/IconButton';
 import { twemojify } from '../../../util/twemojify';
 import navigation from '../../../client/state/navigation';
@@ -58,9 +60,9 @@ function ProfileAvatarMenu() {
                 }
 
                 if (customStatusRef && customStatusRef.current && typeof event.msg === 'string' && event.msg.length > 0) {
-                    customStatusRef.current.innerHTML = ReactDOMServer.renderToStaticMarkup(twemojify(event.msg.substring(0, 100)));
+                    $(customStatusRef.current).html(ReactDOMServer.renderToStaticMarkup(twemojify(event.msg.substring(0, 100))));
                 } else {
-                    customStatusRef.current.innerHTML = ReactDOMServer.renderToStaticMarkup(twemojify(user2.userId));
+                    $(customStatusRef.current).html(ReactDOMServer.renderToStaticMarkup(twemojify(user2.userId)));
                 }
 
                 if (statusRef && statusRef.current && typeof event.status === 'string' && event.status.length > 0) {

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import $ from 'jquery';
 import ReactDOMServer from 'react-dom/server';
 import { twemojify } from '../../../util/twemojify';
 
@@ -24,16 +25,16 @@ function PeopleSelector({
     if (customStatusRef && customStatusRef.current) {
 
       // Get Status
-      const customStatus = customStatusRef.current;
+      const customStatus = $(customStatusRef.current);
 
       if (
         content && content.presenceStatusMsg &&
         content.presence !== 'offline' && content.presence !== 'unavailable' &&
         typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0
       ) {
-        customStatus.innerHTML = ReactDOMServer.renderToStaticMarkup(twemojify(content.presenceStatusMsg.msg.substring(0, 100)));
+        customStatus.html(ReactDOMServer.renderToStaticMarkup(twemojify(content.presenceStatusMsg.msg.substring(0, 100))));
       } else {
-        customStatus.innerHTML = '';
+        customStatus.html('');
       }
 
     }

@@ -2,6 +2,8 @@ import ReactDOMServer from 'react-dom/server';
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
+import $ from 'jquery';
+
 import { twemojify } from '../../../util/twemojify';
 import { getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
 
@@ -402,38 +404,38 @@ function ProfileViewer() {
 
             // Get Bio Data
             if (bioRef.current) {
-              const bioDOM = bioRef.current;
-              if (bioDOM) {
-                const tinyBio = bioDOM.querySelector('#tiny-bio');
-                if (tinyBio) {
-                  bioDOM.classList.remove('d-none');
-                  if (typeof content.presenceStatusMsg.bio === 'string' && content.presenceStatusMsg.bio.length > 0) {
-                    tinyBio.innerHTML = ReactDOMServer.renderToStaticMarkup(twemojify(content.presenceStatusMsg.bio.substring(0, 190), undefined, true, false, true));
-                  } else {
-                    bioDOM.classList.add('d-none');
-                    tinyBio.innerHTML = '';
-                  }
+
+              const bioDOM = $(bioRef.current);
+              const tinyBio = $('#tiny-bio');
+
+              if (tinyBio.length > 0) {
+
+                bioDOM.removeClass('d-none');
+                if (typeof content.presenceStatusMsg.bio === 'string' && content.presenceStatusMsg.bio.length > 0) {
+                  tinyBio.html(ReactDOMServer.renderToStaticMarkup(twemojify(content.presenceStatusMsg.bio.substring(0, 190), undefined, true, false, true)));
                 } else {
-                  bioDOM.classList.add('d-none');
+                  bioDOM.addClass('d-none');
+                  tinyBio.html('');
                 }
+
+              } else {
+                bioDOM.addClass('d-none');
               }
+
             }
 
             // Get Custom Status Data
-            if (customStatusRef.current) {
-              const customStatusDOM = customStatusRef.current;
-              if (customStatusDOM) {
-                customStatusDOM.classList.remove('d-none');
-                if (
-                  content.presence !== 'offline' && content.presence !== 'unavailable' &&
-                  typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0
-                ) {
-                  customStatusDOM.innerHTML = ReactDOMServer.renderToStaticMarkup(twemojify(content.presenceStatusMsg.msg.substring(0, 100)));
-                } else {
-                  customStatusDOM.classList.add('d-none');
-                  customStatusDOM.innerHTML = '';
-                }
-              }
+            const customStatusDOM = $(customStatusRef.current);
+            customStatusDOM.removeClass('d-none');
+
+            if (
+              content.presence !== 'offline' && content.presence !== 'unavailable' &&
+              typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0
+            ) {
+              customStatusDOM.html(ReactDOMServer.renderToStaticMarkup(twemojify(content.presenceStatusMsg.msg.substring(0, 100))));
+            } else {
+              customStatusDOM.addClass('d-none');
+              customStatusDOM.html('');
             }
 
           }
