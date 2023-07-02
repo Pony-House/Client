@@ -79,6 +79,9 @@ Made by Me
 
     protocols:
 
+    Crypto Wormhole
+    https://docs.wormhole.com/wormhole/quick-start/wh-connect
+
     Validador de DNS
 
     Twitter: (https://twitter.com)
