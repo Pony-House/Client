@@ -67,7 +67,7 @@ const Avatar = React.forwardRef(({
                   const img = $(e.target);
                   const avatars = {
                     animate: img.attr('animsrc'),
-                    normal: img.src('normalsrc'),
+                    normal: img.attr('normalsrc'),
                   };
 
                   // Load Data
@@ -80,6 +80,7 @@ const Avatar = React.forwardRef(({
                       if (data.type[0] === 'image') {
 
                         // Gif Detected
+                        img.attr('image-type', data.type[1]);
                         if (data.type[1] === 'gif') {
 
                           // Prepare Node Detector
