@@ -235,6 +235,7 @@ const markdownRules = {
   list: {
     ...defaultRules.list,
     plain: (node, output, state) => {
+
       const oldList = state._list;
       state._list = true;
 
@@ -248,7 +249,9 @@ const markdownRules = {
       if (!state._list) {
         items += '\n\n';
       }
+
       return items;
+
     },
   },
 
@@ -347,23 +350,31 @@ const markdownRules = {
   link: {
     ...defaultRules.link,
     plain: (node, output, state) => {
+
       const out = output(node.content, state);
       const target = sanitizeUrl(node.target) || '';
+
       if (out !== target || node.title) {
         return `[${out}](${target}${node.title ? ` "${node.title}"` : ''})`;
       }
+
       return out;
+
     },
     html: (node, output, state) => {
+
       const out = output(node.content, state);
       const target = sanitizeUrl(node.target) || '';
+
       if (out !== target || node.title) {
         return htmlTag('a', out, {
           href: target,
           title: node.title,
         });
       }
+
       return target;
+
     },
   },
 
@@ -416,7 +427,9 @@ const markdownRules = {
       reason: capture[2],
     }),
     plain: (node, output, state) => {
+
       const warning = `spoiler${node.reason ? `: ${node.reason}` : ''}`;
+
       switch (state.kind) {
         case 'edit':
           return `||${output(node.content, state)}||${node.reason ? `(${node.reason})` : ''}`;
@@ -425,6 +438,7 @@ const markdownRules = {
         default:
           return `[${warning}](${output(node.content, state)})`;
       }
+
     },
     html: (node, output, state) => htmlTag(
       'span',
@@ -455,6 +469,7 @@ const markdownRules = {
 
 // Convert Code back to script
 function mapElement(el) {
+
   switch (el.tagName) {
     case 'MX-REPLY':
       return [];
@@ -475,17 +490,24 @@ function mapElement(el) {
       return [{ type: 'hr' }];
     case 'PRE': {
       let lang;
+
       if (el.firstChild) {
         Array.from(el.firstChild.classList).some((c) => {
+
           const langPrefix = 'language-';
+
           if (c.startsWith(langPrefix)) {
             lang = c.slice(langPrefix.length);
             return true;
           }
+
           return false;
+
         });
       }
+
       return [{ type: 'codeBlock', lang, content: el.innerText }];
+
     }
     case 'BLOCKQUOTE':
       return [{ type: 'blockQuote', content: mapChildren(el) }];
@@ -499,19 +521,26 @@ function mapElement(el) {
         items: Array.from(el.childNodes).map(mapNode),
       }];
     case 'TABLE': {
+
       const headerEl = Array.from(el.querySelector('thead > tr').childNodes);
       const align = headerEl.map((childE) => childE.style['text-align']);
+
       return [{
+
         type: 'table',
         header: headerEl.map(mapChildren),
         align,
+
         cells: Array.from(el.querySelectorAll('tbody > tr')).map((rowEl) => Array.from(rowEl.childNodes).map((childEl, i) => {
           if (align[i] === undefined) align[i] = childEl.style['text-align'];
           return mapChildren(childEl);
         })),
+
       }];
+
     }
     case 'A': {
+
       const href = el.getAttribute('href');
 
       const id = parseIdUri(href);
@@ -523,14 +552,19 @@ function mapElement(el) {
         title: el.getAttribute('title'),
         content: mapChildren(el),
       }];
+
     }
     case 'IMG': {
+
       const src = el.getAttribute('src');
       let title = el.getAttribute('title');
+
       if (el.hasAttribute('data-mx-emoticon')) {
+
         if (title.length > 2 && title.startsWith(':') && title.endsWith(':')) {
           title = title.slice(1, -1);
         }
+
         return [{
           type: 'emoji',
           content: title,
@@ -539,6 +573,7 @@ function mapElement(el) {
             shortcode: title,
           },
         }];
+
       }
 
       return [{
@@ -547,6 +582,7 @@ function mapElement(el) {
         target: src,
         title,
       }];
+
     }
     case 'EM':
     case 'I':
@@ -582,6 +618,7 @@ function mapElement(el) {
     default:
       return mapChildren(el);
   }
+
 }
 
 function mapNode(n) {
@@ -603,6 +640,7 @@ function mapChildren(n) {
 }
 
 function render(content, state, plainOut, htmlOut) {
+
   let c = content;
   if (content.length === 1 && content[0].type === 'paragraph') {
     c = c[0].content;
@@ -621,6 +659,7 @@ function render(content, state, plainOut, htmlOut) {
     plain: plainStr,
     html: htmlStr,
   };
+
 }
 
 const plainParser = parserFor(plainRules);

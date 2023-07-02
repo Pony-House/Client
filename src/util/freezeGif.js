@@ -18,6 +18,9 @@ export function freezeGif(img, wantedWidth) {
         clone.width = width;
         clone.height = height;
     });
+
+    const canvasQuery = $(canvas);
+
     let attr;
     let i = 0;
 
@@ -27,25 +30,25 @@ export function freezeGif(img, wantedWidth) {
 
         if (wantedWidth) {
             const aspect = width / height;
-            canvas.width = wantedWidth;
-            canvas.height = wantedWidth / aspect;
+            canvasQuery.width(wantedWidth);
+            canvasQuery.height(wantedWidth / aspect);
         } else {
-            canvas.width = width;
-            canvas.height = height;
+            canvasQuery.width(width);
+            canvasQuery.height(height);
         }
 
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvasQuery.width(), canvasQuery.height());
 
         for (i = 0; i < img.attributes.length; i++) {
             attr = img.attributes[i];
 
             if (attr.name !== '"') { // test for invalid attributes
-                canvas.setAttribute(attr.name, attr.value);
+                canvasQuery.attr(attr.name, attr.value);
             }
         }
 
-        canvas.classList.add('normal-avatar');
-        canvas.classList.remove('anim-avatar');
+        canvasQuery.addClass('normal-avatar');
+        canvasQuery.removeClass('anim-avatar');
 
         img.parentNode.insertBefore(canvas, img);
 

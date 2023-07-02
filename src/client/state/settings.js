@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import EventEmitter from 'events';
 import appDispatcher from '../dispatcher';
 
@@ -49,19 +50,19 @@ class Settings extends EventEmitter {
   }
 
   _clearTheme() {
-    document.body.classList.remove('system-theme');
+    $('body').removeClass('system-theme');
     this.themes.forEach((themeName) => {
       if (themeName === '') return;
-      document.body.classList.remove(themeName);
+      $('body').removeClass(themeName);
     });
   }
 
   applyTheme() {
     this._clearTheme();
     if (this.useSystemTheme) {
-      document.body.classList.add('system-theme');
+      $('body').addClass('system-theme');
     } else if (this.themes[this.themeIndex]) {
-      document.body.classList.add(this.themes[this.themeIndex]);
+      $('body').addClass(this.themes[this.themeIndex]);
     }
   }
 

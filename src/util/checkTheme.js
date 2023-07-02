@@ -1,16 +1,19 @@
+import $ from 'jquery';
+
 export function isBottomPage() {
     return ((window.innerHeight + Math.round(window.scrollY)) >= document.body.offsetHeight);
 }
 
 export function selectButton() {
 
-    if (document.body && document.body.classList) {
+    const body = $('body');
+    if (body.length > 0) {
 
-        if (document.body.classList.contains('dark-theme')) {
+        if (body.hasClass('dark-theme')) {
             return 'dark';
         }
 
-        if (document.body.classList.contains('butter-theme')) {
+        if (body.hasClass('butter-theme')) {
             return 'secondary';
         }
 
@@ -22,13 +25,14 @@ export function selectButton() {
 
 export function selectButtonInverse() {
 
-    if (document.body && document.body.classList) {
+    const body = $('body');
+    if (body.length > 0) {
 
-        if (document.body.classList.contains('dark-theme')) {
+        if (body.hasClass('dark-theme')) {
             return 'secondary';
         }
 
-        if (document.body.classList.contains('butter-theme')) {
+        if (body.hasClass('butter-theme')) {
             return 'secondary';
         }
 
