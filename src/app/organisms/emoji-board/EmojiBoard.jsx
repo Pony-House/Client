@@ -329,7 +329,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         let src;
 
         if (el.css('background-image')) {
-            src = el.css('background-image').substring(5, e.target.style.backgroundImage.length - 2);
+            src = el.css('background-image').substring(5, el.css('background-image').length - 2);
         }
 
         if (!src || typeof shortcodes === 'undefined') {

@@ -374,73 +374,70 @@ function ProfileViewer() {
 
       // Update Status Profile
       const updateProfileStatus = (mEvent, tinyData) => {
-        if (statusRef && statusRef.current) {
 
-          // Get Status
-          const tinyUser = tinyData;
-          const status = $(statusRef.current);
+        // Get Status
+        const tinyUser = tinyData;
+        const status = $(statusRef.current);
 
-          // Is You
-          if (tinyUser.userId === mx.getUserId()) {
-            const yourData = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
-            tinyUser.presenceStatusMsg = JSON.stringify(yourData);
+        // Is You
+        if (tinyUser.userId === mx.getUserId()) {
+          const yourData = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
+          tinyUser.presenceStatusMsg = JSON.stringify(yourData);
+        }
+
+        // Update Status Icon
+        const content = updateUserStatusIcon(status, tinyUser);
+        if (content && content.presenceStatusMsg) {
+
+          // Get Banner Data
+          const bannerDOM = $(profileBanner.current);
+
+          if (bannerDOM.length > 0) {
+            if (typeof content.presenceStatusMsg.banner === 'string' && content.presenceStatusMsg.banner.length > 0) {
+              bannerDOM.css('background-image', `url("${content.presenceStatusMsg.banner}")`);
+            } else {
+              bannerDOM.css('background-image', '');
+            }
           }
 
-          // Update Status Icon
-          const content = updateUserStatusIcon(status, tinyUser);
-          if (content && content.presenceStatusMsg) {
+          // Get Bio Data
+          if (bioRef.current) {
 
-            // Get Banner Data
-            if (profileBanner.current) {
-              const bannerDOM = profileBanner.current;
-              if (bannerDOM) {
-                if (typeof content.presenceStatusMsg.banner === 'string' && content.presenceStatusMsg.banner.length > 0) {
-                  bannerDOM.style.backgroundImage = `url("${content.presenceStatusMsg.banner}")`;
-                } else {
-                  bannerDOM.style.backgroundImage = '';
-                }
-              }
-            }
+            const bioDOM = $(bioRef.current);
+            const tinyBio = $('#tiny-bio');
 
-            // Get Bio Data
-            if (bioRef.current) {
+            if (tinyBio.length > 0) {
 
-              const bioDOM = $(bioRef.current);
-              const tinyBio = $('#tiny-bio');
-
-              if (tinyBio.length > 0) {
-
-                bioDOM.removeClass('d-none');
-                if (typeof content.presenceStatusMsg.bio === 'string' && content.presenceStatusMsg.bio.length > 0) {
-                  tinyBio.html(ReactDOMServer.renderToStaticMarkup(twemojify(content.presenceStatusMsg.bio.substring(0, 190), undefined, true, false, true)));
-                } else {
-                  bioDOM.addClass('d-none');
-                  tinyBio.html('');
-                }
-
+              bioDOM.removeClass('d-none');
+              if (typeof content.presenceStatusMsg.bio === 'string' && content.presenceStatusMsg.bio.length > 0) {
+                tinyBio.html(ReactDOMServer.renderToStaticMarkup(twemojify(content.presenceStatusMsg.bio.substring(0, 190), undefined, true, false, true)));
               } else {
                 bioDOM.addClass('d-none');
+                tinyBio.html('');
               }
 
-            }
-
-            // Get Custom Status Data
-            const customStatusDOM = $(customStatusRef.current);
-            customStatusDOM.removeClass('d-none');
-
-            if (
-              content.presence !== 'offline' && content.presence !== 'unavailable' &&
-              typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0
-            ) {
-              customStatusDOM.html(ReactDOMServer.renderToStaticMarkup(twemojify(content.presenceStatusMsg.msg.substring(0, 100))));
             } else {
-              customStatusDOM.addClass('d-none');
-              customStatusDOM.html('');
+              bioDOM.addClass('d-none');
             }
 
+          }
+
+          // Get Custom Status Data
+          const customStatusDOM = $(customStatusRef.current);
+          customStatusDOM.removeClass('d-none');
+
+          if (
+            content.presence !== 'offline' && content.presence !== 'unavailable' &&
+            typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0
+          ) {
+            customStatusDOM.html(ReactDOMServer.renderToStaticMarkup(twemojify(content.presenceStatusMsg.msg.substring(0, 100))));
+          } else {
+            customStatusDOM.addClass('d-none');
+            customStatusDOM.html('');
           }
 
         }
+
       };
 
       // Read Events
