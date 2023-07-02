@@ -202,11 +202,11 @@ export function updateUserStatusIcon(status, user, tinyData, canStatus = true, c
     }
 
     for (const item in statusList) {
-        status.classList.remove(`user-presence-${item}`);
+        status.removeClass(`user-presence-${item}`);
 
         const statusClasses = statusList[item].split(' ');
         for (const item2 in statusClasses) {
-            status.classList.remove(statusClasses[item2]);
+            status.removeClass(statusClasses[item2]);
         }
 
     }
@@ -214,7 +214,7 @@ export function updateUserStatusIcon(status, user, tinyData, canStatus = true, c
     const newClasses = getUserStatus(user, useData).split(' ');
 
     for (const item in newClasses) {
-        status.classList.add(newClasses[item]);
+        status.addClass(newClasses[item]);
     }
 
     return useData;

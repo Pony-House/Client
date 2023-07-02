@@ -378,7 +378,7 @@ function ProfileViewer() {
 
           // Get Status
           const tinyUser = tinyData;
-          const status = statusRef.current;
+          const status = $(statusRef.current);
 
           // Is You
           if (tinyUser.userId === mx.getUserId()) {

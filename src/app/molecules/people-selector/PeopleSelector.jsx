@@ -54,7 +54,7 @@ function PeopleSelector({
 
           // Get Status
           const mx = initMatrix.matrixClient;
-          const status = statusRef.current;
+          const status = $(statusRef.current);
           const tinyUser = tinyData;
 
           // Is You
