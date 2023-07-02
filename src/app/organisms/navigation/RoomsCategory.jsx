@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import $ from 'jquery';
 import { updateName, sortName } from '../../../util/roomName';
 import initMatrix from '../../../client/initMatrix';
 import { selectSpace, selectRoom, openReusableContextMenu, selectRoomMode } from '../../../client/action/navigation';
@@ -18,23 +19,23 @@ function setCategoryOpen({ roomName }) {
   let tinyIsOpen = getSpaceItem(`category_${roomName}`);
   tinyIsOpen = (tinyIsOpen === 'on');
 
-  const dom = document.getElementById(`category_bt_${roomName}`);
-  const iconDom = document.querySelector(`#category_bd_${roomName} .ic-base`);
+  const dom = $(`#category_bt_${roomName}`);
+  const iconDom = $(`#category_bd_${roomName} .ic-base`);
 
   // Disable
   if (tinyIsOpen) {
     setSpaceItem(`category_${roomName}`, 'off');
-    dom.classList.add('category-hide');
-    iconDom.classList.remove('fa-chevron-down');
-    iconDom.classList.add('fa-chevron-right');
+    dom.addClass('category-hide');
+    iconDom.removeClass('fa-chevron-down');
+    iconDom.addClass('fa-chevron-right');
   }
 
   // Enable
   else {
     setSpaceItem(`category_${roomName}`, 'on');
-    dom.classList.remove('category-hide');
-    iconDom.classList.remove('fa-chevron-right');
-    iconDom.classList.add('fa-chevron-down');
+    dom.removeClass('category-hide');
+    iconDom.removeClass('fa-chevron-right');
+    iconDom.addClass('fa-chevron-down');
   }
 
 }

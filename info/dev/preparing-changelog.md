@@ -12,5 +12,6 @@
 - Video and audio media - CSS and HTML update.
 - Function global.alert - function fixed.
 - Room category button issue size fixed.
-- New imageAnimSrc values added
-- Jquery module added
+- New imageAnimSrc values added.
+- Jquery module added.
+- Banner Space upload fixed.

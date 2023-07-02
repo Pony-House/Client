@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+import $ from 'jquery';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import settings from '../../../client/state/settings';
@@ -449,8 +450,8 @@ function ProfileSection() {
 
     const content = initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
 
-    const bannerPlace = document.querySelector('.space-banner .avatar__border');
-    const bannerImg = document.querySelector('.space-banner img');
+    const bannerPlace = $('.space-banner .avatar__border');
+    const bannerImg = $('.space-banner img');
 
     if (url === null) {
 
@@ -468,8 +469,8 @@ function ProfileSection() {
         initMatrix.matrixClient.setAccountData('pony.house.profile', content);
         emitUpdateProfile(content);
 
-        if (bannerPlace) bannerPlace.style.backgroundImage = ''; bannerPlace.classList.remove('banner-added');
-        if (bannerImg) bannerImg.src = '';
+        bannerPlace.css('background-image', '').removeClass('banner-added');
+        bannerImg.attr('src', '');
 
       }
 
@@ -480,8 +481,8 @@ function ProfileSection() {
       initMatrix.matrixClient.setAccountData('pony.house.profile', content);
       emitUpdateProfile(content);
 
-      if (bannerPlace) bannerPlace.style.backgroundImage = `url('${initMatrix.matrixClient.mxcUrlToHttp(url, 660, 227)}')`; bannerPlace.classList.add('banner-added');
-      if (bannerImg) bannerImg.src = initMatrix.matrixClient.mxcUrlToHttp(url, 400, 227);
+      bannerPlace.css('background-image', `url('${initMatrix.matrixClient.mxcUrlToHttp(url, 660, 227)}')`).addClass('banner-added');
+      bannerImg.attr('src', initMatrix.matrixClient.mxcUrlToHttp(url, 400, 227));
 
     }
 
