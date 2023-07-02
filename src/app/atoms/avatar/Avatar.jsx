@@ -14,24 +14,33 @@ import { getFileContentType } from '../../../util/fileMime';
 const Avatar = React.forwardRef(({
   text, bgColor, iconSrc, faSrc, iconColor, imageSrc, size, className, imgClass, imageAnimSrc, isDefaultImage, animParentsCount
 }, ref) => {
+
+  // Prepare Data
   let textSize = 's1';
   if (size === 'large') textSize = 'h1';
   if (size === 'small') textSize = 'b1';
   if (size === 'extra-small') textSize = 'b3';
   let imageLoaded = false;
 
+  // Colors
   let colorCode = Number(bgColor.substring(0, bgColor.length - 1).replace('var(--mx-uc-', ''));
   if (typeof colorCode !== 'number' || Number.isNaN(colorCode) || !Number.isFinite(colorCode) || colorCode < 1) {
     colorCode = 1;
   }
 
+  // Render
   return (
     <div ref={ref} className={`avatar-container avatar-container__${size} ${className} noselect`}>
       {
+
+        // Exist Image
         // eslint-disable-next-line no-nested-ternary
         imageSrc !== null || isDefaultImage
+
+          // Image
           ? (!imageAnimSrc ?
 
+            // Default Image
             <img
               className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
               draggable="false"
@@ -43,60 +52,72 @@ const Avatar = React.forwardRef(({
 
             :
 
+            // Custom Image
             <img
+
               className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
               draggable="false"
+              animsrc={imageAnimSrc}
+              normalsrc={imageSrc}
               src={imageAnimSrc !== null ? imageAnimSrc : `./public/img/default_avatar/${colorCode}.jpg`}
               onLoad={(e) => {
                 if (!imageLoaded) {
+
+                  // Prepare Data
+                  const img = $(e.target);
                   imageLoaded = true;
                   getFileContentType(e, imageAnimSrc).then(data => {
-                    e.target.style.backgroundColor = 'transparent';
+
+                    // Set background e prepare data validator
+                    img.css('background-color', 'transparent');
                     if (Array.isArray(data.type) && typeof data.type[0] === 'string' && typeof data.type[1] === 'string') {
                       if (data.type[0] === 'image') {
 
+                        // Gif Detected
                         if (data.type[1] === 'gif') {
 
+                          // Prepare Node Detector
                           let tinyNode = e.target;
                           for (let i = 0; i < animParentsCount; i++) {
                             tinyNode = tinyNode.parentNode;
                           }
 
+                          // Final Node
                           tinyNode = $(tinyNode);
 
+                          // Insert Effects
                           tinyNode.hover(
                             () => {
-                              e.target.src = imageAnimSrc;
+                              img.attr('src', imageAnimSrc);
                             }, () => {
-                              e.target.src = imageSrc;
+                              img.attr('src', imageSrc);
                             }
                           );
 
-                          tinyNode.focus(() => {
-                            e.target.src = imageAnimSrc;
-                          });
-
-                          tinyNode.blur(() => {
-                            e.target.src = imageSrc;
-                          });
-
                         }
 
-                        e.target.src = imageSrc;
+                        // Set Normal Image
+                        img.attr('src', imageSrc);
 
-                      } else { e.target.src = ImageBrokenSVG; }
-                    } else { e.target.src = ImageBrokenSVG; }
+                        // Invalid values here
+                      } else { img.attr('src', ImageBrokenSVG); }
+                    } else { img.attr('src', ImageBrokenSVG); }
+
                   }).catch(err => {
                     console.error(err);
-                    e.target.src = ImageBrokenSVG;
+                    img.attr('src', ImageBrokenSVG);
                   });
                 }
               }}
+
               onError={(e) => { e.target.src = ImageBrokenSVG; }}
-              alt=""
+              alt='avatar'
+
             />
 
           )
+
+          // Icons
           : faSrc !== null
             ? (
               <span
@@ -128,6 +149,7 @@ const Avatar = React.forwardRef(({
   );
 });
 
+// Props
 Avatar.defaultProps = {
   animParentsCount: 4,
   isDefaultImage: false,
