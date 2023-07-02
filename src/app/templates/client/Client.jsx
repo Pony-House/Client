@@ -32,11 +32,11 @@ function Client() {
 
   function onRoomModeSelected(roomType) {
 
-    navWrapperRef.current?.classList.remove('room-mode');
-    navWrapperRef.current?.classList.remove('navigation-mode');
+    const navWrapper = $(navWrapperRef.current);
+    navWrapper.removeClass('room-mode').removeClass('navigation-mode');
 
-    if (roomType === 'room') navWrapperRef.current?.classList.add('room-mode');
-    if (roomType === 'navigation') navWrapperRef.current?.classList.add('navigation-mode');
+    if (roomType === 'room') navWrapper.addClass('room-mode');
+    if (roomType === 'navigation') navWrapper.addClass('navigation-mode');
     resizeWindowChecker();
 
   }

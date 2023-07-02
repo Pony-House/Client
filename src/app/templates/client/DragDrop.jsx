@@ -24,7 +24,8 @@ function DragDrop({ children, navWrapperRef, }) {
     }
 
     function dropAllowed() {
-        return !navigation.isRawModalVisible && dropZone.current && dropZone.current.classList.contains('drag-enabled');
+        const dropWrap = $(dropZone.current);
+        return !navigation.isRawModalVisible && dropWrap.length > 0 && dropWrap.hasClass('drag-enabled');
     }
 
     function handleDragOver(event) {
