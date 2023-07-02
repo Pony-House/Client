@@ -65,6 +65,12 @@ const Avatar = React.forwardRef(({
 
                   // Prepare Data
                   const img = $(e.target);
+                  const avatars = {
+                    animate: img.attr('animsrc'),
+                    normal: img.src('normalsrc'),
+                  };
+
+                  // Load Data
                   imageLoaded = true;
                   getFileContentType(e, imageAnimSrc).then(data => {
 
@@ -88,16 +94,16 @@ const Avatar = React.forwardRef(({
                           // Insert Effects
                           tinyNode.hover(
                             () => {
-                              img.attr('src', imageAnimSrc);
+                              img.attr('src', avatars.animate);
                             }, () => {
-                              img.attr('src', imageSrc);
+                              img.attr('src', avatars.normal);
                             }
                           );
 
                         }
 
                         // Set Normal Image
-                        img.attr('src', imageSrc);
+                        img.attr('src', avatars.normal);
 
                         // Invalid values here
                       } else { img.attr('src', ImageBrokenSVG); }
