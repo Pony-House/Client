@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+import $ from 'jquery';
+
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 
@@ -16,22 +18,36 @@ function ReusableContextMenu() {
   };
 
   useEffect(() => {
+
+    const opener = $(openerRef);
+
     if (data) {
+
       const { cords } = data;
-      openerRef.current.style.transform = `translate(${cords.x}px, ${cords.y}px)`;
-      openerRef.current.style.width = `${cords.width}px`;
-      openerRef.current.style.height = `${cords.height}px`;
-      openerRef.current.click();
+
+      opener.css({
+        transform: `translate(${cords.x}px, ${cords.y}px)`,
+        width: `${cords.width}px`,
+        height: `${cords.height}px`
+      });
+
+      opener.trigger('click');
+
     }
+
     const handleContextMenuOpen = (placement, cords, render, afterClose) => {
+
       if (key) {
         closeMenu();
         return;
       }
+
       setData({
         placement, cords, render, afterClose,
       });
+
     };
+
     navigation.on(cons.events.navigation.REUSABLE_CONTEXT_MENU_OPENED, handleContextMenuOpen);
     return () => {
       navigation.removeListener(
@@ -39,6 +55,7 @@ function ReusableContextMenu() {
         handleContextMenuOpen,
       );
     };
+
   }, [data]);
 
   const handleAfterToggle = (isVisible) => {
