@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import $ from 'jquery';
@@ -30,6 +30,24 @@ const Avatar = React.forwardRef(({
 
   // Default Avatar
   const defaultAvatar = `./public/img/default_avatar/${colorCode}.jpg`;
+  const loadImg = (e) => {
+    const avatar = $(e.target);
+    console.log(avatar.attr('loadedimg'), e.target);
+    if (avatar.attr('loadedimg') === 'false') {
+      avatar.attr('loadedimg', '');
+      loadAvatar(e);
+    }
+  };
+
+  const forceLoadImg = () => {
+    $(`[loadedimg="false"]`).each((index, target) => {
+      const img = $(target);
+      if (img.attr('loadingimg') !== 'true') loadImg({ target });
+    });
+  };
+
+  setTimeout(forceLoadImg, 100);
+  useEffect(() => { forceLoadImg(); }, []);
 
   // Render
   return (
@@ -61,18 +79,13 @@ const Avatar = React.forwardRef(({
               className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
               draggable="false"
               loadedimg='false'
+              loadingimg='false'
               animparentscount={animParentsCount}
               animsrc={imageAnimSrc}
               normalsrc={imageSrc}
               defaultavatar={defaultAvatar}
               src={defaultAvatar}
-              onLoad={(e) => {
-                const avatar = $(e.target);
-                if (avatar.attr('loadedimg') === 'false') {
-                  avatar.attr('loadedimg', '');
-                  loadAvatar(e);
-                }
-              }}
+              onLoad={loadImg}
 
               onError={(e) => { e.target.src = ImageBrokenSVG; }}
               alt='avatar'

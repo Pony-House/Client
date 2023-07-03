@@ -7,16 +7,22 @@ export default function loadAvatar(e) {
 
     // Prepare Data
     const img = $(e.target);
+    img.attr('loadingimg', 'true');
+
     const avatars = {
         parents: Number(img.attr('animparentscount')),
         animate: img.attr('animsrc'),
         normal: img.attr('normalsrc'),
     };
 
+    const loadImg = url => {
+        img.attr('src', url);
+    };
+
     if (Number.isNaN(avatars.parents) || !Number.isFinite(avatars.parents) || avatars.parents < 0 || avatars.parents > 20) avatars.parents = 0;
 
-    if (avatars.animate !== null) img.attr('src', avatars.animate);
-    else if (avatars.normal !== null) img.attr('src', avatars.normal);
+    if (avatars.animate !== null) loadImg(avatars.animate);
+    else if (avatars.normal !== null) loadImg(avatars.normal);
 
     // Load Data
     getFileContentType(e, avatars.animate).then(data => {
@@ -42,24 +48,26 @@ export default function loadAvatar(e) {
                     // Insert Effects
                     tinyNode.hover(
                         () => {
-                            img.attr('src', avatars.animate);
+                            loadImg(avatars.animate);
                         }, () => {
-                            img.attr('src', avatars.normal);
+                            loadImg(avatars.normal);
                         }
                     );
 
                 }
 
                 // Set Normal Image
-                img.attr('src', avatars.normal);
+                loadImg(avatars.normal);
+                img.attr('loadingimg', 'false');
 
                 // Invalid values here
-            } else { img.attr('src', ImageBrokenSVG); }
-        } else { img.attr('src', ImageBrokenSVG); }
+            } else { loadImg(ImageBrokenSVG); img.attr('loadingimg', 'false'); }
+        } else { loadImg(ImageBrokenSVG); img.attr('loadingimg', 'false'); }
 
     }).catch(err => {
         console.error(err);
-        img.attr('src', ImageBrokenSVG);
+        loadImg(ImageBrokenSVG);
+        img.attr('loadingimg', 'false');
     });
 
 };
