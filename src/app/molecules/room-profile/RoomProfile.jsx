@@ -32,10 +32,10 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
   // First Values
   const mx = initMatrix.matrixClient;
   const isDM = initMatrix.roomList.directs.has(roomId);
-  let avatarSrc = mx.getRoom(roomId).getAvatarUrl(mx.baseUrl, 36, 36, 'crop');
-  avatarSrc = isDM ? mx.getRoom(roomId).getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop') : avatarSrc;
-  let avatarAnimSrc = mx.getRoom(roomId).getAvatarUrl(mx.baseUrl);
-  avatarAnimSrc = isDM ? mx.getRoom(roomId).getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : avatarAnimSrc;
+
+  let avatarSrc = mx.getRoom(roomId).getAvatarUrl(mx.baseUrl);
+  avatarSrc = isDM ? mx.getRoom(roomId).getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : avatarSrc;
+
   const room = mx.getRoom(roomId);
   const { currentState } = room;
 
@@ -313,7 +313,7 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
 
         <div className='col-sm-2 col-md-4 col-lg-1 p-0'>
           {!canChangeAvatar && <center>
-            <Avatar imageSrc={avatarSrc} imageAnimSrc={avatarAnimSrc} text={roomName} bgColor={colorMXID(roomId)} size="large" />
+            <Avatar imageSrc={avatarSrc} text={roomName} bgColor={colorMXID(roomId)} size="large" />
           </center>}
           {canChangeAvatar && (
             <ImageUpload
