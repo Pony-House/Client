@@ -163,10 +163,6 @@ function RoomSearch({ roomId }) {
               <Button className='my-3' faSrc="fa-solid fa-magnifying-glass" variant="primary" type="submit">Search</Button>
             </center>
 
-            {searchData?.results.length > 0 && (
-              <Text>{`${searchData.count} results for "${searchTerm}"`}</Text>
-            )}
-
             {!isRoomEncrypted && searchData === null && (
               <div className="room-search__help">
                 {status.type === cons.status.IN_FLIGHT && <Spinner />}
@@ -191,6 +187,10 @@ function RoomSearch({ roomId }) {
 
         </ul>
       </div>
+
+      {searchData?.results.length > 0 && (
+        <center className='border-bottom border-bg pb-1 mb-4'>{`${searchData.count} results for "${searchTerm}"`}</center>
+      )}
 
       {searchData?.results.length > 0 && (
         <>
