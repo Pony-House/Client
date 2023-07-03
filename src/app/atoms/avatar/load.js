@@ -3,6 +3,19 @@ import { getFileContentType } from '../../../util/fileMime';
 
 import ImageBrokenSVG from '../../../../public/res/svg/image-broken.svg';
 
+// Await Avatar Load
+export function waitAvatarLoad(img) {
+    return new Promise((resolve) => {
+
+        if (img.attr('loadingimg') !== 'true') {
+            resolve(true);
+        } else {
+            setTimeout(() => waitAvatarLoad().then(resolve), 100);
+        }
+
+    });
+};
+
 // Update Avatar Data
 export function updateAvatarData(img, normalImg, animateImg) {
     return new Promise((resolve, reject) => {
