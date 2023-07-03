@@ -6,9 +6,11 @@ import ImageBrokenSVG from '../../../../public/res/svg/image-broken.svg';
 export function installAvatarData(img) {
 
     // Load Type Data
-    getFileContentType(img.get(0), img.data('avatars-animate')).then(data => {
+    img.attr('loadingimg', 'true');
+    getFileContentType({ target: img.get(0) }, img.data('avatars-animate')).then(data => {
 
         // Set background e prepare data validator
+        img.attr('loadingimg', 'true');
         img.css('background-color', 'transparent');
 
         // Read File Type
@@ -20,7 +22,7 @@ export function installAvatarData(img) {
                 if (data.type[1] === 'gif') {
 
                     // Prepare Node Detector
-                    let tinyNode = img.get(0).target;
+                    let tinyNode = img.get(0);
                     for (let i = 0; i < img.data('avatars-parents'); i++) {
                         tinyNode = tinyNode.parentNode;
                     }
@@ -92,6 +94,6 @@ export function loadAvatarTags(e) {
     else if (avatars.normal !== null) img.attr('src', avatars.normal);
 
     // Load Data
-    installAvatarData(img);
+    return installAvatarData(img);
 
 };
