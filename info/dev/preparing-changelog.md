@@ -15,3 +15,4 @@
 - New imageAnimSrc values added.
 - Jquery module added.
 - Banner Space upload fixed.
+- Avatar animation hover fixed.
