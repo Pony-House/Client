@@ -804,7 +804,7 @@ function getEditedBody(editedMEvent) {
 // Message Base Receive
 function Message({
   mEvent, isBodyOnly, roomTimeline,
-  focus, fullTime, isEdit, setEdit, cancelEdit,
+  focus, fullTime, isEdit, setEdit, cancelEdit, children,
 }) {
 
   // Get Room Data
@@ -902,7 +902,7 @@ function Message({
 
         </td>
 
-        <td className='p-0 pe-3 py-1'>
+        <td className='p-0 pe-3 py-1' colSpan={!children ? '2' : ''}>
 
           {roomTimeline && !isEdit && (
             <MessageOptions
@@ -967,6 +967,13 @@ function Message({
           )}
 
         </td>
+
+        {children && (
+          <td className='p-0 pe-3 py-1'>
+            {children}
+          </td>
+        )}
+
 
       </tr>
     );

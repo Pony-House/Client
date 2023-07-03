@@ -123,8 +123,9 @@ function RoomSearch({ roomId }) {
               mEvent={mEvent}
               isBodyOnly={false}
               fullTime
-            />
-            <Button onClick={() => selectRoom(roomId, id)}>View</Button>
+            >
+              <Button onClick={() => selectRoom(roomId, id)}>View</Button>
+            </Message>
           </React.Fragment>
         );
       })}
@@ -179,12 +180,16 @@ function RoomSearch({ roomId }) {
 
         {searchData?.results.length > 0 && (
           <>
-            <div className="room-search__content">
-              {searchData.results.map((searchResult) => {
-                const { timeline } = searchResult.context;
-                return renderTimeline(timeline);
-              })}
-            </div>
+
+            <table className="table table-borderless table-hover align-middle m-0" id="chatbox">
+              <tbody className="room-search__content">
+                {searchData.results.map((searchResult) => {
+                  const { timeline } = searchResult.context;
+                  return renderTimeline(timeline);
+                })}
+              </tbody>
+            </table>
+
             {searchData?.next_batch && (
               <div className="room-search__more">
                 {status.type !== cons.status.IN_FLIGHT && (
@@ -193,6 +198,7 @@ function RoomSearch({ roomId }) {
                 {status.type === cons.status.IN_FLIGHT && <Spinner />}
               </div>
             )}
+
           </>
         )}
 
