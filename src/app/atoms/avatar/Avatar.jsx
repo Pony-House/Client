@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import $ from 'jquery';
-import loadAvatar from './load';
+import { loadAvatarTags } from './load';
 
 import { twemojify } from '../../../util/twemojify';
 
@@ -34,7 +34,7 @@ const Avatar = React.forwardRef(({
     const avatar = $(e.target);
     if (avatar.attr('loadedimg') === 'false') {
       avatar.removeAttr('loadedimg');
-      loadAvatar(e);
+      loadAvatarTags(e);
     }
   };
 
