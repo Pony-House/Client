@@ -3,13 +3,15 @@ import { getFileContentType } from '../../../util/fileMime';
 
 import ImageBrokenSVG from '../../../../public/res/svg/image-broken.svg';
 
-export function loadAvatarData(img) {
+export function installAvatarData(img) {
 
-    // Load Data
+    // Load Type Data
     getFileContentType(img.get(0), img.data('avatars-animate')).then(data => {
 
         // Set background e prepare data validator
         img.css('background-color', 'transparent');
+
+        // Read File Type
         if (Array.isArray(data.type) && typeof data.type[0] === 'string' && typeof data.type[1] === 'string') {
             if (data.type[0] === 'image') {
 
@@ -45,41 +47,51 @@ export function loadAvatarData(img) {
             } else { img.attr('src', ImageBrokenSVG); img.attr('loadingimg', 'false'); }
         } else { img.attr('src', ImageBrokenSVG); img.attr('loadingimg', 'false'); }
 
-    }).catch(err => {
-        console.error(err);
-        img.attr('src', ImageBrokenSVG);
-        img.attr('loadingimg', 'false');
-    });
+    })
+
+        // Fail
+        .catch(err => {
+            console.error(err);
+            img.attr('src', ImageBrokenSVG);
+            img.attr('loadingimg', 'false');
+        });
 
 };
 
+// Load Avatar tags
 export function loadAvatarTags(e) {
 
     // Prepare Data
     const img = $(e.target);
     img.attr('loadingimg', 'true');
 
+    // Get Params
     const avatars = {
         parents: Number(img.attr('animparentscount')),
         animate: img.attr('animsrc'),
         normal: img.attr('normalsrc'),
     };
 
+    // Insert Params
     img.data('avatars-animate', avatars.animate);
     img.data('avatars-normal', avatars.normal);
     img.data('avatars-default', img.attr('defaultavatar'));
 
+    // Delete Tags
     img.removeAttr('animsrc');
     img.removeAttr('animparentscount');
     img.removeAttr('normalsrc');
     img.removeAttr('defaultavatar');
 
+    // Fix Parents Param
     if (Number.isNaN(avatars.parents) || !Number.isFinite(avatars.parents) || avatars.parents < 0 || avatars.parents > 20) avatars.parents = 0;
     img.data('avatars-parents', avatars.parents);
 
+    // Update Src
     if (avatars.animate !== null) img.attr('src', avatars.animate);
     else if (avatars.normal !== null) img.attr('src', avatars.normal);
 
-    loadAvatarData(img);
+    // Load Data
+    installAvatarData(img);
 
 };
