@@ -204,7 +204,7 @@ export function forceUnloadedAvatars() {
         img.removeAttr('normalsrc');
         img.removeAttr('defaultavatar');
 
-        waitAvatarLoad(img).then(() => { updateAvatarData(img, normalImg, animateImg, defaultavatar) });
+        waitAvatarLoad(img).then((solved) => { if (solved) updateAvatarData(img, normalImg, animateImg, defaultavatar) });
 
     });
 };
