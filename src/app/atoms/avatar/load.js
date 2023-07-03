@@ -103,9 +103,9 @@ export function installAvatarData(img) {
                         // Insert Effects
                         tinyNode.hover(
                             () => {
-                                if (data.type[1] === 'gif' && img.data('avatars-animate')) img.attr('src', img.data('avatars-animate'));
+                                if (img.data('avatars-type') === 'gif' && img.data('avatars-animate')) img.attr('src', img.data('avatars-animate'));
                             }, () => {
-                                if (data.type[1] === 'gif' && img.data('avatars-normal')) img.attr('src', img.data('avatars-normal'));
+                                if (img.data('avatars-type') === 'gif' && img.data('avatars-normal')) img.attr('src', img.data('avatars-normal'));
                             }
                         );
 
