@@ -26,6 +26,9 @@ export function updateAvatarData(img, normalImg, animateImg, defaultavatar) {
         else if (normalImg !== null) img.attr('src', normalImg).data('avatars-normal', normalImg);
         else if (defaultavatar !== null) img.data('avatars-default', defaultavatar);
 
+        // Remove OLD Avatar
+        img.attr('src', img.data('avatars-default'));
+
         // Get Data
         getFileContentType({ target: img.get(0) }, img.data('avatars-animate')).then(data => {
 
