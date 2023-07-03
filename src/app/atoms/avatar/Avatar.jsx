@@ -50,7 +50,7 @@ const Avatar = React.forwardRef(({
               src={imageSrc !== null ? imageSrc : `./public/img/default_avatar/${colorCode}.jpg`}
               onLoad={(e) => { e.target.style.backgroundColor = 'transparent'; }}
               onError={(e) => { e.target.src = ImageBrokenSVG; }}
-              alt=""
+              alt={text || 'avatar'}
             />
 
             :
@@ -70,7 +70,7 @@ const Avatar = React.forwardRef(({
               onLoad={loadAvatar}
 
               onError={(e) => { e.target.src = ImageBrokenSVG; }}
-              alt='avatar'
+              alt={text || 'avatar'}
 
             />
 
