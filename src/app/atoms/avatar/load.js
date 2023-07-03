@@ -136,6 +136,7 @@ export function loadAvatarTags(e) {
     else if (avatars.normal !== null) img.attr('src', avatars.normal);
 
     // Load Data
-    return installAvatarData(img);
+    installAvatarData(img);
+    return img;
 
 };
