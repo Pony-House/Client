@@ -120,11 +120,12 @@ function RoomSearch({ roomId }) {
         return (
           <React.Fragment key={id}>
             <Message
+              className='p-0'
               mEvent={mEvent}
               isBodyOnly={false}
               fullTime
             >
-              <Button onClick={() => selectRoom(roomId, id)}>View</Button>
+              <div className='h-100 w-100 d-inline'><Button className='float-end' onClick={() => selectRoom(roomId, id)}>View</Button></div>
             </Message>
           </React.Fragment>
         );
@@ -133,77 +134,81 @@ function RoomSearch({ roomId }) {
   );
 
   return (
-    <div className="card noselect m-3">
-      <ul className="list-group list-group-flush">
+    <>
 
-        <form className="room-search__form noselect" onSubmit={handleSearch}>
+      <div className="card noselect m-3">
+        <ul className="list-group list-group-flush">
 
-          <li className="list-group-item very-small text-gray">Room search</li>
+          <form className="room-search__form noselect" onSubmit={handleSearch}>
 
-          <center className='p-3'>
-            <div>
-              <Input
-                placeholder="Search for keywords"
-                name="room-search-input"
-                disabled={isRoomEncrypted}
-                autoFocus
-              />
-            </div>
-            <Button className='my-3' faSrc="fa-solid fa-magnifying-glass" variant="primary" type="submit">Search</Button>
-          </center>
+            <li className="list-group-item very-small text-gray">Room search</li>
 
-          {searchData?.results.length > 0 && (
-            <Text>{`${searchData.count} results for "${searchTerm}"`}</Text>
-          )}
+            <center className='p-3'>
+              <div>
+                <Input
+                  placeholder="Search for keywords"
+                  name="room-search-input"
+                  disabled={isRoomEncrypted}
+                  autoFocus
+                />
+              </div>
+              <Button className='my-3' faSrc="fa-solid fa-magnifying-glass" variant="primary" type="submit">Search</Button>
+            </center>
 
-          {!isRoomEncrypted && searchData === null && (
-            <div className="room-search__help">
-              {status.type === cons.status.IN_FLIGHT && <Spinner />}
-              {status.type === cons.status.IN_FLIGHT && <Text>Searching room messages...</Text>}
-              {status.type === cons.status.PRE_FLIGHT && <RawIcon fa="fa-solid fa-magnifying-glass" size="large" />}
-              {status.type === cons.status.PRE_FLIGHT && <Text>Search room messages</Text>}
-              {status.type === cons.status.ERROR && <Text>Failed to search messages</Text>}
-            </div>
-          )}
+            {searchData?.results.length > 0 && (
+              <Text>{`${searchData.count} results for "${searchTerm}"`}</Text>
+            )}
 
-          {!isRoomEncrypted && searchData?.results.length === 0 && (
-            <div className="room-search__help">
-              <Text>No results found</Text>
-            </div>
-          )}
-          {isRoomEncrypted && (
-            <div className="room-search__help">
-              <Text>Search does not work in encrypted room</Text>
-            </div>
-          )}
-        </form>
-
-        {searchData?.results.length > 0 && (
-          <>
-
-            <table className="table table-borderless table-hover align-middle m-0" id="chatbox">
-              <tbody className="room-search__content">
-                {searchData.results.map((searchResult) => {
-                  const { timeline } = searchResult.context;
-                  return renderTimeline(timeline);
-                })}
-              </tbody>
-            </table>
-
-            {searchData?.next_batch && (
-              <div className="room-search__more">
-                {status.type !== cons.status.IN_FLIGHT && (
-                  <Button onClick={paginate}>Load more</Button>
-                )}
+            {!isRoomEncrypted && searchData === null && (
+              <div className="room-search__help">
                 {status.type === cons.status.IN_FLIGHT && <Spinner />}
+                {status.type === cons.status.IN_FLIGHT && <Text>Searching room messages...</Text>}
+                {status.type === cons.status.PRE_FLIGHT && <RawIcon fa="fa-solid fa-magnifying-glass" size="large" />}
+                {status.type === cons.status.PRE_FLIGHT && <Text>Search room messages</Text>}
+                {status.type === cons.status.ERROR && <Text>Failed to search messages</Text>}
               </div>
             )}
 
-          </>
-        )}
+            {!isRoomEncrypted && searchData?.results.length === 0 && (
+              <div className="room-search__help">
+                <Text>No results found</Text>
+              </div>
+            )}
+            {isRoomEncrypted && (
+              <div className="room-search__help">
+                <Text>Search does not work in encrypted room</Text>
+              </div>
+            )}
+          </form>
 
-      </ul>
-    </div>
+        </ul>
+      </div>
+
+      {searchData?.results.length > 0 && (
+        <>
+
+          <table className="table table-borderless table-hover align-middle m-0" id="chatbox">
+            <tbody className="room-search__content">
+              {searchData.results.map((searchResult) => {
+                const { timeline } = searchResult.context;
+                return renderTimeline(timeline);
+              })}
+            </tbody>
+          </table>
+
+          {searchData?.next_batch && (
+            <div className="room-search__more">
+              {status.type !== cons.status.IN_FLIGHT && (
+                <Button onClick={paginate}>Load more</Button>
+              )}
+              {status.type === cons.status.IN_FLIGHT && <Spinner />}
+            </div>
+          )}
+
+        </>
+      )}
+
+    </>
   );
 }
 

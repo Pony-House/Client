@@ -804,7 +804,7 @@ function getEditedBody(editedMEvent) {
 // Message Base Receive
 function Message({
   mEvent, isBodyOnly, roomTimeline,
-  focus, fullTime, isEdit, setEdit, cancelEdit, children,
+  focus, fullTime, isEdit, setEdit, cancelEdit, children, className,
 }) {
 
   // Get Room Data
@@ -812,8 +812,8 @@ function Message({
   const { editedTimeline, reactionTimeline } = roomTimeline ?? {};
 
   // Content Body
-  const className = [];
-  if (focus) className.push('message-focus');
+  const classList = [];
+  if (focus) classList.push('message-focus');
   const content = mEvent.getContent();
   const eventId = mEvent.getId();
   const msgType = content?.msgtype;
@@ -843,7 +843,7 @@ function Message({
   }, [body, customHTML]);
 
   // Emoji Type
-  if (msgType === 'm.emote') className.push('message--type-emote');
+  if (msgType === 'm.emote') classList.push('message--type-emote');
 
   // Is Edit
   const isEdited = roomTimeline ? editedTimeline.has(eventId) : false;
@@ -872,12 +872,20 @@ function Message({
   // Fix Body String
   if (typeof body !== 'string') body = '';
 
+  // Add Class Items
+  if (className) {
+    const tinyClasses = className.split(' ');
+    for (const item in tinyClasses) {
+      classList.push(tinyClasses[item]);
+    }
+  }
+
   // Normal Message
   if (msgType !== 'm.bad.encrypted') {
 
     // Return Data
     return (
-      <tr className={className.join(' ')}>
+      <tr className={classList.join(' ')}>
 
         <td className='p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base'>
 
@@ -984,7 +992,7 @@ function Message({
   const errorMessage = `<i class="bi bi-key-fill text-warning"></i> <strong>Unable to decrypt message.</strong>`;
   isCustomHTML = true;
   return (
-    <tr className={className.join(' ')}>
+    <tr className={classList.join(' ')}>
 
       <td className='p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base'>
 
@@ -1081,6 +1089,7 @@ function Message({
 
 // Message Default Data
 Message.defaultProps = {
+  className: null,
   isBodyOnly: false,
   focus: false,
   roomTimeline: null,
@@ -1091,6 +1100,7 @@ Message.defaultProps = {
 };
 
 Message.propTypes = {
+  className: PropTypes.string,
   mEvent: PropTypes.shape({}).isRequired,
   isBodyOnly: PropTypes.bool,
   roomTimeline: PropTypes.shape({}),
