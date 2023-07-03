@@ -3,6 +3,51 @@ import { getFileContentType } from '../../../util/fileMime';
 
 import ImageBrokenSVG from '../../../../public/res/svg/image-broken.svg';
 
+// Update Avatar Data
+export function updateAvatarData(img, normalImg, animateImg) {
+
+    // Update Data
+    img.data('avatars-animate', animateImg);
+    img.data('avatars-normal', normalImg);
+
+    // Update Src
+    if (animateImg !== null) img.attr('src', animateImg);
+    else if (normalImg !== null) img.attr('src', normalImg);
+
+    // Get Data
+    img.attr('loadingimg', 'true');
+    getFileContentType({ target: img.get(0) }, img.data('avatars-animate')).then(data => {
+
+        // Set Data Prepare
+        img.attr('loadingimg', 'true');
+
+        // Read File Type
+        if (Array.isArray(data.type) && typeof data.type[0] === 'string' && typeof data.type[1] === 'string') {
+            if (data.type[0] === 'image') {
+
+                // Change Avatar Type
+                img.data('avatars-type', data.type[1]);
+
+                // Set Normal Image
+                img.attr('src', img.data('avatars-normal'));
+                img.attr('loadingimg', 'false');
+
+                // Invalid values here
+            } else { img.attr('src', ImageBrokenSVG); img.attr('loadingimg', 'false'); }
+        } else { img.attr('src', ImageBrokenSVG); img.attr('loadingimg', 'false'); }
+
+    })
+
+        // Fail
+        .catch(err => {
+            console.error(err);
+            img.attr('src', ImageBrokenSVG);
+            img.attr('loadingimg', 'false');
+        });
+
+};
+
+// Install Avatar Data
 export function installAvatarData(img) {
 
     // Load Type Data
@@ -19,27 +64,24 @@ export function installAvatarData(img) {
 
                 // Gif Detected
                 img.data('avatars-type', data.type[1]);
-                if (data.type[1] === 'gif') {
 
-                    // Prepare Node Detector
-                    let tinyNode = img.get(0);
-                    for (let i = 0; i < img.data('avatars-parents'); i++) {
-                        tinyNode = tinyNode.parentNode;
-                    }
-
-                    // Final Node
-                    tinyNode = $(tinyNode);
-
-                    // Insert Effects
-                    tinyNode.hover(
-                        () => {
-                            img.attr('src', img.data('avatars-animate'));
-                        }, () => {
-                            img.attr('src', img.data('avatars-normal'));
-                        }
-                    );
-
+                // Prepare Node Detector
+                let tinyNode = img.get(0);
+                for (let i = 0; i < img.data('avatars-parents'); i++) {
+                    tinyNode = tinyNode.parentNode;
                 }
+
+                // Final Node
+                tinyNode = $(tinyNode);
+
+                // Insert Effects
+                tinyNode.hover(
+                    () => {
+                        if (data.type[1] === 'gif' && img.data('avatars-animate')) img.attr('src', img.data('avatars-animate'));
+                    }, () => {
+                        if (data.type[1] === 'gif') img.attr('src', img.data('avatars-normal'));
+                    }
+                );
 
                 // Set Normal Image
                 img.attr('src', img.data('avatars-normal'));
