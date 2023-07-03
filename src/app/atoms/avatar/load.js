@@ -19,19 +19,16 @@ export function waitAvatarLoad(img) {
 };
 
 // Update Avatar Data
-export function updateAvatarData({ img, normalImg, animateImg }) {
+export function updateAvatarData(img, normalImg, animateImg, defaultavatar) {
+    img.attr('loadingimg', 'true');
     return new Promise((resolve, reject) => {
 
-        // Update Data
-        img.data('avatars-animate', animateImg);
-        img.data('avatars-normal', normalImg);
-
         // Update Src
-        if (animateImg !== null) img.attr('src', animateImg);
-        else if (normalImg !== null) img.attr('src', normalImg);
+        if (animateImg !== null) img.attr('src', animateImg).data('avatars-animate', animateImg);
+        else if (normalImg !== null) img.attr('src', normalImg).data('avatars-normal', normalImg);
+        else if (defaultavatar !== null) img.data('avatars-default', defaultavatar);
 
         // Get Data
-        img.attr('loadingimg', 'true');
         getFileContentType({ target: img.get(0) }, img.data('avatars-animate')).then(data => {
 
             // Set Data Prepare
@@ -70,19 +67,21 @@ export function updateAvatarData({ img, normalImg, animateImg }) {
 updateAvatarData.defaultProps = {
     normalImg: null,
     animateImg: null,
+    defaultavatar: null,
 };
 
 updateAvatarData.propTypes = {
     normalImg: PropTypes.string,
     animateImg: PropTypes.string,
+    defaultavatar: PropTypes.string,
 };
 
 // Install Avatar Data
 export function installAvatarData(img) {
+    img.attr('loadingimg', 'true');
     return new Promise((resolve, reject) => {
 
         // Load Type Data
-        img.attr('loadingimg', 'true');
         getFileContentType({ target: img.get(0) }, img.data('avatars-animate')).then(data => {
 
             // Set background e prepare data validator
@@ -139,11 +138,9 @@ export function installAvatarData(img) {
 
 // Load Avatar tags
 export function loadAvatarTags(e) {
+    const img = $(e.target);
+    img.attr('loadingimg', 'true');
     return new Promise((resolve, reject) => {
-
-        // Prepare Data
-        const img = $(e.target);
-        img.attr('loadingimg', 'true');
 
         // Get Params
         const avatars = {
@@ -182,14 +179,33 @@ export function loadAvatar(e) {
     const avatar = $(e.target);
     if (avatar.attr('loadedimg') === 'false') {
         avatar.removeAttr('loadedimg');
-        loadAvatarTags(e);
+        waitAvatarLoad(avatar).then(() => { loadAvatarTags(e); });
     }
 };
 
 // Force Reload
 export function forceLoadAvatars() {
-    $(`[loadedimg="false"]`).each((index, target) => {
+    $('.avatar-react[loadedimg="false"]').each((index, target) => {
         const img = $(target);
-        if (img.attr('loadingimg') !== 'true') loadAvatar({ target });
+        waitAvatarLoad(img).then(() => { loadAvatar({ target }); });
+    });
+};
+
+export function forceUnloadedAvatars() {
+    $('.avatar-react[animsrc], .avatar-react[normalsrc], .avatar-react[defaultavatar]').each((index, target) => {
+
+        const img = $(target);
+
+        const normalImg = img.attr('normalsrc');
+        const animateImg = img.attr('animsrc');
+        const defaultavatar = img.attr('defaultavatar');
+
+        img.removeAttr('animsrc');
+        img.removeAttr('animparentscount');
+        img.removeAttr('normalsrc');
+        img.removeAttr('defaultavatar');
+
+        waitAvatarLoad(img).then(() => { updateAvatarData(img, normalImg, animateImg, defaultavatar) });
+
     });
 };

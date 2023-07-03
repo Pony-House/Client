@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-
+import { forceUnloadedAvatars } from '../../atoms/avatar/load';
 import { twemojify } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
@@ -34,10 +34,12 @@ function RoomViewHeader({ roomId }) {
   useEffect(() => {
     const { roomList } = initMatrix;
     const handleProfileUpdate = (rId) => {
+      forceUnloadedAvatars();
       if (roomId !== rId) return;
       forceUpdate();
     };
 
+    forceUnloadedAvatars();
     roomList.on(cons.events.roomList.ROOM_PROFILE_UPDATED, handleProfileUpdate);
     return () => {
       roomList.removeListener(cons.events.roomList.ROOM_PROFILE_UPDATED, handleProfileUpdate);
@@ -53,6 +55,8 @@ function RoomViewHeader({ roomId }) {
   };
 
   //       <IconButton className="room-header__drawer-btn" onClick={startVoiceChat} tooltip="Start VC" fa="fa-solid fa-phone" />
+
+  setTimeout(forceUnloadedAvatars, 200);
 
   return (
     <Header>
