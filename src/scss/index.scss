@@ -307,7 +307,7 @@ a {
   &.btn-success i::before,
   &.btn-danger i::before,
   &.btn-dark i::before {
-    color: var(--tc-primary-high);
+    color: var(--btn-normal);
   }
 
   &.btn-warning,
@@ -316,7 +316,7 @@ a {
   &.btn-warning i::before,
   &.btn-info i::before,
   &.btn-light i::before {
-    color: var(--tc-surface-normal);
+    color: var(--btn-dark);
   }
 }
 
