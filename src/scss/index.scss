@@ -971,3 +971,29 @@ a {
   pointer-events: none;
   align-items: center;
 }
+
+/* Avatar */
+.profile-editor,
+.room-info {
+  .avatar-react,
+  .img-upload__process,
+  .avatar__border {
+    height: 82px !important;
+    width: 82px !important;
+    max-width: unset !important;
+  }
+
+  .img-upload__process {
+    left: 6px;
+  }
+
+  .avatar-container .avatar__border {
+    > * {
+      font-size: 21pt;
+    }
+    .emoji {
+      height: 42px;
+      width: 42px;
+    }
+  }
+}

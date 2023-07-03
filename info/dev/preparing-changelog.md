@@ -19,3 +19,4 @@
 - No pinned spaces message fixed.
 - Search HTML fixed.
 - btn buttons css fix.
+- Avatar editor size fixed.

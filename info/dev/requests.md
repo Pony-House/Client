@@ -46,8 +46,6 @@ Made by Me
 
     =======================================================
 
-    --> Ajeitar o tamanho da parte preta do botão de upload de avatar para spaces, rooms, perfil
-
     --> Galeria de gifs e memes
     --> Enviar gravação de voz
     --> Adicionar opção de colocar um ícone do lado do status (Com compatibilidade com emojis)
