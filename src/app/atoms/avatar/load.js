@@ -176,3 +176,20 @@ export function loadAvatarTags(e) {
 
     });
 };
+
+// Load Avatar
+export function loadAvatar(e) {
+    const avatar = $(e.target);
+    if (avatar.attr('loadedimg') === 'false') {
+        avatar.removeAttr('loadedimg');
+        loadAvatarTags(e);
+    }
+};
+
+// Force Reload
+export function forceLoadAvatars() {
+    $(`[loadedimg="false"]`).each((index, target) => {
+        const img = $(target);
+        if (img.attr('loadingimg') !== 'true') loadAvatar({ target });
+    });
+};

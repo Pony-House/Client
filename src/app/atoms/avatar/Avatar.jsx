@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import $ from 'jquery';
-import { loadAvatarTags } from './load';
-
+import { loadAvatar, forceLoadAvatars } from './load';
 import { twemojify } from '../../../util/twemojify';
 
 import Text from '../text/Text';
@@ -30,23 +28,8 @@ const Avatar = React.forwardRef(({
 
   // Default Avatar
   const defaultAvatar = `./public/img/default_avatar/${colorCode}.jpg`;
-  const loadImg = (e) => {
-    const avatar = $(e.target);
-    if (avatar.attr('loadedimg') === 'false') {
-      avatar.removeAttr('loadedimg');
-      loadAvatarTags(e);
-    }
-  };
-
-  const forceLoadImg = () => {
-    $(`[loadedimg="false"]`).each((index, target) => {
-      const img = $(target);
-      if (img.attr('loadingimg') !== 'true') loadImg({ target });
-    });
-  };
-
-  setTimeout(forceLoadImg, 100);
-  useEffect(() => { forceLoadImg(); }, []);
+  setTimeout(forceLoadAvatars, 100);
+  useEffect(() => { forceLoadAvatars(); }, []);
 
   // Render
   return (
@@ -84,7 +67,7 @@ const Avatar = React.forwardRef(({
               normalsrc={imageSrc}
               defaultavatar={defaultAvatar}
               src={defaultAvatar}
-              onLoad={loadImg}
+              onLoad={loadAvatar}
 
               onError={(e) => { e.target.src = ImageBrokenSVG; }}
               alt='avatar'
