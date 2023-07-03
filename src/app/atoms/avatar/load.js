@@ -178,7 +178,7 @@ export function loadAvatar(e) {
     const avatar = $(e.target);
     if (avatar.attr('loadedimg') === 'false') {
         avatar.removeAttr('loadedimg');
-        waitAvatarLoad(avatar).then(() => { loadAvatarTags(e); });
+        waitAvatarLoad(avatar).then((solved) => { if (solved) loadAvatarTags(e); });
     }
 };
 
@@ -186,7 +186,7 @@ export function loadAvatar(e) {
 export function forceLoadAvatars() {
     $('.avatar-react[loadedimg="false"]').each((index, target) => {
         const img = $(target);
-        waitAvatarLoad(img).then(() => { loadAvatar({ target }); });
+        waitAvatarLoad(img).then((solved) => { if (solved) loadAvatar({ target }); });
     });
 };
 
