@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import $ from 'jquery';
 import { getFileContentType } from '../../../util/fileMime';
 
@@ -17,7 +19,7 @@ export function waitAvatarLoad(img) {
 };
 
 // Update Avatar Data
-export function updateAvatarData(img, normalImg, animateImg) {
+export function updateAvatarData({ img, normalImg, animateImg }) {
     return new Promise((resolve, reject) => {
 
         // Update Data
@@ -63,6 +65,16 @@ export function updateAvatarData(img, normalImg, animateImg) {
             });
 
     });
+};
+
+updateAvatarData.defaultProps = {
+    normalImg: null,
+    animateImg: null,
+};
+
+updateAvatarData.propTypes = {
+    normalImg: PropTypes.string,
+    animateImg: PropTypes.string,
 };
 
 // Install Avatar Data
