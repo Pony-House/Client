@@ -18,3 +18,4 @@
 - Avatar animation hover fixed.
 - No pinned spaces message fixed.
 - Search HTML fixed.
+- btn buttons css fix.
