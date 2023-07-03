@@ -15,11 +15,21 @@ export default function loadAvatar(e) {
         normal: img.attr('normalsrc'),
     };
 
+    img.data('avatars-animate', avatars.animate);
+    img.data('avatars-normal', avatars.normal);
+    img.data('avatars-default', img.attr('defaultavatar'));
+
+    img.removeAttr('animsrc');
+    img.removeAttr('animparentscount');
+    img.removeAttr('normalsrc');
+    img.removeAttr('defaultavatar');
+
     const loadImg = url => {
         img.attr('src', url);
     };
 
     if (Number.isNaN(avatars.parents) || !Number.isFinite(avatars.parents) || avatars.parents < 0 || avatars.parents > 20) avatars.parents = 0;
+    img.data('avatars-parents', avatars.parents);
 
     if (avatars.animate !== null) loadImg(avatars.animate);
     else if (avatars.normal !== null) loadImg(avatars.normal);
@@ -33,12 +43,12 @@ export default function loadAvatar(e) {
             if (data.type[0] === 'image') {
 
                 // Gif Detected
-                img.attr('image-type', data.type[1]);
+                img.data('avatars-type', data.type[1]);
                 if (data.type[1] === 'gif') {
 
                     // Prepare Node Detector
                     let tinyNode = e.target;
-                    for (let i = 0; i < avatars.parents; i++) {
+                    for (let i = 0; i < img.data('avatars-parents'); i++) {
                         tinyNode = tinyNode.parentNode;
                     }
 
@@ -48,16 +58,16 @@ export default function loadAvatar(e) {
                     // Insert Effects
                     tinyNode.hover(
                         () => {
-                            loadImg(avatars.animate);
+                            loadImg(img.data('avatars-animate'));
                         }, () => {
-                            loadImg(avatars.normal);
+                            loadImg(img.data('avatars-normal'));
                         }
                     );
 
                 }
 
                 // Set Normal Image
-                loadImg(avatars.normal);
+                loadImg(img.data('avatars-normal'));
                 img.attr('loadingimg', 'false');
 
                 // Invalid values here

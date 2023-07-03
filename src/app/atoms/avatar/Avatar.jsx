@@ -32,9 +32,8 @@ const Avatar = React.forwardRef(({
   const defaultAvatar = `./public/img/default_avatar/${colorCode}.jpg`;
   const loadImg = (e) => {
     const avatar = $(e.target);
-    console.log(avatar.attr('loadedimg'), e.target);
     if (avatar.attr('loadedimg') === 'false') {
-      avatar.attr('loadedimg', '');
+      avatar.removeAttr('loadedimg');
       loadAvatar(e);
     }
   };
