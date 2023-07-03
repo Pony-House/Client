@@ -79,7 +79,7 @@ export function installAvatarData(img) {
                     () => {
                         if (data.type[1] === 'gif' && img.data('avatars-animate')) img.attr('src', img.data('avatars-animate'));
                     }, () => {
-                        if (data.type[1] === 'gif') img.attr('src', img.data('avatars-normal'));
+                        if (data.type[1] === 'gif' && img.data('avatars-normal')) img.attr('src', img.data('avatars-normal'));
                     }
                 );
 
