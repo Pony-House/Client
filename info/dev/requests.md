@@ -72,6 +72,8 @@ Made by Me
 
     --> Criar detector de inatividade
 
+    --> Tema https://github.com/catppuccin/cinny
+
     Fazer o sistema web3
     O banco de dados vai guarda a chave de assinatura, a chave publica da web3, e a sessão que foi usada para fazer a integração.
     Esses dados são usados para fazer uma validação rápida da conexão do usuário.
