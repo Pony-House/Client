@@ -293,6 +293,33 @@ a {
   display: flex;
 }
 
+/* BTN */
+.btn {
+  &.btn-primary,
+  &.btn-primary,
+  &.btn-secondary,
+  &.btn-success,
+  &.btn-danger,
+  &.btn-dark,
+  &.btn-primary i::before,
+  &.btn-primary i::before,
+  &.btn-secondary i::before,
+  &.btn-success i::before,
+  &.btn-danger i::before,
+  &.btn-dark i::before {
+    color: var(--tc-primary-high);
+  }
+
+  &.btn-warning,
+  &.btn-info,
+  &.btn-light,
+  &.btn-warning i::before,
+  &.btn-info i::before,
+  &.btn-light i::before {
+    color: var(--tc-surface-normal);
+  }
+}
+
 /* Fix Emoji Size */
 .emoji-size-fix img.emoji,
 .message-body.emoji-size-fix [data-mx-emoticon] {

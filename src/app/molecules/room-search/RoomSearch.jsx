@@ -5,7 +5,6 @@ import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import { selectRoom } from '../../../client/action/navigation';
 
-import Text from '../../atoms/text/Text';
 import RawIcon from '../../atoms/system-icons/RawIcon';
 import Button from '../../atoms/button/Button';
 import Input from '../../atoms/input/Input';
@@ -166,21 +165,21 @@ function RoomSearch({ roomId }) {
             {!isRoomEncrypted && searchData === null && (
               <div className="room-search__help">
                 {status.type === cons.status.IN_FLIGHT && <Spinner />}
-                {status.type === cons.status.IN_FLIGHT && <Text>Searching room messages...</Text>}
+                {status.type === cons.status.IN_FLIGHT && <span className='small'>Searching room messages...</span>}
                 {status.type === cons.status.PRE_FLIGHT && <RawIcon fa="fa-solid fa-magnifying-glass" size="large" />}
-                {status.type === cons.status.PRE_FLIGHT && <Text>Search room messages</Text>}
-                {status.type === cons.status.ERROR && <Text>Failed to search messages</Text>}
+                {status.type === cons.status.PRE_FLIGHT && <span className='small'>Search room messages</span>}
+                {status.type === cons.status.ERROR && <span className='small'>Failed to search messages</span>}
               </div>
             )}
 
             {!isRoomEncrypted && searchData?.results.length === 0 && (
-              <div className="room-search__help">
-                <Text>No results found</Text>
+              <div className="room-search__help small">
+                No results found
               </div>
             )}
             {isRoomEncrypted && (
-              <div className="room-search__help">
-                <Text>Search does not work in encrypted room</Text>
+              <div className="room-search__help small">
+                Search does not work in encrypted room
               </div>
             )}
           </form>

@@ -4,19 +4,23 @@
   /* background color | --bg-[background type]: value */
   --bg-surface: #ffffff;
   --bg-surface-semi-transparent: rgba(255, 255, 255, 0.9);
+
   --bg-surface-gradient: linear-gradient(
     180deg,
     rgba(246, 246, 246, 1) 0%,
     rgb(246, 246, 246) 40%,
     rgb(233, 233, 233) 100%
   );
+
   --bg-surface-gradient-2: linear-gradient(
     180deg,
     rgba(236, 236, 236, 1) 0%,
     rgb(236, 236, 236) 20%,
     rgb(255, 255, 255) 100%
   );
+
   --bg-surface-gradient-3: linear-gradient(180deg, rgb(223, 223, 223) 0%, rgb(255, 255, 255) 100%);
+
   --bg-surface-transparent: #ffffff00;
   --bg-surface-low: #f6f6f6;
   --bg-surface-low-semi-transparent: rgba(246, 246, 246, 0.9);
@@ -65,6 +69,11 @@
   --tc-surface-normal: rgba(0, 0, 0, 78%);
   --tc-surface-normal-low: rgba(0, 0, 0, 60%);
   --tc-surface-low: rgba(0, 0, 0, 48%);
+
+  --tc-surface-high-reverse: rgba(255, 255, 255, 98%);
+  --tc-surface-normal-reverse: rgba(255, 255, 255, 94%);
+  --tc-surface-normal-low-reverse: rgba(255, 255, 255, 60%);
+  --tc-surface-low-reverse: rgba(255, 255, 255, 58%);
 
   --tc-primary-high: #ffffff;
   --tc-primary-normal: rgba(255, 255, 255, 68%);
@@ -378,6 +387,7 @@
 
 @mixin dark-mode() {
   /* background color | --bg-[background type]: value */
+
   --bg-surface: hsl(0, 2%, 11%);
   --bg-surface-semi-transparent: rgba(29, 27, 27, 0.9);
   --bg-surface-gradient: linear-gradient(
@@ -386,13 +396,16 @@
     rgba(27, 27, 27, 1) 40%,
     rgb(40, 40, 40) 100%
   );
+
   --bg-surface-gradient-2: linear-gradient(
     180deg,
     rgba(27, 27, 27, 1) 0%,
     rgba(27, 27, 27, 1) 20%,
     rgb(40, 40, 50) 100%
   );
+
   --bg-surface-gradient-3: linear-gradient(180deg, rgba(44, 44, 44, 1) 0%, rgb(50, 50, 60) 100%);
+
   --bg-surface-transparent: hsla(0, 0%, 21%, 0);
   --bg-surface-low: hsl(0, 0%, 13%);
   --bg-surface-low-semi-transparent: rgba(33, 33, 33, 0.9);
@@ -419,6 +432,11 @@
   --tc-surface-normal: rgba(255, 255, 255, 94%);
   --tc-surface-normal-low: rgba(255, 255, 255, 60%);
   --tc-surface-low: rgba(255, 255, 255, 58%);
+
+  --tc-surface-high-reverse: #000000;
+  --tc-surface-normal-reverse: rgba(0, 0, 0, 78%);
+  --tc-surface-normal-low-reverse: rgba(0, 0, 0, 60%);
+  --tc-surface-low-reverse: rgba(0, 0, 0, 48%);
 
   --tc-primary-high: #ffffff;
   --tc-primary-normal: rgba(255, 255, 255, 0.68);
