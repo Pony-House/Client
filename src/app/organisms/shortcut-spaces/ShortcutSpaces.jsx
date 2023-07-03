@@ -103,7 +103,7 @@ function ShortcutSpacesContent() {
   return (
     <>
       <Text className="shortcut-spaces__header" variant="b3" weight="bold">Pinned spaces</Text>
-      {spaceShortcut.length === 0 && <Text>No pinned spaces</Text>}
+      {spaceShortcut.length === 0 && <div className='small px-2'>No pinned spaces</div>}
       {spaceShortcut.map((spaceId) => renderSpace(spaceId, true))}
       <Text className="shortcut-spaces__header" variant="b3" weight="bold">Unpinned spaces</Text>
       {spaceWithoutShortcut.length === 0 && <Text>No unpinned spaces</Text>}
