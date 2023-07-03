@@ -3,7 +3,8 @@
   width: 20px !important;
 }
 
-#chatbox {
+#chatbox,
+#search-chatbox {
   word-break: break-word;
 
   .reaction-message {
@@ -205,7 +206,8 @@
   }
 }
 
-#chatbox tr:hover {
+#chatbox tr:hover,
+#search-chatbox tr:hover {
   .hc-time {
     display: block;
   }
@@ -249,14 +251,15 @@ em-emoji-picker {
 }
 
 @media (max-width: 576px) {
-  #chatbox {
+  #chatbox,
+  #search-chatbox {
     .message__options {
       margin-top: -36px;
     }
-  }
-  #chatbox tr:hover {
-    .reaction-message {
-      display: none;
+    tr:hover {
+      .reaction-message {
+        display: none;
+      }
     }
   }
   .show-emoji-list {
@@ -266,5 +269,12 @@ em-emoji-picker {
     width: 100%;
     min-width: 100%;
     margin-bottom: 84px;
+  }
+
+  #search-chatbox {
+    td {
+      padding-left: 0px !important;
+      padding-right: 0px !important;
+    }
   }
 }

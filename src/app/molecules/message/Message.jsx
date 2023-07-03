@@ -804,7 +804,7 @@ function getEditedBody(editedMEvent) {
 // Message Base Receive
 function Message({
   mEvent, isBodyOnly, roomTimeline,
-  focus, fullTime, isEdit, setEdit, cancelEdit, children, className,
+  focus, fullTime, isEdit, setEdit, cancelEdit, children, className, classNameMessage,
 }) {
 
   // Get Room Data
@@ -947,6 +947,7 @@ function Message({
 
           {!isEdit && (
             <MessageBody
+              className={classNameMessage}
               senderName={username}
               isCustomHTML={isCustomHTML}
               body={isMedia(mEvent) ? genMediaContent(mEvent) : customHTML ?? body}
@@ -1089,6 +1090,7 @@ function Message({
 
 // Message Default Data
 Message.defaultProps = {
+  classNameMessage: null,
   className: null,
   isBodyOnly: false,
   focus: false,
@@ -1100,6 +1102,7 @@ Message.defaultProps = {
 };
 
 Message.propTypes = {
+  classNameMessage: PropTypes.string,
   className: PropTypes.string,
   mEvent: PropTypes.shape({}).isRequired,
   isBodyOnly: PropTypes.bool,

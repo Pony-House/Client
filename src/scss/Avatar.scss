@@ -47,7 +47,8 @@
   }
 }
 
-#chatbox > tbody {
+#chatbox > tbody,
+#search-chatbox > tbody {
   > tr {
     .avatar-container {
       .anim-avatar {

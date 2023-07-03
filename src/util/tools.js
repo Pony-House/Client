@@ -71,7 +71,7 @@ export function resizeWindowChecker(timeout = 500) {
                 }
 
                 .room-search__result-item .chatbox-size-fix {
-                    width: ${roomView.offsetWidth - removeValue - 110}px!important;
+                    width: ${roomView.offsetWidth - removeValue - 50}px!important;
                 }
             `);
 

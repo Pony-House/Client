@@ -62,16 +62,21 @@ function useRoomSearch(roomId) {
       },
     };
     try {
+
       const res = await mx.search({ body });
       const data = mx.processRoomEventsSearch({
         _query: body,
         results: [],
         highlights: [],
       }, res);
+
       if (!mountStore.getItem()) return;
       setStatus({ type: cons.status.SUCCESS, term });
       setSearchData(data);
+
+      // eslint-disable-next-line no-useless-return
       if (!mountStore.getItem()) return;
+
     } catch (error) {
       setSearchData(null);
       setStatus({ type: cons.status.ERROR, term });
@@ -121,11 +126,14 @@ function RoomSearch({ roomId }) {
           <React.Fragment key={id}>
             <Message
               className='p-0'
+              classNameMessage='chatbox-size-fix'
               mEvent={mEvent}
               isBodyOnly={false}
               fullTime
             >
-              <div className='h-100 w-100 d-inline'><Button className='float-end' onClick={() => selectRoom(roomId, id)}>View</Button></div>
+              <div className='h-100 w-100 d-inline'>
+                <Button className='float-end' onClick={() => selectRoom(roomId, id)}><i class="bi bi-skip-forward-fill" /></Button>
+              </div>
             </Message>
           </React.Fragment>
         );
@@ -187,7 +195,7 @@ function RoomSearch({ roomId }) {
       {searchData?.results.length > 0 && (
         <>
 
-          <table className="table table-borderless table-hover align-middle m-0" id="chatbox">
+          <table className="table table-borderless table-hover align-middle m-0" id="search-chatbox">
             <tbody className="room-search__content">
               {searchData.results.map((searchResult) => {
                 const { timeline } = searchResult.context;
