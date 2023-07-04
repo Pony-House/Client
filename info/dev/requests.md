@@ -44,6 +44,8 @@ Made by Me
 
     https://github.com/electron-vite/electron-vite-react
 
+    https://docs.walletconnect.com/2.0/web/web3modal/react/wagmi/installation
+
     =======================================================
 
     --> Galeria de gifs e memes
@@ -71,6 +73,8 @@ Made by Me
     --> Criar detector de inatividade
 
     --> Tema https://github.com/catppuccin/cinny
+
+    Sandbox: https://github.com/sablejs/sablejs
 
     Fazer o sistema web3
     O banco de dados vai guarda a chave de assinatura, a chave publica da web3, e a sessão que foi usada para fazer a integração.

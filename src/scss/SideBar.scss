@@ -43,6 +43,14 @@
     margin: calc(var(--sp-tight) / 2) 0;
   }
 }
+
+.space-container {
+  .avatar-container .avatar-react {
+    height: 42px !important;
+    width: 42px !important;
+  }
+}
+
 .sidebar-divider {
   margin: auto;
   width: 24px;
