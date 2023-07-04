@@ -37,3 +37,7 @@ If you are a developer interested in contributing to the project, I'll let the P
 
     setIsRawModalVisible
     isRawModalVisible
+
+## Input send message manager
+
+    src/app/organisms/room/RoomViewInput.jsx

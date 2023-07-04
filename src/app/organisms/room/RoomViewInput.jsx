@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-// import $ from 'jquery';
+import $ from 'jquery';
 import TextareaAutosize from 'react-autosize-textarea';
 
 import initMatrix from '../../../client/initMatrix';
@@ -57,8 +57,7 @@ function RoomViewInput({
 
   // Request Focus
   function requestFocusInput() {
-    if (textAreaRef === null) return;
-    textAreaRef.current.focus();
+    $(textAreaRef.current).focus();
   }
 
   // Effects
@@ -83,16 +82,20 @@ function RoomViewInput({
   };
 
   function uploadingProgress(myRoomId, { loaded, total }) {
+
     if (myRoomId !== roomId) return;
     const progressPer = Math.round((loaded * 100) / total);
-    uploadProgressRef.current.textContent = `Uploading: ${bytesToSize(loaded)}/${bytesToSize(total)} (${progressPer}%)`;
-    inputBaseRef.current.style.backgroundImage = `linear-gradient(90deg, var(--bg-surface-hover) ${progressPer}%, var(--bg-surface-low) ${progressPer}%)`;
+
+    $(uploadProgressRef.current).text(`Uploading: ${bytesToSize(loaded)}/${bytesToSize(total)} (${progressPer}%)`);
+    $(inputBaseRef.current).css('background-image', `linear-gradient(90deg, var(--bg-surface-hover) ${progressPer}%, var(--bg-surface-low) ${progressPer}%)`);
+
   }
+
   function clearAttachment(myRoomId) {
     if (roomId !== myRoomId) return;
     setAttachment(null);
-    inputBaseRef.current.style.backgroundImage = 'unset';
-    uploadInputRef.current.value = null;
+    $(inputBaseRef.current).css('background-image', 'unset');
+    $(uploadInputRef.current).val('');
   }
 
   function rightOptionsA11Y(A11Y) {
@@ -120,11 +123,37 @@ function RoomViewInput({
     viewEvent.emit('cmd_deactivate');
   }
 
-  function setCursorPosition(pos) {
-    setTimeout(() => {
-      textAreaRef.current.focus();
-      textAreaRef.current.setSelectionRange(pos, pos);
-    }, 0);
+  function setCursorPosition(pos1, pos2) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+
+        const textArea = $(textAreaRef.current);
+
+        let selectionStart = pos1;
+        let selectionEnd = pos2;
+
+        if (textArea.length > 0) {
+          if (selectionStart === 'auto') selectionStart = textArea[0].selectionStart;
+          if (selectionEnd === 'auto') selectionEnd = textArea[0].selectionEnd;
+        }
+
+        if (typeof selectionStart !== 'number') {
+
+          if (textArea.length > 0) {
+
+            textArea.focus();
+
+            if (typeof selectionEnd !== 'number' || selectionStart === selectionEnd) textArea.get(0).setSelectionRange(selectionStart, selectionStart);
+            else textArea.get(0).setSelectionRange(selectionStart, selectionEnd);
+
+          };
+
+          resolve(true);
+
+        } else resolve(false);
+
+      }, 0);
+    });
   }
 
   function replaceCmdWith(msg, cursor, replacement) {
@@ -138,12 +167,13 @@ function RoomViewInput({
 
   function firedCmd(cmdData) {
 
-    const msg = textAreaRef.current.value;
-    textAreaRef.current.value = replaceCmdWith(
+    const textArea = $(textAreaRef.current);
+    const msg = textArea.val();
+    textArea.val(replaceCmdWith(
       msg,
       cmdCursorPos,
       typeof cmdData?.replace !== 'undefined' ? cmdData.replace : '',
-    );
+    ));
 
     deactivateCmd();
 
@@ -152,7 +182,7 @@ function RoomViewInput({
   // Input
   function focusInput() {
     if (settings.isTouchScreenDevice) return;
-    textAreaRef.current.focus();
+    $(textAreaRef.current).focus();
   }
 
   // Set Reply
@@ -181,9 +211,10 @@ function RoomViewInput({
     navigation.on(cons.events.navigation.REPLY_TO_CLICKED, setUpReply);
 
     // Textarea
-    if (textAreaRef?.current !== null) {
+    const textArea = $(textAreaRef.current);
+    if (textArea.length > 0) {
       isTyping = false;
-      textAreaRef.current.value = roomsInput.getMessage(roomId);
+      textArea.val(roomsInput.getMessage(roomId));
       setAttachment(roomsInput.getAttachment(roomId));
       setReplyTo(roomsInput.getReplyTo(roomId));
     }
@@ -198,13 +229,15 @@ function RoomViewInput({
       viewEvent.removeListener('cmd_fired', firedCmd);
       navigation.removeListener(cons.events.navigation.REPLY_TO_CLICKED, setUpReply);
 
+      const textArea2 = $(textAreaRef.current);
+
       if (isCmdActivated) deactivateCmd();
-      if (textAreaRef?.current === null) return;
+      if (textArea2.length < 1) return;
 
-      const msg = textAreaRef.current.value;
+      const msg = textArea2.val();
 
-      textAreaRef.current.style.height = 'unset';
-      inputBaseRef.current.style.backgroundImage = 'unset';
+      textArea2.css('height', 'unset');
+      $(inputBaseRef.current).css('background-image', 'unset');
 
       if (msg.trim() === '') {
         roomsInput.setMessage(roomId, '');
@@ -244,8 +277,8 @@ function RoomViewInput({
 
 
     // Prepare Message
-    textAreaRef.current.disabled = true;
-    textAreaRef.current.style.cursor = 'not-allowed';
+    const textArea = $(textAreaRef.current);
+    textArea.prop('disabled', true).css('cursor', 'not-allowed');
 
     // Send Input
     await roomsInput.sendInput(roomId, opt).catch(err => {
@@ -253,13 +286,11 @@ function RoomViewInput({
     });
 
     // CSS
-    textAreaRef.current.disabled = false;
-    textAreaRef.current.style.cursor = 'unset';
+    textArea.prop('disabled', false).css('cursor', 'unset');
     focusInput();
 
     // Get Room ID
-    textAreaRef.current.value = roomsInput.getMessage(roomId);
-    textAreaRef.current.style.height = 'unset';
+    textArea.val(roomsInput.getMessage(roomId)).css('height', 'unset');
 
     // Reply Fix
     if (replyTo !== null) setReplyTo(null);
@@ -294,11 +325,14 @@ function RoomViewInput({
     requestAnimationFrame(() => deactivateCmdAndEmit());
 
     // Message Body
-    const msgBody = textAreaRef.current.value.trim();
+    const textArea = $(textAreaRef.current);
+    const msgBody = textArea.val().trim();
+
+    // This is command!
     if (msgBody.startsWith('/')) {
       processCommand(msgBody.trim());
-      textAreaRef.current.value = '';
-      textAreaRef.current.style.height = 'unset';
+      textArea.val('');
+      textArea.css('height', 'unset');
       return;
     }
 
@@ -416,18 +450,23 @@ function RoomViewInput({
     }
   };
 
-  // Add Emoji
+  // Add Emoji Function
   function addEmoji(emoji) {
-    textAreaRef.current.value += emoji.unicode;
-    textAreaRef.current.focus();
+
+    const textArea = $(textAreaRef.current);
+    textArea.val(`${textArea.val()}${emoji.unicode}`);
+
+    textArea.focus();
+
   }
 
   const handleUploadClick = () => {
-    if (attachment === null) uploadInputRef.current.click();
+    if (attachment === null) $(uploadInputRef.current).trigger('click');
     else {
       roomsInput.cancelAttachment(roomId);
     }
   };
+
   function uploadFileChange(e) {
     const file = e.target.files.item(0);
     setAttachment(file);
