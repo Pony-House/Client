@@ -92,7 +92,7 @@ function Home({ spaceId }) {
           )
         ) ||
 
-        (!isCategorized && spaceIds.length < 1 &&
+        (spaceIds.length < 1 &&
           (
             <center className='p-3 small text-warning'>
               <div className='mb-3'>No rooms were found. Please enable some room.</div>
