@@ -59,7 +59,7 @@
     "katex": "0.16.8",
     "linkify-html": "4.1.1",
     "linkifyjs": "4.1.1",
-    "matrix-js-sdk": "24.0.0",
+    "matrix-js-sdk": "26.1.0",
     "moment-timezone": "0.5.43",
     "photoswipe": "5.3.7",
     "prop-types": "15.8.1",
