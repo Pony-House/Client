@@ -22,3 +22,4 @@
 - Avatar editor size fixed.
 - No rooms message display fixed.
 - firedCmd - jquery.
+- addEmoji - auto space added
