@@ -467,9 +467,22 @@ function RoomViewInput({
 
       textArea.focus();
 
-      if (typeof selectionStart === 'number') {
+      if (typeof selectionStart === 'number' && typeof selectionEnd === 'number') {
 
-        textArea.val(textArea.val().substring(0, selectionStart) + emoji.unicode + textArea.val().substring(selectionEnd, textArea.val().length));
+        let part1 = textArea.val().substring(0, selectionStart);
+        let part2 = textArea.val().substring(selectionEnd, textArea.val().length);
+
+        if (part1.endsWith(':')) {
+          part1 += ' ';
+          selectionStart++;
+        }
+
+        if (part2.startsWith(':')) {
+          part2 = ` ${part2}`;
+          selectionEnd++;
+        }
+
+        textArea.val(part1 + emoji.unicode + part2);
 
         textAreaRef.current.selectionStart = selectionStart + emoji.unicode.length;
         textAreaRef.current.selectionEnd = selectionStart + emoji.unicode.length;
