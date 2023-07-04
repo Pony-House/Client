@@ -85,11 +85,14 @@ function Home({ spaceId }) {
       )}
 
       {
+
         (
           roomIds.length !== 0 && (
             <RoomsCategory notSpace={roomSettings.notSpace} name="Rooms" roomIds={roomIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
           )
-        ) || (!categories &&
+        ) ||
+
+        (!isCategorized && spaceIds.length < 1 &&
           (
             <center className='p-3 small text-warning'>
               <div className='mb-3'>No rooms were found. Please enable some room.</div>
@@ -97,6 +100,7 @@ function Home({ spaceId }) {
             </center>
           )
         )
+
       }
 
       {directIds.length !== 0 && (
