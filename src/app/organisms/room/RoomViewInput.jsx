@@ -454,12 +454,33 @@ function RoomViewInput({
 
   // Add Emoji Function
   function addEmoji(emoji) {
-
     const textArea = $(textAreaRef.current);
-    textArea.val(`${textArea.val()}${emoji.unicode}`);
+    if (textArea.length > 0) {
 
-    textArea.focus();
+      let selectionStart = 0;
+      let selectionEnd = 0;
 
+      if (textArea.length > 0) {
+        selectionStart = textArea[0].selectionStart;
+        selectionEnd = textArea[0].selectionEnd;
+      }
+
+      textArea.focus();
+
+      if (typeof selectionStart === 'number') {
+
+        textArea.val(textArea.val().substring(0, selectionStart) + emoji.unicode + textArea.val().substring(selectionEnd, textArea.val().length));
+
+        textAreaRef.current.selectionStart = selectionStart + emoji.unicode.length;
+        textAreaRef.current.selectionEnd = selectionStart + emoji.unicode.length;
+
+      } else {
+        textArea.val(`${textArea.val()}${emoji.unicode}`);
+      }
+
+      textArea.focus();
+
+    }
   }
 
   const handleUploadClick = () => {
