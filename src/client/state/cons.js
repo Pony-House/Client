@@ -1,5 +1,5 @@
 const cons = {
-  version: '1.3.15',
+  version: '1.3.16',
   secretKey: {
     ACCESS_TOKEN: 'cinny_access_token',
     DEVICE_ID: 'cinny_device_id',
