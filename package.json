@@ -16,7 +16,17 @@
     "ionic:build": "tsc && cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
     "ionic:serve": "vite dev --host"
   },
-  "keywords": [],
+  "keywords": [
+    "react",
+    "javascript",
+    "website",
+    "matrix",
+    "pony",
+    "matrix-client",
+    "brony",
+    "brony-fandom",
+    "pony-house"
+  ],
   "author": "JasminDreasond (Yasmin Seidel)",
   "license": "AGPL-3.0-only",
   "dependencies": {
