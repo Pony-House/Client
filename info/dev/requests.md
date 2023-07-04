@@ -7,6 +7,10 @@ noctabrat
 
     --> Being able to see pfp fullscreen when we click them the same way we can see images
 
+chad
+
+    --> did you ever find out why it never scrolls down to the bottom yet? c:
+
 Made by Me
 
     Insert into manifest
