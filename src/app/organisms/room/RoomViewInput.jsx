@@ -175,6 +175,8 @@ function RoomViewInput({
       typeof cmdData?.replace !== 'undefined' ? cmdData.replace : '',
     ));
 
+    textArea.focus();
+
     deactivateCmd();
 
   }
