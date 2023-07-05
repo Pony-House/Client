@@ -606,7 +606,7 @@ function RoomViewContent({ eventId, roomTimeline }) {
   return (
     <ScrollView onScroll={handleTimelineScroll} ref={timelineSVRef} autoHide>
       <div className="room-view__content" onClick={handleOnClickCapture}>
-        <div className="timeline__wrapper">
+        <div className="timeline__wrapper mb-2">
           <table className="table table-borderless table-hover align-middle m-0" id="chatbox">
             <tbody>
               {roomTimeline.initialized ? renderTimeline() : loadingMsgPlaceholders('loading', 3)}

@@ -7,10 +7,8 @@
   justify-content: flex-end;
 
   & .timeline__wrapper {
-    --typing-noti-height: 28px;
     min-height: 0;
     min-width: 0;
-    padding-bottom: var(--typing-noti-height);
 
     & .message,
     & .ph-msg,
