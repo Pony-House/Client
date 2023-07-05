@@ -5,26 +5,15 @@
 .room-view {
   &__typing {
     display: none;
-    padding: var(--sp-ultra-tight) var(--sp-normal);
-    transition: transform 200ms ease-in-out;
+    position: relative;
+    top: 55px;
 
     & b {
       color: var(--tc-surface-high);
     }
 
-    & .text {
-      @extend .cp-txt__ellipsis;
-      @extend .cp-fx__item-one;
-
-      margin: 0 var(--sp-tight);
-    }
-
     &--open {
       display: flex;
-      background: var(--bg-surface);
-      height: 30px;
-      transform: translateY(-99%);
-      box-shadow: 0 4px 0 0 var(--bg-surface);
       & .bouncing-loader {
         & > *,
         &::after,

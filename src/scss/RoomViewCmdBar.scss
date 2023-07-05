@@ -2,10 +2,15 @@
 @use './partials/text';
 @use './partials/dir';
 
+.cmd-bar.active {
+  background: var(--bg-surface-low);
+}
+
 .cmd-bar {
   --cmd-bar-height: 28px;
   min-height: var(--cmd-bar-height);
   display: flex;
+  z-index: 1;
 
   &__info {
     display: flex;

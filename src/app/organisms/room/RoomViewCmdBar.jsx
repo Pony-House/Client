@@ -32,20 +32,28 @@ CmdItem.propTypes = {
 function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
   function renderCmdSuggestions(cmdPrefix, cmds) {
     const cmdOptString = typeof option === 'string' ? `/${option}` : '/?';
-    return cmds.map((cmd) => (
-      <CmdItem
-        key={cmd}
-        onClick={() => {
-          fireCmd({
-            prefix: cmdPrefix,
-            option,
-            result: commands[cmd],
-          });
-        }}
-      >
-        <Text variant="b2">{`${cmd}${cmd.isOptions ? cmdOptString : ''}`}</Text>
-      </CmdItem>
-    ));
+    const cmdDOM = $('.cmd-bar');
+    cmdDOM.removeClass('active');
+    return cmds.map((cmd) => {
+
+      cmdDOM.addClass('active');
+
+      return (
+        <CmdItem
+          key={cmd}
+          onClick={() => {
+            fireCmd({
+              prefix: cmdPrefix,
+              option,
+              result: commands[cmd],
+            });
+          }}
+        >
+          <Text variant="b2">{`${cmd}${cmd.isOptions ? cmdOptString : ''}`}</Text>
+        </CmdItem>
+      );
+
+    });
   }
 
   function renderEmojiSuggestion(emPrefix, emos) {
@@ -84,36 +92,55 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
       return renderTwemoji(emoji);
     }
 
-    return emos.map((emoji) => (
-      <CmdItem
-        key={emoji.shortcode}
-        onClick={() =>
-          fireCmd({
-            prefix: emPrefix,
-            result: emoji,
-          })
-        }
-      >
-        <Text variant="b1">{renderEmoji(emoji)}</Text>
-        <Text variant="b2">{`:${emoji.shortcode}:`}</Text>
-      </CmdItem>
-    ));
+    const cmdDOM = $('.cmd-bar');
+    cmdDOM.removeClass('active');
+
+    return emos.map((emoji) => {
+
+      cmdDOM.addClass('active');
+
+      return (
+        <CmdItem
+          key={emoji.shortcode}
+          onClick={() =>
+            fireCmd({
+              prefix: emPrefix,
+              result: emoji,
+            })
+          }
+        >
+          <Text variant="b1">{renderEmoji(emoji)}</Text>
+          <Text variant="b2">{`:${emoji.shortcode}:`}</Text>
+        </CmdItem>
+      );
+
+    });
   }
 
   function renderNameSuggestion(namePrefix, members) {
-    return members.map((member) => (
-      <CmdItem
-        key={member.userId}
-        onClick={() => {
-          fireCmd({
-            prefix: namePrefix,
-            result: member,
-          });
-        }}
-      >
-        <Text variant="b2">{twemojify(member.name)}</Text>
-      </CmdItem>
-    ));
+
+    const cmdDOM = $('.cmd-bar');
+    cmdDOM.removeClass('active');
+
+    return members.map((member) => {
+
+      cmdDOM.addClass('active');
+
+      return (
+        <CmdItem
+          key={member.userId}
+          onClick={() => {
+            fireCmd({
+              prefix: namePrefix,
+              result: member,
+            });
+          }}
+        >
+          <Text variant="b2">{twemojify(member.name)}</Text>
+        </CmdItem>
+      );
+
+    });
   }
 
   const cmd = {
@@ -206,6 +233,7 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent }) {
   }
 
   function deactivateCmd() {
+    $('.cmd-bar').removeClass('active');
     setCmd(null);
     cmdOption = undefined;
     cmdPrefix = undefined;
