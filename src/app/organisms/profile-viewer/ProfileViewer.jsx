@@ -92,18 +92,24 @@ ModerationTools.propTypes = {
 function SessionInfo({ userId }) {
   const [devices, setDevices] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
-  const mx = initMatrix.matrixClient;
+  const Crypto = initMatrix.matrixClient.getCrypto();
 
   useEffect(() => {
     let isUnmounted = false;
 
     async function loadDevices() {
       try {
-        await mx.downloadKeys([userId], true);
-        const myDevices = mx.getStoredDevicesForUser(userId);
+
+        let input = await Crypto.getUserDeviceInfo([userId]);
+        input = input.get(userId);
+
+        const myDevices = [];
+        input.forEach((value) => { myDevices.push(value); });
 
         if (isUnmounted) return;
+
         setDevices(myDevices);
+
       } catch {
         setDevices([]);
       }
@@ -125,7 +131,7 @@ function SessionInfo({ userId }) {
           <Chip
             key={device.deviceId}
             faSrc="fa-solid fa-shield"
-            text={device.getDisplayName() || device.deviceId}
+            text={device.displayName || device.deviceId}
           />
         )))}
       </li>

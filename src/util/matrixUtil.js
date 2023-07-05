@@ -212,8 +212,9 @@ export function getSSKeyInfo(key) {
 
 export async function hasDevices(userId) {
   const mx = initMatrix.matrixClient;
+  const Crypto = initMatrix.matrixClient.getCrypto();
   try {
-    const usersDeviceMap = await mx.downloadKeys([userId, mx.getUserId()]);
+    const usersDeviceMap = await Crypto.getUserDeviceInfo([userId, mx.getUserId()]);
     return Object.values(usersDeviceMap)
       .every((userDevices) => (Object.keys(userDevices).length > 0));
   } catch (e) {
