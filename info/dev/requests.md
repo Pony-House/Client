@@ -10,9 +10,6 @@ noctabrat
 chad
 
     --> did you ever find out why it never scrolls down to the bottom yet? c:
-    --> @Tiny Jasmini may i ask for yet another request? move the "is typing" bar to be below the chat text input box... having it above is kind of distracting and it makes it feel like its covering up the chat (making me scroll down to check if that is the case). discord also had the indicator below the chat input box btw.
-
-    --> also i need to find what class that 'is typing' element is using. its still using the old black colour instead of my lighter discord theme colours x3
 
 Made by Me
 
