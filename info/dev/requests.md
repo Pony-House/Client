@@ -89,6 +89,8 @@ Made by Me
     O banco de dados vai guarda a chave de assinatura, a chave publica da web3, e a sessão que foi usada para fazer a integração.
     Esses dados são usados para fazer uma validação rápida da conexão do usuário.
 
+    Usar o UD para fazer algumas determinadas validações de verificação de username.
+
     Web3 XMTP Chat
     https://xmtp.org/docs/build/get-started
 

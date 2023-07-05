@@ -207,7 +207,8 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
 
             <h4 className="card-title">
               <Avatar
-                imageAnimSrc={typeof room.avatar_url === 'string' ? initMatrix.matrixClient.mxcUrlToHttp(room.avatar_url) : null}
+                // animParentsCount={3}
+                // imageAnimSrc={typeof room.avatar_url === 'string' ? initMatrix.matrixClient.mxcUrlToHttp(room.avatar_url) : null}
                 imageSrc={typeof room.avatar_url === 'string' ? initMatrix.matrixClient.mxcUrlToHttp(room.avatar_url, 42, 42, 'crop') : null}
                 bgColor={colorMXID(alias)}
                 text={name}
