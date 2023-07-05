@@ -1,1 +1,2 @@
 - The "typing" warning was changed to a new Chatbox region.
+- Auth white theme fixed.
