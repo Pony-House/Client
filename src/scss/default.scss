@@ -1,6 +1,14 @@
 @use './partials/screen';
 
 :root {
+  --bg-auth-normal: rgb(2, 0, 36);
+  --bg-auth-gradient: linear-gradient(
+    0deg,
+    rgb(31 31 31) 0%,
+    rgb(255 255 255) 35%,
+    rgb(167 167 167) 100%
+  );
+
   /* background color | --bg-[background type]: value */
   --bg-surface: #ffffff;
   --bg-surface-semi-transparent: rgba(255, 255, 255, 0.9);
@@ -390,6 +398,9 @@
 }
 
 @mixin dark-mode() {
+  --bg-auth-normal: rgb(2, 0, 36);
+  --bg-auth-gradient: linear-gradient(0deg, rgb(2, 0, 36) 0%, rgb(32 32 32) 35%, rgb(0 0 0) 100%);
+
   /* background color | --bg-[background type]: value */
 
   --bg-surface: hsl(0, 2%, 11%);

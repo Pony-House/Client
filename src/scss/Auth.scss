@@ -177,8 +177,8 @@
 }
 
 .puddy_background {
-  background: rgb(2, 0, 36);
-  background: linear-gradient(0deg, rgb(2, 0, 36) 0%, rgb(32 32 32) 35%, rgb(0 0 0) 100%);
+  background: var(--bg-auth-normal);
+  background: var(--bg-auth-gradient);
   //background-image: url('/public/favicon.ico');
   background-repeat: no-repeat;
   background-position: center;
