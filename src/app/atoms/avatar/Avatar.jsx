@@ -7,8 +7,9 @@ import { twemojify } from '../../../util/twemojify';
 import Text from '../text/Text';
 import RawIcon from '../system-icons/RawIcon';
 
-import ImageBrokenSVG from '../../../../public/res/svg/image-broken.svg';
 import { avatarInitials } from '../../../util/common';
+
+const ImageBrokenSVG = './img/svg/image-broken.svg';
 
 const Avatar = React.forwardRef(({
   text, bgColor, iconSrc, faSrc, iconColor, imageSrc, size, className, imgClass, imageAnimSrc, isDefaultImage, animParentsCount
@@ -27,7 +28,7 @@ const Avatar = React.forwardRef(({
   }
 
   // Default Avatar
-  const defaultAvatar = `./public/img/default_avatar/${colorCode}.jpg`;
+  const defaultAvatar = `./img/default_avatar/${colorCode}.jpg`;
   setTimeout(forceLoadAvatars, 100);
   useEffect(() => { forceLoadAvatars(); }, []);
 
@@ -47,7 +48,7 @@ const Avatar = React.forwardRef(({
             <img
               className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
               draggable="false"
-              src={imageSrc !== null ? imageSrc : `./public/img/default_avatar/${colorCode}.jpg`}
+              src={imageSrc !== null ? imageSrc : `./img/default_avatar/${colorCode}.jpg`}
               onLoad={(e) => { e.target.style.backgroundColor = 'transparent'; }}
               onError={(e) => { e.target.src = ImageBrokenSVG; }}
               alt={text || 'avatar'}

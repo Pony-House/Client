@@ -16,9 +16,9 @@ import {
 
 import { MenuHeader, MenuItem } from '../../atoms/context-menu/ContextMenu';
 
-import HashSearchIC from '../../../../public/res/ic/outlined/hash-search.svg';
-
 import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
+
+const HashSearchIC = './img/ic/outlined/hash-search.svg';
 
 function SpaceOptions({ roomId, afterOptionSelect }) {
   const mx = initMatrix.matrixClient;

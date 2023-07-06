@@ -20,14 +20,14 @@ import SegmentControl from '../../atoms/segmented-controls/SegmentedControls';
 import Dialog from '../../molecules/dialog/Dialog';
 import SettingTile from '../../molecules/setting-tile/SettingTile';
 
-import HashPlusIC from '../../../../public/res/ic/outlined/hash-plus.svg';
-import SpacePlusIC from '../../../../public/res/ic/outlined/space-plus.svg';
-import HashIC from '../../../../public/res/ic/outlined/hash.svg';
-import HashLockIC from '../../../../public/res/ic/outlined/hash-lock.svg';
-import HashGlobeIC from '../../../../public/res/ic/outlined/hash-globe.svg';
-import SpaceIC from '../../../../public/res/ic/outlined/space.svg';
-import SpaceLockIC from '../../../../public/res/ic/outlined/space-lock.svg';
-import SpaceGlobeIC from '../../../../public/res/ic/outlined/space-globe.svg';
+const HashPlusIC = './img/ic/outlined/hash-plus.svg';
+const SpacePlusIC = './img/ic/outlined/space-plus.svg';
+const HashIC = './img/ic/outlined/hash.svg';
+const HashLockIC = './img/ic/outlined/hash-lock.svg';
+const HashGlobeIC = './img/ic/outlined/hash-globe.svg';
+const SpaceIC = './img/ic/outlined/space.svg';
+const SpaceLockIC = './img/ic/outlined/space-lock.svg';
+const SpaceGlobeIC = './img/ic/outlined/space-globe.svg';
 
 function CreateRoomContent({ isSpace, parentId, onRequestClose }) {
   const [joinRule, setJoinRule] = useState(parentId ? 'restricted' : 'invite');

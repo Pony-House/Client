@@ -8,14 +8,15 @@ import settings from './settings';
 import { setFavicon } from '../../util/common';
 import { updateName } from '../../util/roomName';
 
-// import LogoSVG from '../../../public/res/svg/cinny.svg';
-// import LogoUnreadSVG from '../../../public/res/svg/cinny-unread.svg';
-// import LogoHighlightSVG from '../../../public/res/svg/cinny-highlight.svg';
 import { html, plain } from '../../util/markdown';
 
-const LogoSVG = './public/res/png/cinny.png';
-const LogoUnreadSVG = './public/res/png/cinny-unread.png';
-const LogoHighlightSVG = './public/res/png/cinny-highlight.png';
+// import LogoSVG from './img/svg/cinny.svg';
+// import LogoUnreadSVG from './img/svg/cinny-unread.svg';
+// import LogoHighlightSVG from './img/svg/cinny-highlight.svg';
+
+const LogoSVG = './img/png/cinny.png';
+const LogoUnreadSVG = './img/png/cinny-unread.png';
+const LogoHighlightSVG = './img/png/cinny-highlight.png';
 
 function isNotifEvent(mEvent) {
   const eType = mEvent.getType();

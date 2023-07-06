@@ -15,7 +15,7 @@ import Avatar from '../../atoms/avatar/Avatar';
 import { colorMXID } from '../../../util/colorMXID';
 import { twemojify } from '../../../util/twemojify';
 
-import HashSearchIC from '../../../../public/res/ic/outlined/hash-search.svg';
+const HashSearchIC = './img/ic/outlined/hash-search.svg';
 
 const SEARCH_LIMIT = 20;
 
@@ -271,7 +271,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
 
           </center>
 
-          <img src='./public/img/page/discover.jpg' alt='banner' />
+          <img src='./img/page/discover.jpg' alt='banner' />
 
         </form>
 

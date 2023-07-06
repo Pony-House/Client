@@ -17,12 +17,12 @@ import IconButton from '../../atoms/button/IconButton';
 import { MenuItem, MenuHeader } from '../../atoms/context-menu/ContextMenu';
 import SpaceOptions from '../../molecules/space-options/SpaceOptions';
 
-import HashPlusIC from '../../../../public/res/ic/outlined/hash-plus.svg';
-import HashGlobeIC from '../../../../public/res/ic/outlined/hash-globe.svg';
-import HashSearchIC from '../../../../public/res/ic/outlined/hash-search.svg';
-import SpacePlusIC from '../../../../public/res/ic/outlined/space-plus.svg';
-
 import { setSelectSpace } from '../../../util/selectedRoom';
+
+const HashPlusIC = './img/ic/outlined/hash-plus.svg';
+const HashGlobeIC = './img/ic/outlined/hash-globe.svg';
+const HashSearchIC = './img/ic/outlined/hash-search.svg';
+const SpacePlusIC = './img/ic/outlined/space-plus.svg';
 
 export function HomeSpaceOptions({ spaceId, afterOptionSelect }) {
   const mx = initMatrix.matrixClient;

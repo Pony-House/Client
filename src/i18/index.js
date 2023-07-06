@@ -31,7 +31,7 @@ export function refreshLang() {
         }
 
         // Get Default Data
-        fetch(`./public/i18/${langs.default}.json`, {
+        fetch(`./i18/${langs.default}.json`, {
             headers: {
                 'Accept': 'application/json'
             }
@@ -45,7 +45,7 @@ export function refreshLang() {
 
                 // Insert Custom Lang
                 if (langs.selected !== langs.default) {
-                    fetch(`./public/i18/${langs.selected}.json`, {
+                    fetch(`./i18/${langs.selected}.json`, {
                         headers: {
                             'Accept': 'application/json'
                         }

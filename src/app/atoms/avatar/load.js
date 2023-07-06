@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import { getFileContentType } from '../../../util/fileMime';
 
-import ImageBrokenSVG from '../../../../public/res/svg/image-broken.svg';
+const ImageBrokenSVG = './img/svg/image-broken.svg';
 
 // Await Avatar Load
 export function waitAvatarLoad(img) {

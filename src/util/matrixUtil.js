@@ -1,11 +1,11 @@
 import initMatrix from '../client/initMatrix';
 
-import HashIC from '../../public/res/ic/outlined/hash.svg';
-import HashGlobeIC from '../../public/res/ic/outlined/hash-globe.svg';
-import HashLockIC from '../../public/res/ic/outlined/hash-lock.svg';
-import SpaceIC from '../../public/res/ic/outlined/space.svg';
-import SpaceGlobeIC from '../../public/res/ic/outlined/space-globe.svg';
-import SpaceLockIC from '../../public/res/ic/outlined/space-lock.svg';
+const HashIC = './img/ic/outlined/hash.svg';
+const HashGlobeIC = './img/ic/outlined/hash-globe.svg';
+const HashLockIC = './img/ic/outlined/hash-lock.svg';
+const SpaceIC = './img/ic/outlined/space.svg';
+const SpaceGlobeIC = './img/ic/outlined/space-globe.svg';
+const SpaceLockIC = './img/ic/outlined/space-lock.svg';
 
 const WELL_KNOWN_URI = '/.well-known/matrix/client';
 

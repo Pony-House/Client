@@ -19,7 +19,7 @@
 
     <meta property="og:title" content="Pony House" />
     <meta property="og:url" content="https://client.pony.house" />
-    <meta property="og:image" content="/public/favicon.ico" />
+    <meta property="og:image" content="./favicon.ico" />
     <meta
       property="og:description"
       content="A Private Matrix client where you can enjoy the conversation using simple, elegant and secure interface protected by e2ee with the power of open source."
@@ -28,7 +28,7 @@
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#212121" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f6f6f6" />
 
-    <link id="favicon" rel="shortcut icon" href="./public/favicon.ico" />
+    <link id="favicon" rel="shortcut icon" href="./favicon.ico" />
 
     <link rel="manifest" href="./manifest.json" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -37,58 +37,18 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-    <script src="./public/js/web3.min.js"></script>
+    <script src="./js/web3.min.js"></script>
 
-    <link
-      rel="apple-touch-icon"
-      sizes="57x57"
-      href="./public/res/apple/apple-touch-icon-57x57.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="60x60"
-      href="./public/res/apple/apple-touch-icon-60x60.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="72x72"
-      href="./public/res/apple/apple-touch-icon-72x72.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="76x76"
-      href="./public/res/apple/apple-touch-icon-76x76.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="114x114"
-      href="./public/res/apple/apple-touch-icon-114x114.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="120x120"
-      href="./public/res/apple/apple-touch-icon-120x120.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="144x144"
-      href="./public/res/apple/apple-touch-icon-144x144.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="152x152"
-      href="./public/res/apple/apple-touch-icon-152x152.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="167x167"
-      href="./public/res/apple/apple-touch-icon-167x167.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="./public/res/apple/apple-touch-icon-180x180.png"
-    />
+    <link rel="apple-touch-icon" sizes="57x57" href="./img/apple/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="60x60" href="./img/apple/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="./img/apple/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="./img/apple/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="./img/apple/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="./img/apple/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="./img/apple/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="./img/apple/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="./img/apple/apple-touch-icon-167x167.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./img/apple/apple-touch-icon-180x180.png" />
   </head>
   <body id="appBody">
     <script>
@@ -96,10 +56,10 @@
     </script>
     <div id="root"></div>
     <audio id="notificationSound">
-      <source src="./public/sound/notification.ogg" type="audio/ogg" />
+      <source src="./sound/notification.ogg" type="audio/ogg" />
     </audio>
     <audio id="inviteSound">
-      <source src="./public/sound/invite.ogg" type="audio/ogg" />
+      <source src="./sound/invite.ogg" type="audio/ogg" />
     </audio>
     <script type="module" src="./src/index.jsx"></script>
   </body>
