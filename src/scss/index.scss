@@ -132,6 +132,10 @@ audio:not([controls]) {
   border: 1px solid var(--bg-surface-border);
 }
 
+.form-control-bg::placeholder {
+  color: var(--tc-surface-low) !important;
+}
+
 .form-control-bg,
 .form-control-bg:focus,
 .form-control-bg:active,
