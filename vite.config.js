@@ -69,8 +69,8 @@ const copyFiles = {
       dest: 'public/img/',
     },
     {
-      src: 'src/lang/data',
-      dest: 'public/lang/',
+      src: 'src/i18/data',
+      dest: 'public/i18/',
     }
   ],
 }
