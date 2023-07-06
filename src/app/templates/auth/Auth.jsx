@@ -9,6 +9,9 @@ import ScrollView from '../../atoms/scroll/ScrollView';
 import { Header } from '../../atoms/header/Header';
 import Avatar from '../../atoms/avatar/Avatar';
 
+import LoadingScreen from './modules/LoadingScreen';
+import AuthCard from './modules/AuthCard';
+
 function Auth() {
   const [loginToken, setLoginToken] = useState(getUrlPrams('loginToken'));
 

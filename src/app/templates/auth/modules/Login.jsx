@@ -13,6 +13,8 @@ import ContextMenu, { MenuItem } from '../../../atoms/context-menu/ContextMenu';
 
 import SSOButtons from '../../../molecules/sso-buttons/SSOButtons';
 
+import LoadingScreen from './LoadingScreen';
+
 import { EMAIL_REGEX, BAD_EMAIL_ERROR } from './regex';
 import { normalizeUsername, isValidInput } from './validator';
 

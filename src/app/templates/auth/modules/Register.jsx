@@ -11,6 +11,11 @@ import Text from '../../../atoms/text/Text';
 
 import SSOButtons from '../../../molecules/sso-buttons/SSOButtons';
 
+import LoadingScreen from './LoadingScreen';
+import Recaptcha from './Recaptcha';
+import Terms from './Terms';
+import EmailVerify from './EmailVerify';
+
 import { EMAIL_REGEX, BAD_EMAIL_ERROR } from './regex';
 import { isValidInput } from './validator';
 

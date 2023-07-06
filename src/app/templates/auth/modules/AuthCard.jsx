@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 
 import Text from '../../../atoms/text/Text';
 
+import Homeserver from './Homeserver';
+import Login from './Login';
+import Register from './Register';
+
 function AuthCard() {
     const [hsConfig, setHsConfig] = useState(null);
     const [type, setType] = useState('login');

@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Text from '../../../atoms/text/Text';
 import Spinner from '../../../atoms/spinner/Spinner';
 
+import ProcessWrapper from './ProcessWrapper';
+
 function LoadingScreen({ message }) {
     return (
         <ProcessWrapper>

@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Button from '../../../atoms/button/Button';
 import Text from '../../../atoms/text/Text';
 
+import ProcessWrapper from './ProcessWrapper';
+
 function Terms({ url, onSubmit }) {
     return (
         <ProcessWrapper>
