@@ -67,7 +67,7 @@ function Login({ loginFlow, baseUrl }) {
     return (
         <>
             <div className="auth-form__heading">
-                <Text variant="h2" weight="medium">Login</Text>
+                <h5>Login</h5>
                 {isPassword && (
                     <ContextMenu
                         placement="right"
@@ -104,19 +104,23 @@ function Login({ loginFlow, baseUrl }) {
                         <>
                             {isSubmitting && <LoadingScreen message="Login in progress..." />}
                             <form className="auth-form" onSubmit={handleSubmit}>
+
                                 {typeIndex === 0 && <div><Input values={values.username} name="username" onChange={handleChange} label="Username" type="username" required /></div>}
                                 {errors.username && <Text className="auth-form__error" variant="b3">{errors.username}</Text>}
                                 {typeIndex === 1 && <div><Input values={values.email} name="email" onChange={handleChange} label="Email" type="email" required /></div>}
                                 {errors.email && <Text className="auth-form__error" variant="b3">{errors.email}</Text>}
+
                                 <div className="auth-form__pass-eye-wrapper">
                                     <div><Input values={values.password} name="password" onChange={handleChange} label="Password" type={passVisible ? 'text' : 'password'} required /></div>
                                     <IconButton onClick={() => setPassVisible(!passVisible)} fa={passVisible ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"} size="extra-small" />
                                 </div>
+
                                 {errors.password && <Text className="auth-form__error" variant="b3">{errors.password}</Text>}
                                 {errors.other && <Text className="auth-form__error" variant="b3">{errors.other}</Text>}
                                 <div className="auth-form__btns">
                                     <Button variant="primary" type="submit" disabled={isSubmitting}>Login</Button>
                                 </div>
+
                             </form>
                         </>
                     )}
@@ -141,3 +145,23 @@ Login.propTypes = {
 };
 
 export default Login;
+
+/*
+
+        <div className="form-outline mb-4 small">
+            <input type="email" id="tinyemail" className="form-control form-control-bg form-control-lg" />
+            <label className="form-label text-bg-low" for="tinyemail">Email address</label>
+        </div>
+
+        <div className="form-outline mb-4 small">
+            <input type="password" id="tinypassword" className="form-control form-control-bg form-control-lg" />
+            <label className="form-label text-bg-low" for="tinypassword">Password</label>
+        </div>
+
+        <div className="pt-1 mb-4 small">
+            <button className="btn btn-dark btn-block" type="button" >
+
+            </button>
+        </div>
+
+*/

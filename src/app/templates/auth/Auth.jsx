@@ -49,41 +49,37 @@ function Auth() {
                 <div className="col-md-6 col-lg-7 d-flex align-items-center">
                   <div className="card-body p-lg-4 px-lg-5">
 
-                    <form>
+                    {loginToken && <LoadingScreen message="Redirecting..." />}
+                    {!loginToken && (<>
 
-                      {loginToken && <LoadingScreen message="Redirecting..." />}
-                      {!loginToken && (<>
+                      <div className="d-flex align-items-center mb-3 pb-1">
+                        <Avatar imageSrc="./favicon.ico" />
+                        <span className="ms-3 h2 fw-bold mb-0">Pony House</span>
+                      </div>
 
-                        <div className="d-flex align-items-center mb-3 pb-1">
-                          <Avatar imageSrc="./favicon.ico" />
-                          <span className="ms-3 h2 fw-bold mb-0">Pony House</span>
+                      <AuthCard />
+
+                    </>)}
+
+                    <section className='border-top border-bg pt-4'>
+
+                      <div class="row text-center d-flex justify-content-center">
+
+                        <div class="col-md-4 small">
+                          <a href="https://github.com/Pony-House/Client/releases" rel="noreferrer" class="text-white" target="_blank">{`Version ${cons.version}`}</a>
                         </div>
 
-                        <AuthCard />
-
-                      </>)}
-
-                      <section className='border-top border-bg pt-4'>
-
-                        <div class="row text-center d-flex justify-content-center">
-
-                          <div class="col-md-4 small">
-                            <a href="https://github.com/Pony-House/Client/releases" rel="noreferrer" class="text-white" target="_blank">{`Version ${cons.version}`}</a>
-                          </div>
-
-                          <div class="col-md-4 small">
-                            <a href="https://twitter.com/JasminDreasond" target="_blank" rel="noreferrer" class="text-white">Twitter</a>
-                          </div>
-
-                          <div class="col-md-4 small">
-                            <a href="https://matrix.org" target="_blank" rel="noreferrer" class="text-white">Powered by Matrix</a>
-                          </div>
-
+                        <div class="col-md-4 small">
+                          <a href="https://twitter.com/JasminDreasond" target="_blank" rel="noreferrer" class="text-white">Twitter</a>
                         </div>
 
-                      </section>
+                        <div class="col-md-4 small">
+                          <a href="https://matrix.org" target="_blank" rel="noreferrer" class="text-white">Powered by Matrix</a>
+                        </div>
 
-                    </form>
+                      </div>
+
+                    </section>
 
                   </div>
                 </div>
