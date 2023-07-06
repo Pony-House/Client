@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import moment from 'moment-timezone';
 
 let resizePlace = null;
 let resizeTimeout = null;
@@ -221,5 +222,46 @@ export function countObj(obj) {
 
     // Nothing
     return 0;
+
+};
+
+
+// Time Duration
+export function timeDuration(timeData = 0, durationType = 'asSeconds', now = null) {
+
+    // Number
+    if (typeof timeData !== 'undefined') {
+
+        if (!now) { now = moment(); }
+
+        const duration = moment.duration(now.clone().add(timeData, 'milliseconds').diff(now.clone()));
+        const result = duration[durationType]();
+
+        // Complete
+        return result;
+
+    }
+
+    // Nope
+    return null;
+
+};
+
+// Age
+export function getAge(timeData = 0, now = null) {
+
+    // Number
+    if (typeof timeData !== 'undefined') {
+
+        if (!now) { now = moment(); }
+
+        const birthday = moment(timeData);
+        const age = Math.abs(birthday.diff(now, 'years'));
+        return age;
+
+    }
+
+    // Nope
+    return null;
 
 };
