@@ -13,7 +13,7 @@ export function checkVisible(elm) {
 
 // Is Window Visible
 export function checkVisibleWindow() {
-    return ($('body').hasClass('windowVisible'));
+    return $('body').hasClass('windowVisible');
 }
 
 // HL JS fixer
@@ -85,3 +85,141 @@ export function resizeWindowChecker(timeout = 500) {
 
     }, timeout);
 }
+
+export function dialogWindow(data1, data2) {
+
+    const newData = $('<div>', {
+        id: data1.id,
+        title: data1.title
+    }).append(data1.html);
+
+    $("body").append(newData);
+    newData.dialog(data2);
+
+};
+
+export function btAlert(where, alertType, icon, text) {
+    $(where)
+        .empty()
+        .append($("<div>", {
+            class: `alert alert-${alertType} alert-dismissible fade show`
+        }).append(
+            $("<button>", { class: "close", "data-dismiss": "alert", type: "button" }).append(
+                $("<span>", { "aria-hidden": true, class: "text-secondary" }).text("×")
+            ),
+            $("<i>", { class: icon }), " ", text));
+};
+
+export function btModal(data) {
+
+    if (typeof data.dialog !== "string") { data.dialog = ''; }
+
+    const modal = $("<div>", { class: "modal fade", id: data.id, tabindex: -1, role: "dialog", }).on('hidden.bs.modal', () => {
+        $(this).remove();
+        if (typeof data.hidden === "function") {
+            data.hidden();
+        }
+    }).append(
+        $("<div>", { class: `modal-dialog ${data.dialog}`, role: "document" }).append(
+            $("<div>", { class: "modal-content" }).append(
+
+                $("<div>", { class: "modal-header" }).append(
+                    $("<h5>", { class: "modal-title" }).text(data.title),
+                    $("<button>", { type: "button", class: "btn-close", "data-bs-dismiss": "modal" })
+                ),
+
+                $("<div>", { class: "modal-body" }).append(data.body),
+                $("<div>", { class: "modal-footer" }).append(data.footer)
+
+            )
+        )
+    );
+
+    $("body").prepend(modal);
+    modal.modal();
+
+};
+
+export function formatBytes(bytes, decimals = 2) {
+
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    // eslint-disable-next-line prefer-exponentiation-operator, no-restricted-properties
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+
+};
+
+export function capitalize(text) {
+    return text.replace(/\b\w/g, (l) => l.toUpperCase());
+};
+
+export function dice(obj) {
+    return Number(Math.floor(Math.random() * ((obj - 1) + 1) + 1));
+};
+
+export function percentage(preco, porcentagem) {
+    return preco * (porcentagem / 100);
+};
+
+export function rule3(val1, val2, val3, inverse) {
+
+    if (inverse === true) {
+        return Number(val1 * val2) / val3;
+    }
+
+    return Number(val3 * val2) / val1;
+
+};
+
+export function objType(obj, type) {
+
+    // Is Defined
+    if (typeof obj !== "undefined") {
+
+        // Check Obj Type
+        if (typeof type === "string") {
+
+            if (Object.prototype.toString.call(obj).toLowerCase() === `[object ${type}]`) {
+                return true;
+            }
+
+            return false;
+        }
+
+        // Get Obj Type
+
+        // Result
+        const result = Object.prototype.toString.call(obj).toLowerCase();
+
+        // Send Result
+        return result.substring(8, result.length - 1);
+
+    }
+
+    // Nope
+    return null;
+
+};
+
+export function countObj(obj) {
+
+    // Is Array
+    if (Array.isArray(obj)) {
+        return obj.length;
+    }
+
+    // Object
+    if (objType(obj, 'object')) {
+        return Object.keys(obj).length;
+    }
+
+    // Nothing
+    return 0;
+
+};

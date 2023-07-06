@@ -25,7 +25,6 @@ function onPageShow(event) {
         pagehide: h
     };
 
-    console.log(evt);
     evt = evt || window.event;
     if (evt.type in evtMap)
         $('body').addClass(evtMap[evt.type]);
@@ -102,6 +101,34 @@ export default function startQuery() {
             }
 
         });
+    };
+
+    // Select Range
+    $.fn.selectRange = (start, end) => {
+
+        if (typeof start === "number") {
+
+            if (typeof end !== "number") { end = start; }
+
+            return this.each(() => {
+                if (this.setSelectionRange) {
+                    this.focus();
+                    this.setSelectionRange(start, end);
+                } else if (this.createTextRange) {
+                    const range = this.createTextRange();
+                    range.collapse(true);
+                    range.moveEnd('character', end);
+                    range.moveStart('character', start);
+                    range.select();
+                }
+            });
+
+        }
+
+        const newStart = this[0].selectionStart;
+        const newEnd = this[0].selectionEnd;
+        return { newStart, newEnd };
+
     };
 
     // Tooltip
