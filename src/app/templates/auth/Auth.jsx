@@ -1,35 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-
-import { Formik } from 'formik';
+import React, { useState, useEffect } from 'react';
 
 import * as auth from '../../../client/action/auth';
 import cons from '../../../client/state/cons';
-import { Debounce, getUrlPrams } from '../../../util/common';
-import { getBaseUrl } from '../../../util/matrixUtil';
+import { getUrlPrams } from '../../../util/common';
 
 import Text from '../../atoms/text/Text';
-import Button from '../../atoms/button/Button';
-import IconButton from '../../atoms/button/IconButton';
-import Input from '../../atoms/input/Input';
-import Spinner from '../../atoms/spinner/Spinner';
 import ScrollView from '../../atoms/scroll/ScrollView';
 import { Header } from '../../atoms/header/Header';
 import Avatar from '../../atoms/avatar/Avatar';
-import ContextMenu, { MenuItem, MenuHeader } from '../../atoms/context-menu/ContextMenu';
-
-import SSOButtons from '../../molecules/sso-buttons/SSOButtons';
-
-const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-const BAD_EMAIL_ERROR = 'Invalid email address';
-
-function isValidInput(value, regex) {
-  if (typeof regex === 'string') return regex === value;
-  return regex.test(value);
-}
-function normalizeUsername(rawUsername) {
-  const noLeadingAt = rawUsername.indexOf('@') === 0 ? rawUsername.substr(1) : rawUsername;
-  return noLeadingAt.trim();
-}
 
 function Auth() {
   const [loginToken, setLoginToken] = useState(getUrlPrams('loginToken'));

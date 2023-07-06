@@ -1,4 +1,8 @@
+import React from 'react';
+
 import PropTypes from 'prop-types';
+import Text from '../../atoms/text/Text';
+import Spinner from '../../atoms/spinner/Spinner';
 
 function LoadingScreen({ message }) {
     return (

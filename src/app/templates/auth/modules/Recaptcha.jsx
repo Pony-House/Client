@@ -1,5 +1,9 @@
+import React from 'react';
+
 import PropTypes from 'prop-types';
 import ReCAPTCHA from 'react-google-recaptcha';
+
+import Text from '../../atoms/text/Text';
 
 function Recaptcha({ message, sitekey, onChange }) {
     return (
