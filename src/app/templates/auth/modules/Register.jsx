@@ -1,3 +1,12 @@
+import PropTypes from 'prop-types';
+
+const LOCALPART_SIGNUP_REGEX = /^[a-z0-9_\-.=/]+$/;
+const BAD_LOCALPART_ERROR = 'Username can only contain characters a-z, 0-9, or \'=_-./\'';
+const USER_ID_TOO_LONG_ERROR = 'Your user ID, including the hostname, can\'t be more than 255 characters long.';
+
+const PASSWORD_STRENGHT_REGEX = /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,127}$/;
+const BAD_PASSWORD_ERROR = 'Password must contain at least 1 lowercase, 1 uppercase, 1 number, 1 non-alphanumeric character, 8-127 characters with no space.';
+const CONFIRM_PASSWORD_ERROR = 'Passwords don\'t match.';
 
 let sid;
 let clientSecret;

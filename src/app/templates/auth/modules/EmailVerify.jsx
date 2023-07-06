@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 
 function EmailVerify({ email, onContinue }) {
     return (

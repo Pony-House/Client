@@ -1,3 +1,6 @@
+import PropTypes from 'prop-types';
+import ReCAPTCHA from 'react-google-recaptcha';
+
 function Recaptcha({ message, sitekey, onChange }) {
     return (
         <ProcessWrapper>

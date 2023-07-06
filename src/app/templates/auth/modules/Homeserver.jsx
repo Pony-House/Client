@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 
 let searchingHs = null;
 function Homeserver({ onChange }) {

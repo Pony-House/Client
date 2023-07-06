@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 
 function Login({ loginFlow, baseUrl }) {
     const [typeIndex, setTypeIndex] = useState(0);
