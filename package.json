@@ -48,7 +48,7 @@
     "@web3modal/ethereum": "2.6.2",
     "@web3modal/react": "2.6.2",
     "blurhash": "2.0.5",
-    "bootstrap": "5.2.3",
+    "bootstrap": "5.3.0",
     "bootstrap-icons": "1.10.5",
     "browser-encrypt-attachment": "0.3.0",
     "cross-env": "7.0.3",

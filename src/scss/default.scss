@@ -39,9 +39,9 @@
   --bg-surface-active: rgba(0, 0, 0, 5%);
   --bg-surface-border: rgba(0, 0, 0, 6%);
 
-  --bg-reaction: rgb(57, 61, 78);
-  --bg-reaction-hover: rgba(57, 61, 78, 0.8);
-  --bg-reaction-active: rgba(57, 61, 78, 70%);
+  --bg-reaction: rgb(245 245 245 / 70%);
+  --bg-reaction-hover: rgb(213 213 213 / 80%);
+  --bg-reaction-active: rgb(173 173 173 / 70%);
   --bg-reaction-border: rgba(57, 61, 78, 38%);
 
   --bg-primary: rgb(83, 110, 234);
@@ -431,6 +431,11 @@
   --bg-surface-active: rgba(255, 255, 255, 5%);
   --bg-surface-border: rgba(0, 0, 0, 20%);
 
+  --bg-reaction: rgb(57, 61, 78);
+  --bg-reaction-hover: rgba(57, 61, 78, 0.8);
+  --bg-reaction-active: rgba(57, 61, 78, 70%);
+  --bg-reaction-border: rgba(57, 61, 78, 38%);
+
   --bg-primary: rgb(42, 98, 166);
   --bg-primary-hover: rgba(42, 98, 166, 80%);
   --bg-primary-active: rgba(42, 98, 166, 70%);
@@ -770,55 +775,57 @@
   --ic-surface-low: rgba(255, 251, 222, 64%);
 }
 
-.user-profile {
-  .profile-bg {
-    &--mx-uc-1 {
-      background-color: var(--mx-uc-1);
-    }
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import '@cryptofonts/cryptofont/cryptofont.min.css';
 
-    &--mx-uc-2 {
-      background-color: var(--mx-uc-2);
-    }
+// scss-docs-start import-stack
+// Configuration
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/utilities';
 
-    &--mx-uc-3 {
-      background-color: var(--mx-uc-3);
-    }
+// Layout & components
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/type';
+@import 'bootstrap/scss/images';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/tables';
+@import 'bootstrap/scss/forms';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/transitions';
+//@import 'bootstrap/scss/dropdown';
+@import 'bootstrap/scss/button-group';
+@import 'bootstrap/scss/nav';
+@import 'bootstrap/scss/navbar';
+@import 'bootstrap/scss/card';
+//@import 'bootstrap/scss/accordion';
+@import 'bootstrap/scss/breadcrumb';
+//@import 'bootstrap/scss/pagination';
+@import 'bootstrap/scss/badge';
+//@import 'bootstrap/scss/alert';
+//@import 'bootstrap/scss/progress';
+@import 'bootstrap/scss/list-group';
+@import 'bootstrap/scss/close';
+@import 'bootstrap/scss/toasts';
+@import 'bootstrap/scss/modal';
+@import 'bootstrap/scss/tooltip';
+@import 'bootstrap/scss/popover';
+@import 'bootstrap/scss/spinners';
+//@import 'bootstrap/scss/offcanvas';
+@import 'bootstrap/scss/placeholders';
 
-    &--mx-uc-4 {
-      background-color: var(--mx-uc-4);
-    }
+// Helpers
+@import 'bootstrap/scss/helpers';
 
-    &--mx-uc-5 {
-      background-color: var(--mx-uc-5);
-    }
-
-    &--mx-uc-6 {
-      background-color: var(--mx-uc-6);
-    }
-
-    &--mx-uc-7 {
-      background-color: var(--mx-uc-7);
-    }
-
-    &--mx-uc-8 {
-      background-color: var(--mx-uc-8);
-    }
-  }
-}
-
-.fake-a {
-  color: var(--tc-link) !important;
-  text-decoration: none !important;
-  &--text-danger {
-    color: var(--bs-danger) !important;
-  }
-}
-
-.fake-a:hover,
-.fake-a--text-danger:hover {
-  text-decoration: underline !important;
-  cursor: pointer;
-}
+// Utilities
+@import 'bootstrap/scss/utilities/api';
+// scss-docs-end import-stack
 
 @import 'photoswipe/style.css';
 @import 'katex/dist/katex.min.css';

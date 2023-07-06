@@ -1,62 +1,43 @@
-@import '@fortawesome/fontawesome-free/css/all.min.css';
-@import 'bootstrap-icons/font/bootstrap-icons.css';
-@import '@cryptofonts/cryptofont/cryptofont.min.css';
-
-/* Bootstrap Version */
-@import 'bootstrap/scss/mixins/banner';
-@include bsBanner('');
-
-// scss-docs-start import-stack
-// Configuration
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
-@import 'bootstrap/scss/maps';
-@import 'bootstrap/scss/mixins';
-@import 'bootstrap/scss/utilities';
-
-// Layout & components
-@import 'bootstrap/scss/root';
-@import 'bootstrap/scss/reboot';
-@import 'bootstrap/scss/type';
-@import 'bootstrap/scss/images';
-@import 'bootstrap/scss/containers';
-@import 'bootstrap/scss/grid';
-@import 'bootstrap/scss/tables';
-@import 'bootstrap/scss/forms';
-@import 'bootstrap/scss/buttons';
-@import 'bootstrap/scss/transitions';
-//@import 'bootstrap/scss/dropdown';
-@import 'bootstrap/scss/button-group';
-@import 'bootstrap/scss/nav';
-@import 'bootstrap/scss/navbar';
-@import 'bootstrap/scss/card';
-//@import 'bootstrap/scss/accordion';
-@import 'bootstrap/scss/breadcrumb';
-//@import 'bootstrap/scss/pagination';
-@import 'bootstrap/scss/badge';
-//@import 'bootstrap/scss/alert';
-//@import 'bootstrap/scss/progress';
-@import 'bootstrap/scss/list-group';
-@import 'bootstrap/scss/close';
-@import 'bootstrap/scss/toasts';
-@import 'bootstrap/scss/modal';
-@import 'bootstrap/scss/tooltip';
-@import 'bootstrap/scss/popover';
-@import 'bootstrap/scss/spinners';
-//@import 'bootstrap/scss/offcanvas';
-@import 'bootstrap/scss/placeholders';
-
-// Helpers
-@import 'bootstrap/scss/helpers';
-
-// Utilities
-@import 'bootstrap/scss/utilities/api';
-// scss-docs-end import-stack
-
 :root {
   --bs-green: #45b83b;
   --bs-success: #45b83b;
   --bs-success-rgb: 69, 184, 59;
+}
+
+.user-profile {
+  .profile-bg {
+    &--mx-uc-1 {
+      background-color: var(--mx-uc-1);
+    }
+
+    &--mx-uc-2 {
+      background-color: var(--mx-uc-2);
+    }
+
+    &--mx-uc-3 {
+      background-color: var(--mx-uc-3);
+    }
+
+    &--mx-uc-4 {
+      background-color: var(--mx-uc-4);
+    }
+
+    &--mx-uc-5 {
+      background-color: var(--mx-uc-5);
+    }
+
+    &--mx-uc-6 {
+      background-color: var(--mx-uc-6);
+    }
+
+    &--mx-uc-7 {
+      background-color: var(--mx-uc-7);
+    }
+
+    &--mx-uc-8 {
+      background-color: var(--mx-uc-8);
+    }
+  }
 }
 
 .profile-icon-fa {
@@ -97,6 +78,15 @@ audio:not([controls]) {
 }
 
 /* Bootstrap Fix */
+
+.list-group-item {
+  border: var(--bs-list-group-border-width) solid var(--bg-surface-border);
+}
+
+.table {
+  --bs-table-bg: transparent;
+}
+
 .very-small {
   font-size: 11.2px;
 }
@@ -183,6 +173,8 @@ audio:not([controls]) {
 
 .card {
   --bs-card-bg: var(--bg-surface-semi-transparent);
+  --bs-card-color: var(--tc-surface-normal);
+  color: var(--tc-surface-normal);
 }
 
 .list-group {
