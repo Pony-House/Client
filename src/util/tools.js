@@ -11,6 +11,12 @@ export function checkVisible(elm) {
     return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
 }
 
+// Is Window Visible
+export function checkVisibleWindow() {
+    return ($('body').hasClass('windowVisible'));
+}
+
+// HL JS fixer
 export function hljsFixer(el, where) {
 
     if (where === 'MessageBody') {
