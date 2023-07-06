@@ -74,6 +74,8 @@ export default function startQuery() {
 
     $(document).on('mouseover', onPageShow);
     $(document).on('mouseout', onPageShow);
+    $(document).on('blur', onPageShow);
+    $(document).on('focus', onPageShow);
 
     // Modal Creator
     $.fn.modal = (type, configObject) => {
