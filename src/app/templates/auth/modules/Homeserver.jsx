@@ -86,7 +86,7 @@ function Homeserver({ onChange }) {
     return (
         <>
             <div className="homeserver-form">
-                <div>
+                <div className='w-100'>
                     <Input
                         name="homeserver"
                         onChange={handleHsInput}

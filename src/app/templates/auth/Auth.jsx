@@ -63,18 +63,18 @@ function Auth() {
 
                     <section className='border-top border-bg pt-4'>
 
-                      <div class="row text-center d-flex justify-content-center">
+                      <div className="row text-center d-flex justify-content-center">
 
-                        <div class="col-md-4 small">
-                          <a href="https://github.com/Pony-House/Client/releases" rel="noreferrer" class="text-white" target="_blank">{`Version ${cons.version}`}</a>
+                        <div className="col-md-4 small">
+                          <a href="https://github.com/Pony-House/Client/releases" rel="noreferrer" className="text-white" target="_blank">{`Version ${cons.version}`}</a>
                         </div>
 
-                        <div class="col-md-4 small">
-                          <a href="https://twitter.com/JasminDreasond" target="_blank" rel="noreferrer" class="text-white">Twitter</a>
+                        <div className="col-md-4 small">
+                          <a href="https://twitter.com/JasminDreasond" target="_blank" rel="noreferrer" className="text-white">Twitter</a>
                         </div>
 
-                        <div class="col-md-4 small">
-                          <a href="https://matrix.org" target="_blank" rel="noreferrer" class="text-white">Powered by Matrix</a>
+                        <div className="col-md-4 small">
+                          <a href="https://matrix.org" target="_blank" rel="noreferrer" className="text-white">Powered by Matrix</a>
                         </div>
 
                       </div>
