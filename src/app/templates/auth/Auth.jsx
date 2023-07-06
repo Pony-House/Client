@@ -31,6 +31,95 @@ const CONFIRM_PASSWORD_ERROR = 'Passwords don\'t match.';
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 const BAD_EMAIL_ERROR = 'Invalid email address';
 
+function ProcessWrapper({ children }) {
+  return (
+    <div className="process-wrapper">
+      {children}
+    </div>
+  );
+}
+ProcessWrapper.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+function LoadingScreen({ message }) {
+  return (
+    <ProcessWrapper>
+      <Spinner />
+      <div style={{ marginTop: 'var(--sp-normal)' }}>
+        <Text variant="b1">{message}</Text>
+      </div>
+    </ProcessWrapper>
+  );
+}
+LoadingScreen.propTypes = {
+  message: PropTypes.string.isRequired,
+};
+
+
+function Recaptcha({ message, sitekey, onChange }) {
+  return (
+    <ProcessWrapper>
+      <div style={{ marginBottom: 'var(--sp-normal)' }}>
+        <Text variant="s1" weight="medium">{message}</Text>
+      </div>
+      <ReCAPTCHA sitekey={sitekey} onChange={onChange} />
+    </ProcessWrapper>
+  );
+}
+Recaptcha.propTypes = {
+  message: PropTypes.string.isRequired,
+  sitekey: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
+function Terms({ url, onSubmit }) {
+  return (
+    <ProcessWrapper>
+      <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
+        <div style={{ margin: 'var(--sp-normal)', maxWidth: '450px' }}>
+          <Text variant="h2" weight="medium">Agree with terms</Text>
+          <div style={{ marginBottom: 'var(--sp-normal)' }} />
+          <Text variant="b1">In order to complete registration, you need to agree to the terms and conditions.</Text>
+          <div style={{ display: 'flex', alignItems: 'center', margin: 'var(--sp-normal) 0' }}>
+            <input style={{ marginRight: '8px' }} id="termsCheckbox" type="checkbox" required />
+            <Text variant="b1">
+              {'I accept '}
+              <a style={{ cursor: 'pointer' }} href={url} rel="noreferrer" target="_blank">Terms and Conditions</a>
+            </Text>
+          </div>
+          <Button id="termsBtn" type="submit" variant="primary">Submit</Button>
+        </div>
+      </form>
+    </ProcessWrapper>
+  );
+}
+Terms.propTypes = {
+  url: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+};
+
+function EmailVerify({ email, onContinue }) {
+  return (
+    <ProcessWrapper>
+      <div style={{ margin: 'var(--sp-normal)', maxWidth: '450px' }}>
+        <Text variant="h2" weight="medium">Verify email</Text>
+        <div style={{ margin: 'var(--sp-normal) 0' }}>
+          <Text variant="b1">
+            {'Please check your email '}
+            <b>{`(${email})`}</b>
+            {' and validate before continuing further.'}
+          </Text>
+        </div>
+        <Button variant="primary" onClick={onContinue}>Continue</Button>
+      </div>
+    </ProcessWrapper>
+  );
+}
+EmailVerify.propTypes = {
+  email: PropTypes.string.isRequired,
+};
+
 function isValidInput(value, regex) {
   if (typeof regex === 'string') return regex === value;
   return regex.test(value);
@@ -586,93 +675,5 @@ function Auth() {
     </ScrollView>
   );
 }
-
-function LoadingScreen({ message }) {
-  return (
-    <ProcessWrapper>
-      <Spinner />
-      <div style={{ marginTop: 'var(--sp-normal)' }}>
-        <Text variant="b1">{message}</Text>
-      </div>
-    </ProcessWrapper>
-  );
-}
-LoadingScreen.propTypes = {
-  message: PropTypes.string.isRequired,
-};
-
-function Recaptcha({ message, sitekey, onChange }) {
-  return (
-    <ProcessWrapper>
-      <div style={{ marginBottom: 'var(--sp-normal)' }}>
-        <Text variant="s1" weight="medium">{message}</Text>
-      </div>
-      <ReCAPTCHA sitekey={sitekey} onChange={onChange} />
-    </ProcessWrapper>
-  );
-}
-Recaptcha.propTypes = {
-  message: PropTypes.string.isRequired,
-  sitekey: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
-
-function Terms({ url, onSubmit }) {
-  return (
-    <ProcessWrapper>
-      <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
-        <div style={{ margin: 'var(--sp-normal)', maxWidth: '450px' }}>
-          <Text variant="h2" weight="medium">Agree with terms</Text>
-          <div style={{ marginBottom: 'var(--sp-normal)' }} />
-          <Text variant="b1">In order to complete registration, you need to agree to the terms and conditions.</Text>
-          <div style={{ display: 'flex', alignItems: 'center', margin: 'var(--sp-normal) 0' }}>
-            <input style={{ marginRight: '8px' }} id="termsCheckbox" type="checkbox" required />
-            <Text variant="b1">
-              {'I accept '}
-              <a style={{ cursor: 'pointer' }} href={url} rel="noreferrer" target="_blank">Terms and Conditions</a>
-            </Text>
-          </div>
-          <Button id="termsBtn" type="submit" variant="primary">Submit</Button>
-        </div>
-      </form>
-    </ProcessWrapper>
-  );
-}
-Terms.propTypes = {
-  url: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-};
-
-function EmailVerify({ email, onContinue }) {
-  return (
-    <ProcessWrapper>
-      <div style={{ margin: 'var(--sp-normal)', maxWidth: '450px' }}>
-        <Text variant="h2" weight="medium">Verify email</Text>
-        <div style={{ margin: 'var(--sp-normal) 0' }}>
-          <Text variant="b1">
-            {'Please check your email '}
-            <b>{`(${email})`}</b>
-            {' and validate before continuing further.'}
-          </Text>
-        </div>
-        <Button variant="primary" onClick={onContinue}>Continue</Button>
-      </div>
-    </ProcessWrapper>
-  );
-}
-EmailVerify.propTypes = {
-  email: PropTypes.string.isRequired,
-};
-
-function ProcessWrapper({ children }) {
-  return (
-    <div className="process-wrapper">
-      {children}
-    </div>
-  );
-}
-ProcessWrapper.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 export default Auth;
