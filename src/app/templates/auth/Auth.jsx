@@ -3,10 +3,6 @@ import React, { useState, useEffect } from 'react';
 import * as auth from '../../../client/action/auth';
 import cons from '../../../client/state/cons';
 import { getUrlPrams } from '../../../util/common';
-
-import Text from '../../atoms/text/Text';
-import ScrollView from '../../atoms/scroll/ScrollView';
-import { Header } from '../../atoms/header/Header';
 import Avatar from '../../atoms/avatar/Avatar';
 
 import LoadingScreen from './modules/LoadingScreen';
@@ -41,39 +37,63 @@ function Auth() {
   }, []);
 
   return (
-    <ScrollView invisible>
-      <div className="auth__base puddy_background">
-        <div className="auth__wrapper">
-          {loginToken && <LoadingScreen message="Redirecting..." />}
-          {!loginToken && (
-            <div className="auth-card">
-              <Header>
-                <Avatar size="extra-small" imageSrc="./favicon.ico" />
-                <Text variant="h2" weight="medium">Pony House</Text>
-              </Header>
-              <div className="auth-card__content">
-                <AuthCard />
+    <section className="vh-100 auth-base">
+      <div className="container py-5 h-100">
+        <div className="row d-flex justify-content-center align-items-center h-100">
+          <div className="col col-xl-10">
+            <div className="card">
+              <div className="row g-0">
+
+                <div className="col-md-6 col-lg-5 d-none d-md-block banner" />
+
+                <div className="col-md-6 col-lg-7 d-flex align-items-center">
+                  <div className="card-body p-lg-4 px-lg-5">
+
+                    <form>
+
+                      {loginToken && <LoadingScreen message="Redirecting..." />}
+                      {!loginToken && (<>
+
+                        <div className="d-flex align-items-center mb-3 pb-1">
+                          <Avatar imageSrc="./favicon.ico" />
+                          <span className="ms-3 h2 fw-bold mb-0">Pony House</span>
+                        </div>
+
+                        <AuthCard />
+
+                      </>)}
+
+                      <section className='border-top border-bg pt-4'>
+
+                        <div class="row text-center d-flex justify-content-center">
+
+                          <div class="col-md-4 small">
+                            <a href="https://github.com/Pony-House/Client/releases" rel="noreferrer" class="text-white" target="_blank">{`Version ${cons.version}`}</a>
+                          </div>
+
+                          <div class="col-md-4 small">
+                            <a href="https://twitter.com/JasminDreasond" target="_blank" rel="noreferrer" class="text-white">Twitter</a>
+                          </div>
+
+                          <div class="col-md-4 small">
+                            <a href="https://matrix.org" target="_blank" rel="noreferrer" class="text-white">Powered by Matrix</a>
+                          </div>
+
+                        </div>
+
+                      </section>
+
+                    </form>
+
+                  </div>
+                </div>
+
               </div>
             </div>
-          )}
-        </div>
-
-        <div className="auth-footer">
-          <Text variant="b2">
-            <a href="https://cinny.in" target="_blank" rel="noreferrer">About</a>
-          </Text>
-          <Text variant="b2">
-            <a href="https://github.com/Pony-House/Client/releases" target="_blank" rel="noreferrer">{`v${cons.version}`}</a>
-          </Text>
-          <Text variant="b2">
-            <a href="https://twitter.com/JasminDreasond" target="_blank" rel="noreferrer">Twitter</a>
-          </Text>
-          <Text variant="b2">
-            <a href="https://matrix.org" target="_blank" rel="noreferrer">Powered by Matrix</a>
-          </Text>
+          </div>
         </div>
       </div>
-    </ScrollView>
+    </section>
   );
 }
 

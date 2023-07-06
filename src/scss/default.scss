@@ -775,6 +775,35 @@
   --ic-surface-low: rgba(255, 251, 222, 64%);
 }
 
+:root {
+  --bs-green: #45b83b;
+  --bs-success: #45b83b;
+  --bs-success-rgb: 69, 184, 59;
+}
+
+/* Presence */
+.user-presence-offline,
+.user-presence-unavailable,
+.user-presence-offline:before,
+.user-presence-unavailable:before {
+  color: #bdbdbd !important;
+}
+
+.user-presence-dnd,
+.user-presence-dnd:before {
+  color: #b83b3b !important;
+}
+
+.user-presence-online,
+.user-presence-online:before {
+  color: #45b83b !important;
+}
+
+.user-presence-idle,
+.user-presence-idle:before {
+  color: #b8913b !important;
+}
+
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 @import '@cryptofonts/cryptofont/cryptofont.min.css';

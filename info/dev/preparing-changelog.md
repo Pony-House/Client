@@ -2,3 +2,4 @@
 - Auth white theme fixed.
 - Window Hidden Detector added.
 - Bootstrap Framework updated to 5.3
+- New login page

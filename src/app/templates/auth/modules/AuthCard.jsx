@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import Text from '../../../atoms/text/Text';
-
 import Homeserver from './Homeserver';
 import Login from './Login';
 import Register from './Register';
@@ -15,34 +13,37 @@ function AuthCard() {
         setHsConfig(info);
     };
 
-    return (
-        <>
+    return (<>
+
+        <div className='mb-4'>
             <Homeserver onChange={handleHsChange} />
-            {hsConfig !== null && (
-                type === 'login'
-                    ? <Login loginFlow={hsConfig.login.flows} baseUrl={hsConfig.baseUrl} />
-                    : (
-                        <Register
-                            registerInfo={hsConfig.register}
-                            loginFlow={hsConfig.login.flows}
-                            baseUrl={hsConfig.baseUrl}
-                        />
-                    )
-            )}
-            {hsConfig !== null && (
-                <Text variant="b2" className="auth-card__switch flex--center">
-                    {`${(type === 'login' ? 'Don\'t have' : 'Already have')} an account?`}
-                    <button
-                        type="button"
-                        style={{ color: 'var(--tc-link)', cursor: 'pointer', margin: '0 var(--sp-ultra-tight)' }}
-                        onClick={() => setType((type === 'login') ? 'register' : 'login')}
-                    >
-                        {type === 'login' ? ' Register' : ' Login'}
-                    </button>
-                </Text>
-            )}
-        </>
-    );
+        </div>
+
+        {hsConfig !== null && (
+            type === 'login'
+                ? <Login loginFlow={hsConfig.login.flows} baseUrl={hsConfig.baseUrl} />
+                : (
+                    <Register
+                        registerInfo={hsConfig.register}
+                        loginFlow={hsConfig.login.flows}
+                        baseUrl={hsConfig.baseUrl}
+                    />
+                )
+        )}
+
+        {hsConfig !== null && (<>
+
+            { /* (type === 'login' && <a className="very-small" href="#!">Forgot password?</a>) */}
+
+            <center>
+                <p className="mb-4 pb-lg-2 small" >{`${(type === 'login' ? 'Don\'t have' : 'Already have')} an account?`} <a href="#!" onClick={() => setType((type === 'login') ? 'register' : 'login')}>
+                    {type === 'login' ? 'Register here' : 'Login here'}
+                </a></p>
+            </center>
+
+        </>)}
+
+    </>);
 }
 
 export default AuthCard;
