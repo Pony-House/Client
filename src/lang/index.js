@@ -43,6 +43,7 @@ export function refreshLang() {
                             'Accept': 'application/json'
                         }
                     }).then(res => res.json()).then(data2 => {
+
                         if (objType(data2, 'object')) {
 
                             // Insert Items
@@ -50,12 +51,14 @@ export function refreshLang() {
                                 if (typeof data2[item] === 'string') langs.data[item] = data2[item];
                             }
 
+                            // Complete
                             resolve(true);
 
                         } else {
                             console.error(new Error(`[${langs.selected}] INVALID LANG JSON! THIS NEED TO BE OBJECT WITH STRINGS! USING DEFAULT LANG FOR NOW. (${langs.default})`));
                             resolve(false);
                         }
+
                     }).catch(reject);
                 } else { resolve(true); }
 
