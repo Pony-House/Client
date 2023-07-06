@@ -50,21 +50,29 @@ function Homeserver({ onChange }) {
         setupHsConfig(hs.selected);
     }, [hs]);
 
-    useEffect(async () => {
-        const link = window.location.href;
-        const configFileUrl = `${link}${link[link.length - 1] === '/' ? '' : '/'}config.json`;
-        try {
-            const result = await (await fetch(configFileUrl, { method: 'GET' })).json();
-            const selectedHs = result?.defaultHomeserver;
-            const hsList = result?.homeserverList;
-            const allowCustom = result?.allowCustomHomeservers ?? true;
-            if (!hsList?.length > 0 || selectedHs < 0 || selectedHs >= hsList?.length) {
-                throw new Error();
+    useEffect(() => {
+
+        const authSync = async () => {
+
+            const link = window.location.href;
+            const configFileUrl = `${link}${link[link.length - 1] === '/' ? '' : '/'}config.json`;
+            try {
+                const result = await (await fetch(configFileUrl, { method: 'GET' })).json();
+                const selectedHs = result?.defaultHomeserver;
+                const hsList = result?.homeserverList;
+                const allowCustom = result?.allowCustomHomeservers ?? true;
+                if (!hsList?.length > 0 || selectedHs < 0 || selectedHs >= hsList?.length) {
+                    throw new Error();
+                }
+                setHs({ selected: hsList[selectedHs], list: hsList, allowCustom });
+            } catch {
+                setHs({ selected: 'matrix.org', list: ['matrix.org'], allowCustom: true });
             }
-            setHs({ selected: hsList[selectedHs], list: hsList, allowCustom });
-        } catch {
-            setHs({ selected: 'matrix.org', list: ['matrix.org'], allowCustom: true });
-        }
+
+        };
+
+        authSync();
+
     }, []);
 
     const handleHsInput = (e) => {

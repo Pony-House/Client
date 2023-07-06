@@ -15,21 +15,29 @@ import AuthCard from './modules/AuthCard';
 function Auth() {
   const [loginToken, setLoginToken] = useState(getUrlPrams('loginToken'));
 
-  useEffect(async () => {
-    if (!loginToken) return;
-    if (localStorage.getItem(cons.secretKey.BASE_URL) === undefined) {
-      setLoginToken(null);
-      return;
-    }
-    const baseUrl = localStorage.getItem(cons.secretKey.BASE_URL);
-    try {
-      await auth.loginWithToken(baseUrl, loginToken);
+  useEffect(() => {
 
-      const { href } = window.location;
-      window.location.replace(href.slice(0, href.indexOf('?')));
-    } catch {
-      setLoginToken(null);
-    }
+    const authSync = async () => {
+
+      if (!loginToken) return;
+      if (localStorage.getItem(cons.secretKey.BASE_URL) === undefined) {
+        setLoginToken(null);
+        return;
+      }
+      const baseUrl = localStorage.getItem(cons.secretKey.BASE_URL);
+      try {
+        await auth.loginWithToken(baseUrl, loginToken);
+
+        const { href } = window.location;
+        window.location.replace(href.slice(0, href.indexOf('?')));
+      } catch {
+        setLoginToken(null);
+      }
+
+    };
+
+    authSync();
+
   }, []);
 
   return (
