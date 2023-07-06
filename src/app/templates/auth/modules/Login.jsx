@@ -3,15 +3,15 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 
-import Text from '../../atoms/text/Text';
-import * as auth from '../../../client/action/auth';
-import { getBaseUrl } from '../../../util/matrixUtil';
-import Button from '../../atoms/button/Button';
-import IconButton from '../../atoms/button/IconButton';
-import Input from '../../atoms/input/Input';
-import ContextMenu, { MenuItem } from '../../atoms/context-menu/ContextMenu';
+import Text from '../../../atoms/text/Text';
+import * as auth from '../../../../client/action/auth';
+import { getBaseUrl } from '../../../../util/matrixUtil';
+import Button from '../../../atoms/button/Button';
+import IconButton from '../../../atoms/button/IconButton';
+import Input from '../../../atoms/input/Input';
+import ContextMenu, { MenuItem } from '../../../atoms/context-menu/ContextMenu';
 
-import SSOButtons from '../../molecules/sso-buttons/SSOButtons';
+import SSOButtons from '../../../molecules/sso-buttons/SSOButtons';
 
 import { EMAIL_REGEX, BAD_EMAIL_ERROR } from './regex';
 import { normalizeUsername, isValidInput } from './validator';

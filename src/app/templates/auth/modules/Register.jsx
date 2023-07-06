@@ -3,13 +3,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 
-import * as auth from '../../../client/action/auth';
-import Button from '../../atoms/button/Button';
-import IconButton from '../../atoms/button/IconButton';
-import Input from '../../atoms/input/Input';
-import Text from '../../atoms/text/Text';
+import * as auth from '../../../../client/action/auth';
+import Button from '../../../atoms/button/Button';
+import IconButton from '../../../atoms/button/IconButton';
+import Input from '../../../atoms/input/Input';
+import Text from '../../../atoms/text/Text';
 
-import SSOButtons from '../../molecules/sso-buttons/SSOButtons';
+import SSOButtons from '../../../molecules/sso-buttons/SSOButtons';
 
 import { EMAIL_REGEX, BAD_EMAIL_ERROR } from './regex';
 import { isValidInput } from './validator';

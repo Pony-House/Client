@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import PropTypes from 'prop-types';
 
-import Text from '../../atoms/text/Text';
-import * as auth from '../../../client/action/auth';
-import { Debounce } from '../../../util/common';
-import { getBaseUrl } from '../../../util/matrixUtil';
-import IconButton from '../../atoms/button/IconButton';
-import Input from '../../atoms/input/Input';
-import Spinner from '../../atoms/spinner/Spinner';
-import ContextMenu, { MenuItem, MenuHeader } from '../../atoms/context-menu/ContextMenu';
+import Text from '../../../atoms/text/Text';
+import * as auth from '../../../../client/action/auth';
+import { Debounce } from '../../../../util/common';
+import { getBaseUrl } from '../../../../util/matrixUtil';
+import IconButton from '../../../atoms/button/IconButton';
+import Input from '../../../atoms/input/Input';
+import Spinner from '../../../atoms/spinner/Spinner';
+import ContextMenu, { MenuItem, MenuHeader } from '../../../atoms/context-menu/ContextMenu';
 
 let searchingHs = null;
 function Homeserver({ onChange }) {

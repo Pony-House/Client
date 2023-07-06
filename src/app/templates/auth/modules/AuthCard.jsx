@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Text from '../../atoms/text/Text';
+import Text from '../../../atoms/text/Text';
 
 function AuthCard() {
     const [hsConfig, setHsConfig] = useState(null);
