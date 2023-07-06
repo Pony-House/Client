@@ -4,6 +4,8 @@ import { objType } from '../util/tools';
 // Lang Cache
 const langs = {
 
+    loading: false,
+
     default: 'en',
     selected: null,
 
@@ -17,11 +19,16 @@ const langs = {
 
 // Refresh Lang
 export function refreshLang() {
+    langs.loading = true;
     global.refreshLang = refreshLang;
     return new Promise((resolve, reject) => {
 
         // Fix Default
-        if (!langs.selected || !langs.list[langs.selected]) langs.selected = langs.default;
+        try {
+            if (!langs.selected || !langs.list[langs.selected]) langs.selected = langs.default;
+        } catch (err) {
+            langs.loading = false; reject(err);
+        }
 
         // Get Default Data
         fetch(`./public/lang/${langs.default}.json`, {
@@ -52,21 +59,24 @@ export function refreshLang() {
                             }
 
                             // Complete
+                            langs.loading = false;
                             resolve(true);
 
                         } else {
+                            langs.loading = false;
                             console.error(new Error(`[${langs.selected}] INVALID LANG JSON! THIS NEED TO BE OBJECT WITH STRINGS! USING DEFAULT LANG FOR NOW. (${langs.default})`));
                             resolve(false);
                         }
 
-                    }).catch(reject);
-                } else { resolve(true); }
+                    }).catch(err => { langs.loading = false; reject(err); });
+                } else { langs.loading = false; resolve(true); }
 
-            } else { langs.data = {}; reject(new Error(`[${langs.default}] INVALID DEFAULT LANG JSON! THIS NEED TO BE OBJECT WITH STRINGS!`)); }
-        }).catch(reject);
+            } else { langs.data = {}; langs.loading = false; reject(new Error(`[${langs.default}] INVALID DEFAULT LANG JSON! THIS NEED TO BE OBJECT WITH STRINGS!`)); }
+        }).catch(err => { langs.loading = false; reject(err); });
 
     });
 };
 
 // Load Text
 export function getI18(item) { return langs.data[item]; };
+export function i18IsLoading() { return langs.loading; }
