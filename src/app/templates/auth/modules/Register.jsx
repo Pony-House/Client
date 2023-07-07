@@ -180,15 +180,19 @@ function Register({ registerInfo, loginFlow, baseUrl }) {
 
     return (
         <>
+
             {process.type === 'processing' && <LoadingScreen message={process.message} />}
             {process.type === 'm.login.recaptcha' && <Recaptcha message="Please check the box below to proceed." sitekey={process.sitekey} onChange={handleRecaptcha} />}
             {process.type === 'm.login.terms' && <Terms url={process.url} onSubmit={handleTerms} />}
             {process.type === 'm.login.email.identity' && <EmailVerify email={process.email} onContinue={handleEmailVerify} />}
+
             <div className="auth-form__heading">
-                {!isDisabled && <Text variant="h2" weight="medium">Register</Text>}
+                {!isDisabled && <h5>New user</h5>}
                 {isDisabled && <Text className="auth-form__error">{registerInfo.error}</Text>}
             </div>
+
             {!isDisabled && (
+
                 <Formik
                     initialValues={initialValues}
                     onSubmit={submitter}
@@ -200,29 +204,39 @@ function Register({ registerInfo, loginFlow, baseUrl }) {
                         <>
                             {process.type === undefined && isSubmitting && <LoadingScreen message="Registration in progress..." />}
                             <form className="auth-form" ref={formRef} onSubmit={handleSubmit}>
+
                                 <div><Input values={values.username} name="username" onChange={handleChange} label="Username" type="username" required /></div>
+
                                 {errors.username && <Text className="auth-form__error" variant="b3">{errors.username}</Text>}
                                 <div className="auth-form__pass-eye-wrapper">
                                     <div><Input values={values.password} name="password" onChange={handleChange} label="Password" type={passVisible ? 'text' : 'password'} required /></div>
                                     <IconButton onClick={() => setPassVisible(!passVisible)} src={passVisible ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"} size="extra-small" />
                                 </div>
+
                                 {errors.password && <Text className="auth-form__error" variant="b3">{errors.password}</Text>}
+
                                 <div className="auth-form__pass-eye-wrapper">
                                     <div><Input values={values.confirmPassword} name="confirmPassword" onChange={handleChange} label="Confirm password" type={cPassVisible ? 'text' : 'password'} required /></div>
                                     <IconButton onClick={() => setCPassVisible(!cPassVisible)} src={cPassVisible ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"} size="extra-small" />
                                 </div>
+
                                 {errors.confirmPassword && <Text className="auth-form__error" variant="b3">{errors.confirmPassword}</Text>}
                                 {isEmail && <div><Input values={values.email} name="email" onChange={handleChange} label={`Email${isEmailRequired ? '' : ' (optional)'}`} type="email" required={isEmailRequired} /></div>}
+
                                 {errors.email && <Text className="auth-form__error" variant="b3">{errors.email}</Text>}
                                 {errors.other && <Text className="auth-form__error" variant="b3">{errors.other}</Text>}
+
                                 <div className="auth-form__btns">
                                     <Button variant="primary" type="submit" disabled={isSubmitting}>Register</Button>
                                 </div>
+
                             </form>
                         </>
                     )}
+
                 </Formik>
             )}
+
             {isDisabled && ssoProviders && (
                 <SSOButtons
                     type="sso"
@@ -230,6 +244,7 @@ function Register({ registerInfo, loginFlow, baseUrl }) {
                     baseUrl={baseUrl}
                 />
             )}
+
         </>
     );
 }

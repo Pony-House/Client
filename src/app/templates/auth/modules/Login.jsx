@@ -67,7 +67,7 @@ function Login({ loginFlow, baseUrl }) {
     return (
         <>
             <div className="auth-form__heading">
-                <h5>Login</h5>
+                <h5>Welcome back</h5>
                 {isPassword && (
                     <ContextMenu
                         placement="right"
