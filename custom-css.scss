@@ -17,3 +17,18 @@
     // background-image: url('');
   }
 }
+
+@mixin custom-dark-mode() {
+  /* If you want to use specific custom images for the dark mode, type your style here. */
+}
+
+.dark-theme,
+.butter-theme {
+  @include custom-dark-mode();
+}
+
+@media (prefers-color-scheme: dark) {
+  .system-theme {
+    @include custom-dark-mode();
+  }
+}
