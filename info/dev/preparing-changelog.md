@@ -5,3 +5,4 @@
 - New login page css.
 - twemojify is loading images locally now.
 - Emojiboard now has new varieties of values that can define whether an emoji is found or not.
+- Emoji tooltip added.

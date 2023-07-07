@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 
 import $ from 'jquery';
 import hljs from 'highlight.js';
+import { Tooltip as Tooltip2 } from 'bootstrap';
+
 import { hljsFixer } from '../../../util/tools';
 import { twemojify } from '../../../util/twemojify';
 
@@ -214,6 +216,18 @@ const MessageBody = React.memo(({
       if (!el.hasClass('hljs-fix')) {
         el.addClass('hljs-fix');
         hljsFixer(el, 'MessageBody');
+      }
+
+    });
+
+    // Add tooltip on the emoji
+    $(messageBody.current).find('[data-mx-emoticon]').each((index, value) => {
+
+      const el = $(value);
+
+      if (!el.hasClass('emoji-fix')) {
+        new Tooltip2(value);
+        el.addClass('emoji-fix');
       }
 
     });
