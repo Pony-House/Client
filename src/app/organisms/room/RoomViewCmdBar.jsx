@@ -210,7 +210,7 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent }) {
         const parentRooms = [...parentIds].map((id) => mx.getRoom(id));
         const emojis = getEmojiForCompletion(mx, [mx.getRoom(roomId), ...parentRooms]);
         const recentEmoji = getEmojisList(20, 'recent_emoji', 'emoji');
-        asyncSearch.setup(emojis, { keys: ['shortcode'], isContain: true, limit: 20 });
+        asyncSearch.setup(emojis, { keys: ['shortcode', 'shortcodes'], isContain: true, limit: 20 });
         setCmd({
           prefix,
           suggestions: recentEmoji.length > 0 ? recentEmoji : emojis.slice(26, 46),

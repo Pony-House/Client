@@ -123,7 +123,7 @@ EmojiGroup.propTypes = {
 
 // Search Emoji
 const asyncSearch = new AsyncSearch();
-asyncSearch.setup(emojis, { keys: ['shortcode'], isContain: true, limit: 40 });
+asyncSearch.setup(emojis, { keys: ['shortcode', 'shortcodes', 'label', 'tags'], isContain: true, limit: 40 });
 function SearchedEmoji({ scrollEmojisRef }) {
 
     // Searched

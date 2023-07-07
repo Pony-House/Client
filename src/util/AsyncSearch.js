@@ -119,7 +119,22 @@ class AsyncSearch extends EventEmitter {
 
       // Check Array Values
       if (Array.isArray(this.searchKeys)) {
-        return !!this.searchKeys.find((key) => this._compare(item[key]));
+        return !!this.searchKeys.find((key) => {
+
+          if (typeof item[key] === 'string') {
+            return this._compare(item[key])
+          }
+
+          if (Array.isArray(item[key])) {
+            for (const value in item[key]) {
+              const result = this._compare(item[key][value]);
+              if (result) return result;
+            }
+          }
+
+          return null;
+
+        });
       }
 
       // String
