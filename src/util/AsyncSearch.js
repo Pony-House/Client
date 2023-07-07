@@ -1,6 +1,8 @@
 import EventEmitter from 'events';
 
 class AsyncSearch extends EventEmitter {
+
+  // Constructor
   constructor() {
     super();
 
@@ -9,6 +11,7 @@ class AsyncSearch extends EventEmitter {
     this.RESULT_SENT = 'RESULT_SENT';
   }
 
+  // Reset Data
   _reset() {
     this.dataList = null;
     this.term = null;
@@ -55,6 +58,7 @@ class AsyncSearch extends EventEmitter {
     this.limit = opts?.limit || null;
   }
 
+  // Search Function
   search(term) {
     this._softReset();
 
@@ -67,10 +71,12 @@ class AsyncSearch extends EventEmitter {
     this._find(this.sessionStartTimestamp, 0);
   }
 
+  // Start Find Values
   _find(sessionTimestamp, lastFindingCount) {
     if (sessionTimestamp !== this.sessionStartTimestamp) return;
     this.sessionStartTimestamp = window.performance.now();
 
+    // Search Index
     for (
       let searchIndex = this.searchUptoIndex;
       searchIndex < this.dataList.length;
@@ -96,30 +102,50 @@ class AsyncSearch extends EventEmitter {
     if (lastFindingCount !== this.findingList.length
       || lastFindingCount === 0) this._sendFindings();
     this._softReset();
+
   }
 
+  // Match Search - Validate result
+  // All emojis and stickers will come here to be validated whether or not to appear in the search result.
   _match(item) {
+
+    // String
     if (typeof item === 'string') {
       return this._compare(item);
     }
+
+    // Object
     if (typeof item === 'object') {
+
+      // Check Array Values
       if (Array.isArray(this.searchKeys)) {
         return !!this.searchKeys.find((key) => this._compare(item[key]));
       }
+
+      // String
       if (typeof this.searchKeys === 'string') {
         return this._compare(item[this.searchKeys]);
       }
+
     }
+
+    // Empty
     return false;
+
   }
 
+  // Comparator values to confirm
   _compare(item) {
+
     if (typeof item !== 'string') return false;
     const myItem = this._normalize(item);
     if (this.isContain) return myItem.indexOf(this.term) !== -1;
+
     return myItem.startsWith(this.term);
+
   }
 
+  // Normalize validator
   _normalize(item) {
     let myItem = item.normalize(this.normalizeUnicode ? 'NFKC' : 'NFC');
     if (!this.isCaseSensitive) myItem = myItem.toLocaleLowerCase();
@@ -127,9 +153,11 @@ class AsyncSearch extends EventEmitter {
     return myItem;
   }
 
+  // Complete. Send results
   _sendFindings() {
     this.emit(this.RESULT_SENT, this.findingList, this.term);
   }
+
 }
 
 export default AsyncSearch;
