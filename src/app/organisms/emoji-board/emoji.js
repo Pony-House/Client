@@ -1,9 +1,5 @@
 import emojisData from '@emoji-mart/data';
-
 import clone from 'clone';
-import OLDemojisData from 'emojibase-data/en/compact.json';
-import joypixels from 'emojibase-data/en/shortcodes/joypixels.json';
-import emojibase from 'emojibase-data/en/shortcodes/emojibase.json';
 
 const emojiGroups = [{
   id: 'people',
@@ -47,7 +43,6 @@ const emojiGroups = [{
   emojis: [],
 }];
 Object.freeze(emojiGroups);
-console.log('EMOJI ROOT', emojisData);
 
 const defaultEmojis = [];
 emojisData.categories.forEach(category => {
@@ -56,7 +51,6 @@ emojisData.categories.forEach(category => {
     if (emoji) {
 
       const em = {
-        category: category.id,
         hexcode: emoji.skins[0].unified.toUpperCase(),
         label: emoji.name,
         unicode: emoji.skins[0].native,
@@ -64,35 +58,18 @@ emojisData.categories.forEach(category => {
       };
 
       em.shortcode = emoji.id;
-      em.shortcodes = clone(emoji.keywords);
-      em.shortcodes.unshift(emoji.id);
+      em.shortcodes = emoji.id;
+      em.tags = clone(emoji.keywords);
 
       const groupIndex = emojiGroups.findIndex(group => group.id === category.id);
       if (groupIndex > -1) {
-        em.group = groupIndex;
-        console.log('EMOJI MART', emoji);
-        console.log('EMOJI NEW', clone(em));
-        emojiGroups[groupIndex].emojis.push(emoji);
+        emojiGroups[groupIndex].emojis.push(em);
       };
 
       defaultEmojis.push(em);
 
     }
   }
-});
-
-OLDemojisData.forEach((emoji) => {
-  const myShortCodes = joypixels[emoji.hexcode] || emojibase[emoji.hexcode];
-  if (!myShortCodes) return;
-  const em = {
-    ...emoji,
-    shortcode: Array.isArray(myShortCodes) ? myShortCodes[0] : myShortCodes,
-    shortcodes: myShortCodes,
-  };
-
-  console.log('EMOJI OLD', clone(em));
-  // addToGroup(em);
-  // defaultEmojis.push(em);
 });
 
 const emojis = [];
