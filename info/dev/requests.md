@@ -31,6 +31,8 @@ Made by Me
 
     ]
 
+    Tentar usar a chave de criptografia de rooms para proteger as chaves de API dentro do client matrix.
+
     Criar Video Chamada e Chamada de Voz
 
     Criar sistema de titulos (Algo parecido com cargos)
@@ -54,6 +56,7 @@ Made by Me
 
     =======================================================
 
+    --> Retirar o show/hide de categorias do localstorage para colocar dentro do stoage do matrix
     --> Galeria de gifs e memes
     --> Enviar gravação de voz
     --> Adicionar opção de colocar um ícone do lado do status (Com compatibilidade com emojis)
