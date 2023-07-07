@@ -40,13 +40,13 @@ function Auth() {
     <section className="vh-100 auth-base">
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
-          <div className="col col-xl-10">
+          <div className="col col-xl-10 tiny-box">
             <div className="card">
               <div className="row g-0">
 
                 <div className="col-md-6 col-lg-5 d-none d-md-block banner" />
 
-                <div className="col-md-6 col-lg-7 d-flex align-items-center">
+                <div className="col-md-6 col-lg-7 d-flex align-items-center card-fullscren-base">
                   <div className="card-body p-lg-4 px-lg-5">
 
                     {loginToken && <LoadingScreen message="Redirecting..." />}
@@ -61,7 +61,7 @@ function Auth() {
 
                     </>)}
 
-                    <section className='border-top border-bg pt-4'>
+                    <section className='border-top border-bg py-4 footer'>
 
                       <div className="row text-center d-flex justify-content-center">
 
