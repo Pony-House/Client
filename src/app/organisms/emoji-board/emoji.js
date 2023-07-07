@@ -56,7 +56,6 @@ emojisData.categories.forEach(category => {
     if (emoji) {
 
       const em = {
-        id: emoji.id,
         category: category.id,
         hexcode: emoji.skins[0].unified.toUpperCase(),
         label: emoji.name,
@@ -64,8 +63,9 @@ emojisData.categories.forEach(category => {
         version: emoji.version,
       };
 
-      em.shortcode = emoji.keywords[0];
-      em.shortcodes = emoji.keywords;
+      em.shortcode = emoji.id;
+      em.shortcodes = clone(emoji.keywords);
+      em.shortcodes.unshift(emoji.id);
 
       const groupIndex = emojiGroups.findIndex(group => group.id === category.id);
       if (groupIndex > -1) {
