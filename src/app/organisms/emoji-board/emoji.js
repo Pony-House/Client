@@ -1,58 +1,83 @@
-import emojisData from 'emojibase-data/en/compact.json';
+import emojisData from '@emoji-mart/data';
+
+import clone from 'clone';
+import OLDemojisData from 'emojibase-data/en/compact.json';
 import joypixels from 'emojibase-data/en/shortcodes/joypixels.json';
 import emojibase from 'emojibase-data/en/shortcodes/emojibase.json';
 
 const emojiGroups = [{
+  id: 'people',
   name: 'Smileys & people',
   order: 0,
   emojis: [],
 }, {
+  id: 'nature',
   name: 'Animals & nature',
   order: 1,
   emojis: [],
 }, {
+  id: 'foods',
   name: 'Food & drinks',
   order: 2,
   emojis: [],
 }, {
+  id: 'activity',
   name: 'Activity',
   order: 3,
   emojis: [],
 }, {
+  id: 'places',
   name: 'Travel & places',
   order: 4,
   emojis: [],
 }, {
+  id: 'objects',
   name: 'Objects',
   order: 5,
   emojis: [],
 }, {
+  id: 'symbols',
   name: 'Symbols',
   order: 6,
   emojis: [],
 }, {
+  id: 'flags',
   name: 'Flags',
   order: 7,
   emojis: [],
 }];
 Object.freeze(emojiGroups);
 
-function addEmoji(emoji, order) {
-  emojiGroups[order].emojis.push(emoji);
-}
-function addToGroup(emoji) {
-  if (emoji.group === 0 || emoji.group === 1) addEmoji(emoji, 0);
-  else if (emoji.group === 3) addEmoji(emoji, 1);
-  else if (emoji.group === 4) addEmoji(emoji, 2);
-  else if (emoji.group === 6) addEmoji(emoji, 3);
-  else if (emoji.group === 5) addEmoji(emoji, 4);
-  else if (emoji.group === 7) addEmoji(emoji, 5);
-  else if (emoji.group === 8 || typeof emoji.group === 'undefined') addEmoji(emoji, 6);
-  else if (emoji.group === 9) addEmoji(emoji, 7);
-}
-
 const defaultEmojis = [];
-emojisData.forEach((emoji) => {
+emojisData.categories.forEach(category => {
+  for (const item in category.emojis) {
+    const emoji = emojisData.emojis[category.emojis[item]];
+    if (emoji) {
+
+      const em = {
+        id: emoji.id,
+        category: category.id,
+        hexcode: emoji.skins[0].unified.toUpperCase(),
+        label: emoji.name,
+        unicode: emoji.skins[0].native,
+        version: emoji.version,
+      };
+
+      em.shortcode = emoji.keywords.shift();
+      em.shortcodes = emoji.keywords;
+
+      console.log('NEW', clone(em));
+
+      const groupIndex = emojiGroups.findIndex(group => group.id === category.id);
+      if (groupIndex > -1) emojiGroups[groupIndex].emojis.push(emoji);
+
+      defaultEmojis.push(em);
+
+    }
+  }
+});
+
+OLDemojisData.forEach((emoji) => {
   const myShortCodes = joypixels[emoji.hexcode] || emojibase[emoji.hexcode];
   if (!myShortCodes) return;
   const em = {
@@ -60,8 +85,10 @@ emojisData.forEach((emoji) => {
     shortcode: Array.isArray(myShortCodes) ? myShortCodes[0] : myShortCodes,
     shortcodes: myShortCodes,
   };
-  addToGroup(em);
-  defaultEmojis.push(em);
+
+  console.log('OLD', clone(em));
+  // addToGroup(em);
+  // defaultEmojis.push(em);
 });
 
 const emojis = [];
