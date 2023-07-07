@@ -2,6 +2,7 @@ experiment
 dist
 node_modules
 devAssets
+public/img/twemoji
 
 .DS_Store
 
