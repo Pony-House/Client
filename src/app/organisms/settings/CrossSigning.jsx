@@ -120,7 +120,7 @@ function CrossSigningSetup() {
     <div className="cross-signing__setup">
       <div className="cross-signing__setup-entry">
         <Text>
-          We will generate a <b>Security Key</b>,
+          We will generate a <strong>Security Key</strong>,
           which you can use to manage messages backup and session verification.
         </Text>
         {genWithPhrase !== false && <Button variant="primary" onClick={() => setup()} disabled={genWithPhrase !== undefined}>Generate Key</Button>}
@@ -141,7 +141,7 @@ function CrossSigningSetup() {
             disabled={genWithPhrase !== undefined}
           >
             <Text>
-              Alternatively you can also set a <b>Security Phrase </b>
+              Alternatively you can also set a <strong>Security Phrase </strong>
               so you don't have to remember long Security Key,
               and optionally save the Key as backup.
             </Text>
@@ -193,7 +193,7 @@ function CrossSigningReset() {
       <Text>
         Anyone you have verified with will see security alerts and your message backup will be lost.
         You almost certainly do not want to do this,
-        unless you have lost <b>Security Key</b> or <b>Phrase</b> and
+        unless you have lost <strong>Security Key</strong> or <strong>Phrase</strong> and
         every session you can cross-sign from.
       </Text>
       <Button variant="danger" onClick={setupDialog}>Reset</Button>

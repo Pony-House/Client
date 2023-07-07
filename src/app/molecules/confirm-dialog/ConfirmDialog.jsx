@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { openReusableDialog } from '../../../client/action/navigation';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
-import Text from '../../atoms/text/Text';
 import Button from '../../atoms/button/Button';
 
 function ConfirmDialog({
@@ -12,7 +11,7 @@ function ConfirmDialog({
 }) {
   return (
     <div className="confirm-dialog">
-      <Text>{desc}</Text>
+      <div className='small mb-3'>{desc}</div>
       <div className="confirm-dialog__btn">
         <Button variant={actionType} onClick={() => onComplete(true)}>{actionTitle}</Button>
         <Button onClick={() => onComplete(false)}>Cancel</Button>
@@ -38,7 +37,7 @@ ConfirmDialog.propTypes = {
 export const confirmDialog = (title, desc, actionTitle, actionType = 'primary') => new Promise((resolve) => {
   let isCompleted = false;
   openReusableDialog(
-    <Text variant="s1" weight="medium">{title}</Text>,
+    <div className="m-0 h5">{title}</div>,
     (requestClose) => (
       <ConfirmDialog
         desc={desc}

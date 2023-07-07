@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Text from '../text/Text';
 import RawIcon from '../system-icons/RawIcon';
 import IconButton from '../button/IconButton';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
@@ -23,7 +22,7 @@ function InfoCard({
         </div>
       )}
       <div className="info-card__content">
-        <Text>{title}</Text>
+        <small>{title}</small>
         {content}
       </div>
       {requestClose && (

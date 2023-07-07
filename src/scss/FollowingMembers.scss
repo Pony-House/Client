@@ -13,13 +13,6 @@
     opacity: 0.4;
     margin: 0 var(--sp-extra-tight);
   }
-  & .text {
-    @extend .cp-txt__ellipsis;
-    color: var(--tc-surface-low);
-    b {
-      color: var(--tc-surface-normal);
-    }
-  }
 
   &:hover,
   &:focus {

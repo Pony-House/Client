@@ -68,7 +68,7 @@ function RoomIntroContainer({ event, timeline }) {
     ? (
       <>
         This is the beginning of your direct message history with @
-        <b>{nameJsx}</b>
+        <strong>{nameJsx}</strong>
         {'. '}
         {topic}
       </>
@@ -76,7 +76,7 @@ function RoomIntroContainer({ event, timeline }) {
     : (
       <>
         {'This is the beginning of the '}
-        <b>{nameJsx}</b>
+        <strong>{nameJsx}</strong>
         {' room. '}
         {topic}
       </>

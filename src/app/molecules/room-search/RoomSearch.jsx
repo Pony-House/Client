@@ -165,10 +165,10 @@ function RoomSearch({ roomId }) {
             {!isRoomEncrypted && searchData === null && (
               <div className="room-search__help">
                 {status.type === cons.status.IN_FLIGHT && <Spinner />}
-                {status.type === cons.status.IN_FLIGHT && <span className='small'>Searching room messages...</span>}
+                {status.type === cons.status.IN_FLIGHT && <small>Searching room messages...</small>}
                 {status.type === cons.status.PRE_FLIGHT && <RawIcon fa="fa-solid fa-magnifying-glass" size="large" />}
-                {status.type === cons.status.PRE_FLIGHT && <span className='small'>Search room messages</span>}
-                {status.type === cons.status.ERROR && <span className='small'>Failed to search messages</span>}
+                {status.type === cons.status.PRE_FLIGHT && <small>Search room messages</small>}
+                {status.type === cons.status.ERROR && <small>Failed to search messages</small>}
               </div>
             )}
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import Text from '../text/Text';
 import RawIcon from '../system-icons/RawIcon';
 
 function SegmentedControls({
@@ -29,7 +28,7 @@ function SegmentedControls({
             onClick={() => selectSegment(index)}
           >
             {segment.iconSrc && <RawIcon size="small" src={segment.iconSrc} />}
-            {segment.text && <Text variant="b2">{segment.text}</Text>}
+            {segment.text && <small>{segment.text}</small>}
           </button>
         ))
       }

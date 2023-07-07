@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import RawIcon from '../system-icons/RawIcon';
 import Tooltip from '../tooltip/Tooltip';
-import Text from '../text/Text';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
 const IconButton = React.forwardRef(({
@@ -46,7 +45,7 @@ const IconButton = React.forwardRef(({
   return (
     <Tooltip
       placement={tooltipPlacement}
-      content={<Text variant="b2">{tooltip}</Text>}
+      content={<small>{tooltip}</small>}
     >
       {btn}
     </Tooltip>

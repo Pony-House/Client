@@ -14,7 +14,7 @@ function EmailVerify({ email, onContinue }) {
                 <div style={{ margin: 'var(--sp-normal) 0' }}>
                     <Text variant="b1">
                         {'Please check your email '}
-                        <b>{`(${email})`}</b>
+                        <strong>{`(${email})`}</strong>
                         {' and validate before continuing further.'}
                     </Text>
                 </div>

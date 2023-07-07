@@ -5,7 +5,6 @@ import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import { openReadReceipts } from '../../../client/action/navigation';
 
-import Text from '../../atoms/text/Text';
 import RawIcon from '../../atoms/system-icons/RawIcon';
 
 import { getUsersActionJsx } from '../../organisms/room/common';
@@ -40,11 +39,8 @@ function FollowingMembers({ roomTimeline }) {
       onClick={() => openReadReceipts(roomId, followingMembers)}
       type="button"
     >
-      <RawIcon
-        size="extra-small"
-        fa="fa-solid fa-check-double"
-      />
-      <Text variant="b2">{getUsersActionJsx(roomId, filteredM, 'following the conversation.')}</Text>
+      <RawIcon fa="bi bi-check-all" />
+      <small className='text-bg-low text-truncate'>{getUsersActionJsx(roomId, filteredM, 'following the conversation.')}</small>
     </button>
   );
 }
