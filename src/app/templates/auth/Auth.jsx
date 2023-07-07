@@ -66,15 +66,15 @@ function Auth() {
                       <div className="row text-center d-flex justify-content-center">
 
                         <div className="col-md-4 small">
-                          <a href="https://github.com/Pony-House/Client/releases" rel="noreferrer" className="text-white" target="_blank">{`Version ${cons.version}`}</a>
+                          <a href="https://github.com/Pony-House/Client/releases" rel="noreferrer" className="text-bg-force" target="_blank">{`Version ${cons.version}`}</a>
                         </div>
 
                         <div className="col-md-4 small">
-                          <a href="https://twitter.com/JasminDreasond" target="_blank" rel="noreferrer" className="text-white">Twitter</a>
+                          <a href="https://twitter.com/JasminDreasond" target="_blank" rel="noreferrer" className="text-bg-force">Twitter</a>
                         </div>
 
                         <div className="col-md-4 small">
-                          <a href="https://matrix.org" target="_blank" rel="noreferrer" className="text-white">Powered by Matrix</a>
+                          <a href="https://matrix.org" target="_blank" rel="noreferrer" className="text-bg-force">Powered by Matrix</a>
                         </div>
 
                       </div>

@@ -106,6 +106,18 @@ audio:not([controls]) {
   color: var(--tc-surface-high);
 }
 
+.text-bg-force {
+  color: var(--tc-surface-normal) !important;
+}
+
+.text-bg-low-force {
+  color: var(--tc-surface-low) !important;
+}
+
+.text-bg-high-force {
+  color: var(--tc-surface-high) !important;
+}
+
 .modal {
   --bs-modal-bg: var(--bg-surface);
   --bs-modal-header-border-color: var(--bg-surface-border);
