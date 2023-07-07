@@ -297,6 +297,8 @@
 
   .card-fullscren-base {
     overflow-y: auto;
+    top: -2px;
+    position: relative;
   }
 
   .card-fullscren-base,
