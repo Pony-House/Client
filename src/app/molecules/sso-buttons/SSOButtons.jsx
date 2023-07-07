@@ -21,7 +21,7 @@ function SSOButtons({ type, identityProviders, baseUrl }) {
           idp.icon
             ? (
               <button key={idp.id} type="button" className="sso-btn" onClick={() => handleClick(idp.id)}>
-                <img className="sso-btn__img" src={tempClient.mxcUrlToHttp(idp.icon)} alt={idp.name} />
+                <img className="sso-btn__img rounded-circle" src={tempClient.mxcUrlToHttp(idp.icon)} alt={idp.name} />
               </button>
             ) : <Button key={idp.id} className="sso-btn__text-only" onClick={() => handleClick(idp.id)}>{`Login with ${idp.name}`}</Button>
         ))}

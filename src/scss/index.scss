@@ -1041,4 +1041,12 @@ a {
   .footer {
     position: relative;
   }
+
+  .sso-btn__img:hover {
+    filter: brightness(0.7) grayscale(0.3);
+  }
+
+  .sso-btn__img:active {
+    filter: brightness(0.5) grayscale(0.5);
+  }
 }
