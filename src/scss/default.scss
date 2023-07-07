@@ -775,12 +775,6 @@
   --ic-surface-low: rgba(255, 251, 222, 64%);
 }
 
-:root {
-  --bs-green: #45b83b;
-  --bs-success: #45b83b;
-  --bs-success-rgb: 69, 184, 59;
-}
-
 /* Presence */
 .user-presence-offline,
 .user-presence-unavailable,
@@ -855,6 +849,12 @@
 // Utilities
 @import 'bootstrap/scss/utilities/api';
 // scss-docs-end import-stack
+
+:root {
+  --bs-green: #45b83b;
+  --bs-success: #45b83b;
+  --bs-success-rgb: 69, 184, 59;
+}
 
 @import 'photoswipe/style.css';
 @import 'katex/dist/katex.min.css';
