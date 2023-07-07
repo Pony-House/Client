@@ -117,6 +117,7 @@
 
 /* Auth Page */
 .auth-base {
+  /* Basic */
   .auth-form__pass-eye-wrapper > button {
     top: 30px;
     padding-top: 2px;
@@ -127,6 +128,7 @@
     border-bottom-right-radius: 0px;
   }
 
+  /* Background */
   background: var(--bg-auth-normal);
   background: var(--bg-auth-gradient);
   //background-image: url('');
@@ -134,6 +136,7 @@
   background-position: center;
   background-size: auto 100%;
 
+  /* Box Height */
   .tiny-box,
   .card,
   .tiny-box .card .card-body,
@@ -295,6 +298,7 @@
     }
   }
 
+  /* Full Screen Base */
   .card-fullscren-base {
     overflow-y: auto;
     top: -2px;
@@ -308,7 +312,18 @@
     border-bottom-right-radius: 1rem;
   }
 
+  /* Login Full Screen */
   @media (max-width: 768px) {
+    background: var(--bg-surface-semi-transparent) !important;
+    .card {
+      background: transparent;
+      border: none;
+    }
+
+    .card-body {
+      height: 100%;
+    }
+
     .container {
       padding: 0px !important;
       height: 100% !important;
@@ -323,6 +338,7 @@
     }
   }
 
+  /* Card Fix */
   .card {
     border-radius: 1rem;
 
@@ -352,6 +368,7 @@
   // width: 100%;
   // }
 
+  /* Buttons Animation */
   .sso-btn__img:hover {
     filter: brightness(0.7) grayscale(0.3);
   }
