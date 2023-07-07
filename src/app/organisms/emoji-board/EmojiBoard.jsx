@@ -58,6 +58,8 @@ const EmojiGroup = React.memo(({ name, groupEmojis, className, isFav, }) => {
                                 alt={emoji.shortcodes?.toString()}
                                 unicode={emoji.unicode}
                                 shortcodes={emoji.shortcodes?.toString()}
+                                tags={emoji.tags?.toString()}
+                                label={emoji.label?.toString()}
 
                                 hexcode={emoji.hexcode}
                                 style={{ backgroundImage: `url("${TWEMOJI_BASE_URL}72x72/${emoji.hexcode.toLowerCase()}.png")` }}
@@ -236,16 +238,23 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         const unicode = target.attr('unicode');
         const hexcode = target.attr('hexcode');
         const mxc = target.attr('data-mx-emoticon');
+        const label = target.attr('label');
+        let tags = target.attr('tags');
         let shortcodes = target.attr('shortcodes');
 
         if (typeof shortcodes === 'undefined') shortcodes = undefined;
         else shortcodes = shortcodes.split(',');
+
+        if (typeof tags === 'undefined') tags = undefined;
+        else tags = tags.split(',');
 
         return {
             unicode,
             hexcode,
             shortcodes,
             mxc,
+            tags,
+            label,
         };
 
     }
@@ -314,7 +323,12 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
         infoEmoji.attr('src', emoji.src);
         infoEmoji.attr('alt', emoji.unicode);
-        infoShortcode.text(`:${emoji.shortcode}:`);
+
+        if (typeof emoji.label !== 'string' || emoji.label.trim().length < 1) {
+            infoShortcode.text(`:${emoji.shortcode}:`);
+        } else {
+            infoShortcode.text(emoji.label);
+        }
 
     }
 
@@ -324,7 +338,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         const searchEl = $(searchRef.current);
         if (isTargetNotEmoji(el)) return;
 
-        const { shortcodes, unicode } = getEmojiDataFromTarget(el);
+        const { shortcodes, unicode, label, tags } = getEmojiDataFromTarget(el);
 
         let src;
 
@@ -344,7 +358,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
         if (searchEl.attr('placeholder') === shortcodes[0]) return;
         searchEl.attr('placeholder', shortcodes[0]);
-        setEmojiInfo({ shortcode: shortcodes[0], src, unicode });
+        setEmojiInfo({ shortcode: shortcodes[0], src, unicode, label, tags });
 
     }
 
