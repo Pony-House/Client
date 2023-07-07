@@ -1,5 +1,6 @@
 - The "typing" warning was changed to a new Chatbox region.
 - Auth white theme fixed.
 - Window Hidden Detector added.
-- Bootstrap Framework updated to 5.3
-- New login page
+- Bootstrap Framework updated to 5.3.
+- New login page css.
+- twemojify is loading images locally now.
