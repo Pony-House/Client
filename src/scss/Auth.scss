@@ -128,14 +128,6 @@
     border-bottom-right-radius: 0px;
   }
 
-  /* Background */
-  background: var(--bg-auth-normal);
-  background: var(--bg-auth-gradient);
-  //background-image: url('');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: auto 100%;
-
   /* Box Height */
   .tiny-box,
   .card,
@@ -345,11 +337,6 @@
     .banner {
       border-top-left-radius: 1rem;
       border-bottom-left-radius: 1rem;
-      // background-image: url('');
-      background: var(--bg-auth-normal);
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 100%;
     }
   }
 

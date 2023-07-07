@@ -1,0 +1,19 @@
+/* Login Base */
+.auth-base {
+  /* Background */
+  background: var(--bg-auth-normal);
+  background: var(--bg-auth-gradient);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto 100%;
+  // background-image: url('');
+
+  /* Banner */
+  .card .banner {
+    background: var(--bg-auth-normal);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    // background-image: url('');
+  }
+}
