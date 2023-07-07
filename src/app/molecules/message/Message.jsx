@@ -229,7 +229,7 @@ const MessageBody = React.memo(({
 
         if (!el.attr('title') && el.attr('alt')) el.attr('title', el.attr('alt'));
 
-        new Tooltip2(value);
+        new Tooltip2(value, { customClass: 'small' });
         el.addClass('emoji-fix');
 
       }

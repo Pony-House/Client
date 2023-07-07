@@ -264,7 +264,7 @@ function Sticker({
   return (
     <Tooltip
       placement='top'
-      content={<Text variant="b2">{name}</Text>}
+      content={<div className='small'>{name}</div>}
     >
       <div className="sticker-container" style={{ height: width !== null ? getNativeHeight(width, height, 170) : 'unset' }}>
         {url !== null && <img src={url || link} alt={name} />}
