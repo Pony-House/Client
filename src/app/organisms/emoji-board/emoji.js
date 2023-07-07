@@ -47,6 +47,7 @@ const emojiGroups = [{
   emojis: [],
 }];
 Object.freeze(emojiGroups);
+console.log('EMOJI ROOT', emojisData);
 
 const defaultEmojis = [];
 emojisData.categories.forEach(category => {
@@ -63,13 +64,16 @@ emojisData.categories.forEach(category => {
         version: emoji.version,
       };
 
-      em.shortcode = emoji.keywords.shift();
+      em.shortcode = emoji.keywords[0];
       em.shortcodes = emoji.keywords;
 
-      console.log('NEW', clone(em));
-
       const groupIndex = emojiGroups.findIndex(group => group.id === category.id);
-      if (groupIndex > -1) emojiGroups[groupIndex].emojis.push(emoji);
+      if (groupIndex > -1) {
+        em.group = groupIndex;
+        console.log('EMOJI MART', emoji);
+        console.log('EMOJI NEW', clone(em));
+        emojiGroups[groupIndex].emojis.push(emoji);
+      };
 
       defaultEmojis.push(em);
 
@@ -86,7 +90,7 @@ OLDemojisData.forEach((emoji) => {
     shortcodes: myShortCodes,
   };
 
-  console.log('OLD', clone(em));
+  console.log('EMOJI OLD', clone(em));
   // addToGroup(em);
   // defaultEmojis.push(em);
 });
