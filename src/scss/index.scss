@@ -1038,9 +1038,12 @@ a {
     letter-spacing: 1px;
   }
 
-  .footer {
-    position: relative;
-  }
+  // .footer {
+  // display: block;
+  // position: absolute;
+  // bottom: 0;
+  // width: 100%;
+  // }
 
   .sso-btn__img:hover {
     filter: brightness(0.7) grayscale(0.3);
