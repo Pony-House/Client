@@ -5,21 +5,30 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Pony House</title>
-    <meta name="name" content="Pony House - Matrix" />
+
+    <meta content="website" property="og:type" />
+
+    <meta name="name" content="Pony House - Matrix Client" />
+
     <meta name="author" content="JasminDreasond (Yasmin Seidel)" />
+
     <meta
       name="description"
       content="A Private Matrix client where you can enjoy the conversation using simple, elegant and secure interface protected by e2ee with the power of open source."
     />
+
     <meta
       name="keywords"
       content="cinny, cinnyapp, cinnychat, matrix, matrix client, matrix.org, element, jasmindreasond, pony, house, pony house, tiny jasmini"
     />
 
+    <meta property="og:site_name" content="Pony House" />
     <meta property="og:title" content="Pony House" />
     <meta property="og:url" content="https://client.pony.house" />
-    <meta property="og:image" content="./favicon.ico" />
+    <meta property="og:image" content="./img/png/cinny.png" />
+
     <meta
       property="og:description"
       content="A Private Matrix client where you can enjoy the conversation using simple, elegant and secure interface protected by e2ee with the power of open source."
@@ -36,6 +45,14 @@
     <meta name="apple-mobile-web-app-title" content="Pony House" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!--
+    <meta content="ponyhouse://home" property="al:ios:url" data-rh="true" />
+    <meta content="ponyhouse://home" property="al:android:url" data-rh="true" />
+    <meta content="pony.house.matrix" property="al:android:package" data-rh="true" />
+    <meta content="Pony House" property="al:android:app_name" data-rh="true" />
+    <meta description="" name="description" data-rh="true" />
+    -->
 
     <script src="./js/web3.min.js"></script>
 
@@ -54,13 +71,17 @@
     <script>
       window.global ||= window;
     </script>
+
     <div id="root"></div>
+
     <audio id="notificationSound">
       <source src="./sound/notification.ogg" type="audio/ogg" />
     </audio>
+
     <audio id="inviteSound">
       <source src="./sound/invite.ogg" type="audio/ogg" />
     </audio>
+
     <script type="module" src="./src/index.jsx"></script>
   </body>
 </html>
