@@ -4,9 +4,9 @@
   --bg-auth-normal: rgb(196, 196, 196);
   --bg-auth-gradient: linear-gradient(
     0deg,
-    rgb(31 31 31) 0%,
-    rgb(255 255 255) 35%,
-    rgb(167 167 167) 100%
+    rgb(56, 92, 128) 0%,
+    rgb(89, 203, 218) 35%,
+    rgb(255, 255, 255) 100%
   );
 
   /* background color | --bg-[background type]: value */
@@ -398,8 +398,13 @@
 }
 
 @mixin dark-mode() {
-  --bg-auth-normal: rgb(2, 0, 36);
-  --bg-auth-gradient: linear-gradient(0deg, rgb(2, 0, 36) 0%, rgb(32 32 32) 35%, rgb(0 0 0) 100%);
+  --bg-auth-normal: rgb(36 58 80) 0%;
+  --bg-auth-gradient: linear-gradient(
+    0deg,
+    rgb(36 58 80) 0%,
+    rgb(23 28 32) 35%,
+    rgb(30 30 30) 100%
+  );
 
   /* background color | --bg-[background type]: value */
 
