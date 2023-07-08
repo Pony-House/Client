@@ -1,6 +1,6 @@
 {
   "name": "pony-house-matrix",
-  "version": "1.3.16",
+  "version": "1.3.17",
   "description": "The open source house, your house, the house for all matrix ponies",
   "main": "index.js",
   "engines": {
