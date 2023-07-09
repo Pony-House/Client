@@ -1,0 +1,1 @@
+- When opening the user's profile, you can now click on the avatar to see it in full size.
