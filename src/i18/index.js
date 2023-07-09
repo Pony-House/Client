@@ -19,15 +19,22 @@ const langs = {
 };
 
 // Load Text
-export function getI18Root() { return clone(langs); };
-export function getI18Data() { return clone(langs.data); };
-export function getI18(item) { return clone(langs.data[item]); };
+export function i18GetRoot() { return clone(langs); };
+export function i18GetData() { return clone(langs.data); };
+export function i18Get(item) { return clone(langs.data[item]); };
 export function i18IsLoading() { return (langs.loading === true); }
+
+export function i18Await() {
+    return new Promise((resolve, reject) => {
+        if (langs.loading === true) resolve(true);
+        else setTimeout(() => i18Await().then(resolve).catch(reject), 100);
+    });
+}
 
 // Refresh Lang
 export function refreshLang() {
     langs.loading = true;
-    global.i18 = { refreshLang, get: getI18, isLoading: i18IsLoading, getData: getI18Data, getRoot: getI18Root, };
+    global.i18 = { refreshLang, get: i18Get, isLoading: i18IsLoading, getData: i18GetData, getRoot: i18GetRoot, wait: i18Await, };
     return new Promise((resolve, reject) => {
 
         // Fix Default
