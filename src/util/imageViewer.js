@@ -1,6 +1,5 @@
 import FileSaver from 'file-saver';
 import PhotoSwipeLightbox from 'photoswipe';
-import { getFileContentType } from './fileMime';
 
 export default async function imageViewer(lightbox, imgQuery, name, url) {
     try {
@@ -14,13 +13,6 @@ export default async function imageViewer(lightbox, imgQuery, name, url) {
             if (typeof img.naturalWidth === 'number' && typeof img.naturalHeight === 'number') {
                 imgData.height = img.naturalHeight;
                 imgData.width = img.naturalWidth;
-            }
-
-            // Get Data
-            else {
-
-                // getFileContentType
-
             }
 
             // Create Lightbox
