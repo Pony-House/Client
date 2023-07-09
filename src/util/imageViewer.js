@@ -1,18 +1,33 @@
 import FileSaver from 'file-saver';
 import PhotoSwipeLightbox from 'photoswipe';
+import { getFileContentType } from './fileMime';
 
-export default async function imageViewer(lightbox, imgQuery, name, url) {
+export default async function imageViewer(lightbox, imgQuery, name, url, readMime = false) {
     try {
 
         // Read Image Tag
         const img = imgQuery.get(0);
         if (img) {
 
+            // Get Mime
+            let tinyImgData;
+
+            if (readMime) {
+                tinyImgData = await getFileContentType({ target: img }, url);
+                console.log(tinyImgData);
+            }
+
             // Prepare Data
             const imgData = { height: null, width: null };
             if (typeof img.naturalWidth === 'number' && typeof img.naturalHeight === 'number') {
                 imgData.height = img.naturalHeight;
                 imgData.width = img.naturalWidth;
+            }
+
+            // Get Data
+            else if (tinyImgData) {
+                imgData.height = tinyImgData.height;
+                imgData.width = tinyImgData.width;
             }
 
             // Create Lightbox

@@ -454,7 +454,7 @@ function ProfileViewer() {
 
       // Avatar Preview
       const tinyAvatarPreview = () => {
-        imageViewer(lightbox, $(profileAvatar.current).find('> img'), username, avatarUrl);
+        imageViewer(lightbox, $(profileAvatar.current).find('> img'), username, avatarUrl, true);
       };
 
       // Read Events
