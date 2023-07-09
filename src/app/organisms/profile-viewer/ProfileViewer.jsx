@@ -7,6 +7,8 @@ import $ from 'jquery';
 import { twemojify } from '../../../util/twemojify';
 import { getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
 
+import imageViewer from '../../../util/imageViewer';
+
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
@@ -369,12 +371,15 @@ function ProfileViewer() {
   const statusRef = useRef(null);
   const profileBanner = useRef(null);
   const [isOpen, roomId, userId, closeDialog, handleAfterClose] = useToggleDialog();
+  const [lightbox, setLightbox] = useState(false);
   useRerenderOnProfileChange(roomId, userId);
 
   // Get Data
   const mx = initMatrix.matrixClient;
   const user = mx.getUser(userId);
   const room = mx.getRoom(roomId);
+  let avatarUrl;
+  let username;
 
   useEffect(() => {
     if (user) {
@@ -449,10 +454,7 @@ function ProfileViewer() {
 
       // Avatar Preview
       const tinyAvatarPreview = () => {
-
-        const userAvatar = $(profileAvatar.current);
-
-
+        imageViewer(lightbox, $(profileAvatar.current), username, avatarUrl);
       };
 
       // Read Events
@@ -478,10 +480,10 @@ function ProfileViewer() {
   const renderProfile = () => {
 
     const roomMember = room.getMember(userId);
-    const username = roomMember ? getUsernameOfRoomMember(roomMember) : getUsername(userId);
+    username = roomMember ? getUsernameOfRoomMember(roomMember) : getUsername(userId);
 
     const avatarMxc = roomMember?.getMxcAvatarUrl?.() || user?.avatarUrl;
-    const avatarUrl = (avatarMxc && avatarMxc !== 'null') ? mx.mxcUrlToHttp(avatarMxc) : null;
+    avatarUrl = (avatarMxc && avatarMxc !== 'null') ? mx.mxcUrlToHttp(avatarMxc) : null;
 
     const powerLevel = roomMember?.powerLevel || 0;
     const myPowerLevel = room.getMember(mx.getUserId())?.powerLevel || 0;
@@ -529,6 +531,11 @@ function ProfileViewer() {
       );
     };
 
+    const toggleLightbox = () => {
+      if (!avatarUrl) return;
+      setLightbox(!lightbox);
+    };
+
     return (
       <>
 
@@ -538,7 +545,11 @@ function ProfileViewer() {
 
           <div className="row pb-3">
 
-            <div className='col-lg-3 text-center d-flex justify-content-center modal-user-profile-avatar'>
+            <div
+              className='col-lg-3 text-center d-flex justify-content-center modal-user-profile-avatar'
+              onClick={toggleLightbox}
+              onKeyDown={toggleLightbox}
+            >
               <Avatar ref={profileAvatar} imageSrc={avatarUrl} text={username} bgColor={colorMXID(userId)} size="large" isDefaultImage />
               <i ref={statusRef} className={`user-status pe-2 ${getUserStatus(user)}`} />
             </div>
