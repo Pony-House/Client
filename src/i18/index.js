@@ -1,6 +1,6 @@
 // Checker
-import { objType } from '../util/tools';
 import clone from 'clone';
+import { objType } from '../util/tools';
 
 // Lang Cache
 const langs = {
@@ -26,7 +26,7 @@ export function i18IsLoading() { return (langs.loading === true); }
 
 export function i18Await() {
     return new Promise((resolve, reject) => {
-        if (langs.loading === false) resolve(true);
+        if (!langs.loading) resolve(true);
         else setTimeout(() => i18Await().then(resolve).catch(reject), 100);
     });
 }
