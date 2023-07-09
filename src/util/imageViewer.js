@@ -10,11 +10,23 @@ export default async function imageViewer(lightbox, imgQuery, name, url, readMim
         if (img) {
 
             // Get Mime
-            let tinyImgData;
-
+            let filename = name;
+            let tinyImgData = null;
             if (readMime) {
-                tinyImgData = await getFileContentType({ target: img }, url);
-                console.log(tinyImgData);
+                try {
+
+                    // Read Mime
+                    tinyImgData = await getFileContentType({ target: img }, url);
+
+                    // Insert Mime
+                    if (Array.isArray(tinyImgData.type) && tinyImgData.type.length > 1 && typeof tinyImgData.type[1] === 'string') {
+                        filename += `.${tinyImgData.type[1]}`;
+                    }
+
+                } catch (err) {
+                    console.error(err);
+                    tinyImgData = null;
+                }
             }
 
             // Prepare Data
@@ -35,7 +47,7 @@ export default async function imageViewer(lightbox, imgQuery, name, url, readMim
                 dataSource: [
                     {
                         src: url,
-                        alt: name,
+                        alt: filename,
                         width: imgData.width,
                         height: imgData.height,
                     },
@@ -62,7 +74,7 @@ export default async function imageViewer(lightbox, imgQuery, name, url, readMim
                     isButton: true,
                     html: '<i class="fa-solid fa-floppy-disk pswp__icn" height="32" width="32"></i>',
                     onClick: () => {
-                        FileSaver.saveAs(url, name);
+                        FileSaver.saveAs(url, filename);
                     }
                 });
             });
