@@ -3,10 +3,6 @@ Made by aisa
     1 - Don't mark messages as read if the window isn't focused.
     2- Don't switch to a room when joined via invite on another session.
 
-noctabrat
-
-    --> Being able to see pfp fullscreen when we click them the same way we can see images
-
 chad
 
     --> did you ever find out why it never scrolls down to the bottom yet? c:

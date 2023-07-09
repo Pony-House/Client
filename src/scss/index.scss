@@ -984,3 +984,20 @@ a {
     }
   }
 }
+
+.modal-user-profile-avatar {
+  .avatar-react {
+    transition: filter 0.1s;
+  }
+  .avatar-react:hover,
+  .avatar-react:active {
+    cursor: pointer;
+  }
+  .avatar-react:hover {
+    filter: grayscale(0.2) brightness(0.9);
+  }
+
+  .avatar-react:active {
+    filter: grayscale(0.4) brightness(0.8);
+  }
+}

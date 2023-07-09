@@ -363,6 +363,7 @@ function useRerenderOnProfileChange(roomId, userId) {
 function ProfileViewer() {
 
   // Prepare
+  const profileAvatar = useRef(null);
   const bioRef = useRef(null);
   const customStatusRef = useRef(null);
   const statusRef = useRef(null);
@@ -446,12 +447,25 @@ function ProfileViewer() {
 
       };
 
+      // Avatar Preview
+      const tinyAvatarPreview = () => {
+
+        const userAvatar = $(profileAvatar.current);
+
+
+      };
+
       // Read Events
       updateProfileStatus(null, user);
+
       user.on('User.currentlyActive', updateProfileStatus);
       user.on('User.lastPresenceTs', updateProfileStatus);
       user.on('User.presence', updateProfileStatus);
+
+      $(profileAvatar.current).on('click', tinyAvatarPreview);
+
       return () => {
+        $(profileAvatar.current).off('click', tinyAvatarPreview);
         user.removeListener('User.currentlyActive', updateProfileStatus);
         user.removeListener('User.lastPresenceTs', updateProfileStatus);
         user.removeListener('User.presence', updateProfileStatus);
@@ -524,8 +538,8 @@ function ProfileViewer() {
 
           <div className="row pb-3">
 
-            <div className='col-lg-3 text-center d-flex justify-content-center'>
-              <Avatar imageSrc={avatarUrl} text={username} bgColor={colorMXID(userId)} size="large" isDefaultImage />
+            <div className='col-lg-3 text-center d-flex justify-content-center modal-user-profile-avatar'>
+              <Avatar ref={profileAvatar} imageSrc={avatarUrl} text={username} bgColor={colorMXID(userId)} size="large" isDefaultImage />
               <i ref={statusRef} className={`user-status pe-2 ${getUserStatus(user)}`} />
             </div>
 

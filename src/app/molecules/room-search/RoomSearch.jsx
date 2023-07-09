@@ -131,7 +131,7 @@ function RoomSearch({ roomId }) {
               fullTime
             >
               <div className='h-100 w-100 d-inline'>
-                <Button className='float-end' onClick={() => selectRoom(roomId, id)}><i class="bi bi-skip-forward-fill" /></Button>
+                <Button className='float-end' onClick={() => selectRoom(roomId, id)}><i className="bi bi-skip-forward-fill" /></Button>
               </div>
             </Message>
           </React.Fragment>

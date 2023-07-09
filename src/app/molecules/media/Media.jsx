@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import $ from 'jquery';
 import encrypt from 'browser-encrypt-attachment';
 
-import FileSaver from 'file-saver';
-import PhotoSwipeLightbox from 'photoswipe';
 import { BlurhashCanvas } from 'react-blurhash';
+import imageViewer from '../../../util/imageViewer';
 import Tooltip from '../../atoms/tooltip/Tooltip';
 import Text from '../../atoms/text/Text';
 import IconButton from '../../atoms/button/IconButton';
@@ -170,47 +169,7 @@ function Image({
 
                 imageLoaded = true;
                 const img = $(event.target);
-                const imgAction = () => {
-
-                  const pswp = new PhotoSwipeLightbox({
-                    dataSource: [
-                      {
-                        src: url,
-                        alt: name,
-                        width: img.get(0).naturalWidth,
-                        height: img.get(0).naturalHeight,
-                      },
-                    ],
-                    padding: { top: 40, bottom: 40, left: 100, right: 100 },
-                  });
-
-                  pswp.on('uiRegister', () => {
-                    pswp.ui.registerElement({
-                      name: 'new-window-button',
-                      ariaLabel: 'Open Url',
-                      order: 9,
-                      isButton: true,
-                      html: '<i class="fa-solid fa-arrow-up-right-from-square pswp__icn" height="32" width="32"></i>',
-                      onClick: () => {
-                        window.open(url, '_blank').focus();
-                      }
-                    });
-                    pswp.ui.registerElement({
-                      name: 'download-button',
-                      ariaLabel: 'Download Image',
-                      order: 10,
-                      isButton: true,
-                      html: '<i class="fa-solid fa-floppy-disk pswp__icn" height="32" width="32"></i>',
-                      onClick: () => {
-                        FileSaver.saveAs(url, name);
-                      }
-                    });
-                  });
-
-                  pswp.init();
-                  if (lightbox && lightbox.loadAndOpen) lightbox.loadAndOpen(0);
-
-                };
+                const imgAction = () => { imageViewer(lightbox, img, name, url); };
 
                 img.off('click', imgAction);
                 img.on('click', imgAction);
@@ -386,8 +345,8 @@ function Video({
         <div className="file-container file-open">
           <div className="video-container">
 
-            <div class="ratio ratio-16x9 video-base">
-              <video autoPlay controls poster={thumbUrl}>
+            <div className="ratio ratio-16x9 video-base">
+              <video srcwidth={width} srcheight={height} autoPlay controls poster={thumbUrl}>
                 <source src={url} type={getBlobSafeMimeType(type)} />
               </video>
             </div>

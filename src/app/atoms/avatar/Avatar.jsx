@@ -12,7 +12,7 @@ import { avatarInitials } from '../../../util/common';
 const ImageBrokenSVG = './img/svg/image-broken.svg';
 
 const Avatar = React.forwardRef(({
-  text, bgColor, iconSrc, faSrc, iconColor, imageSrc, size, className, imgClass, imageAnimSrc, isDefaultImage, animParentsCount
+  text, bgColor, iconSrc, faSrc, iconColor, imageSrc, size, className, imgClass, imageAnimSrc, isDefaultImage, animParentsCount, theRef,
 }, ref) => {
 
   // Prepare Data
@@ -46,6 +46,7 @@ const Avatar = React.forwardRef(({
 
             // Default Image
             <img
+              ref={theRef}
               className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
               draggable="false"
               src={imageSrc !== null ? imageSrc : `./img/default_avatar/${colorCode}.jpg`}
