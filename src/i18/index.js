@@ -1,5 +1,6 @@
 // Checker
 import { objType } from '../util/tools';
+import clone from 'clone';
 
 // Lang Cache
 const langs = {
@@ -17,10 +18,16 @@ const langs = {
 
 };
 
+// Load Text
+export function getI18Root() { return clone(langs); };
+export function getI18Data() { return clone(langs.data); };
+export function getI18(item) { return clone(langs.data[item]); };
+export function i18IsLoading() { return (langs.loading === true); }
+
 // Refresh Lang
 export function refreshLang() {
     langs.loading = true;
-    global.refreshLang = refreshLang;
+    global.i18 = { refreshLang, get: getI18, isLoading: i18IsLoading, getData: getI18Data, getRoot: getI18Root, };
     return new Promise((resolve, reject) => {
 
         // Fix Default
@@ -76,7 +83,3 @@ export function refreshLang() {
 
     });
 };
-
-// Load Text
-export function getI18(item) { return langs.data[item]; };
-export function i18IsLoading() { return langs.loading; }
