@@ -26,7 +26,7 @@ export function i18IsLoading() { return (langs.loading === true); }
 
 export function i18Await() {
     return new Promise((resolve, reject) => {
-        if (langs.loading === true) resolve(true);
+        if (langs.loading === false) resolve(true);
         else setTimeout(() => i18Await().then(resolve).catch(reject), 100);
     });
 }
