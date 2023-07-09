@@ -1,24 +1,42 @@
 import FileSaver from 'file-saver';
 import PhotoSwipeLightbox from 'photoswipe';
+import { getFileContentType } from './fileMime';
 
-export default function imageViewer(lightbox, imgQuery, name, url) {
+export default async function imageViewer(lightbox, imgQuery, name, url) {
     try {
 
+        // Read Image Tag
         const img = imgQuery.get(0);
         if (img) {
 
+            // Prepare Data
+            const imgData = { height: null, width: null };
+            if (typeof img.naturalWidth === 'number' && typeof img.naturalHeight === 'number') {
+                imgData.height = img.naturalHeight;
+                imgData.width = img.naturalWidth;
+            }
+
+            // Get Data
+            else {
+
+                // getFileContentType
+
+            }
+
+            // Create Lightbox
             const pswp = new PhotoSwipeLightbox({
                 dataSource: [
                     {
                         src: url,
                         alt: name,
-                        width: img.naturalWidth,
-                        height: img.naturalHeight,
+                        width: imgData.width,
+                        height: imgData.height,
                     },
                 ],
                 padding: { top: 40, bottom: 40, left: 100, right: 100 },
             });
 
+            // Register Buttons
             pswp.on('uiRegister', () => {
                 pswp.ui.registerElement({
                     name: 'new-window-button',
@@ -42,6 +60,7 @@ export default function imageViewer(lightbox, imgQuery, name, url) {
                 });
             });
 
+            // Init lightbox now
             pswp.init();
             if (lightbox && lightbox.loadAndOpen) lightbox.loadAndOpen(0);
 
