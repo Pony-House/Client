@@ -35,7 +35,7 @@
     "@capacitor/app": "5.0.3",
     "@capacitor/cli": "5.0.5",
     "@capacitor/core": "5.0.5",
-    "@capacitor/haptics": "5.0.4",
+    "@capacitor/haptics": "5.0.5",
     "@capacitor/ios": "5.0.5",
     "@capacitor/keyboard": "5.0.4",
     "@capacitor/status-bar": "5.0.4",
