@@ -1,5 +1,8 @@
 import $ from 'jquery';
 
+// Console Values
+const prefixConsole = (text, type = 'log') => console[type](`[audioRec.js] ${text}`);
+
 // API to handle audio recording 
 const audioRecorder = {
 
@@ -238,7 +241,7 @@ function playAudio(recorderAudioAsBlob) {
         audio.load();
 
         // play the audio after successfully setting new src and type that corresponds to the recorded audio
-        console.log('Playing audio...');
+        prefixConsole('Playing audio...');
         audio.play();
 
         // Display text indicator of having the audio play in the background
@@ -265,7 +268,7 @@ function handleHidingRecordingControlButtons() {
  */
 function stopAudioRecording() {
 
-    console.log('Stopping Audio Recording...');
+    prefixConsole('Stopping Audio Recording...');
 
     // stop the recording using the audio recording API
     audioRecorder.stop()
@@ -280,10 +283,12 @@ function stopAudioRecording() {
             // Error handling structure
             switch (error.name) {
                 case 'InvalidStateError': // error from the MediaRecorder.stop
-                    console.log('An InvalidStateError has occured.');
+                    prefixConsole('An InvalidStateError has occured.', 'error');
+                    console.error(error);
                     break;
                 default:
-                    console.log(`An error occured with the error name ${error.name}`);
+                    prefixConsole(`An error occured with the error name ${error.name}`, 'error');
+                    console.error(error);
             };
         });
 }
@@ -345,12 +350,12 @@ function hideTextIndicatorOfAudioPlaying() {
 /** Starts the audio recording */
 function startAudioRecording() {
 
-    console.log('Recording Audio...');
+    prefixConsole('Recording Audio...');
 
     // If a previous audio recording is playing, pause it
     const audio = audioElement.get(0);
     const recorderAudioIsPlaying = !audio.paused; // the paused property tells whether the media element is paused or not
-    console.log('paused?', !recorderAudioIsPlaying);
+    prefixConsole(`paused? ${String(!recorderAudioIsPlaying)}`);
     if (recorderAudioIsPlaying) {
         audio.pause();
         // also hide the audio playing indicator displayed on the screen
@@ -370,45 +375,54 @@ function startAudioRecording() {
         .catch(error => { // on error
             // No Browser Support Error
             if (error.message.includes('mediaDevices API or getUserMedia method is not supported in this browser.')) {
-                console.log('To record audio, use browsers like Chrome and Firefox.');
+                prefixConsole('To record audio, use browsers like Chrome and Firefox.', 'warn');
                 displayBrowserNotSupportedOverlay();
             }
 
             // Error handling structure
             switch (error.name) {
                 case 'AbortError': // error from navigator.mediaDevices.getUserMedia
-                    console.log('An AbortError has occured.');
+                    prefixConsole('An AbortError has occured.', 'error');
+                    console.error(error);
                     break;
                 case 'NotAllowedError': // error from navigator.mediaDevices.getUserMedia
-                    console.log('A NotAllowedError has occured. User might have denied permission.');
+                    prefixConsole('A NotAllowedError has occured. User might have denied permission.', 'error');
+                    console.error(error);
                     break;
                 case 'NotFoundError': // error from navigator.mediaDevices.getUserMedia
-                    console.log('A NotFoundError has occured.');
+                    prefixConsole('A NotFoundError has occured.', 'error');
+                    console.error(error);
                     break;
                 case 'NotReadableError': // error from navigator.mediaDevices.getUserMedia
-                    console.log('A NotReadableError has occured.');
+                    prefixConsole('A NotReadableError has occured.', 'error');
+                    console.error(error);
                     break;
                 case 'SecurityError': // error from navigator.mediaDevices.getUserMedia or from the MediaRecorder.start
-                    console.log('A SecurityError has occured.');
+                    prefixConsole('A SecurityError has occured.', 'error');
+                    console.error(error);
                     break;
                 case 'TypeError': // error from navigator.mediaDevices.getUserMedia
-                    console.log('A TypeError has occured.');
+                    prefixConsole('A TypeError has occured.', 'error');
+                    console.error(error);
                     break;
                 case 'InvalidStateError': // error from the MediaRecorder.start
-                    console.log('An InvalidStateError has occured.');
+                    prefixConsole('An InvalidStateError has occured.', 'error');
+                    console.error(error);
                     break;
                 case 'UnknownError': // error from the MediaRecorder.start
-                    console.log('An UnknownError has occured.');
+                    prefixConsole('An UnknownError has occured.', 'error');
+                    console.error(error);
                     break;
                 default:
-                    console.log(`An error occured with the error name ${error.name}`);
+                    prefixConsole(`An error occured with the error name ${error.name}`, 'error');
+                    console.error(error);
             };
         });
 }
 
 /** Cancel the currently started audio recording */
 function cancelAudioRecording() {
-    console.log('Canceling audio...');
+    prefixConsole('Canceling audio...');
 
     // cancel the recording using the audio recording API
     audioRecorder.cancel();
