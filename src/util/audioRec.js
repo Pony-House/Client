@@ -3,15 +3,22 @@ import $ from 'jquery';
 // Console Values
 const prefixConsole = (text, type = 'log') => console[type](`[audioRec.js] ${text}`);
 
-// API to handle audio recording 
-const audioRecorder = {
+// Cache
+const tinyCache = {
 
     /** Stores the recorded audio as Blob objects of audio data as the recording continues */
     audioBlobs: [],/* of type Blob[] */
+
     /** Stores the reference of the MediaRecorder instance that handles the MediaStream when recording starts */
     mediaRecorder: null, /* of type MediaRecorder */
+
     /** Stores the reference to the stream currently capturing the audio */
     streamBeingCaptured: null, /* of type MediaStream */
+
+};
+
+// API to handle audio recording 
+const audioRecorder = {
 
     /** Start recording the audio 
      * @returns {Promise} - returns a promise that resolves if audio recording successfully started
@@ -32,23 +39,23 @@ const audioRecorder = {
             .then(stream /* of type MediaStream */ => {
 
                 // save the reference of the stream to be able to stop it when necessary
-                audioRecorder.streamBeingCaptured = stream;
+                tinyCache.streamBeingCaptured = stream;
 
                 // create a media recorder instance by passing that stream into the MediaRecorder constructor
-                audioRecorder.mediaRecorder = new MediaRecorder(stream); /* the MediaRecorder interface of the MediaStream Recording
+                tinyCache.mediaRecorder = new MediaRecorder(stream); /* the MediaRecorder interface of the MediaStream Recording
                     API provides functionality to easily record media */
 
                 // clear previously saved audio Blobs, if any
-                audioRecorder.audioBlobs = [];
+                tinyCache.audioBlobs = [];
 
                 // add a dataavailable event listener in order to store the audio data Blobs when recording
-                audioRecorder.mediaRecorder.addEventListener('dataavailable', event => {
+                tinyCache.mediaRecorder.addEventListener('dataavailable', event => {
                     // store audio Blob object
-                    audioRecorder.audioBlobs.push(event.data);
+                    tinyCache.audioBlobs.push(event.data);
                 });
 
                 // start the recording by calling the start method on the media recorder
-                audioRecorder.mediaRecorder.start();
+                tinyCache.mediaRecorder.start();
             });
 
         /* errors are not handled in the API because if its handled and the promise is chained, the .then after the catch will be executed */
@@ -59,12 +66,12 @@ const audioRecorder = {
      */
     stop: () => new Promise(resolve => {
         // save audio type to pass to set the Blob type
-        const mimeType = audioRecorder.mediaRecorder.mimeType;
+        const mimeType = tinyCache.mediaRecorder.mimeType;
 
         // listen to the stop event in order to create & return a single Blob object
-        audioRecorder.mediaRecorder.addEventListener('stop', () => {
+        tinyCache.mediaRecorder.addEventListener('stop', () => {
             // create a single blob object, as we might have gathered a few Blob objects that needs to be joined as one
-            const audioBlob = new Blob(audioRecorder.audioBlobs, { type: mimeType });
+            const audioBlob = new Blob(tinyCache.audioBlobs, { type: mimeType });
 
             // resolve promise with the single audio blob representing the recorded audio
             resolve(audioBlob);
@@ -75,7 +82,7 @@ const audioRecorder = {
     /** Cancel audio recording */
     cancel: () => {
         // stop the recording feature
-        audioRecorder.mediaRecorder.stop();
+        tinyCache.mediaRecorder.stop();
 
         // stop all the tracks on the active stream in order to stop the stream
         audioRecorder.stopStream();
@@ -89,19 +96,19 @@ const audioRecorder = {
      */
     stopStream: () => {
         // stopping the capturing request by stopping all the tracks on the active stream
-        audioRecorder.streamBeingCaptured.getTracks() // get all tracks from the stream
+        tinyCache.streamBeingCaptured.getTracks() // get all tracks from the stream
             .forEach(track /* of type MediaStreamTrack */ => track.stop()); // stop each one
     },
 
     /** Reset all the recording properties including the media recorder and stream being captured */
     resetRecordingProperties: () => {
-        audioRecorder.mediaRecorder = null;
-        audioRecorder.streamBeingCaptured = null;
+        tinyCache.mediaRecorder = null;
+        tinyCache.streamBeingCaptured = null;
 
         /* No need to remove event listeners attached to mediaRecorder as
         If a DOM element which is removed is reference-free (no references pointing to it), the element itself is picked
         up by the garbage collector as well as any event handlers/listeners associated with it.
-        getEventListeners(audioRecorder.mediaRecorder) will return an empty array of events. */
+        getEventListeners(tinyCache.mediaRecorder) will return an empty array of events. */
     }
 
 };
