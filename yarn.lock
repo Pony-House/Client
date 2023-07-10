@@ -282,10 +282,10 @@
   resolved "https://registry.yarnpkg.com/@capacitor/keyboard/-/keyboard-5.0.4.tgz#1f4cca8be2197fb68deb10d0508cad994b7031c1"
   integrity sha512-vIv2NLZRBXgMDkyZurFpANCe7pEbpChdXNGdQFnk1Kg31DFScgwmq4ednZwT4+SHojH6SHCXxaBPg7Y265LWVQ==
 
-"@capacitor/status-bar@5.0.4":
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/@capacitor/status-bar/-/status-bar-5.0.4.tgz#48b89f8a5822d6c16a966e4ebaa2b42656649662"
-  integrity sha512-6gvkUTotpzHlfn5KoIglbIqdaEWV/crLtCYXebtFtRAPofCU8EWcljGeeISKBYPE99xqsk3M66vRUY4OzsAYyA==
+"@capacitor/status-bar@5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@capacitor/status-bar/-/status-bar-5.0.5.tgz#9354f956806037cd8b38076b43894693d033525c"
+  integrity sha512-8ykkIbndeAaATrAYcr4CLSplTeR6CU15h8trXV3DgLXlFQAC6E/WJnoMy1QL61n5rHh725nixqwCTepcgGx/rw==
 
 "@coinbase/wallet-sdk@^3.6.6":
   version "3.7.1"
