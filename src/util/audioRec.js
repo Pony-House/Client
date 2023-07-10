@@ -447,3 +447,6 @@ closeBrowserNotSupportedBoxButton.on('click', hideBrowserNotSupportedOverlay);
 
 // Listen to when the audio being played ends
 audioElement.on('ended', hideTextIndicatorOfAudioPlaying);
+
+// Export
+export default audioRecorder;
