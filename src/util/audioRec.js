@@ -39,7 +39,7 @@ const audioRecorder = {
                 audioRecorder.audioBlobs = [];
 
                 // add a dataavailable event listener in order to store the audio data Blobs when recording
-                audioRecorder.mediaRecorder.addEventListener("dataavailable", event => {
+                audioRecorder.mediaRecorder.addEventListener('dataavailable', event => {
                     // store audio Blob object
                     audioRecorder.audioBlobs.push(event.data);
                 });
@@ -59,7 +59,7 @@ const audioRecorder = {
         const mimeType = audioRecorder.mediaRecorder.mimeType;
 
         // listen to the stop event in order to create & return a single Blob object
-        audioRecorder.mediaRecorder.addEventListener("stop", () => {
+        audioRecorder.mediaRecorder.addEventListener('stop', () => {
             // create a single blob object, as we might have gathered a few Blob objects that needs to be joined as one
             const audioBlob = new Blob(audioRecorder.audioBlobs, { type: mimeType });
 
@@ -104,16 +104,16 @@ const audioRecorder = {
 };
 
 // View
-const microphoneButton = $(".start-recording-button");
-const recordingControlButtonsContainer = $(".recording-contorl-buttons-container");
-const stopRecordingButton = $(".stop-recording-button");
-const cancelRecordingButton = $(".cancel-recording-button");
-const elapsedTimeTag = $(".elapsed-time");
-const closeBrowserNotSupportedBoxButton = $(".close-browser-not-supported-box");
-const overlay = $(".overlay");
-const audioElement = $(".audio-element");
-let audioElementSource = $(".audio-element").find('source');
-const textIndicatorOfAudiPlaying = $(".text-indication-of-audio-playing");
+const microphoneButton = $('.start-recording-button');
+const recordingControlButtonsContainer = $('.recording-contorl-buttons-container');
+const stopRecordingButton = $('.stop-recording-button');
+const cancelRecordingButton = $('.cancel-recording-button');
+const elapsedTimeTag = $('.elapsed-time');
+const closeBrowserNotSupportedBoxButton = $('.close-browser-not-supported-box');
+const overlay = $('.overlay');
+const audioElement = $('.audio-element');
+let audioElementSource = $('.audio-element').find('source');
+const textIndicatorOfAudiPlaying = $('.text-indication-of-audio-playing');
 
 // Controller
 
@@ -132,7 +132,7 @@ let elapsedTimeTimer;
  */
 function elapsedTimeReachedMaximumNumberOfHours(elapsedTime) {
     // Split the elapsed time by the symbo :
-    const elapsedTimeSplitted = elapsedTime.split(":");
+    const elapsedTimeSplitted = elapsedTime.split(':');
 
     // Turn the maximum recording time in hours to a string and pad it with zero if less than 10
     const maximumRecordingTimeInHoursAsString = maximumRecordingTimeInHours < 10 ? `0${maximumRecordingTimeInHours}` : maximumRecordingTimeInHours.toString();
@@ -185,7 +185,7 @@ function computeElapsedTime(startTime) {
     let totalHours = hours + (days * 24);
     totalHours = totalHours < 10 ? `0${totalHours}` : totalHours;
 
-    if (totalHours === "00") {
+    if (totalHours === '00') {
         return `${minutes}:${seconds}`;
     }
     return `${totalHours}:${minutes}:${seconds}`;
@@ -194,7 +194,7 @@ function computeElapsedTime(startTime) {
 
 /** Creates a source element for the the audio element in the HTML document */
 function createSourceForAudioElement() {
-    const sourceElement = document.createElement("source");
+    const sourceElement = document.createElement('source');
     audioElement.append(sourceElement);
 
     audioElementSource = $(sourceElement);
@@ -202,7 +202,7 @@ function createSourceForAudioElement() {
 
 /** Display the text indicator of the audio being playing in the background */
 function displayTextIndicatorOfAudioPlaying() {
-    textIndicatorOfAudiPlaying.removeClass("hide");
+    textIndicatorOfAudiPlaying.removeClass('hide');
 }
 
 /** Plays recorded audio using the audio element in the HTML document
@@ -227,7 +227,7 @@ function playAudio(recorderAudioAsBlob) {
         audioElementSource.attr('src', base64URL);
 
         // set the type of the audio element based on the recorded audio's Blob type
-        const BlobType = recorderAudioAsBlob.type.includes(";") ?
+        const BlobType = recorderAudioAsBlob.type.includes(';') ?
             recorderAudioAsBlob.type.substring(0, recorderAudioAsBlob.type.indexOf(';')) : recorderAudioAsBlob.type;
         audioElementSource.attr('type', BlobType);
 
@@ -238,7 +238,7 @@ function playAudio(recorderAudioAsBlob) {
         audio.load();
 
         // play the audio after successfully setting new src and type that corresponds to the recorded audio
-        console.log("Playing audio...");
+        console.log('Playing audio...');
         audio.play();
 
         // Display text indicator of having the audio play in the background
@@ -265,7 +265,7 @@ function handleHidingRecordingControlButtons() {
  */
 function stopAudioRecording() {
 
-    console.log("Stopping Audio Recording...");
+    console.log('Stopping Audio Recording...');
 
     // stop the recording using the audio recording API
     audioRecorder.stop()
@@ -280,7 +280,7 @@ function stopAudioRecording() {
             // Error handling structure
             switch (error.name) {
                 case 'InvalidStateError': // error from the MediaRecorder.stop
-                    console.log("An InvalidStateError has occured.");
+                    console.log('An InvalidStateError has occured.');
                     break;
                 default:
                     console.log(`An error occured with the error name ${error.name}`);
@@ -304,7 +304,7 @@ function displayElapsedTimeDuringAudioRecording(elapsedTime) {
 /** Computes the elapsed recording time since the moment the function is called in the format h:m:s */
 function handleElapsedRecordingTime() {
     // display inital time when recording begins
-    displayElapsedTimeDuringAudioRecording("00:00");
+    displayElapsedTimeDuringAudioRecording('00:00');
 
     // create an interval that compute & displays elapsed time, as well as, animate red dot - every second
     elapsedTimeTimer = setInterval(() => {
@@ -329,28 +329,28 @@ function handleDisplayingRecordingControlButtons() {
 
 /** Displays browser not supported info box for the user */
 function displayBrowserNotSupportedOverlay() {
-    overlay.removeClass("hide");
+    overlay.removeClass('hide');
 }
 
 /** Displays browser not supported info box for the user */
 function hideBrowserNotSupportedOverlay() {
-    overlay.addClass("hide");
+    overlay.addClass('hide');
 }
 
 /** Hide the text indicator of the audio being playing in the background */
 function hideTextIndicatorOfAudioPlaying() {
-    textIndicatorOfAudiPlaying.addClass("hide");
+    textIndicatorOfAudiPlaying.addClass('hide');
 }
 
 /** Starts the audio recording */
 function startAudioRecording() {
 
-    console.log("Recording Audio...");
+    console.log('Recording Audio...');
 
     // If a previous audio recording is playing, pause it
     const audio = audioElement.get(0);
     const recorderAudioIsPlaying = !audio.paused; // the paused property tells whether the media element is paused or not
-    console.log("paused?", !recorderAudioIsPlaying);
+    console.log('paused?', !recorderAudioIsPlaying);
     if (recorderAudioIsPlaying) {
         audio.pause();
         // also hide the audio playing indicator displayed on the screen
@@ -369,36 +369,36 @@ function startAudioRecording() {
         })
         .catch(error => { // on error
             // No Browser Support Error
-            if (error.message.includes("mediaDevices API or getUserMedia method is not supported in this browser.")) {
-                console.log("To record audio, use browsers like Chrome and Firefox.");
+            if (error.message.includes('mediaDevices API or getUserMedia method is not supported in this browser.')) {
+                console.log('To record audio, use browsers like Chrome and Firefox.');
                 displayBrowserNotSupportedOverlay();
             }
 
             // Error handling structure
             switch (error.name) {
                 case 'AbortError': // error from navigator.mediaDevices.getUserMedia
-                    console.log("An AbortError has occured.");
+                    console.log('An AbortError has occured.');
                     break;
                 case 'NotAllowedError': // error from navigator.mediaDevices.getUserMedia
-                    console.log("A NotAllowedError has occured. User might have denied permission.");
+                    console.log('A NotAllowedError has occured. User might have denied permission.');
                     break;
                 case 'NotFoundError': // error from navigator.mediaDevices.getUserMedia
-                    console.log("A NotFoundError has occured.");
+                    console.log('A NotFoundError has occured.');
                     break;
                 case 'NotReadableError': // error from navigator.mediaDevices.getUserMedia
-                    console.log("A NotReadableError has occured.");
+                    console.log('A NotReadableError has occured.');
                     break;
                 case 'SecurityError': // error from navigator.mediaDevices.getUserMedia or from the MediaRecorder.start
-                    console.log("A SecurityError has occured.");
+                    console.log('A SecurityError has occured.');
                     break;
                 case 'TypeError': // error from navigator.mediaDevices.getUserMedia
-                    console.log("A TypeError has occured.");
+                    console.log('A TypeError has occured.');
                     break;
                 case 'InvalidStateError': // error from the MediaRecorder.start
-                    console.log("An InvalidStateError has occured.");
+                    console.log('An InvalidStateError has occured.');
                     break;
                 case 'UnknownError': // error from the MediaRecorder.start
-                    console.log("An UnknownError has occured.");
+                    console.log('An UnknownError has occured.');
                     break;
                 default:
                     console.log(`An error occured with the error name ${error.name}`);
@@ -408,7 +408,7 @@ function startAudioRecording() {
 
 /** Cancel the currently started audio recording */
 function cancelAudioRecording() {
-    console.log("Canceling audio...");
+    console.log('Canceling audio...');
 
     // cancel the recording using the audio recording API
     audioRecorder.cancel();
