@@ -5,6 +5,7 @@ const tinyPlugins = {
 
     // Cache Functions
     cache: {},
+    order: {},
     props: {}
 
 };
@@ -18,6 +19,10 @@ const createTinyCache = (event, data, callback) => {
             tinyPlugins.cache[event] = [];
         }
 
+        if (!Array.isArray(tinyPlugins.order[event])) {
+            tinyPlugins.order[event] = [];
+        }
+
         if (!objType(tinyPlugins.props[event], 'object')) {
             tinyPlugins.props[event] = {};
         }
@@ -28,9 +33,13 @@ const createTinyCache = (event, data, callback) => {
 
         const oldIndex = tinyPlugins.cache[event].indexOf(callback);
         if (oldIndex < 0) {
+
             tinyPlugins.cache[event].push(callback);
+
             newIndex = tinyPlugins.cache[event].length - 1;
+            tinyPlugins.order[event].push({ callback, index: newIndex });
             result = true;
+
         } else {
             newIndex = oldIndex;
         }
@@ -81,6 +90,13 @@ const deleteTinyCache = (event, callback) => {
                     delete tinyPlugins.props[event][index];
                 }
 
+                if (Array.isArray(tinyPlugins.order[event])) {
+                    const ti = tinyPlugins.order[event].findIndex(item => item.index === index);
+                    if (ti > -1) {
+                        tinyPlugins.order[event].splice(ti, 1);
+                    }
+                }
+
             }
 
         }
@@ -105,7 +121,7 @@ export function emit(event, data) {
     // Exist Data
     if (Array.isArray(tinyPlugins.cache[event])) {
         for (const item in tinyPlugins.cache[event]) {
-
+            await tinyPlugins.cache[event][item](data);
         }
     }
 
@@ -122,7 +138,7 @@ export async function emitAsync(event, data) {
     // Exist Data
     if (Array.isArray(tinyPlugins.cache[event])) {
         for (const item in tinyPlugins.cache[event]) {
-
+            tinyPlugins.cache[event][item](data);
         }
     }
 
