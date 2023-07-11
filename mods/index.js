@@ -114,7 +114,7 @@ export function off(event, callback) {
 };
 
 // Emit
-export function emitAsync(event, data) {
+export function emit(event, data) {
 
     // Exist Data
     if (Array.isArray(tinyPlugins.order[event])) {
@@ -128,7 +128,7 @@ export function emitAsync(event, data) {
 
 };
 
-export async function emit(event, data) {
+export async function emitAsync(event, data) {
 
     // Exist Data
     if (Array.isArray(tinyPlugins.order[event])) {
