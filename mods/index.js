@@ -95,3 +95,38 @@ const deleteTinyCache = (event, callback) => {
 export function off(event, callback) {
     return deleteTinyCache(event, callback);
 };
+
+// Emit
+export function emit(event, data) {
+
+    // Result
+    let result = null;
+
+    // Exist Data
+    if (Array.isArray(tinyPlugins.cache[event])) {
+        for (const item in tinyPlugins.cache[event]) {
+
+        }
+    }
+
+    // Complete
+    return result;
+
+};
+
+export async function emitAsync(event, data) {
+
+    // Result
+    let result = null;
+
+    // Exist Data
+    if (Array.isArray(tinyPlugins.cache[event])) {
+        for (const item in tinyPlugins.cache[event]) {
+
+        }
+    }
+
+    // Complete
+    return result;
+
+};
