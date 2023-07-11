@@ -164,7 +164,7 @@ import * as modEmmiter from './mods';
 
 `src/util/AsyncSearch.js`
 
-### resultSent (Not ready for production)
+### searchResultSent (Not ready for production)
 
     findingList
     term
