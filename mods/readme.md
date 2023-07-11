@@ -10,7 +10,9 @@ The first argument will always be the final value that will be sent to the appli
 
 This value must always be an object. If this object is replaced by something else, a null will be sent to the API.
 
+```ts
     import * as modEmmiter from './mods';
+```
 
 <hr/>
 
@@ -145,6 +147,20 @@ This value must always be an object. If this object is replaced by something els
 ### profileUpdated (Not ready for production)
 
     content
+
+`src/client/state/AccountData.js`
+
+### spaceShortcutUpdate (Not ready for production)
+
+    roomId
+
+### spaceShortcutUpdated (Not ready for production)
+
+    roomId
+
+### categorizeSpaceUpdated (Not ready for production)
+
+    roomId
 
 <hr/>
 

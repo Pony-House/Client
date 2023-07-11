@@ -1,6 +1,7 @@
 import EventEmitter from 'events';
 import appDispatcher from '../dispatcher';
 import cons from './cons';
+import * as modEmmiter from '../../../mods';
 
 class AccountData extends EventEmitter {
   constructor(roomList) {
@@ -71,46 +72,73 @@ class AccountData extends EventEmitter {
   accountActions(action) {
     const actions = {
       [cons.actions.accountData.CREATE_SPACE_SHORTCUT]: () => {
+
         const addRoomId = (id) => {
           if (this.spaceShortcut.has(id)) return;
           this.spaceShortcut.add(id);
         };
+
         if (Array.isArray(action.roomId)) {
           action.roomId.forEach(addRoomId);
         } else {
           addRoomId(action.roomId);
         }
+
         this._updateSpaceShortcutData([...this.spaceShortcut]);
+
+        modEmmiter.emit('spaceShortcutUpdate', action.roomId);
         this.emit(cons.events.accountData.SPACE_SHORTCUT_UPDATED, action.roomId);
+
       },
       [cons.actions.accountData.DELETE_SPACE_SHORTCUT]: () => {
+
         if (!this.spaceShortcut.has(action.roomId)) return;
+
         this.spaceShortcut.delete(action.roomId);
         this._updateSpaceShortcutData([...this.spaceShortcut]);
+
+        modEmmiter.emit('spaceShortcutUpdated', action.roomId);
         this.emit(cons.events.accountData.SPACE_SHORTCUT_UPDATED, action.roomId);
+
       },
       [cons.actions.accountData.MOVE_SPACE_SHORTCUTS]: () => {
+
         const { roomId, toIndex } = action;
         if (!this.spaceShortcut.has(roomId)) return;
+
         this.spaceShortcut.delete(roomId);
         const ssList = [...this.spaceShortcut];
         if (toIndex >= ssList.length) ssList.push(roomId);
         else ssList.splice(toIndex, 0, roomId);
+
         this.spaceShortcut = new Set(ssList);
         this._updateSpaceShortcutData(ssList);
+
+        modEmmiter.emit('spaceShortcutUpdated', roomId);
         this.emit(cons.events.accountData.SPACE_SHORTCUT_UPDATED, roomId);
+
       },
       [cons.actions.accountData.CATEGORIZE_SPACE]: () => {
+
         if (this.categorizedSpaces.has(action.roomId)) return;
+
         this.categorizedSpaces.add(action.roomId);
         this._updateCategorizedSpacesData([...this.categorizedSpaces]);
+
+        modEmmiter.emit('categorizeSpaceUpdated', action.roomId);
         this.emit(cons.events.accountData.CATEGORIZE_SPACE_UPDATED, action.roomId);
+
       },
       [cons.actions.accountData.UNCATEGORIZE_SPACE]: () => {
+
         if (!this.categorizedSpaces.has(action.roomId)) return;
+
         this.categorizedSpaces.delete(action.roomId);
         this._updateCategorizedSpacesData([...this.categorizedSpaces]);
+
+        modEmmiter.emit('categorizeSpaceUpdated', action.roomId);
         this.emit(cons.events.accountData.CATEGORIZE_SPACE_UPDATED, action.roomId);
+
       },
     };
     actions[action.type]?.();
@@ -118,24 +146,40 @@ class AccountData extends EventEmitter {
 
   _listenEvents() {
     this.matrixClient.on('accountData', (event) => {
+
       if (event.getType() !== cons.IN_CINNY_SPACES) return;
+
       this._populateSpaceShortcut();
+
+      modEmmiter.emit('spaceShortcutUpdated');
       this.emit(cons.events.accountData.SPACE_SHORTCUT_UPDATED);
+
       this._populateCategorizedSpaces();
+
+      modEmmiter.emit('categorizeSpaceUpdated');
       this.emit(cons.events.accountData.CATEGORIZE_SPACE_UPDATED);
+
     });
 
     this.roomList.on(cons.events.roomList.ROOM_LEAVED, (roomId) => {
       if (this.spaceShortcut.has(roomId)) {
+
         // if deleted space has shortcut remove it.
         this.spaceShortcut.delete(roomId);
         this._updateSpaceShortcutData([...this.spaceShortcut]);
+
+        modEmmiter.emit('spaceShortcutUpdated', roomId);
         this.emit(cons.events.accountData.SPACE_SHORTCUT_UPDATED, roomId);
+
       }
       if (this.categorizedSpaces.has(roomId)) {
+
         this.categorizedSpaces.delete(roomId);
         this._updateCategorizedSpacesData([...this.categorizedSpaces]);
+
+        modEmmiter.emit('categorizeSpaceUpdated', roomId);
         this.emit(cons.events.accountData.CATEGORIZE_SPACE_UPDATED, roomId);
+
       }
     });
   }
