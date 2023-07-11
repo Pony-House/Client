@@ -90,12 +90,12 @@ class Navigation extends EventEmitter {
 
     if (this.isRoomSettings && typeof this.selectedRoomId === 'string') {
       this.isRoomSettings = !this.isRoomSettings;
-      modEmmiter.emit(cons.events.navigation.ROOM_SETTINGS_TOGGLED, this.isRoomSettings);
+      modEmmiter.emit('roomSettingsToggled', this.isRoomSettings);
       this.emit(cons.events.navigation.ROOM_SETTINGS_TOGGLED, this.isRoomSettings);
     }
 
     modEmmiter.emit(
-      cons.events.navigation.ROOM_SELECTED,
+      'roomSelected',
       this.selectedRoomId,
       prevSelectedRoomId,
       eventId,
@@ -199,7 +199,7 @@ class Navigation extends EventEmitter {
   _selectTab(tabId, selectRoom = true) {
     this.selectedTab = tabId;
     if (selectRoom) this._selectRoomWithTab(this.selectedTab);
-    modEmmiter.emit(cons.events.navigation.TAB_SELECTED, this.selectedTab);
+    modEmmiter.emit('tabSelected', this.selectedTab);
     this.emit(cons.events.navigation.TAB_SELECTED, this.selectedTab);
   }
 
@@ -207,7 +207,7 @@ class Navigation extends EventEmitter {
     this._addToSpacePath(roomId, asRoot);
     this.selectedSpaceId = roomId;
     if (!asRoot && selectRoom) this._selectRoomWithSpace(this.selectedSpaceId);
-    modEmmiter.emit(cons.events.navigation.SPACE_SELECTED, this.selectedSpaceId);
+    modEmmiter.emit('spaceSelected', this.selectedSpaceId);
     this.emit(cons.events.navigation.SPACE_SELECTED, this.selectedSpaceId);
   }
 
@@ -307,7 +307,7 @@ class Navigation extends EventEmitter {
         this._selectTab(action.tabId);
       },
       [cons.actions.navigation.SELECT_ROOM_MODE]: () => {
-        modEmmiter.emit(cons.events.navigation.SELECTED_ROOM_MODE, action.roomType);
+        modEmmiter.emit('selectedRoomMode', action.roomType);
         this.emit(cons.events.navigation.SELECTED_ROOM_MODE, action.roomType);
       },
       [cons.actions.navigation.SELECT_SPACE]: () => {
@@ -318,15 +318,15 @@ class Navigation extends EventEmitter {
         this._selectRoom(action.roomId, action.eventId);
       },
       [cons.actions.navigation.OPEN_SPACE_SETTINGS]: () => {
-        modEmmiter.emit(cons.events.navigation.SPACE_SETTINGS_OPENED, action.roomId, action.tabText, action.isProfile);
+        modEmmiter.emit('spaceSettingsOpened', action.roomId, action.tabText, action.isProfile);
         this.emit(cons.events.navigation.SPACE_SETTINGS_OPENED, action.roomId, action.tabText, action.isProfile);
       },
       [cons.actions.navigation.OPEN_SPACE_MANAGE]: () => {
-        modEmmiter.emit(cons.events.navigation.SPACE_MANAGE_OPENED, action.roomId);
+        modEmmiter.emit('spaceManageOpened', action.roomId);
         this.emit(cons.events.navigation.SPACE_MANAGE_OPENED, action.roomId);
       },
       [cons.actions.navigation.OPEN_SPACE_ADDEXISTING]: () => {
-        modEmmiter.emit(cons.events.navigation.SPACE_ADDEXISTING_OPENED, action.roomId);
+        modEmmiter.emit('spaceAddExistingOpened', action.roomId);
         this.emit(cons.events.navigation.SPACE_ADDEXISTING_OPENED, action.roomId);
       },
       [cons.actions.navigation.TOGGLE_ROOM_SETTINGS]: () => {
@@ -334,7 +334,7 @@ class Navigation extends EventEmitter {
         this.isRoomSettings = !this.isRoomSettings;
 
         modEmmiter.emit(
-          cons.events.navigation.ROOM_SETTINGS_TOGGLED,
+          'roomSettingsToggled',
           this.isRoomSettings,
           action.tabText,
         );
@@ -347,21 +347,21 @@ class Navigation extends EventEmitter {
 
       },
       [cons.actions.navigation.OPEN_SHORTCUT_SPACES]: () => {
-        modEmmiter.emit(cons.events.navigation.SHORTCUT_SPACES_OPENED);
+        modEmmiter.emit('shortcutSpacesOpened');
         this.emit(cons.events.navigation.SHORTCUT_SPACES_OPENED);
       },
       [cons.actions.navigation.OPEN_INVITE_LIST]: () => {
-        modEmmiter.emit(cons.events.navigation.INVITE_LIST_OPENED);
+        modEmmiter.emit('inviteListOpened');
         this.emit(cons.events.navigation.INVITE_LIST_OPENED);
       },
       [cons.actions.navigation.OPEN_PUBLIC_ROOMS]: () => {
-        modEmmiter.emit(cons.events.navigation.PUBLIC_ROOMS_OPENED, action.searchTerm);
+        modEmmiter.emit('publicRoomsOpened', action.searchTerm);
         this.emit(cons.events.navigation.PUBLIC_ROOMS_OPENED, action.searchTerm);
       },
       [cons.actions.navigation.OPEN_CREATE_ROOM]: () => {
 
         modEmmiter.emit(
-          cons.events.navigation.CREATE_ROOM_OPENED,
+          'createRoomOpened',
           action.isSpace,
           action.parentId,
         );
@@ -376,7 +376,7 @@ class Navigation extends EventEmitter {
       [cons.actions.navigation.OPEN_JOIN_ALIAS]: () => {
 
         modEmmiter.emit(
-          cons.events.navigation.JOIN_ALIAS_OPENED,
+          'joinAliasOpened',
           action.term,
         );
 
@@ -386,25 +386,25 @@ class Navigation extends EventEmitter {
         );
       },
       [cons.actions.navigation.OPEN_INVITE_USER]: () => {
-        modEmmiter.emit(cons.events.navigation.INVITE_USER_OPENED, action.roomId, action.searchTerm);
+        modEmmiter.emit('inviteUserOpened', action.roomId, action.searchTerm);
         this.emit(cons.events.navigation.INVITE_USER_OPENED, action.roomId, action.searchTerm);
       },
       [cons.actions.navigation.OPEN_PROFILE_VIEWER]: () => {
-        modEmmiter.emit(cons.events.navigation.PROFILE_VIEWER_OPENED, action.userId, action.roomId);
+        modEmmiter.emit('profileViewerOpened', action.userId, action.roomId);
         this.emit(cons.events.navigation.PROFILE_VIEWER_OPENED, action.userId, action.roomId);
       },
       [cons.actions.navigation.OPEN_SETTINGS]: () => {
-        modEmmiter.emit(cons.events.navigation.SETTINGS_OPENED, action.tabText);
+        modEmmiter.emit('settingsOpened', action.tabText);
         this.emit(cons.events.navigation.SETTINGS_OPENED, action.tabText);
       },
       [cons.actions.navigation.OPEN_NAVIGATION]: () => {
-        modEmmiter.emit(cons.events.navigation.NAVIGATION_OPENED);
+        modEmmiter.emit('navigationOpened');
         this.emit(cons.events.navigation.NAVIGATION_OPENED);
       },
       [cons.actions.navigation.OPEN_EMOJIBOARD]: () => {
 
         modEmmiter.emit(
-          cons.events.navigation.EMOJIBOARD_OPENED,
+          'emojiboardOpened',
           action.cords,
           action.requestEmojiCallback,
           action.dom,
@@ -421,7 +421,7 @@ class Navigation extends EventEmitter {
       [cons.actions.navigation.OPEN_READRECEIPTS]: () => {
 
         modEmmiter.emit(
-          cons.events.navigation.READRECEIPTS_OPENED,
+          'readReceiptsOpened',
           action.roomId,
           action.userIds,
         );
@@ -436,7 +436,7 @@ class Navigation extends EventEmitter {
       [cons.actions.navigation.OPEN_VIEWSOURCE]: () => {
 
         modEmmiter.emit(
-          cons.events.navigation.VIEWSOURCE_OPENED,
+          'viewSourceOpened',
           action.event,
         );
 
@@ -449,7 +449,7 @@ class Navigation extends EventEmitter {
       [cons.actions.navigation.CLICK_REPLY_TO]: () => {
 
         modEmmiter.emit(
-          cons.events.navigation.REPLY_TO_CLICKED,
+          'replyToClicked',
           action.userId,
           action.eventId,
           action.body,
@@ -468,7 +468,7 @@ class Navigation extends EventEmitter {
       [cons.actions.navigation.OPEN_SEARCH]: () => {
 
         modEmmiter.emit(
-          cons.events.navigation.SEARCH_OPENED,
+          'searchOpened',
           action.term,
         );
 
@@ -481,7 +481,7 @@ class Navigation extends EventEmitter {
       [cons.actions.navigation.OPEN_REUSABLE_CONTEXT_MENU]: () => {
 
         modEmmiter.emit(
-          cons.events.navigation.REUSABLE_CONTEXT_MENU_OPENED,
+          'reusableContextMenuOpened',
           action.placement,
           action.cords,
           action.render,
@@ -500,7 +500,7 @@ class Navigation extends EventEmitter {
       [cons.actions.navigation.OPEN_REUSABLE_DIALOG]: () => {
 
         modEmmiter.emit(
-          cons.events.navigation.REUSABLE_DIALOG_OPENED,
+          'reusableDialogOpened',
           action.title,
           action.render,
           action.afterClose,
@@ -517,7 +517,7 @@ class Navigation extends EventEmitter {
       [cons.actions.navigation.OPEN_EMOJI_VERIFICATION]: () => {
 
         modEmmiter.emit(
-          cons.events.navigation.EMOJI_VERIFICATION_OPENED,
+          'emojiVerificationOpened',
           action.request,
           action.targetDevice,
         );
@@ -530,7 +530,7 @@ class Navigation extends EventEmitter {
 
       },
       [cons.actions.navigation.PROFILE_UPDATE]: () => {
-        modEmmiter.emit(cons.events.navigation.PROFILE_UPDATED, action.content);
+        modEmmiter.emit('profileUpdated', action.content);
         this.emit(cons.events.navigation.PROFILE_UPDATED, action.content);
       },
     };
