@@ -113,8 +113,9 @@ export function emit(event, data) {
         for (const item in tinyPlugins.order[event]) {
 
             tinyPlugins.order[event][item].callback(data);
-
-            if (tinyPlugins.order[event][item])
+            if (tinyPlugins.order[event][item].type === 'once') {
+                deleteTinyCache(event, tinyPlugins.order[event][item].callback);
+            }
 
         }
     }
@@ -131,6 +132,9 @@ export async function emitAsync(event, data) {
         for (const item in tinyPlugins.order[event]) {
 
             await tinyPlugins.order[event][item].callback(data);
+            if (tinyPlugins.order[event][item].type === 'once') {
+                deleteTinyCache(event, tinyPlugins.order[event][item].callback);
+            }
 
         }
     }
