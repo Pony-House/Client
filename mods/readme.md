@@ -8,7 +8,9 @@ Features are still under development. I will update this file with more informat
 
 The first argument will always be the final value that will be sent to the application's API.
 
-This value must always be an object. If this object is replaced by something else, a null will be sent to the API
+This value must always be an object. If this object is replaced by something else, a null will be sent to the API.
+
+    import * as modEmmiter from './mods';
 
 <hr/>
 
