@@ -1,3 +1,3 @@
-# Plugins Support
+# Mods Support
 
 Coming soon... (Under development)
