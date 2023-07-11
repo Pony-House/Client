@@ -1,3 +1,4 @@
+/* eslint-disable prefer-rest-params */
 /* eslint-disable no-await-in-loop */
 import { objType } from '../src/util/tools';
 
@@ -113,32 +114,24 @@ export function off(event, callback) {
 };
 
 // Emit
-export function emit(event, data) {
+const argumentsFix = (args) => {
 
-    // Exist Data
-    if (Array.isArray(tinyPlugins.order[event])) {
-        for (const item in tinyPlugins.order[event]) {
-
-            tinyPlugins.order[event][item].callback(data);
-            if (tinyPlugins.order[event][item].type === 'once') {
-                deleteTinyCache(event, tinyPlugins.order[event][item].callback, tinyPlugins.order[event][item].index);
-            }
-
-        }
+    const newArgs = [];
+    for (const item in args) {
+        if (Number(item) !== 0) newArgs.push(args[item]);
     }
 
-    // Complete
-    return data;
+    return newArgs;
 
 };
 
-export async function emitAsync(event, data) {
+export function emit(event) {
 
     // Exist Data
     if (Array.isArray(tinyPlugins.order[event])) {
         for (const item in tinyPlugins.order[event]) {
 
-            await tinyPlugins.order[event][item].callback(data);
+            tinyPlugins.order[event][item].callback.apply({}, argumentsFix(arguments));
             if (tinyPlugins.order[event][item].type === 'once') {
                 deleteTinyCache(event, tinyPlugins.order[event][item].callback, tinyPlugins.order[event][item].index);
             }
@@ -147,6 +140,25 @@ export async function emitAsync(event, data) {
     }
 
     // Complete
-    return data;
+    return true;
+
+};
+
+export async function emitAsync(event) {
+
+    // Exist Data
+    if (Array.isArray(tinyPlugins.order[event])) {
+        for (const item in tinyPlugins.order[event]) {
+
+            await tinyPlugins.order[event][item].callback.apply({}, argumentsFix(arguments));
+            if (tinyPlugins.order[event][item].type === 'once') {
+                deleteTinyCache(event, tinyPlugins.order[event][item].callback, tinyPlugins.order[event][item].index);
+            }
+
+        }
+    }
+
+    // Complete
+    return true;
 
 };

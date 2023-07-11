@@ -1,6 +1,7 @@
 import EventEmitter from 'events';
 import appDispatcher from '../dispatcher';
 import cons from './cons';
+import * as modEmmiter from '../../../mods';
 
 class Navigation extends EventEmitter {
   constructor() {
@@ -79,22 +80,26 @@ class Navigation extends EventEmitter {
   }
 
   _selectRoom(roomId, eventId) {
+
     const prevSelectedRoomId = this.selectedRoomId;
     this.selectedRoomId = roomId;
     if (prevSelectedRoomId !== roomId) this._mapRoomToSpace(roomId);
     this.removeRecentRoom(prevSelectedRoomId);
     this.addRecentRoom(prevSelectedRoomId);
     this.removeRecentRoom(this.selectedRoomId);
+
     if (this.isRoomSettings && typeof this.selectedRoomId === 'string') {
       this.isRoomSettings = !this.isRoomSettings;
       this.emit(cons.events.navigation.ROOM_SETTINGS_TOGGLED, this.isRoomSettings);
     }
+
     this.emit(
       cons.events.navigation.ROOM_SELECTED,
       this.selectedRoomId,
       prevSelectedRoomId,
       eventId,
     );
+
   }
 
   _selectTabWithRoom(roomId) {
