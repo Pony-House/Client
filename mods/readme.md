@@ -162,6 +162,13 @@ import * as modEmmiter from './mods';
 
     roomId
 
+`src/util/AsyncSearch.js`
+
+### resultSent (Not ready for production)
+
+    findingList
+    term
+
 <hr/>
 
 ### Mod Version

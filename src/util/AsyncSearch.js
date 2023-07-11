@@ -1,4 +1,5 @@
 import EventEmitter from 'events';
+import * as modEmmiter from '../../mods';
 
 class AsyncSearch extends EventEmitter {
 
@@ -170,6 +171,7 @@ class AsyncSearch extends EventEmitter {
 
   // Complete. Send results
   _sendFindings() {
+    modEmmiter.emit('resultSent', this.findingList, this.term);
     this.emit(this.RESULT_SENT, this.findingList, this.term);
   }
 
