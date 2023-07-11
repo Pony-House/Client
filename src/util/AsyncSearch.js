@@ -171,8 +171,21 @@ class AsyncSearch extends EventEmitter {
 
   // Complete. Send results
   _sendFindings() {
-    modEmmiter.emit('searchResultSent', this.findingList, this.term);
+
+    modEmmiter.emit('searchResultSent',
+
+      this.findingList,
+      this.term,
+
+      {
+        searchKeys: this.searchKeys,
+        limit: this.limit,
+      },
+
+    );
+
     this.emit(this.RESULT_SENT, this.findingList, this.term);
+
   }
 
 }

@@ -168,6 +168,7 @@ import * as modEmmiter from './mods';
 
     findingList
     term
+    config
 
 <hr/>
 
