@@ -37,6 +37,11 @@ Would you like to customize your login page to your website? Then you can check 
 
 If you would like to edit the homeservers list, you can edit the `config.json` file.
 
+## Mod and patch support
+You can freely develop mods for users to install on the Pony House. The application will also support you to build a version of Pony House with pre-installed mods.
+
+For more information see the folder `/mods`.
+
 ## Local development
 > We recommend using a version manager as versions change very quickly. You will likely need to switch 
 between multiple Node.js versions based on the needs of different projects you're working on. [NVM on windows](https://github.com/coreybutler/nvm-windows#installation--upgrades) on Windows and [nvm](https://github.com/nvm-sh/nvm) on Linux/macOS are pretty good choices. Also recommended nodejs version Hydrogen LTS (v18).
