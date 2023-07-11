@@ -11,7 +11,7 @@ The first argument will always be the final value that will be sent to the appli
 This value must always be an object. If this object is replaced by something else, a null will be sent to the API.
 
 ```ts
-    import * as modEmmiter from './mods';
+import * as modEmmiter from './mods';
 ```
 
 <hr/>
@@ -102,14 +102,14 @@ This value must always be an object. If this object is replaced by something els
 
 ### emojiboardOpened (Not ready for production)
 
-    cords,
+    cords
     requestEmojiCallback
     dom
 
 ### readReceiptsOpened (Not ready for production)
 
-    roomId,
-    userIds,
+    roomId
+    userIds
 
 ### viewSourceOpened (Not ready for production)
 
@@ -128,16 +128,16 @@ This value must always be an object. If this object is replaced by something els
 
 ### reusableContextMenuOpened (Not ready for production)
 
-    placement,
-    cords,
-    render,
-    afterClose,
+    placement
+    cords
+    render
+    afterClose
 
 ### reusableDialogOpened (Not ready for production)
 
-    title,
-    render,
-    afterClose,
+    title
+    render
+    afterClose
 
 ### emojiVerificationOpened (Not ready for production)
 
