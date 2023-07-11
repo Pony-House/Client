@@ -65,7 +65,7 @@ export function once(event, callback, priority = 0) {
 };
 
 // Delete Cache
-const deleteTinyCache = (event, callback) => {
+const deleteTinyCache = (event, callback, tinyIndex) => {
     if (typeof event === 'string' && typeof callback === 'function') {
 
         // Result
@@ -75,7 +75,14 @@ const deleteTinyCache = (event, callback) => {
         if (Array.isArray(tinyPlugins.cache[event])) {
 
             // Index
-            const index = tinyPlugins.cache[event].indexOf(callback);
+            let index;
+
+            if (typeof tinyIndex !== 'number') {
+                index = tinyPlugins.cache[event].indexOf(callback);
+            } else {
+                index = tinyIndex;
+            }
+
             if (index > -1) {
 
                 // Remove Function
@@ -114,7 +121,7 @@ export function emit(event, data) {
 
             tinyPlugins.order[event][item].callback(data);
             if (tinyPlugins.order[event][item].type === 'once') {
-                deleteTinyCache(event, tinyPlugins.order[event][item].callback);
+                deleteTinyCache(event, tinyPlugins.order[event][item].callback, tinyPlugins.order[event][item].index);
             }
 
         }
@@ -133,7 +140,7 @@ export async function emitAsync(event, data) {
 
             await tinyPlugins.order[event][item].callback(data);
             if (tinyPlugins.order[event][item].type === 'once') {
-                deleteTinyCache(event, tinyPlugins.order[event][item].callback);
+                deleteTinyCache(event, tinyPlugins.order[event][item].callback, tinyPlugins.order[event][item].index);
             }
 
         }
