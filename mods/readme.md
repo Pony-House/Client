@@ -14,11 +14,135 @@ This value must always be an object. If this object is replaced by something els
 
 ## Events
 
-### ROOM_SELECTED
+`src/client/state/navigation.js`
 
-    selectedRoomId,
-    prevSelectedRoomId,
+### ROOM_SETTINGS_TOGGLED (Not ready for production)
+
+    isRoomSettings
+
+### ROOM_SELECTED (Not ready for production)
+
+    selectedRoomId
+    prevSelectedRoomId
     eventId
+
+### TAB_SELECTED (Not ready for production)
+
+    selectedTab
+
+### SPACE_SELECTED (Not ready for production)
+
+    selectedSpaceId
+
+### SELECTED_ROOM_MODE (Not ready for production)
+
+    roomType
+
+### SPACE_SETTINGS_OPENED (Not ready for production)
+
+    roomId
+    tabText
+    isProfile
+
+### SPACE_MANAGE_OPENED (Not ready for production)
+
+    roomId
+
+### SPACE_ADDEXISTING_OPENED (Not ready for production)
+
+    roomId
+
+### ROOM_SETTINGS_TOGGLED (Not ready for production)
+
+    isRoomSettings
+    action.tabText
+
+### SHORTCUT_SPACES_OPENED (Not ready for production)
+
+    <EMPTY>
+
+### INVITE_LIST_OPENED (Not ready for production)
+
+    <EMPTY>
+
+### PUBLIC_ROOMS_OPENED (Not ready for production)
+
+    searchTerm
+
+### CREATE_ROOM_OPENED (Not ready for production)
+
+    isSpace
+    parentId
+
+### JOIN_ALIAS_OPENED (Not ready for production)
+
+    term
+
+### INVITE_USER_OPENED (Not ready for production)
+
+    roomId
+    searchTerm
+
+### PROFILE_VIEWER_OPENED (Not ready for production)
+
+    userId
+    roomId
+
+### SETTINGS_OPENED (Not ready for production)
+
+    tabText
+
+### NAVIGATION_OPENED (Not ready for production)
+
+    <EMPTY>
+
+### EMOJIBOARD_OPENED (Not ready for production)
+
+    cords,
+    requestEmojiCallback
+    dom
+
+### READRECEIPTS_OPENED (Not ready for production)
+
+    roomId,
+    userIds,
+
+### VIEWSOURCE_OPENED (Not ready for production)
+
+    event
+
+### REPLY_TO_CLICKED (Not ready for production)
+
+    userId
+    eventId
+    body
+    formattedBody
+
+### SEARCH_OPENED (Not ready for production)
+
+    term
+
+### REUSABLE_CONTEXT_MENU_OPENED (Not ready for production)
+
+    placement,
+    cords,
+    render,
+    afterClose,
+
+### REUSABLE_DIALOG_OPENED (Not ready for production)
+
+    title,
+    render,
+    afterClose,
+
+### EMOJI_VERIFICATION_OPENED (Not ready for production)
+
+    action.request
+    action.targetDevice
+
+### PROFILE_UPDATED (Not ready for production)
+
+    content
 
 <hr/>
 
