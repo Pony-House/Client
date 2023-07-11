@@ -7,13 +7,21 @@ const tinyPlugins = {
     // Cache Functions
     cache: {},
     order: {},
-    props: {}
+    props: {},
+
+    reorder: (event) => {
+        tinyPlugins.order[event].sort((a, b) => b.priority - a.priority);
+    },
 
 };
 
 // Create Cache
-const createTinyCache = (event, data, callback) => {
+const createTinyCache = (event, data, callback, priorityItem = 0) => {
     if (typeof event === 'string' && objType(data, 'object') && typeof callback === 'function') {
+
+        // Fix Priority
+        let priority = priorityItem;
+        if (typeof priority !== 'number' || Number.isNaN(priority) || !Number.isFinite(priority)) priority = 0;
 
         // Check Exist Array
         if (!Array.isArray(tinyPlugins.cache[event])) {
@@ -38,7 +46,7 @@ const createTinyCache = (event, data, callback) => {
             tinyPlugins.cache[event].push(callback);
 
             newIndex = tinyPlugins.cache[event].length - 1;
-            tinyPlugins.order[event].push({ callback, index: newIndex });
+            tinyPlugins.order[event].push({ callback, priority, index: newIndex });
             result = true;
 
         } else {
