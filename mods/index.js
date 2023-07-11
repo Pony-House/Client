@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import { objType } from '../src/util/tools';
 
 // Module Base
@@ -113,36 +114,30 @@ export function off(event, callback) {
 };
 
 // Emit
-export function emit(event, data) {
-
-    // Result
-    let result = null;
+export function emitAsync(event, data) {
 
     // Exist Data
-    if (Array.isArray(tinyPlugins.cache[event])) {
-        for (const item in tinyPlugins.cache[event]) {
-            await tinyPlugins.cache[event][item](data);
+    if (Array.isArray(tinyPlugins.order[event])) {
+        for (const item in tinyPlugins.order[event]) {
+            tinyPlugins.order[event][item].callback(data);
         }
     }
 
     // Complete
-    return result;
+    return data;
 
 };
 
-export async function emitAsync(event, data) {
-
-    // Result
-    let result = null;
+export async function emit(event, data) {
 
     // Exist Data
-    if (Array.isArray(tinyPlugins.cache[event])) {
-        for (const item in tinyPlugins.cache[event]) {
-            tinyPlugins.cache[event][item](data);
+    if (Array.isArray(tinyPlugins.order[event])) {
+        for (const item in tinyPlugins.order[event]) {
+            await tinyPlugins.order[event][item].callback(data);
         }
     }
 
     // Complete
-    return result;
+    return data;
 
 };
