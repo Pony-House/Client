@@ -68,12 +68,12 @@ const createTinyCache = (event, data, callback, priorityItem = 0) => {
     return false;
 }
 
-export function on(event, callback) {
-    return createTinyCache(event, 'on', callback);
+export function on(event, callback, priority = 0) {
+    return createTinyCache(event, 'on', callback, priority);
 };
 
-export function once(event, callback) {
-    return createTinyCache(event, 'once', callback);
+export function once(event, callback, priority = 0) {
+    return createTinyCache(event, 'once', callback, priority);
 };
 
 // Delete Cache
