@@ -90,8 +90,16 @@ class Navigation extends EventEmitter {
 
     if (this.isRoomSettings && typeof this.selectedRoomId === 'string') {
       this.isRoomSettings = !this.isRoomSettings;
+      modEmmiter.emit(cons.events.navigation.ROOM_SETTINGS_TOGGLED, this.isRoomSettings);
       this.emit(cons.events.navigation.ROOM_SETTINGS_TOGGLED, this.isRoomSettings);
     }
+
+    modEmmiter.emit(
+      cons.events.navigation.ROOM_SELECTED,
+      this.selectedRoomId,
+      prevSelectedRoomId,
+      eventId,
+    );
 
     this.emit(
       cons.events.navigation.ROOM_SELECTED,
@@ -191,6 +199,7 @@ class Navigation extends EventEmitter {
   _selectTab(tabId, selectRoom = true) {
     this.selectedTab = tabId;
     if (selectRoom) this._selectRoomWithTab(this.selectedTab);
+    modEmmiter.emit(cons.events.navigation.TAB_SELECTED, this.selectedTab);
     this.emit(cons.events.navigation.TAB_SELECTED, this.selectedTab);
   }
 
@@ -198,6 +207,7 @@ class Navigation extends EventEmitter {
     this._addToSpacePath(roomId, asRoot);
     this.selectedSpaceId = roomId;
     if (!asRoot && selectRoom) this._selectRoomWithSpace(this.selectedSpaceId);
+    modEmmiter.emit(cons.events.navigation.SPACE_SELECTED, this.selectedSpaceId);
     this.emit(cons.events.navigation.SPACE_SELECTED, this.selectedSpaceId);
   }
 
@@ -297,6 +307,7 @@ class Navigation extends EventEmitter {
         this._selectTab(action.tabId);
       },
       [cons.actions.navigation.SELECT_ROOM_MODE]: () => {
+        modEmmiter.emit(cons.events.navigation.SELECTED_ROOM_MODE, action.roomType);
         this.emit(cons.events.navigation.SELECTED_ROOM_MODE, action.roomType);
       },
       [cons.actions.navigation.SELECT_SPACE]: () => {
@@ -307,78 +318,144 @@ class Navigation extends EventEmitter {
         this._selectRoom(action.roomId, action.eventId);
       },
       [cons.actions.navigation.OPEN_SPACE_SETTINGS]: () => {
+        modEmmiter.emit(cons.events.navigation.SPACE_SETTINGS_OPENED, action.roomId, action.tabText, action.isProfile);
         this.emit(cons.events.navigation.SPACE_SETTINGS_OPENED, action.roomId, action.tabText, action.isProfile);
       },
       [cons.actions.navigation.OPEN_SPACE_MANAGE]: () => {
+        modEmmiter.emit(cons.events.navigation.SPACE_MANAGE_OPENED, action.roomId);
         this.emit(cons.events.navigation.SPACE_MANAGE_OPENED, action.roomId);
       },
       [cons.actions.navigation.OPEN_SPACE_ADDEXISTING]: () => {
+        modEmmiter.emit(cons.events.navigation.SPACE_ADDEXISTING_OPENED, action.roomId);
         this.emit(cons.events.navigation.SPACE_ADDEXISTING_OPENED, action.roomId);
       },
       [cons.actions.navigation.TOGGLE_ROOM_SETTINGS]: () => {
+
         this.isRoomSettings = !this.isRoomSettings;
+
+        modEmmiter.emit(
+          cons.events.navigation.ROOM_SETTINGS_TOGGLED,
+          this.isRoomSettings,
+          action.tabText,
+        );
+
         this.emit(
           cons.events.navigation.ROOM_SETTINGS_TOGGLED,
           this.isRoomSettings,
           action.tabText,
         );
+
       },
       [cons.actions.navigation.OPEN_SHORTCUT_SPACES]: () => {
+        modEmmiter.emit(cons.events.navigation.SHORTCUT_SPACES_OPENED);
         this.emit(cons.events.navigation.SHORTCUT_SPACES_OPENED);
       },
       [cons.actions.navigation.OPEN_INVITE_LIST]: () => {
+        modEmmiter.emit(cons.events.navigation.INVITE_LIST_OPENED);
         this.emit(cons.events.navigation.INVITE_LIST_OPENED);
       },
       [cons.actions.navigation.OPEN_PUBLIC_ROOMS]: () => {
+        modEmmiter.emit(cons.events.navigation.PUBLIC_ROOMS_OPENED, action.searchTerm);
         this.emit(cons.events.navigation.PUBLIC_ROOMS_OPENED, action.searchTerm);
       },
       [cons.actions.navigation.OPEN_CREATE_ROOM]: () => {
+
+        modEmmiter.emit(
+          cons.events.navigation.CREATE_ROOM_OPENED,
+          action.isSpace,
+          action.parentId,
+        );
+
         this.emit(
           cons.events.navigation.CREATE_ROOM_OPENED,
           action.isSpace,
           action.parentId,
         );
+
       },
       [cons.actions.navigation.OPEN_JOIN_ALIAS]: () => {
+
+        modEmmiter.emit(
+          cons.events.navigation.JOIN_ALIAS_OPENED,
+          action.term,
+        );
+
         this.emit(
           cons.events.navigation.JOIN_ALIAS_OPENED,
           action.term,
         );
       },
       [cons.actions.navigation.OPEN_INVITE_USER]: () => {
+        modEmmiter.emit(cons.events.navigation.INVITE_USER_OPENED, action.roomId, action.searchTerm);
         this.emit(cons.events.navigation.INVITE_USER_OPENED, action.roomId, action.searchTerm);
       },
       [cons.actions.navigation.OPEN_PROFILE_VIEWER]: () => {
+        modEmmiter.emit(cons.events.navigation.PROFILE_VIEWER_OPENED, action.userId, action.roomId);
         this.emit(cons.events.navigation.PROFILE_VIEWER_OPENED, action.userId, action.roomId);
       },
       [cons.actions.navigation.OPEN_SETTINGS]: () => {
+        modEmmiter.emit(cons.events.navigation.SETTINGS_OPENED, action.tabText);
         this.emit(cons.events.navigation.SETTINGS_OPENED, action.tabText);
       },
       [cons.actions.navigation.OPEN_NAVIGATION]: () => {
+        modEmmiter.emit(cons.events.navigation.NAVIGATION_OPENED);
         this.emit(cons.events.navigation.NAVIGATION_OPENED);
       },
       [cons.actions.navigation.OPEN_EMOJIBOARD]: () => {
+
+        modEmmiter.emit(
+          cons.events.navigation.EMOJIBOARD_OPENED,
+          action.cords,
+          action.requestEmojiCallback,
+          action.dom,
+        );
+
         this.emit(
           cons.events.navigation.EMOJIBOARD_OPENED,
           action.cords,
           action.requestEmojiCallback,
           action.dom,
         );
+
       },
       [cons.actions.navigation.OPEN_READRECEIPTS]: () => {
+
+        modEmmiter.emit(
+          cons.events.navigation.READRECEIPTS_OPENED,
+          action.roomId,
+          action.userIds,
+        );
+
         this.emit(
           cons.events.navigation.READRECEIPTS_OPENED,
           action.roomId,
           action.userIds,
         );
+
       },
       [cons.actions.navigation.OPEN_VIEWSOURCE]: () => {
+
+        modEmmiter.emit(
+          cons.events.navigation.VIEWSOURCE_OPENED,
+          action.event,
+        );
+
         this.emit(
           cons.events.navigation.VIEWSOURCE_OPENED,
           action.event,
         );
+
       },
       [cons.actions.navigation.CLICK_REPLY_TO]: () => {
+
+        modEmmiter.emit(
+          cons.events.navigation.REPLY_TO_CLICKED,
+          action.userId,
+          action.eventId,
+          action.body,
+          action.formattedBody,
+        );
+
         this.emit(
           cons.events.navigation.REPLY_TO_CLICKED,
           action.userId,
@@ -386,14 +463,31 @@ class Navigation extends EventEmitter {
           action.body,
           action.formattedBody,
         );
+
       },
       [cons.actions.navigation.OPEN_SEARCH]: () => {
+
+        modEmmiter.emit(
+          cons.events.navigation.SEARCH_OPENED,
+          action.term,
+        );
+
         this.emit(
           cons.events.navigation.SEARCH_OPENED,
           action.term,
         );
+
       },
       [cons.actions.navigation.OPEN_REUSABLE_CONTEXT_MENU]: () => {
+
+        modEmmiter.emit(
+          cons.events.navigation.REUSABLE_CONTEXT_MENU_OPENED,
+          action.placement,
+          action.cords,
+          action.render,
+          action.afterClose,
+        );
+
         this.emit(
           cons.events.navigation.REUSABLE_CONTEXT_MENU_OPENED,
           action.placement,
@@ -401,23 +495,42 @@ class Navigation extends EventEmitter {
           action.render,
           action.afterClose,
         );
+
       },
       [cons.actions.navigation.OPEN_REUSABLE_DIALOG]: () => {
+
+        modEmmiter.emit(
+          cons.events.navigation.REUSABLE_DIALOG_OPENED,
+          action.title,
+          action.render,
+          action.afterClose,
+        );
+
         this.emit(
           cons.events.navigation.REUSABLE_DIALOG_OPENED,
           action.title,
           action.render,
           action.afterClose,
         );
+
       },
       [cons.actions.navigation.OPEN_EMOJI_VERIFICATION]: () => {
+
+        modEmmiter.emit(
+          cons.events.navigation.EMOJI_VERIFICATION_OPENED,
+          action.request,
+          action.targetDevice,
+        );
+
         this.emit(
           cons.events.navigation.EMOJI_VERIFICATION_OPENED,
           action.request,
           action.targetDevice,
         );
+
       },
       [cons.actions.navigation.PROFILE_UPDATE]: () => {
+        modEmmiter.emit(cons.events.navigation.PROFILE_UPDATED, action.content);
         this.emit(cons.events.navigation.PROFILE_UPDATED, action.content);
       },
     };

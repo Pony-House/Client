@@ -12,6 +12,16 @@ This value must always be an object. If this object is replaced by something els
 
 <hr/>
 
+## Events
+
+### ROOM_SELECTED
+
+    selectedRoomId,
+    prevSelectedRoomId,
+    eventId
+
+<hr/>
+
 ### Mod Version
 
 You need to convince the user to install the mod on their client. 
