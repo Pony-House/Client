@@ -59,7 +59,7 @@ This value must always be an object. If this object is replaced by something els
 ### roomSettingsToggled (Not ready for production)
 
     isRoomSettings
-    action.tabText
+    tabText
 
 ### shortcutSpacesOpened (Not ready for production)
 
@@ -141,8 +141,8 @@ This value must always be an object. If this object is replaced by something els
 
 ### emojiVerificationOpened (Not ready for production)
 
-    action.request
-    action.targetDevice
+    request
+    targetDevice
 
 ### profileUpdated (Not ready for production)
 
