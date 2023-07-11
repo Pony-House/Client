@@ -7,7 +7,6 @@ const tinyPlugins = {
     // Cache Functions
     cache: {},
     order: {},
-    props: {},
 
     reorder: (event) => {
         tinyPlugins.order[event].sort((a, b) => b.priority - a.priority);
@@ -32,10 +31,6 @@ const createTinyCache = (event, data, callback, priorityItem = 0) => {
             tinyPlugins.order[event] = [];
         }
 
-        if (!objType(tinyPlugins.props[event], 'object')) {
-            tinyPlugins.props[event] = {};
-        }
-
         // Check Exist Callback
         let newIndex = -1;
         let result = false;
@@ -46,22 +41,15 @@ const createTinyCache = (event, data, callback, priorityItem = 0) => {
             tinyPlugins.cache[event].push(callback);
 
             newIndex = tinyPlugins.cache[event].length - 1;
-            tinyPlugins.order[event].push({ callback, priority, index: newIndex });
+            tinyPlugins.order[event].push({ callback, priority, index: newIndex, type: data.type });
             result = true;
 
         } else {
             newIndex = oldIndex;
         }
 
-        // Delete Old Values
-        if (objType(tinyPlugins.props[event][oldIndex], 'object')) {
-            delete tinyPlugins.props[event][oldIndex];
-        }
-
-        // Create New Values
-        tinyPlugins.props[event][newIndex] = { type: data.type };
-
         // Complete
+        tinyPlugins.reorder(event);
         return result;
 
     }
@@ -94,11 +82,6 @@ const deleteTinyCache = (event, callback) => {
                 tinyPlugins.cache[event].splice(index, 1);
                 result = true;
 
-                // Delete props
-                if (objType(tinyPlugins.props[event], 'object') && objType(tinyPlugins.props[event][index], 'object')) {
-                    delete tinyPlugins.props[event][index];
-                }
-
                 if (Array.isArray(tinyPlugins.order[event])) {
                     const ti = tinyPlugins.order[event].findIndex(item => item.index === index);
                     if (ti > -1) {
@@ -111,6 +94,7 @@ const deleteTinyCache = (event, callback) => {
         }
 
         // Complete
+        tinyPlugins.reorder(event);
         return result;
 
     }
@@ -127,7 +111,11 @@ export function emit(event, data) {
     // Exist Data
     if (Array.isArray(tinyPlugins.order[event])) {
         for (const item in tinyPlugins.order[event]) {
+
             tinyPlugins.order[event][item].callback(data);
+
+            if (tinyPlugins.order[event][item])
+
         }
     }
 
@@ -141,7 +129,9 @@ export async function emitAsync(event, data) {
     // Exist Data
     if (Array.isArray(tinyPlugins.order[event])) {
         for (const item in tinyPlugins.order[event]) {
+
             await tinyPlugins.order[event][item].callback(data);
+
         }
     }
 
