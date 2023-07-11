@@ -52,6 +52,8 @@ Made by Me
 
     =======================================================
 
+    --> Colocar inserir emoji na aba de editar mensagem
+
     --> Retirar o show/hide de categorias do localstorage para colocar dentro do stoage do matrix
     --> Galeria de gifs e memes
     --> Enviar gravação de voz
