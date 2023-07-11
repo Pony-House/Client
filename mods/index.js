@@ -114,9 +114,9 @@ export function off(event, callback) {
 };
 
 // Emit
-const argumentsFix = (args) => {
+const argumentsFix = (args, result) => {
 
-    const newArgs = [];
+    const newArgs = [result];
     for (const item in args) {
         if (Number(item) !== 0) newArgs.push(args[item]);
     }
@@ -127,11 +127,16 @@ const argumentsFix = (args) => {
 
 export function emit(event) {
 
+    // Result
+    let result = {};
+
     // Exist Data
     if (Array.isArray(tinyPlugins.order[event])) {
         for (const item in tinyPlugins.order[event]) {
 
-            tinyPlugins.order[event][item].callback.apply({}, argumentsFix(arguments));
+            result = tinyPlugins.order[event][item].callback.apply({}, argumentsFix(arguments, result));
+            if (!objType(result, 'object')) result = null;
+
             if (tinyPlugins.order[event][item].type === 'once') {
                 deleteTinyCache(event, tinyPlugins.order[event][item].callback, tinyPlugins.order[event][item].index);
             }
@@ -140,17 +145,23 @@ export function emit(event) {
     }
 
     // Complete
-    return true;
+    if (!result) result = {};
+    return result;
 
 };
 
 export async function emitAsync(event) {
 
+    // Result
+    let result = {};
+
     // Exist Data
     if (Array.isArray(tinyPlugins.order[event])) {
         for (const item in tinyPlugins.order[event]) {
 
-            await tinyPlugins.order[event][item].callback.apply({}, argumentsFix(arguments));
+            result = await tinyPlugins.order[event][item].callback.apply({}, argumentsFix(arguments, result));
+            if (!objType(result, 'object')) result = null;
+
             if (tinyPlugins.order[event][item].type === 'once') {
                 deleteTinyCache(event, tinyPlugins.order[event][item].callback, tinyPlugins.order[event][item].index);
             }
@@ -159,6 +170,7 @@ export async function emitAsync(event) {
     }
 
     // Complete
-    return true;
+    if (!result) result = {};
+    return result;
 
 };

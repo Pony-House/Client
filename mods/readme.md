@@ -4,6 +4,14 @@ You can freely develop mods for Pony House. Users will have to install these mod
 
 Features are still under development. I will update this file with more information during the time.
 
+## Event Arguments
+
+The first argument will always be the final value that will be sent to the application's API.
+
+This value must always be an object. If this object is replaced by something else, a null will be sent to the API
+
+<hr/>
+
 ### Mod Version
 
 You need to convince the user to install the mod on their client. 
