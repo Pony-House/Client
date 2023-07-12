@@ -1,1 +1,8 @@
 /* Record Audio Button */
+.audio-click .ic-base:before {
+  background-color: var();
+}
+
+.audio-hold .ic-base:before {
+  color: var(--bs-danger) !important;
+}

@@ -1,0 +1,16 @@
+.silver-theme {
+  /* background color | --bg-[background type]: value */
+  --bg-surface: hsl(0, 0%, 95%);
+  --bg-surface-semi-transparent: rgba(242, 242, 242, 0.9);
+  --bg-surface-transparent: hsla(0, 0%, 95%, 0);
+  --bg-surface-low: hsl(0, 0%, 91%);
+  --bg-surface-low-semi-transparent: rgb(232, 232, 232, 0.9);
+  --bg-surface-low-transparent: hsla(0, 0%, 91%, 0);
+  --bg-surface-extra-low: hsl(0, 0%, 91%);
+  --bg-surface-extra-low-transparent: hsla(0, 0%, 91%, 0);
+  --invert-filter: invert(0);
+
+  .user-profile .avatar-container {
+    background-color: #f6f6f6;
+  }
+}

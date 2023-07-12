@@ -1,0 +1,358 @@
+@mixin dark-mode() {
+  --bg-auth-normal: rgb(36 58 80) 0%;
+  --bg-auth-gradient: linear-gradient(
+    0deg,
+    rgb(36 58 80) 0%,
+    rgb(23 28 32) 35%,
+    rgb(30 30 30) 100%
+  );
+
+  /* background color | --bg-[background type]: value */
+
+  --bg-surface: hsl(0, 2%, 11%);
+  --bg-surface-semi-transparent: rgba(29, 27, 27, 0.9);
+  --bg-surface-gradient: linear-gradient(
+    180deg,
+    rgba(27, 27, 27, 1) 0%,
+    rgba(27, 27, 27, 1) 40%,
+    rgb(40, 40, 40) 100%
+  );
+
+  --bg-surface-gradient-2: linear-gradient(
+    180deg,
+    rgba(27, 27, 27, 1) 0%,
+    rgba(27, 27, 27, 1) 20%,
+    rgb(40, 40, 50) 100%
+  );
+
+  --bg-surface-gradient-3: linear-gradient(180deg, rgba(44, 44, 44, 1) 0%, rgb(50, 50, 60) 100%);
+
+  --bg-surface-transparent: hsla(0, 0%, 21%, 0);
+  --bg-surface-low: hsl(0, 0%, 13%);
+  --bg-surface-low-semi-transparent: rgba(33, 33, 33, 0.9);
+  --bg-surface-low-transparent: hsla(0, 0%, 18%, 0);
+  --bg-surface-extra-low: hsl(0, 0%, 21%);
+  --bg-surface-extra-low-transparent: hsla(208, 8%, 14%, 0);
+  --bg-surface-hover: rgba(255, 255, 255, 3%);
+  --bg-surface-active: rgba(255, 255, 255, 5%);
+  --bg-surface-border: rgba(0, 0, 0, 20%);
+
+  --bg-reaction: rgb(57, 61, 78);
+  --bg-reaction-hover: rgba(57, 61, 78, 0.8);
+  --bg-reaction-active: rgba(57, 61, 78, 70%);
+  --bg-reaction-border: rgba(57, 61, 78, 38%);
+
+  --bg-primary: rgb(42, 98, 166);
+  --bg-primary-hover: rgba(42, 98, 166, 80%);
+  --bg-primary-active: rgba(42, 98, 166, 70%);
+  --bg-primary-border: rgba(42, 98, 166, 38%);
+
+  --bg-tooltip: #000;
+  --bg-badge: hsl(0, 0%, 75%);
+  --bg-ping: hsla(137deg, 100%, 38%, 40%);
+  --bg-ping-hover: hsla(137deg, 100%, 38%, 50%);
+  --bg-divider: hsla(0, 0%, 100%, 0.1);
+
+  /* text color | --tc-[background type]-[priority]: value */
+  --tc-surface-high: rgba(255, 255, 255, 98%);
+  --tc-surface-normal: rgba(255, 255, 255, 94%);
+  --tc-surface-normal-low: rgba(255, 255, 255, 60%);
+  --tc-surface-low: rgba(255, 255, 255, 58%);
+
+  --tc-surface-high-reverse: #000000;
+  --tc-surface-normal-reverse: rgba(0, 0, 0, 78%);
+  --tc-surface-normal-low-reverse: rgba(0, 0, 0, 60%);
+  --tc-surface-low-reverse: rgba(0, 0, 0, 48%);
+
+  --tc-primary-high: #ffffff;
+  --tc-primary-normal: rgba(255, 255, 255, 0.68);
+  --tc-primary-low: rgba(255, 255, 255, 0.4);
+
+  --tc-code: #e565b1;
+  --tc-link: hsl(213deg 94% 73%);
+  --tc-badge: black;
+  --invert-filter: invert(1);
+
+  /* system icons | --ic-[background type]-[priority]: value */
+  --ic-surface-high: rgb(255, 255, 255);
+  --ic-surface-normal: rgba(255, 255, 255, 84%);
+  --ic-surface-low: rgba(255, 255, 255, 64%);
+  --ic-primary-normal: #ffffff;
+
+  & .text {
+    /* override user mxid colors for texts */
+    --mx-uc-1: hsl(208, 100%, 58%);
+    --mx-uc-2: hsl(301, 80%, 70%);
+    --mx-uc-3: hsl(163, 93%, 41%);
+    --mx-uc-4: hsl(343, 91%, 66%);
+    --mx-uc-5: hsl(24, 90%, 67%);
+    --mx-uc-6: hsl(181, 90%, 50%);
+    --mx-uc-7: hsl(243, 100%, 74%);
+    --mx-uc-8: hsl(94, 66%, 50%);
+  }
+
+  /* shadow and overlay */
+  --bg-overlay: rgba(0, 0, 0, 60%);
+  --bg-overlay-low: rgba(0, 0, 0, 80%);
+
+  --bs-popup: 0 0 16px rgba(0, 0, 0, 25%);
+
+  --bs-surface-border: inset 0 0 0 1px var(--bg-surface-border);
+  --bs-surface-outline: 0 0 0 2px var(--bg-surface-border);
+
+  --bs-primary-border: inset 0 0 0 1px var(--bg-primary-border);
+  --bs-primary-outline: 0 0 0 2px var(--bg-primary-border);
+
+  /* font styles: font-size, letter-spacing, line-hight */
+  --fs-h1: 35.6px;
+
+  --fs-h2: 23.6px;
+
+  --fs-s1: 17.6px;
+
+  --fs-b1: 14.6px;
+  --ls-b1: 0.14px;
+
+  --fs-b2: 13.2px;
+
+  --fs-b3: 11.2px;
+
+  /* override normal font weight for dark mode */
+  --fw-normal: 350;
+
+  --font-secondary: 'InterVariable', 'Roboto', sans-serif;
+
+  /* Code Dark Mode */
+  /* Dracula Theme v1.2.5
+     *
+     * https://github.com/dracula/highlightjs
+     *
+     * Copyright 2016-present, All rights reserved
+     *
+     * Code licensed under the MIT license
+     *
+     * @author Denis Ciccale <dciccale@gmail.com>
+     * @author Zeno Rocha <hi@zenorocha.com>
+     */
+
+  .hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em;
+    background: #282a36;
+  }
+
+  .hljs-built_in,
+  .hljs-selector-tag,
+  .hljs-section,
+  .hljs-link {
+    color: #8be9fd;
+  }
+
+  .hljs-keyword {
+    color: #ff79c6;
+  }
+
+  .hljs,
+  .hljs-subst {
+    color: #f8f8f2;
+  }
+
+  .hljs-title,
+  .hljs-attr,
+  .hljs-meta-keyword {
+    font-style: italic;
+    color: #50fa7b;
+  }
+
+  .hljs-string,
+  .hljs-meta,
+  .hljs-name,
+  .hljs-type,
+  .hljs-symbol,
+  .hljs-bullet,
+  .hljs-addition,
+  .hljs-variable,
+  .hljs-template-tag,
+  .hljs-template-variable {
+    color: #f1fa8c;
+  }
+
+  .hljs-comment,
+  .hljs-quote,
+  .hljs-deletion {
+    color: #6272a4;
+  }
+
+  .hljs-keyword,
+  .hljs-selector-tag,
+  .hljs-literal,
+  .hljs-title,
+  .hljs-section,
+  .hljs-doctag,
+  .hljs-type,
+  .hljs-name,
+  .hljs-strong {
+    font-weight: bold;
+  }
+
+  .hljs-literal,
+  .hljs-number {
+    color: #bd93f9;
+  }
+
+  .hljs-emphasis {
+    font-style: italic;
+  }
+
+  .btn-theme {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #212529;
+    --bs-btn-border-color: #212529;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #424649;
+    --bs-btn-hover-border-color: #373b3e;
+    --bs-btn-focus-shadow-rgb: 66, 70, 73;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #4d5154;
+    --bs-btn-active-border-color: #373b3e;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #212529;
+    --bs-btn-disabled-border-color: #212529;
+  }
+
+  .btn-outline-theme {
+    --bs-btn-color: #212529;
+    --bs-btn-border-color: #212529;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #212529;
+    --bs-btn-hover-border-color: #212529;
+    --bs-btn-focus-shadow-rgb: 33, 37, 41;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #212529;
+    --bs-btn-active-border-color: #212529;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #212529;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #212529;
+    --bs-gradient: none;
+  }
+
+  .btn-theme-bg {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #6c757d;
+    --bs-btn-border-color: #6c757d;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #5c636a;
+    --bs-btn-hover-border-color: #565e64;
+    --bs-btn-focus-shadow-rgb: 130, 138, 145;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #565e64;
+    --bs-btn-active-border-color: #51585e;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #6c757d;
+    --bs-btn-disabled-border-color: #6c757d;
+  }
+
+  .btn-outline-theme-bg {
+    --bs-btn-color: #6c757d;
+    --bs-btn-border-color: transparent;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #6c757d;
+    --bs-btn-hover-border-color: transparent;
+    --bs-btn-focus-shadow-rgb: 108, 117, 125;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #6c757d;
+    --bs-btn-active-border-color: transparent;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #6c757d;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: transparent;
+    --bs-gradient: none;
+  }
+
+  .btn-theme-reverse {
+    --bs-btn-color: #000;
+    --bs-btn-bg: #f8f9fa;
+    --bs-btn-border-color: #f8f9fa;
+    --bs-btn-hover-color: #000;
+    --bs-btn-hover-bg: #d3d4d5;
+    --bs-btn-hover-border-color: #c6c7c8;
+    --bs-btn-focus-shadow-rgb: 211, 212, 213;
+    --bs-btn-active-color: #000;
+    --bs-btn-active-bg: #c6c7c8;
+    --bs-btn-active-border-color: #babbbc;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #000;
+    --bs-btn-disabled-bg: #f8f9fa;
+    --bs-btn-disabled-border-color: #f8f9fa;
+  }
+
+  .btn-outline-theme-reverse {
+    --bs-btn-color: #f8f9fa;
+    --bs-btn-border-color: #f8f9fa;
+    --bs-btn-hover-color: #000;
+    --bs-btn-hover-bg: #f8f9fa;
+    --bs-btn-hover-border-color: #f8f9fa;
+    --bs-btn-focus-shadow-rgb: 248, 249, 250;
+    --bs-btn-active-color: #000;
+    --bs-btn-active-bg: #f8f9fa;
+    --bs-btn-active-border-color: #f8f9fa;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #f8f9fa;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #f8f9fa;
+    --bs-gradient: none;
+  }
+
+  .btn-theme-bg-reverse {
+    --bs-btn-color: #000;
+    --bs-btn-bg: #f8f9fa;
+    --bs-btn-border-color: transparent;
+    --bs-btn-hover-color: #000;
+    --bs-btn-hover-bg: #d3d4d5;
+    --bs-btn-hover-border-color: transparent;
+    --bs-btn-focus-shadow-rgb: 211, 212, 213;
+    --bs-btn-active-color: #000;
+    --bs-btn-active-bg: #c6c7c8;
+    --bs-btn-active-border-color: transparent;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #000;
+    --bs-btn-disabled-bg: #f8f9fa;
+    --bs-btn-disabled-border-color: transparent;
+  }
+
+  .btn-outline-theme-bg-reverse {
+    --bs-btn-color: #f8f9fa;
+    --bs-btn-border-color: transparent;
+    --bs-btn-hover-color: #000;
+    --bs-btn-hover-bg: #f8f9fa;
+    --bs-btn-hover-border-color: transparent;
+    --bs-btn-focus-shadow-rgb: 248, 249, 250;
+    --bs-btn-active-color: #000;
+    --bs-btn-active-bg: #f8f9fa;
+    --bs-btn-active-border-color: transparent;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #f8f9fa;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: transparent;
+    --bs-gradient: none;
+  }
+
+  .user-profile .avatar-container {
+    background-color: #1b1b1b;
+  }
+}
+
+.dark-theme,
+.butter-theme {
+  @include dark-mode();
+}
+
+@media (prefers-color-scheme: dark) {
+  .system-theme {
+    @include dark-mode();
+  }
+}
