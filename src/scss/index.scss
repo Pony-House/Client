@@ -985,6 +985,12 @@ a {
   }
 }
 
+.image-pack-profile {
+  .img-upload__wrapper .img-upload {
+    padding: 0px;
+  }
+}
+
 .modal-user-profile-avatar {
   .avatar-react {
     transition: filter 0.1s;
