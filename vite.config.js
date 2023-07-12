@@ -16,6 +16,10 @@ const copyFiles = {
       dest: '',
     },
     {
+      src: 'img',
+      dest: '/assets/img/',
+    },
+    {
       src: 'config.json',
       dest: '',
     }
