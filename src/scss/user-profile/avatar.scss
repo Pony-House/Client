@@ -1,0 +1,48 @@
+/* Avatar */
+.profile-editor,
+.room-info {
+  .avatar-react,
+  .img-upload__process,
+  .avatar__border {
+    height: 82px !important;
+    width: 82px !important;
+    max-width: unset !important;
+  }
+
+  .img-upload__process {
+    left: 6px;
+  }
+
+  .avatar-container .avatar__border {
+    > * {
+      font-size: 21pt;
+    }
+    .emoji {
+      height: 42px;
+      width: 42px;
+    }
+  }
+}
+
+.image-pack-profile {
+  .img-upload__wrapper .img-upload {
+    padding: 0px;
+  }
+}
+
+.modal-user-profile-avatar {
+  .avatar-react {
+    transition: filter 0.1s;
+  }
+  .avatar-react:hover,
+  .avatar-react:active {
+    cursor: pointer;
+  }
+  .avatar-react:hover {
+    filter: grayscale(0.2) brightness(0.9);
+  }
+
+  .avatar-react:active {
+    filter: grayscale(0.4) brightness(0.8);
+  }
+}

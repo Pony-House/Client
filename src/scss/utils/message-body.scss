@@ -1,0 +1,25 @@
+/* Code Editor */
+.hljs {
+  white-space: break-spaces;
+  overflow-y: auto;
+  padding: 14px !important;
+}
+
+.hljs.fixhl {
+  white-space: pre;
+  td {
+    color: var(--tc-surface-normal);
+    padding: 0px;
+  }
+  .code-line {
+    color: var(--tc-surface-low);
+    padding-right: 10px;
+    width: 1%;
+  }
+}
+
+.message-body {
+  .hljs {
+    max-height: 300px;
+  }
+}

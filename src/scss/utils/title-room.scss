@@ -1,0 +1,47 @@
+/* Title Room */
+.room-info {
+  .avatar-react {
+    height: 65px;
+  }
+
+  @media (max-width: 1920px) {
+    .avatar-react {
+      height: 57px;
+    }
+  }
+
+  @media (max-width: 1600px) {
+    .avatar-react {
+      height: 55px;
+    }
+  }
+
+  @media (max-width: 1470px) {
+    .avatar-react {
+      height: 45px;
+    }
+  }
+
+  @media (max-width: 1380px) {
+    .avatar-react {
+      height: 35px;
+    }
+  }
+
+  @media (max-width: 1315px) {
+    .avatar-react {
+      height: 25px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .avatar-react {
+      height: 80px;
+    }
+  }
+}
+
+.people-drawer > .navbar,
+.space-drawer-body > .navbar {
+  height: 51px;
+}

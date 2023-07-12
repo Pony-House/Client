@@ -1,0 +1,14 @@
+/* DropDrag */
+
+#dropzone {
+  display: none;
+}
+
+.drag-enabled {
+  display: flex !important;
+  position: fixed;
+  z-index: 99999;
+  background-color: rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  align-items: center;
+}
