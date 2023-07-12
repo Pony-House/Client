@@ -4,5 +4,51 @@
 }
 
 .audio-hold .ic-base:before {
-  color: var(--bs-danger) !important;
+  -webkit-animation: rec_audio_color_change 1s infinite alternate;
+  -moz-animation: rec_audio_color_change 1s infinite alternate;
+  -ms-animation: rec_audio_color_change 1s infinite alternate;
+  -o-animation: rec_audio_color_change 1s infinite alternate;
+  animation: rec_audio_color_change 1s infinite alternate;
+  color: var(--bs-danger);
+}
+
+@-webkit-keyframes rec_audio_color_change {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.6;
+  }
+}
+@-moz-keyframes rec_audio_color_change {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.6;
+  }
+}
+@-ms-keyframes rec_audio_color_change {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.6;
+  }
+}
+@-o-keyframes rec_audio_color_change {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.6;
+  }
+}
+@keyframes rec_audio_color_change {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.6;
+  }
 }
