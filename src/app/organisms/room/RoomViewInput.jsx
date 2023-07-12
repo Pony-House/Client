@@ -13,6 +13,7 @@ import { bytesToSize, getEventCords } from '../../../util/common';
 import { getUsername } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
 import { shiftNuller } from '../../../util/shortcut';
+import audioRecorder from '../../../util/audioRec';
 
 import Text from '../../atoms/text/Text';
 import RawIcon from '../../atoms/system-icons/RawIcon';
@@ -34,6 +35,9 @@ let cmdCursorPos = null;
 function RoomViewInput({
   roomId, roomTimeline, viewEvent,
 }) {
+
+  // Rec Ref
+  const recAudioRef = useRef(null);
 
   // File
   const [attachment, setAttachment] = useState(null);
@@ -62,12 +66,33 @@ function RoomViewInput({
 
   // Effects
   useEffect(() => {
+
+    // Audio Record
+    let timeoutId = 0;
+    const audioInput = $(recAudioRef.current);
+    const holdTinyAudio = [
+      () => { audioInput.addClass('audio-click'); timeoutId = setTimeout(holdTinyAudio[2], 300); }, () => { audioInput.removeClass('audio-hold').removeClass('audio-click'); clearTimeout(timeoutId); },
+      () => {
+
+        // Start Record
+        audioInput.addClass('audio-hold');
+
+
+
+      }
+    ];
+
+    // Events
     roomsInput.on(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
     viewEvent.on('focus_msg_input', requestFocusInput);
+    audioInput.on('mousedown', holdTinyAudio[0]).on('mouseup mouseleave', holdTinyAudio[1]);
+
     return () => {
+      audioInput.off('mousedown', holdTinyAudio[0]).off('mouseup mouseleave', holdTinyAudio[1]);
       roomsInput.removeListener(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
       viewEvent.removeListener('focus_msg_input', requestFocusInput);
     };
+
   }, []);
 
   const sendIsTyping = (isT) => {
@@ -606,6 +631,12 @@ function RoomViewInput({
             }}
             tooltip="Emoji"
             fa="fa-solid fa-face-smile"
+          />
+
+          <IconButton
+            ref={recAudioRef}
+            tooltip="Send Audio"
+            fa="fa-solid fa-microphone"
           />
 
           <IconButton onClick={sendMessage} tooltip="Send" fa="fa-solid fa-paper-plane" />
