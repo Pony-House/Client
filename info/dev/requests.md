@@ -109,6 +109,12 @@ Made by Me
     Dogecoin: (https://dogecoin.com/)
     dogecoin://
 
+    Ethereum: ()
+    ethereum://
+
+    Monero: ()
+    monero://
+
     Web3: (https://w3url.w3eth.io/#/)
     web3://
 
