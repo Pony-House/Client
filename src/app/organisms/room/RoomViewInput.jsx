@@ -412,7 +412,14 @@ function RoomViewInput({
       setReplyTo(roomsInput.getReplyTo(roomId));
     }
 
+    const focusUpdate = [
+      () => { $('.room-input').addClass('textarea-focus'); },
+      () => { $('.room-input').removeClass('textarea-focus'); }
+    ];
+
     // Complete
+    textArea.on('focus', focusUpdate[0]);
+    textArea.on('blur', focusUpdate[1]);
     return () => {
 
       roomsInput.removeListener(cons.events.roomsInput.UPLOAD_PROGRESS_CHANGES, uploadingProgress);
@@ -423,6 +430,8 @@ function RoomViewInput({
       navigation.removeListener(cons.events.navigation.REPLY_TO_CLICKED, setUpReply);
 
       const textArea2 = $(textAreaRef.current);
+      textArea2.off('focus', focusUpdate[0]);
+      textArea2.off('blur', focusUpdate[1]);
 
       if (isCmdActivated) deactivateCmd();
       if (textArea2.length < 1) return;
