@@ -168,6 +168,7 @@ function RoomViewInput({
             };
 
             tinyRec.enabled = false;
+            tinyRec.loading = false;
             alert(err.message);
 
           });
@@ -238,6 +239,7 @@ function RoomViewInput({
               };
 
               tinyRec.enabled = false;
+              tinyRec.loading = false;
               alert(err.message);
 
             });
