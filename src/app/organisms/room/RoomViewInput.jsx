@@ -100,7 +100,7 @@ function RoomViewInput({
 
       // User Hold
       () => {
-        if (tinyRec.timeout2) {
+        if (!tinyRec.timeout2) {
 
           tinyRec.timeout2 = momentCountdown(() => {
             tinyRec.time.removeClass('d-none');
