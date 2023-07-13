@@ -249,7 +249,7 @@ function RoomViewInput({
     // Events
     roomsInput.on(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
     viewEvent.on('focus_msg_input', requestFocusInput);
-    tinyRec.input.on('mousedown', holdTinyAudio[0]).on('mouseup mouseleave', holdTinyAudio[1]);
+    tinyRec.input.on('mousedown touchstart', holdTinyAudio[0]).on('mouseup mouseleave touchend', holdTinyAudio[1]);
 
     return () => {
       tinyRec.input.off('mousedown', holdTinyAudio[0]).off('mouseup mouseleave', holdTinyAudio[1]);
