@@ -253,8 +253,15 @@ export function momentCountdown(where, eventTime, currentTime = moment(), interv
     let duration = moment.duration(diffTime, 'milliseconds');
 
     const tinyCountDown = () => {
-        duration = moment.duration(duration - interval, 'milliseconds');
-        where.text(`${duration.hours()}:${duration.minutes()}:${duration.seconds()}`);
+
+        duration = moment.duration(duration + interval, 'milliseconds');
+
+        const hours = duration.hours();
+        const minutes = duration.minutes();
+        const seconds = duration.seconds();
+
+        where.text(`${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : hours}:${seconds < 10 ? `0${seconds}` : seconds}`);
+
     };
 
     tinyCountDown();

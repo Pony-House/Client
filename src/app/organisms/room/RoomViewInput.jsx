@@ -71,7 +71,7 @@ function RoomViewInput({
   useEffect(() => {
 
     // Audio Record
-    const tinyRec = { timeout: 0, timeout2: 0, clock: moment() };
+    const tinyRec = { timeout: 0, timeout2: 0, clock: moment().subtract(1, 'second') };
     tinyRec.input = $(recAudioRef.current);
     tinyRec.time = tinyRec.input.find('> time');
     const holdTinyAudio = [
@@ -82,6 +82,9 @@ function RoomViewInput({
         tinyRec.clock = moment().subtract(1, 'second');
         tinyRec.time.addClass('d-none').text('');
         tinyRec.input.addClass('audio-click');
+
+        clearInterval(tinyRec.timeout2); clearTimeout(tinyRec.timeout);
+        clearInterval(tinyRec.timeout2); clearTimeout(tinyRec.timeout);
 
         tinyRec.timeout2 = momentCountdown(tinyRec.time, tinyRec.clock);
         tinyRec.timeout = setTimeout(holdTinyAudio[2], 300);
