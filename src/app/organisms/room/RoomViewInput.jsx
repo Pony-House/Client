@@ -71,6 +71,7 @@ function RoomViewInput({
   useEffect(() => {
 
     // Audio Record
+    const prefixConsole = (text, type = 'log') => console[type](`[chatbox record] ${text}`);
     const tinyRec = { enabled: false, loading: false, timeout: 0, timeout2: 0, clock: moment().subtract(1, 'second') };
     tinyRec.input = $(recAudioRef.current);
     tinyRec.time = tinyRec.input.find('> time');
@@ -114,9 +115,55 @@ function RoomViewInput({
 
           // Fail Record
           .catch(err => {
+
+            // on error
+            // No Browser Support Error
+            if (err.message.includes('mediaDevices API or getUserMedia method is not supported in this browser.')) {
+              prefixConsole('To record audio, use browsers like Chrome and Firefox.', 'warn');
+            }
+
+            // Error handling structure
+            switch (err.name) {
+              case 'AbortError': // err from navigator.mediaDevices.getUserMedia
+                prefixConsole('An AbortError has occured.', 'error');
+                console.error(err);
+                break;
+              case 'NotAllowedError': // err from navigator.mediaDevices.getUserMedia
+                prefixConsole('A NotAllowedError has occured. User might have denied permission.', 'error');
+                console.error(err);
+                break;
+              case 'NotFoundError': // err from navigator.mediaDevices.getUserMedia
+                prefixConsole('A NotFoundError has occured.', 'error');
+                console.error(err);
+                break;
+              case 'NotReadableError': // err from navigator.mediaDevices.getUserMedia
+                prefixConsole('A NotReadableError has occured.', 'error');
+                console.error(err);
+                break;
+              case 'SecurityError': // err from navigator.mediaDevices.getUserMedia or from the MediaRecorder.start
+                prefixConsole('A SecurityError has occured.', 'error');
+                console.error(err);
+                break;
+              case 'TypeError': // err from navigator.mediaDevices.getUserMedia
+                prefixConsole('A TypeError has occured.', 'error');
+                console.error(err);
+                break;
+              case 'InvalidStateError': // err from the MediaRecorder.start
+                prefixConsole('An InvalidStateError has occured.', 'error');
+                console.error(err);
+                break;
+              case 'UnknownError': // err from the MediaRecorder.start
+                prefixConsole('An UnknownError has occured.', 'error');
+                console.error(err);
+                break;
+              default:
+                prefixConsole(`An err occured with the err name ${err.name}`, 'error');
+                console.error(err);
+            };
+
             tinyRec.enabled = false;
             alert(err.message);
-            console.error(err);
+
           });
 
       },
@@ -139,9 +186,54 @@ function RoomViewInput({
 
             // Fail Record
             .catch(err => {
-              tinyRec.loading = false;
+
+              // No Browser Support Error
+              if (err.message.includes('mediaDevices API or getUserMedia method is not supported in this browser.')) {
+                prefixConsole('To record audio, use browsers like Chrome and Firefox.', 'warn');
+              }
+
+              // Error handling structure
+              switch (err.name) {
+                case 'AbortError': // error from navigator.mediaDevices.getUserMedia
+                  prefixConsole('An AbortError has occured.', 'error');
+                  console.error(err);
+                  break;
+                case 'NotAllowedError': // error from navigator.mediaDevices.getUserMedia
+                  prefixConsole('A NotAllowedError has occured. User might have denied permission.', 'error');
+                  console.error(err);
+                  break;
+                case 'NotFoundError': // error from navigator.mediaDevices.getUserMedia
+                  prefixConsole('A NotFoundError has occured.', 'error');
+                  console.error(err);
+                  break;
+                case 'NotReadableError': // error from navigator.mediaDevices.getUserMedia
+                  prefixConsole('A NotReadableError has occured.', 'error');
+                  console.error(err);
+                  break;
+                case 'SecurityError': // error from navigator.mediaDevices.getUserMedia or from the MediaRecorder.start
+                  prefixConsole('A SecurityError has occured.', 'error');
+                  console.error(err);
+                  break;
+                case 'TypeError': // error from navigator.mediaDevices.getUserMedia
+                  prefixConsole('A TypeError has occured.', 'error');
+                  console.error(err);
+                  break;
+                case 'InvalidStateError': // error from the MediaRecorder.start
+                  prefixConsole('An InvalidStateError has occured.', 'error');
+                  console.error(err);
+                  break;
+                case 'UnknownError': // error from the MediaRecorder.start
+                  prefixConsole('An UnknownError has occured.', 'error');
+                  console.error(err);
+                  break;
+                default:
+                  prefixConsole(`An error occured with the error name ${err.name}`, 'error');
+                  console.error(err);
+              };
+
+              tinyRec.enabled = false;
               alert(err.message);
-              console.error(err);
+
             });
 
         }
