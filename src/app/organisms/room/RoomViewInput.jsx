@@ -83,10 +83,9 @@ function RoomViewInput({
         tinyRec.time.addClass('d-none').text('');
         tinyRec.input.addClass('audio-click');
 
-        clearInterval(tinyRec.timeout2); clearTimeout(tinyRec.timeout);
-        clearInterval(tinyRec.timeout2); clearTimeout(tinyRec.timeout);
+        clearInterval(tinyRec.timeout2); tinyRec.timeout2 = 0;
+        clearTimeout(tinyRec.timeout);
 
-        tinyRec.timeout2 = momentCountdown(tinyRec.time, tinyRec.clock);
         tinyRec.timeout = setTimeout(holdTinyAudio[2], 300);
 
       },
@@ -95,16 +94,22 @@ function RoomViewInput({
       () => {
         tinyRec.time.addClass('d-none').text('');
         tinyRec.input.removeClass('audio-hold').removeClass('audio-click');
-        clearInterval(tinyRec.timeout2); clearTimeout(tinyRec.timeout);
+        clearInterval(tinyRec.timeout2); tinyRec.timeout2 = 0;
+        clearTimeout(tinyRec.timeout);
       },
 
       // User Hold
       () => {
+        if (tinyRec.timeout2) {
 
-        // Start Record
-        tinyRec.input.addClass('audio-hold');
-        tinyRec.time.removeClass('d-none');
+          tinyRec.timeout2 = momentCountdown(() => {
+            tinyRec.time.removeClass('d-none');
+            tinyRec.input.addClass('audio-hold');
+          }, tinyRec.time, tinyRec.clock);
 
+          // Start Record
+
+        }
       },
     ];
 
