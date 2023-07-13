@@ -71,7 +71,7 @@ function RoomViewInput({
   useEffect(() => {
 
     // Audio Record
-    const tinyRec = { timeout: 0, timeout2: 0, clock: moment().subtract(1, 'second') };
+    const tinyRec = { enabled: false, loading: false, timeout: 0, timeout2: 0, clock: moment().subtract(1, 'second') };
     tinyRec.input = $(recAudioRef.current);
     tinyRec.time = tinyRec.input.find('> time');
     const holdTinyAudio = [
@@ -86,28 +86,63 @@ function RoomViewInput({
         clearInterval(tinyRec.timeout2); tinyRec.timeout2 = 0;
         clearTimeout(tinyRec.timeout);
 
-        tinyRec.timeout = setTimeout(holdTinyAudio[2], 300);
+        if (!tinyRec.enabled && !tinyRec.loading) {
+          tinyRec.loading = true;
+          tinyRec.timeout = setTimeout(holdTinyAudio[2], 300);
+        }
 
       },
 
       // Remove Click
       () => {
-        tinyRec.time.addClass('d-none').text('');
-        tinyRec.input.removeClass('audio-hold').removeClass('audio-click');
+
+        // Stop Interval
         clearInterval(tinyRec.timeout2); tinyRec.timeout2 = 0;
         clearTimeout(tinyRec.timeout);
+
+        // Audio Click
+        tinyRec.time.addClass('d-none').text('');
+        tinyRec.input.removeClass('audio-hold').removeClass('audio-click');
+
+        // Stop Record
+        audioRecorder.stop(blob => {
+
+          console.log(blob, 'file');
+          tinyRec.enabled = false;
+
+        })
+
+          // Fail Record
+          .catch(err => {
+            tinyRec.enabled = false;
+            alert(err.message);
+            console.error(err);
+          });
+
       },
 
       // User Hold
       () => {
-        if (!tinyRec.timeout2) {
+        if (!tinyRec.enabled && !tinyRec.timeout2) {
+
+          tinyRec.enabled = true;
 
           tinyRec.timeout2 = momentCountdown(() => {
-            tinyRec.time.removeClass('d-none');
             tinyRec.input.addClass('audio-hold');
           }, tinyRec.time, tinyRec.clock);
 
           // Start Record
+          audioRecorder.start().then(() => {
+            tinyRec.loading = false;
+            tinyRec.time.removeClass('d-none');
+          })
+
+            // Fail Record
+            .catch(err => {
+              tinyRec.loading = false;
+              alert(err.message);
+              console.error(err);
+            });
 
         }
       },
