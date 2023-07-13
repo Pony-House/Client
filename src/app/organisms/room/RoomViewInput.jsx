@@ -106,11 +106,17 @@ function RoomViewInput({
         tinyRec.input.removeClass('audio-hold').removeClass('audio-click');
 
         // Stop Record
-        audioRecorder.stop(blob => {
+        audioRecorder.stop().then(blob => {
+          if (blob) {
 
-          console.log(blob, 'file');
-          tinyRec.enabled = false;
+            const selectedRoomId = navigation.selectedRoomId;
+            if (!selectedRoomId) return;
 
+            initMatrix.roomsInput.setAttachment(selectedRoomId, blob);
+            initMatrix.roomsInput.emit(cons.events.roomsInput.ATTACHMENT_SET, blob);
+            tinyRec.enabled = false;
+
+          }
         })
 
           // Fail Record
