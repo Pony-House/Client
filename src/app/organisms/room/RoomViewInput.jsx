@@ -758,6 +758,7 @@ function RoomViewInput({
         <div ref={rightOptionsRef} className="room-input__option-container">
 
           <IconButton
+            id='sticker-opener'
             onClick={(e) => {
 
               const cords = getEventCords(e);
@@ -784,6 +785,7 @@ function RoomViewInput({
           />
 
           <IconButton
+            id='emoji-opener'
             onClick={(e) => {
 
               const cords = getEventCords(e);
@@ -809,6 +811,7 @@ function RoomViewInput({
           />
 
           <IconButton
+            id='audio-sender'
             ref={recAudioRef}
             tooltip="Send Audio"
             fa="fa-solid fa-microphone"
@@ -816,7 +819,7 @@ function RoomViewInput({
             <time className='very-small ps-2 d-none' />
           </IconButton>
 
-          <IconButton onClick={sendMessage} tooltip="Send" fa="fa-solid fa-paper-plane" />
+          <IconButton id='send-room-message' onClick={sendMessage} tooltip="Send" fa="fa-solid fa-paper-plane" />
 
         </div>
 
