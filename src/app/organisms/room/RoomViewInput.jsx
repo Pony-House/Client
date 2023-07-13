@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import $ from 'jquery';
 import TextareaAutosize from 'react-autosize-textarea';
 
+import moment from 'moment-timezone';
+
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import settings from '../../../client/state/settings';
@@ -14,6 +16,7 @@ import { getUsername } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
 import { shiftNuller } from '../../../util/shortcut';
 import audioRecorder from '../../../util/audioRec';
+import { momentCountdown } from '../../../util/tools';
 
 import Text from '../../atoms/text/Text';
 import RawIcon from '../../atoms/system-icons/RawIcon';
@@ -68,27 +71,47 @@ function RoomViewInput({
   useEffect(() => {
 
     // Audio Record
-    let timeoutId = 0;
-    const audioInput = $(recAudioRef.current);
+    const tinyRec = { timeout: 0, timeout2: 0, clock: moment() };
+    tinyRec.input = $(recAudioRef.current);
+    tinyRec.time = tinyRec.input.find('> time');
     const holdTinyAudio = [
-      () => { audioInput.addClass('audio-click'); timeoutId = setTimeout(holdTinyAudio[2], 300); }, () => { audioInput.removeClass('audio-hold').removeClass('audio-click'); clearTimeout(timeoutId); },
+
+      // User Click
+      () => {
+
+        tinyRec.clock = moment().subtract(1, 'second');
+        tinyRec.time.addClass('d-none').text('');
+        tinyRec.input.addClass('audio-click');
+
+        tinyRec.timeout2 = momentCountdown(tinyRec.time, tinyRec.clock);
+        tinyRec.timeout = setTimeout(holdTinyAudio[2], 300);
+
+      },
+
+      // Remove Click
+      () => {
+        tinyRec.time.addClass('d-none').text('');
+        tinyRec.input.removeClass('audio-hold').removeClass('audio-click');
+        clearInterval(tinyRec.timeout2); clearTimeout(tinyRec.timeout);
+      },
+
+      // User Hold
       () => {
 
         // Start Record
-        audioInput.addClass('audio-hold');
+        tinyRec.input.addClass('audio-hold');
+        tinyRec.time.removeClass('d-none');
 
-
-
-      }
+      },
     ];
 
     // Events
     roomsInput.on(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
     viewEvent.on('focus_msg_input', requestFocusInput);
-    audioInput.on('mousedown', holdTinyAudio[0]).on('mouseup mouseleave', holdTinyAudio[1]);
+    tinyRec.input.on('mousedown', holdTinyAudio[0]).on('mouseup mouseleave', holdTinyAudio[1]);
 
     return () => {
-      audioInput.off('mousedown', holdTinyAudio[0]).off('mouseup mouseleave', holdTinyAudio[1]);
+      tinyRec.input.off('mousedown', holdTinyAudio[0]).off('mouseup mouseleave', holdTinyAudio[1]);
       roomsInput.removeListener(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
       viewEvent.removeListener('focus_msg_input', requestFocusInput);
     };
@@ -637,7 +660,9 @@ function RoomViewInput({
             ref={recAudioRef}
             tooltip="Send Audio"
             fa="fa-solid fa-microphone"
-          />
+          >
+            <time className='very-small ps-2' />
+          </IconButton>
 
           <IconButton onClick={sendMessage} tooltip="Send" fa="fa-solid fa-paper-plane" />
 

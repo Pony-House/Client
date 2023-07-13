@@ -247,6 +247,21 @@ export function timeDuration(timeData = 0, durationType = 'asSeconds', now = nul
 
 };
 
+export function momentCountdown(where, eventTime, currentTime = moment(), interval = 1000) {
+
+    const diffTime = eventTime.valueOf() - currentTime.valueOf();
+    let duration = moment.duration(diffTime, 'milliseconds');
+
+    const tinyCountDown = () => {
+        duration = moment.duration(duration - interval, 'milliseconds');
+        where.text(`${duration.hours()}:${duration.minutes()}:${duration.seconds()}`);
+    };
+
+    tinyCountDown();
+    return setInterval(tinyCountDown, interval);
+
+}
+
 // Age
 export function getAge(timeData = 0, now = null) {
 

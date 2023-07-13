@@ -10,7 +10,7 @@ const IconButton = React.forwardRef(({
   tooltip, tooltipPlacement, src,
   onClick, tabIndex, disabled, isImage,
   className, customColor,
-  style
+  style, children
 }, ref) => {
 
   let textColor = variant;
@@ -37,6 +37,7 @@ const IconButton = React.forwardRef(({
       disabled={disabled}
     >
       <RawIcon fa={fa} size={size} src={src} isImage={isImage} />
+      {children}
     </button>
   );
 
@@ -66,9 +67,11 @@ IconButton.defaultProps = {
   disabled: false,
   isImage: false,
   className: '',
+  children: null,
 };
 
 IconButton.propTypes = {
+  children: PropTypes.node,
   style: PropTypes.object,
   customColor: PropTypes.string,
   variant: PropTypes.oneOf(bsColorsArray),
