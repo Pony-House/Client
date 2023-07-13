@@ -89,6 +89,13 @@
 
 @import './index.scss';
 
+@import './utils/title-room.scss';
+@import './utils/header-room.scss';
+@import './utils/drag-zone.scss';
+@import './user-profile/avatar.scss';
+@import './messages//record-audio.scss';
+@import './utils/message-body.scss';
+
 @import './Math.scss';
 
 @import './ScrollView.scss';

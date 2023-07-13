@@ -136,9 +136,6 @@
      */
 
   .hljs {
-    display: block;
-    overflow-x: auto;
-    padding: 0.5em;
     background: #282a36;
   }
 
@@ -184,25 +181,9 @@
     color: #6272a4;
   }
 
-  .hljs-keyword,
-  .hljs-selector-tag,
-  .hljs-literal,
-  .hljs-title,
-  .hljs-section,
-  .hljs-doctag,
-  .hljs-type,
-  .hljs-name,
-  .hljs-strong {
-    font-weight: bold;
-  }
-
   .hljs-literal,
   .hljs-number {
-    color: #bd93f9;
-  }
-
-  .hljs-emphasis {
-    font-style: italic;
+    color: #bd93f9 !important;
   }
 
   .btn-theme {
