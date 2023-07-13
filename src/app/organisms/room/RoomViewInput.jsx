@@ -669,7 +669,7 @@ function RoomViewInput({
             tooltip="Send Audio"
             fa="fa-solid fa-microphone"
           >
-            <time className='very-small ps-2' />
+            <time className='very-small ps-2 d-none' />
           </IconButton>
 
           <IconButton onClick={sendMessage} tooltip="Send" fa="fa-solid fa-paper-plane" />
