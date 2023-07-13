@@ -525,131 +525,7 @@ a {
   }
 }
 
-/* Space Banner */
-
-.space-banner {
-  margin-bottom: 29px;
-  border: solid 1px var(--bg-surface-border);
-
-  .img-upload {
-    padding: 0px;
-  }
-}
-
-.space-banner,
-.space-banner img {
-  height: 226px;
-  padding: 1px;
-}
-
-.space-banner,
-.space-banner img,
-.space-banner .avatar-container {
-  width: 400px;
-}
-
-.space-banner .avatar-container {
-  height: 225px;
-}
-
-.space-banner.profile-banner,
-.space-banner.profile-banner img,
-.space-banner.profile-banner .avatar-container {
-  width: 660px;
-}
-
-@media (max-width: 991px) {
-  .space-banner.profile-banner,
-  .space-banner.profile-banner img,
-  .space-banner.profile-banner .avatar-container {
-    width: 370px;
-  }
-}
-
-@media (max-width: 768px) {
-  .space-banner.profile-banner,
-  .space-banner.profile-banner img,
-  .space-banner.profile-banner .avatar-container {
-    width: 460px;
-  }
-}
-
-@media (max-width: 576px) {
-  .space-banner,
-  .space-banner img {
-    height: 171px;
-  }
-
-  .space-banner,
-  .space-banner img,
-  .space-banner .avatar-container {
-    width: 300px;
-  }
-
-  .space-banner.profile-banner,
-  .space-banner.profile-banner img,
-  .space-banner.profile-banner .avatar-container {
-    width: 360px;
-  }
-
-  .space-banner .avatar-container {
-    height: 171px;
-  }
-}
-
-#space-header {
-  .navbar.banner-mode {
-    height: 138px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 100% auto;
-    padding-bottom: 49px !important;
-
-    .navbar-nav > .nav-link {
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
-    }
-  }
-
-  @media (max-width: 1124px) {
-    .navbar.banner-mode {
-      background-size: 110% auto;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .navbar.banner-mode {
-      background-size: 100% auto;
-    }
-  }
-
-  background: var(--bg-surface);
-  background: var(--bg-surface-gradient-2);
-}
-
-.space-drawer-body {
-  padding-bottom: 62px !important;
-  height: 100%;
-}
-
-.drawer-with-banner {
-  padding-bottom: 149px !important;
-}
-
-@media (max-width: 768px) {
-  .space-drawer-body:not(.drawer-with-banner) {
-    padding-bottom: 62px !important;
-  }
-}
-
-.space-banner .avatar__border {
-  background-position: center;
-  background-size: 100%;
-  background-repeat: no-repeat;
-}
-
-.space-banner .banner-added > * {
-  display: none;
-}
+@import './room/banner.scss';
 
 /* Welcome */
 .tiny-welcome {
@@ -786,3 +662,5 @@ a {
     margin-bottom: 5px;
   }
 }
+
+@import './messages/textarea.scss';
