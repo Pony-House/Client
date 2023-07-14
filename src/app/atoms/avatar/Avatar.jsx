@@ -66,9 +66,9 @@ const Avatar = React.forwardRef(({
 
               className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
 
-              draggable="false"
-              loadedimg='false'
-              loadingimg='false'
+              draggable='false'
+              loadedimg={appearanceSettings.isAnimateAvatarsHidden !== true ? 'false' : null}
+              loadingimg={appearanceSettings.isAnimateAvatarsHidden !== true ? 'false' : null}
 
               animparentscount={appearanceSettings.isAnimateAvatarsHidden !== true ? animParentsCount : null}
 
