@@ -90,6 +90,18 @@ function RoomViewInput({
         if (!tinyRec.enabled && !tinyRec.loading) {
           tinyRec.loading = true;
           tinyRec.timeout = setTimeout(holdTinyAudio[2], 300);
+        } else {
+          audioRecorder.cancel().then(() => {
+
+            tinyRec.enabled = false;
+            tinyRec.loading = true;
+
+            tinyRec.timeout = setTimeout(holdTinyAudio[2], 300);
+
+          }).catch(err => {
+            alert(err.message);
+            console.error(err);
+          });
         }
 
       },
@@ -177,7 +189,7 @@ function RoomViewInput({
 
       // User Hold
       () => {
-        if (!tinyRec.enabled && !tinyRec.timeout2) {
+        if (tinyRec.loading && !tinyRec.enabled && !tinyRec.timeout2) {
 
           tinyRec.enabled = true;
 
