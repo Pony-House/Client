@@ -113,9 +113,23 @@ function RoomViewInput({
           audioRecorder.stop().then(blob => {
             if (blob) {
 
+              // Get Room ID
               const selectedRoomId = navigation.selectedRoomId;
               if (!selectedRoomId) return;
 
+              // Get Type
+              let fileExt = blob.type;
+
+              // Filter File Type
+              if (typeof fileExt === 'string') {
+                fileExt = fileExt.split('/');
+                fileExt = fileExt[1].split(';')[0];
+              }
+
+              // Insert File Name
+              blob.name = `voice_message_${moment().format('MM/DD/YYYY_hh:mm:ss')}.${fileExt}`;
+
+              // Insert attachment and complete
               initMatrix.roomsInput.setAttachment(selectedRoomId, blob);
               initMatrix.roomsInput.emit(cons.events.roomsInput.ATTACHMENT_SET, blob);
               tinyRec.enabled = false;
@@ -185,8 +199,6 @@ function RoomViewInput({
 
           tinyRec.enabled = false;
           tinyRec.loading = true;
-
-          tinyRec.timeout = setTimeout(holdTinyAudio[2], 300);
 
         }
 
