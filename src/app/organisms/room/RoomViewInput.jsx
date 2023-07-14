@@ -107,6 +107,7 @@ function RoomViewInput({
         // Audio Click
         tinyRec.time.addClass('d-none').text('');
         tinyRec.input.removeClass('audio-hold').removeClass('audio-click');
+        $(textAreaRef.current).attr('placeholder', 'Send a message...');
 
         // Stop Record
         if (!tinyRec.loading) {
