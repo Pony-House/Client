@@ -195,10 +195,16 @@ function RoomViewInput({
         // Cancel
         else {
 
+          // Warn Hold
+          if (!tinyRec.enabled) {
+            alert(`You need to hold the button down to record your audio.`, 'Send Voice - Warning')
+          }
+
+          // Complete
           audioRecorder.cancel();
 
           tinyRec.enabled = false;
-          tinyRec.loading = true;
+          tinyRec.loading = false;
 
         }
 
