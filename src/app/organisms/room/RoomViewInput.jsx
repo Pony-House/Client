@@ -854,7 +854,10 @@ function RoomViewInput({
                 cords.x -= 50;
               }
 
+              const tabNewSpace = $('.room-view__sticky').height(true) - 84;
               cords.y += 220;
+
+              if (tabNewSpace > 0) { cords.y -= tabNewSpace - 60; }
 
               openEmojiBoard(cords, 'emoji', emoji => {
 
