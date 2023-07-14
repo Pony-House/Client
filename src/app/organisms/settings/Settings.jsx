@@ -41,9 +41,18 @@ import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
 function AppearanceSection() {
   const [, updateState] = useState({});
+  const [isAnimateAvatarsHidden, setAnimateAvatarsHidden] = useState(false);
+
+  useEffect(() => {
+
+    const content = initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
+    setAnimateAvatarsHidden((content.isAnimateAvatarsHidden === true));
+
+  }, []);
 
   return (
     <div>
+
       <div className="card noselect mb-3">
         <ul className="list-group list-group-flush">
           <li className="list-group-item very-small text-gray">Theme</li>
@@ -81,6 +90,7 @@ function AppearanceSection() {
           />
         </ul>
       </div>
+
       <div className="card noselect mt-3">
         <ul className="list-group list-group-flush">
           <li className="list-group-item very-small text-gray">Room messages</li>
@@ -119,6 +129,32 @@ function AppearanceSection() {
           />
         </ul>
       </div>
+
+      <div className="card noselect mt-3">
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item very-small text-gray">Pony House</li>
+          <SettingTile
+            title="Disable animated hover avatars"
+            options={(
+              <Toggle
+                className='d-inline-flex'
+                isActive={isAnimateAvatarsHidden}
+                onToggle={data => {
+
+                  const content = initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
+                  content.isAnimateAvatarsHidden = data;
+
+                  initMatrix.matrixClient.setAccountData('pony.house.appearance', content);
+                  setAnimateAvatarsHidden((data === true));
+
+                }}
+              />
+            )}
+            content={<div className="very-small text-gray">Turn off animated avatars that are displayed when you mouse over it.</div>}
+          />
+        </ul>
+      </div>
+
     </div>
   );
 }
