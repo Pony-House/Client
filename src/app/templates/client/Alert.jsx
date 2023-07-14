@@ -23,7 +23,7 @@ function Alert() {
             <Modal.Header className='noselect' closeButton>
                 <Modal.Title className='h5'>{title}</Modal.Title>
             </Modal.Header>
-            <Modal.Body className='text-freedom noselect'>{body}</Modal.Body>
+            <Modal.Body className='small text-freedom noselect p-4'>{body}</Modal.Body>
         </Modal>
     );
 
