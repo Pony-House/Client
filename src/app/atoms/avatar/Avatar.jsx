@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import initMatrix from '../../../client/initMatrix';
 import { loadAvatar, forceLoadAvatars } from './load';
 import { twemojify } from '../../../util/twemojify';
 
@@ -14,6 +15,9 @@ const ImageBrokenSVG = './img/svg/image-broken.svg';
 const Avatar = React.forwardRef(({
   text, bgColor, iconSrc, faSrc, iconColor, imageSrc, size, className, imgClass, imageAnimSrc, isDefaultImage, animParentsCount, theRef,
 }, ref) => {
+
+  // Avatar Config
+  const appearanceSettings = initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
 
   // Prepare Data
   let textSize = 's1';
@@ -61,15 +65,20 @@ const Avatar = React.forwardRef(({
             <img
 
               className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
+
               draggable="false"
               loadedimg='false'
               loadingimg='false'
-              animparentscount={animParentsCount}
-              animsrc={imageAnimSrc}
-              normalsrc={imageSrc}
-              defaultavatar={defaultAvatar}
-              src={defaultAvatar}
-              onLoad={loadAvatar}
+
+              animparentscount={appearanceSettings.isAnimateAvatarsHidden !== true ? animParentsCount : null}
+
+              animsrc={appearanceSettings.isAnimateAvatarsHidden !== true ? imageAnimSrc : null}
+              normalsrc={appearanceSettings.isAnimateAvatarsHidden !== true ? imageSrc : null}
+              defaultavatar={appearanceSettings.isAnimateAvatarsHidden !== true ? defaultAvatar : null}
+
+              src={appearanceSettings.isAnimateAvatarsHidden !== true ? defaultAvatar : imageSrc}
+
+              onLoad={appearanceSettings.isAnimateAvatarsHidden !== true ? loadAvatar : null}
 
               onError={(e) => { e.target.src = ImageBrokenSVG; }}
               alt={text || 'avatar'}
