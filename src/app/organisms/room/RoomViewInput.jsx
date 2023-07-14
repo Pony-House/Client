@@ -195,11 +195,6 @@ function RoomViewInput({
         // Cancel
         else {
 
-          // Warn Hold
-          if (!tinyRec.enabled) {
-            alert(`You need to hold the button down to record your audio.`, 'Send Voice - Warning')
-          }
-
           // Complete
           audioRecorder.cancel();
 
@@ -281,15 +276,23 @@ function RoomViewInput({
 
         }
       },
+      () => {
+
+        // Warn Hold
+        if (!tinyRec.enabled) {
+          alert(`You need to hold the button down to record your audio.`, 'Send Voice - Warning')
+        }
+
+      }
     ];
 
     // Events
     roomsInput.on(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
     viewEvent.on('focus_msg_input', requestFocusInput);
-    tinyRec.input.on('mousedown touchstart', holdTinyAudio[0]).on('mouseup mouseleave touchend', holdTinyAudio[1]);
+    tinyRec.input.on('mousedown touchstart', holdTinyAudio[0]).on('mouseup mouseleave touchend', holdTinyAudio[1]).on('click', holdTinyAudio[3]);
 
     return () => {
-      tinyRec.input.off('mousedown', holdTinyAudio[0]).off('mouseup mouseleave', holdTinyAudio[1]);
+      tinyRec.input.off('mousedown', holdTinyAudio[0]).off('mouseup mouseleave', holdTinyAudio[1]).off('click', holdTinyAudio[3]);
       roomsInput.removeListener(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
       viewEvent.removeListener('focus_msg_input', requestFocusInput);
     };
