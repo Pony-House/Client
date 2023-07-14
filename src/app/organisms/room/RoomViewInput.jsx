@@ -211,9 +211,14 @@ function RoomViewInput({
 
           tinyRec.enabled = true;
 
-          tinyRec.timeout2 = momentCountdown(() => {
+          tinyRec.timeout2 = momentCountdown((time) => {
+
             tinyRec.input.addClass('audio-hold');
-          }, tinyRec.time, tinyRec.clock);
+
+            tinyRec.time.text(time);
+            $(textAreaRef.current).attr('placeholder', time);
+
+          }, tinyRec.clock);
 
           // Start Record
           audioRecorder.start().then(() => {

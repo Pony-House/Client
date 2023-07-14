@@ -247,7 +247,7 @@ export function timeDuration(timeData = 0, durationType = 'asSeconds', now = nul
 
 };
 
-export function momentCountdown(callbackStart, where, eventTime, currentTime = moment(), interval = 1000) {
+export function momentCountdown(callbackStart, eventTime, currentTime = moment(), interval = 1000) {
 
     const diffTime = eventTime.valueOf() - currentTime.valueOf();
     let duration = moment.duration(diffTime, 'milliseconds');
@@ -260,8 +260,7 @@ export function momentCountdown(callbackStart, where, eventTime, currentTime = m
         const minutes = duration.minutes();
         const seconds = duration.seconds();
 
-        where.text(`${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : hours}:${seconds < 10 ? `0${seconds}` : seconds}`);
-        callbackStart();
+        callbackStart(`${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : hours}:${seconds < 10 ? `0${seconds}` : seconds}`);
 
     };
 
