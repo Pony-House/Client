@@ -72,7 +72,7 @@ function RoomViewInput({
 
     // Audio Record
     const prefixConsole = (text, type = 'log') => console[type](`[chatbox record] ${text}`);
-    const tinyRec = { enabled: false, loading: false, timeout: 0, timeout2: 0, clock: moment().subtract(1, 'second') };
+    const tinyRec = { enabled: false, loading: false, timeout: 0, timeout2: 0, clock: moment().subtract(1, 'second'), pointRec: '' };
     tinyRec.input = $(recAudioRef.current);
     tinyRec.time = tinyRec.input.find('> time');
     const holdTinyAudio = [
@@ -214,10 +214,20 @@ function RoomViewInput({
 
           tinyRec.timeout2 = momentCountdown((time) => {
 
+            if (tinyRec.pointRec === '...') {
+              tinyRec.pointRec = '';
+            } else if (tinyRec.pointRec === '..') {
+              tinyRec.pointRec = '...';
+            } else if (tinyRec.pointRec === '.') {
+              tinyRec.pointRec = '..';
+            } else {
+              tinyRec.pointRec = '.';
+            }
+
             tinyRec.input.addClass('audio-hold');
 
             tinyRec.time.text(time);
-            $(textAreaRef.current).attr('placeholder', time);
+            $(textAreaRef.current).attr('placeholder', `${time} - Recording voice${tinyRec.pointRec}`);
 
           }, tinyRec.clock);
 
