@@ -127,7 +127,7 @@ function RoomViewInput({
               }
 
               // Insert File Name
-              blob.name = `voice_message_${moment().format('MM/DD/YYYY_hh:mm:ss')}.${fileExt}`;
+              blob.name = `voice_message_${moment().format('MM/DD/YYYY_HH:mm:ss')}.${fileExt}`;
 
               // Insert attachment and complete
               initMatrix.roomsInput.setAttachment(selectedRoomId, blob);
