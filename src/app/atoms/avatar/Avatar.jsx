@@ -17,7 +17,11 @@ const Avatar = React.forwardRef(({
 }, ref) => {
 
   // Avatar Config
-  const appearanceSettings = initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
+  let appearanceSettings = {};
+
+  if (initMatrix.matrixClient && initMatrix.matrixClient.getAccountData) {
+    appearanceSettings = initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
+  }
 
   // Prepare Data
   let textSize = 's1';
