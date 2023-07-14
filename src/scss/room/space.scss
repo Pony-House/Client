@@ -1,0 +1,113 @@
+/* Tiny User Menu */
+#user-menu {
+  #user-presence {
+    display: block;
+  }
+
+  #user-id {
+    display: none;
+  }
+}
+
+#user-menu:hover {
+  #user-presence {
+    display: none;
+  }
+
+  #user-id {
+    display: block;
+  }
+}
+
+.sidebar-photo {
+  .ps-2 {
+    margin-left: 40px;
+  }
+  i {
+    position: relative;
+    display: block;
+    margin-top: -12px;
+    top: 37px;
+    left: -11px;
+    font-size: 13px;
+  }
+}
+
+/* Room Button */
+
+.space-buttons {
+  .menu {
+    width: 77px;
+  }
+
+  .text > button {
+    width: 156px;
+  }
+
+  @media (max-width: 1124px) {
+    .text > button {
+      width: 116px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .text > button {
+      width: 416px;
+    }
+  }
+
+  @media (max-width: 607px) {
+    .text > button {
+      width: 380px;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .text > button {
+      width: 350px;
+    }
+  }
+
+  @media (max-width: 545px) {
+    .text > button {
+      width: 300px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .text > button {
+      width: 250px;
+    }
+  }
+
+  @media (max-width: 445px) {
+    .text > button {
+      width: 200px;
+    }
+  }
+
+  @media (max-width: 390px) {
+    .text > button {
+      width: 150px;
+    }
+  }
+  @media (max-width: 350px) {
+    .text > button {
+      width: 100px;
+    }
+  }
+}
+
+.category-button span,
+.category-button button {
+  color: var(--tc-surface-low);
+}
+
+.category-button:hover span,
+.category-button:hover button,
+.category-button:hover span,
+.category-button:hover i,
+.room-selector:hover p,
+.room-selector.room-selector--selected p {
+  color: var(--tc-surface-normal) !important;
+}
