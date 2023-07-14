@@ -87,27 +87,13 @@ function RoomViewInput({
         clearInterval(tinyRec.timeout2); tinyRec.timeout2 = 0;
         clearTimeout(tinyRec.timeout);
 
-        if (!tinyRec.enabled && !tinyRec.loading) {
-          tinyRec.loading = true;
-          tinyRec.timeout = setTimeout(holdTinyAudio[2], 300);
-        } else {
-          audioRecorder.cancel().then(() => {
-
-            tinyRec.enabled = false;
-            tinyRec.loading = true;
-
-            tinyRec.timeout = setTimeout(holdTinyAudio[2], 300);
-
-          }).catch(err => {
-
-            tinyRec.enabled = false;
-            tinyRec.loading = false;
-
-            alert(err.message);
-            console.error(err);
-
-          });
+        if (tinyRec.enabled || tinyRec.loading) {
+          audioRecorder.cancel();
+          tinyRec.enabled = false;
         }
+
+        tinyRec.loading = true;
+        tinyRec.timeout = setTimeout(holdTinyAudio[2], 300);
 
       },
 
@@ -194,22 +180,14 @@ function RoomViewInput({
 
         // Cancel
         else {
-          audioRecorder.cancel().then(() => {
 
-            tinyRec.enabled = false;
-            tinyRec.loading = true;
+          audioRecorder.cancel();
 
-            tinyRec.timeout = setTimeout(holdTinyAudio[2], 300);
+          tinyRec.enabled = false;
+          tinyRec.loading = true;
 
-          }).catch(err => {
+          tinyRec.timeout = setTimeout(holdTinyAudio[2], 300);
 
-            tinyRec.enabled = false;
-            tinyRec.loading = false;
-
-            alert(err.message);
-            console.error(err);
-
-          });
         }
 
       },

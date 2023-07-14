@@ -84,11 +84,11 @@ const audioRecorder = {
     }),
 
     /** Cancel audio recording */
-    cancel: () => new Promise((resolve, reject) => {
+    cancel: () => {
         if (tinyCache.mediaRecorder) {
 
             // stop the recording feature
-            tinyCache.mediaRecorder.stop().then(resolve).catch(reject);
+            tinyCache.mediaRecorder.stop();
 
             // stop all the tracks on the active stream in order to stop the stream
             audioRecorder.stopStream();
@@ -96,8 +96,8 @@ const audioRecorder = {
             // reset API properties for next recording
             audioRecorder.resetRecordingProperties();
 
-        } else { resolve(null) }
-    }),
+        }
+    },
 
     /** Stop all the tracks on the active stream in order to stop the stream and remove
      * the red flashing dot showing in the tab
