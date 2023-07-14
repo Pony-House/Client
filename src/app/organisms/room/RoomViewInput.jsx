@@ -99,8 +99,13 @@ function RoomViewInput({
             tinyRec.timeout = setTimeout(holdTinyAudio[2], 300);
 
           }).catch(err => {
+
+            tinyRec.enabled = false;
+            tinyRec.loading = false;
+
             alert(err.message);
             console.error(err);
+
           });
         }
 
@@ -118,72 +123,94 @@ function RoomViewInput({
         tinyRec.input.removeClass('audio-hold').removeClass('audio-click');
 
         // Stop Record
-        audioRecorder.stop().then(blob => {
-          if (blob) {
+        if (!tinyRec.loading) {
+          audioRecorder.stop().then(blob => {
+            if (blob) {
 
-            const selectedRoomId = navigation.selectedRoomId;
-            if (!selectedRoomId) return;
+              const selectedRoomId = navigation.selectedRoomId;
+              if (!selectedRoomId) return;
 
-            initMatrix.roomsInput.setAttachment(selectedRoomId, blob);
-            initMatrix.roomsInput.emit(cons.events.roomsInput.ATTACHMENT_SET, blob);
-            tinyRec.enabled = false;
+              initMatrix.roomsInput.setAttachment(selectedRoomId, blob);
+              initMatrix.roomsInput.emit(cons.events.roomsInput.ATTACHMENT_SET, blob);
+              tinyRec.enabled = false;
 
-          }
-        })
-
-          // Fail Record
-          .catch(err => {
-
-            // on error
-            // No Browser Support Error
-            if (err.message.includes('mediaDevices API or getUserMedia method is not supported in this browser.')) {
-              prefixConsole('To record audio, use browsers like Chrome and Firefox.', 'warn');
             }
+          })
 
-            // Error handling structure
-            switch (err.name) {
-              case 'AbortError': // err from navigator.mediaDevices.getUserMedia
-                prefixConsole('An AbortError has occured.', 'error');
-                console.error(err);
-                break;
-              case 'NotAllowedError': // err from navigator.mediaDevices.getUserMedia
-                prefixConsole('A NotAllowedError has occured. User might have denied permission.', 'error');
-                console.error(err);
-                break;
-              case 'NotFoundError': // err from navigator.mediaDevices.getUserMedia
-                prefixConsole('A NotFoundError has occured.', 'error');
-                console.error(err);
-                break;
-              case 'NotReadableError': // err from navigator.mediaDevices.getUserMedia
-                prefixConsole('A NotReadableError has occured.', 'error');
-                console.error(err);
-                break;
-              case 'SecurityError': // err from navigator.mediaDevices.getUserMedia or from the MediaRecorder.start
-                prefixConsole('A SecurityError has occured.', 'error');
-                console.error(err);
-                break;
-              case 'TypeError': // err from navigator.mediaDevices.getUserMedia
-                prefixConsole('A TypeError has occured.', 'error');
-                console.error(err);
-                break;
-              case 'InvalidStateError': // err from the MediaRecorder.start
-                prefixConsole('An InvalidStateError has occured.', 'error');
-                console.error(err);
-                break;
-              case 'UnknownError': // err from the MediaRecorder.start
-                prefixConsole('An UnknownError has occured.', 'error');
-                console.error(err);
-                break;
-              default:
-                prefixConsole(`An err occured with the err name ${err.name}`, 'error');
-                console.error(err);
-            };
+            // Fail Record
+            .catch(err => {
+
+              // on error
+              // No Browser Support Error
+              if (err.message.includes('mediaDevices API or getUserMedia method is not supported in this browser.')) {
+                prefixConsole('To record audio, use browsers like Chrome and Firefox.', 'warn');
+              }
+
+              // Error handling structure
+              switch (err.name) {
+                case 'AbortError': // err from navigator.mediaDevices.getUserMedia
+                  prefixConsole('An AbortError has occured.', 'error');
+                  console.error(err);
+                  break;
+                case 'NotAllowedError': // err from navigator.mediaDevices.getUserMedia
+                  prefixConsole('A NotAllowedError has occured. User might have denied permission.', 'error');
+                  console.error(err);
+                  break;
+                case 'NotFoundError': // err from navigator.mediaDevices.getUserMedia
+                  prefixConsole('A NotFoundError has occured.', 'error');
+                  console.error(err);
+                  break;
+                case 'NotReadableError': // err from navigator.mediaDevices.getUserMedia
+                  prefixConsole('A NotReadableError has occured.', 'error');
+                  console.error(err);
+                  break;
+                case 'SecurityError': // err from navigator.mediaDevices.getUserMedia or from the MediaRecorder.start
+                  prefixConsole('A SecurityError has occured.', 'error');
+                  console.error(err);
+                  break;
+                case 'TypeError': // err from navigator.mediaDevices.getUserMedia
+                  prefixConsole('A TypeError has occured.', 'error');
+                  console.error(err);
+                  break;
+                case 'InvalidStateError': // err from the MediaRecorder.start
+                  prefixConsole('An InvalidStateError has occured.', 'error');
+                  console.error(err);
+                  break;
+                case 'UnknownError': // err from the MediaRecorder.start
+                  prefixConsole('An UnknownError has occured.', 'error');
+                  console.error(err);
+                  break;
+                default:
+                  prefixConsole(`An err occured with the err name ${err.name}`, 'error');
+                  console.error(err);
+              };
+
+              tinyRec.enabled = false;
+              tinyRec.loading = false;
+              alert(err.message);
+
+            });
+        }
+
+        // Cancel
+        else {
+          audioRecorder.cancel().then(() => {
+
+            tinyRec.enabled = false;
+            tinyRec.loading = true;
+
+            tinyRec.timeout = setTimeout(holdTinyAudio[2], 300);
+
+          }).catch(err => {
 
             tinyRec.enabled = false;
             tinyRec.loading = false;
+
             alert(err.message);
+            console.error(err);
 
           });
+        }
 
       },
 
