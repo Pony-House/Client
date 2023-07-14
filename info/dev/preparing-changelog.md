@@ -1,2 +1,3 @@
 - When opening the user's profile, you can now click on the avatar to see it in full size.
 - New button to send voice message. This button is next to the send emoji button.
+- New user setting to disable animated hover avatar
