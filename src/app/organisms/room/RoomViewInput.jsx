@@ -75,12 +75,14 @@ function RoomViewInput({
     const tinyRec = { enabled: false, loading: false, timeout: 0, timeout2: 0, clock: moment().subtract(1, 'second'), pointRec: '' };
     tinyRec.input = $(recAudioRef.current);
     tinyRec.time = tinyRec.input.find('> time');
+    tinyRec.roomInput = $('.room-input');
     const holdTinyAudio = [
 
       // User Click
       () => {
 
         tinyRec.clock = moment().subtract(1, 'second');
+        tinyRec.roomInput.removeClass('textarea-focus-rec');
         tinyRec.time.addClass('d-none').text('');
         tinyRec.input.addClass('audio-click');
 
@@ -105,6 +107,7 @@ function RoomViewInput({
         clearTimeout(tinyRec.timeout);
 
         // Audio Click
+        tinyRec.roomInput.removeClass('textarea-focus-rec');
         tinyRec.time.addClass('d-none').text('');
         tinyRec.input.removeClass('audio-hold').removeClass('audio-click');
         $(textAreaRef.current).attr('placeholder', 'Send a message...');
@@ -234,6 +237,7 @@ function RoomViewInput({
           // Start Record
           audioRecorder.start().then(() => {
             tinyRec.loading = false;
+            tinyRec.roomInput.addClass('textarea-focus-rec');
             tinyRec.time.removeClass('d-none');
           })
 
