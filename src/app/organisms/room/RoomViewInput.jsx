@@ -608,6 +608,7 @@ function RoomViewInput({
 
     // Send Body
     if (msgBody === '' && attachment === null) return;
+    $('.room-input').removeClass('textarea-typing');
     sendBody(msgBody);
 
   };
