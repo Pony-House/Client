@@ -470,7 +470,18 @@ function RoomViewInput({
       setReplyTo(roomsInput.getReplyTo(roomId));
     }
 
-    const textResize = () => resizeWindowChecker();
+    const textResize = () => {
+
+      const roomInput = $('.room-input');
+      if (textArea.val()?.length > 0) {
+        roomInput.addClass('textarea-typing');
+      } else {
+        roomInput.removeClass('textarea-typing');
+      }
+
+      resizeWindowChecker();
+
+    };
     const focusUpdate = [
       () => { $('.room-input').addClass('textarea-focus'); },
       () => { $('.room-input').removeClass('textarea-focus'); }
@@ -790,7 +801,7 @@ function RoomViewInput({
     return (
       <>
 
-        <div className={`room-input__option-container${attachment === null ? '' : ' room-attachment__option'}`}>
+        <div id="chat-textarea-options" className={`room-input__option-container${attachment === null ? '' : ' room-attachment__option'}`}>
           <input onChange={uploadFileChange} style={{ display: 'none' }} ref={uploadInputRef} type="file" />
           <IconButton onClick={handleUploadClick} tooltip={attachment === null ? 'Upload' : 'Cancel'} fa="fa-solid fa-circle-plus" />
         </div>
@@ -812,7 +823,7 @@ function RoomViewInput({
           </ScrollView>
         </div>
 
-        <div ref={rightOptionsRef} className="room-input__option-container">
+        <div ref={rightOptionsRef} id="chat-textarea-actions" className="room-input__option-container">
 
           <IconButton
             id='sticker-opener'

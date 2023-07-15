@@ -1,13 +1,29 @@
-.textarea-focus,
-.textarea-focus-rec {
-  #sticker-opener {
-    display: none !important;
+@media (max-width: 576px) {
+  .textarea-focus-rec,
+  .textarea-typing {
+    #sticker-opener {
+      display: none !important;
+    }
   }
-}
 
-.textarea-focus-rec {
-  #emoji-opener,
-  #send-room-message {
-    display: none !important;
+  .textarea-focus-rec {
+    #emoji-opener,
+    #send-room-message {
+      display: none !important;
+    }
+  }
+
+  .textarea-typing {
+    #chat-textarea-options,
+    #audio-sender {
+      display: none !important;
+    }
+
+    #send-room-message {
+      i,
+      i:before {
+        color: var(--bs-primary);
+      }
+    }
   }
 }
