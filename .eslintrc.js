@@ -1,4 +1,10 @@
 module.exports = {
+  globals: {
+    '$': 'readonly',
+    'web3': 'readonly',
+    'Web3': 'readonly',
+    'ethereum': 'readonly',
+  },
   env: {
     browser: true,
     es2021: true,

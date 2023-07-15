@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 // Console Values
 const prefixConsole = (text, type = 'log') => console[type](`[audioRec.js] ${text}`);
 

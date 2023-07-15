@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import $ from 'jquery';
-
 import { initHotkeys } from '../../../client/event/hotkeys';
 import { initRoomListListener } from '../../../client/event/roomList';
 

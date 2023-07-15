@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import { Modal, Tooltip } from 'bootstrap/dist/js/bootstrap.esm';
 
 // Window Hidden Detector

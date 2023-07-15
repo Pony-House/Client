@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOMServer from 'react-dom/server';
 
-import $ from 'jquery';
-
 import IconButton from '../../atoms/button/IconButton';
 import { twemojify } from '../../../util/twemojify';
 import navigation from '../../../client/state/navigation';

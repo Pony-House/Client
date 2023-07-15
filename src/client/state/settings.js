@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import EventEmitter from 'events';
 import appDispatcher from '../dispatcher';
 

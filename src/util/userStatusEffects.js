@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import moment from 'moment-timezone';
 import initMatrix from '../client/initMatrix';
 

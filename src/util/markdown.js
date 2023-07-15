@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
-import $ from 'jquery';
 import hljs from 'highlight.js';
 import moment from 'moment-timezone';
 import SimpleMarkdown from '@khanacademy/simple-markdown';

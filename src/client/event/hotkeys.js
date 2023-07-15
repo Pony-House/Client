@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import { openSearch, toggleRoomSettings } from '../action/navigation';
 import navigation from '../state/navigation';
 import { markAsRead } from '../action/notifications';

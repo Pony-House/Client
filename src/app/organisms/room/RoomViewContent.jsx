@@ -3,8 +3,6 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
-import $ from 'jquery';
-
 import moment from 'moment-timezone';
 import { twemojify } from '../../../util/twemojify';
 

@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import { getFileContentType } from '../../../util/fileMime';
 
 const ImageBrokenSVG = './img/svg/image-broken.svg';

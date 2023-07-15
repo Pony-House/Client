@@ -3,7 +3,6 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
-import $ from 'jquery';
 import hljs from 'highlight.js';
 import { Tooltip as Tooltip2 } from 'bootstrap';
 

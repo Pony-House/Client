@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import $ from 'jquery';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 import { emojiGroups, emojis, addDefaultEmojisToList, resetEmojisList, addEmojiToList } from './emoji';

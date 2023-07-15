@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import $ from 'jquery';
 import EventEmitter from 'events';
 
 import cons from '../../../client/state/cons';

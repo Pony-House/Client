@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import $ from 'jquery';
 import encrypt from 'browser-encrypt-attachment';
 
 import { BlurhashCanvas } from 'react-blurhash';

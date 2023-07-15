@@ -1,6 +1,4 @@
 /* freezeGif(e.target, 42); */
-import $ from 'jquery';
-
 export function freezeGif(img, wantedWidth) {
 
     function createElement(type, callback) {

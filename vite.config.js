@@ -12,6 +12,10 @@ const copyFiles = {
       dest: 'js/',
     },
     {
+      src: 'node_modules/jquery/dist/jquery.min.js',
+      dest: 'js/',
+    },
+    {
       src: 'node_modules/@matrix-org/olm/olm.wasm',
       dest: '',
     },

@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 let key;
 let isShift;
 let isCtrl;

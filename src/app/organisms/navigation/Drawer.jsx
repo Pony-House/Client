@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import $ from 'jquery';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';

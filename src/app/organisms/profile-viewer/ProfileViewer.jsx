@@ -2,8 +2,6 @@ import ReactDOMServer from 'react-dom/server';
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import $ from 'jquery';
-
 import { twemojify } from '../../../util/twemojify';
 import { getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
 

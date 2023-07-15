@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 
-import $ from 'jquery';
-
 import { twemojify, TWEMOJI_BASE_URL } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
