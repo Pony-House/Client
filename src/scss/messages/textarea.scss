@@ -1,4 +1,4 @@
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   .textarea-focus-rec,
   .textarea-typing {
     #sticker-opener {
@@ -38,7 +38,7 @@
   }
 }
 
-@media (min-width: 576px) {
+@media (min-width: 768px) {
   #send-room-message {
     display: none !important;
   }
