@@ -4,3 +4,4 @@
 - Emojiboard resize during textare is fixed.
 - When you are using the mobile version, now enter will not send the message automatically.
 - New textarea layout to mobile.
+- New black theme (beta)
