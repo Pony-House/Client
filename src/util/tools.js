@@ -72,6 +72,12 @@ export function resizeWindowChecker(timeout = 500) {
                 removeValue -= 30;
             }
 
+            const tinyRoomSticky = $('.room-view__sticky');
+            let emojiWidth = tinyRoomSticky.height() - 84;
+            if (emojiWidth > 0) {
+                emojiWidth += 16;
+            }
+
             $(resizePlace).html(`
                 .chatbox-size-fix {
                     width: ${roomView.offsetWidth - removeValue}px!important;
@@ -79,6 +85,12 @@ export function resizeWindowChecker(timeout = 500) {
 
                 .room-search__result-item .chatbox-size-fix {
                     width: ${roomView.offsetWidth - removeValue - 50}px!important;
+                }
+
+                @media (max-width: 576px) {
+                    .emoji-board-tippy {
+                        transform: translate(0px, -${emojiWidth}px) !important;
+                    }
                 }
             `);
 
