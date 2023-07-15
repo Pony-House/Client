@@ -52,7 +52,6 @@ Made by Me
 
     =======================================================
 
-    --> Ajeitar uma borda do tema Black
     --> Colocar inserir emoji na aba de editar mensagem
 
     --> Retirar o show/hide de categorias do localstorage para colocar dentro do stoage do matrix
