@@ -9,7 +9,7 @@ export function selectButton() {
     const body = $('body');
     if (body.length > 0) {
 
-        if (body.hasClass('dark-theme')) {
+        if (body.hasClass('dark-theme') || body.hasClass('black-theme')) {
             return 'dark';
         }
 
@@ -28,7 +28,7 @@ export function selectButtonInverse() {
     const body = $('body');
     if (body.length > 0) {
 
-        if (body.hasClass('dark-theme')) {
+        if (body.hasClass('dark-theme') || body.hasClass('black-theme')) {
             return 'secondary';
         }
 
