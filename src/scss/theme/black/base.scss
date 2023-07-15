@@ -21,4 +21,11 @@
   --bg-surface-gradient-2: none;
   --bg-surface-gradient-3: none;
   --bg-auth-gradient: none;
+
+  .sidebar-1 {
+    border-right-color: var(--bg-surface-border);
+    border-right-style: solid;
+    border-right-width: 1px;
+    width: 80px;
+  }
 }
