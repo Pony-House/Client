@@ -676,7 +676,7 @@ function RoomViewInput({
       roomsInput.cancelReplyTo(roomId);
       setReplyTo(null);
     }
-    if (e.key === 'Enter' && e.shiftKey === false) {
+    if (e.key === 'Enter' && e.shiftKey === false && !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       e.preventDefault();
       sendMessage();
     }
