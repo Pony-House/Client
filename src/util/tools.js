@@ -72,10 +72,9 @@ export function resizeWindowChecker(timeout = 500) {
                 removeValue -= 30;
             }
 
-            const tinyRoomSticky = $('.room-view__sticky');
-            let emojiWidth = tinyRoomSticky.height() - 84;
-            if (emojiWidth > 0) {
-                emojiWidth += 16;
+            let emojiWidth = $('.room-view__sticky').get(0)?.offsetHeight - 85;
+            if (Number.isNaN(emojiWidth) || !Number.isFinite(emojiWidth)) {
+                emojiWidth = 0;
             }
 
             $(resizePlace).html(`

@@ -16,7 +16,7 @@ import { getUsername } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
 import { shiftNuller } from '../../../util/shortcut';
 import audioRecorder from '../../../util/audioRec';
-import { momentCountdown } from '../../../util/tools';
+import { momentCountdown, resizeWindowChecker } from '../../../util/tools';
 
 import Text from '../../atoms/text/Text';
 import RawIcon from '../../atoms/system-icons/RawIcon';
@@ -470,14 +470,14 @@ function RoomViewInput({
       setReplyTo(roomsInput.getReplyTo(roomId));
     }
 
+    const textResize = () => resizeWindowChecker();
     const focusUpdate = [
       () => { $('.room-input').addClass('textarea-focus'); },
       () => { $('.room-input').removeClass('textarea-focus'); }
     ];
 
     // Complete
-    textArea.on('focus', focusUpdate[0]);
-    textArea.on('blur', focusUpdate[1]);
+    textArea.on('focus', focusUpdate[0]).on('blur', focusUpdate[1]).on('keydown', textResize).on('keypress', textResize).on('keyup', textResize);
     return () => {
 
       roomsInput.removeListener(cons.events.roomsInput.UPLOAD_PROGRESS_CHANGES, uploadingProgress);
@@ -488,8 +488,7 @@ function RoomViewInput({
       navigation.removeListener(cons.events.navigation.REPLY_TO_CLICKED, setUpReply);
 
       const textArea2 = $(textAreaRef.current);
-      textArea2.off('focus', focusUpdate[0]);
-      textArea2.off('blur', focusUpdate[1]);
+      textArea2.off('focus', focusUpdate[0]).off('blur', focusUpdate[1]).off('keydown', textResize).off('keypress', textResize).off('keyup', textResize);
 
       if (isCmdActivated) deactivateCmd();
       if (textArea2.length < 1) return;
