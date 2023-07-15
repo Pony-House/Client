@@ -14,9 +14,19 @@
   }
 
   .textarea-typing {
-    #chat-textarea-options,
+    #room-file-upload,
     #audio-sender {
       display: none !important;
+    }
+
+    #room-more-textarea {
+      display: block !important;
+      padding-left: 5px;
+      padding-right: 5px;
+      i,
+      i:before {
+        font-size: 10pt;
+      }
     }
 
     #send-room-message {

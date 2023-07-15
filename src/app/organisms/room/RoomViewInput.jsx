@@ -803,7 +803,8 @@ function RoomViewInput({
 
         <div id="chat-textarea-options" className={`room-input__option-container${attachment === null ? '' : ' room-attachment__option'}`}>
           <input onChange={uploadFileChange} style={{ display: 'none' }} ref={uploadInputRef} type="file" />
-          <IconButton onClick={handleUploadClick} tooltip={attachment === null ? 'Upload' : 'Cancel'} fa="fa-solid fa-circle-plus" />
+          <IconButton id="room-file-upload" onClick={handleUploadClick} tooltip={attachment === null ? 'Upload' : 'Cancel'} fa="fa-solid fa-circle-plus" />
+          <IconButton className='d-none' id="room-more-textarea" onClick={() => { $('.room-input').removeClass('textarea-typing'); }} tooltip='More' fa="fa-solid fa-angle-right" />
         </div>
 
         <div ref={inputBaseRef} className="room-input__input-container">
