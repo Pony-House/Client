@@ -69,7 +69,6 @@ Made by Me
     --> Criar sistema de alterar o tamanho da fonte do aplicativo
 
     --> Marcar mensagens como lidas quando a pessoa abre o chat de conversa. (aisa - 1)
-    --> Ajeitar o ícone das configurações do chat quando não é um avatar
 
     --> <Text>{systemState.status}</Text>
 
