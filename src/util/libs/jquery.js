@@ -1,5 +1,3 @@
-import { Modal, Tooltip } from 'bootstrap/dist/js/bootstrap.esm';
-
 // Window Hidden Detector
 let hiddenWindow = 'windowHidden';
 function onPageShow(event) {
@@ -82,11 +80,11 @@ export default function startQuery() {
             if (!$(this).data('bs-modal')) {
 
                 if (configObject) {
-                    $(this).data('bs-modal', new Modal(this, configObject));
+                    $(this).data('bs-modal', new bootstrap.Modal(this, configObject));
                 } else if (typeof type !== 'string') {
-                    $(this).data('bs-modal', new Modal(this, type));
+                    $(this).data('bs-modal', new bootstrap.Modal(this, type));
                 } else {
-                    $(this).data('bs-modal', new Modal(this));
+                    $(this).data('bs-modal', new bootstrap.Modal(this));
                 }
 
             }
@@ -137,11 +135,11 @@ export default function startQuery() {
             if (!$(this).data('bs-tooltip')) {
 
                 if (configObject) {
-                    $(this).data('bs-tooltip', new Tooltip(this, configObject));
+                    $(this).data('bs-tooltip', new bootstrap.Modal(this, configObject));
                 } else if (typeof type !== 'string') {
-                    $(this).data('bs-tooltip', new Tooltip(this, type));
+                    $(this).data('bs-tooltip', new bootstrap.Modal(this, type));
                 } else {
-                    $(this).data('bs-tooltip', new Tooltip(this));
+                    $(this).data('bs-tooltip', new bootstrap.Modal(this));
                 }
 
             }

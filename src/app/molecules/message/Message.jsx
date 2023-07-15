@@ -4,7 +4,6 @@ import React, {
 import PropTypes from 'prop-types';
 
 import hljs from 'highlight.js';
-import { Tooltip as Tooltip2 } from 'bootstrap';
 
 import { hljsFixer } from '../../../util/tools';
 import { twemojify } from '../../../util/twemojify';
@@ -228,7 +227,7 @@ const MessageBody = React.memo(({
 
         if (!el.attr('title') && el.attr('alt')) el.attr('title', el.attr('alt'));
 
-        new Tooltip2(value, { customClass: 'small' });
+        new bootstrap.Tooltip(value, { customClass: 'small' });
         el.addClass('emoji-fix');
 
       }

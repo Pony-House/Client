@@ -4,6 +4,7 @@ module.exports = {
     'web3': 'readonly',
     'Web3': 'readonly',
     'ethereum': 'readonly',
+    'bootstrap': 'readonly',
   },
   env: {
     browser: true,
