@@ -1,4 +1,3 @@
-/* eslint-disable prefer-rest-params */
 /* eslint-disable no-await-in-loop */
 import { objType } from '../src/util/tools';
 
