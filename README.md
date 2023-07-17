@@ -32,10 +32,20 @@ To host Cinny on your own, download tarball of the app from [GitHub release](htt
 You can serve the application with a webserver of your choice by simply copying `dist/` directory to the webroot. 
 To set default Homeserver on login and register page, place a customized [`config.json`](config.json) in webroot of your choice.
 
-## Custom Login Page Style
+## Custom App Style
 Would you like to customize your login page to your website? Then you can check out some values available in the `config/custom-css.scss` file.
 
 If you would like to edit the homeservers list, you can edit the `config/config.json` file.
+
+If you want to put a custom name or welcome message for the app, edit the .env file. (This will only affect the application within react.)
+
+If you want to change some more information about the application's HTML, you'll be looking for the `index.html` file.
+
+If you are trying to edit application image files, you are looking for the `public/img/` folder.
+
+If you want to modify the manifest file, it is present in `public/manifest.json`.
+
+Things more related to the mobile version of the application I recommend you use the <a href="https://marketplace.visualstudio.com/items?itemName=ionic.ionic" target="_blank">Ionic extension</a> from Visual Studio Code.
 
 ## Mod and patch support
 You can freely develop mods for users to install on the Pony House. The application will also support you to build a version of Pony House with pre-installed mods.

@@ -48,6 +48,8 @@ export default defineConfig(({ command, mode }) => {
 
     define: {
       __ENV_APP__: Object.freeze({
+        mode,
+        command,
         info: {
           name: String(env.appName),
           welcome: String(env.appWelcome)
