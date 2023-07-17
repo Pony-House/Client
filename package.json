@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "vite",
+    "start-dev": "vite --devmode",
     "install": "( git submodule update --init --recursive && node -r esm ./scripts/build.js )",
     "build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
     "lint": "yarn check:eslint && yarn check:prettier",
@@ -15,7 +16,7 @@
     "check:prettier": "prettier --check .",
     "fix:prettier": "prettier --write .",
     "ionic:build": "tsc && cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
-    "ionic:serve": "vite dev --host"
+    "ionic:serve": "vite dev --host --devmode"
   },
   "keywords": [
     "react",
