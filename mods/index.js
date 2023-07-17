@@ -170,5 +170,6 @@ tinyAPI.emitAsync = async (event) => {
 
 };
 
+// API Insert
 global.tinyAPI = { on: tinyAPI.on, off: tinyAPI.off, once: tinyAPI.once };
 export default tinyAPI;

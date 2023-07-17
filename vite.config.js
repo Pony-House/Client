@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { wasm } from '@rollup/plugin-wasm';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
@@ -30,41 +30,60 @@ const copyFiles = {
   ],
 }
 
-export default defineConfig({
-  appType: 'spa',
-  publicDir: true,
-  base: "",
-  server: {
-    port: 8469,
-    host: true,
-  },
-  plugins: [
-    viteStaticCopy(copyFiles),
-    wasm(),
-    react(),
-  ],
-  optimizeDeps: {
-    esbuildOptions: {
-      define: {
-        global: 'globalThis'
-      },
-      plugins: [
-        // Enable esbuild polyfill plugins
-        NodeGlobalsPolyfillPlugin({
-          process: false,
-          buffer: true,
-        }),
-      ]
-    }
-  },
-  build: {
-    outDir: 'dist',
-    sourcemap: true,
-    copyPublicDir: true,
-    rollupOptions: {
-      plugins: [
-        inject({ Buffer: ['buffer', 'Buffer'] })
-      ]
-    }
-  },
+export default defineConfig(({ command, mode }) => {
+
+  // Load env file based on `mode` in the current working directory.
+  // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
+  const env = loadEnv(mode, process.cwd(), '');
+
+  // Complete
+  return {
+
+    appType: 'spa',
+    publicDir: true,
+    base: "",
+
+    define: {
+      __APP_ENV__: JSON.stringify(env.APP_ENV),
+    },
+
+    server: {
+      port: 8469,
+      host: true,
+    },
+
+    plugins: [
+      viteStaticCopy(copyFiles),
+      wasm(),
+      react(),
+    ],
+
+    optimizeDeps: {
+      esbuildOptions: {
+        define: {
+          global: 'globalThis'
+        },
+        plugins: [
+          // Enable esbuild polyfill plugins
+          NodeGlobalsPolyfillPlugin({
+            process: false,
+            buffer: true,
+          }),
+        ]
+      }
+    },
+
+    build: {
+      outDir: 'dist',
+      sourcemap: true,
+      copyPublicDir: true,
+      rollupOptions: {
+        plugins: [
+          inject({ Buffer: ['buffer', 'Buffer'] })
+        ]
+      }
+    },
+
+  };
+
 });
