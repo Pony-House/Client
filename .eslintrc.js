@@ -5,6 +5,7 @@ module.exports = {
     'Web3': 'readonly',
     'ethereum': 'readonly',
     'bootstrap': 'readonly',
+    'tinyAPI': 'readonly',
   },
   env: {
     browser: true,
