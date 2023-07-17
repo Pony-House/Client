@@ -2,6 +2,8 @@
 /* eslint-disable no-await-in-loop */
 import { objType } from '../src/util/tools';
 
+const tinyAPI = {};
+
 // Module Base
 const tinyPlugins = {
 
@@ -57,13 +59,9 @@ const createTinyCache = (event, data, callback, priorityItem = 0) => {
     return false;
 }
 
-export function on(event, callback, priority = 0) {
-    return createTinyCache(event, 'on', callback, priority);
-};
+tinyAPI.on = (event, callback, priority = 0) => createTinyCache(event, 'on', callback, priority);
 
-export function once(event, callback, priority = 0) {
-    return createTinyCache(event, 'once', callback, priority);
-};
+tinyAPI.once = (event, callback, priority = 0) => createTinyCache(event, 'once', callback, priority);
 
 // Delete Cache
 const deleteTinyCache = (event, callback, tinyIndex) => {
@@ -109,9 +107,7 @@ const deleteTinyCache = (event, callback, tinyIndex) => {
     return false;
 };
 
-export function off(event, callback) {
-    return deleteTinyCache(event, callback);
-};
+tinyAPI.off = (event, callback) => deleteTinyCache(event, callback);
 
 // Emit
 const argumentsFix = (args, result) => {
@@ -125,7 +121,7 @@ const argumentsFix = (args, result) => {
 
 };
 
-export function emit(event) {
+tinyAPI.emit = (event) => {
 
     // Result
     let result = {};
@@ -150,7 +146,7 @@ export function emit(event) {
 
 };
 
-export async function emitAsync(event) {
+tinyAPI.emitAsync = async (event) => {
 
     // Result
     let result = {};
@@ -174,3 +170,5 @@ export async function emitAsync(event) {
     return result;
 
 };
+
+export default tinyAPI;

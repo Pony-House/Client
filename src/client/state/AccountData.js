@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import appDispatcher from '../dispatcher';
 import cons from './cons';
-import * as modEmmiter from '../../../mods';
+import tinyAPI from '../../../mods';
 
 class AccountData extends EventEmitter {
   constructor(roomList) {
@@ -86,7 +86,7 @@ class AccountData extends EventEmitter {
 
         this._updateSpaceShortcutData([...this.spaceShortcut]);
 
-        modEmmiter.emit('spaceShortcutUpdate', action.roomId);
+        tinyAPI.emit('spaceShortcutUpdate', action.roomId);
         this.emit(cons.events.accountData.SPACE_SHORTCUT_UPDATED, action.roomId);
 
       },
@@ -97,7 +97,7 @@ class AccountData extends EventEmitter {
         this.spaceShortcut.delete(action.roomId);
         this._updateSpaceShortcutData([...this.spaceShortcut]);
 
-        modEmmiter.emit('spaceShortcutUpdated', action.roomId);
+        tinyAPI.emit('spaceShortcutUpdated', action.roomId);
         this.emit(cons.events.accountData.SPACE_SHORTCUT_UPDATED, action.roomId);
 
       },
@@ -114,7 +114,7 @@ class AccountData extends EventEmitter {
         this.spaceShortcut = new Set(ssList);
         this._updateSpaceShortcutData(ssList);
 
-        modEmmiter.emit('spaceShortcutUpdated', roomId);
+        tinyAPI.emit('spaceShortcutUpdated', roomId);
         this.emit(cons.events.accountData.SPACE_SHORTCUT_UPDATED, roomId);
 
       },
@@ -125,7 +125,7 @@ class AccountData extends EventEmitter {
         this.categorizedSpaces.add(action.roomId);
         this._updateCategorizedSpacesData([...this.categorizedSpaces]);
 
-        modEmmiter.emit('categorizeSpaceUpdated', action.roomId);
+        tinyAPI.emit('categorizeSpaceUpdated', action.roomId);
         this.emit(cons.events.accountData.CATEGORIZE_SPACE_UPDATED, action.roomId);
 
       },
@@ -136,7 +136,7 @@ class AccountData extends EventEmitter {
         this.categorizedSpaces.delete(action.roomId);
         this._updateCategorizedSpacesData([...this.categorizedSpaces]);
 
-        modEmmiter.emit('categorizeSpaceUpdated', action.roomId);
+        tinyAPI.emit('categorizeSpaceUpdated', action.roomId);
         this.emit(cons.events.accountData.CATEGORIZE_SPACE_UPDATED, action.roomId);
 
       },
@@ -151,12 +151,12 @@ class AccountData extends EventEmitter {
 
       this._populateSpaceShortcut();
 
-      modEmmiter.emit('spaceShortcutUpdated');
+      tinyAPI.emit('spaceShortcutUpdated');
       this.emit(cons.events.accountData.SPACE_SHORTCUT_UPDATED);
 
       this._populateCategorizedSpaces();
 
-      modEmmiter.emit('categorizeSpaceUpdated');
+      tinyAPI.emit('categorizeSpaceUpdated');
       this.emit(cons.events.accountData.CATEGORIZE_SPACE_UPDATED);
 
     });
@@ -168,7 +168,7 @@ class AccountData extends EventEmitter {
         this.spaceShortcut.delete(roomId);
         this._updateSpaceShortcutData([...this.spaceShortcut]);
 
-        modEmmiter.emit('spaceShortcutUpdated', roomId);
+        tinyAPI.emit('spaceShortcutUpdated', roomId);
         this.emit(cons.events.accountData.SPACE_SHORTCUT_UPDATED, roomId);
 
       }
@@ -177,7 +177,7 @@ class AccountData extends EventEmitter {
         this.categorizedSpaces.delete(roomId);
         this._updateCategorizedSpacesData([...this.categorizedSpaces]);
 
-        modEmmiter.emit('categorizeSpaceUpdated', roomId);
+        tinyAPI.emit('categorizeSpaceUpdated', roomId);
         this.emit(cons.events.accountData.CATEGORIZE_SPACE_UPDATED, roomId);
 
       }

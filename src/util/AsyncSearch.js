@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import * as modEmmiter from '../../mods';
+import tinyAPI from '../../mods';
 
 class AsyncSearch extends EventEmitter {
 
@@ -172,7 +172,7 @@ class AsyncSearch extends EventEmitter {
   // Complete. Send results
   _sendFindings() {
 
-    modEmmiter.emit('searchResultSent',
+    tinyAPI.emit('searchResultSent',
 
       this.findingList,
       this.term,
