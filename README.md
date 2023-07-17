@@ -33,9 +33,9 @@ You can serve the application with a webserver of your choice by simply copying 
 To set default Homeserver on login and register page, place a customized [`config.json`](config.json) in webroot of your choice.
 
 ## Custom Login Page Style
-Would you like to customize your login page to your website? Then you can check out some values available in the `custom-css.scss` file.
+Would you like to customize your login page to your website? Then you can check out some values available in the `config/custom-css.scss` file.
 
-If you would like to edit the homeservers list, you can edit the `config.json` file.
+If you would like to edit the homeservers list, you can edit the `config/config.json` file.
 
 ## Mod and patch support
 You can freely develop mods for users to install on the Pony House. The application will also support you to build a version of Pony House with pre-installed mods.
