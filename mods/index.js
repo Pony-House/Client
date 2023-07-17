@@ -171,4 +171,5 @@ tinyAPI.emitAsync = async (event) => {
 
 };
 
+global.tinyAPI = { on: tinyAPI.on, off: tinyAPI.off, once: tinyAPI.once };
 export default tinyAPI;
