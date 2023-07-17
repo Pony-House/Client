@@ -10,9 +10,16 @@ The first argument will always be the final value that will be sent to the appli
 
 This value must always be an object. If this object is replaced by something else, a null will be sent to the API.
 
+To find out what global values are available, use this console debug. 
+
 ```ts
-import * as modEmmiter from './mods';
+console.log(tinyAPI);
 ```
+
+    tinyAPI.on
+    tinyAPI.once
+
+    tinyAPI.off
 
 <hr/>
 
