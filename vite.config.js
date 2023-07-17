@@ -34,6 +34,9 @@ export default defineConfig(({ command, mode }) => {
 
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
+  console.log(`[vite-config] ${mode}`);
+  console.log(`[vite-config] [command] ${command}`);
+
   const env = loadEnv(mode, process.cwd(), '');
 
   // Complete
@@ -44,7 +47,12 @@ export default defineConfig(({ command, mode }) => {
     base: "",
 
     define: {
-      __APP_ENV__: JSON.stringify(env.APP_ENV),
+      __ENV_APP__: Object.freeze({
+        info: {
+          name: String(env.appName),
+          welcome: String(env.appWelcome)
+        }
+      }),
     },
 
     server: {

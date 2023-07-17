@@ -6,9 +6,9 @@ function Welcome() {
       <center>
         <img className="app-welcome__logo noselect" src="./favicon.ico" alt="Cinny logo" />
 
-        <h2 className='mt-3'>Welcome to Pony House</h2>
+        <h2 className='mt-3'>{`Welcome to ${__ENV_APP__.info.name}`}</h2>
 
-        <h6>The open source house, your house, the house for all matrix ponies</h6>
+        <h6>{__ENV_APP__.info.welcome}</h6>
 
       </center>
     </div>

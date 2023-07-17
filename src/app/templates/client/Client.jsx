@@ -95,7 +95,7 @@ function Client() {
         <Text className="loading__message" variant="b2">{loadingMsg}</Text>
 
         <div className="loading__appname">
-          <Text variant="h2" weight="medium">Pony House</Text>
+          <Text variant="h2" weight="medium">{__ENV_APP__.info.name}</Text>
         </div>
       </div>
     );

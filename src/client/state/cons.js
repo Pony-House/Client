@@ -6,7 +6,7 @@ const cons = {
     USER_ID: 'cinny_user_id',
     BASE_URL: 'cinny_hs_base_url',
   },
-  DEVICE_DISPLAY_NAME: 'Pony House',
+  DEVICE_DISPLAY_NAME: __ENV_APP__.info.name,
   IN_CINNY_SPACES: 'in.cinny.spaces',
   tabs: {
     HOME: 'home',

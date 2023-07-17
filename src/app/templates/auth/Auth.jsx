@@ -54,7 +54,7 @@ function Auth() {
 
                       <div className="d-flex align-items-center mb-3 pb-1">
                         <Avatar imageSrc="./favicon.ico" />
-                        <span className="ms-3 h2 fw-bold mb-0">Pony House</span>
+                        <span className="ms-3 h2 fw-bold mb-0">{__ENV_APP__.info.name}</span>
                       </div>
 
                       <AuthCard />

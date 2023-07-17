@@ -132,7 +132,7 @@ function AppearanceSection() {
 
       <div className="card noselect mt-3">
         <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Pony House</li>
+          <li className="list-group-item very-small text-gray">{__ENV_APP__.info.name}</li>
           <SettingTile
             title="Disable animated hover avatars"
             options={(
@@ -299,7 +299,7 @@ function AboutSection() {
               <div className='col-md-11 pe-0'>
 
                 <h4>
-                  Pony House
+                  {__ENV_APP__.info.name}
                   <span className="very-small text-gray" style={{ margin: '0 var(--sp-extra-tight)' }}>{`v${cons.version}`}</span>
                 </h4>
 
@@ -340,7 +340,7 @@ function AboutSection() {
           </li>
 
           <li className="list-group-item border-0">
-            <div className='small'>The Pony House is a fork from the <a href="https://github.com/cinnyapp/cinny" target="_blank" rel="noreferrer noopener">Cinny</a>. All source code base credits go to this group.</div>
+            <div className='small'>{`The ${__ENV_APP__.info.name} is a fork from the `}<a href="https://github.com/cinnyapp/cinny" target="_blank" rel="noreferrer noopener">Cinny</a>. All source code base credits go to this group.</div>
           </li>
 
         </ul>
