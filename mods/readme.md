@@ -16,10 +16,10 @@ To find out what global values are available, use this console debug.
 console.log(tinyAPI);
 ```
 
-    tinyAPI.on
-    tinyAPI.once
+    tinyAPI.on(eventName, callback)
+    tinyAPI.once(eventName, callback)
 
-    tinyAPI.off
+    tinyAPI.off(eventName, callback)
 
 <hr/>
 
