@@ -59,7 +59,7 @@ between multiple Node.js versions based on the needs of different projects you'r
 Execute the following commands to start a development server (or a Ionic environment):
 ```sh
 yarn # Installs all dependencies
-yarn start # Serve a development version
+yarn start-dev # Serve a development version
 ```
 
 To build the web app:
