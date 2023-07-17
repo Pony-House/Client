@@ -6,6 +6,7 @@ module.exports = {
     'ethereum': 'readonly',
     'bootstrap': 'readonly',
     'tinyAPI': 'readonly',
+    'arguments': 'readonly',
   },
   env: {
     browser: true,
