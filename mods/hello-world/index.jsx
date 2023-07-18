@@ -3,15 +3,19 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import jReact from '../lib/jReact';
 
-// Normal Welcome
-console.log('[Tiny Plugin] Hello World!');
+export default function helloWorld() {
 
-// jQuery Welcome
-console.log('[Tiny Plugin] jQuery + React Demo',
-    jReact(<small>Hello World in react!</small>)
-);
+    // Normal Welcome
+    console.log('[Tiny Plugin] Hello World!');
 
-// Vanilla Welcome
-console.log('[Tiny Plugin] Vanilla React Demo', renderToStaticMarkup(
-    <small>Hello World in react!</small>
-));
+    // jQuery Welcome
+    console.log('[Tiny Plugin] jQuery + React Demo',
+        jReact(<small>Hello World in react!</small>)
+    );
+
+    // Vanilla Welcome
+    console.log('[Tiny Plugin] Vanilla React Demo', renderToStaticMarkup(
+        <small>Hello World in react!</small>
+    ));
+
+};
