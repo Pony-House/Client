@@ -4,6 +4,8 @@ node_modules
 devAssets
 public/img/twemoji
 
+mods/test
+
 .DS_Store
 
 .expo/
