@@ -21,6 +21,7 @@ import Alert from './Alert';
 import DragDrop from './DragDrop';
 import { resizeWindowChecker } from '../../../util/tools';
 import { startUserAfk, stopUserAfk } from '../../../util/userStatusEffects';
+import Mods from './Mods';
 
 function Client() {
   const [isLoading, changeLoading] = useState(true);
@@ -115,6 +116,7 @@ function Client() {
       <EmojiBoardOpener />
       <ReusableContextMenu />
       <Alert />
+      <Mods />
     </DragDrop>
   );
 }
