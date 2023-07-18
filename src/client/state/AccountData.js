@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import appDispatcher from '../dispatcher';
 import cons from './cons';
-import tinyAPI from '../../../mods';
+import tinyAPI from '../../util/mods';
 
 class AccountData extends EventEmitter {
   constructor(roomList) {

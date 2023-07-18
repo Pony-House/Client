@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import tinyAPI from '../../mods';
+import tinyAPI from './mods';
 
 class AsyncSearch extends EventEmitter {
 
