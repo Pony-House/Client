@@ -1,13 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+/* eslint-disable react/jsx-no-useless-fragment */
+import React, { useEffect } from 'react';
+import '../../../../mods';
 
 export default function Mods() {
-
-    const scriptsRef = useRef(null);
-
     useEffect(() => {
-        console.log(`[mods] Base meta loaded.`, scriptsRef.current);
+        console.log(`[mods] Base meta loaded.`);
     });
-
-    return (<script ref={scriptsRef} id="mods" />);
-
+    return <></>;
 };

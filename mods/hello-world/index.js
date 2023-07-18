@@ -1,0 +1,1 @@
+console.log('[Tiny Plugin] Hello World!');
