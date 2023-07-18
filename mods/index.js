@@ -1,1 +1,2 @@
-// import './hello-world';
+// import './test';
+import './hello-world';
