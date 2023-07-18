@@ -125,18 +125,18 @@ export function btModal(data) {
 
     if (typeof data.dialog !== "string") { data.dialog = ''; }
 
-    const modal = $("<div>", { class: "modal fade", id: data.id, tabindex: -1, role: "dialog", }).on('hidden.bs.modal', () => {
+    const modal = $("<div>", { class: "fade modal", id: data.id, tabindex: -1, role: "dialog", 'aria-modal': 'true', }).on('hidden.bs.modal', () => {
         $(this).remove();
         if (typeof data.hidden === "function") {
             data.hidden();
         }
     }).append(
-        $("<div>", { class: `modal-dialog ${data.dialog}`, role: "document" }).append(
+        $("<div>", { class: `modal-dialog ${data.dialog} modal-popup` }).append(
             $("<div>", { class: "modal-content" }).append(
 
-                $("<div>", { class: "modal-header" }).append(
-                    $("<h5>", { class: "modal-title" }).text(data.title),
-                    $("<button>", { type: "button", class: "btn-close", "data-bs-dismiss": "modal" })
+                $("<div>", { class: "noselect modal-header" }).append(
+                    $("<h5>", { class: "h5 emoji-size-fix modal-title h4" }).text(data.title),
+                    $("<button>", { type: "button", class: "btn-close", "data-bs-dismiss": "modal", 'aria-label': 'Close' })
                 ),
 
                 $("<div>", { class: "modal-body" }).append(data.body),
