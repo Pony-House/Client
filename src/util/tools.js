@@ -125,12 +125,7 @@ export function btModal(data) {
 
     if (typeof data.dialog !== "string") { data.dialog = ''; }
 
-    const modal = $("<div>", { class: "fade modal", id: data.id, tabindex: -1, role: "dialog", 'aria-modal': 'true', }).on('hidden.bs.modal', () => {
-        $(this).remove();
-        if (typeof data.hidden === "function") {
-            data.hidden();
-        }
-    }).append(
+    const modal = $("<div>", { class: "fade modal", id: data.id, tabindex: -1, role: "dialog", 'aria-hidden': true, 'aria-modal': 'true', }).append(
         $("<div>", { class: `modal-dialog ${data.dialog} modal-popup` }).append(
             $("<div>", { class: "modal-content" }).append(
 
@@ -147,7 +142,23 @@ export function btModal(data) {
     );
 
     $("body").prepend(modal);
-    modal.modal();
+    let modalControl;
+
+    if (typeof data.cfg !== 'string') {
+        modalControl = new bootstrap.Modal(modal.get(0), data.cfg);
+    } else {
+        modalControl = new bootstrap.Modal(modal.get(0));
+    }
+
+    modal.get(0).addEventListener('hidden.bs.modal', () => {
+        modal.remove();
+        if (typeof data.hidden === "function") {
+            data.hidden();
+        }
+    });
+
+    modalControl.show();
+    return modalControl;
 
 };
 

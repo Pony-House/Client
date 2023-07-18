@@ -73,33 +73,6 @@ export default function startQuery() {
     $(document).on('blur', onPageShow);
     $(document).on('focus', onPageShow);
 
-    // Modal Creator
-    $.fn.modal = (type, configObject) => {
-        this.each(() => {
-
-            if (!$(this).data('bs-modal')) {
-
-                if (configObject) {
-                    $(this).data('bs-modal', new bootstrap.Modal(this, configObject));
-                } else if (typeof type !== 'string') {
-                    $(this).data('bs-modal', new bootstrap.Modal(this, type));
-                } else {
-                    $(this).data('bs-modal', new bootstrap.Modal(this));
-                }
-
-            }
-
-            const modal = $(this).data('bs-modal');
-
-            if (typeof type === 'string' && typeof modal[type] === 'function') {
-                modal[type]();
-            } else {
-                modal.show();
-            }
-
-        });
-    };
-
     // Select Range
     $.fn.selectRange = (start, end) => {
 
