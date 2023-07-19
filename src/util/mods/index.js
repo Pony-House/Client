@@ -147,7 +147,7 @@ tinyAPI.emit = function (event) {
 
 };
 
-tinyAPI.emitAsync = async (event) => {
+tinyAPI.emitAsync = async function (event) {
 
     // Result
     let result = {};
