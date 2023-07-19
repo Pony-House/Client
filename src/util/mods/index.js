@@ -11,7 +11,9 @@ const tinyPlugins = {
     order: {},
 
     reorder: (event) => {
-        tinyPlugins.order[event].sort((a, b) => b.priority - a.priority);
+        if (Array.isArray(tinyPlugins.order[event])) {
+            tinyPlugins.order[event].sort((a, b) => b.priority - a.priority);
+        }
     },
 
 };
