@@ -25,6 +25,21 @@ console.log(tinyAPI);
 
 ## Events
 
+`src/client/logger/index.js`
+
+### consoleRemoveData
+
+    console object
+
+### consoleNewData
+
+    level
+    message
+
+### consoleUpdate
+
+    console cache
+
 `src/client/state/navigation.js`
 
 ### roomSettingsToggled (Not ready for production)
