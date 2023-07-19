@@ -14,7 +14,7 @@ const logCache = {
                 msg
             });
 
-            if (logCache.data.length > 500) {
+            if (logCache.data.length > 1000) {
 
                 const tinyData = logCache.data.shift();
 
@@ -41,7 +41,6 @@ mxLogger.log = (...msg) => logCache.add('log', msg);
 mxLogger.warn = (...msg) => logCache.add('warn', msg);
 mxLogger.error = (...msg) => logCache.add('error', msg);
 mxLogger.trace = (...msg) => logCache.add('trace', msg);
-const getLogData = () => logCache.data;
 
 export function isLogString(value) {
 
@@ -66,4 +65,32 @@ global.playLogData = () => {
     }
 };
 
-export default getLogData;
+const createLogArgs = (type, args) => {
+
+    const tinyArgs = [type];
+    for (const item in args) {
+        tinyArgs.push(args[item]);
+    }
+
+    return tinyArgs;
+
+};
+
+global.logger = {
+    debug: () => logCache.add.apply(this, createLogArgs('debug', arguments)),
+    log: () => logCache.add.apply(this, createLogArgs('log', arguments)),
+    info: () => logCache.add.apply(this, createLogArgs('info', arguments)),
+    warn: () => logCache.add.apply(this, createLogArgs('warn', arguments)),
+    error: () => logCache.add.apply(this, createLogArgs('error', arguments)),
+    trace: () => logCache.add.apply(this, createLogArgs('trace', arguments)),
+};
+
+export default {
+    getData: () => logCache.data,
+    debug: () => logCache.add.apply(this, createLogArgs('debug', arguments)),
+    log: () => logCache.add.apply(this, createLogArgs('log', arguments)),
+    info: () => logCache.add.apply(this, createLogArgs('info', arguments)),
+    warn: () => logCache.add.apply(this, createLogArgs('warn', arguments)),
+    error: () => logCache.add.apply(this, createLogArgs('error', arguments)),
+    trace: () => logCache.add.apply(this, createLogArgs('trace', arguments)),
+};
