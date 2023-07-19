@@ -9,6 +9,10 @@
 
   /* background color | --bg-[background type]: value */
 
+  --bg-loadingoverlay: rgba(0, 0, 0, 0.6);
+  --bg-loadingoverlay-circle: rgb(214, 214, 214);
+  --bg-loadingoverlay-text: rgb(214, 214, 214);
+
   --bg-surface: hsl(0, 2%, 11%);
   --bg-surface-semi-transparent: rgba(29, 27, 27, 0.9);
   --bg-surface-gradient: linear-gradient(

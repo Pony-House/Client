@@ -1,0 +1,14 @@
+.loadingoverlay {
+  background: var(--bg-loadingoverlay) !important;
+  justify-content: center !important;
+
+  .loadingoverlay_element svg circle {
+    fill: var(--bg-loadingoverlay-circle) !important;
+  }
+
+  .loadingoverlay_text {
+    font-size: 29pt !important;
+    margin-top: 14px !important;
+    color: var(--bg-loadingoverlay-text) !important;
+  }
+}

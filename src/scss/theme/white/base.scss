@@ -10,6 +10,11 @@
   );
 
   /* background color | --bg-[background type]: value */
+
+  --bg-loadingoverlay: rgba(255, 255, 255, 0.8);
+  --bg-loadingoverlay-circle: rgb(32, 32, 32);
+  --bg-loadingoverlay-text: rgb(32, 32, 32);
+
   --bg-surface: #ffffff;
   --bg-surface-semi-transparent: rgba(255, 255, 255, 0.9);
 
