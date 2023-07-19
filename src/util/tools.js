@@ -129,7 +129,7 @@ export function btModal(data) {
     }
 
     const modal = $("<div>", { class: "fade modal", id: data.id, tabindex: -1, role: "dialog", 'aria-hidden': true, 'aria-modal': 'true', }).append(
-        $("<div>", { class: `modal-dialog ${data.dialog} modal-popup` }).append(
+        $("<div>", { class: `modal-dialog ${data.dialog} modal-popup modal-dialog-scrollable` }).append(
             $("<div>", { class: "modal-content" }).append(
 
                 $("<div>", { class: "noselect modal-header" }).append(
