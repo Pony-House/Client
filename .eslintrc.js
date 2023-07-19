@@ -8,6 +8,7 @@ module.exports = {
     'tinyAPI': 'readonly',
     'arguments': 'readonly',
     'getLogData': 'readonly',
+    'playLogData': 'readonly',
     '__ENV_APP__': 'readonly',
   },
   env: {

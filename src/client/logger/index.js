@@ -40,6 +40,12 @@ mxLogger.warn = (...msg) => logCache.add('warn', msg);
 mxLogger.error = (...msg) => logCache.add('error', msg);
 mxLogger.trace = (...msg) => logCache.add('trace', msg);
 const getLogData = () => logCache.data;
+
 global.getLogData = () => clone(logCache.data);
+global.playLogData = () => {
+    for (const item in logCache.data) {
+        console[logCache.data[item].level] = logCache.data[item].msg;
+    }
+};
 
 export default getLogData;

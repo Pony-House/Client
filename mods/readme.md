@@ -33,6 +33,10 @@ console.log(tinyAPI);
 
 Returns an Array with the list of the matrix-sdk logs. (Read-only)
 
+### playLogData()
+
+Display the matrix-sdk logs.
+
 ## Events
 
 `src/client/logger/index.js`
