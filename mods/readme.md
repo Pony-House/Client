@@ -29,6 +29,30 @@ console.log(tinyAPI);
 
 <hr/>
 
+## Libs
+
+Here is the list of libraries that are available to use natively within the application.
+
+#### MomentJS (with timezone)
+https://momentjs.com/
+
+#### jQuery
+https://jquery.com/
+
+#### jQuery UI
+https://jqueryui.com/
+
+#### Jquery Loading Overlay
+https://gasparesganga.com/labs/jquery-loading-overlay/
+
+#### Bootstrap 5
+https://getbootstrap.com/docs/5.3/getting-started/introduction/
+
+#### Web3JS
+https://web3js.readthedocs.io/en/v1.10.0/
+
+<hr/>
+
 ## Methods
 
 ### logger.getData()
