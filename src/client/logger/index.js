@@ -7,28 +7,30 @@ const logCache = {
 
     data: [],
     add: (level, msg) => {
+        if (typeof level === 'string' && (Array.isArray(msg) || typeof msg === 'string')) {
 
-        logCache.data.push({
-            level,
-            msg
-        });
+            logCache.data.push({
+                level,
+                msg
+            });
 
-        if (logCache.data.length > 500) {
+            if (logCache.data.length > 500) {
 
-            const tinyData = logCache.data.shift();
+                const tinyData = logCache.data.shift();
 
-            consoleRemoveData(tinyData);
-            tinyAPI.emit('consoleRemoveData', tinyData);
+                consoleRemoveData(tinyData);
+                tinyAPI.emit('consoleRemoveData', tinyData);
+
+            }
+
+            const tinyData = { level, msg };
+            consoleNewData(tinyData);
+            tinyAPI.emit('consoleNewData', tinyData);
+
+            consoleUpdate(logCache.data);
+            tinyAPI.emit('consoleUpdate', logCache.data);
 
         }
-
-        const tinyData = { level, msg };
-        consoleNewData(tinyData);
-        tinyAPI.emit('consoleNewData', tinyData);
-
-        consoleUpdate(logCache.data);
-        tinyAPI.emit('consoleUpdate', logCache.data);
-
     }
 
 };
@@ -41,10 +43,26 @@ mxLogger.error = (...msg) => logCache.add('error', msg);
 mxLogger.trace = (...msg) => logCache.add('trace', msg);
 const getLogData = () => logCache.data;
 
+export function isLogString(value) {
+
+    for (const item in value) {
+        if (typeof value[item] !== 'string') {
+            return false;
+        }
+    }
+
+    return true;
+
+};
+
 global.getLogData = () => clone(logCache.data);
 global.playLogData = () => {
     for (const item in logCache.data) {
-        console[logCache.data[item].level] = logCache.data[item].msg;
+        if (Array.isArray(logCache.data[item].msg) && isLogString(logCache.data[item].msg)) {
+            console[logCache.data[item].level](logCache.data[item].msg.join(' '));
+        } else if (typeof logCache.data[item].msg === 'string') {
+            console[logCache.data[item].level](logCache.data[item].msg);
+        }
     }
 };
 
