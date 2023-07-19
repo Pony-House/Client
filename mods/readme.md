@@ -23,6 +23,12 @@ console.log(tinyAPI);
 
 <hr/>
 
+## Methods
+
+### getLogData()
+
+Returns an Array with the list of the matrix-sdk logs. (Read-only)
+
 ## Events
 
 `src/client/logger/index.js`
