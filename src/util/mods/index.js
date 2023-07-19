@@ -37,7 +37,6 @@ const createTinyCache = (event, data, callback, priorityItem = 0) => {
 
         // Check Exist Callback
         let newIndex = -1;
-        let result = false;
 
         const oldIndex = tinyPlugins.cache[event].indexOf(callback);
         if (oldIndex < 0) {
@@ -46,7 +45,6 @@ const createTinyCache = (event, data, callback, priorityItem = 0) => {
 
             newIndex = tinyPlugins.cache[event].length - 1;
             tinyPlugins.order[event].push({ callback, priority, index: newIndex, type: data.type });
-            result = true;
 
         } else {
             newIndex = oldIndex;
@@ -54,7 +52,7 @@ const createTinyCache = (event, data, callback, priorityItem = 0) => {
 
         // Complete
         tinyPlugins.reorder(event);
-        return result;
+        return newIndex;
 
     }
     return false;
@@ -108,7 +106,8 @@ const deleteTinyCache = (event, callback, tinyIndex) => {
     return false;
 };
 
-tinyAPI.off = (event, callback) => deleteTinyCache(event, callback);
+tinyAPI.off = (event, callback, index) => deleteTinyCache(event, callback, index);
+
 
 // Emit
 const argumentsFix = (args, result) => {
