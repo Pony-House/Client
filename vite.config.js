@@ -7,10 +7,21 @@ import inject from '@rollup/plugin-inject';
 
 const copyFiles = {
   targets: [
+
+    {
+      src: 'node_modules/moment-timezone/builds/*',
+      dest: 'js/moment/',
+    },
+    {
+      src: 'node_modules/moment/min/*',
+      dest: 'js/moment/',
+    },
+
     {
       src: 'node_modules/web3/dist/web3.min.js',
       dest: 'js/',
     },
+
     {
       src: 'node_modules/jquery/dist/jquery.min.js',
       dest: 'js/',
@@ -19,10 +30,12 @@ const copyFiles = {
       src: 'node_modules/jquery-ui/dist/jquery-ui.min.js',
       dest: 'js/',
     },
+
     {
       src: 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
       dest: 'js/',
     },
+
     {
       src: 'node_modules/@matrix-org/olm/olm.wasm',
       dest: '',
@@ -31,6 +44,7 @@ const copyFiles = {
       src: 'config/config.json',
       dest: '',
     }
+
   ],
 }
 

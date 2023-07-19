@@ -11,7 +11,8 @@ const logCache = {
 
             logCache.data.push({
                 level,
-                msg
+                msg,
+                time: moment(),
             });
 
             if (logCache.data.length > 1000) {

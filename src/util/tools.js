@@ -1,5 +1,3 @@
-import moment from 'moment-timezone';
-
 let resizePlace = null;
 let resizeTimeout = null;
 let head;
