@@ -42,7 +42,7 @@ mxLogger.warn = (...msg) => logCache.add('warn', msg);
 mxLogger.error = (...msg) => logCache.add('error', msg);
 mxLogger.trace = (...msg) => logCache.add('trace', msg);
 
-export function isLogString(value) {
+function isLogString(value) {
 
     for (const item in value) {
         if (typeof value[item] !== 'string') {
@@ -52,6 +52,19 @@ export function isLogString(value) {
 
     return true;
 
+};
+
+function logDatatoString(value) {
+
+    if (Array.isArray(value) && isLogString(value)) {
+        return value.join(' ');
+    }
+
+    if (typeof value === 'string') {
+        return value;
+    }
+
+    return null;
 };
 
 const createLogArgs = (type, args) => {
@@ -65,9 +78,19 @@ const createLogArgs = (type, args) => {
 
 };
 
+function playLogData() {
+    for (const item in logCache.data) {
+        console[logCache.data[item].level](logDatatoString(logCache.data[item].msg));
+    }
+}
+
 global.logger = {
 
+    logDatatoString,
+    isLogString,
+
     getData: () => clone(logCache.data),
+
     debug() { logCache.add.apply(this, createLogArgs('debug', arguments)) },
     log() { logCache.add.apply(this, createLogArgs('log', arguments)) },
     info() { logCache.add.apply(this, createLogArgs('info', arguments)) },
@@ -75,24 +98,24 @@ global.logger = {
     error() { logCache.add.apply(this, createLogArgs('error', arguments)) },
     trace() { logCache.add.apply(this, createLogArgs('trace', arguments)) },
 
-    play: () => {
-        for (const item in logCache.data) {
-            if (Array.isArray(logCache.data[item].msg) && isLogString(logCache.data[item].msg)) {
-                console[logCache.data[item].level](logCache.data[item].msg.join(' '));
-            } else if (typeof logCache.data[item].msg === 'string') {
-                console[logCache.data[item].level](logCache.data[item].msg);
-            }
-        }
-    }
+    play: playLogData,
 
 };
 
 export default {
+
+    logDatatoString,
+    isLogString,
+
     getData: () => logCache.data,
+
     debug() { logCache.add.apply(this, createLogArgs('debug', arguments)) },
     log() { logCache.add.apply(this, createLogArgs('log', arguments)) },
     info() { logCache.add.apply(this, createLogArgs('info', arguments)) },
     warn() { logCache.add.apply(this, createLogArgs('warn', arguments)) },
     error() { logCache.add.apply(this, createLogArgs('error', arguments)) },
     trace() { logCache.add.apply(this, createLogArgs('trace', arguments)) },
+
+    play: playLogData,
+
 };
