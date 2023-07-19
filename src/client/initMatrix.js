@@ -10,6 +10,7 @@ import RoomsInput from './state/RoomsInput';
 import Notifications from './state/Notifications';
 import { cryptoCallbacks } from './state/secretStorageKeys';
 import navigation from './state/navigation';
+import './logger';
 
 global.Olm = Olm;
 
@@ -29,25 +30,32 @@ class InitMatrix extends EventEmitter {
   }
 
   async startClient() {
+
     const indexedDBStore = new sdk.IndexedDBStore({
       indexedDB: global.indexedDB,
       localStorage: global.localStorage,
       dbName: 'web-sync-store',
     });
+
     await indexedDBStore.startup();
 
     this.matrixClient = sdk.createClient({
+
       baseUrl: secret.baseUrl,
+
       accessToken: secret.accessToken,
       userId: secret.userId,
       store: indexedDBStore,
+
       cryptoStore: new sdk.IndexedDBCryptoStore(global.indexedDB, 'crypto-store'),
+
       deviceId: secret.deviceId,
       timelineSupport: true,
       cryptoCallbacks,
       verificationMethods: [
         'm.sas.v1',
       ],
+
     });
 
     await this.matrixClient.initCrypto();
@@ -55,7 +63,9 @@ class InitMatrix extends EventEmitter {
     await this.matrixClient.startClient({
       lazyLoadMembers: true,
     });
+
     this.matrixClient.setGlobalErrorOnUnknownDevices(false);
+
   }
 
   setupSync() {
