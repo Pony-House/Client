@@ -163,18 +163,18 @@ const api = new JitsiMeetExternalAPI(domain, options);
 
 // Ready to Close
 api.addListener('readyToClose', () => {
-    console.log('readyToClose');
+    console.log('[meet] readyToClose');
 });
 
 // Mute Audio
 api.addListener('audioMuteStatusChanged', (data) => {
-    console.log('audioMuteStatusChanged', data);
+    console.log('[meet] audioMuteStatusChanged', data);
     // api.executeCommand('toggleAudio');
 });
 
 // Mute Video
 api.addListener('videoMuteStatusChanged', (data) => {
-    console.log('videoMuteStatusChanged', data);
+    console.log('[meet] videoMuteStatusChanged', data);
     // api.executeCommand('toggleVideo');
 });
 

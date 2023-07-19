@@ -17,8 +17,8 @@ function startApp(appProtocol) {
     startWeb3();
     startQuery();
 
-    console.log(`Starting app using the protocol "${appProtocol}" mode.`);
-    console.log(`Dev Mode: ${isDevMode}`);
+    console.log(`[app] Starting app using the protocol "${appProtocol}" mode.`);
+    console.log(`[app] Dev Mode: ${isDevMode}`);
     global.isDevMode = isDevMode;
 
     const root = ReactDOM.createRoot(document.getElementById('root'));

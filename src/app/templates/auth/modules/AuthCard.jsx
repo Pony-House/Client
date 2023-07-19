@@ -9,7 +9,6 @@ function AuthCard() {
     const [type, setType] = useState('login');
 
     const handleHsChange = (info) => {
-        console.log(info);
         setHsConfig(info);
     };
 

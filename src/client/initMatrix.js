@@ -1,7 +1,6 @@
 import EventEmitter from 'events';
 import * as sdk from 'matrix-js-sdk';
 import Olm from '@matrix-org/olm';
-// import { logger } from 'matrix-js-sdk/lib/logger';
 
 import { secret } from './state/auth';
 import RoomList from './state/RoomList';
@@ -10,11 +9,10 @@ import RoomsInput from './state/RoomsInput';
 import Notifications from './state/Notifications';
 import { cryptoCallbacks } from './state/secretStorageKeys';
 import navigation from './state/navigation';
-import './logger';
+import logger from './logger';
 
 global.Olm = Olm;
 
-// logger.disableAll();
 
 class InitMatrix extends EventEmitter {
   constructor() {
@@ -71,14 +69,14 @@ class InitMatrix extends EventEmitter {
   setupSync() {
     const sync = {
       NULL: () => {
-        console.log('NULL state');
+        logger.log('NULL state');
       },
       SYNCING: () => {
-        console.log('SYNCING state');
+        logger.log('SYNCING state');
       },
       PREPARED: (prevState) => {
-        console.log('PREPARED state');
-        console.log('Previous state: ', prevState);
+        logger.log('PREPARED state');
+        logger.log('Previous state: ', prevState);
         // TODO: remove global.initMatrix at end
         global.initMatrix = this;
         if (prevState === null) {
@@ -93,16 +91,16 @@ class InitMatrix extends EventEmitter {
         }
       },
       RECONNECTING: () => {
-        console.log('RECONNECTING state');
+        logger.log('RECONNECTING state');
       },
       CATCHUP: () => {
-        console.log('CATCHUP state');
+        logger.log('CATCHUP state');
       },
       ERROR: () => {
-        console.log('ERROR state');
+        logger.log('ERROR state');
       },
       STOPPED: () => {
-        console.log('STOPPED state');
+        logger.log('STOPPED state');
       },
     };
     this.matrixClient.on('sync', (state, prevState) => sync[state](prevState));

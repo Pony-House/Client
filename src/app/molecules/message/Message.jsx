@@ -837,8 +837,6 @@ function Message({
 
   let { body } = content;
 
-  // console.log(content);
-
   // User Data
   const username = mEvent.sender ? getUsernameOfRoomMember(mEvent.sender) : getUsername(senderId);
   const avatarSrc = mEvent.sender?.getAvatarUrl(initMatrix.matrixClient.baseUrl, 36, 36, 'crop') ?? null;

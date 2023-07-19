@@ -7,7 +7,7 @@ window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt)
     }
 
     // Log display mode change to analytics
-    console.log('DISPLAY_MODE_CHANGED', displayMode);
+    console.log('[PWA] DISPLAY_MODE_CHANGED', displayMode);
 
 });
 
@@ -23,7 +23,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
     // showInstallPromotion();
 
     // Optionally, send analytics event that PWA install promo was shown.
-    console.log(`'beforeinstallprompt' event was fired.`);
+    console.log(`[PWA] 'beforeinstallprompt' event was fired.`);
 
 });
 
@@ -36,7 +36,7 @@ window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
 
     // Optionally, send analytics event to indicate successful install
-    console.log('PWA was installed');
+    console.log('[PWA] PWA was installed');
 
 });
 
