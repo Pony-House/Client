@@ -306,7 +306,7 @@ function SideBar() {
       <center className='sidebar-item-1 h-100'>
         <ScrollView invisible>
           <div className="scrollable-content">
-            <div className="featured-container">
+            <div id='space-feature' className="featured-container">
               <FeaturedTab />
               {totalInvites !== 0 && (
                 <SidebarAvatar
@@ -319,7 +319,7 @@ function SideBar() {
               <CrossSigninAlert />
             </div>
             <div className="sidebar-divider" />
-            <div className="space-container">
+            <div id='space-container' className="space-container">
               <SpaceShortcut />
               <SidebarAvatar
                 tooltip="Pin spaces"
@@ -332,7 +332,7 @@ function SideBar() {
       </center>
       <center className='sidebar-item-2'>
         <div className="sidebar-divider" />
-        <div className="sticky-container">
+        <div id='space-container-2' className="sticky-container">
           <SidebarAvatar
             tooltip="Search"
             onClick={() => openSearch()}

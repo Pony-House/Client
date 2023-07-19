@@ -91,7 +91,7 @@ function RoomViewHeader({ roomId }) {
 
       </ul>
 
-      <ul className='navbar-nav ms-auto mb-0 small'>
+      <ul className='navbar-nav ms-auto mb-0 small' id='room-options'>
 
         {mx.isRoomEncrypted(roomId) === false && (
           <li className="nav-item">
