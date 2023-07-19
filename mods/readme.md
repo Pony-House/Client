@@ -4,6 +4,10 @@ You can freely develop mods for Pony House. Users will have to install these mod
 
 Features are still under development. I will update this file with more information during the time.
 
+**WARNING!!**
+
+Using mods that attempt to modify Pony House's primary files can corrupt other mods and the app itself. If you are trying this, fork the repository instead of trying to develop a mod.
+
 ## Event Arguments
 
 The first argument will always be the final value that will be sent to the application's API.
