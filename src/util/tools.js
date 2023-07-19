@@ -123,17 +123,22 @@ export function btModal(data) {
 
     if (typeof data.dialog !== "string") { data.dialog = ''; }
 
+    let footer = null;
+    if (data.footer) {
+        footer = $("<div>", { class: "modal-footer" }).append(data.footer);
+    }
+
     const modal = $("<div>", { class: "fade modal", id: data.id, tabindex: -1, role: "dialog", 'aria-hidden': true, 'aria-modal': 'true', }).append(
         $("<div>", { class: `modal-dialog ${data.dialog} modal-popup` }).append(
             $("<div>", { class: "modal-content" }).append(
 
                 $("<div>", { class: "noselect modal-header" }).append(
-                    $("<h5>", { class: "h5 emoji-size-fix modal-title h4" }).text(data.title),
+                    $("<div>", { class: "h5 emoji-size-fix modal-title h4" }).text(data.title),
                     $("<button>", { type: "button", class: "btn-close", "data-bs-dismiss": "modal", 'aria-label': 'Close' })
                 ),
 
-                $("<div>", { class: "modal-body" }).append(data.body),
-                $("<div>", { class: "modal-footer" }).append(data.footer)
+                $("<div>", { class: "modal-body bg-bg2" }).append(data.body),
+                footer,
 
             )
         )

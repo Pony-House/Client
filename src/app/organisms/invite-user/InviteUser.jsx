@@ -236,13 +236,13 @@ function InviteUser({
             typeof searchQuery.username !== 'undefined' && isSearching && (
               <div className="flex--center">
                 <Spinner size="small" />
-                <Text variant="b2">{`Searching for user "${searchQuery.username}"...`}</Text>
+                <small className='ms-3'>{`Searching for user "${searchQuery.username}"...`}</small>
               </div>
             )
           }
           {
             typeof searchQuery.username !== 'undefined' && !isSearching && (
-              <Text variant="b2">{`Search result for user "${searchQuery.username}"`}</Text>
+              <small>{`Search result for user "${searchQuery.username}"`}</small>
             )
           }
           {
