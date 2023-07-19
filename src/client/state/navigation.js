@@ -323,6 +323,7 @@ class Navigation extends EventEmitter {
       [cons.actions.navigation.SELECT_ROOM_MODE]: () => {
         tinyAPI.emit('selectedRoomMode', action.roomType);
         this.emit(cons.events.navigation.SELECTED_ROOM_MODE, action.roomType);
+        setTimeout(() => tinyAPI.emit('selectedRoomModeAfter', action.roomType), 100);
       },
 
       [cons.actions.navigation.SELECT_SPACE]: () => {
