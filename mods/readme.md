@@ -16,6 +16,8 @@ This value must always be an object. If this object is replaced by something els
 
 To find out what global values are available, use this console debug. 
 
+Emitters are always reset when you edit mod files via react. But remember that page elements will not have the same effect.
+
 ```ts
 console.log(tinyAPI);
 ```
