@@ -77,7 +77,7 @@ console object = level, message
 
     selectedSpaceId
 
-### selectedRoomMode(After) (Not ready for production)
+### selectedRoomMode[After]
 
     roomType
 
