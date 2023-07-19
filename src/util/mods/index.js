@@ -107,6 +107,15 @@ const deleteTinyCache = (event, callback, tinyIndex) => {
 };
 
 tinyAPI.off = (event, callback, index) => deleteTinyCache(event, callback, index);
+tinyAPI.resetAll = () => {
+
+    delete tinyPlugins.order;
+    delete tinyPlugins.cache;
+
+    tinyPlugins.order = {};
+    tinyPlugins.cache = {};
+
+};
 
 
 // Emit
