@@ -7,6 +7,7 @@ module.exports = {
     'bootstrap': 'readonly',
     'tinyAPI': 'readonly',
     'arguments': 'readonly',
+    'getLogData': 'readonly',
     '__ENV_APP__': 'readonly',
   },
   env: {
