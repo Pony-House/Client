@@ -60,9 +60,9 @@ const createTinyCache = (event, data, callback, priorityItem = 0) => {
     return false;
 }
 
-tinyAPI.on = (event, callback, priority = 0) => createTinyCache(event, 'on', callback, priority);
+tinyAPI.on = (event, callback, priority = 0) => createTinyCache(event, { type: 'on' }, callback, priority);
 
-tinyAPI.once = (event, callback, priority = 0) => createTinyCache(event, 'once', callback, priority);
+tinyAPI.once = (event, callback, priority = 0) => createTinyCache(event, { type: 'once' }, callback, priority);
 
 // Delete Cache
 const deleteTinyCache = (event, callback, tinyIndex) => {
@@ -122,7 +122,7 @@ const argumentsFix = (args, result) => {
 
 };
 
-tinyAPI.emit = (event) => {
+tinyAPI.emit = function (event) {
 
     // Result
     let result = {};

@@ -38,6 +38,7 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
+    'func-names': 0,
     'prefer-rest-params': 0,
     'max-classes-per-file': 0,
     'guard-for-in': 0,
