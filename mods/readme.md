@@ -29,11 +29,11 @@ console.log(tinyAPI);
 
 ## Methods
 
-### getLogData()
+### logger.getData()
 
 Returns an Array with the list of the matrix-sdk logs. (Read-only)
 
-### playLogData()
+### logger.play()
 
 Display the matrix-sdk logs.
 

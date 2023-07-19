@@ -54,17 +54,6 @@ export function isLogString(value) {
 
 };
 
-global.getLogData = () => clone(logCache.data);
-global.playLogData = () => {
-    for (const item in logCache.data) {
-        if (Array.isArray(logCache.data[item].msg) && isLogString(logCache.data[item].msg)) {
-            console[logCache.data[item].level](logCache.data[item].msg.join(' '));
-        } else if (typeof logCache.data[item].msg === 'string') {
-            console[logCache.data[item].level](logCache.data[item].msg);
-        }
-    }
-};
-
 const createLogArgs = (type, args) => {
 
     const tinyArgs = [type];
@@ -77,20 +66,33 @@ const createLogArgs = (type, args) => {
 };
 
 global.logger = {
-    debug: () => logCache.add.apply(this, createLogArgs('debug', arguments)),
-    log: () => logCache.add.apply(this, createLogArgs('log', arguments)),
-    info: () => logCache.add.apply(this, createLogArgs('info', arguments)),
-    warn: () => logCache.add.apply(this, createLogArgs('warn', arguments)),
-    error: () => logCache.add.apply(this, createLogArgs('error', arguments)),
-    trace: () => logCache.add.apply(this, createLogArgs('trace', arguments)),
+
+    getData: () => clone(logCache.data),
+    debug() { logCache.add.apply(this, createLogArgs('debug', arguments)) },
+    log() { logCache.add.apply(this, createLogArgs('log', arguments)) },
+    info() { logCache.add.apply(this, createLogArgs('info', arguments)) },
+    warn() { logCache.add.apply(this, createLogArgs('warn', arguments)) },
+    error() { logCache.add.apply(this, createLogArgs('error', arguments)) },
+    trace() { logCache.add.apply(this, createLogArgs('trace', arguments)) },
+
+    play: () => {
+        for (const item in logCache.data) {
+            if (Array.isArray(logCache.data[item].msg) && isLogString(logCache.data[item].msg)) {
+                console[logCache.data[item].level](logCache.data[item].msg.join(' '));
+            } else if (typeof logCache.data[item].msg === 'string') {
+                console[logCache.data[item].level](logCache.data[item].msg);
+            }
+        }
+    }
+
 };
 
 export default {
     getData: () => logCache.data,
-    debug: () => logCache.add.apply(this, createLogArgs('debug', arguments)),
-    log: () => logCache.add.apply(this, createLogArgs('log', arguments)),
-    info: () => logCache.add.apply(this, createLogArgs('info', arguments)),
-    warn: () => logCache.add.apply(this, createLogArgs('warn', arguments)),
-    error: () => logCache.add.apply(this, createLogArgs('error', arguments)),
-    trace: () => logCache.add.apply(this, createLogArgs('trace', arguments)),
+    debug() { logCache.add.apply(this, createLogArgs('debug', arguments)) },
+    log() { logCache.add.apply(this, createLogArgs('log', arguments)) },
+    info() { logCache.add.apply(this, createLogArgs('info', arguments)) },
+    warn() { logCache.add.apply(this, createLogArgs('warn', arguments)) },
+    error() { logCache.add.apply(this, createLogArgs('error', arguments)) },
+    trace() { logCache.add.apply(this, createLogArgs('trace', arguments)) },
 };
