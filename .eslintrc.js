@@ -37,6 +37,7 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
+    'prefer-rest-params': 0,
     'max-classes-per-file': 0,
     'guard-for-in': 0,
     'no-restricted-syntax': 0,
