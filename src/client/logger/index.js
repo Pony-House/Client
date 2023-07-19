@@ -1,5 +1,6 @@
 
 import { logger as mxLogger } from 'matrix-js-sdk/lib/logger';
+import { consoleRemoveData, consoleNewData, consoleUpdate } from '../action/navigation';
 import tinyAPI from '../../util/mods';
 
 const logCache = {
@@ -13,10 +14,19 @@ const logCache = {
         });
 
         if (logCache.data.length > 500) {
-            tinyAPI.emit('consoleRemoveData', logCache.data.shift());
+
+            const tinyData = logCache.data.shift();
+
+            consoleRemoveData(tinyData);
+            tinyAPI.emit('consoleRemoveData', tinyData);
+
         }
 
-        tinyAPI.emit('consoleNewData', level, msg);
+        const tinyData = { level, msg };
+        consoleNewData(tinyData);
+        tinyAPI.emit('consoleNewData', tinyData);
+
+        consoleUpdate(logCache.data);
         tinyAPI.emit('consoleUpdate', logCache.data);
 
     }

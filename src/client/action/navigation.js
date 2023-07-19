@@ -198,3 +198,24 @@ export function emitUpdateProfile(content) {
     content,
   });
 }
+
+export function consoleRemoveData(content) {
+  appDispatcher.dispatch({
+    type: cons.actions.navigation.CONSOLE_REMOVE_DATA,
+    content,
+  });
+}
+
+export function consoleNewData(content) {
+  appDispatcher.dispatch({
+    type: cons.actions.navigation.CONSOLE_NEW_DATA,
+    content,
+  });
+}
+
+export function consoleUpdate(content) {
+  appDispatcher.dispatch({
+    type: cons.actions.navigation.CONSOLE_UPDATE,
+    content,
+  });
+}

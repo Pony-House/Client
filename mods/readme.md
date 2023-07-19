@@ -27,14 +27,15 @@ console.log(tinyAPI);
 
 `src/client/logger/index.js`
 
+console object = level, message
+
 ### consoleRemoveData
 
     console object
 
 ### consoleNewData
 
-    level
-    message
+    console object
 
 ### consoleUpdate
 

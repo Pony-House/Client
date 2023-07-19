@@ -297,6 +297,7 @@ class Navigation extends EventEmitter {
   }
 
   navigate(action) {
+
     const actions = {
       [cons.actions.navigation.SELECT_TAB]: () => {
         const roomId = (
@@ -306,29 +307,48 @@ class Navigation extends EventEmitter {
         this._selectSpace(roomId, true);
         this._selectTab(action.tabId);
       },
+
+      [cons.actions.navigation.CONSOLE_REMOVE_DATA]: () => {
+        this.emit(cons.events.navigation.CONSOLE_REMOVED_DATA, action.content);
+      },
+
+      [cons.actions.navigation.CONSOLE_NEW_DATA]: () => {
+        this.emit(cons.events.navigation.CONSOLE_NEW_DATA_CREATED, action.content);
+      },
+
+      [cons.actions.navigation.CONSOLE_UPDATE]: () => {
+        this.emit(cons.events.navigation.CONSOLE_UPDATED, action.content);
+      },
+
       [cons.actions.navigation.SELECT_ROOM_MODE]: () => {
         tinyAPI.emit('selectedRoomMode', action.roomType);
         this.emit(cons.events.navigation.SELECTED_ROOM_MODE, action.roomType);
       },
+
       [cons.actions.navigation.SELECT_SPACE]: () => {
         this._selectSpace(action.roomId, false);
       },
+
       [cons.actions.navigation.SELECT_ROOM]: () => {
         if (action.roomId) this._selectTabWithRoom(action.roomId);
         this._selectRoom(action.roomId, action.eventId);
       },
+
       [cons.actions.navigation.OPEN_SPACE_SETTINGS]: () => {
         tinyAPI.emit('spaceSettingsOpened', action.roomId, action.tabText, action.isProfile);
         this.emit(cons.events.navigation.SPACE_SETTINGS_OPENED, action.roomId, action.tabText, action.isProfile);
       },
+
       [cons.actions.navigation.OPEN_SPACE_MANAGE]: () => {
         tinyAPI.emit('spaceManageOpened', action.roomId);
         this.emit(cons.events.navigation.SPACE_MANAGE_OPENED, action.roomId);
       },
+
       [cons.actions.navigation.OPEN_SPACE_ADDEXISTING]: () => {
         tinyAPI.emit('spaceAddExistingOpened', action.roomId);
         this.emit(cons.events.navigation.SPACE_ADDEXISTING_OPENED, action.roomId);
       },
+
       [cons.actions.navigation.TOGGLE_ROOM_SETTINGS]: () => {
 
         this.isRoomSettings = !this.isRoomSettings;
@@ -346,18 +366,22 @@ class Navigation extends EventEmitter {
         );
 
       },
+
       [cons.actions.navigation.OPEN_SHORTCUT_SPACES]: () => {
         tinyAPI.emit('shortcutSpacesOpened');
         this.emit(cons.events.navigation.SHORTCUT_SPACES_OPENED);
       },
+
       [cons.actions.navigation.OPEN_INVITE_LIST]: () => {
         tinyAPI.emit('inviteListOpened');
         this.emit(cons.events.navigation.INVITE_LIST_OPENED);
       },
+
       [cons.actions.navigation.OPEN_PUBLIC_ROOMS]: () => {
         tinyAPI.emit('publicRoomsOpened', action.searchTerm);
         this.emit(cons.events.navigation.PUBLIC_ROOMS_OPENED, action.searchTerm);
       },
+
       [cons.actions.navigation.OPEN_CREATE_ROOM]: () => {
 
         tinyAPI.emit(
@@ -373,6 +397,7 @@ class Navigation extends EventEmitter {
         );
 
       },
+
       [cons.actions.navigation.OPEN_JOIN_ALIAS]: () => {
 
         tinyAPI.emit(
@@ -385,22 +410,27 @@ class Navigation extends EventEmitter {
           action.term,
         );
       },
+
       [cons.actions.navigation.OPEN_INVITE_USER]: () => {
         tinyAPI.emit('inviteUserOpened', action.roomId, action.searchTerm);
         this.emit(cons.events.navigation.INVITE_USER_OPENED, action.roomId, action.searchTerm);
       },
+
       [cons.actions.navigation.OPEN_PROFILE_VIEWER]: () => {
         tinyAPI.emit('profileViewerOpened', action.userId, action.roomId);
         this.emit(cons.events.navigation.PROFILE_VIEWER_OPENED, action.userId, action.roomId);
       },
+
       [cons.actions.navigation.OPEN_SETTINGS]: () => {
         tinyAPI.emit('settingsOpened', action.tabText);
         this.emit(cons.events.navigation.SETTINGS_OPENED, action.tabText);
       },
+
       [cons.actions.navigation.OPEN_NAVIGATION]: () => {
         tinyAPI.emit('navigationOpened');
         this.emit(cons.events.navigation.NAVIGATION_OPENED);
       },
+
       [cons.actions.navigation.OPEN_EMOJIBOARD]: () => {
 
         tinyAPI.emit(
@@ -418,6 +448,7 @@ class Navigation extends EventEmitter {
         );
 
       },
+
       [cons.actions.navigation.OPEN_READRECEIPTS]: () => {
 
         tinyAPI.emit(
@@ -433,6 +464,7 @@ class Navigation extends EventEmitter {
         );
 
       },
+
       [cons.actions.navigation.OPEN_VIEWSOURCE]: () => {
 
         tinyAPI.emit(
@@ -446,6 +478,7 @@ class Navigation extends EventEmitter {
         );
 
       },
+
       [cons.actions.navigation.CLICK_REPLY_TO]: () => {
 
         tinyAPI.emit(
@@ -465,6 +498,7 @@ class Navigation extends EventEmitter {
         );
 
       },
+
       [cons.actions.navigation.OPEN_SEARCH]: () => {
 
         tinyAPI.emit(
@@ -478,6 +512,7 @@ class Navigation extends EventEmitter {
         );
 
       },
+
       [cons.actions.navigation.OPEN_REUSABLE_CONTEXT_MENU]: () => {
 
         tinyAPI.emit(
@@ -497,6 +532,7 @@ class Navigation extends EventEmitter {
         );
 
       },
+
       [cons.actions.navigation.OPEN_REUSABLE_DIALOG]: () => {
 
         tinyAPI.emit(
@@ -514,6 +550,7 @@ class Navigation extends EventEmitter {
         );
 
       },
+
       [cons.actions.navigation.OPEN_EMOJI_VERIFICATION]: () => {
 
         tinyAPI.emit(
@@ -529,12 +566,16 @@ class Navigation extends EventEmitter {
         );
 
       },
+
       [cons.actions.navigation.PROFILE_UPDATE]: () => {
         tinyAPI.emit('profileUpdated', action.content);
         this.emit(cons.events.navigation.PROFILE_UPDATED, action.content);
       },
+
     };
+
     actions[action.type]?.();
+
   }
 }
 
