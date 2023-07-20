@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import hljs from 'highlight.js';
 
-import { hljsFixer } from '../../../util/tools';
+import { hljsFixer, resizeWindowChecker } from '../../../util/tools';
 import { twemojify } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
@@ -205,6 +205,7 @@ const MessageBody = React.memo(({
     $(messageBody.current).find('pre code').each((index, value) => {
 
       const el = $(value);
+      resizeWindowChecker();
 
       if (!el.hasClass('hljs')) {
         hljs.highlightElement(value);

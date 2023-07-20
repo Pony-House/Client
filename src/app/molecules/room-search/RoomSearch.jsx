@@ -12,6 +12,7 @@ import Spinner from '../../atoms/spinner/Spinner';
 import { Message } from '../message/Message';
 
 import { useStore } from '../../hooks/useStore';
+import { resizeWindowChecker } from '../../../util/tools';
 
 const roomIdToBackup = new Map();
 
@@ -121,6 +122,7 @@ function RoomSearch({ roomId }) {
     <div className="room-search__result-item" key={timeline[0].getId()}>
       {timeline.map((mEvent) => {
         const id = mEvent.getId();
+        resizeWindowChecker();
         return (
           <React.Fragment key={id}>
             <Message

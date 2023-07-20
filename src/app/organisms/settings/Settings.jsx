@@ -34,6 +34,7 @@ import { MenuItem } from '../../atoms/context-menu/ContextMenu';
 import RadioButton from '../../atoms/button/RadioButton';
 import ImageUpload from '../../molecules/image-upload/ImageUpload';
 
+import { resizeWindowChecker } from '../../../util/tools';
 import { getStatusCSS } from '../../../util/onlineStatus';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
@@ -675,9 +676,11 @@ function Settings() {
   const [isOpen, requestClose] = useWindowToggle(setSelectedTab);
 
   const handleTabChange = (tabItem) => setSelectedTab(tabItem);
+  resizeWindowChecker();
 
   return (
     <PopupWindow
+      classBody='py-0 my-0'
       title={window.matchMedia('screen and (max-width: 768px)').matches ? 'Settings' : null}
       isOpen={isOpen}
       size={window.matchMedia('screen and (max-width: 768px)').matches ? 'modal-xl' : 'modal-fullscreen'}
@@ -687,11 +690,11 @@ function Settings() {
 
         (!window.matchMedia('screen and (max-width: 768px)').matches ?
 
-          <div className="container w-100">
+          <div className="container my-0 py-0 w-100">
 
             <div className='row'>
 
-              <div className='col-md-2'>
+              <div className='col-md-2 py-0 overflow-scroll height-full-size'>
                 <Tabs
                   items={tabItems}
                   defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
@@ -700,7 +703,7 @@ function Settings() {
                 />
               </div>
 
-              <div className='col-md-10'>
+              <div className='col-md-10 py-0'>
                 {selectedTab.render()}
               </div>
 
@@ -710,7 +713,7 @@ function Settings() {
 
           :
 
-          <div className="w-100">
+          <div className="w-100 py-3">
 
             <ProfileEditor userId={initMatrix.matrixClient.getUserId()} />
             <Tabs
@@ -723,7 +726,9 @@ function Settings() {
               {selectedTab.render()}
             </div>
 
-          </div>)
+          </div>
+
+        )
 
       )}
     </PopupWindow>

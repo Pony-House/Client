@@ -3,6 +3,7 @@
 import hljs from 'highlight.js';
 import SimpleMarkdown from '@khanacademy/simple-markdown';
 import { idRegex, parseIdUri } from './common';
+import { resizeWindowChecker } from './tools';
 
 moment.locale('en');
 const timestampFormats = {
@@ -201,6 +202,7 @@ const markdownRules = {
     html: (node) => {
 
       const autoCode = () => {
+        resizeWindowChecker();
         const tinyCode = hljs.highlightAuto(node.content);
         return `<pre><code class='chatbox-size-fix language-${tinyCode.language} hljs'>${tinyCode.value}</code></pre>`;
       };
@@ -209,6 +211,7 @@ const markdownRules = {
 
       const langs = hljs.listLanguages();
       if (langs.indexOf(node.lang) > -1) {
+        resizeWindowChecker();
         return `<pre><code class='chatbox-size-fix language-${node.lang} hljs'>${hljs.highlight(node.content, { language: node.lang }).value}</code></pre>`;
       }
 

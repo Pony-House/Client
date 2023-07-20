@@ -45,7 +45,7 @@ PWContentSelector.propTypes = {
 
 function PopupWindow({
   className, isOpen, title, contentTitle,
-  drawer, onAfterClose, onRequestClose, children,
+  drawer, onAfterClose, onRequestClose, children, classBody,
   size
 }) {
   const haveDrawer = drawer !== null;
@@ -81,7 +81,7 @@ function PopupWindow({
         <Modal.Title className='h5 emoji-size-fix'>{finalTitle}</Modal.Title>
       </Modal.Header> : null)}
 
-      <Modal.Body className='bg-bg2'>
+      <Modal.Body className={`bg-bg2${classBody ? ` ${classBody}` : ''}`}>
         {haveDrawer && (
           { drawer }
         )}
@@ -94,6 +94,7 @@ function PopupWindow({
 }
 
 PopupWindow.defaultProps = {
+  classBody: null,
   className: null,
   size: null,
   drawer: null,
@@ -103,6 +104,7 @@ PopupWindow.defaultProps = {
 };
 
 PopupWindow.propTypes = {
+  classBody: PropTypes.string,
   className: PropTypes.string,
   size: PropTypes.string,
   isOpen: PropTypes.bool.isRequired,
