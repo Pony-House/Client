@@ -5,6 +5,11 @@
 .room-selector {
   @extend .cp-fx__row--s-c;
 
+  .avatar-container {
+    top: -2px;
+    position: relative;
+  }
+
   border: 1px solid transparent;
   border-radius: var(--bo-radius);
   cursor: pointer;
