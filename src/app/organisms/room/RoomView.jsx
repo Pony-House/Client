@@ -15,6 +15,8 @@ import RoomViewCmdBar from './RoomViewCmdBar';
 const viewEvent = new EventEmitter();
 
 function RoomView({ roomTimeline, eventId }) {
+  const refcmdInput = useRef(null);
+  const refRoomInput = useRef(null);
   const roomViewRef = useRef(null);
   const { roomId } = roomTimeline;
 
@@ -50,18 +52,22 @@ function RoomView({ roomTimeline, eventId }) {
             roomTimeline={roomTimeline}
           />
           <RoomViewFloating
+            refRoomInput={refRoomInput}
+            refcmdInput={refcmdInput}
             roomId={roomId}
             roomTimeline={roomTimeline}
           />
         </div>
         <div className="room-view__sticky">
           <RoomViewInput
+            refRoomInput={refRoomInput}
             roomId={roomId}
             roomTimeline={roomTimeline}
             viewEvent={viewEvent}
           />
           <RoomViewCmdBar
             roomId={roomId}
+            refcmdInput={refcmdInput}
             roomTimeline={roomTimeline}
             viewEvent={viewEvent}
           />

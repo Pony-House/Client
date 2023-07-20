@@ -152,7 +152,7 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
 const asyncSearch = new AsyncSearch();
 let cmdPrefix;
 let cmdOption;
-function RoomViewCmdBar({ roomId, roomTimeline, viewEvent }) {
+function RoomViewCmdBar({ roomId, roomTimeline, viewEvent, refcmdInput, }) {
   const [cmd, setCmd] = useState(null);
 
   function displaySuggestions(suggestions) {
@@ -307,14 +307,14 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent }) {
   const isError = typeof cmd?.error === 'string';
   if (cmd === null || isError) {
     return (
-      <div className="cmd-bar">
+      <div ref={refcmdInput} className="cmd-bar">
         <FollowingMembers roomTimeline={roomTimeline} />
       </div>
     );
   }
 
   return (
-    <div className="cmd-bar">
+    <div ref={refcmdInput} className="cmd-bar">
       <div className="cmd-bar__info">
         <div className="very-small text-gray">TAB</div>
       </div>

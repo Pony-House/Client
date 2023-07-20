@@ -33,7 +33,7 @@ let cmdCursorPos = null;
 
 // Room View Input
 function RoomViewInput({
-  roomId, roomTimeline, viewEvent,
+  roomId, roomTimeline, viewEvent, refRoomInput,
 }) {
 
   // Rec Ref
@@ -945,7 +945,7 @@ function RoomViewInput({
     <>
       {replyTo !== null && attachReply()}
       {attachment !== null && attachFile()}
-      <form className="room-input" onSubmit={(e) => { e.preventDefault(); }}>
+      <form ref={refRoomInput} className="room-input" onSubmit={(e) => { e.preventDefault(); }}>
         {
           renderInputs()
         }

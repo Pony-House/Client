@@ -77,7 +77,7 @@ function useScrollToBottom(roomTimeline) {
 }
 
 function RoomViewFloating({
-  roomId, roomTimeline,
+  roomId, roomTimeline, refRoomInput, refcmdInput,
 }) {
   const [isJumpToEvent, jumpToEvent, cancelJumpToEvent] = useJumpToEvent(roomTimeline);
   const [typingMembers] = useTypingMembers(roomTimeline);
@@ -87,6 +87,17 @@ function RoomViewFloating({
     roomTimeline.emit(cons.events.roomTimeline.SCROLL_TO_LIVE);
     setIsAtBottom(true);
   };
+
+  const roomInput = $(refRoomInput.current);
+  const cmdInput = $(refcmdInput.current);
+
+  roomInput.removeClass('textarea-user-typing');
+  cmdInput.removeClass('cmd-user-typing');
+
+  if (typingMembers.size > 0) {
+    roomInput.addClass('textarea-user-typing');
+    cmdInput.addClass('cmd-user-typing');
+  }
 
   return (
     <>

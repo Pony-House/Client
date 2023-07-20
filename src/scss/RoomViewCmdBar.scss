@@ -6,6 +6,12 @@
   background: var(--bg-surface-low);
 }
 
+.cmd-user-typing {
+  .following-members * {
+    color: rgba(0, 0, 0, 0) !important;
+  }
+}
+
 .cmd-bar {
   --cmd-bar-height: 28px;
   min-height: var(--cmd-bar-height);
