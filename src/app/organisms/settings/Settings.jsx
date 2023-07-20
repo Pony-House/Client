@@ -526,7 +526,7 @@ function ProfileSection() {
 
   return (<>
 
-    <ProfileEditor userId={initMatrix.matrixClient.getUserId()} />
+    {window.matchMedia('screen and (min-width: 768px)').matches ? <ProfileEditor userId={initMatrix.matrixClient.getUserId()} /> : null}
 
     <div className="card noselect">
       <ul className="list-group list-group-flush">
@@ -678,35 +678,54 @@ function Settings() {
 
   return (
     <PopupWindow
+      title={window.matchMedia('screen and (max-width: 768px)').matches ? 'Settings' : null}
       isOpen={isOpen}
-      size='modal-fullscreen'
+      size={window.matchMedia('screen and (max-width: 768px)').matches ? 'modal-xl' : 'modal-fullscreen'}
       onRequestClose={requestClose}
     >
       {isOpen && (
-        <div className="container w-100">
 
-          <div className='row'>
+        (!window.matchMedia('screen and (max-width: 768px)').matches ?
 
-            <div className='col-md-2'>
-              <Tabs
-                items={tabItems}
-                defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
-                onSelect={handleTabChange}
-                isFullscreen
-              />
+          <div className="container w-100">
+
+            <div className='row'>
+
+              <div className='col-md-2'>
+                <Tabs
+                  items={tabItems}
+                  defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
+                  onSelect={handleTabChange}
+                  isFullscreen
+                />
+              </div>
+
+              <div className='col-md-10'>
+                {selectedTab.render()}
+              </div>
+
             </div>
 
-            <div className='col-md-10'>
-              {selectedTab.render()}
-            </div>
+
+
+
 
           </div>
 
+          : <div className="w-100">
+            <ProfileEditor userId={initMatrix.matrixClient.getUserId()} />
+            <Tabs
+              items={tabItems}
+              defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
+              onSelect={handleTabChange}
+            />
 
+            <div className="p-3 border-top border-bg">
+              {selectedTab.render()}
+            </div>
 
+          </div>)
 
-
-        </div>
       )}
     </PopupWindow>
   );

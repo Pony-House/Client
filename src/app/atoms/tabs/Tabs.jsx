@@ -54,9 +54,14 @@ function Tabs({ items, defaultSelected, onSelect, className, isFullscreen }) {
     onSelect(item, index);
   };
 
+  let isFullscreenMode = isFullscreen;
+  if (isFullscreen && window.matchMedia('screen and (max-width: 768px)').matches) {
+    isFullscreenMode = false;
+  }
+
   return (
 
-    !isFullscreen ?
+    !isFullscreenMode ?
 
       <div ref={tabRef} id='tabs-scroll' className={`table-responsive hide-scrollbar ${className}`}
 
