@@ -697,9 +697,7 @@ function Settings() {
             </div>
 
             <div className='col-md-10'>
-              <div className="p-3 border-top border-bg">
-                {selectedTab.render()}
-              </div>
+              {selectedTab.render()}
             </div>
 
           </div>
