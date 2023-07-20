@@ -514,14 +514,14 @@ a {
   .avatar__border {
     background-color: var(--bg-surface-low) !important;
   }
-}
 
-@media (max-width: 576px) {
-  .avatar-container {
-    left: 15px !important;
-  }
-  .user-status {
-    left: -17px !important;
+  @media (max-width: 576px) {
+    .avatar-container {
+      left: 15px !important;
+    }
+    .user-status {
+      left: -17px !important;
+    }
   }
 }
 
