@@ -1,6 +1,11 @@
 @use './partials/text';
 
 .people-selector {
+  .avatar-container {
+    top: 2px;
+    position: relative;
+  }
+
   i {
     margin-left: -11px;
     font-size: 13px;
