@@ -524,7 +524,10 @@ function ProfileSection() {
 
   };
 
-  return (
+  return (<>
+
+    <ProfileEditor userId={initMatrix.matrixClient.getUserId()} />
+
     <div className="card noselect">
       <ul className="list-group list-group-flush">
         <li className="list-group-item very-small text-gray">Profile</li>
@@ -584,6 +587,8 @@ function ProfileSection() {
 
       </ul>
     </div>
+
+  </>
   );
 
 }
@@ -599,6 +604,11 @@ export const tabText = {
   LOGOUT: 'Logout',
 };
 const tabItems = [{
+  text: tabText.PROFILE,
+  faSrc: "fa-solid fa-id-card",
+  disabled: false,
+  render: () => <ProfileSection />,
+}, {
   text: tabText.APPEARANCE,
   faSrc: "fa-solid fa-sun",
   disabled: false,
@@ -618,11 +628,6 @@ const tabItems = [{
   faSrc: "fa-solid fa-lock",
   disabled: false,
   render: () => <SecuritySection />,
-}, {
-  text: tabText.PROFILE,
-  faSrc: "fa-solid fa-id-card",
-  disabled: false,
-  render: () => <ProfileSection />,
 }, {
   text: tabText.DONATE,
   faSrc: "fa-solid fa-coins",
@@ -674,23 +679,34 @@ function Settings() {
   return (
     <PopupWindow
       isOpen={isOpen}
-      size='modal-xl'
-      title='Settings'
+      size='modal-fullscreen'
       onRequestClose={requestClose}
     >
       {isOpen && (
+        <div className="container w-100">
 
-        <div className="w-100">
-          <ProfileEditor userId={initMatrix.matrixClient.getUserId()} />
-          <Tabs
-            items={tabItems}
-            defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
-            onSelect={handleTabChange}
-          />
+          <div className='row'>
 
-          <div className="p-3 border-top border-bg">
-            {selectedTab.render()}
+            <div className='col-md-2'>
+              <Tabs
+                items={tabItems}
+                defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
+                onSelect={handleTabChange}
+                isFullscreen
+              />
+            </div>
+
+            <div className='col-md-10'>
+              <div className="p-3 border-top border-bg">
+                {selectedTab.render()}
+              </div>
+            </div>
+
           </div>
+
+
+
+
 
         </div>
       )}

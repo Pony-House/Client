@@ -6,7 +6,6 @@ import { twemojify } from '../../../util/twemojify';
 
 import Text from '../../atoms/text/Text';
 import { MenuItem } from '../../atoms/context-menu/ContextMenu';
-import ScrollView from '../../atoms/scroll/ScrollView';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
 function PWContentSelector({
@@ -77,15 +76,18 @@ function PopupWindow({
       onExited={onAfterClose}
       dialogClassName={className === null ? `${size} modal-dialog-scrollable modal-popup` : `${className} ${size} modal-dialog-scrollable modal-popup`}
     >
-      <Modal.Header className='noselect' closeButton>
+
+      {(finalTitle ? <Modal.Header className='noselect' closeButton>
         <Modal.Title className='h5 emoji-size-fix'>{finalTitle}</Modal.Title>
-      </Modal.Header>
+      </Modal.Header> : null)}
+
       <Modal.Body className='bg-bg2'>
         {haveDrawer && (
           { drawer }
         )}
         {children}
       </Modal.Body>
+
     </Modal>
   );
 

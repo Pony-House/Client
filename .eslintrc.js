@@ -38,6 +38,7 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
+    'no-restricted-exports': 0,
     'func-names': 0,
     'prefer-rest-params': 0,
     'max-classes-per-file': 0,

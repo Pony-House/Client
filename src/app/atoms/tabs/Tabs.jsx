@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
+import RawIcon from '../system-icons/RawIcon';
 import Button from '../button/Button';
 
 function TabItem({
@@ -43,7 +44,7 @@ TabItem.propTypes = {
   disabled: PropTypes.bool,
 };
 
-function Tabs({ items, defaultSelected, onSelect, className }) {
+function Tabs({ items, defaultSelected, onSelect, className, isFullscreen }) {
   const [selectedItem, setSelectedItem] = useState(items[defaultSelected]);
   const tabRef = useRef(null);
 
@@ -54,39 +55,67 @@ function Tabs({ items, defaultSelected, onSelect, className }) {
   };
 
   return (
-    <div ref={tabRef} id='tabs-scroll' className={`table-responsive hide-scrollbar ${className}`}
 
-      onWheel={e => {
-        const scrollContainer = tabRef.current;
-        scrollContainer.scrollLeft -= e.deltaY;
-      }}
+    !isFullscreen ?
 
-    >
-      <table className="table border-0 m-0">
-        <tbody>
-          <tr>
-            {items.map((item, index) => (
-              <TabItem
-                key={item.text}
-                selected={selectedItem.text === item.text}
-                iconSrc={item.iconSrc}
-                faSrc={item.faSrc}
-                className={item.className}
-                onClick={typeof item.onClick !== 'function' ? () => handleTabSelection(item, index) : item.onClick}
-                disabled={item.disabled}
-              >
-                {item.text}
-              </TabItem>
-            ))}
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <div ref={tabRef} id='tabs-scroll' className={`table-responsive hide-scrollbar ${className}`}
+
+        onWheel={e => {
+          const scrollContainer = tabRef.current;
+          scrollContainer.scrollLeft -= e.deltaY;
+        }}
+
+      >
+        <table className="table border-0 m-0">
+          <tbody>
+            <tr>
+              {items.map((item, index) => (
+                <TabItem
+                  key={item.text}
+                  selected={selectedItem.text === item.text}
+                  iconSrc={item.iconSrc}
+                  faSrc={item.faSrc}
+                  className={item.className}
+                  onClick={typeof item.onClick !== 'function' ? () => handleTabSelection(item, index) : item.onClick}
+                  disabled={item.disabled}
+                >
+                  {item.text}
+                </TabItem>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      :
+
+      <div ref={tabRef} id='tabs-scroll' className={`d-flex align-items-start ${className}`}>
+        <div class="nav flex-column nav-pills me-3" id="tabs-scroll-pills-tab" role="tablist" aria-orientation="vertical">
+          {items.map((item, index) => (
+            <button
+              key={item.text}
+              className={`nav-link ${item.className} ${selectedItem.text === item.text ? 'active' : ''}`}
+              data-bs-toggle="pill"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              onClick={typeof item.onClick !== 'function' ? () => handleTabSelection(item, index) : item.onClick}
+              disabled={item.disabled ? 'disabled' : null}
+            >
+              {item.iconSrc && <RawIcon size="small" className='me-2' src={item.iconSrc} />}
+              {item.faSrc && <RawIcon size="small" className='me-2' fa={item.faSrc} />}
+              {item.text}
+            </button>
+          ))}
+        </div>
+      </div>
+
   );
 }
 
 Tabs.defaultProps = {
   defaultSelected: 0,
+  isFullscreen: false,
 };
 
 Tabs.propTypes = {
@@ -97,6 +126,7 @@ Tabs.propTypes = {
       disabled: PropTypes.bool,
     }),
   ).isRequired,
+  isFullscreen: PropTypes.bool,
   defaultSelected: PropTypes.number,
   className: PropTypes.string,
   onSelect: PropTypes.func.isRequired,
