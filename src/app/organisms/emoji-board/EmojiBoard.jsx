@@ -11,7 +11,7 @@ import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import AsyncSearch from '../../../util/AsyncSearch';
-import { addToEmojiList, getEmojisList, removeToEmojiList } from './recent';
+import { addToEmojiList, getEmojisList, removeFromEmojiList } from './recent';
 import { TWEMOJI_BASE_URL } from '../../../util/twemojify';
 import { checkVisible } from '../../../util/tools';
 
@@ -303,9 +303,9 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             el.removeClass('fav-emoji');
 
             if (emoji.hexcode) {
-                removeToEmojiList(typesAdd.noCustom, 'fav_emoji', $(emojiBoardRef.current).attr('board-type'));
+                removeFromEmojiList(typesAdd.noCustom, 'fav_emoji', $(emojiBoardRef.current).attr('board-type'));
             } else {
-                removeToEmojiList(typesAdd.custom, 'fav_emoji', $(emojiBoardRef.current).attr('board-type'));
+                removeFromEmojiList(typesAdd.custom, 'fav_emoji', $(emojiBoardRef.current).attr('board-type'));
             }
 
         }

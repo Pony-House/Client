@@ -49,7 +49,7 @@ export function addToEmojiList(emojiData, where, type) {
 
 }
 
-export function removeToEmojiList(emojiData, where, type) {
+export function removeFromEmojiList(emojiData, where, type) {
 
   const recent = getEmojisListRaw(type);
 

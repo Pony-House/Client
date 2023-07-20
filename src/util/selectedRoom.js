@@ -30,7 +30,7 @@ export function addToDataFolder(spaceData, where, dataFolder) {
 
 }
 
-export function removeDataFolder(spaceData, where, dataFolder) {
+export function removeFromDataFolder(spaceData, where, dataFolder) {
 
     const tinyData = getDataFolderRaw(dataFolder);
 
