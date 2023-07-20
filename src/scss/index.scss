@@ -546,10 +546,15 @@ a {
 
 @import './messages/textarea.scss';
 
-#settings-base {
-  #setting-tab {
-  }
+@media (min-width: 576px) {
+  #settings-base {
+    #setting-tab {
+      position: fixed;
+      width: 250px;
+    }
 
-  #settings-content {
+    #settings-content {
+      margin-left: 250px;
+    }
   }
 }

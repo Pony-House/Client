@@ -695,7 +695,7 @@ function Settings() {
 
             <div className='row'>
 
-              <div id='setting-tab' className='col-md-2 py-3 overflow-scroll height-full-size'>
+              <div id='setting-tab' className='col-md-2 py-3 overflow-scroll h-100'>
                 <Tabs
                   items={tabItems}
                   defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
