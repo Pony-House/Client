@@ -19,7 +19,7 @@ import navigation from '../../../client/state/navigation';
 import cons from '../../../client/state/cons';
 import Alert from './Alert';
 import DragDrop from './DragDrop';
-import { resizeWindowChecker } from '../../../util/tools';
+import { resizeWindowChecker, scrollFixer } from '../../../util/tools';
 import { startUserAfk, stopUserAfk } from '../../../util/userStatusEffects';
 import Mods from './Mods';
 
@@ -43,10 +43,10 @@ function Client() {
   useEffect(() => {
     startUserAfk();
     navigation.on(cons.events.navigation.SELECTED_ROOM_MODE, onRoomModeSelected);
-    $(window).on('resize', resizeWindowChecker);
+    $(window).on('resize', resizeWindowChecker).on('mousewheel', scrollFixer);
     return (() => {
       stopUserAfk();
-      $(window).off('resize', resizeWindowChecker);
+      $(window).off('resize', resizeWindowChecker).on('mousewheel', scrollFixer);
       navigation.removeListener(cons.events.navigation.SELECTED_ROOM_MODE, onRoomModeSelected);
     });
   }, []);

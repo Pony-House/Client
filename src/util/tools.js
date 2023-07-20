@@ -33,7 +33,7 @@ export function hljsFixer(el, where) {
 };
 
 // Check Resize css Fixer
-export function resizeWindowChecker(timeout = 500) {
+const tinyResizeFixer = (timeout = 500) => {
     if (resizeTimeout) clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
 
@@ -66,6 +66,7 @@ export function resizeWindowChecker(timeout = 500) {
                 height: ${$(document).height()}px;
             }
         `;
+
         const roomView = document.querySelector('.room-view');
         if (roomView) {
 
@@ -100,7 +101,10 @@ export function resizeWindowChecker(timeout = 500) {
         } else { $(resizePlace).html(newTinyHTML); }
 
     }, timeout);
-}
+};
+
+export function resizeWindowChecker(timeout = 500) { return tinyResizeFixer(timeout); };
+export function scrollFixer(timeout = 500) { return tinyResizeFixer(timeout); };
 
 export function dialogWindow(data1, data2) {
 

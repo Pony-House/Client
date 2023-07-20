@@ -108,7 +108,7 @@ PopupWindow.propTypes = {
   className: PropTypes.string,
   size: PropTypes.string,
   isOpen: PropTypes.bool.isRequired,
-  title: PropTypes.node.isRequired,
+  title: PropTypes.node,
   contentTitle: PropTypes.node,
   drawer: PropTypes.node,
   onAfterClose: PropTypes.func,

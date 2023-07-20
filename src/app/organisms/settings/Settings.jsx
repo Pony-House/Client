@@ -672,11 +672,19 @@ function useWindowToggle(setSelectedTab) {
 }
 
 function Settings() {
+  const tinyScroll = useRef(null);
   const [selectedTab, setSelectedTab] = useState(tabItems[0]);
   const [isOpen, requestClose] = useWindowToggle(setSelectedTab);
 
   const handleTabChange = (tabItem) => setSelectedTab(tabItem);
   resizeWindowChecker();
+
+  useEffect(() => {
+
+    resizeWindowChecker();
+    // $(tinyScroll.current).followScroll();
+
+  });
 
   return (
     <PopupWindow
@@ -694,7 +702,7 @@ function Settings() {
 
             <div className='row'>
 
-              <div className='col-md-2 py-0 overflow-scroll height-full-size'>
+              <div ref={tinyScroll} className='col-md-2 py-0 overflow-scroll height-full-size'>
                 <Tabs
                   items={tabItems}
                   defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
