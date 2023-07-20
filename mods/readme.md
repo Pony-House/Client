@@ -233,6 +233,12 @@ console object = level, message
     term
     config
 
+`others`
+
+### mouseWheel
+
+    event
+
 <hr/>
 
 ### Mod Version

@@ -1,3 +1,5 @@
+import tinyAPI from "./mods";
+
 let resizePlace = null;
 let resizeTimeout = null;
 let head;
@@ -104,7 +106,7 @@ const tinyResizeFixer = (timeout = 500) => {
 };
 
 export function resizeWindowChecker(timeout = 500) { return tinyResizeFixer(timeout); };
-export function scrollFixer(timeout = 500) { return tinyResizeFixer(timeout); };
+export function scrollFixer(event) { tinyAPI.emit('mouseWheel', event); };
 
 export function dialogWindow(data1, data2) {
 

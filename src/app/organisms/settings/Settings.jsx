@@ -678,16 +678,21 @@ function Settings() {
 
   const handleTabChange = (tabItem) => setSelectedTab(tabItem);
   resizeWindowChecker();
+  const scrollerFix = () => {
+    setTimeout(() => {
+      console.log($('#settings-scroll .modal-body').scrollTop());
+    }, 50);
+  };
 
   useEffect(() => {
-
     resizeWindowChecker();
-    // $(tinyScroll.current).followScroll();
-
+    $(window).on('mousewheel', scrollerFix);
+    return () => $(window).off('mousewheel', scrollerFix);
   });
 
   return (
     <PopupWindow
+      id='settings-scroll'
       classBody='py-0 my-0'
       title={window.matchMedia('screen and (max-width: 768px)').matches ? 'Settings' : null}
       isOpen={isOpen}

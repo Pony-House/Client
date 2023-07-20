@@ -46,7 +46,7 @@ PWContentSelector.propTypes = {
 function PopupWindow({
   className, isOpen, title, contentTitle,
   drawer, onAfterClose, onRequestClose, children, classBody,
-  size
+  size, id,
 }) {
   const haveDrawer = drawer !== null;
   const cTitle = contentTitle !== null ? contentTitle : title;
@@ -71,6 +71,7 @@ function PopupWindow({
 
   return (
     <Modal
+      id={id}
       show={isOpen}
       onHide={onRequestClose}
       onExited={onAfterClose}
@@ -94,6 +95,7 @@ function PopupWindow({
 }
 
 PopupWindow.defaultProps = {
+  id: null,
   classBody: null,
   className: null,
   size: null,
@@ -104,6 +106,7 @@ PopupWindow.defaultProps = {
 };
 
 PopupWindow.propTypes = {
+  id: PropTypes.string,
   classBody: PropTypes.string,
   className: PropTypes.string,
   size: PropTypes.string,
