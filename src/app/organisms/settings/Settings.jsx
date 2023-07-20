@@ -672,29 +672,15 @@ function useWindowToggle(setSelectedTab) {
 }
 
 function Settings() {
-  const tinyScroll = useRef(null);
   const [selectedTab, setSelectedTab] = useState(tabItems[0]);
   const [isOpen, requestClose] = useWindowToggle(setSelectedTab);
 
   const handleTabChange = (tabItem) => setSelectedTab(tabItem);
   resizeWindowChecker();
-  const scrollerFix = () => {
-    for (let i = 0; i < 60; i++) {
-      setTimeout(() => {
-        $(tinyScroll.current).css('transform', `translateY(${$('#settings-scroll .modal-body').scrollTop()}px)`);
-      }, 8.33 * i);
-    }
-  };
-
-  useEffect(() => {
-    resizeWindowChecker();
-    $(window).on('mousewheel', scrollerFix);
-    return () => $(window).off('mousewheel', scrollerFix);
-  });
 
   return (
     <PopupWindow
-      id='settings-scroll'
+      id='settings-base'
       classBody='py-0 my-0'
       title={window.matchMedia('screen and (max-width: 768px)').matches ? 'Settings' : null}
       isOpen={isOpen}
@@ -709,7 +695,7 @@ function Settings() {
 
             <div className='row'>
 
-              <div ref={tinyScroll} className='col-md-2 py-0 overflow-scroll height-full-size'>
+              <div id='setting-tab' className='col-md-2 py-3 overflow-scroll height-full-size'>
                 <Tabs
                   items={tabItems}
                   defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
@@ -718,7 +704,7 @@ function Settings() {
                 />
               </div>
 
-              <div className='col-md-10 py-0'>
+              <div id="settings-content" className='col-md-10 py-3'>
                 {selectedTab.render()}
               </div>
 
@@ -732,12 +718,13 @@ function Settings() {
 
             <ProfileEditor userId={initMatrix.matrixClient.getUserId()} />
             <Tabs
+              id='setting-tab-2'
               items={tabItems}
               defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
               onSelect={handleTabChange}
             />
 
-            <div className="p-3 border-top border-bg">
+            <div id="settings-content-2" className="p-3 border-top border-bg">
               {selectedTab.render()}
             </div>
 

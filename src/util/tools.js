@@ -324,3 +324,12 @@ export function getAge(timeData = 0, now = null) {
     return null;
 
 };
+
+// Scroll Follower
+export function scrollFollower(where, where2, time1 = 60, time2 = 8.33) {
+    for (let i = 0; i < time1; i++) {
+        setTimeout(() => {
+            $(where).css('transform', `translateY(${$(where2).scrollTop()}px)`);
+        }, time2 * i);
+    }
+};

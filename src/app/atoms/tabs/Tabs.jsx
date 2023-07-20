@@ -44,7 +44,7 @@ TabItem.propTypes = {
   disabled: PropTypes.bool,
 };
 
-function Tabs({ items, defaultSelected, onSelect, className, isFullscreen }) {
+function Tabs({ items, defaultSelected, onSelect, className, isFullscreen, id, }) {
   const [selectedItem, setSelectedItem] = useState(items[defaultSelected]);
   const tabRef = useRef(null);
 
@@ -63,7 +63,7 @@ function Tabs({ items, defaultSelected, onSelect, className, isFullscreen }) {
 
     !isFullscreenMode ?
 
-      <div ref={tabRef} id='tabs-scroll' className={`table-responsive hide-scrollbar ${className}`}
+      <div id={id} ref={tabRef} className={`table-responsive hide-scrollbar ${className}`}
 
         onWheel={e => {
           const scrollContainer = tabRef.current;
@@ -94,7 +94,7 @@ function Tabs({ items, defaultSelected, onSelect, className, isFullscreen }) {
 
       :
 
-      <div ref={tabRef} id='tabs-scroll' className={`d-flex align-items-start ${className}`}>
+      <div id={id} ref={tabRef} className={`d-flex align-items-start ${className}`}>
         <div className="nav flex-column nav-pills me-3" id="tabs-scroll-pills-tab" role="tablist" aria-orientation="vertical">
           {items.map((item, index) => (
             <button
