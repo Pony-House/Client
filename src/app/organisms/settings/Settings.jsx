@@ -679,9 +679,11 @@ function Settings() {
   const handleTabChange = (tabItem) => setSelectedTab(tabItem);
   resizeWindowChecker();
   const scrollerFix = () => {
-    setTimeout(() => {
-      console.log($('#settings-scroll .modal-body').scrollTop());
-    }, 50);
+    for (let i = 0; i < 60; i++) {
+      setTimeout(() => {
+        $(tinyScroll.current).css('transform', `translateY(${$('#settings-scroll .modal-body').scrollTop()}px)`);
+      }, 8.33 * i);
+    }
   };
 
   useEffect(() => {
