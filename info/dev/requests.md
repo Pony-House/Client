@@ -52,9 +52,10 @@ Made by Me
 
     =======================================================
 
+    ------------------> Retirar o show/hide de categorias do localstorage para colocar dentro do stoage do matrix
+
     --> Colocar inserir emoji na aba de editar mensagem
 
-    --> Retirar o show/hide de categorias do localstorage para colocar dentro do stoage do matrix
     --> Galeria de gifs e memes
 
     --> Adicionar opção de colocar um ícone do lado do status (Com compatibilidade com emojis)
