@@ -702,7 +702,7 @@ function Settings() {
 
           <div className="container my-0 py-0 w-100">
 
-            <div id='setting-tab' className='py-3 overflow-scroll h-100 border-bg'>
+            <div id='setting-tab' className='py-3 h-100 border-bg'>
               <Tabs
                 items={tabItems}
                 defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}

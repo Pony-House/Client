@@ -243,6 +243,10 @@ body {
   background-color: var(--bg-surface-hover);
 }
 
+*::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
 *::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -553,10 +557,12 @@ a {
       width: 250px;
       border-right-style: solid;
       border-width: 1px;
+      overflow-y: scroll;
     }
 
     #settings-content {
       padding-left: 270px;
+      padding-right: 50px;
     }
   }
 }
