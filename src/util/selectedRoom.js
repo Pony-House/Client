@@ -51,9 +51,11 @@ export function addToDataFolder(dataFolder, folderName, where, data) {
     if (i < 0) {
         entry = [{ value: data, id: where }, 1];
     } else {
-        [entry] = tinyData[where].splice(i, 1);
+        [entry] = tinyData[folderName].splice(i, 1);
+        entry[0].value = data;
         entry[1] += 1;
     }
+
     tinyData[folderName].unshift(entry);
 
     tinyData[folderName] = tinyData[folderName].slice(0, 100);
