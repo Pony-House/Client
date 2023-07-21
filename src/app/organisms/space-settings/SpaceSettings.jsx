@@ -184,13 +184,20 @@ function SpaceSettings() {
 
   return (
     <PopupWindow
+
+      id='settings-base'
       isOpen={isOpen}
-      className="modal-xl modal-dialog-scrollable noselect"
-      title={<>
+      className="modal-dialog-scrollable noselect"
+
+      title={window.matchMedia('screen and (max-width: 768px)').matches ? <>
         {isOpen && twemojify(room.name)}
         <span style={{ color: 'var(--tc-surface-low)' }}> — space settings</span>
-      </>}
+      </> : null}
+
+      size={window.matchMedia('screen and (max-width: 768px)').matches ? 'modal-xl' : 'modal-fullscreen'}
+
       onRequestClose={requestClose}
+
     >
       {isOpen && roomId &&
         (
