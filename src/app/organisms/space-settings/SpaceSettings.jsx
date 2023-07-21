@@ -35,31 +35,35 @@ const tabText = {
   PERMISSIONS: 'Permissions',
 };
 
-const tabItems = [{
-  faSrc: "fa-solid fa-gear",
-  text: tabText.GENERAL,
-  disabled: false,
-},
+const tabItems = [
 
-{ type: 'divider', },
+  {
+    faSrc: "fa-solid fa-gear",
+    text: tabText.GENERAL,
+    disabled: false,
+  },
 
-{
-  faSrc: "fa-solid fa-user",
-  text: tabText.MEMBERS,
-  disabled: false,
-}, {
-  faSrc: "fa-solid fa-face-smile",
-  text: tabText.EMOJIS,
-  disabled: false,
-},
+  { type: 'divider', },
 
-{ type: 'divider', },
+  {
+    faSrc: "fa-solid fa-user",
+    text: tabText.MEMBERS,
+    disabled: false,
+  },
 
-{
-  faSrc: "fa-solid fa-shield",
-  text: tabText.PERMISSIONS,
-  disabled: false,
-}];
+  {
+    faSrc: "fa-solid fa-face-smile",
+    text: tabText.EMOJIS,
+    disabled: false,
+  },
+
+  { type: 'divider', },
+
+  {
+    faSrc: "fa-solid fa-shield",
+    text: tabText.PERMISSIONS,
+    disabled: false,
+  }];
 
 // Config
 function GeneralSettings({ roomId, profileMode }) {
@@ -171,16 +175,26 @@ function useWindowToggle(setSelectedTab, setProfileMode) {
   const [tinyWindow, setWindow] = useState(null);
 
   useEffect(() => {
+
     const openSpaceSettings = (roomId, tab, isProfile) => {
+
       setProfileMode(isProfile);
       setWindow({ roomId, tabText });
-      const tabItem = tabItems.find((item) => item.text === tab);
-      if (tabItem) setSelectedTab(tabItem);
+
+      if (tab) {
+        const tabItem = tabItems.find((item) => item.text === tab);
+        if (tabItem) setSelectedTab(tabItem);
+      } else {
+        setSelectedTab(tabItems[0]);
+      }
+
     };
+
     navigation.on(cons.events.navigation.SPACE_SETTINGS_OPENED, openSpaceSettings);
     return () => {
       navigation.removeListener(cons.events.navigation.SPACE_SETTINGS_OPENED, openSpaceSettings);
     };
+
   }, []);
 
   const requestClose = () => setWindow(null);
