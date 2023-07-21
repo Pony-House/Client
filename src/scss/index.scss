@@ -553,6 +553,9 @@ a {
 /* Special settings menu */
 @media (min-width: 768px) {
   #settings-base {
+    .modal-body {
+      padding: 0px 80px;
+    }
     #setting-close {
       position: fixed;
       right: 0;
@@ -576,7 +579,7 @@ a {
 
     #setting-tab {
       position: fixed;
-      width: 250px;
+      width: 240px;
       border-right-style: solid;
       border-width: 1px;
       overflow-y: scroll;

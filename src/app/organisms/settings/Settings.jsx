@@ -729,7 +729,7 @@ function Settings() {
 
         (!window.matchMedia('screen and (max-width: 768px)').matches ?
 
-          <div className="container my-0 py-0 w-100">
+          <div className="my-0 py-0">
 
             <div id='setting-tab' className='py-3 h-100 border-bg'>
               <Tabs
