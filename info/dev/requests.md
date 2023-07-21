@@ -52,8 +52,6 @@ Made by Me
 
     =======================================================
 
-    --> Colocar inserir emoji na aba de editar mensagem
-
     --> Galeria de gifs e memes
 
     --> Adicionar opção de colocar um ícone do lado do status (Com compatibilidade com emojis)

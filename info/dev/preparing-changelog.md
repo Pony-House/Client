@@ -6,4 +6,5 @@
 - New textarea layout to mobile.
 - New black theme. (beta)
 - Typing message css issues fixed.
-- New settings page UI
+- New settings page UI.
+- The "Edit message" is supporting emojis now.

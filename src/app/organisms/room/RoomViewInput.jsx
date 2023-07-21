@@ -720,7 +720,11 @@ function RoomViewInput({
 
   // Add Emoji Function
   function addEmoji(emoji) {
-    const textArea = $(textAreaRef.current);
+
+    let textArea = $(textAreaRef.current);
+    const tinyEditText = $('.message__edit textarea');
+    if (tinyEditText.length > 0) textArea = tinyEditText;
+
     if (textArea.length > 0) {
 
       let selectionStart = 0;
