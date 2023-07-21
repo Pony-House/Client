@@ -148,7 +148,7 @@ GeneralSettings.propTypes = {
 };
 
 function useWindowToggle(setSelectedTab, setProfileMode) {
-  const [window, setWindow] = useState(null);
+  const [tinyWindow, setWindow] = useState(null);
 
   useEffect(() => {
     const openSpaceSettings = (roomId, tab, isProfile) => {
@@ -165,15 +165,15 @@ function useWindowToggle(setSelectedTab, setProfileMode) {
 
   const requestClose = () => setWindow(null);
 
-  return [window, requestClose];
+  return [tinyWindow, requestClose];
 }
 
 function SpaceSettings() {
   const [profileMode, setProfileMode] = useState(false);
   const [selectedTab, setSelectedTab] = useState(tabItems[0]);
-  const [window, requestClose] = useWindowToggle(setSelectedTab, setProfileMode);
-  const isOpen = window !== null;
-  const roomId = window?.roomId;
+  const [tinyWindow, requestClose] = useWindowToggle(setSelectedTab, setProfileMode);
+  const isOpen = tinyWindow !== null;
+  const roomId = tinyWindow?.roomId;
 
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
@@ -192,23 +192,51 @@ function SpaceSettings() {
       </>}
       onRequestClose={requestClose}
     >
-      {isOpen && (
-        <>
-          <RoomProfile profileMode={profileMode} roomId={roomId} isSpace />
-          <Tabs
-            className='border-bottom border-bg'
-            items={tabItems}
-            defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
-            onSelect={handleTabChange}
-          />
-          <div className="pt-3">
-            {selectedTab.text === tabText.GENERAL && <GeneralSettings roomId={roomId} profileMode={profileMode} />}
-            {selectedTab.text === tabText.MEMBERS && <RoomMembers roomId={roomId} profileMode={profileMode} />}
-            {selectedTab.text === tabText.EMOJIS && <RoomEmojis roomId={roomId} profileMode={profileMode} />}
-            {selectedTab.text === tabText.PERMISSIONS && <RoomPermissions roomId={roomId} profileMode={profileMode} />}
-          </div>
-        </>
-      )}
+      {isOpen && roomId &&
+        (
+          !window.matchMedia('screen and (max-width: 768px)').matches ?
+
+            <div className="my-0 py-0">
+
+              <div id='setting-tab' className='py-3 h-100 border-bg'>
+                <Tabs
+                  requestClose={requestClose}
+                  className='border-bottom border-bg'
+                  items={tabItems}
+                  defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
+                  onSelect={handleTabChange}
+                  isFullscreen
+                />
+              </div>
+
+              <div id="settings-content" className='py-3'>
+                {selectedTab.text === tabText.GENERAL && <GeneralSettings roomId={roomId} profileMode={profileMode} />}
+                {selectedTab.text === tabText.MEMBERS && <RoomMembers roomId={roomId} profileMode={profileMode} />}
+                {selectedTab.text === tabText.EMOJIS && <RoomEmojis roomId={roomId} profileMode={profileMode} />}
+                {selectedTab.text === tabText.PERMISSIONS && <RoomPermissions roomId={roomId} profileMode={profileMode} />}
+              </div>
+
+            </div>
+
+            :
+
+            <>
+              <RoomProfile profileMode={profileMode} roomId={roomId} isSpace />
+              <Tabs
+                className='border-bottom border-bg'
+                items={tabItems}
+                defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
+                onSelect={handleTabChange}
+              />
+              <div className="pt-3">
+                {selectedTab.text === tabText.GENERAL && <GeneralSettings roomId={roomId} profileMode={profileMode} />}
+                {selectedTab.text === tabText.MEMBERS && <RoomMembers roomId={roomId} profileMode={profileMode} />}
+                {selectedTab.text === tabText.EMOJIS && <RoomEmojis roomId={roomId} profileMode={profileMode} />}
+                {selectedTab.text === tabText.PERMISSIONS && <RoomPermissions roomId={roomId} profileMode={profileMode} />}
+              </div>
+            </>
+        )
+      }
     </PopupWindow>
   );
 }
