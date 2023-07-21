@@ -99,6 +99,7 @@ function Tabs({ items, defaultSelected, onSelect, className, isFullscreen, id, r
         <div className="nav flex-column nav-pills me-3 w-100" id="tabs-scroll-pills-tab" role="tablist" aria-orientation="vertical">
 
           <button
+            id='setting-close'
             className='nav-link'
             data-bs-toggle="pill"
             type="button"
@@ -107,10 +108,10 @@ function Tabs({ items, defaultSelected, onSelect, className, isFullscreen, id, r
             onClick={requestClose}
           >
             <RawIcon size="small" className='me-2' fa='fa-solid fa-circle-xmark' />
-            Close
+            <span>Close</span>
           </button>
 
-          <hr className='border-bg2' />
+          <hr id='setting-close-hr' className='border-bg2' />
 
           {items.map((item, index) => {
 

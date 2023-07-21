@@ -552,6 +552,25 @@ a {
 
 @media (min-width: 768px) {
   #settings-base {
+    #setting-close {
+      position: fixed;
+      right: 0;
+      span {
+        display: none;
+      }
+      i {
+        margin-left: 0px !important;
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+        font-size: 15pt;
+        margin-right: 6px !important;
+      }
+    }
+
+    #setting-close-hr {
+      display: none;
+    }
+
     #setting-tab {
       position: fixed;
       width: 250px;
