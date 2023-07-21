@@ -44,7 +44,7 @@ TabItem.propTypes = {
   disabled: PropTypes.bool,
 };
 
-function Tabs({ items, defaultSelected, onSelect, className, isFullscreen, id, }) {
+function Tabs({ items, defaultSelected, onSelect, className, isFullscreen, id, requestClose, }) {
   const [selectedItem, setSelectedItem] = useState(items[defaultSelected]);
   const tabRef = useRef(null);
 
@@ -97,6 +97,21 @@ function Tabs({ items, defaultSelected, onSelect, className, isFullscreen, id, }
 
       <div id={id} ref={tabRef} className={`d-flex align-items-start ${className}`}>
         <div className="nav flex-column nav-pills me-3 w-100" id="tabs-scroll-pills-tab" role="tablist" aria-orientation="vertical">
+
+          <button
+            className='nav-link'
+            data-bs-toggle="pill"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            onClick={requestClose}
+          >
+            <RawIcon size="small" className='me-2' fa='fa-solid fa-circle-xmark' />
+            Close
+          </button>
+
+          <hr className='border-bg2' />
+
           {items.map((item, index) => {
 
             if (item.type !== 'divider') {
@@ -119,6 +134,7 @@ function Tabs({ items, defaultSelected, onSelect, className, isFullscreen, id, }
             return <hr className='border-bg2' />;
 
           })}
+
         </div>
       </div>
 

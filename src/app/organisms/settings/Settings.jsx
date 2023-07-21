@@ -733,6 +733,7 @@ function Settings() {
 
             <div id='setting-tab' className='py-3 h-100 border-bg'>
               <Tabs
+                requestClose={requestClose}
                 items={tabItems}
                 defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
                 onSelect={handleTabChange}
