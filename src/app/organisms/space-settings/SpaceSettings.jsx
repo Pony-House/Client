@@ -39,7 +39,11 @@ const tabItems = [{
   faSrc: "fa-solid fa-gear",
   text: tabText.GENERAL,
   disabled: false,
-}, {
+},
+
+{ type: 'divider', },
+
+{
   faSrc: "fa-solid fa-user",
   text: tabText.MEMBERS,
   disabled: false,
@@ -47,7 +51,11 @@ const tabItems = [{
   faSrc: "fa-solid fa-face-smile",
   text: tabText.EMOJIS,
   disabled: false,
-}, {
+},
+
+{ type: 'divider', },
+
+{
   faSrc: "fa-solid fa-shield",
   text: tabText.PERMISSIONS,
   disabled: false,
