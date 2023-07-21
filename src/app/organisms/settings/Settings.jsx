@@ -702,21 +702,17 @@ function Settings() {
 
           <div className="container my-0 py-0 w-100">
 
-            <div className='row'>
+            <div id='setting-tab' className='py-3 overflow-scroll h-100 border-bg'>
+              <Tabs
+                items={tabItems}
+                defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
+                onSelect={handleTabChange}
+                isFullscreen
+              />
+            </div>
 
-              <div id='setting-tab' className='col-md-2 py-3 overflow-scroll h-100 border-bg'>
-                <Tabs
-                  items={tabItems}
-                  defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
-                  onSelect={handleTabChange}
-                  isFullscreen
-                />
-              </div>
-
-              <div id="settings-content" className='col-md-10 py-3'>
-                {selectedTab.render()}
-              </div>
-
+            <div id="settings-content" className='py-3'>
+              {selectedTab.render()}
             </div>
 
           </div>
