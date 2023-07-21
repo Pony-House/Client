@@ -592,6 +592,9 @@ a {
       border-right-style: solid;
       border-width: 1px;
       overflow-y: scroll;
+      .border-bottom {
+        border-bottom: solid transparent !important;
+      }
     }
 
     #settings-content {
