@@ -551,6 +551,15 @@ a {
 @import './messages/textarea.scss';
 
 /* Special settings menu */
+@media (min-width: 1800px) {
+  #settings-base {
+    #settings-content {
+      max-width: 1800px;
+      margin: auto;
+    }
+  }
+}
+
 @media (min-width: 768px) {
   #settings-base {
     .modal-body {
