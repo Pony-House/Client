@@ -527,7 +527,16 @@ function ProfileSection() {
 
   return (<>
 
-    {window.matchMedia('screen and (min-width: 768px)').matches ? <ProfileEditor userId={initMatrix.matrixClient.getUserId()} /> : null}
+    {window.matchMedia('screen and (min-width: 768px)').matches ? <div className="card noselect mb-3">
+      <ul className="list-group list-group-flush">
+
+        <li className="list-group-item very-small text-gray">Account ID</li>
+
+        <li className="list-group-item border-0">
+          <ProfileEditor userId={initMatrix.matrixClient.getUserId()} />
+        </li>
+
+      </ul></div> : null}
 
     <div className="card noselect">
       <ul className="list-group list-group-flush">
@@ -695,7 +704,7 @@ function Settings() {
 
             <div className='row'>
 
-              <div id='setting-tab' className='col-md-2 py-3 overflow-scroll h-100'>
+              <div id='setting-tab' className='col-md-2 py-3 overflow-scroll h-100 border-bg'>
                 <Tabs
                   items={tabItems}
                   defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}

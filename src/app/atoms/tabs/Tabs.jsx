@@ -95,7 +95,7 @@ function Tabs({ items, defaultSelected, onSelect, className, isFullscreen, id, }
       :
 
       <div id={id} ref={tabRef} className={`d-flex align-items-start ${className}`}>
-        <div className="nav flex-column nav-pills me-3" id="tabs-scroll-pills-tab" role="tablist" aria-orientation="vertical">
+        <div className="nav flex-column nav-pills me-3 w-100" id="tabs-scroll-pills-tab" role="tablist" aria-orientation="vertical">
           {items.map((item, index) => (
             <button
               key={item.text}
