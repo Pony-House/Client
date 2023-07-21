@@ -550,6 +550,7 @@ a {
 
 @import './messages/textarea.scss';
 
+/* Special settings menu */
 @media (min-width: 768px) {
   #settings-base {
     #setting-close {
@@ -579,18 +580,22 @@ a {
       border-right-style: solid;
       border-width: 1px;
       overflow-y: scroll;
-
-      .nav-link {
-        color: var(--ic-surface) !important;
-      }
-
-      .nav-link:hover {
-        background-color: var(--bg-surface-low) !important;
-      }
     }
 
     #settings-content {
       padding-left: 270px;
+    }
+  }
+}
+
+#settings-base {
+  #setting-tab {
+    .nav-link {
+      color: var(--ic-surface) !important;
+    }
+
+    .nav-link:hover {
+      background-color: var(--bg-surface-low) !important;
     }
   }
 }
