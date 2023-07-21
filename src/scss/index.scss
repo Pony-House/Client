@@ -555,6 +555,8 @@ a {
     #setting-close {
       position: fixed;
       right: 0;
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
       span {
         display: none;
       }
@@ -577,6 +579,14 @@ a {
       border-right-style: solid;
       border-width: 1px;
       overflow-y: scroll;
+
+      .nav-link {
+        color: var(--ic-surface) !important;
+      }
+
+      .nav-link:hover {
+        background-color: var(--bg-surface-low) !important;
+      }
     }
 
     #settings-content {

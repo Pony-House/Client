@@ -118,7 +118,7 @@ function Tabs({ items, defaultSelected, onSelect, className, isFullscreen, id, r
             if (item.type !== 'divider') {
               return <button
                 key={item.text}
-                className={`nav-link ${item.className} ${selectedItem.text === item.text ? 'active' : ''}`}
+                className={`nav-link small ${item.className} ${selectedItem.text === item.text ? 'active' : ''}`}
                 data-bs-toggle="pill"
                 type="button"
                 role="tab"
