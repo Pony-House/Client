@@ -5,7 +5,7 @@ import { updateName, sortName } from '../../../util/roomName';
 import initMatrix from '../../../client/initMatrix';
 import { selectSpace, selectRoom, openReusableContextMenu, selectRoomMode } from '../../../client/action/navigation';
 import { getEventCords } from '../../../util/common';
-import { getSpaceItem, setSpaceItem } from '../../../util/selectedRoom';
+import { getDataList, addToDataFolder } from '../../../util/selectedRoom';
 
 import RawIcon from '../../atoms/system-icons/RawIcon';
 import IconButton from '../../atoms/button/IconButton';
@@ -15,15 +15,14 @@ import { HomeSpaceOptions } from './DrawerHeader';
 
 function setCategoryOpen({ roomName }) {
 
-  let tinyIsOpen = getSpaceItem(`category_${roomName}`);
-  tinyIsOpen = (tinyIsOpen === 'on');
+  const tinyIsOpen = getDataList('hc_cache', 'data', roomName);
 
   const dom = $(`#category_bt_${roomName}`);
   const iconDom = $(`#category_bd_${roomName} .ic-base`);
 
   // Disable
   if (tinyIsOpen) {
-    setSpaceItem(`category_${roomName}`, 'off');
+    addToDataFolder('hc_cache', 'data', roomName, false);
     dom.addClass('category-hide');
     iconDom.removeClass('fa-chevron-down');
     iconDom.addClass('fa-chevron-right');
@@ -31,11 +30,12 @@ function setCategoryOpen({ roomName }) {
 
   // Enable
   else {
-    setSpaceItem(`category_${roomName}`, 'on');
+    addToDataFolder('hc_cache', 'data', roomName, true);
     dom.removeClass('category-hide');
     iconDom.removeClass('fa-chevron-right');
     iconDom.addClass('fa-chevron-down');
   }
+
 
 }
 
@@ -163,11 +163,9 @@ function RoomsCategory({
     const roomIdB2 = `category_bt_${roomDivId}`;
     const roomIdB1 = `category_bd_${roomDivId}`;
 
-    let tinyIsOpen = getSpaceItem(`category_${roomDivId}`);
-    if (typeof tinyIsOpen === 'string') {
-      tinyIsOpen = (tinyIsOpen === 'on');
-    } else {
-      setSpaceItem(`category_${roomDivId}`, 'on');
+    let tinyIsOpen = getDataList('hc_cache', 'data', roomDivId);
+    if (typeof tinyIsOpen !== 'boolean') {
+      addToDataFolder('hc_cache', 'data', roomDivId, true);
       tinyIsOpen = true;
     }
 
