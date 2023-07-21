@@ -75,6 +75,7 @@ function Tabs({ items, defaultSelected, onSelect, className, isFullscreen, id, }
           <tbody>
             <tr>
               {items.map((item, index) => (
+                item.type !== 'divider' &&
                 <TabItem
                   key={item.text}
                   selected={selectedItem.text === item.text}
@@ -96,22 +97,28 @@ function Tabs({ items, defaultSelected, onSelect, className, isFullscreen, id, }
 
       <div id={id} ref={tabRef} className={`d-flex align-items-start ${className}`}>
         <div className="nav flex-column nav-pills me-3 w-100" id="tabs-scroll-pills-tab" role="tablist" aria-orientation="vertical">
-          {items.map((item, index) => (
-            <button
-              key={item.text}
-              className={`nav-link ${item.className} ${selectedItem.text === item.text ? 'active' : ''}`}
-              data-bs-toggle="pill"
-              type="button"
-              role="tab"
-              aria-selected="false"
-              onClick={typeof item.onClick !== 'function' ? () => handleTabSelection(item, index) : item.onClick}
-              disabled={item.disabled ? 'disabled' : null}
-            >
-              {item.iconSrc && <RawIcon size="small" className='me-2' src={item.iconSrc} />}
-              {item.faSrc && <RawIcon size="small" className='me-2' fa={item.faSrc} />}
-              {item.text}
-            </button>
-          ))}
+          {items.map((item, index) => {
+
+            if (item.type !== 'divider') {
+              return <button
+                key={item.text}
+                className={`nav-link ${item.className} ${selectedItem.text === item.text ? 'active' : ''}`}
+                data-bs-toggle="pill"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                onClick={typeof item.onClick !== 'function' ? () => handleTabSelection(item, index) : item.onClick}
+                disabled={item.disabled ? 'disabled' : null}
+              >
+                {item.iconSrc && <RawIcon size="small" className='me-2' src={item.iconSrc} />}
+                {item.faSrc && <RawIcon size="small" className='me-2' fa={item.faSrc} />}
+                {item.text}
+              </button>;
+            }
+
+            return <hr className='border-bg2' />;
+
+          })}
         </div>
       </div>
 

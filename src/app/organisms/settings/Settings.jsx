@@ -538,9 +538,10 @@ function ProfileSection() {
 
       </ul></div> : null}
 
-    <div className="card noselect">
+    <div className="card noselect mb-3">
       <ul className="list-group list-group-flush">
-        <li className="list-group-item very-small text-gray">Profile</li>
+
+        <li className="list-group-item very-small text-gray">Status</li>
 
         <li className="list-group-item border-0">
           <div className='small'>Status</div>
@@ -569,6 +570,12 @@ function ProfileSection() {
           <input ref={customStatusRef} className="form-control form-control-bg" type="text" placeholder="" maxLength="100" defaultValue={customStatus} />
           <Button className='mt-2' onClick={sendCustomStatus} variant="primary">Submit</Button>
         </li>
+
+      </ul></div>
+
+    <div className="card noselect">
+      <ul className="list-group list-group-flush">
+        <li className="list-group-item very-small text-gray">Info</li>
 
         <li className="list-group-item border-0">
           <div className='small'>About me</div>
@@ -613,52 +620,74 @@ export const tabText = {
   PROFILE: 'Profile',
   LOGOUT: 'Logout',
 };
-const tabItems = [{
-  text: tabText.PROFILE,
-  faSrc: "fa-solid fa-id-card",
-  disabled: false,
-  render: () => <ProfileSection />,
-}, {
-  text: tabText.APPEARANCE,
-  faSrc: "fa-solid fa-sun",
-  disabled: false,
-  render: () => <AppearanceSection />,
-}, {
-  text: tabText.NOTIFICATIONS,
-  faSrc: "fa-solid fa-bell",
-  disabled: false,
-  render: () => <NotificationsSection />,
-}, {
-  text: tabText.EMOJI,
-  faSrc: "fa-solid fa-face-smile",
-  disabled: false,
-  render: () => <EmojiSection />,
-}, {
-  text: tabText.SECURITY,
-  faSrc: "fa-solid fa-lock",
-  disabled: false,
-  render: () => <SecuritySection />,
-}, {
-  text: tabText.DONATE,
-  faSrc: "fa-solid fa-coins",
-  disabled: false,
-  render: () => <DonateSection />,
-}, {
-  text: tabText.ABOUT,
-  faSrc: "fa-solid fa-circle-info",
-  disabled: false,
-  render: () => <AboutSection />,
-}, {
-  text: tabText.LOGOUT,
-  faSrc: "fa-solid fa-power-off",
-  className: 'btn-text-danger',
-  disabled: false,
-  onClick: async () => {
-    if (await confirmDialog('Logout', 'Are you sure that you want to logout your session?', 'Logout', 'danger')) {
-      initMatrix.logout();
+const tabItems = [
+
+  {
+    text: tabText.PROFILE,
+    faSrc: "fa-solid fa-id-card",
+    disabled: false,
+    render: () => <ProfileSection />,
+  },
+
+  {
+    text: tabText.APPEARANCE,
+    faSrc: "fa-solid fa-sun",
+    disabled: false,
+    render: () => <AppearanceSection />,
+  },
+
+  {
+    text: tabText.EMOJI,
+    faSrc: "fa-solid fa-face-smile",
+    disabled: false,
+    render: () => <EmojiSection />,
+  },
+
+  { type: 'divider', },
+
+  {
+    text: tabText.NOTIFICATIONS,
+    faSrc: "fa-solid fa-bell",
+    disabled: false,
+    render: () => <NotificationsSection />,
+  },
+
+  {
+    text: tabText.SECURITY,
+    faSrc: "fa-solid fa-lock",
+    disabled: false,
+    render: () => <SecuritySection />,
+  },
+
+  { type: 'divider', },
+
+  {
+    text: tabText.DONATE,
+    faSrc: "fa-solid fa-coins",
+    disabled: false,
+    render: () => <DonateSection />,
+  },
+
+  {
+    text: tabText.ABOUT,
+    faSrc: "fa-solid fa-circle-info",
+    disabled: false,
+    render: () => <AboutSection />,
+  },
+
+  { type: 'divider', },
+
+  {
+    text: tabText.LOGOUT,
+    faSrc: "fa-solid fa-power-off",
+    className: 'btn-text-danger',
+    disabled: false,
+    onClick: async () => {
+      if (await confirmDialog('Logout', 'Are you sure that you want to logout your session?', 'Logout', 'danger')) {
+        initMatrix.logout();
+      }
     }
-  }
-}];
+  }];
 
 function useWindowToggle(setSelectedTab) {
   const [isOpen, setIsOpen] = useState(false);
