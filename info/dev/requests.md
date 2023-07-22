@@ -52,7 +52,7 @@ Made by Me
 
     =======================================================
 
-    --> Adicionar opção de colocar um ícone do lado do status (Com compatibilidade com emojis)
+    ------------------> Adicionar opção de colocar um ícone do lado do status (Com compatibilidade com emojis)
 
     --> Confiador de URL
 
