@@ -64,6 +64,23 @@ function RoomViewInput({
     $(textAreaRef.current).focus();
   }
 
+  // Send is Typing
+  const sendIsTyping = (isT) => {
+    mx.sendTyping(roomId, isT, isT ? TYPING_TIMEOUT : undefined);
+    isTyping = isT;
+
+    if (isT === true) {
+      setTimeout(() => {
+        if (isTyping) sendIsTyping(false);
+      }, TYPING_TIMEOUT);
+    }
+  };
+
+  function checkTypingPerm() {
+    const content = initMatrix.matrixClient.getAccountData('pony.house.privacy')?.getContent() ?? {};
+    return (content.hideTypingWarn === true);
+  };
+
   // Effects
   useEffect(() => {
 
@@ -87,6 +104,7 @@ function RoomViewInput({
         clearTimeout(tinyRec.timeout);
 
         if (tinyRec.enabled || tinyRec.loading) {
+          if (!checkTypingPerm()) sendIsTyping(false);
           audioRecorder.cancel();
           tinyRec.enabled = false;
         }
@@ -111,6 +129,7 @@ function RoomViewInput({
 
         // Stop Record
         if (!tinyRec.loading) {
+          if (!checkTypingPerm()) sendIsTyping(false);
           audioRecorder.stop().then(blob => {
             if (blob) {
 
@@ -197,6 +216,7 @@ function RoomViewInput({
         else {
 
           // Complete
+          if (!checkTypingPerm()) sendIsTyping(false);
           audioRecorder.cancel();
 
           tinyRec.enabled = false;
@@ -232,6 +252,7 @@ function RoomViewInput({
           }, tinyRec.clock);
 
           // Start Record
+          if (!checkTypingPerm()) sendIsTyping(true);
           audioRecorder.start().then(() => {
             tinyRec.loading = false;
             tinyRec.roomInput.addClass('textarea-focus-rec');
@@ -315,17 +336,6 @@ function RoomViewInput({
     };
 
   }, []);
-
-  const sendIsTyping = (isT) => {
-    mx.sendTyping(roomId, isT, isT ? TYPING_TIMEOUT : undefined);
-    isTyping = isT;
-
-    if (isT === true) {
-      setTimeout(() => {
-        if (isTyping) sendIsTyping(false);
-      }, TYPING_TIMEOUT);
-    }
-  };
 
   function uploadingProgress(myRoomId, { loaded, total }) {
 
@@ -445,11 +455,6 @@ function RoomViewInput({
     focusInput();
 
   }
-
-  function checkTypingPerm() {
-    const content = initMatrix.matrixClient.getAccountData('pony.house.privacy')?.getContent() ?? {};
-    return (content.hideTypingWarn === true);
-  };
 
   // Effects
   useEffect(() => {
