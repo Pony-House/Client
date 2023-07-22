@@ -18,11 +18,29 @@
 .space-banner,
 .space-banner img,
 .space-banner .avatar-container {
-  width: 400px;
+  width: 300px;
+}
+
+@media (min-width: 950px) {
+  .space-banner,
+  .space-banner img,
+  .space-banner .avatar-container {
+    width: 400px;
+  }
 }
 
 .space-banner .avatar-container {
   height: 225px;
+}
+
+@media (max-width: 991px) {
+  .settings-modal-open.settings-modal-open-2 {
+    .space-banner,
+    .space-banner img,
+    .space-banner .avatar-container {
+      width: 300px;
+    }
+  }
 }
 
 .space-banner.profile-banner,
