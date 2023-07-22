@@ -258,3 +258,11 @@
 .emoji-board-base {
   border: 1px solid var(--bg-surface-border);
 }
+
+@media (max-width: 576px) {
+  .settings-modal-open {
+    .emoji-board-tippy {
+      transform: translate(0px, 85px) !important;
+    }
+  }
+}
