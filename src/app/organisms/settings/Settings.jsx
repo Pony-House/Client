@@ -11,6 +11,7 @@ import {
 } from '../../../client/action/settings';
 import { emitUpdateProfile, openEmojiBoard } from '../../../client/action/navigation';
 import { usePermission } from '../../hooks/usePermission';
+import { TWEMOJI_BASE_URL } from '../../../util/twemojify';
 
 import Button from '../../atoms/button/Button';
 import Toggle from '../../atoms/button/Toggle';
@@ -579,7 +580,14 @@ function ProfileSection() {
 
                 openEmojiBoard(cords, 'emoji', emoji => {
 
-                  console.log(emoji);
+                  if (emoji.mxc) {
+                    setcustomStatusIcon(initMatrix.matrixClient.mxcUrlToHttp(emoji.mxc));
+                  } else if (emoji.unicode) {
+                    setcustomStatusIcon(`${TWEMOJI_BASE_URL}72x72/${emoji.hexcode.toLowerCase()}.png`);
+                  } else {
+                    setcustomStatusIcon('./img/default_avatar/1.jpg');
+                  }
+
                   e.target.click()
 
                 });
