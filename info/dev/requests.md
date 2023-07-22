@@ -34,7 +34,6 @@ Made by Me
     Criar sistema de titulos (Algo parecido com cargos)
 
     Criar o app desktop e mobile
-    Criar o sistema de gravação de voz
 
     Criar leitor de mensagens fixadas
 
