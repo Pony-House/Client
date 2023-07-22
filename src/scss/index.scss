@@ -73,6 +73,12 @@ audio:not([controls]) {
 
 /* Bootstrap Fix */
 
+.input-group-text {
+  color: var(--ic-surface-low);
+  background-color: var(--bg-surface);
+  border: var(--bs-border-width) solid var(--bg-surface-border);
+}
+
 .list-group-item {
   border: var(--bs-list-group-border-width) solid var(--bg-surface-border);
 }
@@ -550,3 +556,12 @@ a {
 
 @import './messages/textarea.scss';
 @import './page/settings.scss';
+
+#change-custom-status-img {
+  max-height: 30px;
+  height: 30px;
+  &:hover {
+    cursor: pointer;
+    filter: brightness(0.7) opacity(0.7) grayscale(0.5);
+  }
+}

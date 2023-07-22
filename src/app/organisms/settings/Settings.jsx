@@ -4,11 +4,12 @@ import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import settings from '../../../client/state/settings';
 import navigation from '../../../client/state/navigation';
+import { getEventCords } from '../../../util/common';
 import {
   toggleSystemTheme, toggleMarkdown, toggleMembershipEvents, toggleNickAvatarEvents,
   toggleNotifications, toggleNotificationSounds,
 } from '../../../client/action/settings';
-import { emitUpdateProfile } from '../../../client/action/navigation';
+import { emitUpdateProfile, openEmojiBoard } from '../../../client/action/navigation';
 import { usePermission } from '../../hooks/usePermission';
 
 import Button from '../../atoms/button/Button';
@@ -397,6 +398,7 @@ function ProfileSection() {
 
   const customStatusRef = useRef(null);
   const bioRef = useRef(null);
+  const [customStatusIcon, setcustomStatusIcon] = useState('./img/default_avatar/1.jpg');
 
   const [profileStatus, setProfileStatus] = useState(userProfile.status ? userProfile.status : 'online');
   const [banner, setBanner] = useState(userProfile.banner);
@@ -567,7 +569,25 @@ function ProfileSection() {
         <li className="list-group-item border-0">
           <div className='small'>Custom Status</div>
           <div className='very-small text-gray'>Enter a status that will appear next to your name.</div>
-          <input ref={customStatusRef} className="form-control form-control-bg" type="text" placeholder="" maxLength="100" defaultValue={customStatus} />
+          <div class="input-group">
+            <span className="input-group-text" id="basic-addon1">
+              <img id='change-custom-status-img' className='img-fluid' src={customStatusIcon} alt='custom-status' onClick={(e) => {
+
+                const cords = getEventCords(e);
+                cords.x -= (document.dir === 'rtl' ? -80 : 280) - 200;
+                cords.y -= 230;
+
+                openEmojiBoard(cords, 'emoji', emoji => {
+
+                  console.log(emoji);
+                  e.target.click()
+
+                });
+
+              }} />
+            </span>
+            <input ref={customStatusRef} className="form-control form-control-bg" type="text" placeholder="" maxLength="100" defaultValue={customStatus} />
+          </div>
           <Button className='mt-2' onClick={sendCustomStatus} variant="primary">Submit</Button>
         </li>
 
@@ -715,6 +735,12 @@ function Settings() {
 
   const handleTabChange = (tabItem) => setSelectedTab(tabItem);
   resizeWindowChecker();
+
+  if (isOpen) {
+    $('body').addClass('settings-modal-open');
+  } else {
+    $('body').removeClass('settings-modal-open');
+  }
 
   return (
     <PopupWindow

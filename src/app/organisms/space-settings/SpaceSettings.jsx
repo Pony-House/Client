@@ -216,6 +216,12 @@ function SpaceSettings() {
     setSelectedTab(tabItem);
   };
 
+  if (isOpen) {
+    $('body').addClass('settings-modal-open');
+  } else {
+    $('body').removeClass('settings-modal-open');
+  }
+
   return (
     <PopupWindow
 
