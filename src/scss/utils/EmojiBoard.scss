@@ -1,6 +1,6 @@
-@use './partials/flex';
-@use './partials/text';
-@use './partials/dir';
+@use '../partials/flex';
+@use '../partials/text';
+@use '../partials/dir';
 
 .emoji-board {
   --emoji-board-height: 390px;
