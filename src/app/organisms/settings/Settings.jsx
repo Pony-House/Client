@@ -573,7 +573,7 @@ function ProfileSection() {
           <div className='very-small text-gray'>Enter a status that will appear next to your name.</div>
           <div class="input-group">
             <span className="input-group-text" id="basic-addon1">
-              <img id='change-custom-status-img' className='img-fluid' src={customStatusIcon} alt='custom-status' onClick={(e) => {
+              <img id='change-custom-status-img' className='img-fluid disabled' src={customStatusIcon} alt='custom-status' onClick={(e) => {
 
                 const cords = getEventCords(e);
                 cords.x -= (document.dir === 'rtl' ? -80 : 280) - 200;
