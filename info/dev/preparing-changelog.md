@@ -8,3 +8,4 @@
 - Typing message css issues fixed.
 - New settings page UI.
 - The "Edit message" is supporting emojis now.
+- Double click to expand code viewer.

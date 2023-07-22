@@ -28,7 +28,13 @@ export function hljsFixer(el, where) {
         el.html(el.html().replace(/(?:\r\n|\r|\n)/g, () => {
             countBr++;
             return `</td></tr><tr><td class="code-line noselect">${countBr}</td><td class="code-text">`;
-        }));
+        })).on("dblclick", () => {
+            if (!el.hasClass('hljs-fullview')) {
+                el.addClass('hljs-fullview');
+            } else {
+                el.removeClass('hljs-fullview');
+            }
+        });;
 
     }
 
