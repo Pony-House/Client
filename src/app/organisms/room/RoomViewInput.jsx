@@ -77,7 +77,7 @@ function RoomViewInput({
   };
 
   function checkTypingPerm() {
-    const content = initMatrix.matrixClient.getAccountData('pony.house.privacy')?.getContent() ?? {};
+    const content = mx.getAccountData('pony.house.privacy')?.getContent() ?? {};
     return (content.hideTypingWarn === true);
   };
 
@@ -854,7 +854,7 @@ function RoomViewInput({
 
                 handleSendSticker({
                   body: data.unicode.substring(1, data.unicode.length - 1),
-                  httpUrl: initMatrix.matrixClient.mxcUrlToHttp(data.mxc),
+                  httpUrl: mx.mxcUrlToHttp(data.mxc),
                   mxc: data.mxc
                 });
 
