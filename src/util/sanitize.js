@@ -11,7 +11,7 @@ const permittedHtmlTags = [
   'td', 'caption', 'pre', 'span', 'img', 'details', 'summary',
 ];
 
-const urlSchemes = ['https', 'http', 'ftp', 'mailto', 'magnet', 'ipfs', 'bitcoin'];
+const urlSchemes = ['https', 'http', 'ftp', 'mailto', 'magnet', 'ipfs', 'bitcoin', 'twitter', 'dogecoin', 'ethereum', 'monero', 'web3', 'ar', 'lbry', 'steam'];
 
 const permittedTagToAttributes = {
   font: ['style', 'data-mx-bg-color', 'data-mx-color', 'color'],

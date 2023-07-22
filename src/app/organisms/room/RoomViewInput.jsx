@@ -654,7 +654,7 @@ function RoomViewInput({
     if (cmdPrefix === ':') {
       // skip emoji autofill command if link is suspected.
       const checkForLink = targetInput.slice(0, cmdParts.index);
-      if (checkForLink.match(/(http|https|mailto|matrix|ircs|irc)$/)) {
+      if (checkForLink.match(/(http|https|mailto|matrix|ircs|irc|ftp|ipfs|bitcoin|twitter|dogecoin|ethereum|monero|web3|ar|lbry|steam)$/)) {
         deactivateCmdAndEmit();
         return;
       }
