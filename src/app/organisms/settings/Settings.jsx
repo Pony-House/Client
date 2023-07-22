@@ -41,6 +41,48 @@ import { getStatusCSS } from '../../../util/onlineStatus';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
+const toggleAction = (dataFolder, valueName, setToggle) => data => {
+
+  const content = initMatrix.matrixClient.getAccountData(dataFolder)?.getContent() ?? {};
+  content[valueName] = data;
+
+  initMatrix.matrixClient.setAccountData(dataFolder, content);
+  setToggle((data === true));
+
+};
+
+function PrivacySection() {
+  const [hideTypingWarn, sethideTypingWarn] = useState(false);
+
+  useEffect(() => {
+
+    const content = initMatrix.matrixClient.getAccountData('pony.house.privacy')?.getContent() ?? {};
+    sethideTypingWarn((content.hideTypingWarn === true));
+
+  }, []);
+
+  return (
+    <div>
+      <div className="card noselect mt-3">
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item very-small text-gray">Chat room</li>
+          <SettingTile
+            title={"Disable \"typing\" warning"}
+            options={(
+              <Toggle
+                className='d-inline-flex'
+                isActive={hideTypingWarn}
+                onToggle={toggleAction('pony.house.privacy', 'hideTypingWarn', sethideTypingWarn)}
+              />
+            )}
+            content={<div className="very-small text-gray">Users will no longer be able to see whether or not you are typing.</div>}
+          />
+        </ul>
+      </div>
+    </div>
+  );
+};
+
 function AppearanceSection() {
   const [, updateState] = useState({});
   const [isAnimateAvatarsHidden, setAnimateAvatarsHidden] = useState(false);
@@ -142,15 +184,7 @@ function AppearanceSection() {
               <Toggle
                 className='d-inline-flex'
                 isActive={isAnimateAvatarsHidden}
-                onToggle={data => {
-
-                  const content = initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
-                  content.isAnimateAvatarsHidden = data;
-
-                  initMatrix.matrixClient.setAccountData('pony.house.appearance', content);
-                  setAnimateAvatarsHidden((data === true));
-
-                }}
+                onToggle={toggleAction('pony.house.appearance', 'isAnimateAvatarsHidden', setAnimateAvatarsHidden)}
               />
             )}
             content={<div className="very-small text-gray">Turn off animated avatars that are displayed when you mouse over it.</div>}
@@ -571,7 +605,7 @@ function ProfileSection() {
         <li className="list-group-item border-0">
           <div className='small'>Custom Status</div>
           <div className='very-small text-gray'>Enter a status that will appear next to your name.</div>
-          <div class="input-group">
+          <div className="input-group">
             <span className="input-group-text" id="basic-addon1">
               <img id='change-custom-status-img' className='img-fluid' src={customStatusIcon} alt='custom-status' onClick={(e) => {
                 if (!$(e.target).hasClass('disabled')) {
@@ -646,6 +680,7 @@ function ProfileSection() {
 
 export const tabText = {
   APPEARANCE: 'Appearance',
+  PRIVACY: 'Privacy',
   NOTIFICATIONS: 'Notifications',
   EMOJI: 'Emoji',
   SECURITY: 'Security',
@@ -691,6 +726,13 @@ const tabItems = [
     faSrc: "fa-solid fa-lock",
     disabled: false,
     render: () => <SecuritySection />,
+  },
+
+  {
+    text: tabText.PRIVACY,
+    faSrc: "bi bi-eye-fill",
+    disabled: false,
+    render: () => <PrivacySection />,
   },
 
   { type: 'divider', },

@@ -446,6 +446,11 @@ function RoomViewInput({
 
   }
 
+  function checkTypingPerm() {
+    const content = initMatrix.matrixClient.getAccountData('pony.house.privacy')?.getContent() ?? {};
+    return (content.hideTypingWarn === true);
+  };
+
   // Effects
   useEffect(() => {
 
@@ -532,7 +537,7 @@ function RoomViewInput({
     if (roomsInput.isSending(roomId)) return;
 
     // Cancel Typing Warn
-    sendIsTyping(false);
+    if (!checkTypingPerm()) sendIsTyping(false);
 
     // Set Message
     roomsInput.setMessage(roomId, body);
@@ -617,18 +622,20 @@ function RoomViewInput({
 
   // Typing Progress
   function processTyping(msg) {
+    if (!checkTypingPerm()) {
 
-    const isEmptyMsg = msg === '';
+      const isEmptyMsg = msg === '';
 
-    if (isEmptyMsg && isTyping) {
-      sendIsTyping(false);
-      return;
+      if (isEmptyMsg && isTyping) {
+        sendIsTyping(false);
+        return;
+      }
+
+      if (!isEmptyMsg && !isTyping) {
+        sendIsTyping(true);
+      }
+
     }
-
-    if (!isEmptyMsg && !isTyping) {
-      sendIsTyping(true);
-    }
-
   }
 
   // Get Cursor
