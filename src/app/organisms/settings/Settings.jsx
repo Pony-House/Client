@@ -574,28 +574,30 @@ function ProfileSection() {
           <div class="input-group">
             <span className="input-group-text" id="basic-addon1">
               <img id='change-custom-status-img' className='img-fluid disabled' src={customStatusIcon} alt='custom-status' onClick={(e) => {
+                if (!$(e.target).hasClass('disabled')) {
 
-                const cords = getEventCords(e);
-                cords.x -= (document.dir === 'rtl' ? -80 : 280) - 200;
-                cords.y -= 230;
+                  const cords = getEventCords(e);
+                  cords.x -= (document.dir === 'rtl' ? -80 : 280) - 200;
+                  cords.y -= 230;
 
-                openEmojiBoard(cords, 'emoji', emoji => {
+                  openEmojiBoard(cords, 'emoji', emoji => {
 
-                  if (emoji.mxc) {
-                    setcustomStatusIcon(initMatrix.matrixClient.mxcUrlToHttp(emoji.mxc));
-                    setcustomStatusValue(emoji.mxc);
-                  } else if (emoji.unicode) {
-                    setcustomStatusIcon(`${TWEMOJI_BASE_URL}72x72/${emoji.hexcode.toLowerCase()}.png`);
-                    setcustomStatusValue(emoji.unicode);
-                  } else {
-                    setcustomStatusIcon('./img/default_avatar/1.jpg');
-                    setcustomStatusValue(null);
-                  }
+                    if (emoji.mxc) {
+                      setcustomStatusIcon(initMatrix.matrixClient.mxcUrlToHttp(emoji.mxc));
+                      setcustomStatusValue(emoji.mxc);
+                    } else if (emoji.unicode) {
+                      setcustomStatusIcon(`${TWEMOJI_BASE_URL}72x72/${emoji.hexcode.toLowerCase()}.png`);
+                      setcustomStatusValue(emoji.unicode);
+                    } else {
+                      setcustomStatusIcon('./img/default_avatar/1.jpg');
+                      setcustomStatusValue(null);
+                    }
 
-                  e.target.click()
+                    e.target.click()
 
-                });
+                  });
 
+                }
               }} />
             </span>
             <input ref={customStatusRef} className="form-control form-control-bg" type="text" placeholder="" maxLength="100" defaultValue={customStatus} />
