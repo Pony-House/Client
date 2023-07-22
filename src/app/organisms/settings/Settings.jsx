@@ -400,6 +400,7 @@ function ProfileSection() {
   const customStatusRef = useRef(null);
   const bioRef = useRef(null);
   const [customStatusIcon, setcustomStatusIcon] = useState('./img/default_avatar/1.jpg');
+  const [customStatusValue, setcustomStatusValue] = useState(null);
 
   const [profileStatus, setProfileStatus] = useState(userProfile.status ? userProfile.status : 'online');
   const [banner, setBanner] = useState(userProfile.banner);
@@ -582,10 +583,13 @@ function ProfileSection() {
 
                   if (emoji.mxc) {
                     setcustomStatusIcon(initMatrix.matrixClient.mxcUrlToHttp(emoji.mxc));
+                    setcustomStatusValue(emoji.mxc);
                   } else if (emoji.unicode) {
                     setcustomStatusIcon(`${TWEMOJI_BASE_URL}72x72/${emoji.hexcode.toLowerCase()}.png`);
+                    setcustomStatusValue(emoji.unicode);
                   } else {
                     setcustomStatusIcon('./img/default_avatar/1.jpg');
+                    setcustomStatusValue(null);
                   }
 
                   e.target.click()
