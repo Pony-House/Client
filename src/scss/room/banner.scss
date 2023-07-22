@@ -31,14 +31,37 @@
   width: 660px;
 }
 
+@media (max-width: 1140px) {
+  .space-banner.profile-banner,
+  .space-banner.profile-banner img,
+  .space-banner.profile-banner .avatar-container {
+    width: 515px;
+  }
+}
+
 @media (max-width: 991px) {
   .space-banner.profile-banner,
   .space-banner.profile-banner img,
   .space-banner.profile-banner .avatar-container {
-    width: 370px;
+    width: 300px;
   }
 }
 
+.settings-modal-open.settings-modal-open-2 {
+  .space-banner.profile-banner,
+  .space-banner.profile-banner img,
+  .space-banner.profile-banner .avatar-container {
+    width: 545px;
+  }
+
+  @media (max-width: 991px) {
+    .space-banner.profile-banner,
+    .space-banner.profile-banner img,
+    .space-banner.profile-banner .avatar-container {
+      width: 260px;
+    }
+  }
+}
 @media (max-width: 768px) {
   .space-banner.profile-banner,
   .space-banner.profile-banner img,

@@ -742,6 +742,12 @@ function Settings() {
     $('body').removeClass('settings-modal-open');
   }
 
+  if (window.matchMedia('screen and (max-width: 768px)').matches) {
+    $('body').addClass('settings-modal-open-2');
+  } else {
+    $('body').removeClass('settings-modal-open-2');
+  }
+
   return (
     <PopupWindow
       id='settings-base'
