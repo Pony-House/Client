@@ -27,8 +27,6 @@ Made by Me
 
     ]
 
-    Tentar usar a chave de criptografia de rooms para proteger as chaves de API dentro do client matrix.
-
     Criar Video Chamada e Chamada de Voz
 
     Criar sistema de titulos (Algo parecido com cargos)
