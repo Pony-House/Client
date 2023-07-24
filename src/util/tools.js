@@ -68,10 +68,19 @@ const tinyResizeFixer = (timeout = 500) => {
             } else { setTimeout(() => resizeWindowChecker(), 1); return; }
         }
 
+        let heightModalFullSize = 159;
+        if (window.matchMedia('screen and (max-width: 768px)').matches) {
+            heightModalFullSize -= 58;
+        }
+
         // Room View
         const newTinyHTML = `
             .height-full-size {
                 height: ${$(document).height()}px;
+            }
+
+            .height-modal-full-size {
+                height: ${$(document).height() - heightModalFullSize}px;
             }
         `;
 
