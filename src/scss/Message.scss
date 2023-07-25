@@ -204,6 +204,26 @@
     height: 80px !important;
     width: 80px !important;
   }
+
+  p {
+    margin: 0px;
+  }
+  ol {
+    margin: 0px;
+    li {
+      height: auto;
+      p {
+        display: inline-block;
+        position: relative;
+        top: -21px;
+      }
+    }
+  }
+
+  ol,
+  ul {
+    padding-left: 30px;
+  }
 }
 
 #chatbox tr:hover,
