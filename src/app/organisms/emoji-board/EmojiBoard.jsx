@@ -173,41 +173,16 @@ export function getUpdateAvailableEmoji() {
     return updateAvailableEmoji;
 };
 
-const tinyBoardData = { av: null, recent: null, av: null, board: null };
+const tinyBoardData = { av: null, recent: null, fav: null, board: null };
 
 // Board
 function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
     // First Values
     const emojiInfo = useRef(null);
+    const [boardType, setBoardType] = useState('emoji');
     // let tinyTimeoutEmoji = null;
     const tinyTimeoutCollection = [];
-
-    // Get Function
-    const getFunctionEmoji = (dom) => {
-
-        if (emojiBoardRef.current) {
-
-            let boardType = dom;
-            if (typeof boardType !== 'string') {
-                boardType = $(emojiBoardRef.current).attr('board-type');
-            }
-
-            if (boardType === 'emoji') {
-                ROW_EMOJIS_COUNT = 7;
-                return 'getEmojis';
-            }
-
-            if (boardType === 'sticker') {
-                ROW_EMOJIS_COUNT = 3;
-                return 'getStickers';
-            }
-
-        }
-
-        return 'getEmojis';
-
-    };
 
     // Check Emoji Visible
     function onScroll(event) {
@@ -389,10 +364,20 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     const [favEmojis, setFavEmojis] = useState([]);
     const [favStickers, setFavStickers] = useState([]);
 
-    const boardType = getFunctionEmoji();
+    if (emojiBoardRef.current) {
 
-    const recentOffset = (boardType !== 'getStickers' ? recentEmojis.length : recentStickers.length) > 0 ? 1 : 0;
-    const favOffset = (boardType !== 'getStickers' ? favEmojis.length : favStickers.length) > 0 ? 1 : 0;
+        if (boardType === 'emoji') {
+            ROW_EMOJIS_COUNT = 7;
+        }
+
+        if (boardType === 'sticker') {
+            ROW_EMOJIS_COUNT = 3;
+        }
+
+    }
+
+    const recentOffset = (boardType !== 'sticker' ? recentEmojis.length : recentStickers.length) > 0 ? 1 : 0;
+    const favOffset = (boardType !== 'sticker' ? favEmojis.length : favStickers.length) > 0 ? 1 : 0;
 
     useEffect(() => {
         updateAvailableEmoji = async (selectedRoomId) => {
@@ -454,7 +439,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
         };
 
-        const onOpen = () => {
+        const onOpen = (roomId, cords, requestEmojiCallback, dom) => {
 
             $(searchRef.current).val('');
             handleSearchChange();
@@ -465,6 +450,8 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
             setRecentStickers(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', 'sticker'));
             setFavStickers(getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji', 'sticker'));
+
+            setBoardType(dom);
 
         };
 
@@ -480,13 +467,12 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     }, []);
 
     resetEmojisList();
-    if (boardType === 'getEmojis') addDefaultEmojisToList(favEmojis);
-
-    if (tinyBoardData.board !== boardType) {
-        tinyBoardData.fav = (boardType !== 'getStickers' ? favEmojis : favStickers);
-        tinyBoardData.recent = (boardType !== 'getStickers' ? recentEmojis : recentStickers);
-        tinyBoardData.av = (boardType !== 'getStickers' ? availableEmojis : availableStickers);
-    }
+    if (boardType === 'emoji') addDefaultEmojisToList(favEmojis);
+    tinyBoardData.board = boardType;
+    tinyBoardData.fav = (boardType !== 'sticker' ? favEmojis : favStickers);
+    tinyBoardData.recent = (boardType !== 'sticker' ? recentEmojis : recentStickers);
+    tinyBoardData.av = (boardType !== 'sticker' ? availableEmojis : availableStickers);
+    console.log(boardType);
 
     function openGroup(groupOrder) {
 
@@ -543,7 +529,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                     <div className="emoji-board__nav-custom">
                         {tinyBoardData.av.map((pack) => {
 
-                            const packItems = pack[boardType]();
+                            const packItems = pack[boardType !== 'sticker' ? 'getEmojis' : 'getStickers']();
                             for (const item in packItems) {
                                 addEmojiToList({
                                     isFav: (tinyBoardData.fav.findIndex(u => u.mxc === packItems[item].mxc) > -1),
@@ -580,7 +566,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                         })}
                     </div>
                     <div className="emoji-board__nav-twemoji">
-                        {boardType === 'getEmojis' ? cateogoryList.map(categoryReader) : [].map(categoryReader)}
+                        {boardType === 'emoji' ? cateogoryList.map(categoryReader) : [].map(categoryReader)}
                     </div>
                 </div>
             </ScrollView>
@@ -606,13 +592,13 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                                 <EmojiGroup
                                     name={pack.displayName ?? 'Unknown'}
                                     key={pack.packIndex}
-                                    groupEmojis={pack[boardType]()}
+                                    groupEmojis={pack[boardType !== 'sticker' ? 'getEmojis' : 'getStickers']()}
                                     className="custom-emoji-group"
                                 />
                             ))}
 
                             {emojiGroups.map((group) => (
-                                <EmojiGroup className={boardType === 'getStickers' ? 'd-none' : null} key={group.name} name={group.name} groupEmojis={group.emojis} />
+                                <EmojiGroup className={boardType === 'sticker' ? 'd-none' : null} key={group.name} name={group.name} groupEmojis={group.emojis} />
                             ))}
 
                         </div>
