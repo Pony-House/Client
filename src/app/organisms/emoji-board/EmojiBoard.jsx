@@ -379,30 +379,46 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     }
 
     const [availableEmojis, setAvailableEmojis] = useState([]);
-    const [recentEmojis, setRecentEmojis] = useState([]);
-    const [favEmojis, setFavEmojis] = useState([]);
+    const [availableStickers, setavailableStickers] = useState([]);
 
-    const recentOffset = recentEmojis.length > 0 ? 1 : 0;
-    const favOffset = favEmojis.length > 0 ? 1 : 0;
+    const [recentEmojis, setRecentEmojis] = useState([]);
+    const [recentStickers, setRecentStickers] = useState([]);
+
+    const [favEmojis, setFavEmojis] = useState([]);
+    const [favStickers, setFavStickers] = useState([]);
+
+    const boardType = getFunctionEmoji();
+
+    const recentOffset = (boardType !== 'getStickers' ? recentEmojis.length : recentStickers.length) > 0 ? 1 : 0;
+    const favOffset = (boardType !== 'getStickers' ? favEmojis.length : favStickers.length) > 0 ? 1 : 0;
 
     useEffect(() => {
-        updateAvailableEmoji = async (selectedRoomId, dom) => {
+        updateAvailableEmoji = async (selectedRoomId) => {
 
             const mx = initMatrix.matrixClient;
-            const boardType = getFunctionEmoji(dom);
-
             if (!selectedRoomId) {
 
-                const packs = await getRelevantPacks(mx).filter(
-                    (pack) => pack[boardType]().length !== 0
+                const emojiPacks = await getRelevantPacks(mx).filter(
+                    (pack) => pack.getEmojis().length !== 0
                 );
 
                 // Set an index for each pack so that we know where to jump when the user uses the nav
-                for (let i = 0; i < packs.length; i += 1) {
-                    packs[i].packIndex = i;
+                for (let i = 0; i < emojiPacks.length; i += 1) {
+                    emojiPacks[i].packIndex = i;
                 }
 
-                setAvailableEmojis(packs);
+                setAvailableEmojis(emojiPacks);
+
+                const stickerPacks = await getRelevantPacks(mx).filter(
+                    (pack) => pack.getStickers().length !== 0
+                );
+
+                // Set an index for each pack so that we know where to jump when the user uses the nav
+                for (let i = 0; i < stickerPacks.length; i += 1) {
+                    stickerPacks[i].packIndex = i;
+                }
+
+                setavailableStickers(stickerPacks);
                 return;
 
             }
@@ -412,29 +428,41 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             const parentRooms = [...parentIds].map((id) => mx.getRoom(id));
             if (room) {
 
-                const packs = await getRelevantPacks(room.client, [room, ...parentRooms]).filter(
-                    (pack) => pack[boardType]().length !== 0
+                const emojiPacks = await getRelevantPacks(room.client, [room, ...parentRooms]).filter(
+                    (pack) => pack.getEmojis().length !== 0
                 );
 
                 // Set an index for each pack so that we know where to jump when the user uses the nav
-                for (let i = 0; i < packs.length; i += 1) {
-                    packs[i].packIndex = i;
+                for (let i = 0; i < emojiPacks.length; i += 1) {
+                    emojiPacks[i].packIndex = i;
                 }
-                setAvailableEmojis(packs);
+                setAvailableEmojis(emojiPacks);
+
+                const stickerPacks = await getRelevantPacks(room.client, [room, ...parentRooms]).filter(
+                    (pack) => pack.getStickers().length !== 0
+                );
+
+                // Set an index for each pack so that we know where to jump when the user uses the nav
+                for (let i = 0; i < stickerPacks.length; i += 1) {
+                    stickerPacks[i].packIndex = i;
+                }
+                setavailableStickers(stickerPacks);
+
             }
 
         };
 
         const onOpen = () => {
 
-            const boardType = $(emojiBoardRef.current).attr('board-type');
-
             $(searchRef.current).val('');
             handleSearchChange();
 
             // only update when board is getting opened to prevent shifting UI
-            setRecentEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', boardType));
-            setFavEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji', boardType));
+            setRecentEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', 'emoji'));
+            setFavEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji', 'emoji'));
+
+            setRecentStickers(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', 'sticker'));
+            setFavStickers(getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji', 'sticker'));
 
         };
 
@@ -456,17 +484,16 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
         const groupCount = $emojiContent.length;
         if (groupCount > emojiGroups.length) {
-            tabIndex += groupCount - emojiGroups.length - availableEmojis.length - recentOffset - favOffset;
+            tabIndex += groupCount - emojiGroups.length - (boardType !== 'getStickers' ? availableEmojis.length : availableStickers.length) - recentOffset - favOffset;
         }
 
         $emojiContent.children().get(tabIndex).scrollIntoView();
 
     }
 
-    const boardType = getFunctionEmoji();
     const categoryReader = ([indx, ico, name]) => (
         <IconButton
-            onClick={() => openGroup(recentOffset + favOffset + availableEmojis.length + indx)}
+            onClick={() => openGroup(recentOffset + favOffset + (boardType !== 'getStickers' ? availableEmojis.length : availableStickers.length) + indx)}
             key={indx}
             fa={ico}
             tooltip={name}
@@ -487,7 +514,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             <ScrollView invisible>
                 <div className="emoji-board__nav">
 
-                    {favEmojis.length > 0 && (
+                    {(boardType !== 'getStickers' ? favEmojis.length : favStickers.length) > 0 && (
                         <IconButton
                             onClick={() => openGroup(0)}
                             fa='fa-solid fa-star'
@@ -496,7 +523,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                         />
                     )}
 
-                    {recentEmojis.length > 0 && (
+                    {(boardType !== 'getStickers' ? recentEmojis.length : recentStickers.length) > 0 && (
                         <IconButton
                             onClick={() => openGroup(1)}
                             fa='fa-solid fa-clock-rotate-left'
@@ -506,12 +533,12 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                     )}
 
                     <div className="emoji-board__nav-custom">
-                        {availableEmojis.map((pack) => {
+                        {(boardType !== 'getStickers' ? availableEmojis : availableStickers).map((pack) => {
 
                             const packItems = pack[boardType]();
                             for (const item in packItems) {
                                 addEmojiToList({
-                                    isFav: (favEmojis.findIndex(u => u.mxc === packItems[item].mxc) > -1),
+                                    isFav: ((boardType !== 'getStickers' ? favEmojis : favStickers).findIndex(u => u.mxc === packItems[item].mxc) > -1),
                                     group: null,
                                     hexcode: null,
                                     label: packItems[item].shortcode,
@@ -559,15 +586,15 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
                             <SearchedEmoji scrollEmojisRef={scrollEmojisRef} />
 
-                            {favEmojis.length > 0 && (
-                                <EmojiGroup name="Favorites" groupEmojis={favEmojis} isFav />
+                            {(boardType !== 'getStickers' ? favEmojis.length : favStickers.length) > 0 && (
+                                <EmojiGroup name="Favorites" groupEmojis={(boardType !== 'getStickers' ? favEmojis : favStickers)} isFav />
                             )}
 
-                            {recentEmojis.length > 0 && (
-                                <EmojiGroup name="Recently used" groupEmojis={recentEmojis} />
+                            {(boardType !== 'getStickers' ? recentEmojis.length : recentStickers.length) > 0 && (
+                                <EmojiGroup name="Recently used" groupEmojis={(boardType !== 'getStickers' ? recentEmojis : recentStickers)} />
                             )}
 
-                            {availableEmojis.map((pack) => (
+                            {(boardType !== 'getStickers' ? availableEmojis : availableStickers).map((pack) => (
                                 <EmojiGroup
                                     name={pack.displayName ?? 'Unknown'}
                                     key={pack.packIndex}
