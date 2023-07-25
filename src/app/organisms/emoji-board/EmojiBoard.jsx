@@ -5,7 +5,12 @@ import PropTypes from 'prop-types';
 
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
-import { emojiGroups, emojis, addDefaultEmojisToList, resetEmojisList, addEmojiToList } from './emoji';
+import {
+    emojiGroups, emojis,
+    addDefaultEmojisToList, resetEmojisList, addEmojiToList,
+    addStickerToList, resetStickersList
+} from './emoji';
+
 import { getRelevantPacks } from './custom-emoji';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -173,7 +178,10 @@ export function getUpdateAvailableEmoji() {
     return updateAvailableEmoji;
 };
 
-const tinyBoardData = { av: null, recent: null, fav: null, board: null };
+const tinyBoardData = {
+    av: null, recent: null, fav: null, board: null,
+    packs: { emoji: {}, sticker: {} }
+};
 
 // Board
 function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
@@ -467,12 +475,38 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     }, []);
 
     resetEmojisList();
-    if (boardType === 'emoji') addDefaultEmojisToList(favEmojis);
+    resetStickersList();
+
+    addDefaultEmojisToList(favEmojis);
+
     tinyBoardData.board = boardType;
     tinyBoardData.fav = (boardType !== 'sticker' ? favEmojis : favStickers);
     tinyBoardData.recent = (boardType !== 'sticker' ? recentEmojis : recentStickers);
     tinyBoardData.av = (boardType !== 'sticker' ? availableEmojis : availableStickers);
-    console.log(boardType);
+
+    const readPacker = (type, type2, addWhereToList) => (pack) => {
+
+        const packItems = pack[type]();
+        for (const item in packItems) {
+            addWhereToList({
+                isFav: (tinyBoardData.fav.findIndex(u => u.mxc === packItems[item].mxc) > -1),
+                group: null,
+                hexcode: null,
+                label: packItems[item].shortcode,
+                order: null,
+                shortcode: packItems[item].shortcode,
+                shortcodes: [packItems[item].shortcode],
+                tags: [packItems[item].shortcode, 'custom'],
+                src: initMatrix.matrixClient.mxcUrlToHttp(packItems[item].mxc),
+                mxc: packItems[item].mxc,
+                unicode: null
+            });
+        }
+
+    };
+
+    availableEmojis.map(readPacker('getEmojis', 'emoji', addEmojiToList));
+    availableStickers.map(readPacker('getStickers', 'sticker', addStickerToList));
 
     function openGroup(groupOrder) {
 
@@ -530,23 +564,6 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                         {tinyBoardData.av.map((pack) => {
 
                             const packItems = pack[boardType !== 'sticker' ? 'getEmojis' : 'getStickers']();
-                            for (const item in packItems) {
-                                addEmojiToList({
-                                    isFav: (tinyBoardData.fav.findIndex(u => u.mxc === packItems[item].mxc) > -1),
-                                    group: null,
-                                    hexcode: null,
-                                    label: packItems[item].shortcode,
-                                    order: null,
-                                    shortcode: packItems[item].shortcode,
-                                    shortcodes: [packItems[item].shortcode],
-                                    tags: [packItems[item].shortcode, 'custom'],
-                                    src: initMatrix.matrixClient.mxcUrlToHttp(packItems[item].mxc),
-                                    mxc: packItems[item].mxc,
-                                    unicode: null
-                                });
-                            }
-
-
                             const src = initMatrix.matrixClient.mxcUrlToHttp(
                                 pack.avatarUrl ?? packItems[0].mxc
                             );

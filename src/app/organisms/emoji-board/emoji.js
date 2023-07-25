@@ -99,6 +99,27 @@ const addDefaultEmojisToList = (favEmojis = []) => {
   });
 };
 
+const stickers = [];
+
+const addStickerToList = data => {
+  stickers.push(data);
+};
+
+const removeStickerFromList = data => {
+  const index = stickers.indexOf(data);
+  if (index > -1) {
+    stickers.splice(index, 1);
+  }
+};
+
+const resetStickersList = () => {
+  while (stickers.length > 0) {
+    stickers.shift();
+  }
+};
+
 export {
-  emojis, defaultEmojis, emojiGroups, addEmojiToList, removeEmojiFromList, resetEmojisList, addDefaultEmojisToList,
+  emojis, defaultEmojis, emojiGroups,
+  addEmojiToList, removeEmojiFromList, resetEmojisList, addDefaultEmojisToList,
+  addStickerToList, removeStickerFromList, resetStickersList,
 };
