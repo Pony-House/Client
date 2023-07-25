@@ -168,6 +168,11 @@ SearchedEmoji.propTypes = {
     scrollEmojisRef: PropTypes.shape({}).isRequired,
 };
 
+let updateAvailableEmoji;
+export function getUpdateAvailableEmoji() {
+    return updateAvailableEmoji;
+};
+
 // Board
 function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
@@ -375,16 +380,27 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     const favOffset = favEmojis.length > 0 ? 1 : 0;
 
     useEffect(() => {
-        const updateAvailableEmoji = (selectedRoomId) => {
+        updateAvailableEmoji = async (selectedRoomId) => {
 
+            const mx = initMatrix.matrixClient;
             const boardType = getFunctionEmoji();
 
             if (!selectedRoomId) {
-                setAvailableEmojis([]);
+
+                const packs = await getRelevantPacks(mx).filter(
+                    (pack) => pack[boardType]().length !== 0
+                );
+
+                // Set an index for each pack so that we know where to jump when the user uses the nav
+                for (let i = 0; i < packs.length; i += 1) {
+                    packs[i].packIndex = i;
+                }
+
+                setAvailableEmojis(packs);
                 return;
+
             }
 
-            const mx = initMatrix.matrixClient;
             const room = mx.getRoom(selectedRoomId);
             const parentIds = initMatrix.roomList.getAllParentSpaces(room.roomId);
             const parentRooms = [...parentIds].map((id) => mx.getRoom(id));

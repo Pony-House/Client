@@ -40,6 +40,7 @@ import { resizeWindowChecker } from '../../../util/tools';
 import { getStatusCSS } from '../../../util/onlineStatus';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
+import { getUpdateAvailableEmoji } from '../emoji-board/EmojiBoard';
 
 const toggleAction = (dataFolder, valueName, setToggle) => data => {
 
@@ -614,22 +615,31 @@ function ProfileSection() {
                   cords.x -= (document.dir === 'rtl' ? -80 : 280) - 200;
                   cords.y -= 230;
 
-                  openEmojiBoard(cords, 'emoji', emoji => {
+                  const tinyOpenEmojis = () => {
+                    openEmojiBoard(cords, 'emoji', emoji => {
 
-                    if (emoji.mxc) {
-                      setcustomStatusIcon(initMatrix.matrixClient.mxcUrlToHttp(emoji.mxc));
-                      setcustomStatusValue(emoji.mxc);
-                    } else if (emoji.unicode) {
-                      setcustomStatusIcon(`${TWEMOJI_BASE_URL}72x72/${emoji.hexcode.toLowerCase()}.png`);
-                      setcustomStatusValue(emoji.unicode);
-                    } else {
-                      setcustomStatusIcon('./img/default_avatar/1.jpg');
-                      setcustomStatusValue(null);
-                    }
+                      if (emoji.mxc) {
+                        setcustomStatusIcon(initMatrix.matrixClient.mxcUrlToHttp(emoji.mxc));
+                        setcustomStatusValue(emoji.mxc);
+                      } else if (emoji.unicode) {
+                        setcustomStatusIcon(`${TWEMOJI_BASE_URL}72x72/${emoji.hexcode.toLowerCase()}.png`);
+                        setcustomStatusValue(emoji.unicode);
+                      } else {
+                        setcustomStatusIcon('./img/default_avatar/1.jpg');
+                        setcustomStatusValue(null);
+                      }
 
-                    e.target.click()
+                      e.target.click();
 
-                  });
+                    });
+                  };
+
+                  const updateAvailableEmoji = getUpdateAvailableEmoji();
+                  if (typeof updateAvailableEmoji === 'function') {
+                    return updateAvailableEmoji().then(() => tinyOpenEmojis());
+                  }
+
+                  tinyOpenEmojis();
 
                 }
               }} />
