@@ -508,13 +508,17 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
     resetEmojisList();
     if (boardType === 'getEmojis') addDefaultEmojisToList(favEmojis);
+    const tinyBoardData = {
+        fav: (boardType !== 'getStickers' ? favEmojis : favStickers),
+        recent: (boardType !== 'getStickers' ? recentEmojis : recentStickers)
+    };
 
     return (
         <div id="emoji-board" className="emoji-board" ref={emojiBoardRef}>
             <ScrollView invisible>
                 <div className="emoji-board__nav">
 
-                    {(boardType !== 'getStickers' ? favEmojis.length : favStickers.length) > 0 && (
+                    {tinyBoardData.fav.length > 0 && (
                         <IconButton
                             onClick={() => openGroup(0)}
                             fa='fa-solid fa-star'
@@ -523,7 +527,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                         />
                     )}
 
-                    {(boardType !== 'getStickers' ? recentEmojis.length : recentStickers.length) > 0 && (
+                    {tinyBoardData.recent.length > 0 && (
                         <IconButton
                             onClick={() => openGroup(1)}
                             fa='fa-solid fa-clock-rotate-left'
@@ -538,7 +542,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                             const packItems = pack[boardType]();
                             for (const item in packItems) {
                                 addEmojiToList({
-                                    isFav: ((boardType !== 'getStickers' ? favEmojis : favStickers).findIndex(u => u.mxc === packItems[item].mxc) > -1),
+                                    isFav: (tinyBoardData.fav.findIndex(u => u.mxc === packItems[item].mxc) > -1),
                                     group: null,
                                     hexcode: null,
                                     label: packItems[item].shortcode,
@@ -586,12 +590,12 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
                             <SearchedEmoji scrollEmojisRef={scrollEmojisRef} />
 
-                            {(boardType !== 'getStickers' ? favEmojis.length : favStickers.length) > 0 && (
-                                <EmojiGroup name="Favorites" groupEmojis={(boardType !== 'getStickers' ? favEmojis : favStickers)} isFav />
+                            {tinyBoardData.fav.length > 0 && (
+                                <EmojiGroup name="Favorites" groupEmojis={tinyBoardData.fav} isFav />
                             )}
 
-                            {(boardType !== 'getStickers' ? recentEmojis.length : recentStickers.length) > 0 && (
-                                <EmojiGroup name="Recently used" groupEmojis={(boardType !== 'getStickers' ? recentEmojis : recentStickers)} />
+                            {tinyBoardData.recent.length > 0 && (
+                                <EmojiGroup name="Recently used" groupEmojis={tinyBoardData.recent} />
                             )}
 
                             {(boardType !== 'getStickers' ? availableEmojis : availableStickers).map((pack) => (
