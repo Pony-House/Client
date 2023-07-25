@@ -40,7 +40,6 @@ import { resizeWindowChecker } from '../../../util/tools';
 import { getStatusCSS } from '../../../util/onlineStatus';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
-import { getUpdateAvailableEmoji } from '../emoji-board/EmojiBoard';
 
 const toggleAction = (dataFolder, valueName, setToggle) => data => {
 
@@ -633,11 +632,6 @@ function ProfileSection() {
 
                     });
                   };
-
-                  const updateAvailableEmoji = getUpdateAvailableEmoji();
-                  if (typeof updateAvailableEmoji === 'function') {
-                    return updateAvailableEmoji().then(() => tinyOpenEmojis());
-                  }
 
                   tinyOpenEmojis();
 

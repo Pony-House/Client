@@ -5,18 +5,14 @@ import PropTypes from 'prop-types';
 
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
-import {
-    emojiGroups, emojis,
-    addDefaultEmojisToList, resetEmojisList, addEmojiToList,
-    addStickerToList, resetStickersList
-} from './emoji';
+import { emojiGroups, emojis, } from './emoji';
+import { loadEmojiData, getEmojiData } from './emojiData';
 
-import { getRelevantPacks } from './custom-emoji';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import AsyncSearch from '../../../util/AsyncSearch';
-import { addToEmojiList, getEmojisList, removeFromEmojiList } from './recent';
+import { addToEmojiList, removeFromEmojiList } from './recent';
 import { TWEMOJI_BASE_URL } from '../../../util/twemojify';
 import { checkVisible } from '../../../util/tools';
 
@@ -173,24 +169,21 @@ SearchedEmoji.propTypes = {
     scrollEmojisRef: PropTypes.shape({}).isRequired,
 };
 
-let updateAvailableEmoji;
-export function getUpdateAvailableEmoji() {
-    return updateAvailableEmoji;
-};
-
-const tinyBoardData = {
-    av: null, recent: null, fav: null, board: null,
-    packs: { emoji: {}, sticker: {} }
-};
-
 // Board
 function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
     // First Values
     const emojiInfo = useRef(null);
     const [boardType, setBoardType] = useState('emoji');
-    // let tinyTimeoutEmoji = null;
+    const [selectedRoomId, setSelectedRoomId] = useState(null);
     const tinyTimeoutCollection = [];
+
+    const [emojiFav, setEmojiFav] = useState([]);
+    const [emojiData, setEmojiData] = useState([]);
+    const [emojiRecent, setEmojiRecent] = useState([]);
+
+    loadEmojiData(selectedRoomId);
+    getEmojiData(boardType, emojiRecent, emojiFav, emojiData, setEmojiRecent, setEmojiFav, setEmojiData);
 
     // Check Emoji Visible
     function onScroll(event) {
@@ -363,15 +356,6 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         $(scrollEmojisRef.current).scrollTop(0);
     }
 
-    const [availableEmojis, setAvailableEmojis] = useState([]);
-    const [availableStickers, setavailableStickers] = useState([]);
-
-    const [recentEmojis, setRecentEmojis] = useState([]);
-    const [recentStickers, setRecentStickers] = useState([]);
-
-    const [favEmojis, setFavEmojis] = useState([]);
-    const [favStickers, setFavStickers] = useState([]);
-
     if (emojiBoardRef.current) {
 
         if (boardType === 'emoji') {
@@ -384,83 +368,18 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
     }
 
-    const recentOffset = (boardType !== 'sticker' ? recentEmojis.length : recentStickers.length) > 0 ? 1 : 0;
-    const favOffset = (boardType !== 'sticker' ? favEmojis.length : favStickers.length) > 0 ? 1 : 0;
+    const recentOffset = emojiRecent.length > 0 ? 1 : 0;
+    const favOffset = emojiFav.length > 0 ? 1 : 0;
 
     useEffect(() => {
-        updateAvailableEmoji = async (selectedRoomId) => {
-
-            const mx = initMatrix.matrixClient;
-            if (!selectedRoomId) {
-
-                const emojiPacks = await getRelevantPacks(mx).filter(
-                    (pack) => pack.getEmojis().length !== 0
-                );
-
-                // Set an index for each pack so that we know where to jump when the user uses the nav
-                for (let i = 0; i < emojiPacks.length; i += 1) {
-                    emojiPacks[i].packIndex = i;
-                }
-
-                setAvailableEmojis(emojiPacks);
-
-                const stickerPacks = await getRelevantPacks(mx).filter(
-                    (pack) => pack.getStickers().length !== 0
-                );
-
-                // Set an index for each pack so that we know where to jump when the user uses the nav
-                for (let i = 0; i < stickerPacks.length; i += 1) {
-                    stickerPacks[i].packIndex = i;
-                }
-
-                setavailableStickers(stickerPacks);
-                return;
-
-            }
-
-            const room = mx.getRoom(selectedRoomId);
-            const parentIds = await initMatrix.roomList.getAllParentSpaces(room.roomId);
-            const parentRooms = [...parentIds].map((id) => mx.getRoom(id));
-            if (room) {
-
-                const emojiPacks = await getRelevantPacks(room.client, [room, ...parentRooms]).filter(
-                    (pack) => pack.getEmojis().length !== 0
-                );
-
-                // Set an index for each pack so that we know where to jump when the user uses the nav
-                for (let i = 0; i < emojiPacks.length; i += 1) {
-                    emojiPacks[i].packIndex = i;
-                }
-                setAvailableEmojis(emojiPacks);
-
-                const stickerPacks = await getRelevantPacks(room.client, [room, ...parentRooms]).filter(
-                    (pack) => pack.getStickers().length !== 0
-                );
-
-                // Set an index for each pack so that we know where to jump when the user uses the nav
-                for (let i = 0; i < stickerPacks.length; i += 1) {
-                    stickerPacks[i].packIndex = i;
-                }
-                setavailableStickers(stickerPacks);
-
-            }
-
+        const updateAvailableEmoji = async (newRoomId) => {
+            setSelectedRoomId(newRoomId);
         };
 
         const onOpen = (roomId, cords, requestEmojiCallback, dom) => {
-
             $(searchRef.current).val('');
             handleSearchChange();
-
-            // only update when board is getting opened to prevent shifting UI
-            setRecentEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', 'emoji'));
-            setFavEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji', 'emoji'));
-
-            setRecentStickers(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', 'sticker'));
-            setFavStickers(getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji', 'sticker'));
-
             setBoardType(dom);
-
         };
 
         navigation.on(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
@@ -474,40 +393,6 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
     }, []);
 
-    resetEmojisList();
-    resetStickersList();
-
-    addDefaultEmojisToList(favEmojis);
-
-    tinyBoardData.board = boardType;
-    tinyBoardData.fav = (boardType !== 'sticker' ? favEmojis : favStickers);
-    tinyBoardData.recent = (boardType !== 'sticker' ? recentEmojis : recentStickers);
-    tinyBoardData.av = (boardType !== 'sticker' ? availableEmojis : availableStickers);
-
-    const readPacker = (type, type2, addWhereToList) => (pack) => {
-
-        const packItems = pack[type]();
-        for (const item in packItems) {
-            addWhereToList({
-                isFav: (tinyBoardData.fav.findIndex(u => u.mxc === packItems[item].mxc) > -1),
-                group: null,
-                hexcode: null,
-                label: packItems[item].shortcode,
-                order: null,
-                shortcode: packItems[item].shortcode,
-                shortcodes: [packItems[item].shortcode],
-                tags: [packItems[item].shortcode, 'custom'],
-                src: initMatrix.matrixClient.mxcUrlToHttp(packItems[item].mxc),
-                mxc: packItems[item].mxc,
-                unicode: null
-            });
-        }
-
-    };
-
-    availableEmojis.map(readPacker('getEmojis', 'emoji', addEmojiToList));
-    availableStickers.map(readPacker('getStickers', 'sticker', addStickerToList));
-
     function openGroup(groupOrder) {
 
         let tabIndex = groupOrder;
@@ -515,7 +400,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
         const groupCount = $emojiContent.length;
         if (groupCount > emojiGroups.length) {
-            tabIndex += groupCount - emojiGroups.length - tinyBoardData.av.length - recentOffset - favOffset;
+            tabIndex += groupCount - emojiGroups.length - emojiData.length - recentOffset - favOffset;
         }
 
         $emojiContent.children().get(tabIndex).scrollIntoView();
@@ -524,7 +409,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
     const categoryReader = ([indx, ico, name]) => (
         <IconButton
-            onClick={() => openGroup(recentOffset + favOffset + tinyBoardData.av.length + indx)}
+            onClick={() => openGroup(recentOffset + favOffset + emojiData.length + indx)}
             key={indx}
             fa={ico}
             tooltip={name}
@@ -542,7 +427,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             <ScrollView invisible>
                 <div className="emoji-board__nav">
 
-                    {tinyBoardData.fav.length > 0 && (
+                    {emojiFav.length > 0 && (
                         <IconButton
                             onClick={() => openGroup(0)}
                             fa='fa-solid fa-star'
@@ -551,7 +436,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                         />
                     )}
 
-                    {tinyBoardData.recent.length > 0 && (
+                    {emojiRecent.length > 0 && (
                         <IconButton
                             onClick={() => openGroup(1)}
                             fa='fa-solid fa-clock-rotate-left'
@@ -561,7 +446,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                     )}
 
                     <div className="emoji-board__nav-custom">
-                        {tinyBoardData.av.map((pack) => {
+                        {emojiData.map((pack) => {
 
                             const packItems = pack[boardType !== 'sticker' ? 'getEmojis' : 'getStickers']();
                             const src = initMatrix.matrixClient.mxcUrlToHttp(
@@ -597,15 +482,15 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
                             <SearchedEmoji scrollEmojisRef={scrollEmojisRef} />
 
-                            {tinyBoardData.fav.length > 0 && (
-                                <EmojiGroup name="Favorites" groupEmojis={tinyBoardData.fav} isFav />
+                            {emojiFav.length > 0 && (
+                                <EmojiGroup name="Favorites" groupEmojis={emojiFav} isFav />
                             )}
 
-                            {tinyBoardData.recent.length > 0 && (
-                                <EmojiGroup name="Recently used" groupEmojis={tinyBoardData.recent} />
+                            {emojiRecent.length > 0 && (
+                                <EmojiGroup name="Recently used" groupEmojis={emojiRecent} />
                             )}
 
-                            {tinyBoardData.av.map((pack) => (
+                            {emojiData.map((pack) => (
                                 <EmojiGroup
                                     name={pack.displayName ?? 'Unknown'}
                                     key={pack.packIndex}
