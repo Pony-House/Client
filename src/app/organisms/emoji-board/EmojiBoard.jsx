@@ -477,6 +477,14 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
     }, []);
 
+    resetEmojisList();
+    if (boardType === 'getEmojis') addDefaultEmojisToList(favEmojis);
+    const tinyBoardData = {
+        fav: (boardType !== 'getStickers' ? favEmojis : favStickers),
+        recent: (boardType !== 'getStickers' ? recentEmojis : recentStickers),
+        av: (boardType !== 'getStickers' ? availableEmojis : availableStickers)
+    };
+
     function openGroup(groupOrder) {
 
         let tabIndex = groupOrder;
@@ -484,7 +492,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
         const groupCount = $emojiContent.length;
         if (groupCount > emojiGroups.length) {
-            tabIndex += groupCount - emojiGroups.length - (boardType !== 'getStickers' ? availableEmojis.length : availableStickers.length) - recentOffset - favOffset;
+            tabIndex += groupCount - emojiGroups.length - tinyBoardData.av.length - recentOffset - favOffset;
         }
 
         $emojiContent.children().get(tabIndex).scrollIntoView();
@@ -493,7 +501,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
     const categoryReader = ([indx, ico, name]) => (
         <IconButton
-            onClick={() => openGroup(recentOffset + favOffset + (boardType !== 'getStickers' ? availableEmojis.length : availableStickers.length) + indx)}
+            onClick={() => openGroup(recentOffset + favOffset + tinyBoardData.av.length + indx)}
             key={indx}
             fa={ico}
             tooltip={name}
@@ -505,13 +513,6 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         $('#emoji-board').parent().parent().parent().parent().parent()
             .addClass('emoji-board-tippy');
     }, 500);
-
-    resetEmojisList();
-    if (boardType === 'getEmojis') addDefaultEmojisToList(favEmojis);
-    const tinyBoardData = {
-        fav: (boardType !== 'getStickers' ? favEmojis : favStickers),
-        recent: (boardType !== 'getStickers' ? recentEmojis : recentStickers)
-    };
 
     return (
         <div id="emoji-board" className="emoji-board" ref={emojiBoardRef}>
