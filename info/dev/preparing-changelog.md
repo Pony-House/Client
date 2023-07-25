@@ -11,3 +11,4 @@
 - Double click to expand code viewer.
 - New privacy tab added.
 - Rec voice is sending "typing" warn now.
+- Chatbox ul/ol/hljs css fix.
