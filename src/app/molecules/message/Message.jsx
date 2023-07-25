@@ -219,7 +219,6 @@ const MessageBody = React.memo(({
 
       if (!el.hasClass('hljs')) {
         el.addClass('hljs');
-        hljsFixer(el, 'MessageBody');
       }
 
     });
