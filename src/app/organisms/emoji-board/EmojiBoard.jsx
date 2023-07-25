@@ -173,6 +173,8 @@ export function getUpdateAvailableEmoji() {
     return updateAvailableEmoji;
 };
 
+const tinyBoardData = { av: null, recent: null, av: null, board: null };
+
 // Board
 function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
@@ -479,11 +481,12 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
     resetEmojisList();
     if (boardType === 'getEmojis') addDefaultEmojisToList(favEmojis);
-    const tinyBoardData = {
-        fav: (boardType !== 'getStickers' ? favEmojis : favStickers),
-        recent: (boardType !== 'getStickers' ? recentEmojis : recentStickers),
-        av: (boardType !== 'getStickers' ? availableEmojis : availableStickers)
-    };
+
+    if (tinyBoardData.board !== boardType) {
+        tinyBoardData.fav = (boardType !== 'getStickers' ? favEmojis : favStickers);
+        tinyBoardData.recent = (boardType !== 'getStickers' ? recentEmojis : recentStickers);
+        tinyBoardData.av = (boardType !== 'getStickers' ? availableEmojis : availableStickers);
+    }
 
     function openGroup(groupOrder) {
 
