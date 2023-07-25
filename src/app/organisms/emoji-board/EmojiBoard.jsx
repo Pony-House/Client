@@ -425,24 +425,16 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
         };
 
-        const onOpen = (roomId, cords, requestEmojiCallback, dom) => {
+        const onOpen = () => {
 
             const boardType = $(emojiBoardRef.current).attr('board-type');
 
-            const finalResult = () => {
-                $(searchRef.current).val('');
-                handleSearchChange();
+            $(searchRef.current).val('');
+            handleSearchChange();
 
-                // only update when board is getting opened to prevent shifting UI
-                setRecentEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', boardType));
-                setFavEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji', boardType));
-            };
-
-            if (boardType === dom || typeof updateAvailableEmoji !== 'function') {
-                finalResult();
-            } else {
-                updateAvailableEmoji(roomId, dom).then(() => finalResult());
-            }
+            // only update when board is getting opened to prevent shifting UI
+            setRecentEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', boardType));
+            setFavEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji', boardType));
 
         };
 
