@@ -402,11 +402,11 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             }
 
             const room = mx.getRoom(selectedRoomId);
-            const parentIds = initMatrix.roomList.getAllParentSpaces(room.roomId);
+            const parentIds = await initMatrix.roomList.getAllParentSpaces(room.roomId);
             const parentRooms = [...parentIds].map((id) => mx.getRoom(id));
             if (room) {
 
-                const packs = getRelevantPacks(room.client, [room, ...parentRooms]).filter(
+                const packs = await getRelevantPacks(room.client, [room, ...parentRooms]).filter(
                     (pack) => pack[boardType]().length !== 0
                 );
 
@@ -419,14 +419,25 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
         };
 
-        const onOpen = () => {
+        const onOpen = (roomId, cords, requestEmojiCallback, dom) => {
 
-            $(searchRef.current).val('');
-            handleSearchChange();
+            const boardType = $(emojiBoardRef.current).attr('board-type');
 
-            // only update when board is getting opened to prevent shifting UI
-            setRecentEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', $(emojiBoardRef.current).attr('board-type')));
-            setFavEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji', $(emojiBoardRef.current).attr('board-type')));
+            const finalResult = () => {
+                $(searchRef.current).val('');
+                handleSearchChange();
+
+                // only update when board is getting opened to prevent shifting UI
+                setRecentEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', boardType));
+                setFavEmojis(getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji', boardType));
+            };
+
+            if (boardType === dom || typeof updateAvailableEmoji !== 'function') {
+                finalResult();
+            } else {
+                console.log(roomId);
+                updateAvailableEmoji(roomId).then(() => finalResult());
+            }
 
         };
 

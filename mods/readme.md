@@ -165,6 +165,7 @@ console object = level, message
 
 ### emojiboardOpened (Not ready for production)
 
+    roomId
     cords
     requestEmojiCallback
     dom

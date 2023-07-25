@@ -850,7 +850,7 @@ function RoomViewInput({
 
               cords.y += 220;
 
-              openEmojiBoard(cords, 'sticker', data => {
+              openEmojiBoard(roomId, cords, 'sticker', data => {
 
                 handleSendSticker({
                   body: data.unicode.substring(1, data.unicode.length - 1),
@@ -884,11 +884,9 @@ function RoomViewInput({
 
               if (tabNewSpace > 0) { cords.y -= tabNewSpace - 60; }
 
-              openEmojiBoard(cords, 'emoji', emoji => {
-
+              openEmojiBoard(roomId, cords, 'emoji', emoji => {
                 addEmoji(emoji);
                 shiftNuller(() => e.target.click());
-
               });
 
             }}

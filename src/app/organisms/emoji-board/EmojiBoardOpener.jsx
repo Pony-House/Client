@@ -15,7 +15,7 @@ function EmojiBoardOpener() {
   const searchRef = useRef(null);
   const emojiBoardRef = useRef(null);
 
-  function openEmojiBoard(cords, requestEmojiCallback, dom) {
+  function openEmojiBoard(roomId, cords, requestEmojiCallback, dom) {
 
     const opener = $(openerRef.current);
     $(emojiBoardRef.current).attr('board-type', dom);

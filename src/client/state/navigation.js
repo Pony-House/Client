@@ -436,6 +436,7 @@ class Navigation extends EventEmitter {
 
         tinyAPI.emit(
           'emojiboardOpened',
+          action.roomId,
           action.cords,
           action.requestEmojiCallback,
           action.dom,
@@ -443,6 +444,7 @@ class Navigation extends EventEmitter {
 
         this.emit(
           cons.events.navigation.EMOJIBOARD_OPENED,
+          action.roomId,
           action.cords,
           action.requestEmojiCallback,
           action.dom,

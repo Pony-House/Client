@@ -616,7 +616,7 @@ function ProfileSection() {
                   cords.y -= 230;
 
                   const tinyOpenEmojis = () => {
-                    openEmojiBoard(cords, 'emoji', emoji => {
+                    openEmojiBoard(null, cords, 'emoji', emoji => {
 
                       if (emoji.mxc) {
                         setcustomStatusIcon(initMatrix.matrixClient.mxcUrlToHttp(emoji.mxc));

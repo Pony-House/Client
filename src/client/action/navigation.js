@@ -124,9 +124,10 @@ export function openSettings(tabText) {
   });
 }
 
-export function openEmojiBoard(cords, dom, requestEmojiCallback) {
+export function openEmojiBoard(roomId, cords, dom, requestEmojiCallback) {
   appDispatcher.dispatch({
     type: cons.actions.navigation.OPEN_EMOJIBOARD,
+    roomId,
     cords,
     requestEmojiCallback,
     dom,
