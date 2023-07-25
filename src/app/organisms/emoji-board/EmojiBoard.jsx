@@ -182,10 +182,15 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     const tinyTimeoutCollection = [];
 
     // Get Function
-    const getFunctionEmoji = () => {
+    const getFunctionEmoji = (dom) => {
 
         if (emojiBoardRef.current) {
-            const boardType = $(emojiBoardRef.current).attr('board-type');
+
+            let boardType = dom;
+            if (typeof boardType !== 'string') {
+                boardType = $(emojiBoardRef.current).attr('board-type');
+            }
+
             if (boardType === 'emoji') {
                 ROW_EMOJIS_COUNT = 7;
                 return 'getEmojis';
@@ -195,6 +200,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                 ROW_EMOJIS_COUNT = 3;
                 return 'getStickers';
             }
+
         }
 
         return 'getEmojis';
@@ -380,10 +386,10 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     const favOffset = favEmojis.length > 0 ? 1 : 0;
 
     useEffect(() => {
-        updateAvailableEmoji = async (selectedRoomId) => {
+        updateAvailableEmoji = async (selectedRoomId, dom) => {
 
             const mx = initMatrix.matrixClient;
-            const boardType = getFunctionEmoji();
+            const boardType = getFunctionEmoji(dom);
 
             if (!selectedRoomId) {
 
@@ -435,8 +441,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             if (boardType === dom || typeof updateAvailableEmoji !== 'function') {
                 finalResult();
             } else {
-                console.log(roomId);
-                updateAvailableEmoji(roomId).then(() => finalResult());
+                updateAvailableEmoji(roomId, dom).then(() => finalResult());
             }
 
         };
