@@ -538,7 +538,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                     )}
 
                     <div className="emoji-board__nav-custom">
-                        {(boardType !== 'getStickers' ? availableEmojis : availableStickers).map((pack) => {
+                        {tinyBoardData.av.map((pack) => {
 
                             const packItems = pack[boardType]();
                             for (const item in packItems) {
@@ -599,7 +599,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                                 <EmojiGroup name="Recently used" groupEmojis={tinyBoardData.recent} />
                             )}
 
-                            {(boardType !== 'getStickers' ? availableEmojis : availableStickers).map((pack) => (
+                            {tinyBoardData.av.map((pack) => (
                                 <EmojiGroup
                                     name={pack.displayName ?? 'Unknown'}
                                     key={pack.packIndex}
