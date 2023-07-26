@@ -4,6 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 
 import hljs from 'highlight.js';
+import jReact from '../../../../mods/lib/jReact';
 
 import { hljsFixer, resizeWindowChecker } from '../../../util/tools';
 import { twemojify } from '../../../util/twemojify';
@@ -932,12 +933,17 @@ function Message({
   if (msgType !== 'm.bad.encrypted') {
 
     // Check Urls on the message
+    const messageFinder = `[roomid='${roomId}'][senderid='${senderId}'][eventid='${eventId}'][msgtype='${msgType}']`;
+    $(messageFinder).find('.message-url-embed').remove();
     if (msgType === 'm.text' && Array.isArray(bodyUrls) && bodyUrls.length > 0) {
       for (const item in bodyUrls) {
         getUrlPreview(`https://${bodyUrls[item]}`).then(embed => {
-          const messageBody = $(`[roomid='${roomId}'][senderid='${senderId}'][eventid='${eventId}'][msgtype='${msgType}'] .message-body`);
+          const messageBody = $(`${messageFinder} .message-body`);
           if (messageBody.length > 0) {
             console.log(embed);
+            jReact(<div className='message-embed message-url-embed'>
+              yay
+            </div>).insertAfter(messageBody);
           }
         }).catch(console.error);
       }
