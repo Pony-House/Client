@@ -34,6 +34,13 @@ import * as Media from '../media/Media';
 import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
 import { getBlobSafeMimeType } from '../../../util/mimetypes';
 import { html, plain } from '../../../util/markdown';
+import getUrlPreview from '../../../util/libs/getUrlPreview';
+
+// const expressionWithHttp =
+//   /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))/gi;
+
+const expressionWithHttp =
+  /((www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))/gi;
 
 function PlaceholderMessage() {
   return (
@@ -871,6 +878,16 @@ function Message({
   // Content Data
   let isCustomHTML = content.format === 'org.matrix.custom.html';
   let customHTML = isCustomHTML ? content.formatted_body : null;
+  const bodyUrls = body.match(expressionWithHttp);
+
+  // Check Urls on the message
+  if (msgType === 'm.text' && Array.isArray(bodyUrls) && bodyUrls.length > 0) {
+    for (const item in bodyUrls) {
+      getUrlPreview(`https://${bodyUrls[item]}`).then(embed => {
+        console.log(embed);
+      }).catch(console.error);
+    }
+  }
 
   // Edit Data
   const edit = useCallback(() => {

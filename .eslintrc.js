@@ -38,6 +38,8 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
+    'prefer-regex-literals': 0,
+    'no-useless-escape': 0,
     'no-restricted-exports': 0,
     'func-names': 0,
     'prefer-rest-params': 0,
