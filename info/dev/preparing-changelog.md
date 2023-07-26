@@ -13,3 +13,4 @@
 - Rec voice is sending "typing" warn now.
 - Chatbox ul/ol/hljs css fix.
 - Emojiboard fav/recents list fixed. Now the values are no longer mixing with each other.
+- New copy text added to copy message text.
