@@ -637,13 +637,6 @@ const MessageOptions = React.memo(({
             <MenuHeader>Options</MenuHeader>
             <MenuItem
               className="text-start"
-              faSrc="fa-solid fa-check-double"
-              onClick={() => openReadReceipts(roomId, roomTimeline.getEventReaders(mEvent))}
-            >
-              Read receipts
-            </MenuItem>
-            <MenuItem
-              className="text-start"
               faSrc="fa-solid fa-copy"
               onClick={() => {
                 const messageBody = $(`[roomid='${roomid}'][senderid='${senderid}'][eventid='${eventid}'][msgtype='${msgtype}'] .message-body`);
@@ -651,12 +644,20 @@ const MessageOptions = React.memo(({
                   copyToClipboard((customHTML
                     ? html(customHTML, { kind: 'edit', onlyPlain: true }).plain
                     : plain(body, { kind: 'edit', onlyPlain: true }).plain));
+                  alert('Text successfully copied to the clipboard.');
                 } else {
                   alert('No text was found in this message.');
                 }
               }}
             >
               Copy text
+            </MenuItem>
+            <MenuItem
+              className="text-start"
+              faSrc="fa-solid fa-check-double"
+              onClick={() => openReadReceipts(roomId, roomTimeline.getEventReaders(mEvent))}
+            >
+              Read receipts
             </MenuItem>
             <MenuItem
               className="text-start"
