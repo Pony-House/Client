@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 import { emojiGroups, emojis, } from './emoji';
-import { loadEmojiData, getEmojiData } from './emojiData';
+import { loadEmojiData, getEmojiData, ROW_EMOJIS_COUNT, ROW_STICKERS_COUNT } from './emojiData';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -22,7 +22,7 @@ import Input from '../../atoms/input/Input';
 import ScrollView from '../../atoms/scroll/ScrollView';
 
 // Emoji Config
-let ROW_EMOJIS_COUNT = 7;
+let ROW_COUNT;
 const cateogoryList = [
     [0, 'fa-solid fa-face-smile', 'Smilies'],
     [1, 'fa-solid fa-dog', 'Animals'],
@@ -40,9 +40,9 @@ const EmojiGroup = React.memo(({ name, groupEmojis, className, isFav, }) => {
         const emojiBoard = [];
         const totalEmojis = groupEmojis.length;
 
-        for (let r = 0; r < totalEmojis; r += ROW_EMOJIS_COUNT) {
+        for (let r = 0; r < totalEmojis; r += ROW_COUNT) {
             const emojiRow = [];
-            for (let c = r; c < r + ROW_EMOJIS_COUNT; c += 1) {
+            for (let c = r; c < r + ROW_COUNT; c += 1) {
                 const emojiIndex = c;
                 if (emojiIndex >= totalEmojis) break;
                 const emoji = groupEmojis[emojiIndex];
@@ -182,6 +182,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     const [emojiData, setEmojiData] = useState([]);
     const [emojiRecent, setEmojiRecent] = useState([]);
 
+    ROW_COUNT = (boardType !== 'sticker' ? ROW_EMOJIS_COUNT : ROW_STICKERS_COUNT);
     loadEmojiData(selectedRoomId);
     getEmojiData(boardType, emojiRecent, emojiFav, emojiData, setEmojiRecent, setEmojiFav, setEmojiData);
 
@@ -359,11 +360,11 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     if (emojiBoardRef.current) {
 
         if (boardType === 'emoji') {
-            ROW_EMOJIS_COUNT = 7;
+            ROW_COUNT = ROW_EMOJIS_COUNT;
         }
 
         if (boardType === 'sticker') {
-            ROW_EMOJIS_COUNT = 3;
+            ROW_COUNT = ROW_STICKERS_COUNT;
         }
 
     }
