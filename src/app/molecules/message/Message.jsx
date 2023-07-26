@@ -880,15 +880,6 @@ function Message({
   let customHTML = isCustomHTML ? content.formatted_body : null;
   const bodyUrls = body.match(expressionWithHttp);
 
-  // Check Urls on the message
-  if (msgType === 'm.text' && Array.isArray(bodyUrls) && bodyUrls.length > 0) {
-    for (const item in bodyUrls) {
-      getUrlPreview(`https://${bodyUrls[item]}`).then(embed => {
-        console.log(embed);
-      }).catch(console.error);
-    }
-  }
-
   // Edit Data
   const edit = useCallback(() => {
     setEdit(eventId);
@@ -939,6 +930,18 @@ function Message({
 
   // Normal Message
   if (msgType !== 'm.bad.encrypted') {
+
+    // Check Urls on the message
+    if (msgType === 'm.text' && Array.isArray(bodyUrls) && bodyUrls.length > 0) {
+      for (const item in bodyUrls) {
+        getUrlPreview(`https://${bodyUrls[item]}`).then(embed => {
+          const messageBody = $(`[roomid='${roomId}'][senderid='${senderId}'][eventid='${eventId}'][msgtype='${msgType}'] .message-body`);
+          if (messageBody.length > 0) {
+            console.log(embed);
+          }
+        }).catch(console.error);
+      }
+    }
 
     // Return Data
     return (
