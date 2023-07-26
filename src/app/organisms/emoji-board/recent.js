@@ -7,44 +7,51 @@ function getEmojisListRaw(type) {
   return initMatrix.matrixClient.getAccountData(eventType + type)?.getContent() ?? { recent_emoji: [], fav_emoji: [] };
 }
 
-export function getEmojisList(limit, where, type) {
+export function getEmojisList(limit, where, tinyEmojis) {
   const res = [];
   getEmojisListRaw('emoji')[where]
     .sort((a, b) => b[1] - a[1])
     .find(([emojiData]) => {
 
       let emoji;
-
-      if (!emojiData.isCustom) {
-        emoji = emojis.find((e) => e.unicode === emojiData.unicode);
+      if (!Array.isArray(tinyEmojis)) {
+        if (!emojiData.isCustom) {
+          emoji = emojis.find((e) => e.unicode === emojiData.unicode);
+        } else {
+          emoji = emojis.find((e) => e.mxc === emojiData.mxc);
+        }
       } else {
-        emoji = emojis.find((e) => e.mxc === emojiData.mxc);
+
+        // eslint-disable-next-line no-lonely-if
+        if (!emojiData.isCustom) {
+          emoji = tinyEmojis.find((e) => e.unicode === emojiData.unicode);
+        } else {
+          emoji = tinyEmojis.find((e) => e.mxc === emojiData.mxc);
+        }
+
       }
 
       if (emoji) return res.push(emoji) >= limit;
-
       return false;
 
     });
   return res;
 }
 
-export function getStickersList(limit, where) {
+export function getStickersList(limit, where, tinyStickers) {
   const res = [];
   getEmojisListRaw('sticker')[where]
     .sort((a, b) => b[1] - a[1])
     .find(([emojiData]) => {
 
       let emoji;
-
-      if (!emojiData.isCustom) {
-        emoji = stickers.find((e) => e.unicode === emojiData.unicode);
-      } else {
+      if (!Array.isArray(tinyStickers)) {
         emoji = stickers.find((e) => e.mxc === emojiData.mxc);
+      } else {
+        emoji = tinyStickers.find((e) => e.mxc === emojiData.mxc);
       }
 
       if (emoji) return res.push(emoji) >= limit;
-
       return false;
 
     });
