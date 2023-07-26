@@ -119,7 +119,7 @@ const resetStickersList = () => {
 };
 
 export {
-  emojis, defaultEmojis, emojiGroups,
+  emojis, stickers, defaultEmojis, emojiGroups,
   addEmojiToList, removeEmojiFromList, resetEmojisList, addDefaultEmojisToList,
   addStickerToList, removeStickerFromList, resetStickersList,
 };

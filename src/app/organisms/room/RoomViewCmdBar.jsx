@@ -207,7 +207,7 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent, refcmdInput, }) {
         const parentIds = initMatrix.roomList.getAllParentSpaces(roomId);
         const parentRooms = [...parentIds].map((id) => mx.getRoom(id));
         const emojis = getEmojiForCompletion(mx, [mx.getRoom(roomId), ...parentRooms]);
-        const recentEmoji = getEmojisList(20, 'recent_emoji', 'emoji');
+        const recentEmoji = getEmojisList(20, 'recent_emoji');
         asyncSearch.setup(emojis, { keys: ['shortcode', 'shortcodes'], isContain: true, limit: 20 });
         setCmd({
           prefix,

@@ -2,7 +2,7 @@ import objectHash from 'object-hash';
 import { getRelevantPacks } from './custom-emoji';
 import initMatrix from '../../../client/initMatrix';
 
-import { getEmojisList } from './recent';
+import { getEmojisList, getStickersList } from './recent';
 
 import {
     addDefaultEmojisToList, resetEmojisList, addEmojiToList,
@@ -85,11 +85,11 @@ export function loadEmojiData(selectedRoomId) {
 
     }
 
-    tinyBoardData.emoji.recent = getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji', 'emoji');
-    tinyBoardData.emoji.fav = getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji', 'emoji');
+    tinyBoardData.emoji.recent = getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji');
+    tinyBoardData.emoji.fav = getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji');
 
-    tinyBoardData.sticker.recent = getEmojisList(3 * ROW_STICKERS_COUNT, 'recent_emoji', 'sticker');
-    tinyBoardData.sticker.fav = getEmojisList(3 * ROW_STICKERS_COUNT, 'fav_emoji', 'sticker');
+    tinyBoardData.sticker.recent = getStickersList(3 * ROW_STICKERS_COUNT, 'recent_emoji');
+    tinyBoardData.sticker.fav = getStickersList(3 * ROW_STICKERS_COUNT, 'fav_emoji');
 
     const readPacker = (where, type, addWhereToList) => (pack) => {
         const packItems = pack[type]();

@@ -1,5 +1,5 @@
 import initMatrix from '../../../client/initMatrix';
-import { emojis } from './emoji';
+import { emojis, stickers } from './emoji';
 
 const eventType = 'io.pony.house.recent_';
 
@@ -9,7 +9,7 @@ function getEmojisListRaw(type) {
 
 export function getEmojisList(limit, where, type) {
   const res = [];
-  getEmojisListRaw(type)[where]
+  getEmojisListRaw('emoji')[where]
     .sort((a, b) => b[1] - a[1])
     .find(([emojiData]) => {
 
@@ -19,6 +19,28 @@ export function getEmojisList(limit, where, type) {
         emoji = emojis.find((e) => e.unicode === emojiData.unicode);
       } else {
         emoji = emojis.find((e) => e.mxc === emojiData.mxc);
+      }
+
+      if (emoji) return res.push(emoji) >= limit;
+
+      return false;
+
+    });
+  return res;
+}
+
+export function getStickersList(limit, where) {
+  const res = [];
+  getEmojisListRaw('sticker')[where]
+    .sort((a, b) => b[1] - a[1])
+    .find(([emojiData]) => {
+
+      let emoji;
+
+      if (!emojiData.isCustom) {
+        emoji = stickers.find((e) => e.unicode === emojiData.unicode);
+      } else {
+        emoji = stickers.find((e) => e.mxc === emojiData.mxc);
       }
 
       if (emoji) return res.push(emoji) >= limit;
