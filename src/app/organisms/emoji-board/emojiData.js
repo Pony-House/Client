@@ -85,12 +85,6 @@ export function loadEmojiData(selectedRoomId) {
 
     }
 
-    tinyBoardData.emoji.recent = getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji');
-    tinyBoardData.emoji.fav = getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji');
-
-    tinyBoardData.sticker.recent = getStickersList(3 * ROW_STICKERS_COUNT, 'recent_emoji');
-    tinyBoardData.sticker.fav = getStickersList(3 * ROW_STICKERS_COUNT, 'fav_emoji');
-
     const readPacker = (where, type, addWhereToList) => (pack) => {
         const packItems = pack[type]();
         for (const item in packItems) {
@@ -117,6 +111,12 @@ export function loadEmojiData(selectedRoomId) {
     tinyBoardData.emoji.data.map(readPacker('emoji', 'getEmojis', addEmojiToList));
     tinyBoardData.sticker.data.map(readPacker('sticker', 'getStickers', addStickerToList));
     addDefaultEmojisToList(tinyBoardData.emoji.fav);
+
+    tinyBoardData.emoji.recent = getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji');
+    tinyBoardData.emoji.fav = getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji');
+
+    tinyBoardData.sticker.recent = getStickersList(3 * ROW_STICKERS_COUNT, 'recent_emoji');
+    tinyBoardData.sticker.fav = getStickersList(3 * ROW_STICKERS_COUNT, 'fav_emoji');
 
     return tinyBoardData;
 
