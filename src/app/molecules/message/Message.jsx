@@ -13,7 +13,7 @@ import {
   getUsername, getUsernameOfRoomMember, parseReply, trimHTMLReply,
 } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
-import { getEventCords } from '../../../util/common';
+import { getEventCords, copyToClipboard } from '../../../util/common';
 import { redactEvent, sendReaction } from '../../../client/action/roomTimeline';
 import {
   openEmojiBoard, openProfileViewer, openReadReceipts, openViewSource, replyTo,
@@ -597,7 +597,7 @@ function handleOpenViewSource(mEvent, roomTimeline) {
 
 // Message Options
 const MessageOptions = React.memo(({
-  roomTimeline, mEvent, edit, reply,
+  roomTimeline, mEvent, edit, reply, roomid, senderid, eventid, msgtype, body, customHTML,
 }) => {
   const { roomId, room } = roomTimeline;
   const mx = initMatrix.matrixClient;
@@ -644,6 +644,22 @@ const MessageOptions = React.memo(({
             </MenuItem>
             <MenuItem
               className="text-start"
+              faSrc="fa-solid fa-copy"
+              onClick={() => {
+                const messageBody = $(`[roomid='${roomid}'][senderid='${senderid}'][eventid='${eventid}'][msgtype='${msgtype}'] .message-body`);
+                if (messageBody.length > 0) {
+                  copyToClipboard((customHTML
+                    ? html(customHTML, { kind: 'edit', onlyPlain: true }).plain
+                    : plain(body, { kind: 'edit', onlyPlain: true }).plain));
+                } else {
+                  alert('No text was found in this message.');
+                }
+              }}
+            >
+              Copy text
+            </MenuItem>
+            <MenuItem
+              className="text-start"
               faSrc="fa-solid fa-code"
               onClick={() => handleOpenViewSource(mEvent, roomTimeline)}
             >
@@ -687,6 +703,10 @@ const MessageOptions = React.memo(({
 
 // Options Default
 MessageOptions.propTypes = {
+  roomid: PropTypes.string,
+  senderid: PropTypes.string,
+  eventid: PropTypes.string,
+  msgtype: PropTypes.string,
   roomTimeline: PropTypes.shape({}).isRequired,
   mEvent: PropTypes.shape({}).isRequired,
   edit: PropTypes.func.isRequired,
@@ -904,7 +924,7 @@ function Message({
 
     // Return Data
     return (
-      <tr className={classList.join(' ')}>
+      <tr roomid={roomId} senderid={senderId} eventid={eventId} msgtype={msgType} className={classList.join(' ')}>
 
         <td className='p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base'>
 
@@ -933,6 +953,12 @@ function Message({
 
           {roomTimeline && !isEdit && (
             <MessageOptions
+              customHTML={customHTML}
+              body={body}
+              roomid={roomId}
+              senderid={senderId}
+              eventid={eventId}
+              msgtype={msgType}
               roomTimeline={roomTimeline}
               mEvent={mEvent}
               edit={edit}
@@ -1002,7 +1028,6 @@ function Message({
           </td>
         )}
 
-
       </tr>
     );
 
@@ -1012,7 +1037,7 @@ function Message({
   const errorMessage = `<i class="bi bi-key-fill text-warning"></i> <strong>Unable to decrypt message.</strong>`;
   isCustomHTML = true;
   return (
-    <tr className={classList.join(' ')}>
+    <tr roomid={roomId} senderid={senderId} eventid={eventId} msgtype={msgType} className={classList.join(' ')}>
 
       <td className='p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base'>
 
@@ -1040,6 +1065,10 @@ function Message({
 
         {roomTimeline && !isEdit && (
           <MessageOptions
+            roomid={roomId}
+            senderid={senderId}
+            eventid={eventId}
+            msgtype={msgType}
             roomTimeline={roomTimeline}
             mEvent={mEvent}
             edit={edit}
