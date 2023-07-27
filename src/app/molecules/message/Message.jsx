@@ -1066,42 +1066,43 @@ function Message({
             />
 
             {embeds.length > 0 ? <div className='message-embed message-url-embed'>
-              {embeds.map(embed => !embed.data['og:type'] || (typeof embed.data['og:type'] === 'string' && embed.data['og:type'] === 'website') ? <div className='card mt-2'>
-                <div className='card-body'>
+              {embeds.map(embed => {
+                if (!embed.data['og:type'] || (typeof embed.data['og:type'] === 'string' && embed.data['og:type'] === 'website')) {
 
-                  {typeof embed.data['og:site_name'] === 'string' && embed.data['og:site_name'].length > 0 ? <p className='card-text very-small mb-2'>{embed.data['og:site_name']}</p> : null}
+                  const isThumb = (typeof embed.data['og:image:height'] !== 'number' || embed.data['og:image:height'] < 512 || embed.data['og:image:height'] === embed.data['og:image:width']);
 
-                  {typeof embed.data['og:title'] === 'string' && embed.data['og:title'].length > 0 ? <h5 className='card-title small fw-bold'>
-                    {typeof embed.data['og:url'] === 'string' && embed.data['og:url'].length > 0 ? <a href={embed.data['og:url']} target='_blank' rel="noreferrer">
-                      {embed.data['og:title']}
-                    </a> : embed.data['og:title']}
-                  </h5> : null}
+                  return <div className='card mt-2'>
+                    <div className='card-body'>
 
-                  {typeof embed.data['og:image:height'] !== 'number' || embed.data['og:image:height'] < 512 || embed.data['og:image:height'] === embed.data['og:image:width'] ?
-                    typeof embed.data['og:description'] === 'string' && embed.data['og:description'].length > 0 && <p className='card-text very-small'>
+                      {isThumb && typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 ? <span className='float-end'>
+                        <img height={72} width={72} src={mx.mxcUrlToHttp(embed.data['og:image'], 72, 72, 'crop')} type={embed.data['og:image:type']} alt='embed-img' />
+                      </span> : null}
 
-                      {embed.data['og:description']}
+                      <span>
 
-                      {typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 && (
-                        <span className='float-end'>
-                          <img height={72} width={72} src={mx.mxcUrlToHttp(embed.data['og:image'], 72, 72, 'crop')} type={embed.data['og:image:type']} alt='embed-img' />
-                        </span>
-                      )}
+                        {typeof embed.data['og:site_name'] === 'string' && embed.data['og:site_name'].length > 0 ? <p className='card-text very-small mb-2'>{embed.data['og:site_name']}</p> : null}
 
-                    </p> : <>
+                        {typeof embed.data['og:title'] === 'string' && embed.data['og:title'].length > 0 ? <h5 className='card-title small fw-bold'>
+                          {typeof embed.data['og:url'] === 'string' && embed.data['og:url'].length > 0 ? <a href={embed.data['og:url']} target='_blank' rel="noreferrer">
+                            {embed.data['og:title']}
+                          </a> : embed.data['og:title']}
+                        </h5> : null}
 
-                      {typeof embed.data['og:description'] === 'string' && embed.data['og:description'].length > 0 ? <p className='card-text very-small'>
-                        {embed.data['og:description']}
-                      </p> : null}
+                        {typeof embed.data['og:description'] === 'string' && embed.data['og:description'].length > 0 ? <p className='card-text very-small'>
+                          {embed.data['og:description']}
+                        </p> : null}
 
-                      {typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 ?
-                        <img className='img-fluid mt-2' height={embed.data['og:image:height']} width={embed.data['og:image:width']} src={mx.mxcUrlToHttp(embed.data['og:image'])} type={embed.data['og:image:type']} alt='embed-img' />
-                        : null}
+                        {!isThumb && typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 ?
+                          <img className='img-fluid mt-2' height={embed.data['og:image:height']} width={embed.data['og:image:width']} src={mx.mxcUrlToHttp(embed.data['og:image'])} type={embed.data['og:image:type']} alt='embed-img' />
+                          : null}
 
-                    </>}
+                      </span>
 
-                </div>
-              </div> : null)}
+                    </div>
+                  </div>;
+
+                }
+              })}
             </div> : null}
 
           </>
