@@ -854,7 +854,7 @@ function getEditedBody(editedMEvent) {
 // Message Base Receive
 function Message({
   mEvent, isBodyOnly, roomTimeline,
-  focus, fullTime, isEdit, setEdit, cancelEdit, children, className, classNameMessage, timelineSVRef,
+  focus, fullTime, isEdit, setEdit, cancelEdit, children, className, classNameMessage, timelineSVRef, timelineScrollRef,
 }) {
 
   // Get Room Data
@@ -934,10 +934,14 @@ function Message({
 
 
   useEffect(() => {
+
+    // Room jQuery base
+    const messageFinder = `[roomid='${roomId}'][senderid='${senderId}'][eventid='${eventId}'][msgtype='${msgType}']`;
+
+    // Read Message
     if (msgType === 'm.text') {
 
       // Check Urls on the message
-      const messageFinder = `[roomid='${roomId}'][senderid='${senderId}'][eventid='${eventId}'][msgtype='${msgType}']`;
       if (Array.isArray(bodyUrls) && bodyUrls.length > 0) {
 
         // Create embed base
@@ -990,11 +994,20 @@ function Message({
 
       }
 
-      return () => {
-        $(messageFinder).find('.message-url-embed').remove();
-      };
-
     }
+
+    // Detect Top Chatbox Class
+    if ($('body').hasClass('chatbox-top-page')) {
+      if (timelineScrollRef.current) {
+        timelineScrollRef.current.scrollTo(99999);
+      }
+    }
+
+    // Complete
+    return () => {
+      $(messageFinder).find('.message-url-embed').remove();
+    };
+
   }, []);
 
   // Normal Message

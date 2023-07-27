@@ -117,6 +117,7 @@ function handleOnClickCapture(e) {
 }
 
 function renderEvent(
+  timelineScrollRef,
   timelineSVRef,
   roomTimeline,
   mEvent,
@@ -148,6 +149,7 @@ function renderEvent(
   }
   return (
     <Message
+      timelineScrollRef={timelineScrollRef}
       timelineSVRef={timelineSVRef}
       key={mEvent.getId()}
       mEvent={mEvent}
@@ -605,6 +607,7 @@ function RoomViewContent({ eventId, roomTimeline }) {
       if (isFocus) jumpToItemIndex = itemCountIndex;
 
       tl.push(renderEvent(
+        timelineScrollRef,
         timelineSVRef,
         roomTimeline,
         mEvent,

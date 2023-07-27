@@ -28,6 +28,11 @@ class TimelineScroll {
     this._scrollTo(scrollInfo, maxScrollTop);
   }
 
+  scrollTo(maxScrollTop) {
+    const scrollInfo = getScrollInfo(this.scroll);
+    this._scrollTo(scrollInfo, maxScrollTop);
+  }
+
   // use previous calc by this._updateTopBottomMsg() & this._calcDiff.
   tryRestoringScroll() {
     const scrollInfo = getScrollInfo(this.scroll);
