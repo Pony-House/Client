@@ -50,10 +50,14 @@
     margin-left: 10px;
   }
   .card {
-    border-left-width: 6px;
+    border-left-width: 5px;
     border-left-color: var(--default-embed-color);
     border-right: 0px;
     border-top: 0px;
     border-bottom: 0px;
+
+    .card-text {
+      color: var(--tc-surface-low);
+    }
   }
 }
