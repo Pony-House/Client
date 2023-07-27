@@ -16,7 +16,16 @@ export default function getUrlPreview(url, ts = 0) {
     return new Promise((resolve, reject) => {
         const mx = initMatrix.matrixClient;
         if (typeof url === 'string') {
-            if (tinyCache[url] && objType(tinyCache[url].data, 'object')) {
+            if (
+
+                tinyCache[url] &&
+
+                (
+                    objType(tinyCache[url].data, 'object') ||
+                    tinyCache[url].data === null
+                )
+
+            ) {
                 resolve(tinyCache[url].data);
             } else {
                 mx.getUrlPreview(url, ts).then(embed => {
