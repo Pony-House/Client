@@ -933,9 +933,11 @@ function Message({
   }
 
   const handleScrollToBottom = () => {
-    setTimeout(() => {
-      $('#chatbox-scroll').scrollTop(99999)
-    }, 500);
+    for (let i = 0; i < 60; i++) {
+      setTimeout(() => {
+        $('#chatbox-scroll').scrollTop(99999)
+      }, 16 * Number(i + 1));
+    }
   };
 
   useEffect(() => {
