@@ -1088,7 +1088,6 @@ function Message({
               {embeds.map(embed => {
                 if (embed.data) {
 
-
                   // Is Thumb
                   const isThumb = (
 
@@ -1201,7 +1200,7 @@ function Message({
 
                         {isVideo ?
                           <div className='mt-2 ratio ratio-16x9'>
-                            <iframe title={String(embed.data['og:title'])} src={videoUrl} allowfullscreen='' />
+                            <embed title={String(embed.data['og:title'])} src={videoUrl} allowfullscreen='' />
                           </div>
                           : null}
 
