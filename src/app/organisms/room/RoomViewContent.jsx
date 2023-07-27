@@ -117,6 +117,7 @@ function handleOnClickCapture(e) {
 }
 
 function renderEvent(
+  timelineSVRef,
   roomTimeline,
   mEvent,
   prevMEvent,
@@ -147,6 +148,7 @@ function renderEvent(
   }
   return (
     <Message
+      timelineSVRef={timelineSVRef}
       key={mEvent.getId()}
       mEvent={mEvent}
       isBodyOnly={isBodyOnly}
@@ -603,6 +605,7 @@ function RoomViewContent({ eventId, roomTimeline }) {
       if (isFocus) jumpToItemIndex = itemCountIndex;
 
       tl.push(renderEvent(
+        timelineSVRef,
         roomTimeline,
         mEvent,
         isNewEvent ? null : prevMEvent,

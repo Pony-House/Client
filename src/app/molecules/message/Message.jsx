@@ -854,10 +854,11 @@ function getEditedBody(editedMEvent) {
 // Message Base Receive
 function Message({
   mEvent, isBodyOnly, roomTimeline,
-  focus, fullTime, isEdit, setEdit, cancelEdit, children, className, classNameMessage,
+  focus, fullTime, isEdit, setEdit, cancelEdit, children, className, classNameMessage, timelineSVRef,
 }) {
 
   // Get Room Data
+  $(timelineSVRef.current).trigger('scroll');
   const mx = initMatrix.matrixClient;
   const roomId = mEvent.getRoomId();
   const { editedTimeline, reactionTimeline } = roomTimeline ?? {};
