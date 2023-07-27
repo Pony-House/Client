@@ -965,10 +965,7 @@ function Message({
                   tb.roomId === roomId &&
                   tb.senderId === senderId &&
                   tb.eventId === eventId
-              ) < 0 &&
-
-              bodyUrls[item].indexOf('@') < 0 &&
-              bodyUrls[item].indexOf(':') < 0
+              ) < 0
 
             ) {
 
