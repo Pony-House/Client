@@ -1041,7 +1041,7 @@ function Message({
             />
 
             {embeds.length > 0 ? <div className='message-embed message-url-embed'>
-              {embeds.map(embed => <div className='card mt-3'>
+              {embeds.map(embed => !embed.data['og:type'] || (typeof embed.data['og:type'] === 'string' && embed.data['og:type'] === 'website') ? <div className='card mt-2'>
                 <div className='card-body'>
 
                   {typeof embed.data['og:site_name'] === 'string' && embed.data['og:site_name'].length > 0 ? <p className='card-text very-small'>{embed.data['og:site_name']}</p> : null}
@@ -1057,7 +1057,7 @@ function Message({
                   </p> : null}
 
                 </div>
-              </div>)}
+              </div> : null)}
             </div> : null}
 
           </>
