@@ -858,6 +858,7 @@ function Message({
 }) {
 
   // Get Room Data
+  const mx = initMatrix.matrixClient;
   const roomId = mEvent.getRoomId();
   const { editedTimeline, reactionTimeline } = roomTimeline ?? {};
   const [embeds, setEmbeds] = useState([]);
@@ -1068,7 +1069,7 @@ function Message({
               {embeds.map(embed => !embed.data['og:type'] || (typeof embed.data['og:type'] === 'string' && embed.data['og:type'] === 'website') ? <div className='card mt-2'>
                 <div className='card-body'>
 
-                  {typeof embed.data['og:site_name'] === 'string' && embed.data['og:site_name'].length > 0 ? <p className='card-text very-small'>{embed.data['og:site_name']}</p> : null}
+                  {typeof embed.data['og:site_name'] === 'string' && embed.data['og:site_name'].length > 0 ? <p className='card-text very-small mb-2'>{embed.data['og:site_name']}</p> : null}
 
                   {typeof embed.data['og:title'] === 'string' && embed.data['og:title'].length > 0 ? <h5 className='card-title small fw-bold'>
                     {typeof embed.data['og:url'] === 'string' && embed.data['og:url'].length > 0 ? <a href={embed.data['og:url']} target='_blank' rel="noreferrer">
@@ -1076,9 +1077,28 @@ function Message({
                     </a> : embed.data['og:title']}
                   </h5> : null}
 
-                  {typeof embed.data['og:description'] === 'string' && embed.data['og:description'].length > 0 ? <p className='card-text very-small'>
-                    {embed.data['og:description']}
-                  </p> : null}
+                  {typeof embed.data['og:image:height'] !== 'number' || embed.data['og:image:height'] < 512 || embed.data['og:image:height'] === embed.data['og:image:width'] ?
+                    typeof embed.data['og:description'] === 'string' && embed.data['og:description'].length > 0 && <p className='card-text very-small'>
+
+                      {embed.data['og:description']}
+
+                      {typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 && (
+                        <span className='float-end'>
+                          <img height={72} width={72} src={mx.mxcUrlToHttp(embed.data['og:image'], 72, 72, 'crop')} type={embed.data['og:image:type']} alt='embed-img' />
+                        </span>
+                      )}
+
+                    </p> : <>
+
+                      {typeof embed.data['og:description'] === 'string' && embed.data['og:description'].length > 0 ? <p className='card-text very-small'>
+                        {embed.data['og:description']}
+                      </p> : null}
+
+                      {typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 ?
+                        <img className='img-fluid mt-2' height={embed.data['og:image:height']} width={embed.data['og:image:width']} src={mx.mxcUrlToHttp(embed.data['og:image'])} type={embed.data['og:image:type']} alt='embed-img' />
+                        : null}
+
+                    </>}
 
                 </div>
               </div> : null)}
