@@ -117,7 +117,6 @@ function handleOnClickCapture(e) {
 }
 
 function renderEvent(
-  timelineScrollRef,
   timelineSVRef,
   roomTimeline,
   mEvent,
@@ -149,7 +148,6 @@ function renderEvent(
   }
   return (
     <Message
-      timelineScrollRef={timelineScrollRef}
       timelineSVRef={timelineSVRef}
       key={mEvent.getId()}
       mEvent={mEvent}
@@ -607,7 +605,6 @@ function RoomViewContent({ eventId, roomTimeline }) {
       if (isFocus) jumpToItemIndex = itemCountIndex;
 
       tl.push(renderEvent(
-        timelineScrollRef,
         timelineSVRef,
         roomTimeline,
         mEvent,
@@ -627,7 +624,7 @@ function RoomViewContent({ eventId, roomTimeline }) {
   };
 
   return (
-    <ScrollView ref={timelineSVRef} autoHide>
+    <ScrollView id='chatbox-scroll' ref={timelineSVRef} autoHide>
       <div className="room-view__content" onClick={handleOnClickCapture}>
         <div className="timeline__wrapper mb-2">
           <table className="table table-borderless table-hover align-middle m-0" id="chatbox">

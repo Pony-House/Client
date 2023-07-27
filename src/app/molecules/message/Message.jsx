@@ -854,7 +854,7 @@ function getEditedBody(editedMEvent) {
 // Message Base Receive
 function Message({
   mEvent, isBodyOnly, roomTimeline,
-  focus, fullTime, isEdit, setEdit, cancelEdit, children, className, classNameMessage, timelineSVRef, timelineScrollRef,
+  focus, fullTime, isEdit, setEdit, cancelEdit, children, className, classNameMessage, timelineSVRef,
 }) {
 
   // Get Room Data
@@ -932,6 +932,11 @@ function Message({
     }
   }
 
+  const handleScrollToBottom = () => {
+    setTimeout(() => {
+      $('#chatbox-scroll').scrollTop(99999)
+    }, 500);
+  };
 
   useEffect(() => {
 
@@ -998,9 +1003,7 @@ function Message({
 
     // Detect Top Chatbox Class
     if ($('body').hasClass('chatbox-top-page')) {
-      if (timelineScrollRef.current) {
-        timelineScrollRef.current.scrollTo(99999);
-      }
+      handleScrollToBottom();
     }
 
     // Complete
@@ -1191,9 +1194,7 @@ function Message({
   }
 
   if ($('body').hasClass('chatbox-top-page')) {
-    if (timelineScrollRef.current) {
-      setTimeout(() => timelineScrollRef.current.scrollTo(99999), 100);
-    }
+    handleScrollToBottom();
   }
 
   // Bad Message
