@@ -28,7 +28,16 @@ export default function getUrlPreview(url, ts = 0) {
 
                     resolve(embed);
 
-                }).catch(reject);
+                }).catch(err => {
+
+                    tinyCache[url] = {
+                        data: null,
+                        timeout: 60
+                    };
+
+                    reject(err);
+
+                });
             }
 
         }

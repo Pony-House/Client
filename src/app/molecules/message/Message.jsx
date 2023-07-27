@@ -971,6 +971,7 @@ function Message({
                 // eslint-disable-next-line no-await-in-loop
                 tinyEmbed.data = await getUrlPreview(`https://${bodyUrls[item]}`);
               } catch (err) {
+                tinyEmbed.data = null;
                 console.error(err);
               }
 
