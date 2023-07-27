@@ -945,24 +945,36 @@ function Message({
 
           let limit = 5;
           for (const item in bodyUrls) {
-            if (limit > 0 && newEmbeds.findIndex(
-              tb =>
-                tb.url === bodyUrls[item] &&
-                tb.roomId === roomId &&
-                tb.senderId === senderId &&
-                tb.eventId === eventId
-            ) < 0) {
+            if (
 
-              // eslint-disable-next-line no-await-in-loop
-              const embed = await getUrlPreview(`https://${bodyUrls[item]}`).catch(console.error);
-              newEmbeds.push({
+              limit > 0 && newEmbeds.findIndex(
+                tb =>
+                  tb.url === bodyUrls[item] &&
+                  tb.roomId === roomId &&
+                  tb.senderId === senderId &&
+                  tb.eventId === eventId
+              ) < 0 &&
+
+              bodyUrls[item].indexOf('@') < 0 &&
+              bodyUrls[item].indexOf(':') < 0
+
+            ) {
+
+              const tinyEmbed = {
                 url: bodyUrls[item],
-                data: embed,
                 roomId,
                 senderId,
                 eventId,
-              });
+              };
 
+              try {
+                // eslint-disable-next-line no-await-in-loop
+                tinyEmbed.data = await getUrlPreview(`https://${bodyUrls[item]}`);
+              } catch (err) {
+                console.error(err);
+              }
+
+              newEmbeds.push(tinyEmbed);
               limit--;
 
             }
@@ -1067,7 +1079,16 @@ function Message({
 
             {embeds.length > 0 ? <div className='message-embed message-url-embed'>
               {embeds.map(embed => {
-                if (!embed.data['og:type'] || (typeof embed.data['og:type'] === 'string' && embed.data['og:type'] === 'website')) {
+                if (
+
+                  embed.data &&
+
+                  (
+                    !embed.data['og:type'] ||
+                    (typeof embed.data['og:type'] === 'string' && embed.data['og:type'] === 'website')
+                  )
+
+                ) {
 
                   const isThumb = (typeof embed.data['og:image:height'] !== 'number' || embed.data['og:image:height'] < 512 || embed.data['og:image:height'] === embed.data['og:image:width']);
 
