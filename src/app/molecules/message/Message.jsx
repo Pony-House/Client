@@ -1088,8 +1088,39 @@ function Message({
               {embeds.map(embed => {
                 if (embed.data) {
 
-                  const isThumb = (typeof embed.data['og:image:height'] !== 'number' || embed.data['og:image:height'] < 512 || embed.data['og:image:height'] === embed.data['og:image:width']);
+                  console.log(embed.data);
 
+                  // Embed Type
+                  let type = null;
+                  if (typeof embed.data['og:type'] === 'string') {
+                    type = embed.data['og:type'].toLowerCase().split('.');
+                  }
+
+                  // Is Thumb
+                  const isThumb = (
+
+                    embed.data['og:type'] !== 'article' &&
+
+                    !embed.data['og:video:url'] &&
+                    !embed.data['og:video:height'] &&
+                    !embed.data['og:video:width'] &&
+                    !embed.data['og:video:type'] &&
+
+                    (typeof embed.data['og:image:height'] !== 'number' || embed.data['og:image:height'] < 512 || embed.data['og:image:height'] === embed.data['og:image:width'])
+
+                  );
+
+                  // Is Video
+                  const isVideo = (
+                    Array.isArray(type) &&
+                    type.indexOf('video') > -1 &&
+                    embed.data['og:video:url'] &&
+                    embed.data['og:video:height'] &&
+                    embed.data['og:video:width'] &&
+                    embed.data['og:video:type']
+                  );
+
+                  // Complete
                   return <div className='card mt-2'>
                     <div className='card-body'>
 
@@ -1118,7 +1149,7 @@ function Message({
                           {twemojify(embed.data['og:description'])}
                         </p> : null}
 
-                        {!isThumb && typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 ?
+                        {!isVideo && !isThumb && typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 ?
                           <Media.Image
                             name='embed-img'
                             className='mt-2 embed-img'
