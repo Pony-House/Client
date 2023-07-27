@@ -1102,7 +1102,7 @@ function Message({
                           className='embed-thumb'
                           width={embed.data['og:image:width']}
                           height={embed.data['og:image:height']}
-                          link={mx.mxcUrlToHttp(embed.data['og:image'])}
+                          link={mx.mxcUrlToHttp(embed.data['og:image'], 2000, 2000)}
                           type={embed.data['og:image:type']}
                         />
                       </span> : null}
@@ -1127,7 +1127,7 @@ function Message({
                             className='mt-2 embed-img'
                             width={embed.data['og:image:width']}
                             height={embed.data['og:image:height']}
-                            link={mx.mxcUrlToHttp(embed.data['og:image'])}
+                            link={mx.mxcUrlToHttp(embed.data['og:image'], 2000, 2000)}
                             type={embed.data['og:image:type']}
                           />
                           : null}
