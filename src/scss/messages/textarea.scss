@@ -46,9 +46,6 @@
 
 .message-embed {
   max-width: 465px;
-  .embed-thumb {
-    margin-left: 10px;
-  }
   .card {
     border-left-width: 5px;
     border-left-color: var(--default-embed-color);
@@ -60,14 +57,26 @@
       color: var(--tc-surface-low);
     }
   }
-  .embed-img {
+  .embed-img,
+  .embed-thumb {
     max-width: unset !important;
     .image-container {
       height: auto !important;
       img {
         max-width: 100% !important;
-        height: auto !important;
       }
+    }
+  }
+  .embed-img {
+    img {
+      height: auto !important;
+    }
+  }
+  .embed-thumb {
+    background-color: transparent !important;
+    margin-left: 10px;
+    img {
+      height: 72px !important;
     }
   }
 }

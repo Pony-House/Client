@@ -1097,7 +1097,14 @@ function Message({
                     <div className='card-body'>
 
                       {isThumb && typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 ? <span className='float-end'>
-                        <img className='embed-thumb' height={72} width={72} src={mx.mxcUrlToHttp(embed.data['og:image'], 72, 72, 'crop')} type={embed.data['og:image:type']} alt='embed-img' />
+                        <Media.Image
+                          name='embed-img'
+                          className='embed-thumb'
+                          width={embed.data['og:image:width']}
+                          height={embed.data['og:image:height']}
+                          link={mx.mxcUrlToHttp(embed.data['og:image'])}
+                          type={embed.data['og:image:type']}
+                        />
                       </span> : null}
 
                       <span>
