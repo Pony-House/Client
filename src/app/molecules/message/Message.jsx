@@ -940,13 +940,13 @@ function Message({
 
         // Create embed base
         for (const item in bodyUrls) {
-          getUrlPreview(`https://${bodyUrls[item]}`).then(embed => {
-            if (embeds.findIndex(tb => tb.url === bodyUrls[item]) < 0) {
+          if (embeds.findIndex(tb => tb.url === bodyUrls[item]) < 0) {
+            getUrlPreview(`https://${bodyUrls[item]}`).then(embed => {
               const newEmbeds = clone(embeds);
               newEmbeds.push({ url: bodyUrls[item], data: embed });
               setEmbeds(newEmbeds);
-            }
-          }).catch(console.error);
+            }).catch(console.error);
+          }
         }
 
       }
