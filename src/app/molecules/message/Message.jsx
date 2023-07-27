@@ -1099,16 +1099,7 @@ function Message({
 
             {embeds.length > 0 ? <div className='message-embed message-url-embed'>
               {embeds.map(embed => {
-                if (
-
-                  embed.data &&
-
-                  (
-                    !embed.data['og:type'] ||
-                    (typeof embed.data['og:type'] === 'string' && embed.data['og:type'] === 'website')
-                  )
-
-                ) {
+                if (embed.data) {
 
                   const isThumb = (typeof embed.data['og:image:height'] !== 'number' || embed.data['og:image:height'] < 512 || embed.data['og:image:height'] === embed.data['og:image:width']);
 
