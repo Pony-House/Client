@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import clone from 'clone';
 import hljs from 'highlight.js';
 
-import { hljsFixer, resizeWindowChecker } from '../../../util/tools';
+import { hljsFixer, resizeWindowChecker, chatboxScrollToBottom } from '../../../util/tools';
 import { twemojify } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
@@ -932,14 +932,6 @@ function Message({
     }
   }
 
-  const handleScrollToBottom = () => {
-    for (let i = 0; i < 60; i++) {
-      setTimeout(() => {
-        $('#chatbox-scroll').scrollTop(99999)
-      }, 16 * Number(i + 1));
-    }
-  };
-
   useEffect(() => {
 
     // Room jQuery base
@@ -1002,12 +994,8 @@ function Message({
 
     }
 
-    // Detect Top Chatbox Class
-    if ($('body').hasClass('chatbox-top-page')) {
-      handleScrollToBottom();
-    }
-
     // Complete
+    chatboxScrollToBottom();
     return () => {
       $(messageFinder).find('.message-url-embed').remove();
     };
@@ -1185,9 +1173,7 @@ function Message({
 
   }
 
-  if ($('body').hasClass('chatbox-top-page')) {
-    handleScrollToBottom();
-  }
+  chatboxScrollToBottom();
 
   // Bad Message
   const errorMessage = `<i class="bi bi-key-fill text-warning"></i> <strong>Unable to decrypt message.</strong>`;

@@ -1,4 +1,4 @@
-import tinyAPI from "./mods";
+import tinyAPI from './mods';
 
 let resizePlace = null;
 let resizeTimeout = null;
@@ -38,6 +38,16 @@ export function hljsFixer(el, where) {
 
     }
 
+};
+
+export function chatboxScrollToBottom(forceScroll = false) {
+    if (forceScroll || $('body').hasClass('chatbox-top-page')) {
+        for (let i = 0; i < 60; i++) {
+            setTimeout(() => {
+                $('#chatbox-scroll').scrollTop(99999)
+            }, 16 * Number(i + 1));
+        }
+    }
 };
 
 // Check Resize css Fixer
