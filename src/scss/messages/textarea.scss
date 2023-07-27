@@ -60,4 +60,14 @@
       color: var(--tc-surface-low);
     }
   }
+  .embed-img {
+    max-width: unset !important;
+    .image-container {
+      height: auto !important;
+      img {
+        max-width: 100% !important;
+        height: auto !important;
+      }
+    }
+  }
 }

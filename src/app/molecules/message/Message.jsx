@@ -1115,7 +1115,14 @@ function Message({
                         </p> : null}
 
                         {!isThumb && typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 ?
-                          <img className='img-fluid mt-2 embed-img' height={embed.data['og:image:height']} width={embed.data['og:image:width']} src={mx.mxcUrlToHttp(embed.data['og:image'])} type={embed.data['og:image:type']} alt='embed-img' />
+                          <Media.Image
+                            name='embed-img'
+                            className='mt-2 embed-img'
+                            width={embed.data['og:image:width']}
+                            height={embed.data['og:image:height']}
+                            link={mx.mxcUrlToHttp(embed.data['og:image'])}
+                            type={embed.data['og:image:type']}
+                          />
                           : null}
 
                       </span>

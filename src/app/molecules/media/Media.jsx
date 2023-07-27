@@ -121,7 +121,7 @@ File.propTypes = {
 };
 
 function Image({
-  name, width, height, link, file, type, blurhash,
+  name, width, height, link, file, type, blurhash, className, classImage,
 }) {
   const [url, setUrl] = useState(null);
   const [blur, setBlur] = useState(true);
@@ -146,7 +146,7 @@ function Image({
   };
 
   return (
-    <div className="file-container">
+    <div className={`file-container${className ? ` ${className}` : ''}`}>
       <div
         style={{ height: width !== null ? getNativeHeight(width, height) : 'unset' }}
         className="image-container"
@@ -158,6 +158,7 @@ function Image({
         {blurhash && blur && <BlurhashCanvas hash={blurhash} punch={1} />}
         {url !== null && (
           <img
+            className={classImage}
             draggable="false"
             style={{ display: blur ? 'none' : 'unset' }}
             onLoad={event => {
@@ -188,6 +189,8 @@ Image.defaultProps = {
   file: null,
   width: null,
   height: null,
+  className: null,
+  classImage: null,
   type: '',
   blurhash: '',
 };
@@ -198,6 +201,8 @@ Image.propTypes = {
   link: PropTypes.string.isRequired,
   file: PropTypes.shape({}),
   type: PropTypes.string,
+  className: PropTypes.string,
+  classImage: PropTypes.string,
   blurhash: PropTypes.string,
 };
 
