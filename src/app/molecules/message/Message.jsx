@@ -965,7 +965,9 @@ function Message({
                   tb.roomId === roomId &&
                   tb.senderId === senderId &&
                   tb.eventId === eventId
-              ) < 0
+              ) < 0 &&
+
+              !bodyUrls[item].startsWith('@')
 
             ) {
 
