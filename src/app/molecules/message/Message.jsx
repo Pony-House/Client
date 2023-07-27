@@ -1088,8 +1088,6 @@ function Message({
               {embeds.map(embed => {
                 if (embed.data) {
 
-                  console.log(embed.data);
-
                   // Embed Type
                   let type = null;
                   if (typeof embed.data['og:type'] === 'string') {
@@ -1138,6 +1136,12 @@ function Message({
                   } else if (typeof embed.data['og:image'] === 'string') {
                     imgUrl = embed.data['og:image'];
                   }
+
+                  /*
+                    {isVideo && typeof imgUrl === 'string' && imgUrl.length > 0 ?
+                      <img src={mx.mxcUrlToHttp(imgUrl, 2000, 2000)} className='mt-2 img-fluid embed-video' alt={embed.data['og:video:secure_url']} />
+                    : null}
+                  */
 
                   // Complete
                   return <div className='card mt-2'>
@@ -1195,8 +1199,10 @@ function Message({
                           />
                           : null}
 
-                        {isVideo && typeof imgUrl === 'string' && imgUrl.length > 0 ?
-                          <img src={mx.mxcUrlToHttp(imgUrl, 2000, 2000)} className='mt-2 img-fluid embed-video' alt={embed.data['og:video:secure_url']} />
+                        {isVideo ?
+                          <div className='mt-2 ratio ratio-16x9'>
+                            <iframe title={embed.data['og:title']} src={embed.data['og:video:url']} allowfullscreen='' />
+                          </div>
                           : null}
 
                       </span>
