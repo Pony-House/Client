@@ -38,6 +38,7 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
+    'import/no-cycle': 0,
     'array-callback-return': 0,
     'prefer-regex-literals': 0,
     'no-useless-escape': 0,

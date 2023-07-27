@@ -41,10 +41,13 @@ export function hljsFixer(el, where) {
 };
 
 export function chatboxScrollToBottom(forceScroll = false) {
-    if (forceScroll || $('body').hasClass('chatbox-top-page')) {
+    const body = $('body');
+    if (forceScroll || body.hasClass('chatbox-top-page')) {
         for (let i = 0; i < 60; i++) {
             setTimeout(() => {
-                $('#chatbox-scroll').scrollTop(99999)
+                if (forceScroll || body.hasClass('chatbox-top-page')) {
+                    $('#chatbox-scroll').scrollTop(99999);
+                }
             }, 16 * Number(i + 1));
         }
     }
@@ -75,6 +78,7 @@ const tinyResizeFixer = (timeout = 500) => {
                     resizePlace = resizePlaceDOM;
                 }
 
+                // eslint-disable-next-line no-use-before-define
             } else { setTimeout(() => resizeWindowChecker(), 1); return; }
         }
 

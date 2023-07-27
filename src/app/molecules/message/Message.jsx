@@ -1112,12 +1112,20 @@ function Message({
 
                   // Is Video
                   const isVideo = (
+
                     Array.isArray(type) &&
+
                     type.indexOf('video') > -1 &&
                     embed.data['og:video:url'] &&
-                    embed.data['og:video:height'] &&
-                    embed.data['og:video:width'] &&
+
+                    typeof embed.data['og:video:height'] === 'number' &&
+                    typeof embed.data['og:video:width'] === 'number' &&
+
+                    embed.data['og:video:height'] > 0 &&
+                    embed.data['og:video:width'] > 0 &&
+
                     embed.data['og:video:type']
+
                   );
 
                   // Complete
@@ -1158,6 +1166,10 @@ function Message({
                             link={mx.mxcUrlToHttp(embed.data['og:image'], 2000, 2000)}
                             type={embed.data['og:image:type']}
                           />
+                          : null}
+
+                        {isVideo && typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 ?
+                          <img src={mx.mxcUrlToHttp(embed.data['og:image'], 2000, 2000)} className='mt-2 img-fluid embed-video' alt={embed.data['og:video:secure_url']} />
                           : null}
 
                       </span>
