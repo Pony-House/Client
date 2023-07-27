@@ -1168,17 +1168,21 @@ function Message({
                           {twemojify(embed.data['og:description'])}
                         </p> : null}
 
-                        {typeof embed.data['article:publisher'] === 'string' && embed.data['article:publisher'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mt-2'>
-                          {twemojify(embed.data['article:publisher'])}
-                        </p> : null}
+                        {embed.data['og:type'] === 'article' ? <>
 
-                        {typeof embed.data['article:section'] === 'string' && embed.data['article:section'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mt-2'>
-                          {twemojify(embed.data['article:section'])}
-                        </p> : null}
+                          {typeof embed.data['article:publisher'] === 'string' && embed.data['article:publisher'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mt-2'>
+                            {twemojify(embed.data['article:publisher'])}
+                          </p> : null}
 
-                        {typeof embed.data['article:tag'] === 'string' && embed.data['article:tag'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mt-2'>
-                          {twemojify(embed.data['article:tag'])}
-                        </p> : null}
+                          {typeof embed.data['article:section'] === 'string' && embed.data['article:section'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mt-2'>
+                            {twemojify(embed.data['article:section'])}
+                          </p> : null}
+
+                          {typeof embed.data['article:tag'] === 'string' && embed.data['article:tag'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mt-2'>
+                            {twemojify(embed.data['article:tag'])}
+                          </p> : null}
+
+                        </> : null}
 
                         {!isVideo && !isThumb && typeof imgUrl === 'string' && imgUrl.length > 0 ?
                           <Media.Image
