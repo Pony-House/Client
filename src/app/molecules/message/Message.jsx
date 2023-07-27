@@ -939,15 +939,39 @@ function Message({
       if (Array.isArray(bodyUrls) && bodyUrls.length > 0) {
 
         // Create embed base
-        for (const item in bodyUrls) {
-          if (embeds.findIndex(tb => tb.url === bodyUrls[item]) < 0) {
-            getUrlPreview(`https://${bodyUrls[item]}`).then(embed => {
-              const newEmbeds = clone(embeds);
-              newEmbeds.push({ url: bodyUrls[item], data: embed });
-              setEmbeds(newEmbeds);
-            }).catch(console.error);
+        const newEmbeds = clone(embeds);
+        const searchEmbeds = async () => {
+
+          let limit = 5;
+          for (const item in bodyUrls) {
+            if (limit > 0 && newEmbeds.findIndex(
+              tb =>
+                tb.url === bodyUrls[item] &&
+                tb.roomId === roomId &&
+                tb.senderId === senderId &&
+                tb.eventId === eventId
+            ) < 0) {
+
+              // eslint-disable-next-line no-await-in-loop
+              const embed = await getUrlPreview(`https://${bodyUrls[item]}`).catch(console.error);
+              newEmbeds.push({
+                url: bodyUrls[item],
+                data: embed,
+                roomId,
+                senderId,
+                eventId,
+              });
+
+              limit--;
+
+            }
           }
-        }
+
+          setEmbeds(newEmbeds);
+
+        };
+
+        searchEmbeds();
 
       }
 
