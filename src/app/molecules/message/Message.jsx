@@ -1075,7 +1075,7 @@ function Message({
                     <div className='card-body'>
 
                       {isThumb && typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 ? <span className='float-end'>
-                        <img height={72} width={72} src={mx.mxcUrlToHttp(embed.data['og:image'], 72, 72, 'crop')} type={embed.data['og:image:type']} alt='embed-img' />
+                        <img className='embed-thumb' height={72} width={72} src={mx.mxcUrlToHttp(embed.data['og:image'], 72, 72, 'crop')} type={embed.data['og:image:type']} alt='embed-img' />
                       </span> : null}
 
                       <span>
@@ -1093,7 +1093,7 @@ function Message({
                         </p> : null}
 
                         {!isThumb && typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 ?
-                          <img className='img-fluid mt-2' height={embed.data['og:image:height']} width={embed.data['og:image:width']} src={mx.mxcUrlToHttp(embed.data['og:image'])} type={embed.data['og:image:type']} alt='embed-img' />
+                          <img className='img-fluid mt-2 embed-img' height={embed.data['og:image:height']} width={embed.data['og:image:width']} src={mx.mxcUrlToHttp(embed.data['og:image'])} type={embed.data['og:image:type']} alt='embed-img' />
                           : null}
 
                       </span>

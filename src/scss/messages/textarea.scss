@@ -45,6 +45,10 @@
 }
 
 .message-embed {
+  max-width: 500px;
+  .embed-thumb {
+    margin-left: 10px;
+  }
   .card {
     border-left-width: 6px;
     border-left-color: var(--default-embed-color);
