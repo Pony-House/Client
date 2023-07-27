@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
+import clone from 'clone';
 import hljs from 'highlight.js';
 
 import { hljsFixer, resizeWindowChecker } from '../../../util/tools';
@@ -940,7 +941,11 @@ function Message({
         // Create embed base
         for (const item in bodyUrls) {
           getUrlPreview(`https://${bodyUrls[item]}`).then(embed => {
-            console.log(embed);
+            if (embeds.findIndex(tb => tb.url === bodyUrls[item]) < 0) {
+              const newEmbeds = clone(embeds);
+              newEmbeds.push({ url: bodyUrls[item], data: embed });
+              setEmbeds(newEmbeds);
+            }
           }).catch(console.error);
         }
 
@@ -1039,16 +1044,16 @@ function Message({
               {embeds.map(embed => <div className='card mt-3'>
                 <div className='card-body'>
 
-                  {typeof embed['og:site_name'] === 'string' && embed['og:site_name'].length > 0 ? <p className='card-text very-small'>{embed['og:site_name']}</p> : null}
+                  {typeof embed.data['og:site_name'] === 'string' && embed.data['og:site_name'].length > 0 ? <p className='card-text very-small'>{embed.data['og:site_name']}</p> : null}
 
-                  {typeof embed['og:title'] === 'string' && embed['og:title'].length > 0 ? <h5 className='card-title small fw-bold'>
-                    {typeof embed['og:url'] === 'string' && embed['og:url'].length > 0 ? <a href={embed['og:url']} target='_blank' rel="noreferrer">
-                      {embed['og:title']}
-                    </a> : embed['og:title']}
+                  {typeof embed.data['og:title'] === 'string' && embed.data['og:title'].length > 0 ? <h5 className='card-title small fw-bold'>
+                    {typeof embed.data['og:url'] === 'string' && embed.data['og:url'].length > 0 ? <a href={embed.data['og:url']} target='_blank' rel="noreferrer">
+                      {embed.data['og:title']}
+                    </a> : embed.data['og:title']}
                   </h5> : null}
 
-                  {typeof embed['og:description'] === 'string' && embed['og:description'].length > 0 ? <p className='card-text very-small'>
-                    {embed['og:description']}
+                  {typeof embed.data['og:description'] === 'string' && embed.data['og:description'].length > 0 ? <p className='card-text very-small'>
+                    {embed.data['og:description']}
                   </p> : null}
 
                 </div>
