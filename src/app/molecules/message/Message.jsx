@@ -4,7 +4,6 @@ import React, {
 import PropTypes from 'prop-types';
 
 import hljs from 'highlight.js';
-import jReact from '../../../../mods/lib/jReact';
 
 import { hljsFixer, resizeWindowChecker } from '../../../util/tools';
 import { twemojify } from '../../../util/twemojify';
@@ -860,6 +859,7 @@ function Message({
   // Get Room Data
   const roomId = mEvent.getRoomId();
   const { editedTimeline, reactionTimeline } = roomTimeline ?? {};
+  const [embeds, setEmbeds] = useState([]);
 
   // Content Body
   const classList = [];
@@ -929,50 +929,32 @@ function Message({
     }
   }
 
-  // Normal Message
-  if (msgType !== 'm.bad.encrypted') {
 
-    // Check Urls on the message
-    const messageFinder = `[roomid='${roomId}'][senderid='${senderId}'][eventid='${eventId}'][msgtype='${msgType}']`;
-    $(messageFinder).find('.message-url-embed').remove();
-    if (msgType === 'm.text' && Array.isArray(bodyUrls) && bodyUrls.length > 0) {
+  useEffect(() => {
+    if (msgType === 'm.text') {
 
-      // Create embed base
-      const messageBody = $(`${messageFinder} .message-body`);
-      const newEmbed = jReact(<div className='message-embed message-url-embed' />);
-      newEmbed.insertAfter(messageBody);
-      for (const item in bodyUrls) {
-        getUrlPreview(`https://${bodyUrls[item]}`).then(embed => {
-          if (messageBody.length > 0) {
+      // Check Urls on the message
+      const messageFinder = `[roomid='${roomId}'][senderid='${senderId}'][eventid='${eventId}'][msgtype='${msgType}']`;
+      if (Array.isArray(bodyUrls) && bodyUrls.length > 0) {
 
-            // Insert embed element
-            newEmbed.append(jReact(
-              <div className='card mt-3'>
-                <div className='card-body'>
-
-                  {typeof embed['og:site_name'] === 'string' && embed['og:site_name'].length > 0 ? <p className='card-text very-small'>{embed['og:site_name']}</p> : null}
-
-                  {typeof embed['og:title'] === 'string' && embed['og:title'].length > 0 ? <h5 className='card-title small fw-bold'>
-                    {typeof embed['og:url'] === 'string' && embed['og:url'].length > 0 ? <a href={embed['og:url']} target='_blank' rel="noreferrer">
-                      {embed['og:title']}
-                    </a> : embed['og:title']}
-                  </h5> : null}
-
-                  {typeof embed['og:description'] === 'string' && embed['og:description'].length > 0 ? <p className='card-text very-small'>
-                    {embed['og:description']}
-                  </p> : null}
-
-                </div>
-              </div>
-            ));
-
+        // Create embed base
+        for (const item in bodyUrls) {
+          getUrlPreview(`https://${bodyUrls[item]}`).then(embed => {
             console.log(embed);
+          }).catch(console.error);
+        }
 
-          }
-        }).catch(console.error);
       }
 
+      return () => {
+        $(messageFinder).find('.message-url-embed').remove();
+      };
+
     }
+  }, []);
+
+  // Normal Message
+  if (msgType !== 'm.bad.encrypted') {
 
     // Return Data
     return (
@@ -1042,7 +1024,8 @@ function Message({
             />
           )}
 
-          {!isEdit && (
+          {!isEdit && (<>
+
             <MessageBody
               className={classNameMessage}
               senderName={username}
@@ -1051,6 +1034,28 @@ function Message({
               msgType={msgType}
               isEdited={isEdited}
             />
+
+            {embeds.length > 0 ? <div className='message-embed message-url-embed'>
+              {embeds.map(embed => <div className='card mt-3'>
+                <div className='card-body'>
+
+                  {typeof embed['og:site_name'] === 'string' && embed['og:site_name'].length > 0 ? <p className='card-text very-small'>{embed['og:site_name']}</p> : null}
+
+                  {typeof embed['og:title'] === 'string' && embed['og:title'].length > 0 ? <h5 className='card-title small fw-bold'>
+                    {typeof embed['og:url'] === 'string' && embed['og:url'].length > 0 ? <a href={embed['og:url']} target='_blank' rel="noreferrer">
+                      {embed['og:title']}
+                    </a> : embed['og:title']}
+                  </h5> : null}
+
+                  {typeof embed['og:description'] === 'string' && embed['og:description'].length > 0 ? <p className='card-text very-small'>
+                    {embed['og:description']}
+                  </p> : null}
+
+                </div>
+              </div>)}
+            </div> : null}
+
+          </>
           )}
 
           {isEdit && (
