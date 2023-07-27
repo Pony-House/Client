@@ -45,10 +45,8 @@ export function chatboxScrollToBottom(forceScroll = false) {
     if (forceScroll || body.hasClass('chatbox-top-page')) {
         for (let i = 0; i < 60; i++) {
             setTimeout(() => {
-                if (forceScroll || body.hasClass('chatbox-top-page')) {
-                    $('#chatbox-scroll').scrollTop(99999);
-                }
-            }, 16 * Number(i + 1));
+                $('#chatbox-scroll').scrollTop(99999);
+            }, 3 * Number(i + 1));
         }
     }
 };
