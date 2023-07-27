@@ -1106,16 +1106,16 @@ function Message({
 
                       <span>
 
-                        {typeof embed.data['og:site_name'] === 'string' && embed.data['og:site_name'].length > 0 ? <p className='card-text very-small mb-2'>{embed.data['og:site_name']}</p> : null}
+                        {typeof embed.data['og:site_name'] === 'string' && embed.data['og:site_name'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mb-2'>{twemojify(embed.data['og:site_name'])}</p> : null}
 
-                        {typeof embed.data['og:title'] === 'string' && embed.data['og:title'].length > 0 ? <h5 className='card-title small fw-bold'>
+                        {typeof embed.data['og:title'] === 'string' && embed.data['og:title'].length > 0 ? <h5 className='card-title small emoji-size-fix fw-bold'>
                           {typeof embed.data['og:url'] === 'string' && embed.data['og:url'].length > 0 ? <a href={embed.data['og:url']} target='_blank' rel="noreferrer">
-                            {embed.data['og:title']}
+                            {twemojify(embed.data['og:title'])}
                           </a> : embed.data['og:title']}
                         </h5> : null}
 
-                        {typeof embed.data['og:description'] === 'string' && embed.data['og:description'].length > 0 ? <p className='card-text very-small'>
-                          {embed.data['og:description']}
+                        {typeof embed.data['og:description'] === 'string' && embed.data['og:description'].length > 0 ? <p className='card-text very-small emoji-size-fix-2'>
+                          {twemojify(embed.data['og:description'])}
                         </p> : null}
 
                         {!isThumb && typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 ?
