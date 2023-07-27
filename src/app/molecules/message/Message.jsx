@@ -1088,11 +1088,6 @@ function Message({
               {embeds.map(embed => {
                 if (embed.data) {
 
-                  // Embed Type
-                  let type = null;
-                  if (typeof embed.data['og:type'] === 'string') {
-                    type = embed.data['og:type'].toLowerCase().split('.');
-                  }
 
                   // Is Thumb
                   const isThumb = (
@@ -1103,37 +1098,42 @@ function Message({
                     ) &&
 
                     !embed.data['og:video:url'] &&
-                    !embed.data['og:video:height'] &&
-                    !embed.data['og:video:width'] &&
-                    !embed.data['og:video:type'] &&
+                    !embed.data['og:video'] &&
+                    !embed.data['og:video:secure_url'] &&
 
-                    (typeof embed.data['og:image:height'] !== 'number' || embed.data['og:image:height'] < 512 || embed.data['og:image:height'] === embed.data['og:image:width'])
+                    (
+                      typeof embed.data['og:image:height'] !== 'number' ||
+                      typeof embed.data['og:image:width'] !== 'number' ||
+                      (embed.data['og:image:height'] < 512 && embed.data['og:image:width'] < 512) ||
+                      embed.data['og:image:height'] === embed.data['og:image:width']
+                    )
 
                   );
 
+                  // Video
+                  let videoUrl = null;
+                  if (typeof embed.data['og:video:secure_url'] === 'string' && embed.data['og:video:secure_url'].length > 0) {
+                    videoUrl = embed.data['og:video:secure_url'];
+                  } else if (typeof embed.data['og:video'] === 'string' && embed.data['og:video'].length > 0) {
+                    videoUrl = embed.data['og:video'];
+                  } else if (typeof embed.data['og:video:url'] === 'string' && embed.data['og:video:url'].length > 0) {
+                    videoUrl = embed.data['og:video:url'];
+                  }
+
+
                   // Is Video
                   const isVideo = (
-
-                    Array.isArray(type) &&
-
-                    type.indexOf('video') > -1 &&
-                    embed.data['og:video:url'] &&
-
-                    typeof embed.data['og:video:height'] === 'number' &&
-                    typeof embed.data['og:video:width'] === 'number' &&
-
-                    embed.data['og:video:height'] > 0 &&
-                    embed.data['og:video:width'] > 0 &&
-
+                    videoUrl &&
+                    typeof embed.data['og:video:height'] &&
+                    typeof embed.data['og:video:width'] &&
                     embed.data['og:video:type']
-
                   );
 
                   // Image
                   let imgUrl = null;
                   if (typeof embed.data['og:image'] === 'string' && typeof embed.data['og:image:secure_url'] === 'string') {
                     imgUrl = embed.data['og:image:secure_url'].length > 0 ? embed.data['og:image:secure_url'] : embed.data['og:image'];
-                  } else if (typeof embed.data['og:image'] === 'string') {
+                  } else if (typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0) {
                     imgUrl = embed.data['og:image'];
                   }
 
@@ -1147,14 +1147,14 @@ function Message({
                   return <div className='card mt-2'>
                     <div className='card-body'>
 
-                      {isThumb && typeof imgUrl === 'string' && imgUrl.length > 0 ? <span className='float-end'>
+                      {isThumb && typeof imgUrl === 'string' ? <span className='float-end'>
                         <Media.Image
                           name='embed-img'
                           className='embed-thumb'
-                          width={embed.data['og:image:width']}
-                          height={embed.data['og:image:height']}
+                          width={Number(embed.data['og:image:width'])}
+                          height={Number(embed.data['og:image:height'])}
                           link={mx.mxcUrlToHttp(imgUrl, 2000, 2000)}
-                          type={embed.data['og:image:type']}
+                          type={String(embed.data['og:image:type'])}
                         />
                       </span> : null}
 
@@ -1192,16 +1192,16 @@ function Message({
                           <Media.Image
                             name='embed-img'
                             className='mt-2 embed-img'
-                            width={embed.data['og:image:width']}
-                            height={embed.data['og:image:height']}
+                            width={Number(embed.data['og:image:width'])}
+                            height={Number(embed.data['og:image:height'])}
                             link={mx.mxcUrlToHttp(imgUrl, 2000, 2000)}
-                            type={embed.data['og:image:type']}
+                            type={String(embed.data['og:image:type'])}
                           />
                           : null}
 
                         {isVideo ?
                           <div className='mt-2 ratio ratio-16x9'>
-                            <iframe title={embed.data['og:title']} src={embed.data['og:video:url']} allowfullscreen='' />
+                            <iframe title={String(embed.data['og:title'])} src={videoUrl} allowfullscreen='' />
                           </div>
                           : null}
 
