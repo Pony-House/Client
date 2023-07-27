@@ -514,23 +514,28 @@ function RoomViewContent({ eventId, roomTimeline }) {
 
   const handleTimelineScroll = (event) => {
 
-    const timelineScroll = timelineScrollRef.current;
-    const timelineSV = $(timelineSVRef.current);
-    if ((!event || !event.target) && timelineSV.length < 1) return;
+    const tinyScroll = $('#chatbox-scroll');
+    if (tinyScroll.length > 0) {
 
-    throttle._(() => {
-
-      const backwards = timelineScroll?.calcScroll();
-      if (typeof backwards !== 'boolean') return;
-
-      if (!backwards) {
+      const scrollSize = tinyScroll.prop('scrollHeight') - 771;
+      if (tinyScroll.scrollTop() >= scrollSize) {
         $('body').addClass('chatbox-top-page');
       } else {
         $('body').removeClass('chatbox-top-page');
       }
 
-      handleScroll(backwards);
+    } else {
+      $('body').addClass('chatbox-top-page');
+    }
 
+    const timelineScroll = timelineScrollRef.current;
+    const timelineSV = $(timelineSVRef.current);
+    if ((!event || !event.target) && timelineSV.length < 1) return;
+
+    throttle._(() => {
+      const backwards = timelineScroll?.calcScroll();
+      if (typeof backwards !== 'boolean') return;
+      handleScroll(backwards);
     }, 200)();
 
   };
