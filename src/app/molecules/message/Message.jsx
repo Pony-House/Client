@@ -1099,7 +1099,10 @@ function Message({
                   // Is Thumb
                   const isThumb = (
 
-                    embed.data['og:type'] !== 'article' &&
+                    (
+                      embed.data['og:type'] !== 'article' ||
+                      embed.data['og:type'] === 'profile'
+                    ) &&
 
                     !embed.data['og:video:url'] &&
                     !embed.data['og:video:height'] &&
@@ -1128,17 +1131,25 @@ function Message({
 
                   );
 
+                  // Image
+                  let imgUrl = null;
+                  if (typeof embed.data['og:image'] === 'string' && typeof embed.data['og:image:secure_url'] === 'string') {
+                    imgUrl = embed.data['og:image:secure_url'].length > 0 ? embed.data['og:image:secure_url'] : embed.data['og:image'];
+                  } else if (typeof embed.data['og:image'] === 'string') {
+                    imgUrl = embed.data['og:image'];
+                  }
+
                   // Complete
                   return <div className='card mt-2'>
                     <div className='card-body'>
 
-                      {isThumb && typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 ? <span className='float-end'>
+                      {isThumb && typeof imgUrl === 'string' && imgUrl.length > 0 ? <span className='float-end'>
                         <Media.Image
                           name='embed-img'
                           className='embed-thumb'
                           width={embed.data['og:image:width']}
                           height={embed.data['og:image:height']}
-                          link={mx.mxcUrlToHttp(embed.data['og:image'], 2000, 2000)}
+                          link={mx.mxcUrlToHttp(imgUrl, 2000, 2000)}
                           type={embed.data['og:image:type']}
                         />
                       </span> : null}
@@ -1157,19 +1168,31 @@ function Message({
                           {twemojify(embed.data['og:description'])}
                         </p> : null}
 
-                        {!isVideo && !isThumb && typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 ?
+                        {typeof embed.data['article:publisher'] === 'string' && embed.data['article:publisher'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mt-2'>
+                          {twemojify(embed.data['article:publisher'])}
+                        </p> : null}
+
+                        {typeof embed.data['article:section'] === 'string' && embed.data['article:section'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mt-2'>
+                          {twemojify(embed.data['article:section'])}
+                        </p> : null}
+
+                        {typeof embed.data['article:tag'] === 'string' && embed.data['article:tag'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mt-2'>
+                          {twemojify(embed.data['article:tag'])}
+                        </p> : null}
+
+                        {!isVideo && !isThumb && typeof imgUrl === 'string' && imgUrl.length > 0 ?
                           <Media.Image
                             name='embed-img'
                             className='mt-2 embed-img'
                             width={embed.data['og:image:width']}
                             height={embed.data['og:image:height']}
-                            link={mx.mxcUrlToHttp(embed.data['og:image'], 2000, 2000)}
+                            link={mx.mxcUrlToHttp(imgUrl, 2000, 2000)}
                             type={embed.data['og:image:type']}
                           />
                           : null}
 
-                        {isVideo && typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0 ?
-                          <img src={mx.mxcUrlToHttp(embed.data['og:image'], 2000, 2000)} className='mt-2 img-fluid embed-video' alt={embed.data['og:video:secure_url']} />
+                        {isVideo && typeof imgUrl === 'string' && imgUrl.length > 0 ?
+                          <img src={mx.mxcUrlToHttp(imgUrl, 2000, 2000)} className='mt-2 img-fluid embed-video' alt={embed.data['og:video:secure_url']} />
                           : null}
 
                       </span>
