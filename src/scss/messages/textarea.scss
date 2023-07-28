@@ -79,4 +79,30 @@
       height: 72px !important;
     }
   }
+  .embed-video {
+    background-color: #000;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+
+    .play-button {
+      transition: background-color 0.1s;
+      transition-timing-function: ease-in-out;
+      background-color: rgba(255, 255, 255, 0.7);
+      background-size: 50px;
+      -webkit-filter: invert(100%);
+      filter: invert(100%);
+      background-position: center;
+      background-repeat: no-repeat;
+      pointer-events: none;
+    }
+  }
+
+  .embed-video:hover {
+    cursor: pointer;
+    .play-button {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+  }
 }

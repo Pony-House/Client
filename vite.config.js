@@ -9,6 +9,11 @@ const copyFiles = {
   targets: [
 
     {
+      src: 'node_modules/bootstrap-icons/icons/play-circle-fill.svg',
+      dest: 'img/svg/',
+    },
+
+    {
       src: 'node_modules/moment-timezone/builds/*',
       dest: 'js/moment/',
     },

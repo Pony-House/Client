@@ -36,6 +36,7 @@ import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
 import { getBlobSafeMimeType } from '../../../util/mimetypes';
 import { html, plain } from '../../../util/markdown';
 import getUrlPreview from '../../../util/libs/getUrlPreview';
+import jReact from '../../../../mods/lib/jReact';
 
 // const expressionWithHttp =
 //   /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))/gi;
@@ -1136,11 +1137,10 @@ function Message({
                     imgUrl = embed.data['og:image'];
                   }
 
-                  /*
-                    {isVideo && typeof imgUrl === 'string' && imgUrl.length > 0 ?
-                      <img src={mx.mxcUrlToHttp(imgUrl, 2000, 2000)} className='mt-2 img-fluid embed-video' alt={embed.data['og:video:secure_url']} />
-                    : null}
-                  */
+                  const defaultVideoAvatar = './img/default_avatar/1.jpg';
+                  if (!imgUrl && isVideo) {
+                    imgUrl = defaultVideoAvatar;
+                  }
 
                   // Complete
                   return <div className='card mt-2'>
@@ -1198,11 +1198,17 @@ function Message({
                           />
                           : null}
 
-                        {isVideo ?
-                          <div className='mt-2 ratio ratio-16x9'>
-                            <embed title={String(embed.data['og:title'])} src={videoUrl} allowfullscreen='' />
-                          </div>
-                          : null}
+
+                        {isVideo && typeof imgUrl === 'string' && imgUrl.length > 0 ?
+                          <div className='mt-2 ratio ratio-16x9 embed-video' style={{ backgroundImage: `url('${imgUrl !== defaultVideoAvatar ? mx.mxcUrlToHttp(imgUrl, 2000, 2000) : defaultVideoAvatar}')` }} onClick={(e) => {
+                            $(e.target).replaceWith(jReact(
+                              <div className='mt-2 ratio ratio-16x9 embed-video enabled'>
+                                <embed title={String(embed.data['og:title'])} src={videoUrl} allowfullscreen='' />
+                              </div>
+                            ))
+                          }} >
+                            <div className='play-button w-100 h-100' style={{ backgroundImage: `url('./img/svg/play-circle-fill.svg')` }} />
+                          </div> : null}
 
                       </span>
 
