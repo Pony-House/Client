@@ -80,6 +80,7 @@ export function parsePresenceStatus(presence) {
                         tinyResult.msgIcon = twemojifyIcon(tinyParse.msgIcon);
                     } else {
                         tinyResult.msgIcon = initMatrix.matrixClient.mxcUrlToHttp(tinyParse.msgIcon);
+                        tinyResult.msgIconThumb = initMatrix.matrixClient.mxcUrlToHttp(tinyParse.msgIcon, 50, 50, 'crop');
                     }
                 }
 
