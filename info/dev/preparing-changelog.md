@@ -15,3 +15,4 @@
 - Emojiboard fav/recents list fixed. Now the values are no longer mixing with each other.
 - New copy text added to copy message text.
 - Embed features added.
+- Custom Status supports custom emojis now.
