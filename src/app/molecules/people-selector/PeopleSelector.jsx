@@ -37,7 +37,9 @@ function PeopleSelector({
           htmlStatus.push($('<img>', { src: content.presenceStatusMsg.msgIcon, alt: 'icon', class: 'emoji me-2' }));
         }
 
-        htmlStatus.push(ReactDOMServer.renderToStaticMarkup(twemojify(content.presenceStatusMsg.msg.substring(0, 100))));
+        htmlStatus.push(ReactDOMServer.renderToStaticMarkup(<span className='cs-text'>
+          {twemojify(content.presenceStatusMsg.msg.substring(0, 100))}
+        </span>));
 
       }
 
@@ -101,7 +103,7 @@ function PeopleSelector({
 
       <div className="small people-selector__name text-start">
         <span className='emoji-size-fix'>{twemojify(name)}</span>
-        <div ref={customStatusRef} className='very-small text-gray text-truncate emoji-size-fix-2' />
+        <div ref={customStatusRef} className='very-small text-gray text-truncate emoji-size-fix-2 user-custom-status' />
       </div>
 
       {peopleRole !== null && <Text className="people-selector__role" variant="b3">{peopleRole}</Text>}

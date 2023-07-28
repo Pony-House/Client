@@ -1,6 +1,10 @@
 @use './partials/text';
 
 .people-selector {
+  .user-custom-status {
+    display: flex;
+  }
+
   .avatar-container {
     top: 2px;
     position: relative;
