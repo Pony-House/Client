@@ -37,7 +37,7 @@ function PeopleSelector({
           htmlStatus.push($('<img>', { src: content.presenceStatusMsg.msgIcon, alt: 'icon', class: 'emoji me-2' }));
         }
 
-        htmlStatus.push(ReactDOMServer.renderToStaticMarkup(<span className='cs-text'>
+        htmlStatus.push(ReactDOMServer.renderToStaticMarkup(<span className='text-truncate cs-text'>
           {twemojify(content.presenceStatusMsg.msg.substring(0, 100))}
         </span>));
 
