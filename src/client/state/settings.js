@@ -70,6 +70,29 @@ class Settings extends EventEmitter {
     return this.themes[this.themeIndex].data;
   }
 
+  changeMobileBackground(value = 'default') {
+    const data = this.themes[this.themeIndex].data;
+    return new Promise((resolve, reject) => {
+      if (Capacitor.isNativePlatform()) {
+
+        try {
+
+          StatusBar.setBackgroundColor({ color: data.statusBar.backgroundColor[value] });
+          StatusBar.setStyle({ style: data.statusBar.style });
+
+        } catch (err) {
+          reject(err);
+          return;
+        }
+
+        resolve(true);
+
+      } else {
+        resolve(null);
+      }
+    });
+  }
+
   _clearTheme() {
     $('body').removeClass('system-theme');
     this.themes.forEach((theme) => {
@@ -88,10 +111,7 @@ class Settings extends EventEmitter {
       $('body').addClass(this.themes[this.themeIndex].id);
     }
 
-    if (Capacitor.isNativePlatform()) {
-      StatusBar.setBackgroundColor({ color: this.themes[this.themeIndex].data.statusBar.backgroundColor.default });
-      StatusBar.setStyle({ style: this.themes[this.themeIndex].data.statusBar.style });
-    }
+    this.changeMobileBackground('default');
 
   }
 
