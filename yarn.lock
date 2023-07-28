@@ -277,11 +277,6 @@
   resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-5.0.5.tgz#799c6eb3bf5988ff1e394a28d7f5caa8435460da"
   integrity sha512-U72TPbKN1HlUqEGCOPsCBp6j93Qu1TazWUuA8Q1yfcGDfSOE0zMDNl3eU7XO5OyzpV7z9lf8NJdehimezVl7sA==
 
-"@capacitor/keyboard@5.0.4":
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/@capacitor/keyboard/-/keyboard-5.0.4.tgz#1f4cca8be2197fb68deb10d0508cad994b7031c1"
-  integrity sha512-vIv2NLZRBXgMDkyZurFpANCe7pEbpChdXNGdQFnk1Kg31DFScgwmq4ednZwT4+SHojH6SHCXxaBPg7Y265LWVQ==
-
 "@capacitor/local-notifications@5.0.6":
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/@capacitor/local-notifications/-/local-notifications-5.0.6.tgz#9684dbd7086e325e61b9297569ee9c06e5b8d8f9"
