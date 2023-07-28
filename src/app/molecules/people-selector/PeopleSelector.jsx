@@ -26,6 +26,7 @@ function PeopleSelector({
       // Get Status
       const customStatus = $(customStatusRef.current);
       const htmlStatus = [];
+      let customStatusImg;
 
       if (
         content && content.presenceStatusMsg &&
@@ -36,7 +37,13 @@ function PeopleSelector({
       ) {
 
         if (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0) {
-          htmlStatus.push($('<img>', { src: content.presenceStatusMsg.msgIcon, alt: 'icon', class: 'emoji me-1' }));
+
+          customStatusImg = $('<img>', { src: content.presenceStatusMsg.msgIconThumb, alt: 'icon', class: 'emoji me-1' });
+          htmlStatus.push(customStatusImg);
+
+          customStatusImg.data('pony-house-cs-normal', content.presenceStatusMsg.msgIconThumb);
+          customStatusImg.data('pony-house-cs-hover', content.presenceStatusMsg.msgIcon);
+
         }
 
         if (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) {
@@ -48,6 +55,16 @@ function PeopleSelector({
       }
 
       customStatus.html(htmlStatus);
+
+      if (customStatusImg) {
+        customStatusImg.parent().parent().parent().hover(
+          () => {
+            customStatusImg.attr('src', customStatusImg.data('pony-house-cs-hover'));
+          }, () => {
+            customStatusImg.attr('src', customStatusImg.data('pony-house-cs-normal'));
+          }
+        );
+      }
 
     }
 
