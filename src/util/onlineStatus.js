@@ -74,6 +74,10 @@ export function parsePresenceStatus(presence) {
                     tinyResult.msg = tinyParse.msg.substring(0, 100);
                 }
 
+                if (typeof tinyParse.msgIcon === 'string' && tinyParse.msgIcon.length > 0) {
+                    tinyResult.msgIcon = initMatrix.matrixClient.mxcUrlToHttp(tinyParse.msgIcon);
+                }
+
                 // User Banner
                 if (typeof tinyParse.banner === 'string' && tinyParse.banner.length > 0) {
                     tinyResult.banner = mx.mxcUrlToHttp(tinyParse.banner);

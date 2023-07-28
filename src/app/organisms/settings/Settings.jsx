@@ -611,7 +611,6 @@ function ProfileSection() {
           <div className="input-group">
             <span className="input-group-text" id="basic-addon1">
 
-
               {customStatusValue ? <IconButton fa="fa-solid fa-xmark" className='btn-sm me-2' onClick={() => {
                 setcustomStatusIcon('./img/default_avatar/1.jpg');
                 setcustomStatusValue(null);
