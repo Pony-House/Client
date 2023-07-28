@@ -433,8 +433,8 @@ function ProfileSection() {
 
   const customStatusRef = useRef(null);
   const bioRef = useRef(null);
-  const [customStatusIcon, setcustomStatusIcon] = useState('./img/default_avatar/1.jpg');
-  const [customStatusValue, setcustomStatusValue] = useState(null);
+  const [customStatusIcon, setcustomStatusIcon] = useState(typeof userProfile.msgIcon === 'string' ? initMatrix.matrixClient.mxcUrlToHttp(userProfile.msgIcon) : './img/default_avatar/1.jpg');
+  const [customStatusValue, setcustomStatusValue] = useState(typeof userProfile.msgIcon === 'string' ? userProfile.msgIcon : null);
 
   const [profileStatus, setProfileStatus] = useState(userProfile.status ? userProfile.status : 'online');
   const [banner, setBanner] = useState(userProfile.banner);
@@ -458,9 +458,11 @@ function ProfileSection() {
       if (typeof value === 'string' && value.length > 0) {
         setCustomStatus(value);
         content.msg = value;
+        content.msgIcon = customStatusValue;
       } else {
         setCustomStatus(null);
         content.msg = null;
+        content.msgIcon = null;
       }
 
       initMatrix.matrixClient.setAccountData('pony.house.profile', content);
@@ -607,7 +609,10 @@ function ProfileSection() {
           <div className='very-small text-gray'>Enter a status that will appear next to your name.</div>
           <div className="input-group">
             <span className="input-group-text" id="basic-addon1">
-              <img id='change-custom-status-img' className='img-fluid disabled' src={customStatusIcon} alt='custom-status' onClick={(e) => {
+
+              {customStatusValue ? 'yay' : null}
+
+              <img id='change-custom-status-img' className='img-fluid' src={customStatusIcon} alt='custom-status' onClick={(e) => {
                 if (!$(e.target).hasClass('disabled')) {
 
                   const cords = getEventCords(e);
@@ -637,6 +642,7 @@ function ProfileSection() {
 
                 }
               }} />
+
             </span>
             <input ref={customStatusRef} className="form-control form-control-bg" type="text" placeholder="" maxLength="100" defaultValue={customStatus} />
           </div>
