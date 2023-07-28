@@ -18,6 +18,7 @@ import Toggle from '../../atoms/button/Toggle';
 import Tabs from '../../atoms/tabs/Tabs';
 import SegmentedControls from '../../atoms/segmented-controls/SegmentedControls';
 
+import IconButton from '../../atoms/button/IconButton';
 import PopupWindow from '../../molecules/popup-window/PopupWindow';
 import SettingTile from '../../molecules/setting-tile/SettingTile';
 import ImportE2ERoomKeys from '../../molecules/import-export-e2e-room-keys/ImportE2ERoomKeys';
@@ -610,7 +611,11 @@ function ProfileSection() {
           <div className="input-group">
             <span className="input-group-text" id="basic-addon1">
 
-              {customStatusValue ? 'yay' : null}
+
+              {customStatusValue ? <IconButton fa="fa-solid fa-xmark" className='btn-sm me-2' onClick={() => {
+                setcustomStatusIcon('./img/default_avatar/1.jpg');
+                setcustomStatusValue(null);
+              }} /> : null}
 
               <img id='change-custom-status-img' className='img-fluid' src={customStatusIcon} alt='custom-status' onClick={(e) => {
                 if (!$(e.target).hasClass('disabled')) {
