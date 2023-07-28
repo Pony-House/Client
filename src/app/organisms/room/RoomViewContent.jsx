@@ -517,8 +517,8 @@ function RoomViewContent({ eventId, roomTimeline }) {
     const tinyScroll = $('#chatbox-scroll');
     if (tinyScroll.length > 0) {
 
-      const scrollSize = tinyScroll.prop('scrollHeight') - 771;
-      if (tinyScroll.scrollTop() >= scrollSize) {
+      const scrollSize = tinyScroll.prop('scrollHeight') - $(window).height();
+      if (tinyScroll.scrollTop() >= scrollSize - 300) {
         $('body').addClass('chatbox-top-page');
       } else {
         $('body').removeClass('chatbox-top-page');
