@@ -460,6 +460,7 @@ function ProfileSection() {
       const content = initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
 
       const { value } = customStatusRef.current;
+
       if (
         (typeof value === 'string' && value.length > 0) ||
         (typeof customStatusValue === 'string' && customStatusValue.length > 0)
@@ -468,10 +469,15 @@ function ProfileSection() {
         if (typeof value === 'string' && value.length > 0) {
           setCustomStatus(value);
           content.msg = value;
+        } else {
+          setCustomStatus(null);
+          content.msg = null;
         }
 
         if (typeof customStatusValue === 'string' && customStatusValue.length > 0) {
           content.msgIcon = customStatusValue;
+        } else {
+          content.msgIcon = null;
         }
 
       } else {
