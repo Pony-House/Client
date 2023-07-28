@@ -435,16 +435,27 @@ function ProfileViewer() {
           // Get Custom Status Data
           const customStatusDOM = $(customStatusRef.current);
           customStatusDOM.removeClass('d-none');
+          const htmlStatus = [];
 
           if (
+            content && content.presenceStatusMsg &&
             content.presence !== 'offline' && content.presence !== 'unavailable' &&
             typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0
           ) {
-            customStatusDOM.html(ReactDOMServer.renderToStaticMarkup(twemojify(content.presenceStatusMsg.msg.substring(0, 100))));
+
+            if (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0) {
+              htmlStatus.push($('<img>', { src: content.presenceStatusMsg.msgIcon, alt: 'icon', class: 'emoji me-2' }));
+            }
+
+            htmlStatus.push(ReactDOMServer.renderToStaticMarkup(<span className='text-truncate cs-text'>
+              {twemojify(content.presenceStatusMsg.msg.substring(0, 100))}
+            </span>));
+
           } else {
             customStatusDOM.addClass('d-none');
-            customStatusDOM.html('');
           }
+
+          customStatusDOM.html(htmlStatus);
 
         }
 
@@ -580,7 +591,7 @@ function ProfileViewer() {
               <h6 className='emoji-size-fix m-0 mb-1'><strong>{twemojify(username)}</strong></h6>
               <small className='text-gray emoji-size-fix'>{twemojify(userId)}</small>
 
-              <div ref={customStatusRef} className='d-none mt-2 emoji-size-fix small' />
+              <div ref={customStatusRef} className='d-none mt-2 emoji-size-fix small user-custom-status' />
 
               <div ref={bioRef} className='d-none'>
 
