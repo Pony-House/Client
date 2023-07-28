@@ -57,7 +57,10 @@ function ProfileAvatarMenu() {
 
                 }
 
-                if (customStatusRef && customStatusRef.current && typeof event.msg === 'string' && event.msg.length > 0) {
+                if (customStatusRef && customStatusRef.current && (
+                    (typeof event.msg === 'string' && event.msg.length > 0) ||
+                    (typeof event.msgIcon === 'string' && event.msgIcon.length > 0)
+                )) {
 
                     const content = getPresence({ presenceStatusMsg: eventJSON });
                     const htmlStatus = [];
@@ -66,9 +69,11 @@ function ProfileAvatarMenu() {
                         htmlStatus.push($('<img>', { src: content.presenceStatusMsg.msgIcon, alt: 'icon', class: 'emoji me-1' }));
                     }
 
-                    htmlStatus.push(ReactDOMServer.renderToStaticMarkup(<span className='text-truncate cs-text'>
-                        {twemojify(content.presenceStatusMsg.msg.substring(0, 100))}
-                    </span>));
+                    if (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) {
+                        htmlStatus.push(ReactDOMServer.renderToStaticMarkup(<span className='text-truncate cs-text'>
+                            {twemojify(content.presenceStatusMsg.msg.substring(0, 100))}
+                        </span>));
+                    }
 
                     $(customStatusRef.current).html(htmlStatus);
 

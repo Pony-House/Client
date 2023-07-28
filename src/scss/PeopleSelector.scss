@@ -1,5 +1,11 @@
 @use './partials/text';
 
+.user-custom-status.custom-status-emoji-only {
+  .emoji {
+    height: 45px !important;
+  }
+}
+
 .people-selector {
   .user-custom-status {
     display: flex;

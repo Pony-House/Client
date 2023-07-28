@@ -460,14 +460,27 @@ function ProfileSection() {
       const content = initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
 
       const { value } = customStatusRef.current;
-      if (typeof value === 'string' && value.length > 0) {
-        setCustomStatus(value);
-        content.msg = value;
-        content.msgIcon = customStatusValue;
+      if (
+        (typeof value === 'string' && value.length > 0) ||
+        (typeof customStatusValue === 'string' && customStatusValue.length > 0)
+      ) {
+
+        if (typeof value === 'string' && value.length > 0) {
+          setCustomStatus(value);
+          content.msg = value;
+        }
+
+        if (typeof customStatusValue === 'string' && customStatusValue.length > 0) {
+          content.msgIcon = customStatusValue;
+        }
+
       } else {
+
         setCustomStatus(null);
         content.msg = null;
+
         content.msgIcon = null;
+
       }
 
       initMatrix.matrixClient.setAccountData('pony.house.profile', content);

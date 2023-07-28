@@ -29,17 +29,21 @@ function PeopleSelector({
 
       if (
         content && content.presenceStatusMsg &&
-        content.presence !== 'offline' && content.presence !== 'unavailable' &&
-        typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0
+        content.presence !== 'offline' && content.presence !== 'unavailable' && (
+          (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) ||
+          (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0)
+        )
       ) {
 
         if (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0) {
           htmlStatus.push($('<img>', { src: content.presenceStatusMsg.msgIcon, alt: 'icon', class: 'emoji me-1' }));
         }
 
-        htmlStatus.push(ReactDOMServer.renderToStaticMarkup(<span className='text-truncate cs-text'>
-          {twemojify(content.presenceStatusMsg.msg.substring(0, 100))}
-        </span>));
+        if (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) {
+          htmlStatus.push(ReactDOMServer.renderToStaticMarkup(<span className='text-truncate cs-text'>
+            {twemojify(content.presenceStatusMsg.msg.substring(0, 100))}
+          </span>));
+        }
 
       }
 
