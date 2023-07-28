@@ -13,7 +13,7 @@ import { getUsername } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
 import { shiftNuller } from '../../../util/shortcut';
 import audioRecorder from '../../../util/audioRec';
-import { momentCountdown, resizeWindowChecker } from '../../../util/tools';
+import { momentCountdown, resizeWindowChecker, toast } from '../../../util/tools';
 
 import Text from '../../atoms/text/Text';
 import RawIcon from '../../atoms/system-icons/RawIcon';
@@ -207,7 +207,7 @@ function RoomViewInput({
 
               tinyRec.enabled = false;
               tinyRec.loading = false;
-              alert(err.message);
+              toast(err.message);
 
             });
         }
@@ -308,7 +308,7 @@ function RoomViewInput({
 
               tinyRec.enabled = false;
               tinyRec.loading = false;
-              alert(err.message);
+              toast(err.message);
 
             });
 
@@ -318,7 +318,7 @@ function RoomViewInput({
 
         // Warn Hold
         if (!tinyRec.enabled) {
-          alert(`You need to hold the button down to record your audio.`, 'Send Voice - Warning')
+          toast(`You need to hold the button down to record your audio.`, 'Send Voice - Warning');
         }
 
       }
@@ -559,7 +559,7 @@ function RoomViewInput({
 
     // Send Input
     await roomsInput.sendInput(roomId, opt).catch(err => {
-      alert(err.message);
+      toast(err.message);
     });
 
     // CSS

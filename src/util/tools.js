@@ -1,3 +1,6 @@
+import { Toast } from '@capacitor/toast';
+import { Capacitor } from '@capacitor/core';
+
 import tinyAPI from './mods';
 
 let resizePlace = null;
@@ -49,6 +52,14 @@ export function chatboxScrollToBottom(forceScroll = false) {
             }, 3 * Number(i + 1));
         }
     }
+};
+
+export function toast(msg, title) {
+    return new Promise((resolve, reject) => {
+        if (Capacitor.isNativePlatform()) {
+            Toast.show({ text: msg }).then(resolve).catch(reject);
+        } else { resolve(alert(msg, title)); }
+    });
 };
 
 // Check Resize css Fixer

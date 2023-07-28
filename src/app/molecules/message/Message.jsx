@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import clone from 'clone';
 import hljs from 'highlight.js';
 
-import { hljsFixer, resizeWindowChecker, chatboxScrollToBottom } from '../../../util/tools';
+import { hljsFixer, resizeWindowChecker, chatboxScrollToBottom, toast } from '../../../util/tools';
 import { twemojify } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
@@ -653,9 +653,9 @@ const MessageOptions = React.memo(({
                   copyToClipboard((customHTML
                     ? html(customHTML, { kind: 'edit', onlyPlain: true }).plain
                     : plain(body, { kind: 'edit', onlyPlain: true }).plain));
-                  alert('Text successfully copied to the clipboard.');
+                  toast('Text successfully copied to the clipboard.');
                 } else {
-                  alert('No text was found in this message.');
+                  toast('No text was found in this message.');
                 }
               }}
             >

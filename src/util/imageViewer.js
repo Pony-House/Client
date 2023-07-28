@@ -1,6 +1,7 @@
 import FileSaver from 'file-saver';
 import PhotoSwipeLightbox from 'photoswipe';
 import { getFileContentType } from './fileMime';
+import { toast } from './tools';
 
 export default async function imageViewer(lightbox, imgQuery, name, url, readMime = false) {
     try {
@@ -85,5 +86,5 @@ export default async function imageViewer(lightbox, imgQuery, name, url, readMim
 
         }
 
-    } catch (err) { console.error(err); alert(err.message); }
+    } catch (err) { console.error(err); toast(err.message); }
 };
