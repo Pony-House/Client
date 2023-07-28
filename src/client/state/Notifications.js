@@ -307,6 +307,17 @@ class Notifications extends EventEmitter {
 
       if (Capacitor.isNativePlatform()) {
 
+        /* 
+        const noti = await LocalNotifications.schedule({notifications: [
+          {
+            body: body.plain,
+            sound: './sound/notification.ogg',
+            smallIcon: icon,
+            largeIcon: icon,
+          }
+        ]});
+        */
+
       } else {
 
         const noti = new window.Notification(title, {
