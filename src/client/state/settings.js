@@ -1,7 +1,25 @@
+import { StatusBar } from '@capacitor/status-bar';
+import { Capacitor } from '@capacitor/core';
+
 import EventEmitter from 'events';
 import appDispatcher from '../dispatcher';
 
 import cons from './cons';
+
+import blackTheme from '../../scss/theme/black';
+import butterTheme from '../../scss/theme/butter';
+import darkTheme from '../../scss/theme/dark';
+import silverTheme from '../../scss/theme/silver';
+import whiteTheme from '../../scss/theme/white';
+
+const themes = {
+  black: { data: blackTheme, id: 'black-theme' },
+  butter: { data: butterTheme, id: 'butter-theme' },
+  dark: { data: darkTheme, id: 'dark-theme' },
+  silver: { data: silverTheme, id: 'silver-theme' },
+  white: { data: whiteTheme, id: '' },
+};
+
 
 function getSettings() {
   const settings = localStorage.getItem('settings');
@@ -20,7 +38,7 @@ class Settings extends EventEmitter {
   constructor() {
     super();
 
-    this.themes = ['', 'silver-theme', 'dark-theme', 'butter-theme', 'black-theme'];
+    this.themes = [themes.white, themes.silver, themes.dark, themes.butter, themes.black];
     this.themeIndex = this.getThemeIndex();
 
     this.useSystemTheme = this.getUseSystemTheme();
@@ -45,24 +63,36 @@ class Settings extends EventEmitter {
   }
 
   getThemeName() {
-    return this.themes[this.themeIndex];
+    return this.themes[this.themeIndex].id;
+  }
+
+  getThemeData() {
+    return this.themes[this.themeIndex].data;
   }
 
   _clearTheme() {
     $('body').removeClass('system-theme');
-    this.themes.forEach((themeName) => {
-      if (themeName === '') return;
-      $('body').removeClass(themeName);
+    this.themes.forEach((theme) => {
+      if (theme.id === '') return;
+      $('body').removeClass(theme.id);
     });
   }
 
   applyTheme() {
+
     this._clearTheme();
+
     if (this.useSystemTheme) {
       $('body').addClass('system-theme');
     } else if (this.themes[this.themeIndex]) {
-      $('body').addClass(this.themes[this.themeIndex]);
+      $('body').addClass(this.themes[this.themeIndex].id);
     }
+
+    if (Capacitor.isNativePlatform()) {
+      StatusBar.setBackgroundColor({ color: this.themes[this.themeIndex].data.statusBar.backgroundColor.default });
+      StatusBar.setStyle({ style: this.themes[this.themeIndex].data.statusBar.style });
+    }
+
   }
 
   setTheme(themeIndex) {
