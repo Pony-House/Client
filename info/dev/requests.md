@@ -49,8 +49,6 @@ Made by Me
 
     =======================================================
 
-    --> Adicionar Toast para o botão de gravar voz.
-
     ------------------> Adicionar opção de colocar um ícone do lado do status (Com compatibilidade com emojis)
 
     --> Confiador de URL
