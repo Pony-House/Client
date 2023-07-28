@@ -49,8 +49,6 @@ Made by Me
 
     =======================================================
 
-    ------------------> Adicionar opção de colocar um ícone do lado do status (Com compatibilidade com emojis)
-
     --> Confiador de URL
 
     --> Depois de um determinado tempo de inatividade, o usuário que estiver com status online vai trocar para Afk.
