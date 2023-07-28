@@ -8,6 +8,19 @@ import { sanitizeText } from './sanitize';
 
 export const TWEMOJI_BASE_URL = './img/twemoji/';
 
+global.String.prototype.toUnicode = function () {
+  let result = "";
+  for (let i = 0; i < this.length; i++) {
+    // Assumption: all characters are < 0xffff
+    result += `\\u${(`000${this[i].charCodeAt(0).toString(16)}`).substring(-4)}`;
+  }
+  return result;
+};
+
+global.String.prototype.emojiToCode = function () {
+  return this.codePointAt(0).toString(16);
+};
+
 const Math = lazy(() => import('../app/atoms/math/Math'));
 
 const mathOptions = {
@@ -38,7 +51,9 @@ const mathOptions = {
  * @returns React component
  */
 export function twemojify(text, opts, linkify = false, sanitize = true, maths = false) {
+
   if (typeof text !== 'string') return text;
+
   let content = text;
   const options = opts ?? { base: TWEMOJI_BASE_URL };
   if (!options.base) {
@@ -56,5 +71,11 @@ export function twemojify(text, opts, linkify = false, sanitize = true, maths = 
       rel: 'noreferrer noopener',
     });
   }
+
   return parse(content, maths ? mathOptions : null);
+
+}
+
+export function twemojifyIcon(text, size = 72) {
+  return `${TWEMOJI_BASE_URL}${size}x${size}/${text.emojiToCode().toLowerCase()}.png`;
 }

@@ -1,4 +1,5 @@
 import initMatrix from '../client/initMatrix';
+import { twemojifyIcon } from './twemojify';
 
 // Status Builder
 const statusList = {
@@ -75,7 +76,11 @@ export function parsePresenceStatus(presence) {
                 }
 
                 if (typeof tinyParse.msgIcon === 'string' && tinyParse.msgIcon.length > 0) {
-                    tinyResult.msgIcon = initMatrix.matrixClient.mxcUrlToHttp(tinyParse.msgIcon);
+                    if (tinyParse.msgIcon.length <= 2) {
+                        tinyResult.msgIcon = twemojifyIcon(tinyParse.msgIcon);
+                    } else {
+                        tinyResult.msgIcon = initMatrix.matrixClient.mxcUrlToHttp(tinyParse.msgIcon);
+                    }
                 }
 
                 // User Banner

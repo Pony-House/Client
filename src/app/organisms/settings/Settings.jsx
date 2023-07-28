@@ -11,7 +11,7 @@ import {
 } from '../../../client/action/settings';
 import { emitUpdateProfile, openEmojiBoard } from '../../../client/action/navigation';
 import { usePermission } from '../../hooks/usePermission';
-import { TWEMOJI_BASE_URL } from '../../../util/twemojify';
+import { TWEMOJI_BASE_URL, twemojifyIcon } from '../../../util/twemojify';
 
 import Button from '../../atoms/button/Button';
 import Toggle from '../../atoms/button/Toggle';
@@ -434,7 +434,11 @@ function ProfileSection() {
 
   const customStatusRef = useRef(null);
   const bioRef = useRef(null);
-  const [customStatusIcon, setcustomStatusIcon] = useState(typeof userProfile.msgIcon === 'string' ? initMatrix.matrixClient.mxcUrlToHttp(userProfile.msgIcon) : './img/default_avatar/1.jpg');
+
+  const [customStatusIcon, setcustomStatusIcon] = useState(typeof userProfile.msgIcon === 'string' ?
+    userProfile.msgIcon.length <= 2 ? twemojifyIcon(userProfile.msgIcon) : initMatrix.matrixClient.mxcUrlToHttp(userProfile.msgIcon)
+    : './img/default_avatar/1.jpg');
+
   const [customStatusValue, setcustomStatusValue] = useState(typeof userProfile.msgIcon === 'string' ? userProfile.msgIcon : null);
 
   const [profileStatus, setProfileStatus] = useState(userProfile.status ? userProfile.status : 'online');

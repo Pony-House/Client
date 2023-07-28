@@ -25,16 +25,23 @@ function PeopleSelector({
 
       // Get Status
       const customStatus = $(customStatusRef.current);
+      const htmlStatus = [];
 
       if (
         content && content.presenceStatusMsg &&
         content.presence !== 'offline' && content.presence !== 'unavailable' &&
         typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0
       ) {
-        customStatus.html(ReactDOMServer.renderToStaticMarkup(twemojify(content.presenceStatusMsg.msg.substring(0, 100))));
-      } else {
-        customStatus.html('');
+
+        if (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0) {
+          htmlStatus.push($('<img>', { src: content.presenceStatusMsg.msgIcon, alt: 'icon', class: 'emoji me-2' }));
+        }
+
+        htmlStatus.push(ReactDOMServer.renderToStaticMarkup(twemojify(content.presenceStatusMsg.msg.substring(0, 100))));
+
       }
+
+      customStatus.html(htmlStatus);
 
     }
 
