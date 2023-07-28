@@ -287,6 +287,11 @@
   resolved "https://registry.yarnpkg.com/@capacitor/status-bar/-/status-bar-5.0.4.tgz#48b89f8a5822d6c16a966e4ebaa2b42656649662"
   integrity sha512-6gvkUTotpzHlfn5KoIglbIqdaEWV/crLtCYXebtFtRAPofCU8EWcljGeeISKBYPE99xqsk3M66vRUY4OzsAYyA==
 
+"@capacitor/toast@5.0.6":
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/@capacitor/toast/-/toast-5.0.6.tgz#3b85bf03db2d9f7208a81be678bda689625a2acb"
+  integrity sha512-djkRHVT8YtLJC1vvOnDU3EfAHfQYqAD7LYEXmSmhYuTnXRIggX93m/NkazwLnnpr95kDbs2VVPM/J6dqqYuJng==
+
 "@coinbase/wallet-sdk@^3.6.6":
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/@coinbase/wallet-sdk/-/wallet-sdk-3.7.1.tgz#44b3b7a925ff5cc974e4cbf7a44199ffdcf03541"
