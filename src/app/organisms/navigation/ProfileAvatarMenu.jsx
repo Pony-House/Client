@@ -11,7 +11,7 @@ import { colorMXID } from '../../../util/colorMXID';
 
 import initMatrix from '../../../client/initMatrix';
 import { tabText as settingTabText } from '../settings/Settings';
-import { getUserStatus } from '../../../util/onlineStatus';
+import { getPresence, getUserStatus } from '../../../util/onlineStatus';
 
 import {
     openSettings,
@@ -58,7 +58,20 @@ function ProfileAvatarMenu() {
                 }
 
                 if (customStatusRef && customStatusRef.current && typeof event.msg === 'string' && event.msg.length > 0) {
-                    $(customStatusRef.current).html(ReactDOMServer.renderToStaticMarkup(twemojify(event.msg.substring(0, 100))));
+
+                    const content = getPresence({ presenceStatusMsg: eventJSON });
+                    const htmlStatus = [];
+
+                    if (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0) {
+                        htmlStatus.push($('<img>', { src: content.presenceStatusMsg.msgIcon, alt: 'icon', class: 'emoji me-1' }));
+                    }
+
+                    htmlStatus.push(ReactDOMServer.renderToStaticMarkup(<span className='text-truncate cs-text'>
+                        {twemojify(content.presenceStatusMsg.msg.substring(0, 100))}
+                    </span>));
+
+                    $(customStatusRef.current).html(htmlStatus);
+
                 } else {
                     $(customStatusRef.current).html(ReactDOMServer.renderToStaticMarkup(twemojify(user2.userId)));
                 }
@@ -125,7 +138,7 @@ function ProfileAvatarMenu() {
                             />
                             <i ref={statusRef} className={newStatus} />
                             <div className="very-small ps-2 text-truncate emoji-size-fix-2" id='display-name' >{profile.displayName}</div>
-                            <div ref={customStatusRef} className="very-small ps-2 text-truncate emoji-size-fix-2" id='user-presence' >{profile.userId}</div>
+                            <div ref={customStatusRef} className="very-small ps-2 text-truncate emoji-size-fix-2 user-custom-status" id='user-presence' >{profile.userId}</div>
                             <div className="very-small ps-2 text-truncate emoji-size-fix-2" id='user-id' >{profile.userId}</div>
                         </button>
 
