@@ -1624,6 +1624,18 @@
     "@typescript-eslint/types" "5.62.0"
     eslint-visitor-keys "^3.3.0"
 
+"@use-gpu/live@^0.9.3":
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/@use-gpu/live/-/live-0.9.3.tgz#7275146445fb6e79fe17b6613d8bc73a6a2f0e80"
+  integrity sha512-e04ttWQCguTKSlqI6eyP5xOFnlV71xSYI5nEmB2siVyCfturg/TzPL63tttLIdxiaup5reVDn5wIWVQ9BbDWwQ==
+
+"@use-gpu/react@0.9.3":
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/@use-gpu/react/-/react-0.9.3.tgz#217cf9211abbd406d058ef25b23c47124ab1849a"
+  integrity sha512-1MIVgu7vGLaoYOWTG7b6mcAjqnIyvUN6dhGD8N5US2VHywoWi21LXlnXT7tOi36VBd3uQomzaG7BDyE76ctHaw==
+  dependencies:
+    "@use-gpu/live" "^0.9.3"
+
 "@vitejs/plugin-react@4.0.3":
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-react/-/plugin-react-4.0.3.tgz#007d27ad5ef1eac4bf8c29e168ba9be2203c371b"
