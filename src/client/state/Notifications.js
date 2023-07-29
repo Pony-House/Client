@@ -13,10 +13,6 @@ import { updateName } from '../../util/roomName';
 
 import { html, plain } from '../../util/markdown';
 
-// import LogoSVG from './img/svg/cinny.svg';
-// import LogoUnreadSVG from './img/svg/cinny-unread.svg';
-// import LogoHighlightSVG from './img/svg/cinny-highlight.svg';
-
 const LogoSVG = './img/png/cinny.png';
 const LogoUnreadSVG = './img/png/cinny-unread.png';
 const LogoHighlightSVG = './img/png/cinny-highlight.png';
