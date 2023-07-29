@@ -1,3 +1,4 @@
+import * as colors from 'console-log-colors';
 import initMatrix from '../client/initMatrix';
 
 const HashIC = './img/ic/outlined/hash.svg';
@@ -218,7 +219,7 @@ export async function hasDevices(userId) {
     return Object.values(usersDeviceMap)
       .every((userDevices) => (Object.keys(userDevices).length > 0));
   } catch (e) {
-    console.error("Error determining if it's possible to encrypt to all users: ", e);
+    console.error(`${colors.grey('[matrix]')} Error determining if it's possible to encrypt to all users: `, e);
     return false;
   }
 }

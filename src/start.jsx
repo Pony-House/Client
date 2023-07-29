@@ -1,3 +1,4 @@
+import * as colors from 'console-log-colors';
 import { HTML } from '@use-gpu/react';
 import React from 'react';
 import * as ReactDOM from 'react-dom/client';
@@ -21,8 +22,8 @@ function startApp(appProtocol) {
     startWeb3();
     startQuery();
 
-    console.log(`[app] Starting app using the protocol "${appProtocol}" mode.`);
-    console.log(`[app] Dev Mode: ${isDevMode}`);
+    console.log(`${colors.green('[app]')} Starting app using the protocol "${appProtocol}" mode.`);
+    console.log(`${colors.green('[app]')} Dev Mode: ${isDevMode}`);
     global.isDevMode = isDevMode;
 
     const root = ReactDOM.createRoot(document.getElementById('root'));

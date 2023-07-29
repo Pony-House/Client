@@ -1,3 +1,5 @@
+import * as colors from 'console-log-colors';
+
 let deferredPrompt;
 window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt) => {
 
@@ -7,7 +9,7 @@ window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt)
     }
 
     // Log display mode change to analytics
-    console.log('[PWA] DISPLAY_MODE_CHANGED', displayMode);
+    console.log(`${colors.green('[PWA]')} DISPLAY_MODE_CHANGED`, displayMode);
 
 });
 
@@ -23,7 +25,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
     // showInstallPromotion();
 
     // Optionally, send analytics event that PWA install promo was shown.
-    console.log(`[PWA] 'beforeinstallprompt' event was fired.`);
+    console.log(`${colors.green('[PWA]')} 'beforeinstallprompt' event was fired.`);
 
 });
 
@@ -36,7 +38,7 @@ window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
 
     // Optionally, send analytics event to indicate successful install
-    console.log('[PWA] PWA was installed');
+    console.log(`${colors.green('[PWA]')} PWA was installed`);
 
 });
 

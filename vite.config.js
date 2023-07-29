@@ -1,4 +1,5 @@
 import { defineConfig, loadEnv } from 'vite';
+import * as colors from 'console-log-colors';
 import react from '@vitejs/plugin-react';
 import { wasm } from '@rollup/plugin-wasm';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
@@ -72,8 +73,8 @@ export default defineConfig(({ command, mode }) => {
 
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
-  console.log(`[vite-config] ${mode}`);
-  console.log(`[vite-config] [command] ${command}`);
+  console.log(`${colors.blue('[vite-config]')} ${mode}`);
+  console.log(`${colors.blue('[vite-config]')} [command] ${command}`);
 
   const env = loadEnv(mode, process.cwd(), '');
 

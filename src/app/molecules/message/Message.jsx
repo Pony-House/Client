@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
+import * as colors from 'console-log-colors';
 import clone from 'clone';
 import hljs from 'highlight.js';
 import * as linkify from "linkifyjs";
@@ -258,7 +259,7 @@ const MessageBody = React.memo(({
         true,
       );
     } catch {
-      console.error('Malformed custom html: ', body);
+      console.error(`${colors.grey('[matrix]')} ${colors.blue('[msg]')} Malformed custom html: `, body);
       content = twemojify(body, undefined);
     }
   } else if (!isSystem) {
