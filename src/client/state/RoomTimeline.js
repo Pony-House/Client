@@ -171,14 +171,17 @@ class RoomTimeline extends EventEmitter {
 
   async loadEventTimeline(eventId) {
     // we use first unfiltered EventTimelineSet for room pagination.
+    $('body').addClass('force-no-chatbox-top-page');
     const timelineSet = this.getUnfilteredTimelineSet();
     try {
       const eventTimeline = await this.matrixClient.getEventTimeline(timelineSet, eventId);
       this.activeTimeline = eventTimeline;
       await this._reset();
       this.emit(cons.events.roomTimeline.READY, eventId);
+      $('body').removeClass('force-no-chatbox-top-page');
       return true;
     } catch {
+      $('body').removeClass('force-no-chatbox-top-page');
       return false;
     }
   }
