@@ -48,7 +48,7 @@
     "@khanacademy/simple-markdown": "0.9.2",
     "@matrix-org/olm": "3.2.15",
     "@tippyjs/react": "4.2.6",
-    "@walletconnect/web3wallet": "1.8.5",
+    "@walletconnect/web3wallet": "1.8.7",
     "@web3modal/ethereum": "2.6.2",
     "@web3modal/react": "2.6.2",
     "blurhash": "2.0.5",
