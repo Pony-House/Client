@@ -79,23 +79,21 @@ function PeopleSelector({
 
       // Update Status Profile
       const updateProfileStatus = (mEvent, tinyData) => {
-        if (statusRef && statusRef.current) {
 
-          // Get Status
-          const mx = initMatrix.matrixClient;
-          const status = $(statusRef.current);
-          const tinyUser = tinyData;
+        // Get Status
+        const mx = initMatrix.matrixClient;
+        const status = $(statusRef.current);
+        const tinyUser = tinyData;
 
-          // Is You
-          if (tinyUser.userId === mx.getUserId()) {
-            const yourData = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
-            tinyUser.presenceStatusMsg = JSON.stringify(yourData);
-          }
-
-          // Update Status Icon
-          getCustomStatus(updateUserStatusIcon(status, tinyUser));
-
+        // Is You
+        if (tinyUser.userId === mx.getUserId()) {
+          const yourData = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
+          tinyUser.presenceStatusMsg = JSON.stringify(yourData);
         }
+
+        // Update Status Icon
+        getCustomStatus(updateUserStatusIcon(status, tinyUser));
+
       };
 
       // Read Events
