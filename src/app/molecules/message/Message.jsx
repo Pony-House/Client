@@ -878,7 +878,7 @@ function Message({
   // Content Data
   let isCustomHTML = content.format === 'org.matrix.custom.html';
   let customHTML = isCustomHTML ? content.formatted_body : null;
-  const bodyUrls = linkify.find(body);
+  const bodyUrls = linkify.find(body.replace(/<@(.*)>/gm), '');
 
   // Edit Data
   const edit = useCallback(() => {
