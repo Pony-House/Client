@@ -1,4 +1,5 @@
-import * as linkify from "linkifyjs";
+import * as linkify from 'linkifyjs';
+
 import initMatrix from '../../client/initMatrix';
 import { objType } from '../tools';
 
