@@ -2,7 +2,6 @@ import EventEmitter from 'events';
 import * as sdk from 'matrix-js-sdk';
 import Olm from '@matrix-org/olm';
 
-import * as colors from 'console-log-colors';
 import { secret } from './state/auth';
 import RoomList from './state/RoomList';
 import AccountData from './state/AccountData';
@@ -70,14 +69,14 @@ class InitMatrix extends EventEmitter {
   setupSync() {
     const sync = {
       NULL: () => {
-        logger.log(`${colors.grey('[matrix]')} NULL state`);
+        logger.log(`NULL state`);
       },
       SYNCING: () => {
-        logger.log(`${colors.grey('[matrix]')} SYNCING state`);
+        logger.log(`SYNCING state`);
       },
       PREPARED: (prevState) => {
-        logger.log(`${colors.grey('[matrix]')} PREPARED state`);
-        logger.log(`${colors.grey('[matrix]')} Previous state: `, prevState);
+        logger.log(`PREPARED state`);
+        logger.log(`Previous state: `, prevState);
         // TODO: remove global.initMatrix at end
         global.initMatrix = this;
         if (prevState === null) {
@@ -92,16 +91,16 @@ class InitMatrix extends EventEmitter {
         }
       },
       RECONNECTING: () => {
-        logger.log(`${colors.grey('[matrix]')} RECONNECTING state`);
+        logger.log(`RECONNECTING state`);
       },
       CATCHUP: () => {
-        logger.log(`${colors.grey('[matrix]')} CATCHUP state`);
+        logger.log(`CATCHUP state`);
       },
       ERROR: () => {
-        logger.log(`${colors.grey('[matrix]')} ERROR state`);
+        logger.log(`ERROR state`);
       },
       STOPPED: () => {
-        logger.log(`${colors.grey('[matrix]')} STOPPED state`);
+        logger.log(`STOPPED state`);
       },
     };
     this.matrixClient.on('sync', (state, prevState) => sync[state](prevState));

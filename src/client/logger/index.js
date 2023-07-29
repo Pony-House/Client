@@ -1,5 +1,4 @@
 import clone from 'clone';
-import * as colors from 'console-log-colors';
 import { logger as mxLogger } from 'matrix-js-sdk/lib/logger';
 import { consoleRemoveData, consoleNewData, consoleUpdate } from '../action/navigation';
 import tinyAPI from '../../util/mods';
@@ -38,11 +37,12 @@ const logCache = {
 };
 
 // rewrite matrix logger
-mxLogger.info = (...msg) => logCache.add('info', `${colors.grey('[matrix]')} ${msg}`);
-mxLogger.log = (...msg) => logCache.add('log', `${colors.grey('[matrix]')} ${msg}`);
-mxLogger.warn = (...msg) => logCache.add('warn', `${colors.grey('[matrix]')} ${msg}`);
-mxLogger.error = (...msg) => logCache.add('error', `${colors.grey('[matrix]')} ${msg}`);
-mxLogger.trace = (...msg) => logCache.add('trace', `${colors.grey('[matrix]')} ${msg}`);
+mxLogger.info = (...msg) => logCache.add('info', msg);
+mxLogger.log = (...msg) => logCache.add('log', msg);
+mxLogger.warn = (...msg) => logCache.add('warn', msg);
+mxLogger.error = (...msg) => logCache.add('error', msg);
+mxLogger.trace = (...msg) => logCache.add('trace', msg);
+mxLogger.debug = (...msg) => logCache.add('debug', msg);
 
 function isLogString(value) {
 
