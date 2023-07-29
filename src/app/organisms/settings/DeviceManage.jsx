@@ -215,8 +215,21 @@ function DeviceManage() {
 
         <li className="list-group-item very-small text-gray">Unverified sessions</li>
 
+        {!isMeVerified && (
+          <li className="list-group-item small text-primary p-3">
+            <i className="fa-solid fa-circle-info me-2" />
+            Verify this session either with your Security Key/Phrase here or by initiating emoji verification from a verified session.
+          </li>
+        )}
+        {isMeVerified && unverified.length > 0 && (
+          <li className="list-group-item small text-bg p-3">
+            <i className="fa-solid fa-circle-info me-2" />
+            Verify other sessions by emoji verification or remove unfamiliar ones.
+          </li>
+        )}
+
         {!isCSEnabled && (
-          <li className="list-group-item small text-warning p-4">
+          <li className="list-group-item small text-warning p-3">
             <i className="fa-solid fa-circle-info me-2" />
             Setup cross signing in case you lose all your sessions.
           </li>

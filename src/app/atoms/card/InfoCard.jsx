@@ -7,7 +7,7 @@ import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
 function InfoCard({
   className, style,
-  variant, iconSrc,
+  variant, iconSrc, faSrc,
   title, content,
   rounded, requestClose,
 }) {
@@ -16,18 +16,28 @@ function InfoCard({
   if (className) classes.push(className);
   return (
     <div className={classes.join(' ')} style={style}>
+
       {iconSrc && (
         <div className="info-card__icon">
           <RawIcon color={`var(--ic-${variant}-high)`} src={iconSrc} />
         </div>
       )}
+
+      {faSrc && (
+        <div className="info-card__icon">
+          <RawIcon fa={faSrc} />
+        </div>
+      )}
+
       <div className="info-card__content">
         <small>{title}</small>
         {content}
       </div>
+
       {requestClose && (
         <IconButton fa="fa-solid fa-xmark" variant={variant} onClick={requestClose} />
       )}
+
     </div>
   );
 }
@@ -36,6 +46,7 @@ InfoCard.defaultProps = {
   className: null,
   style: null,
   variant: 'link btn-bg',
+  faSrc: null,
   iconSrc: null,
   content: null,
   rounded: false,
@@ -46,6 +57,7 @@ InfoCard.propTypes = {
   className: PropTypes.string,
   style: PropTypes.shape({}),
   variant: PropTypes.oneOf(bsColorsArray),
+  faSrc: PropTypes.string,
   iconSrc: PropTypes.string,
   title: PropTypes.string.isRequired,
   content: PropTypes.node,
