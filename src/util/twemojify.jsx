@@ -1,10 +1,32 @@
 /* eslint-disable import/prefer-default-export */
 import React, { lazy, Suspense } from 'react';
 
+import * as linkify from "linkifyjs";
 import linkifyHtml from 'linkify-html';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 import { sanitizeText } from './sanitize';
+
+linkify.registerCustomProtocol('matrix');
+linkify.registerCustomProtocol('twitter');
+linkify.registerCustomProtocol('steam');
+
+linkify.registerCustomProtocol('ircs');
+linkify.registerCustomProtocol('irc');
+
+linkify.registerCustomProtocol('ftp');
+
+linkify.registerCustomProtocol('ipfs');
+
+linkify.registerCustomProtocol('bitcoin');
+linkify.registerCustomProtocol('dogecoin');
+linkify.registerCustomProtocol('monero');
+
+linkify.registerCustomProtocol('ethereum');
+linkify.registerCustomProtocol('web3');
+
+linkify.registerCustomProtocol('ar');
+linkify.registerCustomProtocol('lbry');
 
 export const TWEMOJI_BASE_URL = './img/twemoji/';
 
@@ -50,7 +72,7 @@ const mathOptions = {
  * @param {boolean} [maths=false] - render maths (default: false)
  * @returns React component
  */
-export function twemojify(text, opts, linkify = false, sanitize = true, maths = false) {
+export function twemojify(text, opts, linkifyEnabled = false, sanitize = true, maths = false) {
 
   if (typeof text !== 'string') return text;
 
@@ -65,7 +87,7 @@ export function twemojify(text, opts, linkify = false, sanitize = true, maths = 
   }
 
   content = twemoji.parse(content, options);
-  if (linkify) {
+  if (linkifyEnabled) {
     content = linkifyHtml(content, {
       target: '_blank',
       rel: 'noreferrer noopener',
