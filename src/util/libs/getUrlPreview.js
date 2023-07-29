@@ -1,3 +1,4 @@
+import * as linkify from "linkifyjs";
 import initMatrix from '../../client/initMatrix';
 import { objType } from '../tools';
 
@@ -15,7 +16,7 @@ setInterval(() => {
 export default function getUrlPreview(url, ts = 0) {
     return new Promise((resolve, reject) => {
         const mx = initMatrix.matrixClient;
-        if (typeof url === 'string') {
+        if (typeof url === 'string' && linkify.test(url)) {
             if (
 
                 tinyCache[url] &&
