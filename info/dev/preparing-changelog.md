@@ -17,3 +17,4 @@
 - Embed features added.
 - Custom Status supports custom emojis now.
 - If the green button saying you have new messages is clicked, this will mark the chat as read on the room now.
+- Fixed the issue where notifications were not received from the room that was visible in the app when you have the app minimized.
