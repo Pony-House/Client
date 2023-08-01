@@ -3,10 +3,15 @@ import React, { lazy, Suspense } from 'react';
 
 import * as linkify from "linkifyjs";
 import linkifyHtml from 'linkify-html';
+import linkifyRegisterKeywords from 'linkify-plugin-keyword';
+
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 import { sanitizeText } from './sanitize';
 
+import keywords from '../../mods/keywords';
+
+// Register Protocols
 linkify.registerCustomProtocol('matrix');
 linkify.registerCustomProtocol('twitter');
 linkify.registerCustomProtocol('steam');
@@ -28,8 +33,15 @@ linkify.registerCustomProtocol('web3');
 linkify.registerCustomProtocol('ar');
 linkify.registerCustomProtocol('lbry');
 
+// Register Keywords
+const tinywords = [];
+for (const item in keywords) { tinywords.push(keywords[item].name); }
+linkifyRegisterKeywords(tinywords);
+
+// Emoji Base
 export const TWEMOJI_BASE_URL = './img/twemoji/';
 
+// String Protocols
 global.String.prototype.toUnicode = function () {
   let result = "";
   for (let i = 0; i < this.length; i++) {
@@ -43,8 +55,8 @@ global.String.prototype.emojiToCode = function () {
   return this.codePointAt(0).toString(16);
 };
 
+// Tiny Math
 const Math = lazy(() => import('../app/atoms/math/Math'));
-
 const mathOptions = {
   replace: (node) => {
     const maths = node.attribs?.['data-mx-maths'];
@@ -89,8 +101,20 @@ export function twemojify(text, opts, linkifyEnabled = false, sanitize = true, m
   content = twemoji.parse(content, options);
   if (linkifyEnabled) {
     content = linkifyHtml(content, {
+
+      defaultProtocol: 'https',
+
+      formatHref: {
+        keyword: (keyword) => {
+          const tinyword = keyword.toLowerCase();
+          const item = keywords.find(word => word.name === tinyword);
+          if (item) return item.href;
+        },
+      },
+
       target: '_blank',
       rel: 'noreferrer noopener',
+
     });
   }
 
