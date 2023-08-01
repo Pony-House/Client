@@ -54,8 +54,6 @@ Made by Me
 
     --> <Text>{systemState.status}</Text>
 
-    --> Concertar envio de notificação. A notificação precisa apitar quando o usuário está na mesma página, mas está com a janela minimizada
-
     --> Tema https://github.com/catppuccin/cinny
 
     Sandbox: https://github.com/sablejs/sablejs

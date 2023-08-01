@@ -16,3 +16,4 @@
 - New copy text added to copy message text.
 - Embed features added.
 - Custom Status supports custom emojis now.
+- If the green button saying you have new messages is clicked, this will mark the chat as read on the room now.

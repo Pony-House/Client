@@ -253,12 +253,13 @@ class Notifications extends EventEmitter {
   }
 
   async _displayPopupNoti(mEvent, room) {
+
     if (!settings.showNotifications && !settings.isNotificationSounds) return;
 
     const actions = this.matrixClient.getPushActionsForEvent(mEvent);
     if (!actions?.notify) return;
 
-    if (navigation.selectedRoomId === room.roomId && document.visibilityState === 'visible') return;
+    if (navigation.selectedRoomId === room.roomId && document.visibilityState === 'visible' && !$('body').hasClass('windowHidden')) return;
 
     if (mEvent.isEncrypted()) {
       await mEvent.attemptDecryption(this.matrixClient.crypto);
@@ -340,6 +341,7 @@ class Notifications extends EventEmitter {
     } else {
       this._playNotiSound();
     }
+
   }
 
   _deletePopupNoti(eventId) {
