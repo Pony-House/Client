@@ -3,10 +3,6 @@ Made by aisa
     1 - Don't mark messages as read if the window isn't focused.
     2- Don't switch to a room when joined via invite on another session.
 
-chad
-
-    --> did you ever find out why it never scrolls down to the bottom yet? c:
-
 Made by Me
 
     Insert into manifest
@@ -55,8 +51,6 @@ Made by Me
     --> Se o usuário colocar o status afk propositalmente, apenas o presence vai definir o afk value para questões de privacidade do usuário.
     --> Status ocupado não pode enviar notificação
     --> Criar sistema de alterar o tamanho da fonte do aplicativo
-
-    --> Marcar mensagens como lidas quando a pessoa abre o chat de conversa. (aisa - 1)
 
     --> <Text>{systemState.status}</Text>
 

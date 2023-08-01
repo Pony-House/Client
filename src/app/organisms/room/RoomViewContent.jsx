@@ -604,7 +604,7 @@ function RoomViewContent({ eventId, roomTimeline }) {
           && readUptoEvent.getTs() < mEvent.getTs());
         if (unreadDivider) {
           isNewEvent = true;
-          tl.push(<Divider key={`new-${mEvent.getId()}`} variant="success" text="New messages" />);
+          tl.push(<Divider key={`new-${mEvent.getId()}`} variant="success" text="New messages" roomId={roomTimeline.roomId} clickRemove />);
           itemCountIndex += 1;
           if (jumpToItemIndex === -1) jumpToItemIndex = itemCountIndex;
         }

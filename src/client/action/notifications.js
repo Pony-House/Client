@@ -1,10 +1,11 @@
 import initMatrix from '../initMatrix';
 
-// eslint-disable-next-line import/prefer-default-export
 export async function markAsRead(roomId) {
+
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
   if (!room) return;
+
   initMatrix.notifications.deleteNoti(roomId);
 
   const timeline = room.getLiveTimeline().getEvents();
@@ -18,9 +19,11 @@ export async function markAsRead(roomId) {
     }
     return null;
   };
+
   if (timeline.length === 0) return;
   const latestEvent = getLatestValidEvent();
-  if (latestEvent === null) return;
 
+  if (latestEvent === null) return;
   await mx.sendReadReceipt(latestEvent);
+
 }

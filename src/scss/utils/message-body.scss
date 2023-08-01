@@ -46,3 +46,14 @@
 .hljs-fullview {
   max-height: none !important;
 }
+
+.divider-box {
+  .divider-box-click,
+  .divider-box-click:hover {
+    cursor: pointer;
+  }
+
+  .divider-box-click:hover {
+    background-color: var(--bg-positive-border) !important;
+  }
+}
