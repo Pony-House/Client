@@ -49,8 +49,6 @@ Made by Me
 
     =======================================================
 
-    -------------> Quando você clica em uma mensagem mencionada e está no bottom da página, o auto scroll da issue. Corrigir isso agora.
-
     --> Confiador de URL
 
     --> Depois de um determinado tempo de inatividade, o usuário que estiver com status online vai trocar para Afk.

@@ -562,6 +562,8 @@ function RoomViewContent({ eventId, roomTimeline }) {
   }, [listenKeyboard]);
 
   const renderTimeline = () => {
+
+    const body = $('body');
     const tl = [];
     const limit = eventLimitRef.current;
 
@@ -570,10 +572,12 @@ function RoomViewContent({ eventId, roomTimeline }) {
     const readUptoEvent = readUptoEvtStore.getItem();
     let unreadDivider = false;
 
+    let renderingHolders = false;
     if (roomTimeline.canPaginateBackward() || limit.from > 0) {
       tl.push(loadingMsgPlaceholders(1, PLACEHOLDER_COUNT));
       itemCountIndex += PLACEHOLDER_COUNT;
     }
+
     for (let i = limit.from; i < limit.length; i += 1) {
       if (i >= timeline.length) break;
       const mEvent = timeline[i];
@@ -627,11 +631,21 @@ function RoomViewContent({ eventId, roomTimeline }) {
       ));
       itemCountIndex += 1;
     }
+
     if (roomTimeline.canPaginateForward() || limit.length < timeline.length) {
+      renderingHolders = true;
       tl.push(loadingMsgPlaceholders(2, PLACEHOLDER_COUNT));
     }
 
+    if (renderingHolders) {
+      body.removeClass('chatbox-top-page');
+      body.addClass('force-no-chatbox-top-page');
+    } else {
+      body.removeClass('force-no-chatbox-top-page');
+    }
+
     return tl;
+
   };
 
   return (
