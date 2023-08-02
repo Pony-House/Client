@@ -22,6 +22,11 @@ export default [
         href: 'https://gitlab.com/'
     },
 
+    {
+        name: 'ubuntu',
+        href: 'https://ubuntu.com/'
+    },
+
     // Games
     {
         name: 'steam',
@@ -70,6 +75,16 @@ export default [
         href: 'https://youtube.com/'
     },
 
+    {
+        name: 'mastodon',
+        href: 'https://joinmastodon.org/'
+    },
+
+    {
+        name: 'equestria social',
+        href: 'https://equestria.social/'
+    },
+
     // Crypto Social
     {
         name: 'lenster',
@@ -105,6 +120,16 @@ export default [
     {
         name: 'crypto prices',
         href: 'https://coinmarketcap.com/'
+    },
+
+    {
+        name: 'opensea',
+        href: 'https://opensea.io/'
+    },
+
+    {
+        name: 'rarible',
+        href: 'https://rarible.com/'
     },
 
     // DEX
