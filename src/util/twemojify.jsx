@@ -109,6 +109,24 @@ const tinyRender = {
 
 };
 
+tinyRender.list = {
+
+  react: {
+    url: tinyRender.react('url'),
+    mail: tinyRender.react('mail'),
+    email: tinyRender.react('email'),
+    keyword: tinyRender.react('keyword'),
+  },
+
+  html: {
+    url: tinyRender.html('url'),
+    mail: tinyRender.html('mail'),
+    email: tinyRender.html('email'),
+    keyword: tinyRender.html('keyword'),
+  }
+
+};
+
 /**
  * @param {string} text - text to twemojify
  * @param {object|undefined} opts - options for tweomoji.parse
@@ -162,9 +180,7 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
     if (linkifyEnabled) {
 
       // Render Data
-      linkifyOptions.render = tinyRender.react('normal');
-
-      // Complete
+      linkifyOptions.render = tinyRender.list.react;
       return <span className='linkify-base'><Linkify options={linkifyOptions}>{parse(msgContent, maths ? mathOptions : null)}</Linkify></span>;
 
     }
@@ -180,7 +196,7 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
   if (linkifyEnabled) {
 
     // Render Data
-    linkifyOptions.render = tinyRender.html('normal');
+    linkifyOptions.render = tinyRender.list.html;
     linkifyOptions.className = 'lk-href';
 
     // Insert Render
