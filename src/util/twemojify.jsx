@@ -113,6 +113,7 @@ export function twemojify(text, opts, linkifyEnabled = false, sanitize = true, m
       },
 
       rel: 'noreferrer noopener',
+      target: '_blank',
 
     });
   }
