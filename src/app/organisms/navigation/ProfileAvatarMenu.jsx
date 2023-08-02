@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ReactDOMServer from 'react-dom/server';
+import jReact from '../../../../mods/lib/jReact';
 
 import IconButton from '../../atoms/button/IconButton';
 import { twemojify } from '../../../util/twemojify';
@@ -70,7 +70,7 @@ function ProfileAvatarMenu() {
                     }
 
                     if (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) {
-                        htmlStatus.push(ReactDOMServer.renderToStaticMarkup(<span className='text-truncate cs-text'>
+                        htmlStatus.push(jReact(<span className='text-truncate cs-text'>
                             {twemojify(content.presenceStatusMsg.msg.substring(0, 100))}
                         </span>));
                     }
@@ -78,7 +78,7 @@ function ProfileAvatarMenu() {
                     $(customStatusRef.current).html(htmlStatus);
 
                 } else {
-                    $(customStatusRef.current).html(ReactDOMServer.renderToStaticMarkup(twemojify(user2.userId)));
+                    $(customStatusRef.current).html(jReact(twemojify(user2.userId)));
                 }
 
                 if (statusRef && statusRef.current && typeof event.status === 'string' && event.status.length > 0) {
