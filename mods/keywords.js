@@ -248,7 +248,7 @@ export default [
         href: `https://pancakeswap.finance/`
     },
 
-    // ${defaultNames.cryptocurrency}
+    // Blockchain
     {
         title: `Polygon - ${defaultNames.blockchain}`,
         name: [`polygon`, `matic`],

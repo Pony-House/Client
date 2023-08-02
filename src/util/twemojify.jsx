@@ -1,6 +1,5 @@
 /* eslint-disable import/prefer-default-export */
 import React, { lazy, Suspense } from 'react';
-import Tooltip from '../app/atoms/tooltip/Tooltip';
 
 import * as linkify from "linkifyjs";
 import linkifyHtml from 'linkify-html';
@@ -10,9 +9,11 @@ import linkifyRegisterKeywords from 'linkify-plugin-keyword';
 
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
+import Tooltip from '../app/atoms/tooltip/Tooltip';
 import { sanitizeText } from './sanitize';
 
 import keywords from '../../mods/keywords';
+import { btModal } from './tools';
 
 // Register Protocols
 linkify.registerCustomProtocol('matrix');
@@ -99,7 +100,54 @@ const mathOptions = {
 
 // Open URL
 const openTinyURL = (url) => {
-  global.open(url, '_blank');
+  try {
+
+    // Prepare Whitelist
+    const whiteList = JSON.parse(localStorage.getItem('pony-house-urls-whitelist') ?? '[]');
+    let urlAllowed = false;
+
+    // Read Whitelist
+    if (whiteList.indexOf(url) > -1) urlAllowed = true;
+    if (!urlAllowed) {
+
+      const tinyUrl = new URL(url);
+      console.log(tinyUrl);
+
+      btModal({
+
+        id: 'trust-tiny-url',
+        title: `Leaving ${__ENV_APP__.info.name}`,
+
+        dialog: 'modal-dialog-centered',
+
+        body: $('<center>', { class: 'small' }).append(
+
+          $('<p>').text('This link is taking you to the following website'),
+
+          $('<div>', { class: 'card' }).append(
+            $('<div>', { class: 'card-body text-break' }).text(url)
+          ),
+
+          $('<div>', { class: 'form-check mt-2 text-start' }).append(
+            $('<input>', { type: 'checkbox', class: 'form-check-input', id: 'whitelist-the-domain' }),
+            $('<label>', { class: 'form-check-label small', for: 'whitelist-the-domain' }).html(`Trust <strong>${url}</strong> links from now on`)
+          )
+
+        ),
+
+        footer: [
+          $('<button>', { class: 'btn btn-bg mx-2' }).text('Go Back'),
+          $('<button>', { class: 'btn btn-primary mx-2' }).text('Visit Site'),
+        ],
+
+      });
+
+    } else if (urlAllowed) global.open(url, '_blank');
+
+  } catch (err) {
+    alert(err.message, 'Error - Open External url');
+    console.error(err);
+  }
 };
 
 const tinyRender = {
