@@ -3,6 +3,9 @@ import * as colors from 'console-log-colors';
 let deferredPrompt;
 window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt) => {
 
+    const body = $('body');
+    body.removeClass('window-browser').removeClass('window-standalone');
+
     let displayMode = 'browser';
     if (evt.matches) {
         displayMode = 'standalone';
@@ -10,6 +13,7 @@ window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt)
 
     // Log display mode change to analytics
     console.log(`${colors.green('[PWA]')} DISPLAY_MODE_CHANGED`, displayMode);
+    body.addClass(`window-${displayMode}`);
 
 });
 
@@ -41,6 +45,14 @@ window.addEventListener('appinstalled', () => {
     console.log(`${colors.green('[PWA]')} PWA was installed`);
 
 });
+
+if (window.matchMedia('(display-mode: standalone)').matches) {
+    console.log(`${colors.green('[PWA]')} This is running as standalone.`);
+    $('body').addClass(`window-standalone`);
+} else {
+    console.log(`${colors.green('[PWA]')} This is running as browser.`);
+    $('body').addClass(`window-browser`);
+}
 
 export function getPWADisplayMode() {
 

@@ -80,7 +80,7 @@ const mathOptions = {
 
 // Open URL
 const openTinyURL = (url) => {
-  console.log(url);
+  global.open(url, '_blank');
 };
 
 /**
