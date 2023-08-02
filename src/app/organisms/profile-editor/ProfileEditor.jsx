@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import { colorMXID } from '../../../util/colorMXID';
@@ -103,7 +103,7 @@ function ProfileEditor({ userId }) {
   const renderInfo = () => (
     <div className="profile-editor__info" style={{ marginBottom: avatarSrc ? '24px' : '0' }}>
       <div>
-        <div className='h5 emoji-size-fix'>{twemojify(username) ?? userId}</div>
+        <div className='h5 emoji-size-fix'>{twemojifyReact(username) ?? userId}</div>
         <IconButton
           fa="fa-solid fa-pencil"
           size="extra-small"

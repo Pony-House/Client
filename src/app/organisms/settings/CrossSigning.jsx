@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import FileSaver from 'file-saver';
 import { Formik } from 'formik';
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import { openReusableDialog } from '../../../client/action/navigation';
@@ -21,7 +21,7 @@ import { useCrossSigningStatus } from '../../hooks/useCrossSigningStatus';
 const failedDialog = () => {
   const renderFailure = (requestClose) => (
     <div className="cross-signing__failure">
-      <Text variant="h1">{twemojify('❌')}</Text>
+      <Text variant="h1">{twemojifyReact('❌')}</Text>
       <Text weight="medium">Failed to setup cross signing. Please try again.</Text>
       <Button onClick={requestClose}>Close</Button>
     </div>
@@ -188,7 +188,7 @@ const setupDialog = () => {
 function CrossSigningReset() {
   return (
     <div className="cross-signing__reset">
-      <Text variant="h1">{twemojify('✋🧑‍🚒🤚')}</Text>
+      <Text variant="h1">{twemojifyReact('✋🧑‍🚒🤚')}</Text>
       <Text weight="medium">Resetting cross-signing keys is permanent.</Text>
       <Text>
         Anyone you have verified with will see security alerts and your message backup will be lost.

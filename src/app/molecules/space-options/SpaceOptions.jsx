@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import { openSpaceSettings, openSpaceManage, openInviteUser } from '../../../client/action/navigation';
@@ -82,7 +82,7 @@ function SpaceOptions({ roomId, afterOptionSelect }) {
 
   return (
     <div className="noselect emoji-size-fix" style={{ maxWidth: 'calc(var(--navigation-drawer-width) - var(--sp-normal))' }}>
-      <MenuHeader>{twemojify(`Options for ${room?.name}`)}</MenuHeader>
+      <MenuHeader>{twemojifyReact(`Options for ${room?.name}`)}</MenuHeader>
       <MenuItem className="text-start" faSrc="fa-solid fa-check-double" onClick={handleMarkAsRead}>Mark as read</MenuItem>
       <MenuItem
         onClick={handleCategorizeClick}

@@ -1,6 +1,6 @@
 import Modal from 'react-bootstrap/Modal';
 import React from 'react';
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 function Alert() {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -9,7 +9,7 @@ function Alert() {
 
     global.alert = (text = '', title = 'App Alert') => {
         setTitle(title);
-        setBody(twemojify(text));
+        setBody(twemojifyReact(text));
         setIsOpen(true);
     };
 

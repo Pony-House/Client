@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -266,7 +266,7 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
       <div>
 
         <h4 className='d-inline-block m-0 my-1'>
-          {twemojify(roomName)}
+          {twemojifyReact(roomName)}
           {profileMode ? <small className='ms-3 very-small text-success'>
             <i className="bi bi-patch-check-fill me-1" />
             {`(${profileName}'s Profile)`}
@@ -276,14 +276,14 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
         {(nameCinny.category.length > 0) && (
           <div className='d-inline-block m-0 my-1'>
             <span style={{ marginRight: '8px', marginLeft: '18px' }}><RawIcon fa="fa-solid fa-grip-lines-vertical" /></span>
-            <span>{twemojify(nameCinny.category)}</span>
+            <span>{twemojifyReact(nameCinny.category)}</span>
           </div>
         )}
 
         {(nameCinny.index.length > 0) && (
           <div className='d-inline-block m-0 my-1'>
             <span style={{ marginRight: '8px', marginLeft: '8px' }}><RawIcon fa="fa-solid fa-grip-lines-vertical" /></span>
-            <span>{twemojify(nameCinny.index)}</span>
+            <span>{twemojifyReact(nameCinny.index)}</span>
           </div>
         )}
 
@@ -301,7 +301,7 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
       </div>
 
       <div className="very-small text-gray">{room.getCanonicalAlias() || room.roomId}</div>
-      {roomTopic && <div className="very-small text-freedom">{twemojify(roomTopic, undefined, true)}</div>}
+      {roomTopic && <div className="very-small text-freedom">{twemojifyReact(roomTopic, undefined, true)}</div>}
 
     </div>
   );

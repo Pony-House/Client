@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 import { colorMXID } from '../../../util/colorMXID';
 
 import Text from '../../atoms/text/Text';
@@ -73,11 +73,11 @@ function RoomSelector({
             isDefaultImage={(!iconSrc || notSpace)}
           />
           <Text variant="b1" weight={isUnread ? 'medium' : 'normal'}>
-            {twemojify(name)}
+            {twemojifyReact(name)}
             {parentName && (
               <span className="very-small text-gray">
                 {' — '}
-                {twemojify(parentName)}
+                {twemojifyReact(parentName)}
               </span>
             )}
           </Text>

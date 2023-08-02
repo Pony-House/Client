@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -59,8 +59,8 @@ function RoomIntroContainer({ event, timeline }) {
   avatarSrc = isDM ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 80, 80, 'crop') : avatarSrc;
 
   const heading = isDM ? room.name : `Welcome to ${room.name}`;
-  const topic = twemojify(roomTopic || '', undefined, true);
-  const nameJsx = twemojify(room.name);
+  const topic = twemojifyReact(roomTopic || '', undefined, true);
+  const nameJsx = twemojifyReact(room.name);
   const desc = isDM
     ? (
       <>
@@ -93,7 +93,7 @@ function RoomIntroContainer({ event, timeline }) {
       roomId={timeline.roomId}
       avatarSrc={avatarSrc}
       name={room.name}
-      heading={twemojify(heading)}
+      heading={twemojifyReact(heading)}
       desc={desc}
       time={event ? `Created at ${moment(event.getDate()).format('DD MMMM YYYY, hh:mm A')}` : null}
     />

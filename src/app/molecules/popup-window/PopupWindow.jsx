@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-bootstrap/Modal';
 
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import Text from '../../atoms/text/Text';
 import { MenuItem } from '../../atoms/context-menu/ContextMenu';
@@ -56,7 +56,7 @@ function PopupWindow({
   if (typeof title !== 'undefined') {
     finalTitle = (
       typeof title === 'string'
-        ? twemojify(title)
+        ? twemojifyReact(title)
         : title
     );
   }
@@ -64,7 +64,7 @@ function PopupWindow({
   else if (typeof cTitle !== 'undefined') {
     finalTitle =
       typeof cTitle === 'string'
-        ? <Text variant="h2" weight="medium" primary>{twemojify(cTitle)}</Text>
+        ? <Text variant="h2" weight="medium" primary>{twemojifyReact(cTitle)}</Text>
         : cTitle
       ;
   }

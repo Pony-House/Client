@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -136,7 +136,7 @@ function DrawerHeader({ selectedTab, spaceId, room, banner }) {
             onClick={openSpaceOptions}
             type="button"
           >
-            <strong className='me-2'>{twemojify(spaceName)}</strong>
+            <strong className='me-2'>{twemojifyReact(spaceName)}</strong>
             <RawIcon size="small" fa="fa-solid fa-chevron-down" />
           </button>
         ) : (

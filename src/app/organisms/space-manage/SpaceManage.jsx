@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -36,7 +36,7 @@ function SpaceManageBreadcrumb({ path, onSelect }) {
               <React.Fragment key={item.roomId}>
                 {index > 0 && <RawIcon size="extra-small" fa="fa-solid fa-chevron-right" />}
                 <Button onClick={() => onSelect(item.roomId, item.name)}>
-                  <Text variant="b2">{twemojify(item.name)}</Text>
+                  <Text variant="b2">{twemojifyReact(item.name)}</Text>
                 </Button>
               </React.Fragment>
             ))
@@ -120,7 +120,7 @@ function SpaceManageItem({
   );
   const roomNameJSX = (
     <Text className='emoji-size-fix'>
-      {twemojify(name)}
+      {twemojifyReact(name)}
       <span className="very-small text-gray" span>{` • ${roomInfo.num_joined_members} members`}</span>
     </Text>
   );
@@ -158,7 +158,7 @@ function SpaceManageItem({
             : <Button variant="primary" onClick={handleJoin} disabled={isJoining}>{isJoining ? 'Joining...' : 'Join'}</Button>
         }
       </div>
-      {isExpand && roomInfo.topic && <Text variant="b2">{twemojify(roomInfo.topic, undefined, true)}</Text>}
+      {isExpand && roomInfo.topic && <Text variant="b2">{twemojifyReact(roomInfo.topic, undefined, true)}</Text>}
     </div>
   );
 }
@@ -420,7 +420,7 @@ function SpaceManage() {
       isOpen={roomId !== null}
       className="modal-lg modal-dialog-scrollable noselect"
       title={<>
-        {roomId && twemojify(room.name)}
+        {roomId && twemojifyReact(room.name)}
         <span style={{ color: 'var(--tc-surface-low)' }}> — manage rooms</span>
       </>}
       onRequestClose={requestClose}

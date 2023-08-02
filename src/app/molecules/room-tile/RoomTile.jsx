@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import { colorMXID } from '../../../util/colorMXID';
 
@@ -24,7 +24,7 @@ function RoomTile({
         />
       </div>
       <div className="room-tile__content emoji-size-fix">
-        <Text variant="s1">{twemojify(name)}</Text>
+        <Text variant="s1">{twemojifyReact(name)}</Text>
         <div className="very-small text-gray">
           {
             inviterName !== null
@@ -34,7 +34,7 @@ function RoomTile({
         </div>
         {
           desc !== null && (typeof desc === 'string')
-            ? <Text className="room-tile__content__desc emoji-size-fix" variant="b2">{twemojify(desc, undefined, true)}</Text>
+            ? <Text className="room-tile__content__desc emoji-size-fix" variant="b2">{twemojifyReact(desc, undefined, true)}</Text>
             : desc
         }
       </div>

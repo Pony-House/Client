@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 
-import { twemojify, TWEMOJI_BASE_URL } from '../../../util/twemojify';
+import { twemojifyReact, TWEMOJI_BASE_URL } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import { getEmojiForCompletion } from '../emoji-board/custom-emoji';
@@ -134,7 +134,7 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
             });
           }}
         >
-          <Text variant="b2">{twemojify(member.name)}</Text>
+          <Text variant="b2">{twemojifyReact(member.name)}</Text>
         </CmdItem>
       );
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import jReact from '../../../../mods/lib/jReact';
 
 import IconButton from '../../atoms/button/IconButton';
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 import navigation from '../../../client/state/navigation';
 import Avatar from '../../atoms/avatar/Avatar';
 import cons from '../../../client/state/cons';
@@ -71,14 +71,14 @@ function ProfileAvatarMenu() {
 
                     if (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) {
                         htmlStatus.push(jReact(<span className='text-truncate cs-text'>
-                            {twemojify(content.presenceStatusMsg.msg.substring(0, 100))}
+                            {twemojifyReact(content.presenceStatusMsg.msg.substring(0, 100))}
                         </span>));
                     }
 
                     $(customStatusRef.current).html(htmlStatus);
 
                 } else {
-                    $(customStatusRef.current).html(jReact(twemojify(user2.userId)));
+                    $(customStatusRef.current).html(jReact(twemojifyReact(user2.userId)));
                 }
 
                 if (statusRef && statusRef.current && typeof event.status === 'string' && event.status.length > 0) {

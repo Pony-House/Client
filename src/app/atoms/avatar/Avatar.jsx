@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import initMatrix from '../../../client/initMatrix';
 import { loadAvatar, forceLoadAvatars } from './load';
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import Text from '../text/Text';
 import RawIcon from '../system-icons/RawIcon';
@@ -112,7 +112,7 @@ const Avatar = React.forwardRef(({
                     ? <RawIcon size={size} src={iconSrc} color={iconColor} />
                     : text !== null && (
                       <Text variant={textSize} primary>
-                        {twemojify(avatarInitials(text))}
+                        {twemojifyReact(true, avatarInitials(text))}
                       </Text>
                     )
                 }

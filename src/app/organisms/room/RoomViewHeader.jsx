@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { forceUnloadedAvatars } from '../../atoms/avatar/load';
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -84,7 +84,7 @@ function RoomViewHeader({ roomId }) {
             type="button"
           >
             <Avatar className='d-inline-block me-2' imageSrc={avatarSrc} animParentsCount={2} text={roomName} bgColor={colorMXID(roomId)} size="small" isDefaultImage />
-            <span className='me-2 text-truncate d-inline-block room-name'>{twemojify(roomName)}</span>
+            <span className='me-2 text-truncate d-inline-block room-name'>{twemojifyReact(roomName)}</span>
             <RawIcon fa="fa-solid fa-chevron-down room-icon" />
           </button>
         </li>

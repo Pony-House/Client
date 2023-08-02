@@ -84,7 +84,7 @@ const mathOptions = {
  * @param {boolean} [maths=false] - render maths (default: false)
  * @returns React component
  */
-export function twemojify(text, opts, linkifyEnabled = false, sanitize = true, maths = false) {
+const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact = false) => {
 
   if (typeof text !== 'string') return text;
 
@@ -120,7 +120,15 @@ export function twemojify(text, opts, linkifyEnabled = false, sanitize = true, m
 
   return parse(content, maths ? mathOptions : null);
 
+};
+
+export function twemojify(text, opts, linkifyEnabled = false, sanitize = true, maths = false) {
+  return twemojifyAction(text, opts, linkifyEnabled, sanitize, maths, false);
 }
+
+export function twemojifyReact(text, opts, linkifyEnabled = false, sanitize = true, maths = false) {
+  return twemojifyAction(text, opts, linkifyEnabled, sanitize, maths, true);
+};
 
 export function twemojifyIcon(text, size = 72) {
   return `${TWEMOJI_BASE_URL}${size}x${size}/${text.emojiToCode().toLowerCase()}.png`;

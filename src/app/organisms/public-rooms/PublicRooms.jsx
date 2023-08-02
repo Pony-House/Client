@@ -13,7 +13,7 @@ import Input from '../../atoms/input/Input';
 import PopupWindow from '../../molecules/popup-window/PopupWindow';
 import Avatar from '../../atoms/avatar/Avatar';
 import { colorMXID } from '../../../util/colorMXID';
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 const HashSearchIC = './img/ic/outlined/hash-search.svg';
 
@@ -216,12 +216,12 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
               />
             </h4>
 
-            <h4 className="card-title small emoji-size-fix">{twemojify(name)}</h4>
+            <h4 className="card-title small emoji-size-fix">{twemojifyReact(name)}</h4>
 
             <p className="card-text p-y-1 text-freedom text-size-box very-small emoji-size-fix" style={{ 'height': '150px', 'maxHeight': '150px' }}>
               {
                 desc !== null && (typeof desc === 'string')
-                  ? twemojify(desc, undefined, true)
+                  ? twemojifyReact(desc, undefined, true)
                   : desc
               }
             </p>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -109,7 +109,7 @@ function DrawerBreadcrumb({ spaceId }) {
                         else selectSpace(id);
                       }}
                     >
-                      {id === cons.tabs.HOME ? 'Home' : twemojify(mx.getRoom(id).name)}
+                      {id === cons.tabs.HOME ? 'Home' : twemojifyReact(mx.getRoom(id).name)}
                       {noti !== null && (
                         <NotificationBadge
                           className='ms-1'

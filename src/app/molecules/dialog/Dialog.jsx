@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Modal from 'react-bootstrap/Modal';
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 function Dialog({
   className, isOpen, title, onAfterOpen, onAfterClose,
@@ -21,7 +21,7 @@ function Dialog({
         <Modal.Title className='h5 emoji-size-fix'>
           {
             typeof title === 'string'
-              ? twemojify(title)
+              ? twemojifyReact(title)
               : title
           }
         </Modal.Title>

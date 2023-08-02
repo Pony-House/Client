@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import Text from '../../atoms/text/Text';
 import Tooltip from '../../atoms/tooltip/Tooltip';
@@ -18,7 +18,7 @@ const SidebarAvatar = React.forwardRef(({
 
   return (
     <Tooltip
-      content={<Text variant="b1">{twemojify(tooltip)}</Text>}
+      content={<Text variant="b1">{twemojifyReact(tooltip)}</Text>}
       placement="right"
     >
       <button

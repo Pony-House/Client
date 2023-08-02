@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -102,7 +102,7 @@ function EmojiVerificationContent({ data, requestClose }) {
           {sas.sas.emoji.map((emoji, i) => (
             // eslint-disable-next-line react/no-array-index-key
             <div className="emoji-verification__emoji-block" key={`${emoji[1]}-${i}`}>
-              <Text variant="h1">{twemojify(emoji[0])}</Text>
+              <Text variant="h1">{twemojifyReact(emoji[0])}</Text>
               <Text>{emoji[1]}</Text>
             </div>
           ))}

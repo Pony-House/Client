@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -236,7 +236,7 @@ function SpaceSettings() {
       className="modal-dialog-scrollable noselect"
 
       title={window.matchMedia('screen and (max-width: 768px)').matches ? <>
-        {isOpen && twemojify(room.name)}
+        {isOpen && twemojifyReact(room.name)}
         <span style={{ color: 'var(--tc-surface-low)' }}> — space settings</span>
       </> : null}
 

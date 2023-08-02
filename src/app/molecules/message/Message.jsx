@@ -9,7 +9,7 @@ import hljs from 'highlight.js';
 import * as linkify from "linkifyjs";
 
 import { hljsFixer, resizeWindowChecker, chatboxScrollToBottom, toast } from '../../../util/tools';
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import {
@@ -69,8 +69,8 @@ const MessageHeader = React.memo(({
   userId, username,
 }) => (
   <span className='username-base emoji-size-fix' style={{ color: colorMXID(userId) }}>
-    <span className='username'>{twemojify(username)}</span>
-    <span className='user-id'>{twemojify(userId)}</span>
+    <span className='username'>{twemojifyReact(username)}</span>
+    <span className='user-id'>{twemojifyReact(userId)}</span>
   </span>
 ));
 
@@ -104,9 +104,9 @@ function MessageReply({ name, color, body }) {
     <div className="pb-2 emoji-size-fix small text-reply">
       <RawIcon color={color} size="normal" fa="fa-solid fa-reply" />
       {' '}
-      <span className="username-title emoji-size-fix" style={{ color }}>{twemojify(name)}</span>
+      <span className="username-title emoji-size-fix" style={{ color }}>{twemojifyReact(name)}</span>
       {' '}
-      {twemojify(body)}
+      {twemojifyReact(body)}
     </div>
   );
 }
@@ -251,7 +251,7 @@ const MessageBody = React.memo(({
   let content = null;
   if (isCustomHTML) {
     try {
-      content = twemojify(
+      content = twemojifyReact(
         sanitizeCustomHtml(initMatrix.matrixClient, body),
         undefined,
         true,
@@ -260,12 +260,12 @@ const MessageBody = React.memo(({
       );
     } catch {
       console.error(`${colors.grey('[matrix]')} ${colors.blue('[msg]')} Malformed custom html: `, body);
-      content = twemojify(body, undefined);
+      content = twemojifyReact(body, undefined);
     }
   } else if (!isSystem) {
-    content = twemojify(body, undefined, true);
+    content = twemojifyReact(body, undefined, true);
   } else {
-    content = twemojify(body, undefined, true, false, true);
+    content = twemojifyReact(body, undefined, true, false, true);
   }
 
   // Determine if this message should render with large emojis
@@ -304,7 +304,7 @@ const MessageBody = React.memo(({
       {msgType === 'm.emote' && (
         <>
           {'* '}
-          {twemojify(senderName)}
+          {twemojifyReact(senderName)}
           {' '}
         </>
       )}
@@ -440,7 +440,7 @@ function genReactionMsg(userIds, reaction, shortcode) {
     <>
       {userIds.map((userId, index) => (
         <React.Fragment key={userId}>
-          <span className='emoji-size-fix-2'>{twemojify(getUsername(userId))}</span>
+          <span className='emoji-size-fix-2'>{twemojifyReact(getUsername(userId))}</span>
           {index < userIds.length - 1 && (
             <span style={{ opacity: '.6' }}>
               {index === userIds.length - 2 ? ' and ' : ', '}
@@ -449,7 +449,7 @@ function genReactionMsg(userIds, reaction, shortcode) {
         </React.Fragment>
       ))}
       <span style={{ opacity: '.6' }}>{' reacted with '}</span>
-      <span className='emoji-size-fix-2'>{twemojify(shortcode ? `:${shortcode}:` : reaction, { className: 'react-emoji' })}</span>
+      <span className='emoji-size-fix-2'>{twemojifyReact(shortcode ? `:${shortcode}:` : reaction, { className: 'react-emoji' })}</span>
     </>
   );
 }
@@ -475,7 +475,7 @@ function MessageReaction({
         {
           customEmojiUrl
             ? <img className="react-emoji" draggable="false" alt={shortcode ?? reaction} src={customEmojiUrl} />
-            : twemojify(reaction, { className: 'react-emoji' })
+            : twemojifyReact(reaction, { className: 'react-emoji' })
         }
         <div className="very-small text-gray msg__reaction-count">{count}</div>
       </button>
@@ -1162,30 +1162,30 @@ function Message({
 
                       <span>
 
-                        {typeof embed.data['og:site_name'] === 'string' && embed.data['og:site_name'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mb-2'>{twemojify(embed.data['og:site_name'])}</p> : null}
+                        {typeof embed.data['og:site_name'] === 'string' && embed.data['og:site_name'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mb-2'>{twemojifyReact(embed.data['og:site_name'])}</p> : null}
 
                         {typeof embed.data['og:title'] === 'string' && embed.data['og:title'].length > 0 ? <h5 className='card-title small emoji-size-fix fw-bold'>
                           {typeof embed.data['og:url'] === 'string' && embed.data['og:url'].length > 0 ? <a href={embed.data['og:url']} target='_blank' rel="noreferrer">
-                            {twemojify(embed.data['og:title'])}
+                            {twemojifyReact(embed.data['og:title'])}
                           </a> : embed.data['og:title']}
                         </h5> : null}
 
                         {typeof embed.data['og:description'] === 'string' && embed.data['og:description'].length > 0 ? <p className='card-text very-small emoji-size-fix-2'>
-                          {twemojify(embed.data['og:description'])}
+                          {twemojifyReact(embed.data['og:description'])}
                         </p> : null}
 
                         {embed.data['og:type'] === 'article' ? <>
 
                           {typeof embed.data['article:publisher'] === 'string' && embed.data['article:publisher'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mt-2'>
-                            {twemojify(embed.data['article:publisher'])}
+                            {twemojifyReact(embed.data['article:publisher'])}
                           </p> : null}
 
                           {typeof embed.data['article:section'] === 'string' && embed.data['article:section'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mt-2'>
-                            {twemojify(embed.data['article:section'])}
+                            {twemojifyReact(embed.data['article:section'])}
                           </p> : null}
 
                           {typeof embed.data['article:tag'] === 'string' && embed.data['article:tag'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mt-2'>
-                            {twemojify(embed.data['article:tag'])}
+                            {twemojifyReact(embed.data['article:tag'])}
                           </p> : null}
 
                         </> : null}

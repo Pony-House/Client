@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -220,7 +220,7 @@ function SpaceAddExisting() {
       className="modal-dialog-scrollable noselect"
       title={(
         <Text variant="s1" weight="medium" primary>
-          {roomId && twemojify(room.name)}
+          {roomId && twemojifyReact(room.name)}
           <span style={{ color: 'var(--tc-surface-low)' }}> — add existing rooms</span>
         </Text>
       )}

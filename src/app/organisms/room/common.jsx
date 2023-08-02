@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import { getUsername, getUsernameOfRoomMember } from '../../../util/matrixUtil';
@@ -10,7 +10,7 @@ function getTimelineJSXMessages() {
     join(user) {
       return (
         <>
-          <strong>{twemojify(user)}</strong>
+          <strong>{twemojifyReact(user)}</strong>
           {' joined the room'}
         </>
       );
@@ -19,27 +19,27 @@ function getTimelineJSXMessages() {
       const reasonMsg = (typeof reason === 'string') ? `: ${reason}` : '';
       return (
         <>
-          <strong>{twemojify(user)}</strong>
+          <strong>{twemojifyReact(user)}</strong>
           {' left the room'}
-          {twemojify(reasonMsg)}
+          {twemojifyReact(reasonMsg)}
         </>
       );
     },
     invite(inviter, user) {
       return (
         <>
-          <strong>{twemojify(inviter)}</strong>
+          <strong>{twemojifyReact(inviter)}</strong>
           {' invited '}
-          <strong>{twemojify(user)}</strong>
+          <strong>{twemojifyReact(user)}</strong>
         </>
       );
     },
     cancelInvite(inviter, user) {
       return (
         <>
-          <strong>{twemojify(inviter)}</strong>
+          <strong>{twemojifyReact(inviter)}</strong>
           {' canceled '}
-          <strong>{twemojify(user)}</strong>
+          <strong>{twemojifyReact(user)}</strong>
           {'\'s invite'}
         </>
       );
@@ -47,7 +47,7 @@ function getTimelineJSXMessages() {
     rejectInvite(user) {
       return (
         <>
-          <strong>{twemojify(user)}</strong>
+          <strong>{twemojifyReact(user)}</strong>
           {' rejected the invitation'}
         </>
       );
@@ -56,10 +56,10 @@ function getTimelineJSXMessages() {
       const reasonMsg = (typeof reason === 'string') ? `: ${reason}` : '';
       return (
         <>
-          <strong>{twemojify(actor)}</strong>
+          <strong>{twemojifyReact(actor)}</strong>
           {' kicked '}
-          <strong>{twemojify(user)}</strong>
-          {twemojify(reasonMsg)}
+          <strong>{twemojifyReact(user)}</strong>
+          {twemojifyReact(reasonMsg)}
         </>
       );
     },
@@ -67,26 +67,26 @@ function getTimelineJSXMessages() {
       const reasonMsg = (typeof reason === 'string') ? `: ${reason}` : '';
       return (
         <>
-          <strong>{twemojify(actor)}</strong>
+          <strong>{twemojifyReact(actor)}</strong>
           {' banned '}
-          <strong>{twemojify(user)}</strong>
-          {twemojify(reasonMsg)}
+          <strong>{twemojifyReact(user)}</strong>
+          {twemojifyReactReact(reasonMsg)}
         </>
       );
     },
     unban(actor, user) {
       return (
         <>
-          <strong>{twemojify(actor)}</strong>
+          <strong>{twemojifyReact(actor)}</strong>
           {' unbanned '}
-          <strong>{twemojify(user)}</strong>
+          <strong>{twemojifyReact(user)}</strong>
         </>
       );
     },
     avatarSets(user) {
       return (
         <>
-          <strong>{twemojify(user)}</strong>
+          <strong>{twemojifyReact(user)}</strong>
           {' set a avatar'}
         </>
       );
@@ -94,7 +94,7 @@ function getTimelineJSXMessages() {
     avatarChanged(user) {
       return (
         <>
-          <strong>{twemojify(user)}</strong>
+          <strong>{twemojifyReact(user)}</strong>
           {' changed their avatar'}
         </>
       );
@@ -102,7 +102,7 @@ function getTimelineJSXMessages() {
     avatarRemoved(user) {
       return (
         <>
-          <strong>{twemojify(user)}</strong>
+          <strong>{twemojifyReact(user)}</strong>
           {' removed their avatar'}
         </>
       );
@@ -110,27 +110,27 @@ function getTimelineJSXMessages() {
     nameSets(user, newName) {
       return (
         <>
-          <strong>{twemojify(user)}</strong>
+          <strong>{twemojifyReact(user)}</strong>
           {' set display name to '}
-          <strong>{twemojify(newName)}</strong>
+          <strong>{twemojifyReact(newName)}</strong>
         </>
       );
     },
     nameChanged(user, newName) {
       return (
         <>
-          <strong>{twemojify(user)}</strong>
+          <strong>{twemojifyReact(user)}</strong>
           {' changed their display name to '}
-          <strong>{twemojify(newName)}</strong>
+          <strong>{twemojifyReact(newName)}</strong>
         </>
       );
     },
     nameRemoved(user, lastName) {
       return (
         <>
-          <strong>{twemojify(user)}</strong>
+          <strong>{twemojifyReact(user)}</strong>
           {' removed their display name '}
-          <strong>{twemojify(lastName)}</strong>
+          <strong>{twemojifyReact(lastName)}</strong>
         </>
       );
     },
@@ -143,7 +143,7 @@ function getUsersActionJsx(roomId, userIds, actionStr) {
     if (room?.getMember(userId)) return getUsernameOfRoomMember(room.getMember(userId));
     return getUsername(userId);
   };
-  const getUserJSX = (userId) => <strong>{twemojify(getUserDisplayName(userId))}</strong>;
+  const getUserJSX = (userId) => <strong>{twemojifyReact(getUserDisplayName(userId))}</strong>;
   if (!Array.isArray(userIds)) return 'Idle';
   if (userIds.length === 0) return 'Idle';
   const MAX_VISIBLE_COUNT = 3;

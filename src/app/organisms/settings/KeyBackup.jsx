@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import { openReusableDialog } from '../../../client/action/navigation';
@@ -59,7 +59,7 @@ function CreateKeyBackupDialog({ keyData }) {
       )}
       {done === true && (
         <>
-          <Text variant="h1">{twemojify('✅')}</Text>
+          <Text variant="h1">{twemojifyReact('✅')}</Text>
           <Text>Successfully created backup</Text>
         </>
       )}
@@ -132,7 +132,7 @@ function RestoreKeyBackupDialog({ keyData }) {
       )}
       {status.done && (
         <>
-          <Text variant="h1">{twemojify('✅')}</Text>
+          <Text variant="h1">{twemojifyReact('✅')}</Text>
           <Text>{status.done}</Text>
         </>
       )}
@@ -170,7 +170,7 @@ function DeleteKeyBackupDialog({ requestClose }) {
 
   return (
     <div className="key-backup__delete">
-      <Text variant="h1">{twemojify('🗑')}</Text>
+      <Text variant="h1">{twemojifyReact('🗑')}</Text>
       <Text weight="medium">Deleting key backup is permanent.</Text>
       <Text>All encrypted messages keys stored on server will be deleted.</Text>
       {
