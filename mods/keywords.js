@@ -56,6 +56,31 @@ export default [
 
     // Social
     {
+        name: 'patreon',
+        href: 'https://www.patreon.com/'
+    },
+
+    {
+        name: 'keybase',
+        href: 'https://keybase.io/'
+    },
+
+    {
+        name: 'twitch',
+        href: 'https://www.twitch.tv/'
+    },
+
+    {
+        name: 'soundcloud',
+        href: 'https://soundcloud.com/'
+    },
+
+    {
+        name: 'matrix',
+        href: 'https://matrix.org/'
+    },
+
+    {
         name: 'pony house',
         href: 'https://pony.house/'
     },
@@ -148,6 +173,11 @@ export default [
         href: 'https://pancakeswap.finance/'
     },
 
+    {
+        name: 'pancake swap',
+        href: 'https://pancakeswap.finance/'
+    },
+
     // Cryptocurrency
     {
         name: 'polygon',
@@ -181,6 +211,11 @@ export default [
 
     // Tokens USD
     {
+        name: 'circle',
+        href: 'https://www.circle.com/'
+    },
+
+    {
         name: 'usdc',
         href: 'https://www.circle.com/en/usdc'
     },
@@ -204,6 +239,27 @@ export default [
     {
         name: '$shib',
         href: 'https://www.shibatoken.com/'
+    },
+
+    // Crypto Wallet
+    {
+        name: 'metamask',
+        href: 'https://metamask.io/'
+    },
+
+    {
+        name: 'rabby',
+        href: 'https://rabby.io/'
+    },
+
+    {
+        name: 'frame wallet',
+        href: 'https://frame.sh/'
+    },
+
+    {
+        name: 'trust wallet',
+        href: 'https://trustwallet.com/'
     },
 
 ];
