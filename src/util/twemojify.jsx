@@ -83,6 +83,26 @@ const openTinyURL = (url) => {
   global.open(url, '_blank');
 };
 
+const tinyRender = {
+
+  html: type => ({ attributes, content }) => {
+
+    let tinyAttr = '';
+    for (const attr in attributes) {
+      tinyAttr += ` ${attr}=${attributes[attr]}`;
+    }
+
+    return `<a${tinyAttr}>${content}</a>`;
+
+  },
+
+  react: type => ({ attributes, content }) => {
+    const { href, ...props } = attributes;
+    return <a href={href} onClick={(e) => { e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; }} {...props} className='lk-href'>{content}</a>;
+  }
+
+};
+
 /**
  * @param {string} text - text to twemojify
  * @param {object|undefined} opts - options for tweomoji.parse
@@ -136,10 +156,7 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
     if (linkifyEnabled) {
 
       // Render Data
-      linkifyOptions.render = ({ attributes, content }) => {
-        const { href, ...props } = attributes;
-        return <a href={href} onClick={(e) => { e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; }} {...props} className='lk-href'>{content}</a>;
-      };
+      linkifyOptions.render = tinyRender.react('normal');
 
       // Complete
       return <span className='linkify-base'><Linkify options={linkifyOptions}>{parse(msgContent, maths ? mathOptions : null)}</Linkify></span>;
@@ -155,8 +172,14 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
 
   // Insert Linkify
   if (linkifyEnabled) {
+
+    // Render Data
+    linkifyOptions.render = tinyRender.html('normal');
     linkifyOptions.className = 'lk-href';
+
+    // Insert Render
     msgContent = linkifyHtml(msgContent, linkifyOptions);
+
   }
 
   // Final Result
