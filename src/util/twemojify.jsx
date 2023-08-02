@@ -114,17 +114,6 @@ export function twemojify(text, opts, linkifyEnabled = false, sanitize = true, m
 
       rel: 'noreferrer noopener',
 
-      render: ({ tagName, attributes }) => {
-
-        let tinyAttrs = '';
-        for (const attr in attributes) {
-          tinyAttrs += ` ${attr}=${attributes[attr]}`;
-        }
-
-        return `<${tagName} class='linkify-url' target='_blank'${tinyAttrs}>${arguments[0]}</${tagName}>`;
-
-      },
-
     });
   }
 
