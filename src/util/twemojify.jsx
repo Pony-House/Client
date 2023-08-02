@@ -4,6 +4,7 @@ import React, { lazy, Suspense } from 'react';
 import * as linkify from "linkifyjs";
 import linkifyHtml from 'linkify-html';
 import Linkify from 'linkify-react';
+
 import linkifyRegisterKeywords from 'linkify-plugin-keyword';
 
 import parse from 'html-react-parser';
@@ -129,15 +130,18 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
     // Insert Linkify
     if (linkifyEnabled) {
 
+      // Render Data
       linkifyOptions.render = ({ attributes, content }) => {
         const { href, ...props } = attributes;
         return <a href={href} {...props}>{content}</a>;
       };
 
+      // Complete
       return <Linkify options={linkifyOptions}>{parse(msgContent, maths ? mathOptions : null)}</Linkify>;
 
     }
 
+    // Complete
     return parse(msgContent, maths ? mathOptions : null);
 
   }
@@ -149,11 +153,15 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
     msgContent = linkifyHtml(msgContent, linkifyOptions);
   }
 
-  return msgContent;
+  // Final Result
+  msgContent = $('<span>').html(msgContent);
 
+  // Complete
+  return msgContent.html();
 
 };
 
+// Functions
 export function twemojify(text, opts, linkifyEnabled = false, sanitize = true) {
   return twemojifyAction(text, opts, linkifyEnabled, sanitize, false, false);
 }
