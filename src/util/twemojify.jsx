@@ -89,7 +89,13 @@ const tinyRender = {
 
     let tinyAttr = '';
     for (const attr in attributes) {
-      tinyAttr += ` ${attr}=${attributes[attr]}`;
+      tinyAttr += ` ${attr}${attributes[attr].length > 0 ? `=${attributes[attr]}` : ''}`;
+    }
+
+    if (type === 'keyword') {
+      tinyAttr += ' iskeyword="true"';
+    } else {
+      tinyAttr += ' iskeyword="false"';
     }
 
     return `<a${tinyAttr}>${content}</a>`;
@@ -98,7 +104,7 @@ const tinyRender = {
 
   react: type => ({ attributes, content }) => {
     const { href, ...props } = attributes;
-    return <a href={href} onClick={(e) => { e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; }} {...props} className='lk-href'>{content}</a>;
+    return <a href={href} onClick={(e) => { e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; }} {...props} iskeyword={type === 'keyword' ? 'true' : 'false'} className='lk-href'>{content}</a>;
   }
 
 };
