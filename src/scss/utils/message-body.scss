@@ -57,3 +57,18 @@
     background-color: var(--bg-positive-border) !important;
   }
 }
+
+.linkify-base {
+  .lk-href[iskeyword='true'],
+  .lk-href[iskeyword='true']:hover {
+    color: unset !important;
+    cursor: help !important;
+  }
+
+  .lk-href[iskeyword='true']:hover {
+    -webkit-text-decoration: underline dotted !important;
+    text-decoration: underline dotted !important;
+    -webkit-text-decoration-skip-ink: none !important;
+    text-decoration-skip-ink: none !important;
+  }
+}
