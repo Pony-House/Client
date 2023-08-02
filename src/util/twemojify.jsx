@@ -3,6 +3,7 @@ import React, { lazy, Suspense } from 'react';
 
 import * as linkify from "linkifyjs";
 import linkifyHtml from 'linkify-html';
+import Linkify from 'linkify-react';
 import linkifyRegisterKeywords from 'linkify-plugin-keyword';
 
 import parse from 'html-react-parser';
@@ -90,7 +91,7 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
   if (typeof text !== 'string') return text;
 
   // Content Prepare
-  let content = text;
+  let msgContent = text;
   const options = opts ?? { base: TWEMOJI_BASE_URL };
   if (!options.base) {
     options.base = TWEMOJI_BASE_URL;
@@ -98,11 +99,11 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
 
   // Sanitize Filter
   if (sanitize) {
-    content = sanitizeText(content);
+    msgContent = sanitizeText(msgContent);
   }
 
   // Emoji Parse
-  content = twemoji.parse(content, options);
+  msgContent = twemoji.parse(msgContent, options);
 
   // Linkify Options
   const linkifyOptions = {
@@ -127,10 +128,17 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
 
     // Insert Linkify
     if (linkifyEnabled) {
-      content = linkifyHtml(content, linkifyOptions);
+
+      linkifyOptions.render = ({ attributes, content }) => {
+        const { href, ...props } = attributes;
+        return <a href={href} {...props}>{content}</a>;
+      };
+
+      return <Linkify options={linkifyOptions}>{parse(msgContent, maths ? mathOptions : null)}</Linkify>;
+
     }
 
-    return parse(content, maths ? mathOptions : null);
+    return parse(msgContent, maths ? mathOptions : null);
 
   }
 
@@ -138,10 +146,10 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
 
   // Insert Linkify
   if (linkifyEnabled) {
-    content = linkifyHtml(content, linkifyOptions);
+    msgContent = linkifyHtml(msgContent, linkifyOptions);
   }
 
-  return content;
+  return msgContent;
 
 
 };

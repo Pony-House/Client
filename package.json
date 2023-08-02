@@ -70,6 +70,7 @@
     "katex": "0.16.8",
     "linkify-html": "4.1.1",
     "linkify-plugin-keyword": "4.1.1",
+    "linkify-react": "4.1.1",
     "linkifyjs": "4.1.1",
     "matrix-js-sdk": "26.1.0",
     "moment-timezone": "0.5.43",

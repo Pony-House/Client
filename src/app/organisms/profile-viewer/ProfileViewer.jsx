@@ -419,7 +419,7 @@ function ProfileViewer() {
 
               bioDOM.removeClass('d-none');
               if (typeof content.presenceStatusMsg.bio === 'string' && content.presenceStatusMsg.bio.length > 0) {
-                tinyBio.html(twemojify(content.presenceStatusMsg.bio.substring(0, 190), undefined, true, false, true));
+                tinyBio.html(twemojify(content.presenceStatusMsg.bio.substring(0, 190), undefined, true, false));
               } else {
                 bioDOM.addClass('d-none');
                 tinyBio.html('');

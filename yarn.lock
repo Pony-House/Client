@@ -4811,6 +4811,11 @@ linkify-plugin-keyword@4.1.1:
   resolved "https://registry.yarnpkg.com/linkify-plugin-keyword/-/linkify-plugin-keyword-4.1.1.tgz#0359a5d6d1ca11dd95016722f4bfd31dc50fc15a"
   integrity sha512-N55yPOhPbwZs66nqR4o/4oxq0xR+CTn+NFhrwSQvrNlHMcuZ6oaIlzFwdU0Es6Sdea/7Bn6zFbmNyJ/FPH4gLg==
 
+linkify-react@4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/linkify-react/-/linkify-react-4.1.1.tgz#79cc29c6e5c0fd660be74a6a51d25c1b36977cf7"
+  integrity sha512-2K9Y1cUdvq40dFWqCJ//X+WP19nlzIVITFGI93RjLnA0M7KbnxQ/ffC3AZIZaEIrLangF9Hjt3i0GQ9/anEG5A==
+
 linkifyjs@4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/linkifyjs/-/linkifyjs-4.1.1.tgz#73d427e3bbaaf4ca8e71c589ad4ffda11a9a5fde"

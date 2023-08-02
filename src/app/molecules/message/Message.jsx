@@ -273,21 +273,24 @@ const MessageBody = React.memo(({
   // - Contains only emoji
   // - Contains no more than 10 emoji
   let emojiOnly = false;
-  if (content.type === 'img') {
-    // If this messages contains only a single (inline) image
-    emojiOnly = true;
-  } else if (content.constructor.name === 'Array') {
-    // Otherwise, it might be an array of images / texb
-
-    // Count the number of emojis
-    const nEmojis = content.filter((e) => e.type === 'img').length;
-
-    // Make sure there's no text besides whitespace and variation selector U+FE0F
-    if (nEmojis <= 10 && content.every((element) => (
-      (typeof element === 'object' && element.type === 'img')
-      || (typeof element === 'string' && /^[\s\ufe0f]*$/g.test(element))
-    ))) {
+  const msgContent = content?.props?.children;
+  if (msgContent) {
+    if (msgContent.type === 'img') {
+      // If this messages contains only a single (inline) image
       emojiOnly = true;
+    } else if (msgContent.constructor.name === 'Array') {
+      // Otherwise, it might be an array of images / texb
+
+      // Count the number of emojis
+      const nEmojis = msgContent.filter((e) => e.type === 'img').length;
+
+      // Make sure there's no text besides whitespace and variation selector U+FE0F
+      if (nEmojis <= 10 && msgContent.every((element) => (
+        (typeof element === 'object' && element.type === 'img')
+        || (typeof element === 'string' && /^[\s\ufe0f]*$/g.test(element))
+      ))) {
+        emojiOnly = true;
+      }
     }
   }
 
