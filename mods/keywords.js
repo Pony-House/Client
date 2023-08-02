@@ -32,6 +32,12 @@ export default [
         href: 'https://ubuntu.com/'
     },
 
+    {
+        title: 'IPFS - Inter Planetary File System',
+        name: 'ipfs',
+        href: 'https://ipfs.tech/'
+    },
+
     // Games
     {
         title: 'Steam Games',
@@ -251,15 +257,27 @@ export default [
     },
 
     {
-        title: 'Dogecoin - Blockchain',
+        title: 'Arweave - Blockchain',
+        name: ['arweave', '$arb'],
+        href: 'https://arbitrum.io/'
+    },
+
+    {
+        title: 'Dogecoin - Cryptocurrency',
         name: ['dogecoin', 'doge'],
         href: 'https://dogecoin.com/'
     },
 
     {
-        title: 'Bitcoin - Blockchain',
+        title: 'Bitcoin - Cryptocurrency',
         name: ['bitcoin', 'btc'],
         href: 'https://bitcoin.org/'
+    },
+
+    {
+        title: 'Monero - Cryptocurrency',
+        name: ['monero', 'xmr'],
+        href: 'https://www.getmonero.org/'
     },
 
     // Tokens USD
