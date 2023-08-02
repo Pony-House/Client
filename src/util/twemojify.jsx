@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import React, { lazy, Suspense } from 'react';
+import Tooltip from '../app/atoms/tooltip/Tooltip';
 
 import * as linkify from "linkifyjs";
 import linkifyHtml from 'linkify-html';
@@ -42,14 +43,14 @@ for (const item in keywords) {
 
   if (typeof keywords[item].name === 'string') {
     tinywords.push(keywords[item].name);
-    tinywordsDB[keywords[item].name] = keywords[item].href;
+    tinywordsDB[keywords[item].name] = { href: keywords[item].href, title: keywords[item].title };
   }
 
   else if (Array.isArray(keywords[item].name) && keywords[item].name.length > 0) {
     for (const item2 in keywords[item].name) {
       if (typeof keywords[item].name[item2] === 'string') {
         tinywords.push(keywords[item].name[item2]);
-        tinywordsDB[keywords[item].name[item2]] = keywords[item].href;
+        tinywordsDB[keywords[item].name[item2]] = { href: keywords[item].href, title: keywords[item].title };
       };
     }
   }
@@ -121,8 +122,10 @@ const tinyRender = {
   },
 
   react: type => ({ attributes, content }) => {
-    const { href, ...props } = attributes;
-    return <a href={href} onClick={(e) => { e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; }} {...props} iskeyword={type === 'keyword' ? 'true' : 'false'} className='lk-href'>{content}</a>;
+    const { href, title, ...props } = attributes;
+    return <Tooltip content={<small>{title}</small>} >
+      <a href={href} onClick={(e) => { e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; }} {...props} iskeyword={type === 'keyword' ? 'true' : 'false'} className='lk-href'>{content}</a>
+    </Tooltip>;
   }
 
 };
@@ -181,7 +184,7 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
     formatHref: {
       keyword: (keyword) => {
         const tinyword = keyword.toLowerCase();
-        if (tinywordsDB[tinyword]) return tinywordsDB[tinyword];
+        if (tinywordsDB[tinyword] && typeof tinywordsDB[tinyword].href === 'string') return tinywordsDB[tinyword].href;
       },
     },
 
@@ -223,7 +226,7 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
 
   // Final Result
   msgContent = $('<span>', { class: 'linkify-base' }).html(msgContent);
-  msgContent.find('.lk-href').on('click', event => { const e = event.originalEvent; e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; });
+  msgContent.find('.lk-href').on('click', event => { const e = event.originalEvent; e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; }).tooltip();
 
   // Complete
   return msgContent;
