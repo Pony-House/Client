@@ -263,6 +263,12 @@ export default [
     },
 
     {
+        title: 'LBRY - Blockchain',
+        name: ['lbry'],
+        href: 'https://lbry.com/'
+    },
+
+    {
         title: 'Dogecoin - Cryptocurrency',
         name: ['dogecoin', 'doge'],
         href: 'https://dogecoin.com/'
