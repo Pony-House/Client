@@ -2,13 +2,13 @@ export default [
 
     // Booru
     {
-        title: 'Derpibooru',
+        title: 'Derpibooru - Philomena Booru',
         name: 'derpibooru',
         href: 'https://derpibooru.org/'
     },
 
     {
-        title: 'Furbooru',
+        title: 'Furbooru - Philomena Booru',
         name: 'furbooru',
         href: 'https://furbooru.org/'
     },
@@ -152,7 +152,7 @@ export default [
 
     // Crypto Social
     {
-        title: 'Lenster - Lens App',
+        title: 'Lenster - Lens Web3 Application',
         name: 'lenster',
         href: 'https://lenster.xyz/'
     },

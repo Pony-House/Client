@@ -117,13 +117,15 @@ const tinyRender = {
       tinyAttr += ' iskeyword="false"';
     }
 
-    return `<a${tinyAttr}>${content}</a>`;
+    const db = tinywordsDB[content.toLowerCase()];
+    return `<a${tinyAttr} title="${db?.title}">${content}</a>`;
 
   },
 
   react: type => ({ attributes, content }) => {
-    const { href, title, ...props } = attributes;
-    return <Tooltip content={<small>{title}</small>} >
+    const { href, ...props } = attributes;
+    const db = tinywordsDB[content.toLowerCase()];
+    return <Tooltip content={<small>{db?.title}</small>} >
       <a href={href} onClick={(e) => { e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; }} {...props} iskeyword={type === 'keyword' ? 'true' : 'false'} className='lk-href'>{content}</a>
     </Tooltip>;
   }
