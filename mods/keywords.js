@@ -1,18 +1,31 @@
 const defaultNames = {
-
+    philomena: 'Philomena Booru',
+    linuxOS: 'Linux OS',
+    matrixClient: 'Matrix Client',
+    mastodonSocialMedia: 'Mastodon Social Media',
+    lensWeb3: 'Lens Web3 Application',
+    cryptoExchange: 'Crypto Exchange',
+    web3Registrar: 'Web3 Registrar',
+    nftMarketplace: 'NFT Marketplace',
+    defi: 'DeFi',
+    blockchain: 'Blockchain',
+    cryptocurrency: 'Cryptocurrency',
+    cryptoCompany: 'Crypto Company',
+    cryptoToken: 'Crypto Token',
+    cryptoSelfCustody: 'Crypto Self-Custody',
 };
 
 export default [
 
     // Booru
     {
-        title: `Derpibooru - Philomena Booru`,
+        title: `Derpibooru - ${defaultNames.philomena}`,
         name: `derpibooru`,
         href: `https://derpibooru.org/`
     },
 
     {
-        title: `Furbooru - Philomena Booru`,
+        title: `Furbooru - ${defaultNames.philomena}`,
         name: `furbooru`,
         href: `https://furbooru.org/`
     },
@@ -31,7 +44,7 @@ export default [
     },
 
     {
-        title: `Ubuntu - Linux OS`,
+        title: `Ubuntu - ${defaultNames.linuxOS}`,
         name: `ubuntu`,
         href: `https://ubuntu.com/`
     },
@@ -44,7 +57,7 @@ export default [
 
     // Games
     {
-        title: `Steam Games`,
+        title: `Steam`,
         name: [`steam`, `valve`],
         href: `https://store.steampowered.com/`
     },
@@ -125,7 +138,7 @@ export default [
     },
 
     {
-        title: `Pony House - Matrix Client`,
+        title: `Pony House - ${defaultNames.matrixClient}`,
         name: `pony house`,
         href: `https://pony.house/`
     },
@@ -155,14 +168,14 @@ export default [
     },
 
     {
-        title: `Equestria Social - Mastodon Social Media`,
+        title: `Equestria Social - ${defaultNames.mastodonSocialMedia}`,
         name: `equestria social`,
         href: `https://equestria.social/`
     },
 
     // Crypto Social
     {
-        title: `Lenster - Lens Web3 Application`,
+        title: `Lenster - ${defaultNames.lensWeb3}`,
         name: `lenster`,
         href: `https://lenster.xyz/`
     },
@@ -181,19 +194,19 @@ export default [
 
     // Crypto
     {
-        title: `Binance - Crypto Exchange`,
+        title: `Binance - ${defaultNames.cryptoExchange}`,
         name: `binance`,
         href: `https://binance.com/`
     },
 
     {
-        title: `Coinbase - Crypto Exchange`,
+        title: `Coinbase - ${defaultNames.cryptoExchange}`,
         name: `coinbase`,
         href: `https://coinbase.com/`
     },
 
     {
-        title: `Unstoppable Domains - Web3 Registrar`,
+        title: `Unstoppable Domains - ${defaultNames.web3Registrar}`,
         name: `unstoppable domains`,
         href: `https://unstoppabledomains.com/`
     },
@@ -205,138 +218,138 @@ export default [
     },
 
     {
-        title: `OpenSea - NFT Marketplace`,
+        title: `OpenSea - ${defaultNames.nftMarketplace}`,
         name: `opensea`,
         href: `https://opensea.io/`
     },
 
     {
-        title: `Rarible - NFT Marketplace`,
+        title: `Rarible - ${defaultNames.nftMarketplace}`,
         name: `rarible`,
         href: `https://rarible.com/`
     },
 
     // DEX
     {
-        title: `Uniswap Ecosystem - DeFi`,
+        title: `Uniswap Ecosystem - ${defaultNames.defi}`,
         name: `uniswap`,
         href: `https://uniswap.org/`
     },
 
     {
-        title: `QuickSwap - DeFi`,
+        title: `QuickSwap - ${defaultNames.defi}`,
         name: `quickswap`,
         href: `https://quickswap.exchange/`
     },
 
     {
-        title: `PancakeSwap - DeFi`,
+        title: `PancakeSwap - ${defaultNames.defi}`,
         name: [`pancakeswap`, `pancake swap`],
         href: `https://pancakeswap.finance/`
     },
 
-    // Cryptocurrency
+    // ${defaultNames.cryptocurrency}
     {
-        title: `Polygon - Blockchain`,
+        title: `Polygon - ${defaultNames.blockchain}`,
         name: [`polygon`, `matic`],
         href: `https://polygon.technology/`
     },
 
     {
-        title: `Ethereum - Blockchain`,
+        title: `Ethereum - ${defaultNames.blockchain}`,
         name: [`ethereum`, `eth`],
         href: `https://ethereum.org/`
     },
 
     {
-        title: `Optimism - Blockchain`,
+        title: `Optimism - ${defaultNames.blockchain}`,
         name: [`optimism`, `$op`],
         href: `https://www.optimism.io/`
     },
 
     {
-        title: `Arbitrum - Blockchain`,
+        title: `Arbitrum - ${defaultNames.blockchain}`,
         name: [`arbitrum`, `$arb`],
         href: `https://arbitrum.io/`
     },
 
     {
-        title: `Arweave - Blockchain`,
+        title: `Arweave - ${defaultNames.blockchain}`,
         name: [`arweave`, `$arb`],
         href: `https://arbitrum.io/`
     },
 
     {
-        title: `LBRY - Blockchain`,
+        title: `LBRY - ${defaultNames.blockchain}`,
         name: [`lbry`],
         href: `https://lbry.com/`
     },
 
     {
-        title: `Dogecoin - Cryptocurrency`,
+        title: `Dogecoin - ${defaultNames.cryptocurrency}`,
         name: [`dogecoin`, `doge`],
         href: `https://dogecoin.com/`
     },
 
     {
-        title: `Bitcoin - Cryptocurrency`,
+        title: `Bitcoin - ${defaultNames.cryptocurrency}`,
         name: [`bitcoin`, `btc`],
         href: `https://bitcoin.org/`
     },
 
     {
-        title: `Monero - Cryptocurrency`,
+        title: `Monero - ${defaultNames.cryptocurrency}`,
         name: [`monero`, `xmr`],
         href: `https://www.getmonero.org/`
     },
 
     // Tokens USD
     {
-        title: `Circle - Crypto Company`,
+        title: `Circle - ${defaultNames.cryptoCompany}`,
         name: `circle`,
         href: `https://www.circle.com/`
     },
 
     {
-        title: `USD Coin - Crypto Token`,
+        title: `USD Coin - ${defaultNames.cryptoToken}`,
         name: [`usdc`, `usd coin`],
         href: `https://www.circle.com/en/usdc`
     },
 
     {
-        title: `Dollar Tether - Crypto Token`,
+        title: `Dollar Tether - ${defaultNames.cryptoToken}`,
         name: [`usdt`, `tether`],
         href: `https://tether.to/`
     },
 
     // Crypto Token
     {
-        title: `Shiba - Crypto Token`,
+        title: `Shiba - ${defaultNames.cryptoToken}`,
         name: [`shiba token`, `$shib`],
         href: `https://www.shibatoken.com/`
     },
 
     // Crypto Wallet
     {
-        title: `Metamask Wallet - Crypto Self-Custody`,
+        title: `Metamask Wallet - ${defaultNames.cryptoSelfCustody}`,
         name: `metamask`,
         href: `https://metamask.io/`
     },
 
     {
-        title: `Rabby Wallet - Crypto Self-Custody`,
+        title: `Rabby Wallet - ${defaultNames.cryptoSelfCustody}`,
         name: `rabby`,
         href: `https://rabby.io/`
     },
 
     {
-        title: `Frame Wallet - Crypto Self-Custody`,
+        title: `Frame Wallet - ${defaultNames.cryptoSelfCustody}`,
         name: `frame wallet`,
         href: `https://frame.sh/`
     },
 
     {
-        title: `Trust Wallet - Crypto Self-Custody`,
+        title: `Trust Wallet - ${defaultNames.cryptoSelfCustody}`,
         name: `trust wallet`,
         href: `https://trustwallet.com/`
     },
