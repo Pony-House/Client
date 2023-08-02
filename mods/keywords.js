@@ -54,7 +54,28 @@ export default [
         href: 'https://www.deviantart.com/'
     },
 
+    // Tiny me
+    {
+        name: 'jasmindreasond',
+        href: 'https://www.google.com/search?q=jasmindreasond'
+    },
+
+    {
+        name: 'tiny jasmini',
+        href: 'https://www.google.com/search?q=jasmindreasond'
+    },
+
+    {
+        name: 'puddy club',
+        href: 'https://puddy.club/'
+    },
+
     // Social
+    {
+        name: 'google',
+        href: 'https://google.com/'
+    },
+
     {
         name: 'patreon',
         href: 'https://www.patreon.com/'
