@@ -37,7 +37,25 @@ linkify.registerCustomProtocol('lbry');
 
 // Register Keywords
 const tinywords = [];
-for (const item in keywords) { tinywords.push(keywords[item].name); }
+const tinywordsDB = {};
+for (const item in keywords) {
+
+  if (typeof keywords[item].name === 'string') {
+    tinywords.push(keywords[item].name);
+    tinywordsDB[keywords[item].name] = keywords[item].href;
+  }
+
+  else if (Array.isArray(keywords[item].name) && keywords[item].name.length > 0) {
+    for (const item2 in keywords[item].name) {
+      if (typeof keywords[item].name[item2] === 'string') {
+        tinywords.push(keywords[item].name[item2]);
+        tinywordsDB[keywords[item].name[item2]] = keywords[item].href;
+      };
+    }
+  }
+
+}
+
 linkifyRegisterKeywords(tinywords);
 
 // Emoji Base
@@ -163,8 +181,7 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
     formatHref: {
       keyword: (keyword) => {
         const tinyword = keyword.toLowerCase();
-        const item = keywords.find(word => word.name === tinyword);
-        if (item) return item.href;
+        if (tinywordsDB[tinyword]) return tinywordsDB[tinyword];
       },
     },
 

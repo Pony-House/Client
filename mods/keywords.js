@@ -56,12 +56,7 @@ export default [
 
     // Tiny me
     {
-        name: 'jasmindreasond',
-        href: 'https://www.google.com/search?q=jasmindreasond'
-    },
-
-    {
-        name: 'tiny jasmini',
+        name: ['jasmindreasond', 'tiny jasmini'],
         href: 'https://www.google.com/search?q=jasmindreasond'
     },
 
@@ -190,43 +185,38 @@ export default [
     },
 
     {
-        name: 'pancakeswap',
-        href: 'https://pancakeswap.finance/'
-    },
-
-    {
-        name: 'pancake swap',
+        name: ['pancakeswap', 'pancake swap'],
         href: 'https://pancakeswap.finance/'
     },
 
     // Cryptocurrency
     {
-        name: 'polygon',
+        name: ['polygon', 'matic'],
         href: 'https://polygon.technology/'
     },
 
     {
-        name: 'ethereum',
+        name: ['ethereum', 'eth'],
         href: 'https://ethereum.org/'
     },
 
     {
-        name: 'optimism',
+        name: ['optimism', '$op'],
         href: 'https://www.optimism.io/'
     },
 
     {
-        name: 'arbitrum',
+        name: ['arbitrum', '$arb'],
         href: 'https://offchainlabs.com/'
     },
 
     {
-        name: 'dogecoin',
+        name: ['dogecoin', 'doge'],
         href: 'https://dogecoin.com/'
     },
 
     {
-        name: 'bitcoin',
+        name: ['bitcoin', 'btc'],
         href: 'https://bitcoin.org/'
     },
 
@@ -237,28 +227,18 @@ export default [
     },
 
     {
-        name: 'usdc',
+        name: ['usdc', 'usd coin'],
         href: 'https://www.circle.com/en/usdc'
     },
 
     {
-        name: 'usd coin',
-        href: 'https://www.circle.com/en/usdc'
-    },
-
-    {
-        name: 'usdt',
-        href: 'https://tether.to/'
-    },
-
-    {
-        name: 'tether',
+        name: ['usdt', 'tether'],
         href: 'https://tether.to/'
     },
 
     // Crypto Token
     {
-        name: '$shib',
+        name: ['shiba token', '$shib'],
         href: 'https://www.shibatoken.com/'
     },
 
