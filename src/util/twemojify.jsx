@@ -86,40 +86,63 @@ const mathOptions = {
  */
 const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) => {
 
+  // Not String
   if (typeof text !== 'string') return text;
 
+  // Content Prepare
   let content = text;
   const options = opts ?? { base: TWEMOJI_BASE_URL };
   if (!options.base) {
     options.base = TWEMOJI_BASE_URL;
   }
 
+  // Sanitize Filter
   if (sanitize) {
     content = sanitizeText(content);
   }
 
+  // Emoji Parse
   content = twemoji.parse(content, options);
-  if (linkifyEnabled) {
-    content = linkifyHtml(content, {
 
-      defaultProtocol: 'https',
+  // Linkify Options
+  const linkifyOptions = {
 
-      formatHref: {
-        keyword: (keyword) => {
-          const tinyword = keyword.toLowerCase();
-          const item = keywords.find(word => word.name === tinyword);
-          if (item) return item.href;
-        },
+    defaultProtocol: 'https',
+
+    formatHref: {
+      keyword: (keyword) => {
+        const tinyword = keyword.toLowerCase();
+        const item = keywords.find(word => word.name === tinyword);
+        if (item) return item.href;
       },
+    },
 
-      rel: 'noreferrer noopener',
-      target: '_blank',
+    rel: 'noreferrer noopener',
+    target: '_blank',
 
-    });
+  };
+
+  // React Mode
+  if (isReact) {
+
+    // Insert Linkify
+    if (linkifyEnabled) {
+      content = linkifyHtml(content, linkifyOptions);
+    }
+
+    return parse(content, maths ? mathOptions : null);
+
   }
 
-  if (isReact) return parse(content, maths ? mathOptions : null);
+  // jQuery Mode
+
+  // Insert Linkify
+  if (linkifyEnabled) {
+    content = linkifyHtml(content, linkifyOptions);
+  }
+
   return content;
+
 
 };
 
