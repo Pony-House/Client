@@ -84,7 +84,7 @@ const mathOptions = {
  * @param {boolean} [maths=false] - render maths (default: false)
  * @returns React component
  */
-const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact = false) => {
+const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) => {
 
   if (typeof text !== 'string') return text;
 
@@ -118,12 +118,13 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact = 
     });
   }
 
-  return parse(content, maths ? mathOptions : null);
+  if (isReact) return parse(content, maths ? mathOptions : null);
+  return content;
 
 };
 
-export function twemojify(text, opts, linkifyEnabled = false, sanitize = true, maths = false) {
-  return twemojifyAction(text, opts, linkifyEnabled, sanitize, maths, false);
+export function twemojify(text, opts, linkifyEnabled = false, sanitize = true) {
+  return twemojifyAction(text, opts, linkifyEnabled, sanitize, false, false);
 }
 
 export function twemojifyReact(text, opts, linkifyEnabled = false, sanitize = true, maths = false) {

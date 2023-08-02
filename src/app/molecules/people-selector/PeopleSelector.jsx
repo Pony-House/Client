@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ReactDOMServer from 'react-dom/server';
-import { twemojifyReact } from '../../../util/twemojify';
+import { twemojifyReact, twemojify } from '../../../util/twemojify';
 
 import { blurOnBubbling } from '../../atoms/button/script';
 
@@ -47,9 +46,7 @@ function PeopleSelector({
         }
 
         if (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) {
-          htmlStatus.push(ReactDOMServer.renderToStaticMarkup(<span className='text-truncate cs-text'>
-            {twemojifyReact(content.presenceStatusMsg.msg.substring(0, 100))}
-          </span>));
+          htmlStatus.push($('<span>', { class: 'text-truncate cs-text' }).html(twemojify(content.presenceStatusMsg.msg.substring(0, 100))));
         }
 
       }

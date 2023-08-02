@@ -1,8 +1,7 @@
-import ReactDOMServer from 'react-dom/server';
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { twemojifyReact } from '../../../util/twemojify';
+import { twemojifyReact, twemojify } from '../../../util/twemojify';
 import { getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
 
 import imageViewer from '../../../util/imageViewer';
@@ -420,7 +419,7 @@ function ProfileViewer() {
 
               bioDOM.removeClass('d-none');
               if (typeof content.presenceStatusMsg.bio === 'string' && content.presenceStatusMsg.bio.length > 0) {
-                tinyBio.html(ReactDOMServer.renderToStaticMarkup(twemojifyReact(content.presenceStatusMsg.bio.substring(0, 190), undefined, true, false, true)));
+                tinyBio.html(twemojify(content.presenceStatusMsg.bio.substring(0, 190), undefined, true, false, true));
               } else {
                 bioDOM.addClass('d-none');
                 tinyBio.html('');
@@ -451,9 +450,7 @@ function ProfileViewer() {
             }
 
             if (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) {
-              htmlStatus.push(ReactDOMServer.renderToStaticMarkup(<span className='text-truncate cs-text'>
-                {twemojifyReact(content.presenceStatusMsg.msg.substring(0, 100))}
-              </span>));
+              htmlStatus.push($('<span>', { class: 'text-truncate cs-text' }).html(twemojify(content.presenceStatusMsg.msg.substring(0, 100))));
             } else { isAloneEmojiCustomStatus = true; }
 
           } else {
