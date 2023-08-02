@@ -138,16 +138,16 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
       // Render Data
       linkifyOptions.render = ({ attributes, content }) => {
         const { href, ...props } = attributes;
-        return <a href={href} onClick={(e) => { e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; }} {...props} className='linkify'>{content}</a>;
+        return <a href={href} onClick={(e) => { e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; }} {...props} className='lk-href'>{content}</a>;
       };
 
       // Complete
-      return <Linkify options={linkifyOptions}>{parse(msgContent, maths ? mathOptions : null)}</Linkify>;
+      return <span className='linkify-base'><Linkify options={linkifyOptions}>{parse(msgContent, maths ? mathOptions : null)}</Linkify></span>;
 
     }
 
     // Complete
-    return parse(msgContent, maths ? mathOptions : null);
+    return <span className='linkify-base'>{parse(msgContent, maths ? mathOptions : null)}</span>;
 
   }
 
@@ -155,13 +155,13 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
 
   // Insert Linkify
   if (linkifyEnabled) {
-    linkifyOptions.className = 'linkify';
+    linkifyOptions.className = 'lk-href';
     msgContent = linkifyHtml(msgContent, linkifyOptions);
   }
 
   // Final Result
-  msgContent = $('<span>').html(msgContent);
-  msgContent.find('.linkify').on('click', event => { const e = event.originalEvent; e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; });
+  msgContent = $('<span>', { class: 'linkify-base' }).html(msgContent);
+  msgContent.find('.lk-href').on('click', event => { const e = event.originalEvent; e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; });
 
   // Complete
   return msgContent;

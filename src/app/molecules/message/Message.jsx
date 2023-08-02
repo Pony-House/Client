@@ -273,7 +273,7 @@ const MessageBody = React.memo(({
   // - Contains only emoji
   // - Contains no more than 10 emoji
   let emojiOnly = false;
-  const msgContent = content?.props?.children;
+  const msgContent = content?.props?.children?.props?.children;
   if (msgContent) {
     if (msgContent.type === 'img') {
       // If this messages contains only a single (inline) image
