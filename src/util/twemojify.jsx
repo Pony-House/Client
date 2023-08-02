@@ -78,6 +78,11 @@ const mathOptions = {
   },
 };
 
+// Open URL
+const openTinyURL = (url) => {
+  console.log(url);
+};
+
 /**
  * @param {string} text - text to twemojify
  * @param {object|undefined} opts - options for tweomoji.parse
@@ -133,7 +138,7 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
       // Render Data
       linkifyOptions.render = ({ attributes, content }) => {
         const { href, ...props } = attributes;
-        return <a href={href} {...props}>{content}</a>;
+        return <a href={href} onClick={(e) => { e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; }} {...props} className='linkify'>{content}</a>;
       };
 
       // Complete
@@ -150,14 +155,16 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
 
   // Insert Linkify
   if (linkifyEnabled) {
+    linkifyOptions.className = 'linkify';
     msgContent = linkifyHtml(msgContent, linkifyOptions);
   }
 
   // Final Result
   msgContent = $('<span>').html(msgContent);
+  msgContent.find('.linkify').on('click', event => { const e = event.originalEvent; e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; });
 
   // Complete
-  return msgContent.html();
+  return msgContent;
 
 };
 
