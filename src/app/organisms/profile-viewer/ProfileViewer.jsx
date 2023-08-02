@@ -1,7 +1,7 @@
+import ReactDOMServer from 'react-dom/server';
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import jReact from '../../../../mods/lib/jReact';
 import { twemojify } from '../../../util/twemojify';
 import { getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
 
@@ -420,7 +420,7 @@ function ProfileViewer() {
 
               bioDOM.removeClass('d-none');
               if (typeof content.presenceStatusMsg.bio === 'string' && content.presenceStatusMsg.bio.length > 0) {
-                tinyBio.html(jReact(twemojify(content.presenceStatusMsg.bio.substring(0, 190), undefined, true, false, true)));
+                tinyBio.html(ReactDOMServer.renderToStaticMarkup(twemojify(content.presenceStatusMsg.bio.substring(0, 190), undefined, true, false, true)));
               } else {
                 bioDOM.addClass('d-none');
                 tinyBio.html('');
@@ -451,7 +451,7 @@ function ProfileViewer() {
             }
 
             if (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) {
-              htmlStatus.push(jReact(<span className='text-truncate cs-text'>
+              htmlStatus.push(ReactDOMServer.renderToStaticMarkup(<span className='text-truncate cs-text'>
                 {twemojify(content.presenceStatusMsg.msg.substring(0, 100))}
               </span>));
             } else { isAloneEmojiCustomStatus = true; }

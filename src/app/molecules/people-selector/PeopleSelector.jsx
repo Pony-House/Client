@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import jReact from '../../../../mods/lib/jReact';
+import ReactDOMServer from 'react-dom/server';
 import { twemojify } from '../../../util/twemojify';
 
 import { blurOnBubbling } from '../../atoms/button/script';
@@ -47,7 +47,7 @@ function PeopleSelector({
         }
 
         if (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) {
-          htmlStatus.push(jReact(<span className='text-truncate cs-text'>
+          htmlStatus.push(ReactDOMServer.renderToStaticMarkup(<span className='text-truncate cs-text'>
             {twemojify(content.presenceStatusMsg.msg.substring(0, 100))}
           </span>));
         }
