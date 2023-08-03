@@ -234,6 +234,12 @@ console object = level, message
     term
     config
 
+`src/app/organisms/navigation/ProfileAvatarMenu.jsx`
+
+### userStatusUpdate
+
+    statusData
+
 `src/util/twemojify.jsx`
 
 ### openUrlChecker

@@ -16,6 +16,9 @@ import { getPresence, getUserStatus } from '../../../util/onlineStatus';
 import {
     openSettings,
 } from '../../../client/action/navigation';
+import tinyAPI from '../../../util/mods';
+
+const accountStatus = { status: null, data: null };
 
 function ProfileAvatarMenu() {
     const mx = initMatrix.matrixClient;
@@ -37,6 +40,7 @@ function ProfileAvatarMenu() {
 
         // Set New User Status
         const onProfileUpdate = (event = {}) => {
+
             if (event) {
 
                 const tinyEvent = event;
@@ -76,9 +80,13 @@ function ProfileAvatarMenu() {
                     }
 
                     $(customStatusRef.current).html(htmlStatus);
+                    accountStatus.data = content.presenceStatusMsg;
+                    accountStatus.status = event.status;
 
                 } else {
                     $(customStatusRef.current).html(jReact(twemojifyReact(user2.userId)));
+                    accountStatus.data = null;
+                    accountStatus.status = null;
                 }
 
                 if (statusRef && statusRef.current && typeof event.status === 'string' && event.status.length > 0) {
@@ -87,7 +95,13 @@ function ProfileAvatarMenu() {
                     statusRef.current.className = getUserStatus(user2);
                 }
 
+            } else {
+                accountStatus.data = null;
+                accountStatus.status = null;
             }
+
+            tinyAPI.emit('userStatusUpdate', accountStatus);
+
         };
 
         onProfileUpdate(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
