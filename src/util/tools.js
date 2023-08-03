@@ -197,7 +197,7 @@ export function btModal(data) {
         )
     );
 
-    $("body").prepend(modal);
+    $("body").append(modal);
     let modalControl;
 
     if (typeof data.cfg !== 'string') {
@@ -207,12 +207,17 @@ export function btModal(data) {
     }
 
     modal.get(0).addEventListener('hidden.bs.modal', () => {
+
         modal.remove();
         if (typeof data.hidden === "function") {
             data.hidden();
         }
+
+        $('body > .modal-temp-hide').removeClass('modal-temp-hide').fadeIn();
+
     });
 
+    $('body > .modal, body > .modal-backdrop').addClass('modal-temp-hide').fadeOut();
     modalControl.show();
     return modalControl;
 
