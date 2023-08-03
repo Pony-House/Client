@@ -107,13 +107,11 @@ const openTinyURL = (url) => {
     let urlAllowed = false;
 
     // Read Whitelist
-    if (whiteList.indexOf(url) > -1) urlAllowed = true;
+    const tinyUrl = new URL(url);
+    if (whiteList.indexOf(tinyUrl.origin) > -1) urlAllowed = true;
     if (!urlAllowed) {
 
-      const tinyUrl = new URL(url);
-      console.log(tinyUrl);
-
-      btModal({
+      const tinyModal = btModal({
 
         id: 'trust-tiny-url',
         title: `Leaving ${__ENV_APP__.info.name}`,
@@ -130,14 +128,19 @@ const openTinyURL = (url) => {
 
           $('<div>', { class: 'form-check mt-2 text-start' }).append(
             $('<input>', { type: 'checkbox', class: 'form-check-input', id: 'whitelist-the-domain' }),
-            $('<label>', { class: 'form-check-label small', for: 'whitelist-the-domain' }).html(`Trust <strong>${url}</strong> links from now on`)
+            $('<label>', { class: 'form-check-label small', for: 'whitelist-the-domain' }).html(`Trust <strong>${tinyUrl.hostname}</strong> links from now on`)
           )
 
         ),
 
         footer: [
-          $('<button>', { class: 'btn btn-bg mx-2' }).text('Go Back'),
-          $('<button>', { class: 'btn btn-primary mx-2' }).text('Visit Site'),
+          $('<button>', { class: 'btn btn-bg mx-2' }).text('Go Back').on('click', () => tinyModal.hide()),
+          $('<button>', { class: 'btn btn-primary mx-2' }).text('Visit Site').on('click', () => {
+            whiteList.push(tinyUrl.origin);
+            global.localStorage.setItem('pony-house-urls-whitelist', JSON.stringify(whiteList));
+            global.open(url, '_blank');
+            tinyModal.hide();
+          }),
         ],
 
       });
