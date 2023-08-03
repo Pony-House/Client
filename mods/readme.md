@@ -242,7 +242,7 @@ console object = level, message
 
 `src/util/twemojify.jsx`
 
-### openUrlChecker
+### openUrlChecker (await)
 
     hostname (string)
     protocol (string)
