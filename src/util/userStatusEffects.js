@@ -1,4 +1,5 @@
 import initMatrix from '../client/initMatrix';
+import { emitUpdateProfile } from '../client/action/navigation';
 import tinyAPI from './mods';
 
 // Cache Data
@@ -35,15 +36,22 @@ const intervalTimestamp = () => {
     // API
     const counter = getUserAfk();
     tinyAPI.emit('afkTimeCounter', counter);
+    const content = initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
+    const originalAfk = content.afk;
 
     // 10 Minutes later...
     if (counter > 600) {
-
+        content.afk = true;
     }
 
     // Nope
     else {
+        content.afk = false;
+    }
 
+    if (typeof originalAfk !== 'boolean' || originalAfk !== content.afk) {
+        initMatrix.matrixClient.setAccountData('pony.house.profile', content);
+        emitUpdateProfile(content);
     }
 
 };

@@ -877,8 +877,8 @@ function Message({
 
   // User Data
   const username = mEvent.sender ? getUsernameOfRoomMember(mEvent.sender) : getUsername(senderId);
-  const avatarSrc = mEvent.sender?.getAvatarUrl(initMatrix.matrixClient.baseUrl, 36, 36, 'crop') ?? null;
-  const avatarAnimSrc = mEvent.sender?.getAvatarUrl(initMatrix.matrixClient.baseUrl) ?? null;
+  const avatarSrc = mEvent.sender?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop') ?? null;
+  const avatarAnimSrc = mEvent.sender?.getAvatarUrl(mx.baseUrl) ?? null;
 
   // Content Data
   let isCustomHTML = content.format === 'org.matrix.custom.html';
