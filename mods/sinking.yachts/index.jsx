@@ -1,4 +1,5 @@
 import * as colors from 'console-log-colors';
+import { objType } from '../../src/util/tools';
 
 export default function sinkingYachts() {
 
@@ -7,10 +8,12 @@ export default function sinkingYachts() {
 
     // Function
     tinyAPI.on('openUrlChecker', (data, host) => {
+        if (!objType(data, 'object') || !data.isScammer) {
 
-        console.log(host);
-        // return { isScammer: true };
+            console.log(host);
+            // return { isScammer: true };
 
+        } else { return data; }
     });
 
 };
