@@ -26,7 +26,7 @@ import appLoadMsg from '../../../../mods/appLoadMsg';
 
 function Client() {
   const [isLoading, changeLoading] = useState(true);
-  const [loadingMsg, setLoadingMsg] = useState(appLoadMsg.items[dice(appLoadMsg.items.length) - 1]);
+  const [loadingMsg, setLoadingMsg] = useState(appLoadMsg.en.items[dice(appLoadMsg.en.items.length) - 1]);
 
   const navWrapperRef = useRef(null);
 
@@ -62,19 +62,19 @@ function Client() {
       if (counter2 !== 2) {
 
         counter2 += 1;
-        setLoadingMsg(appLoadMsg.items[dice(appLoadMsg.items.length) - 1]);
+        setLoadingMsg(appLoadMsg.en.items[dice(appLoadMsg.en.items.length) - 1]);
 
       } else {
 
         counter += 1;
 
         if (counter === 3) {
-          setLoadingMsg(appLoadMsg.loading[appLoadMsg.loading.length - 1]);
+          setLoadingMsg(appLoadMsg.en.loading[appLoadMsg.en.loading.length - 1]);
           clearInterval(iId);
           return;
         }
 
-        setLoadingMsg(appLoadMsg.loading[counter]);
+        setLoadingMsg(appLoadMsg.en.loading[counter]);
 
       }
 
