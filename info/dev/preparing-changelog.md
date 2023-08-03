@@ -20,3 +20,4 @@
 - Fixed the issue where notifications were not received from the room that was visible in the app when you have the app minimized.
 - Keywords url added.
 - When clicking on a URL, the user will receive a notification whether or not the user should trust the domain.
+- System status is a modal now.
