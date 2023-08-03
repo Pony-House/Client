@@ -50,8 +50,6 @@ Made by Me
     --> Status ocupado não pode enviar notificação
     --> Criar sistema de alterar o tamanho da fonte do aplicativo
 
-    --> <Text>{systemState.status}</Text>
-
     --> Tema https://github.com/catppuccin/cinny
 
     Sandbox: https://github.com/sablejs/sablejs
