@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+import Modal from 'react-bootstrap/Modal';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 
-import Text from '../../atoms/text/Text';
 import ScrollView from '../../atoms/scroll/ScrollView';
 
 import DrawerHeader from './DrawerHeader';
@@ -77,9 +77,9 @@ function Drawer() {
     $('#space-header > .navbar').removeClass('banner-mode').css('background-image', '');
   }
 
-  return (
-    <div className={`space-drawer-body${avatarSrc ? ' drawer-with-banner' : ''}`}>
+  return <>
 
+    <div className={`space-drawer-body${avatarSrc ? ' drawer-with-banner' : ''}`}>
       <DrawerHeader selectedTab={selectedTab} spaceId={spaceId} banner={avatarSrc} room={room} />
 
       <ScrollView ref={scrollRef} autoHide>
@@ -94,15 +94,20 @@ function Drawer() {
             : <Directs size={roomList.directs.size} />
         }
       </ScrollView>
-
-      {systemState !== null && (
-        <div className="drawer__state">
-          <Text>{systemState.status}</Text>
-        </div>
-      )}
-
     </div>
-  );
+
+    {systemState !== null ? <Modal dialogClassName='modal-dialog-centered modal-dialog-scrollable' show >
+      <Modal.Header className='noselect'>
+        <Modal.Title className='h5'>System Status</Modal.Title>
+      </Modal.Header>
+      <Modal.Body className='small'>
+        {systemState.status}
+      </Modal.Body>
+    </Modal> : null}
+
+
+
+  </>;
 }
 
 export default Drawer;
