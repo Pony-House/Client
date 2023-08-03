@@ -40,7 +40,7 @@ const intervalTimestamp = () => {
     const originalAfk = content.afk;
 
     // 10 Minutes later...
-    if (counter > 600) {
+    if (counter > 600 || content.status === '🟠' || content.status === 'idle') {
         content.afk = true;
     }
 
