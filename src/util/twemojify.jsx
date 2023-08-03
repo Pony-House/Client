@@ -116,7 +116,7 @@ const openTinyURL = (url) => {
         id: 'trust-tiny-url',
         title: `Leaving ${__ENV_APP__.info.name}`,
 
-        dialog: 'modal-dialog-centered',
+        dialog: 'modal-dialog-centered modal-lg',
 
         body: $('<center>', { class: 'small' }).append(
 
