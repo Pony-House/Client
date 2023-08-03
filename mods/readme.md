@@ -238,20 +238,28 @@ console object = level, message
 
 ### userStatusUpdate
 
-    statusData
+    statusData (object)
 
 `src/util/twemojify.jsx`
 
 ### openUrlChecker
 
-    hostname
-    protocol
+    hostname (string)
+    protocol (string)
+
+`src/util/userStatusEffects.js`
+
+Every 1 second this event is emitted.
+
+### afkTimeCounter
+
+    counter(number)
 
 `others`
 
 ### mouseWheel
 
-    event
+    event (event)
 
 <hr/>
 
