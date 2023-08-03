@@ -1,3 +1,4 @@
+import sinkingYachts from './sinking.yachts';
 // import startTest from './test';
 // import './test/style.scss';
 
@@ -5,6 +6,7 @@
 
 export default function startMods() {
 
+    sinkingYachts();
     // helloWorld();
     // startTest();
 
