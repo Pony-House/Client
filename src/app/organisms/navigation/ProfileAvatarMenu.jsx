@@ -60,7 +60,10 @@ function ProfileAvatarMenu() {
             if (event) {
 
                 const tinyEvent = event;
-                const eventJSON = JSON.stringify(tinyEvent);
+
+                const tinyClone = clone(event);
+                if (tinyClone.afk) tinyClone.status = '🟠';
+                const eventJSON = JSON.stringify(tinyClone);
 
                 if (eventJSON.length > 0 /* && (typeof user2.presenceStatusMsg !== 'string' || user2.presenceStatusMsg !== eventJSON) */) {
 
