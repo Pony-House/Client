@@ -208,12 +208,12 @@ export function btModal(data) {
 
     modal.get(0).addEventListener('hidden.bs.modal', () => {
 
+        $('body > .modal-temp-hide').removeClass('modal-temp-hide').fadeIn();
+
         modal.remove();
         if (typeof data.hidden === "function") {
             data.hidden();
         }
-
-        $('body > .modal-temp-hide').removeClass('modal-temp-hide').fadeIn();
 
     });
 
