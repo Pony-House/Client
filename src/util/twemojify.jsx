@@ -13,7 +13,8 @@ import Tooltip from '../app/atoms/tooltip/Tooltip';
 import { sanitizeText } from './sanitize';
 
 import keywords from '../../mods/keywords';
-import { btModal } from './tools';
+import { btModal, objType } from './tools';
+import tinyAPI from './mods';
 
 // Register Protocols
 linkify.registerCustomProtocol('matrix');
@@ -115,6 +116,8 @@ const openTinyURL = async (url) => {
 
     // Start loading
     $.LoadingOverlay('show');
+    const scammerCache = await tinyAPI.emitAsync('openUrlChecker', tinyUrl.hostname || tinyUrl.host);
+    const isScammer = (objType(scammerCache, 'object') && scammerCache.isScammer);
 
     // Read Whitelist
     if (whiteList.indexOf(tinyValue) > -1) urlAllowed = true;
@@ -122,10 +125,13 @@ const openTinyURL = async (url) => {
 
       const body = $('<center>', { class: 'small' }).append(
 
-        $('<p>').text('This link is taking you to the following website'),
+        $('<p>', { class: isScammer ? 'text-danger' : null }).text(isScammer ?
+          'The domain was detected in a scammer database! Are you sure you want to continue? Proceed at your own risk!' :
+          'This link is taking you to the following website'
+        ),
 
         $('<div>', { class: 'card' }).append(
-          $('<div>', { class: 'card-body text-break' }).text(url)
+          $('<div>', { class: `card-body text-break${isScammer ? 'text-warning' : ''}` }).text(url)
         ),
 
         (typeof tinyValue === 'string' && tinyValue !== 'null' && $('<div>', { class: 'form-check mt-2 text-start' }).append(
