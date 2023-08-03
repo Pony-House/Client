@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+
+import clone from 'clone';
 import jReact from '../../../../mods/lib/jReact';
 
 import IconButton from '../../atoms/button/IconButton';
@@ -19,6 +21,20 @@ import {
 import tinyAPI from '../../../util/mods';
 
 const accountStatus = { status: null, data: null };
+export function getAccountStatus(where) {
+
+    if (typeof where === 'string') {
+
+        if (where !== 'status') {
+            return clone(accountStatus.status);
+        }
+
+        return clone(accountStatus.data[where]);
+    }
+
+    return null;
+
+};
 
 function ProfileAvatarMenu() {
     const mx = initMatrix.matrixClient;
