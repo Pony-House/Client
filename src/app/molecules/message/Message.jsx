@@ -40,6 +40,8 @@ import { html, plain } from '../../../util/markdown';
 import getUrlPreview from '../../../util/libs/getUrlPreview';
 import jReact from '../../../../mods/lib/jReact';
 
+import openTinyURL from '../../../util/message/urlProtection';
+
 function PlaceholderMessage() {
   return (
     <tr className="ph-msg">
@@ -1168,7 +1170,9 @@ function Message({
                         {typeof embed.data['og:site_name'] === 'string' && embed.data['og:site_name'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mb-2'>{twemojifyReact(embed.data['og:site_name'])}</p> : null}
 
                         {typeof embed.data['og:title'] === 'string' && embed.data['og:title'].length > 0 ? <h5 className='card-title small emoji-size-fix fw-bold'>
-                          {typeof embed.data['og:url'] === 'string' && embed.data['og:url'].length > 0 ? <a href={embed.data['og:url']} target='_blank' rel="noreferrer">
+                          {typeof embed.data['og:url'] === 'string' && embed.data['og:url'].length > 0 ? <a href={embed.data['og:url']} onClick={(e) => {
+                            e.preventDefault(); openTinyURL($(e.target).parent().attr('href')); return false;
+                          }} target='_blank' rel="noreferrer">
                             {twemojifyReact(embed.data['og:title'])}
                           </a> : embed.data['og:title']}
                         </h5> : null}
