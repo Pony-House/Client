@@ -110,7 +110,7 @@ const openTinyURL = (url) => {
     const tinyUrl = new URL(url);
     let tinyValue = tinyUrl.origin;
     if (typeof tinyValue !== 'string' || tinyValue === 'null') {
-
+      tinyValue = tinyUrl.protocol;
     }
 
     // Read Whitelist
@@ -127,7 +127,7 @@ const openTinyURL = (url) => {
 
         (typeof tinyValue === 'string' && tinyValue !== 'null' && $('<div>', { class: 'form-check mt-2 text-start' }).append(
           $('<input>', { type: 'checkbox', class: 'form-check-input', id: 'whitelist-the-domain' }),
-          $('<label>', { class: 'form-check-label small', for: 'whitelist-the-domain' }).html(`Trust <strong>${tinyUrl.hostname}</strong> links from now on`)
+          $('<label>', { class: 'form-check-label small', for: 'whitelist-the-domain' }).html(`Trust <strong>${typeof tinyUrl.hostname === 'string' && tinyUrl.hostname.length > 0 && tinyUrl.hostname !== 'null' ? tinyUrl.hostname : 'protocol'}</strong> links from now on`)
         ))
 
       );
