@@ -21,3 +21,4 @@
 - Keywords url added.
 - When clicking on a URL, the user will receive a notification whether or not the user should trust the domain.
 - System status is a modal now.
+- The dnd status now does not send notifications.
