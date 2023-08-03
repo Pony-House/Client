@@ -29,7 +29,7 @@ export default {
             'Looking for your ponies...',
             'Looking for your puddings...',
 
-            'Oh my goodness, here we go again.',
+            'Oh my goodness, here we go again...',
 
             'Where are your puddings while this is loading?',
 

@@ -109,7 +109,7 @@ function Client() {
           />
         </div>
         <Spinner />
-        <Text className="loading__message" variant="b2">{loadingMsg}</Text>
+        <p className="loading__message small mt-3">{loadingMsg}</p>
 
         <div className="loading__appname">
           <Text variant="h2" weight="medium">{__ENV_APP__.info.name}</Text>

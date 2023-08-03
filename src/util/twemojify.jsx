@@ -116,7 +116,15 @@ const openTinyURL = async (url) => {
 
     // Start loading
     $.LoadingOverlay('show');
-    const scammerCache = await tinyAPI.emitAsync('openUrlChecker', tinyUrl.hostname || tinyUrl.host);
+    let scammerCache;
+
+    try {
+      scammerCache = await tinyAPI.emitAsync('openUrlChecker', tinyUrl.hostname || tinyUrl.host);
+    } catch (err) {
+      scammerCache = null;
+      console.error(err);
+    }
+
     const isScammer = (objType(scammerCache, 'object') && scammerCache.isScammer);
 
     // Read Whitelist
@@ -131,7 +139,7 @@ const openTinyURL = async (url) => {
         ),
 
         $('<div>', { class: 'card' }).append(
-          $('<div>', { class: `card-body text-break${isScammer ? 'text-warning' : ''}` }).text(url)
+          $('<div>', { class: `card-body text-break${isScammer ? ' text-warning' : ''}` }).text(url)
         ),
 
         (typeof tinyValue === 'string' && tinyValue !== 'null' && $('<div>', { class: 'form-check mt-2 text-start' }).append(
@@ -151,7 +159,9 @@ const openTinyURL = async (url) => {
 
         footer: [
           $('<button>', { class: 'btn btn-bg mx-2' }).text('Go Back').on('click', () => tinyModal.hide()),
-          $('<button>', { class: 'btn btn-primary mx-2' }).text('Visit Site').on('click', () => {
+          $('<button>', { class: `btn ${isScammer ? ' btn-danger' : 'btn-primary'} mx-2` }).text('Visit Site').prepend(
+            isScammer ? $('<i>', { class: 'fa-solid fa-circle-radiation me-2' }) : null
+          ).on('click', () => {
 
             if (typeof tinyValue === 'string' && tinyValue !== 'null' && $('#whitelist-the-domain').is(':checked')) {
               whiteList.push(tinyValue);
