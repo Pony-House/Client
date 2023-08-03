@@ -136,10 +136,15 @@ const openTinyURL = (url) => {
         footer: [
           $('<button>', { class: 'btn btn-bg mx-2' }).text('Go Back').on('click', () => tinyModal.hide()),
           $('<button>', { class: 'btn btn-primary mx-2' }).text('Visit Site').on('click', () => {
-            whiteList.push(tinyUrl.origin);
-            global.localStorage.setItem('pony-house-urls-whitelist', JSON.stringify(whiteList));
+
+            if ($('#whitelist-the-domain').is(':checked')) {
+              whiteList.push(tinyUrl.origin);
+              global.localStorage.setItem('pony-house-urls-whitelist', JSON.stringify(whiteList));
+            }
+
             global.open(url, '_blank');
             tinyModal.hide();
+
           }),
         ],
 
