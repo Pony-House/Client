@@ -2,6 +2,7 @@ import { Toast } from '@capacitor/toast';
 import { Capacitor } from '@capacitor/core';
 
 import tinyAPI from './mods';
+import { twemojify } from './twemojify';
 
 let resizePlace = null;
 let resizeTimeout = null;
@@ -190,7 +191,7 @@ export function btModal(data) {
                     $("<button>", { type: "button", class: "btn-close", "data-bs-dismiss": "modal", 'aria-label': 'Close' })
                 ),
 
-                $("<div>", { class: "modal-body bg-bg2" }).append(data.body),
+                $("<div>", { class: `modal-body bg-bg2${typeof data.bodyClass === 'string' ? ` ${data.bodyClass}` : ''}` }).append(data.body),
                 footer,
 
             )
@@ -222,6 +223,14 @@ export function btModal(data) {
     return modalControl;
 
 };
+
+global.alert = (text = '', title = 'App Alert') => btModal({
+    id: 'browser-alert',
+    dialog: 'modal-dialog-centered modal-dialog-scrollable',
+    bodyClass: 'small text-freedom noselect p-4',
+    title,
+    body: twemojify(text),
+});
 
 export function formatBytes(bytes, decimals = 2) {
 

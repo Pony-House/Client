@@ -17,7 +17,6 @@ import EmojiBoardOpener from '../../organisms/emoji-board/EmojiBoardOpener';
 import initMatrix from '../../../client/initMatrix';
 import navigation from '../../../client/state/navigation';
 import cons from '../../../client/state/cons';
-import Alert from './Alert';
 import DragDrop from './DragDrop';
 import { dice, resizeWindowChecker, scrollFixer } from '../../../util/tools';
 import { startUserAfk, stopUserAfk } from '../../../util/userStatusEffects';
@@ -131,7 +130,6 @@ function Client() {
       <Dialogs />
       <EmojiBoardOpener />
       <ReusableContextMenu />
-      <Alert />
       <Mods />
     </DragDrop>
   );
