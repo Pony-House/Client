@@ -38,9 +38,8 @@ import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
 import { getBlobSafeMimeType } from '../../../util/mimetypes';
 import { html, plain } from '../../../util/markdown';
 import getUrlPreview from '../../../util/libs/getUrlPreview';
-import jReact from '../../../../mods/lib/jReact';
 
-import openTinyURL from '../../../util/message/urlProtection';
+import Embed from './Embed';
 
 function PlaceholderMessage() {
   return (
@@ -1095,137 +1094,7 @@ function Message({
 
             {embeds.length > 0 ? <div className='message-embed message-url-embed'>
               {embeds.map(embed => {
-                if (embed.data) {
-
-                  // Is Thumb
-                  const isThumb = (
-
-                    (
-                      embed.data['og:type'] !== 'article' ||
-                      embed.data['og:type'] === 'profile'
-                    ) &&
-
-                    !embed.data['og:video:url'] &&
-                    !embed.data['og:video'] &&
-                    !embed.data['og:video:secure_url'] &&
-
-                    (
-                      typeof embed.data['og:image:height'] !== 'number' ||
-                      typeof embed.data['og:image:width'] !== 'number' ||
-                      (embed.data['og:image:height'] < 512 && embed.data['og:image:width'] < 512) ||
-                      embed.data['og:image:height'] === embed.data['og:image:width']
-                    )
-
-                  );
-
-                  // Video
-                  let videoUrl = null;
-                  if (typeof embed.data['og:video:secure_url'] === 'string' && embed.data['og:video:secure_url'].length > 0) {
-                    videoUrl = embed.data['og:video:secure_url'];
-                  } else if (typeof embed.data['og:video'] === 'string' && embed.data['og:video'].length > 0) {
-                    videoUrl = embed.data['og:video'];
-                  } else if (typeof embed.data['og:video:url'] === 'string' && embed.data['og:video:url'].length > 0) {
-                    videoUrl = embed.data['og:video:url'];
-                  }
-
-
-                  // Is Video
-                  const isVideo = (
-                    videoUrl &&
-                    typeof embed.data['og:video:height'] &&
-                    typeof embed.data['og:video:width'] &&
-                    embed.data['og:video:type']
-                  );
-
-                  // Image
-                  let imgUrl = null;
-                  if (typeof embed.data['og:image'] === 'string' && typeof embed.data['og:image:secure_url'] === 'string') {
-                    imgUrl = embed.data['og:image:secure_url'].length > 0 ? embed.data['og:image:secure_url'] : embed.data['og:image'];
-                  } else if (typeof embed.data['og:image'] === 'string' && embed.data['og:image'].length > 0) {
-                    imgUrl = embed.data['og:image'];
-                  }
-
-                  const defaultVideoAvatar = './img/default_avatar/1.jpg';
-                  if (!imgUrl && isVideo) {
-                    imgUrl = defaultVideoAvatar;
-                  }
-
-                  // Complete
-                  return <div className='card mt-2'>
-                    <div className='card-body'>
-
-                      {isThumb && typeof imgUrl === 'string' ? <span className='float-end'>
-                        <Media.Image
-                          name='embed-img'
-                          className='embed-thumb'
-                          width={Number(embed.data['og:image:width'])}
-                          height={Number(embed.data['og:image:height'])}
-                          link={mx.mxcUrlToHttp(imgUrl, 2000, 2000)}
-                          type={String(embed.data['og:image:type'])}
-                        />
-                      </span> : null}
-
-                      <span>
-
-                        {typeof embed.data['og:site_name'] === 'string' && embed.data['og:site_name'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mb-2'>{twemojifyReact(embed.data['og:site_name'])}</p> : null}
-
-                        {typeof embed.data['og:title'] === 'string' && embed.data['og:title'].length > 0 ? <h5 className='card-title small emoji-size-fix fw-bold'>
-                          {typeof embed.data['og:url'] === 'string' && embed.data['og:url'].length > 0 ? <a href={embed.data['og:url']} onClick={(e) => {
-                            e.preventDefault(); openTinyURL($(e.target).parent().attr('href')); return false;
-                          }} target='_blank' rel="noreferrer">
-                            {twemojifyReact(embed.data['og:title'])}
-                          </a> : embed.data['og:title']}
-                        </h5> : null}
-
-                        {typeof embed.data['og:description'] === 'string' && embed.data['og:description'].length > 0 ? <p className='card-text very-small emoji-size-fix-2'>
-                          {twemojifyReact(embed.data['og:description'])}
-                        </p> : null}
-
-                        {embed.data['og:type'] === 'article' ? <>
-
-                          {typeof embed.data['article:publisher'] === 'string' && embed.data['article:publisher'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mt-2'>
-                            {twemojifyReact(embed.data['article:publisher'])}
-                          </p> : null}
-
-                          {typeof embed.data['article:section'] === 'string' && embed.data['article:section'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mt-2'>
-                            {twemojifyReact(embed.data['article:section'])}
-                          </p> : null}
-
-                          {typeof embed.data['article:tag'] === 'string' && embed.data['article:tag'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mt-2'>
-                            {twemojifyReact(embed.data['article:tag'])}
-                          </p> : null}
-
-                        </> : null}
-
-                        {!isVideo && !isThumb && typeof imgUrl === 'string' && imgUrl.length > 0 ?
-                          <Media.Image
-                            name='embed-img'
-                            className='mt-2 embed-img'
-                            width={Number(embed.data['og:image:width'])}
-                            height={Number(embed.data['og:image:height'])}
-                            link={mx.mxcUrlToHttp(imgUrl, 2000, 2000)}
-                            type={String(embed.data['og:image:type'])}
-                          />
-                          : null}
-
-
-                        {isVideo && typeof imgUrl === 'string' && imgUrl.length > 0 ?
-                          <div className='mt-2 ratio ratio-16x9 embed-video' style={{ backgroundImage: `url('${imgUrl !== defaultVideoAvatar ? mx.mxcUrlToHttp(imgUrl, 2000, 2000) : defaultVideoAvatar}')` }} onClick={(e) => {
-                            $(e.target).replaceWith(jReact(
-                              <div className='mt-2 ratio ratio-16x9 embed-video enabled'>
-                                <embed title={String(embed.data['og:title'])} src={videoUrl} allowfullscreen='' />
-                              </div>
-                            ))
-                          }} >
-                            <div className='play-button w-100 h-100' style={{ backgroundImage: `url('./img/svg/play-circle-fill.svg')` }} />
-                          </div> : null}
-
-                      </span>
-
-                    </div>
-                  </div>;
-
-                }
+                if (embed.data) return <Embed embed={embed.data} />
               })}
             </div> : null}
 
