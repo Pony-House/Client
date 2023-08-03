@@ -10,8 +10,21 @@ import jReact from '../../../../mods/lib/jReact';
 
 import openTinyURL from '../../../util/message/urlProtection';
 
+const tinyUrlAction = (event) => {
+    const e = event.originalEvent;
+    e.preventDefault(); openTinyURL($(event.currentTarget).attr('href')); return false;
+};
+
 // Embed Data
 function Embed({ embed }) {
+
+    // URL Ref
+    const tinyUrl = useRef(null);
+
+    useEffect(() => {
+        $(tinyUrl.current).on('click', tinyUrlAction);
+        return () => { $(tinyUrl.current).off('click', tinyUrlAction); };
+    });
 
     // Matrix
     const mx = initMatrix.matrixClient;
@@ -89,9 +102,7 @@ function Embed({ embed }) {
                 {typeof embed['og:site_name'] === 'string' && embed['og:site_name'].length > 0 ? <p className='card-text very-small emoji-size-fix-2 mb-2'>{twemojifyReact(embed['og:site_name'])}</p> : null}
 
                 {typeof embed['og:title'] === 'string' && embed['og:title'].length > 0 ? <h5 className='card-title small emoji-size-fix fw-bold'>
-                    {typeof embed['og:url'] === 'string' && embed['og:url'].length > 0 ? <a href={embed['og:url']} onClick={(e) => {
-                        e.preventDefault(); openTinyURL($(e.target).parent().attr('href')); return false;
-                    }} target='_blank' rel="noreferrer">
+                    {typeof embed['og:url'] === 'string' && embed['og:url'].length > 0 ? <a ref={tinyUrl} href={embed['og:url']} target='_blank' rel="noreferrer">
                         {twemojifyReact(embed['og:title'])}
                     </a> : embed['og:title']}
                 </h5> : null}
