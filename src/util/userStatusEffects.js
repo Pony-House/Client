@@ -18,6 +18,17 @@ const lastTimestampUpdate = () => {
     userInteractions.afkTime.value = moment().valueOf();
 };
 
+// Get
+export function getUserAfk(type = 'seconds') {
+
+    if (typeof userInteractions.afkTime.value === 'number') {
+        return moment().diff(userInteractions.afkTime.value, type);
+    }
+
+    return null;
+
+};
+
 // Interval
 const intervalTimestamp = () => {
 
@@ -34,17 +45,6 @@ const intervalTimestamp = () => {
     else {
 
     }
-
-};
-
-// Get
-export function getUserAfk(type = 'seconds') {
-
-    if (typeof userInteractions.afkTime.value === 'number') {
-        return moment().diff(userInteractions.afkTime.value, type);
-    }
-
-    return null;
 
 };
 
