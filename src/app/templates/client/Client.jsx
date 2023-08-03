@@ -108,7 +108,8 @@ function Client() {
           />
         </div>
         <Spinner />
-        <p className="loading__message small mt-3">{loadingMsg}</p>
+        <div className='very-small fw-bold text-uppercase mt-3'>Did you know</div>
+        <p className="loading__message small">{loadingMsg}</p>
 
         <div className="loading__appname">
           <Text variant="h2" weight="medium">{__ENV_APP__.info.name}</Text>
