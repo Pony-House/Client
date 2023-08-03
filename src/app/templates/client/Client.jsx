@@ -19,13 +19,14 @@ import navigation from '../../../client/state/navigation';
 import cons from '../../../client/state/cons';
 import Alert from './Alert';
 import DragDrop from './DragDrop';
-import { resizeWindowChecker, scrollFixer } from '../../../util/tools';
+import { dice, resizeWindowChecker, scrollFixer } from '../../../util/tools';
 import { startUserAfk, stopUserAfk } from '../../../util/userStatusEffects';
 import Mods from './Mods';
+import appLoadMsg from '../../../../mods/appLoadMsg';
 
 function Client() {
   const [isLoading, changeLoading] = useState(true);
-  const [loadingMsg, setLoadingMsg] = useState('Heating up');
+  const [loadingMsg, setLoadingMsg] = useState(appLoadMsg.items[dice(appLoadMsg.items.length) - 1]);
 
   const navWrapperRef = useRef(null);
 
@@ -52,27 +53,42 @@ function Client() {
   }, []);
 
   useEffect(() => {
-    let counter = 0;
+
+    let counter = -1;
+    let counter2 = -1;
+
     const iId = setInterval(() => {
-      const msgList = [
-        'Almost there...',
-        'Looks like you have a lot of stuff to heat up!',
-      ];
-      if (counter === msgList.length - 1) {
-        setLoadingMsg(msgList[msgList.length - 1]);
-        clearInterval(iId);
-        return;
+
+      if (counter2 !== 2) {
+
+        counter2 += 1;
+        setLoadingMsg(appLoadMsg.items[dice(appLoadMsg.items.length) - 1]);
+
+      } else {
+
+        counter += 1;
+
+        if (counter === 3) {
+          setLoadingMsg(appLoadMsg.loading[appLoadMsg.loading.length - 1]);
+          clearInterval(iId);
+          return;
+        }
+
+        setLoadingMsg(appLoadMsg.loading[counter]);
+
       }
-      setLoadingMsg(msgList[counter]);
-      counter += 1;
+
     }, 15000);
+
     initMatrix.once('init_loading_finished', () => {
       clearInterval(iId);
       initHotkeys();
       initRoomListListener(initMatrix.roomList);
       changeLoading(false);
     });
+
     initMatrix.init();
+
   }, []);
 
   if (isLoading) {

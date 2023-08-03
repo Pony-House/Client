@@ -241,6 +241,8 @@ export function dice(obj) {
     return Number(Math.floor(Math.random() * ((obj - 1) + 1) + 1));
 };
 
+global.dice = dice;
+
 export function percentage(preco, porcentagem) {
     return preco * (porcentagem / 100);
 };
