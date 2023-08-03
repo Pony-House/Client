@@ -45,6 +45,7 @@ Made by Me
 
     =======================================================
 
+    ----------> Colocar alternador de modals no dialog e popup
     ----------> AJEITAR EMBED PARA ACEITAR FREEDOM TEXT
 
     --> Depois de um determinado tempo de inatividade, o usuário que estiver com status online vai trocar para Afk.
