@@ -106,10 +106,31 @@ const openTinyURL = (url) => {
     const whiteList = JSON.parse(localStorage.getItem('pony-house-urls-whitelist') ?? '[]');
     let urlAllowed = false;
 
-    // Read Whitelist
+    // Checker Value
     const tinyUrl = new URL(url);
-    if (whiteList.indexOf(tinyUrl.origin) > -1) urlAllowed = true;
+    let tinyValue = tinyUrl.origin;
+    if (typeof tinyValue !== 'string' || tinyValue === 'null') {
+
+    }
+
+    // Read Whitelist
+    if (whiteList.indexOf(tinyValue) > -1) urlAllowed = true;
     if (!urlAllowed) {
+
+      const body = $('<center>', { class: 'small' }).append(
+
+        $('<p>').text('This link is taking you to the following website'),
+
+        $('<div>', { class: 'card' }).append(
+          $('<div>', { class: 'card-body text-break' }).text(url)
+        ),
+
+        (typeof tinyValue === 'string' && tinyValue !== 'null' && $('<div>', { class: 'form-check mt-2 text-start' }).append(
+          $('<input>', { type: 'checkbox', class: 'form-check-input', id: 'whitelist-the-domain' }),
+          $('<label>', { class: 'form-check-label small', for: 'whitelist-the-domain' }).html(`Trust <strong>${tinyUrl.hostname}</strong> links from now on`)
+        ))
+
+      );
 
       const tinyModal = btModal({
 
@@ -117,28 +138,14 @@ const openTinyURL = (url) => {
         title: `Leaving ${__ENV_APP__.info.name}`,
 
         dialog: 'modal-dialog-centered modal-lg',
-
-        body: $('<center>', { class: 'small' }).append(
-
-          $('<p>').text('This link is taking you to the following website'),
-
-          $('<div>', { class: 'card' }).append(
-            $('<div>', { class: 'card-body text-break' }).text(url)
-          ),
-
-          $('<div>', { class: 'form-check mt-2 text-start' }).append(
-            $('<input>', { type: 'checkbox', class: 'form-check-input', id: 'whitelist-the-domain' }),
-            $('<label>', { class: 'form-check-label small', for: 'whitelist-the-domain' }).html(`Trust <strong>${tinyUrl.hostname}</strong> links from now on`)
-          )
-
-        ),
+        body,
 
         footer: [
           $('<button>', { class: 'btn btn-bg mx-2' }).text('Go Back').on('click', () => tinyModal.hide()),
           $('<button>', { class: 'btn btn-primary mx-2' }).text('Visit Site').on('click', () => {
 
-            if ($('#whitelist-the-domain').is(':checked')) {
-              whiteList.push(tinyUrl.origin);
+            if (typeof tinyValue === 'string' && tinyValue !== 'null' && $('#whitelist-the-domain').is(':checked')) {
+              whiteList.push(tinyValue);
               global.localStorage.setItem('pony-house-urls-whitelist', JSON.stringify(whiteList));
             }
 
