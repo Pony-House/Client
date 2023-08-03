@@ -99,7 +99,7 @@ const mathOptions = {
 };
 
 // Open URL
-const openTinyURL = (url) => {
+const openTinyURL = async (url) => {
   try {
 
     // Prepare Whitelist
@@ -112,6 +112,9 @@ const openTinyURL = (url) => {
     if (typeof tinyValue !== 'string' || tinyValue === 'null') {
       tinyValue = tinyUrl.protocol;
     }
+
+    // Start loading
+    $.LoadingOverlay('show');
 
     // Read Whitelist
     if (whiteList.indexOf(tinyValue) > -1) urlAllowed = true;
@@ -151,13 +154,14 @@ const openTinyURL = (url) => {
 
             global.open(url, '_blank');
             tinyModal.hide();
+            $.LoadingOverlay('hide');
 
           }),
         ],
 
       });
 
-    } else if (urlAllowed) global.open(url, '_blank');
+    } else if (urlAllowed) global.open(url, '_blank'); $.LoadingOverlay('hide');
 
   } catch (err) {
     alert(err.message, 'Error - Open External url');
@@ -188,9 +192,8 @@ const tinyRender = {
   react: type => ({ attributes, content }) => {
     const { href, ...props } = attributes;
     const db = tinywordsDB[content.toLowerCase()];
-    return <Tooltip content={<small>{db?.title}</small>} >
-      <a href={href} onClick={(e) => { e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; }} {...props} iskeyword={type === 'keyword' ? 'true' : 'false'} className='lk-href'>{content}</a>
-    </Tooltip>;
+    const result = <a href={href} onClick={(e) => { e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; }} {...props} iskeyword={type === 'keyword' ? 'true' : 'false'} className='lk-href'>{content}</a>;
+    return db?.title ? <Tooltip content={<small>{db.title}</small>} >{result}</Tooltip> : result;
   }
 
 };
@@ -291,7 +294,9 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
 
   // Final Result
   msgContent = $('<span>', { class: 'linkify-base' }).html(msgContent);
-  msgContent.find('.lk-href').on('click', event => { const e = event.originalEvent; e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; }).tooltip();
+  const tinyUrls = msgContent.find('.lk-href');
+  tinyUrls.on('click', event => { const e = event.originalEvent; e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; });
+  tinyUrls.each(() => $(this).attr('title') && $(this).tooltip());
 
   // Complete
   return msgContent;
