@@ -119,7 +119,7 @@ const openTinyURL = async (url) => {
     let scammerCache;
 
     try {
-      scammerCache = await tinyAPI.emitAsync('openUrlChecker', tinyUrl.hostname || tinyUrl.host);
+      scammerCache = await tinyAPI.emitAsync('openUrlChecker', tinyUrl.hostname || tinyUrl.host, tinyUrl.protocol);
     } catch (err) {
       scammerCache = null;
       console.error(err);

@@ -239,6 +239,7 @@ console object = level, message
 ### openUrlChecker
 
     hostname
+    protocol
 
 `others`
 
