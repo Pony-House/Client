@@ -107,7 +107,7 @@ function Embed({ embed }) {
                     </a> : embed['og:title']}
                 </h5> : null}
 
-                {typeof embed['og:description'] === 'string' && embed['og:description'].length > 0 ? <p className='card-text very-small emoji-size-fix-2'>
+                {typeof embed['og:description'] === 'string' && embed['og:description'].length > 0 ? <p className='card-text text-freedom very-small emoji-size-fix-2'>
                     {twemojifyReact(embed['og:description'])}
                 </p> : null}
 
