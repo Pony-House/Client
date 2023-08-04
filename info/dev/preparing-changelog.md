@@ -22,3 +22,4 @@
 - When clicking on a URL, the user will receive a notification whether or not the user should trust the domain.
 - System status is a modal now.
 - The dnd status now does not send notifications.
+- Now every 10 minutes the account with online status will automatically change to afk status.
