@@ -51,6 +51,21 @@ https://getbootstrap.com/docs/5.3/getting-started/introduction/
 #### Web3JS
 https://web3js.readthedocs.io/en/v1.10.0/
 
+#### Cache Matrix storage per room
+src/util/selectedRoom.js
+
+    dataFolder = storage name
+    folderName = object name (from dataFolder)
+    where = data id
+
+    data = the data value
+
+    limit = The limit of data that can be stored. Default value is 100. If the limit is exceeded, old data will be automatically deleted during the progress.
+
+    addToDataFolder(dataFolder, folderName, where, data, limit)
+    removeFromDataFolder(dataFolder, folderName, where)
+    getDataList(dataFolder, folderName, where)
+
 <hr/>
 
 ## Methods
