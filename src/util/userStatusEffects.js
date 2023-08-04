@@ -40,7 +40,7 @@ const intervalTimestamp = () => {
     const originalAfk = content.afk;
 
     // 10 Minutes later...
-    if (counter > 600 || content.status === '🟠' || content.status === 'idle') {
+    if (counter > 60 || content.status === '🟠' || content.status === 'idle') {
         content.afk = true;
     }
 
@@ -50,8 +50,9 @@ const intervalTimestamp = () => {
     }
 
     if (typeof originalAfk !== 'boolean' || originalAfk !== content.afk) {
-        initMatrix.matrixClient.setAccountData('pony.house.profile', content);
-        emitUpdateProfile(content);
+        console.log('yay');
+        // initMatrix.matrixClient.setAccountData('pony.house.profile', content);
+        // emitUpdateProfile(content);
     }
 
 };
