@@ -41,7 +41,7 @@ export function getDataList(dataFolder, folderName, where) {
 
 }
 
-export function addToDataFolder(dataFolder, folderName, where, data) {
+export function addToDataFolder(dataFolder, folderName, where, data, limit = 100) {
 
     const tinyData = getDataFolderRaw(dataFolder, folderName);
     const i = tinyData[folderName].findIndex(([u]) => u && u.id === where);
@@ -58,7 +58,7 @@ export function addToDataFolder(dataFolder, folderName, where, data) {
 
     tinyData[folderName].unshift(entry);
 
-    tinyData[folderName] = tinyData[folderName].slice(0, 100);
+    tinyData[folderName] = tinyData[folderName].slice(0, limit);
     initMatrix.matrixClient.setAccountData(eventType + dataFolder, tinyData);
 
 }
