@@ -50,11 +50,14 @@ Made by Me
     --> Opção de desativar carregamento de embeds de url
     --> Opção de desativar carregamento de embeds de mensagens
 
-    --> Criar sistema de notes (limite de 100 itens no array)
+    --> Criar sistema de notes
+    (limite de 500 itens no array)
 
-    --> Criar filtro para desativar animação de gifs especificas. A gente vai usar a ID e dominio do arquivo para facilitar isso. (Limite de 600 itens por array)
+    --> Criar filtro para desativar animação de gifs especificas. A gente vai usar a ID e dominio do arquivo para facilitar isso.
+    (Limite de 600 itens por array)
 
     --> Opção de desativar ou ativar animação de emojis ou stickers
+    (Também ser possível banir animação de usuários individualmente - limite de 600 itens por array)
 
     --> Criar sistema de alterar o tamanho da fonte do aplicativo
 
