@@ -54,10 +54,10 @@ Made by Me
     (limite de 500 itens no array)
 
     --> Criar filtro para desativar animação de gifs especificas. A gente vai usar a ID e dominio do arquivo para facilitar isso.
-    (Limite de 600 itens por array)
+    (Limite de 600 itens por array) (Opçao alternativa de fazer a animação ser hover)
 
     --> Opção de desativar ou ativar animação de emojis ou stickers
-    (Também ser possível banir animação de usuários individualmente - limite de 600 itens por array)
+    (Também ser possível banir animação de usuários individualmente - limite de 600 itens por array) (Opçao alternativa de fazer a animação ser hover)
 
     --> Criar sistema de alterar o tamanho da fonte do aplicativo
 
