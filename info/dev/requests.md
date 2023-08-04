@@ -53,6 +53,9 @@ Made by Me
     --> Criar sistema de notes (limite de 100 itens no array)
 
     --> Criar filtro para desativar animação de gifs especificas. A gente vai usar a ID e dominio do arquivo para facilitar isso. (Limite de 600 itens por array)
+
+    --> Opção de desativar ou ativar animação de emojis ou stickers
+
     --> Criar sistema de alterar o tamanho da fonte do aplicativo
 
     --> Tema https://github.com/catppuccin/cinny
