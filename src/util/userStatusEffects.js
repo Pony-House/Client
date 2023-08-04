@@ -5,6 +5,8 @@ import tinyAPI from './mods';
 // Cache Data
 const userInteractions = {
 
+    enabled: false,
+
     afkTime: {
         value: null,
         interval: null
@@ -30,31 +32,36 @@ export function getUserAfk(type = 'seconds') {
 
 };
 
+export function enableAfkSystem(value = true) {
+    if (typeof value === 'boolean') userInteractions.enabled = value;
+};
+
 // Interval
 const intervalTimestamp = () => {
+    if (userInteractions.enabled) {
 
-    // API
-    const counter = getUserAfk();
-    tinyAPI.emit('afkTimeCounter', counter);
-    const content = initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
-    const originalAfk = content.afk;
+        // API
+        const counter = getUserAfk();
+        tinyAPI.emit('afkTimeCounter', counter);
+        const content = initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
+        const originalAfk = content.afk;
 
-    // 10 Minutes later...
-    if (counter > 60 || content.status === '🟠' || content.status === 'idle') {
-        content.afk = true;
+        // 10 Minutes later...
+        if (counter > 60 || content.status === '🟠' || content.status === 'idle') {
+            content.afk = true;
+        }
+
+        // Nope
+        else {
+            content.afk = false;
+        }
+
+        if (typeof originalAfk !== 'boolean' || originalAfk !== content.afk) {
+            initMatrix.matrixClient.setAccountData('pony.house.profile', content);
+            emitUpdateProfile(content);
+        }
+
     }
-
-    // Nope
-    else {
-        content.afk = false;
-    }
-
-    if (typeof originalAfk !== 'boolean' || originalAfk !== content.afk) {
-        console.log('yay');
-        // initMatrix.matrixClient.setAccountData('pony.house.profile', content);
-        // emitUpdateProfile(content);
-    }
-
 };
 
 // Start

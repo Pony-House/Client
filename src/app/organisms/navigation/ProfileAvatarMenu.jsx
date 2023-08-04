@@ -19,6 +19,7 @@ import {
     openSettings,
 } from '../../../client/action/navigation';
 import tinyAPI from '../../../util/mods';
+import { enableAfkSystem } from '../../../util/userStatusEffects';
 
 const accountStatus = { status: null, data: null };
 export function getAccountStatus(where) {
@@ -120,6 +121,7 @@ function ProfileAvatarMenu() {
             }
 
             tinyAPI.emit('userStatusUpdate', accountStatus);
+            enableAfkSystem();
 
         };
 
