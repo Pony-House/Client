@@ -9,8 +9,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Get Path
-const srcDir = path.join(__dirname, '../repositories/twemoji/assets');
-const destDir = path.join(__dirname, '../public/img/twemoji');
+const srcDir = path.join(__dirname, './repositories/twemoji/assets');
+const destDir = path.join(__dirname, './public/img/twemoji');
 
 // To copy a folder or file, select overwrite accordingly
 try {
