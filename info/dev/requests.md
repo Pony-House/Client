@@ -49,6 +49,8 @@ Made by Me
 
     ----------------------> COLOCAR PARA MOBILE QUANDO O USUÁRIO MINIMIZAR O APP, COLOCAR O MODO AFK
 
+    --> Quando a configuração de avatar de canais em space é ativado. Está mostrando avatar de usuários aleatóriamente.
+
     --> Algumas alocações de avatar de repente ficaram desregulados.
 
     --> A configuração padrão ao criar uma room deve ser fundador invés de admin
@@ -89,6 +91,11 @@ Made by Me
     --> Ajeitar o carregador de usuários de rooms para ficar mais otimizado
 
     --> Sistema de perfil do space. Este perfil vai ter mais uma configuração de banner adicional.
+
+    --> Sistema de ligações tem dois métodos de servidor. Ou usando o servidor matrix. Ou usando um Jitsi.
+    (Se a pessoa não configurar um custom Jitsi server, vai usar o servidor padrão)
+    (Todo mudno precisa está usando o mesmo jitsi server para funcionar. Todos vão ver qual o dominio do servidor que está sendo usado)
+    (A pessoa precisa confirmar se ela vai aceitar ou não usar um servidor personalizado desconhecido pro questões de seguranças)
 
     Sandbox: https://github.com/sablejs/sablejs
 
