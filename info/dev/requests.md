@@ -37,6 +37,8 @@ Made by Me
 
     Criar i18
 
+    Sistema de trocar o tamanho da imagem antes de enviar.
+
     https://github.com/electron-vite/electron-vite-react
 
     https://docs.walletconnect.com/2.0/web/web3modal/react/wagmi/installation
@@ -46,6 +48,8 @@ Made by Me
     =======================================================
 
     ----------------------> COLOCAR PARA MOBILE QUANDO O USUÁRIO MINIMIZAR O APP, COLOCAR O MODO AFK
+
+    --> Checar Sincronizador da lista de emojis
 
     --> Se o registro tiver recaptcha, checar uma whitelist se o registro pode continuar.
 
