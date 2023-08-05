@@ -49,6 +49,8 @@ Made by Me
 
     ----------------------> COLOCAR PARA MOBILE QUANDO O USUÁRIO MINIMIZAR O APP, COLOCAR O MODO AFK
 
+    --> Ajeitar a troca de favicon quando alguma notificação acontece.
+
     --> Se o usuário estiver em uma popup, enviar notificações mesmo se estiver na mesma janela.
     --> Checar Sincronizador da lista de emojis quando um novo emoji ou lista de emoji é adicionado.
 
