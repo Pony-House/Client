@@ -70,6 +70,10 @@ Made by Me
 
     --> Tema https://github.com/catppuccin/cinny
 
+    --> Ajeitar sincronização quando uma DM é aberta pela primeira vez
+
+    --> Ajeitar o carregador de usuários de rooms para ficar mais otimizado
+
     Sandbox: https://github.com/sablejs/sablejs
 
     Fazer o sistema web3
