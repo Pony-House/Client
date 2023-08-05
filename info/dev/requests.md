@@ -88,6 +88,8 @@ Made by Me
 
     --> Ajeitar o carregador de usuários de rooms para ficar mais otimizado
 
+    --> Sistema de perfil do space. Este perfil vai ter mais uma configuração de banner adicional.
+
     Sandbox: https://github.com/sablejs/sablejs
 
     Fazer o sistema web3
