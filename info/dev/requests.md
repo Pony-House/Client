@@ -47,6 +47,8 @@ Made by Me
 
     ----------------------> COLOCAR PARA MOBILE QUANDO O USUÁRIO MINIMIZAR O APP, COLOCAR O MODO AFK
 
+    --> Se o registro tiver recaptcha, checar uma whitelist se o registro pode continuar.
+
     --> Opção de desativar carregamento de embeds de url
     --> Opção de desativar carregamento de embeds de mensagens
 
