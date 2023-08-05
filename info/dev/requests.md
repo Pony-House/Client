@@ -49,6 +49,8 @@ Made by Me
 
     ----------------------> COLOCAR PARA MOBILE QUANDO O USUÁRIO MINIMIZAR O APP, COLOCAR O MODO AFK
 
+    --> Algumas alocações de avatar de repente ficaram desregulados.
+
     --> A configuração padrão ao criar uma room deve ser fundador invés de admin
 
     --> Fazer o marcador que separa a lista de amigos da lista de DMs estranhos.
