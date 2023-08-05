@@ -92,6 +92,8 @@ Made by Me
 
     --> Sistema de perfil do space. Este perfil vai ter mais uma configuração de banner adicional.
 
+    --> Ver perfil do usuário ao passar o mouse em cima dele.
+
     --> Sistema de ligações tem dois métodos de servidor. Ou usando o servidor matrix. Ou usando um Jitsi.
     (Se a pessoa não configurar um custom Jitsi server, vai usar o servidor padrão)
     (Todo mudno precisa está usando o mesmo jitsi server para funcionar. Todos vão ver qual o dominio do servidor que está sendo usado)
