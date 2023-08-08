@@ -942,7 +942,8 @@ function Message({
     if (msgType === 'm.text') {
 
       // Check Urls on the message
-      if (Array.isArray(bodyUrls) && bodyUrls.length > 0) {
+      const appAppearance = mx.getAccountData('pony.house.appearance')?.getContent() ?? {};
+      if (appAppearance.isEmbedDisabled !== true && Array.isArray(bodyUrls) && bodyUrls.length > 0) {
 
         // Create embed base
         const newEmbeds = clone(embeds);

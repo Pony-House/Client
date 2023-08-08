@@ -137,11 +137,13 @@ function ExperimentalSection() {
 function AppearanceSection() {
   const [, updateState] = useState({});
   const [isAnimateAvatarsHidden, setAnimateAvatarsHidden] = useState(false);
+  const [isEmbedDisabled, setEmbedDisabled] = useState(false);
 
   useEffect(() => {
 
     const content = initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
     setAnimateAvatarsHidden((content.isAnimateAvatarsHidden === true));
+    setEmbedDisabled((content.isEmbedDisabled === true));
 
   }, []);
 
@@ -229,6 +231,7 @@ function AppearanceSection() {
       <div className="card noselect mt-3">
         <ul className="list-group list-group-flush">
           <li className="list-group-item very-small text-gray">{__ENV_APP__.info.name}</li>
+
           <SettingTile
             title="Disable animated hover avatars"
             options={(
@@ -240,6 +243,19 @@ function AppearanceSection() {
             )}
             content={<div className="very-small text-gray">Turn off animated avatars that are displayed when you mouse over it.</div>}
           />
+
+          <SettingTile
+            title="Disable message url embed"
+            options={(
+              <Toggle
+                className='d-inline-flex'
+                isActive={isEmbedDisabled}
+                onToggle={toggleAction('pony.house.appearance', 'isEmbedDisabled', setEmbedDisabled)}
+              />
+            )}
+            content={<div className="very-small text-gray">All messages will no longer load embed.</div>}
+          />
+
         </ul>
       </div>
 

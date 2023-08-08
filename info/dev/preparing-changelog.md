@@ -1,0 +1,1 @@
+- Embed hide option added.
