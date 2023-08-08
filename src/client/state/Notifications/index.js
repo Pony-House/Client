@@ -8,15 +8,12 @@ import { selectRoom } from '../../action/navigation';
 import cons from '../cons';
 import navigation from '../navigation';
 import settings from '../settings';
-import { setFavicon } from '../../../util/common';
 import { updateName } from '../../../util/roomName';
 
 import { html, plain } from '../../../util/markdown';
 import { getAccountStatus } from '../../../app/organisms/navigation/ProfileAvatarMenu';
 
 const LogoSVG = './img/png/cinny.png';
-const LogoUnreadSVG = './img/png/cinny-unread.png';
-const LogoHighlightSVG = './img/png/cinny-highlight.png';
 
 function isNotifEvent(mEvent) {
   const eType = mEvent.getType();
@@ -80,6 +77,7 @@ class Notifications extends EventEmitter {
   }
 
   async _initNoti() {
+
     this.initialized = false;
     this.roomIdToNoti = new Map();
 
@@ -96,10 +94,12 @@ class Notifications extends EventEmitter {
     [...this.roomList.directs].forEach(addNoti);
 
     this.initialized = true;
-    this._updateFavicon();
+    // this._updateFavicon();
+
   }
 
   doesRoomHaveUnread(room) {
+
     const userId = this.matrixClient.getUserId();
     const readUpToId = room.getEventReadUpTo(userId);
     const liveEvents = room.getLiveTimeline().getEvents();
@@ -113,12 +113,16 @@ class Notifications extends EventEmitter {
       if (event.getId() === readUpToId) return false;
       if (isNotifEvent(event)) return true;
     }
+
     return true;
+
   }
 
   getNotiType(roomId) {
+
     const mx = this.matrixClient;
     let pushRule;
+
     try {
       pushRule = mx.getRoomPushRule('global', roomId);
     } catch {
@@ -133,8 +137,10 @@ class Notifications extends EventEmitter {
 
       return isMuted ? cons.notifs.MUTE : cons.notifs.DEFAULT;
     }
+
     if (pushRule.actions[0] === 'notify') return cons.notifs.ALL_MESSAGES;
     return cons.notifs.MENTIONS_AND_KEYWORDS;
+
   }
 
   getNoti(roomId) {
@@ -167,43 +173,8 @@ class Notifications extends EventEmitter {
     }
   }
 
-  async _updateFavicon() {
-
-    if (!this.initialized) return;
-
-    let unread = false;
-    let highlight = false;
-
-    [...this.roomIdToNoti.values()].find((noti) => {
-
-      if (!unread) {
-        unread = noti.total > 0 || noti.highlight > 0;
-      }
-
-      highlight = noti.highlight > 0;
-      if (unread && highlight) return true;
-
-      return false;
-
-    });
-
-    let newFavicon = LogoSVG;
-    if (unread && !highlight) {
-      newFavicon = LogoUnreadSVG;
-    }
-
-    if (unread && highlight) {
-      newFavicon = LogoHighlightSVG;
-    }
-
-    if (newFavicon === this.favicon) return;
-    this.favicon = newFavicon;
-
-    setFavicon(this.favicon);
-
-  }
-
   _setNoti(roomId, total, highlight) {
+
     const addNoti = (id, t, h, fromId) => {
       const prevTotal = this.roomIdToNoti.get(id)?.total ?? null;
       const noti = this.getNoti(id);
@@ -229,24 +200,31 @@ class Notifications extends EventEmitter {
     allParentSpaces.forEach((spaceId) => {
       addNoti(spaceId, addT, addH, roomId);
     });
-    this._updateFavicon();
+
+    // this._updateFavicon();
+
   }
 
   _deleteNoti(roomId, total, highlight) {
+
     const removeNoti = (id, t, h, fromId) => {
+
       if (this.roomIdToNoti.has(id) === false) return;
 
       const noti = this.getNoti(id);
       const prevTotal = noti.total;
       noti.total -= t;
       noti.highlight -= h;
+
       if (noti.total < 0) {
         noti.total = 0;
         noti.highlight = 0;
       }
+
       if (fromId && noti.from !== null) {
         if (!this.hasNoti(fromId)) noti.from.delete(fromId);
       }
+
       if (noti.from === null || noti.from.size === 0) {
         this.roomIdToNoti.delete(id);
         this.emit(cons.events.notifications.FULL_READ, id);
@@ -255,6 +233,7 @@ class Notifications extends EventEmitter {
         this.roomIdToNoti.set(id, noti);
         this.emit(cons.events.notifications.NOTI_CHANGED, id, noti.total, prevTotal);
       }
+
     };
 
     removeNoti(roomId, total, highlight);
@@ -262,7 +241,9 @@ class Notifications extends EventEmitter {
     allParentSpaces.forEach((spaceId) => {
       removeNoti(spaceId, total, highlight, roomId);
     });
-    this._updateFavicon();
+
+    // this._updateFavicon();
+
   }
 
   async _displayPopupNoti(mEvent, room) {
@@ -370,29 +351,40 @@ class Notifications extends EventEmitter {
   }
 
   _deletePopupRoomNotis(roomId) {
+
     this.roomIdToPopupNotis.get(roomId)?.forEach((n) => {
       this.eventIdToPopupNoti.delete(n.tag);
       n.close();
     });
+
     this.roomIdToPopupNotis.delete(roomId);
+
   }
 
   _playNotiSound() {
+
     if (!this._notiAudio) {
       this._notiAudio = document.getElementById('notificationSound');
     }
+
     this._notiAudio.play();
+
   }
 
   _playInviteSound() {
+
     if (!this._inviteAudio) {
       this._inviteAudio = document.getElementById('inviteSound');
     }
+
     this._inviteAudio.play();
+
   }
 
   _listenEvents() {
+
     this.matrixClient.on('Room.timeline', (mEvent, room) => {
+
       if (mEvent.isRedaction()) this._deletePopupNoti(mEvent.event.redacts);
 
       if (room.isSpaceRoom()) return;
@@ -417,10 +409,12 @@ class Notifications extends EventEmitter {
       if (this.matrixClient.getSyncState() === 'SYNCING') {
         this._displayPopupNoti(mEvent, room);
       }
+
     });
 
     this.matrixClient.on('accountData', (mEvent, oldMEvent) => {
       if (mEvent.getType() === 'm.push_rules') {
+
         const override = mEvent?.getContent()?.global?.override;
         const oldOverride = oldMEvent?.getContent()?.global?.override;
         if (!override || !oldOverride) return;
@@ -445,6 +439,7 @@ class Notifications extends EventEmitter {
           this.emit(cons.events.notifications.MUTE_TOGGLED, rule.rule_id, true);
           this.deleteNoti(rule.rule_id);
         });
+
         unMutedRules.forEach((rule) => {
           this.emit(cons.events.notifications.MUTE_TOGGLED, rule.rule_id, false);
           const room = this.matrixClient.getRoom(rule.rule_id);
@@ -453,10 +448,12 @@ class Notifications extends EventEmitter {
           const highlight = room.getUnreadNotificationCount('highlight');
           this._setNoti(room.roomId, total ?? 0, highlight ?? 0);
         });
+
       }
     });
 
     this.matrixClient.on('Room.receipt', (mEvent, room) => {
+
       if (mEvent.getType() !== 'm.receipt' || room.isSpaceRoom()) return;
       const content = mEvent.getContent();
       const userId = this.matrixClient.getUserId();
@@ -470,15 +467,19 @@ class Notifications extends EventEmitter {
           }
         });
       });
+
     });
 
     this.matrixClient.on('Room.myMembership', (room, membership) => {
+
       if (membership === 'leave' && this.hasNoti(room.roomId)) {
         this.deleteNoti(room.roomId);
       }
+
       if (membership === 'invite') {
         this._playInviteSound();
       }
+
     });
   }
 }
