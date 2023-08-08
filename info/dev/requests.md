@@ -61,7 +61,6 @@ Made by Me
     --> Quando o usuário abrir o app, invés de ir para a sessão de salas, ele deve ir para a lista de DMs.
 
     --> Ajeitar... Ao criar uma sala, o app está jogando para o menu de homes. Isso não pode acotecer se a room for dentro de um space.
-    --> Ajeitar a troca de favicon quando alguma notificação acontece.
 
     --> Se o usuário estiver em uma popup, enviar notificações mesmo se estiver na mesma janela.
     --> Checar Sincronizador da lista de emojis quando um novo emoji ou lista de emoji é adicionado.
