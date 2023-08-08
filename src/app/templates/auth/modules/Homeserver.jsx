@@ -54,19 +54,28 @@ function Homeserver({ onChange }) {
 
         const authSync = async () => {
 
-            const link = window.location.href;
-            const configFileUrl = `${link}${link[link.length - 1] === '/' ? '' : '/'}config.json`;
             try {
-                const result = await (await fetch(configFileUrl, { method: 'GET' })).json();
+
+                const result = await (await fetch(`${window.location.origin}${window.location.pathname}config.json`, { method: 'GET' })).json();
+
                 const selectedHs = result?.defaultHomeserver;
                 const hsList = result?.homeserverList;
                 const allowCustom = result?.allowCustomHomeservers ?? true;
+
                 if (!hsList?.length > 0 || selectedHs < 0 || selectedHs >= hsList?.length) {
                     throw new Error();
                 }
-                setHs({ selected: hsList[selectedHs], list: hsList, allowCustom });
+
+                let selectedServer = hsList[selectedHs];
+                if (typeof window.location.hash === 'string' && window.location.hash.startsWith('#') && window.location.hash.length > 1) {
+                    selectedServer = window.location.hash.substring(1);
+                    if (hsList.indexOf(selectedServer) < 0) hsList.push(selectedServer);
+                }
+
+                setHs({ selected: selectedServer, list: hsList, allowCustom });
+
             } catch {
-                setHs({ selected: 'matrix.org', list: ['matrix.org'], allowCustom: true });
+                setHs({ selected: '', list: [''], allowCustom: true });
             }
 
         };

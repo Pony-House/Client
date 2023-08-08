@@ -4,6 +4,7 @@ import Homeserver from './Homeserver';
 import Login from './Login';
 import Register from './Register';
 
+global.authPublicData = {};
 function AuthCard() {
     const [hsConfig, setHsConfig] = useState(null);
     const [type, setType] = useState('login');
@@ -11,6 +12,8 @@ function AuthCard() {
     const handleHsChange = (info) => {
         setHsConfig(info);
     };
+
+    global.authPublicData.register = { params: hsConfig?.register?.params };
 
     return (<>
 

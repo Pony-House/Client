@@ -47,6 +47,12 @@ If you want to modify the manifest file, it is present in `public/manifest.json`
 
 Things more related to the mobile version of the application I recommend you use the <a href="https://marketplace.visualstudio.com/items?itemName=ionic.ionic" target="_blank">Ionic extension</a> from Visual Studio Code.
 
+## Auto select custom domain
+
+Example: https://pony.house/#matrix.org
+
+When the page loads, the application will automatically try to load the selected custom homeserver. This is useful if you want to refer a friend directly using your homeserver url.
+
 ## Mod and patch support
 You can freely develop mods for users to install on the Pony House. The application will also support you to build a version of Pony House with pre-installed mods.
 

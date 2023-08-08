@@ -1,1 +1,2 @@
 - Embed hide option added.
+- Custom domain support on the url hash.

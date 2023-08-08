@@ -66,7 +66,7 @@ function ProfileAvatarMenu() {
                 if (tinyClone.afk) tinyClone.status = '🟠';
                 const eventJSON = JSON.stringify(tinyClone);
 
-                if (eventJSON.length > 0 /* && (typeof user2.presenceStatusMsg !== 'string' || user2.presenceStatusMsg !== eventJSON) */) {
+                if (eventJSON.length > 0) {
 
                     let presenceStatus = 'online';
                     if (typeof tinyEvent.status === 'string') {
