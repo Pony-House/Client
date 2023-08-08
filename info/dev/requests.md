@@ -47,8 +47,6 @@ Made by Me
 
     =======================================================
 
-    ----------------------> COLOCAR PARA MOBILE QUANDO O USUÁRIO MINIMIZAR O APP, COLOCAR O MODO AFK
-
     --> Quando a configuração de avatar de canais em space é ativado. Está mostrando avatar de usuários aleatóriamente.
 
     --> Algumas alocações de avatar de repente ficaram desregulados.

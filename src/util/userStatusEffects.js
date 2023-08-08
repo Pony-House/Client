@@ -1,3 +1,4 @@
+import { App } from '@capacitor/app';
 import initMatrix from '../client/initMatrix';
 import { emitUpdateProfile } from '../client/action/navigation';
 import tinyAPI from './mods';
@@ -6,6 +7,9 @@ import tinyAPI from './mods';
 const userInteractions = {
 
     enabled: false,
+    mobile: {
+        isActive: true,
+    },
 
     afkTime: {
         value: null,
@@ -13,6 +17,11 @@ const userInteractions = {
     },
 
 };
+
+// Mobile
+App.addListener('appStateChange', ({ isActive }) => {
+    userInteractions.mobile.isActive = isActive;
+});
 
 // User AFK
 
@@ -47,7 +56,7 @@ const intervalTimestamp = () => {
         const originalAfk = content.afk;
 
         // 10 Minutes later...
-        if ((content.status === '🟢' || content.status === 'online') && (counter > 600 || content.status === '🟠' || content.status === 'idle')) {
+        if ((content.status === '🟢' || content.status === 'online') && (counter > 600 || content.status === '🟠' || content.status === 'idle' || !userInteractions.mobile.isActive)) {
             content.afk = true;
         }
 
