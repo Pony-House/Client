@@ -66,8 +66,6 @@ Made by Me
     --> Se o usuário estiver em uma popup, enviar notificações mesmo se estiver na mesma janela.
     --> Checar Sincronizador da lista de emojis quando um novo emoji ou lista de emoji é adicionado.
 
-    --> Se o registro tiver recaptcha, checar uma whitelist se o registro pode continuar.
-
     --> Opção de desativar carregamento de embeds de mensagens
 
     --> Criar sistema de notes
