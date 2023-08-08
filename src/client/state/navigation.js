@@ -5,6 +5,7 @@ import tinyAPI from '../../util/mods';
 
 class Navigation extends EventEmitter {
   constructor() {
+
     super();
     // this will attached by initMatrix
     this.initMatrix = {};
@@ -20,69 +21,92 @@ class Navigation extends EventEmitter {
     this.spaceToRoom = new Map();
 
     this.rawModelStack = [];
+
   }
 
   _addToSpacePath(roomId, asRoot) {
+
     if (typeof roomId !== 'string') {
       this.selectedSpacePath = [cons.tabs.HOME];
       return;
     }
+
     if (asRoot) {
       this.selectedSpacePath = [roomId];
       return;
     }
+
     if (this.selectedSpacePath.includes(roomId)) {
       const spIndex = this.selectedSpacePath.indexOf(roomId);
       this.selectedSpacePath = this.selectedSpacePath.slice(0, spIndex + 1);
       return;
     }
+
     this.selectedSpacePath.push(roomId);
+
   }
 
   _mapRoomToSpace(roomId) {
+
     const { roomList, accountData } = this.initMatrix;
+
     if (
       this.selectedTab === cons.tabs.HOME
       && roomList.rooms.has(roomId)
       && !roomList.roomIdToParents.has(roomId)
     ) {
+
       this.spaceToRoom.set(cons.tabs.HOME, {
         roomId,
         timestamp: Date.now(),
       });
+
       return;
+
     }
+
     if (this.selectedTab === cons.tabs.DIRECTS && roomList.directs.has(roomId)) {
+
       this.spaceToRoom.set(cons.tabs.DIRECTS, {
         roomId,
         timestamp: Date.now(),
       });
+
       return;
+
     }
 
     const parents = roomList.roomIdToParents.get(roomId);
+
     if (!parents) return;
     if (parents.has(this.selectedSpaceId)) {
+
       this.spaceToRoom.set(this.selectedSpaceId, {
         roomId,
         timestamp: Date.now(),
       });
+
     } else if (accountData.categorizedSpaces.has(this.selectedSpaceId)) {
+
       const categories = roomList.getCategorizedSpaces([this.selectedSpaceId]);
       const parent = [...parents].find((pId) => categories.has(pId));
+
       if (parent) {
         this.spaceToRoom.set(parent, {
           roomId,
           timestamp: Date.now(),
         });
+
       }
     }
+
   }
 
   _selectRoom(roomId, eventId) {
 
     const prevSelectedRoomId = this.selectedRoomId;
     this.selectedRoomId = roomId;
+
     if (prevSelectedRoomId !== roomId) this._mapRoomToSpace(roomId);
     this.removeRecentRoom(prevSelectedRoomId);
     this.addRecentRoom(prevSelectedRoomId);
@@ -111,18 +135,23 @@ class Navigation extends EventEmitter {
   }
 
   _selectTabWithRoom(roomId) {
+
     const { roomList, accountData } = this.initMatrix;
     const { categorizedSpaces } = accountData;
 
     if (roomList.isOrphan(roomId)) {
+
       if (roomList.directs.has(roomId)) {
         this._selectSpace(null, true, false);
         this._selectTab(cons.tabs.DIRECTS, false);
         return;
       }
+
       this._selectSpace(null, true, false);
       this._selectTab(cons.tabs.HOME, false);
+
       return;
+
     }
 
     const parents = roomList.roomIdToParents.get(roomId);
@@ -153,21 +182,27 @@ class Navigation extends EventEmitter {
     }
 
     if (parents.size > 0) {
+
       const sortedParents = [...parents].sort((p1, p2) => {
         const t1 = this.spaceToRoom.get(p1)?.timestamp ?? 0;
         const t2 = this.spaceToRoom.get(p2)?.timestamp ?? 0;
         return t2 - t1;
       });
+
       this._selectSpace(sortedParents[0], true, false);
       this._selectTab(sortedParents[0], false);
+
     }
+
   }
 
   _getLatestActiveRoomId(roomIds) {
+
     const mx = this.initMatrix.matrixClient;
 
     let ts = 0;
     let roomId = null;
+
     roomIds.forEach((childId) => {
       const room = mx.getRoom(childId);
       if (!room) return;
@@ -177,10 +212,13 @@ class Navigation extends EventEmitter {
         roomId = childId;
       }
     });
+
     return roomId;
+
   }
 
   _getLatestSelectedRoomId(spaceIds) {
+
     let ts = 0;
     let roomId = null;
 
@@ -193,25 +231,35 @@ class Navigation extends EventEmitter {
         roomId = data.roomId;
       }
     });
+
     return roomId;
+
   }
 
   _selectTab(tabId, selectRoom = true) {
+
     this.selectedTab = tabId;
     if (selectRoom) this._selectRoomWithTab(this.selectedTab);
+
     tinyAPI.emit('tabSelected', this.selectedTab);
     this.emit(cons.events.navigation.TAB_SELECTED, this.selectedTab);
+
   }
 
   _selectSpace(roomId, asRoot, selectRoom = true) {
+
     this._addToSpacePath(roomId, asRoot);
     this.selectedSpaceId = roomId;
+
     if (!asRoot && selectRoom) this._selectRoomWithSpace(this.selectedSpaceId);
+
     tinyAPI.emit('spaceSelected', this.selectedSpaceId);
     this.emit(cons.events.navigation.SPACE_SELECTED, this.selectedSpaceId);
+
   }
 
   _selectRoomWithSpace(spaceId) {
+
     if (!spaceId) return;
     const { roomList, accountData, matrixClient } = this.initMatrix;
     const { categorizedSpaces } = accountData;
@@ -225,6 +273,7 @@ class Navigation extends EventEmitter {
     const children = [];
 
     if (categorizedSpaces.has(spaceId)) {
+
       const categories = roomList.getCategorizedSpaces([spaceId]);
 
       const latestSelectedRoom = this._getLatestSelectedRoomId([...categories.keys()]);
@@ -239,7 +288,10 @@ class Navigation extends EventEmitter {
           children.push(childId);
         });
       });
-    } else {
+
+    }
+
+    else {
       roomList.getSpaceChildren(spaceId).forEach((id) => {
         if (matrixClient.getRoom(id)?.isSpaceRoom() === false) {
           children.push(id);
@@ -253,21 +305,29 @@ class Navigation extends EventEmitter {
     }
 
     this._selectRoom(this._getLatestActiveRoomId(children));
+
   }
 
   _selectRoomWithTab(tabId) {
+
     const { roomList } = this.initMatrix;
     if (tabId === cons.tabs.HOME || tabId === cons.tabs.DIRECTS) {
+
       const data = this.spaceToRoom.get(tabId);
+
       if (data) {
         this._selectRoom(data.roomId);
         return;
       }
+
       const children = tabId === cons.tabs.HOME ? roomList.getOrphanRooms() : [...roomList.directs];
       this._selectRoom(this._getLatestActiveRoomId(children));
       return;
+
     }
+
     this._selectRoomWithSpace(tabId);
+
   }
 
   removeRecentRoom(roomId) {
@@ -279,12 +339,14 @@ class Navigation extends EventEmitter {
   }
 
   addRecentRoom(roomId) {
+
     if (typeof roomId !== 'string') return;
 
     this.recentRooms.push(roomId);
     if (this.recentRooms.length > 10) {
       this.recentRooms.splice(0, 1);
     }
+
   }
 
   get isRawModalVisible() {
