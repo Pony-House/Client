@@ -103,6 +103,8 @@ export default async (url) => {
 
             });
 
+            $.LoadingOverlay('hide');
+
         } else if (urlAllowed) {
             openUrl(url).then(() => {
                 $.LoadingOverlay('hide');
