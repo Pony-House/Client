@@ -34,6 +34,7 @@
   "dependencies": {
     "@capacitor/android": "5.2.2",
     "@capacitor/app": "5.0.3",
+    "@capacitor/browser": "5.0.6",
     "@capacitor/cli": "5.2.2",
     "@capacitor/core": "5.2.2",
     "@capacitor/haptics": "5.0.6",

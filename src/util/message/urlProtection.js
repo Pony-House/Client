@@ -1,5 +1,23 @@
+
+import { Capacitor } from '@capacitor/core';
+import { Browser } from '@capacitor/browser';
+
 import { btModal, objType } from '../tools';
 import tinyAPI from '../mods';
+
+const openUrl = (url) => new Promise((resolve, reject) => {
+
+    // Mobile
+    if (Capacitor.isNativePlatform()) {
+        Browser.open({ url }).then(resolve).catch(reject);
+    }
+
+    // Browser
+    else {
+        resolve(global.open(url, '_blank'));
+    }
+
+});
 
 export default async (url) => {
     try {
@@ -69,16 +87,31 @@ export default async (url) => {
                             global.localStorage.setItem('pony-house-urls-whitelist', JSON.stringify(whiteList));
                         }
 
-                        global.open(url, '_blank');
-                        tinyModal.hide();
-                        $.LoadingOverlay('hide');
+                        openUrl(url).then(() => {
+                            tinyModal.hide();
+                            $.LoadingOverlay('hide');
+                        }).catch(err => {
+                            console.error(err);
+                            alert(err.message);
+                            tinyModal.hide();
+                            $.LoadingOverlay('hide');
+                        });
+
 
                     }),
                 ],
 
             });
 
-        } else if (urlAllowed) global.open(url, '_blank'); $.LoadingOverlay('hide');
+        } else if (urlAllowed) {
+            openUrl(url).then(() => {
+                $.LoadingOverlay('hide');
+            }).catch(err => {
+                console.error(err);
+                alert(err.message);
+                $.LoadingOverlay('hide');
+            });
+        }
 
     } catch (err) {
         alert(err.message, 'Error - Open External url');

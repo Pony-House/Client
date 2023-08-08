@@ -239,6 +239,11 @@
   resolved "https://registry.yarnpkg.com/@capacitor/app/-/app-5.0.3.tgz#f1801b0e33c778bc840cec41101983c9df5c13b0"
   integrity sha512-YqGWnD+O8wjNVyIctZCMkVqOr3RhxunLUBbmLpdRc66RzPN7xEk8GAwxY2YV/ehTL054mo3uqovpWvei7rYsEA==
 
+"@capacitor/browser@5.0.6":
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/@capacitor/browser/-/browser-5.0.6.tgz#d936c4951e5a14f3cc841853c3424e29dfa17d88"
+  integrity sha512-wEI7Na6PVzSP/00ud7pjbBwXwVG7HywCdy2fJT/hzF6yuHn4tDirbOvbr1JKd9LZqKs2Xn+TapV38JhBRhX6YA==
+
 "@capacitor/cli@5.2.2":
   version "5.2.2"
   resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-5.2.2.tgz#7799e4bfccc8a5bd7f51df1c6ea74d9505a5aae9"
