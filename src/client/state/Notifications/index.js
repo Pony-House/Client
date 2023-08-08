@@ -2,17 +2,17 @@ import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
 
 import EventEmitter from 'events';
-import renderAvatar from '../../app/atoms/avatar/render';
-import { cssColorMXID } from '../../util/colorMXID';
-import { selectRoom } from '../action/navigation';
-import cons from './cons';
-import navigation from './navigation';
-import settings from './settings';
-import { setFavicon } from '../../util/common';
-import { updateName } from '../../util/roomName';
+import renderAvatar from '../../../app/atoms/avatar/render';
+import { cssColorMXID } from '../../../util/colorMXID';
+import { selectRoom } from '../../action/navigation';
+import cons from '../cons';
+import navigation from '../navigation';
+import settings from '../settings';
+import { setFavicon } from '../../../util/common';
+import { updateName } from '../../../util/roomName';
 
-import { html, plain } from '../../util/markdown';
-import { getAccountStatus } from '../../app/organisms/navigation/ProfileAvatarMenu';
+import { html, plain } from '../../../util/markdown';
+import { getAccountStatus } from '../../../app/organisms/navigation/ProfileAvatarMenu';
 
 const LogoSVG = './img/png/cinny.png';
 const LogoUnreadSVG = './img/png/cinny-unread.png';
@@ -168,27 +168,39 @@ class Notifications extends EventEmitter {
   }
 
   async _updateFavicon() {
+
     if (!this.initialized) return;
+
     let unread = false;
     let highlight = false;
+
     [...this.roomIdToNoti.values()].find((noti) => {
+
       if (!unread) {
         unread = noti.total > 0 || noti.highlight > 0;
       }
+
       highlight = noti.highlight > 0;
       if (unread && highlight) return true;
+
       return false;
+
     });
+
     let newFavicon = LogoSVG;
     if (unread && !highlight) {
       newFavicon = LogoUnreadSVG;
     }
+
     if (unread && highlight) {
       newFavicon = LogoHighlightSVG;
     }
+
     if (newFavicon === this.favicon) return;
     this.favicon = newFavicon;
+
     setFavicon(this.favicon);
+
   }
 
   _setNoti(roomId, total, highlight) {
