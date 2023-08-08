@@ -15,6 +15,11 @@ import { getAccountStatus } from '../../../app/organisms/navigation/ProfileAvata
 
 const LogoSVG = './img/png/cinny.png';
 
+const soundFiles = {
+  notification: new Audio('./sound/notification.ogg'),
+  invite: new Audio('./sound/invite.ogg'),
+};
+
 function isNotifEvent(mEvent) {
   const eType = mEvent.getType();
   if (!cons.supportEventTypes.includes(eType)) return false;
@@ -364,7 +369,7 @@ class Notifications extends EventEmitter {
   _playNotiSound() {
 
     if (!this._notiAudio) {
-      this._notiAudio = document.getElementById('notificationSound');
+      this._notiAudio = soundFiles.notification;
     }
 
     this._notiAudio.play();
@@ -374,7 +379,7 @@ class Notifications extends EventEmitter {
   _playInviteSound() {
 
     if (!this._inviteAudio) {
-      this._inviteAudio = document.getElementById('inviteSound');
+      this._inviteAudio = soundFiles.invite;
     }
 
     this._inviteAudio.play();
