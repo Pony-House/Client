@@ -30,7 +30,7 @@ function useSystemState() {
         setSystemState(tinyStatus);
       }
 
-      if (systemState.status !== null) {
+      if (systemState !== null && systemState.status !== null) {
         const tinyStatus = { status: null, value: state }
         tinyAPI.emit('systemState', tinyStatus);
         setSystemState(tinyStatus);
@@ -109,7 +109,7 @@ function Drawer() {
       </ScrollView>
     </div>
 
-    {systemState.status !== null ? <Modal dialogClassName='modal-dialog-centered modal-dialog-scrollable' show >
+    {systemState !== null && systemState.status !== null ? <Modal dialogClassName='modal-dialog-centered modal-dialog-scrollable' show >
       <Modal.Header className='noselect'>
         <Modal.Title className='h5'>System Status</Modal.Title>
       </Modal.Header>
