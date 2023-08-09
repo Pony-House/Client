@@ -270,6 +270,14 @@ Every 1 second this event is emitted.
 
     counter(number)
 
+Every 1 second this event is emitted. (The value will only be counted when the system is actually working)
+
+The update will only be emitted when there is a change in the user's afk status.
+
+### afkTimeCounterProgress and afkTimeCounterUpdated
+
+    counter(number)
+
 `others`
 
 ### mouseWheel

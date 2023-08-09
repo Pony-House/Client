@@ -2,6 +2,7 @@ import { App } from '@capacitor/app';
 import initMatrix from '../client/initMatrix';
 import { emitUpdateProfile } from '../client/action/navigation';
 import tinyAPI from './mods';
+import { countObj } from './tools';
 
 // Cache Data
 const userInteractions = {
@@ -54,20 +55,26 @@ const intervalTimestamp = () => {
         tinyAPI.emit('afkTimeCounter', counter);
         const content = initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
         const originalAfk = content.afk;
+        if (countObj(content) > 0) {
 
-        // 10 Minutes later...
-        if ((content.status === '🟢' || content.status === 'online') && (counter > 600 || content.status === '🟠' || content.status === 'idle' || !userInteractions.mobile.isActive)) {
-            content.afk = true;
-        }
+            tinyAPI.emit('afkTimeCounterProgress', counter);
 
-        // Nope
-        else {
-            content.afk = false;
-        }
+            // 10 Minutes later...
+            if ((content.status === '🟢' || content.status === 'online') && (counter > 600 || content.status === '🟠' || content.status === 'idle' || !userInteractions.mobile.isActive)) {
+                content.afk = true;
+            }
 
-        if (typeof originalAfk !== 'boolean' || originalAfk !== content.afk) {
-            initMatrix.matrixClient.setAccountData('pony.house.profile', content);
-            emitUpdateProfile(content);
+            // Nope
+            else {
+                content.afk = false;
+            }
+
+            if (typeof originalAfk !== 'boolean' || originalAfk !== content.afk) {
+                tinyAPI.emit('afkTimeCounterUpdated', counter);
+                initMatrix.matrixClient.setAccountData('pony.house.profile', content);
+                emitUpdateProfile(content);
+            }
+
         }
 
     }
