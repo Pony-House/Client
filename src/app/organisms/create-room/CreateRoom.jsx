@@ -37,7 +37,7 @@ function CreateRoomContent({ isSpace, parentId, onRequestClose }) {
 
   const [isValidAddress, setIsValidAddress] = useState(null);
   const [addressValue, setAddressValue] = useState(undefined);
-  const [roleIndex, setRoleIndex] = useState(0);
+  const [roleIndex, setRoleIndex] = useState(1);
 
   const addressRef = useRef(null);
 

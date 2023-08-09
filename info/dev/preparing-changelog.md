@@ -1,3 +1,4 @@
 - Embed hide option added.
 - Custom domain support on the url hash.
 - When you are opening the app, you will be sent to the DMs list instead of the rooms list.
+- When creating a room, you will now be using the "founder" setting by default.
