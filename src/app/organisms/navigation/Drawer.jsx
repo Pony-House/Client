@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-
 import Modal from 'react-bootstrap/Modal';
+
+import tinyAPI from '../../../util/mods';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
@@ -17,19 +18,31 @@ import { useSelectedTab } from '../../hooks/useSelectedTab';
 import { useSelectedSpace } from '../../hooks/useSelectedSpace';
 
 function useSystemState() {
-  const [systemState, setSystemState] = useState(null);
+  const [systemState, setSystemState] = useState({ status: null, value: null });
 
   useEffect(() => {
+
     const handleSystemState = (state) => {
+
       if (state === 'ERROR' || state === 'RECONNECTING' || state === 'STOPPED') {
-        setSystemState({ status: 'Connection lost!' });
+        const tinyStatus = { status: 'Connection lost!', value: state };
+        tinyAPI.emit('systemState', tinyStatus);
+        setSystemState(tinyStatus);
       }
-      if (systemState !== null) setSystemState(null);
+
+      if (systemState.status !== null) {
+        const tinyStatus = { status: null, value: state }
+        tinyAPI.emit('systemState', tinyStatus);
+        setSystemState(tinyStatus);
+      }
+
     };
+
     initMatrix.matrixClient.on('sync', handleSystemState);
     return () => {
       initMatrix.matrixClient.removeListener('sync', handleSystemState);
     };
+
   }, [systemState]);
 
   return [systemState];
@@ -96,7 +109,7 @@ function Drawer() {
       </ScrollView>
     </div>
 
-    {systemState !== null ? <Modal dialogClassName='modal-dialog-centered modal-dialog-scrollable' show >
+    {systemState.status !== null ? <Modal dialogClassName='modal-dialog-centered modal-dialog-scrollable' show >
       <Modal.Header className='noselect'>
         <Modal.Title className='h5'>System Status</Modal.Title>
       </Modal.Header>

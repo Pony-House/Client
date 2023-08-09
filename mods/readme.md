@@ -278,6 +278,14 @@ The update will only be emitted when there is a change in the user's afk status.
 
     counter(number)
 
+`src/app/organisms/navigation/Drawer.jsx`
+
+When a connection status occurs in the system, a warning will be emitted.
+
+### systemState
+
+    systemStatus (object with status value)
+
 `others`
 
 ### mouseWheel
