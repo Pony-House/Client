@@ -10,9 +10,9 @@ class Navigation extends EventEmitter {
     // this will attached by initMatrix
     this.initMatrix = {};
 
-    this.selectedTab = cons.tabs.HOME;
+    this.selectedTab = cons.tabs.DIRECTS;
     this.selectedSpaceId = null;
-    this.selectedSpacePath = [cons.tabs.HOME];
+    this.selectedSpacePath = [cons.tabs.DIRECTS];
 
     this.selectedRoomId = null;
     this.isRoomSettings = false;

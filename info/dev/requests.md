@@ -58,8 +58,6 @@ Made by Me
 
     --> Os usuários que madam DM devem ser mostrados na lista de fixados. (Apenas os DMs marcados como da lsita de amigos)
 
-    --> Quando o usuário abrir o app, invés de ir para a sessão de salas, ele deve ir para a lista de DMs.
-
     --> Ajeitar... Ao criar uma sala, o app está jogando para o menu de homes. Isso não pode acotecer se a room for dentro de um space.
 
     --> Se o usuário estiver em uma popup, enviar notificações mesmo se estiver na mesma janela.
