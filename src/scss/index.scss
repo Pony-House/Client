@@ -456,6 +456,12 @@ a {
 /* Banner Profile */
 
 .user-profile {
+  .username:hover,
+  .display-name:hover {
+    cursor: pointer;
+    color: var(--tc-link);
+  }
+
   .profile-banner {
     height: 212px;
     min-height: 212px;

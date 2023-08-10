@@ -47,8 +47,6 @@ Made by Me
 
     =======================================================
 
-    --> Ao acessar o perfil do usuário, se clicar no nickname ou username, vai copiar aquilo.
-
     --> Algumas alocações de avatar de repente ficaram desregulados.
 
     --> Fazer o marcador que separa a lista de amigos da lista de DMs estranhos.

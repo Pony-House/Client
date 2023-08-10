@@ -658,8 +658,8 @@ function ProfileViewer() {
                 </Button>
               </div>
 
-              <h6 ref={displayNameRef} className='emoji-size-fix m-0 mb-1 fw-bold'>{twemojifyReact(username)}</h6>
-              <small ref={userNameRef} className='text-gray emoji-size-fix'>{twemojifyReact(userId)}</small>
+              <h6 ref={displayNameRef} className='emoji-size-fix m-0 mb-1 fw-bold display-name'>{twemojifyReact(username)}</h6>
+              <small ref={userNameRef} className='text-gray emoji-size-fix username'>{twemojifyReact(userId)}</small>
 
               <div ref={customStatusRef} className='d-none mt-2 emoji-size-fix small user-custom-status' />
 

@@ -4,3 +4,4 @@
 - When creating a room, you will now be using the "founder" setting by default.
 - Profile note added.
 - Notification pings when you're on a popup now.
+- Username copy function on the profile is added now.
