@@ -253,6 +253,7 @@ class Notifications extends EventEmitter {
 
   async _displayPopupNoti(mEvent, room) {
 
+    const body = $('body');
     const userStatus = getAccountStatus('status');
     if (!settings.showNotifications && !settings.isNotificationSounds) return;
 
@@ -260,9 +261,10 @@ class Notifications extends EventEmitter {
     if (!actions?.notify) return;
 
     if (
+      !body.hasClass('modal-open') &&
       navigation.selectedRoomId === room.roomId &&
       document.visibilityState === 'visible' &&
-      !$('body').hasClass('windowHidden')
+      !body.hasClass('windowHidden')
     ) return;
 
     if (userStatus === 'dnd' || userStatus === '🔴') return;

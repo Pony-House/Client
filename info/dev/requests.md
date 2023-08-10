@@ -58,7 +58,6 @@ Made by Me
 
     --> Ajeitar... Ao criar uma sala, o app está jogando para o menu de homes. Isso não pode acotecer se a room for dentro de um space.
 
-    --> Se o usuário estiver em uma popup, enviar notificações mesmo se estiver na mesma janela.
     --> Checar Sincronizador da lista de emojis quando um novo emoji ou lista de emoji é adicionado.
 
     --> Opção de desativar carregamento de embeds de mensagens
