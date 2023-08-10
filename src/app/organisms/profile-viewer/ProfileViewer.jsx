@@ -602,10 +602,15 @@ function ProfileViewer() {
 
                 <hr />
 
-                <div className='text-gray emoji-size-fix text-uppercase fw-bold very-small mb-2'>About me</div>
+                <div className='text-gray text-uppercase fw-bold very-small mb-2'>About me</div>
                 <div id='tiny-bio' className='emoji-size-fix small text-freedom' />
 
               </div>
+
+              <hr />
+
+              <label for="tiny-note" class="form-label text-gray text-uppercase fw-bold very-small mb-2">Note</label>
+              <input type="email" class="form-control form-control-bg emoji-size-fix small" id="tiny-note" placeholder="Insert a note here" />
 
             </div>
 
