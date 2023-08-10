@@ -107,7 +107,7 @@ function MessageReply({ name, color, body }) {
       {' '}
       <span className="username-title emoji-size-fix" style={{ color }}>{twemojifyReact(name)}</span>
       {' '}
-      {twemojifyReact(body)}
+      {body.length > 200 ? twemojifyReact(`${body.substring(0, 200)}......`) : twemojifyReact(body)}
     </div>
   );
 }
