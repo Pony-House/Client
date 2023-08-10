@@ -9,6 +9,7 @@ import Text from '../text/Text';
 import RawIcon from '../system-icons/RawIcon';
 
 import { avatarInitials } from '../../../util/common';
+import defaultAvatar from './defaultAvatar';
 
 const ImageBrokenSVG = './img/svg/image-broken.svg';
 
@@ -36,7 +37,7 @@ const Avatar = React.forwardRef(({
   }
 
   // Default Avatar
-  const defaultAvatar = `./img/default_avatar/${colorCode}.jpg`;
+  const tinyDa = defaultAvatar(colorCode);
   setTimeout(forceLoadAvatars, 100);
   useEffect(() => { forceLoadAvatars(); }, []);
 
@@ -57,7 +58,7 @@ const Avatar = React.forwardRef(({
               ref={theRef}
               className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
               draggable="false"
-              src={imageSrc !== null ? imageSrc : `./img/default_avatar/${colorCode}.jpg`}
+              src={imageSrc !== null ? imageSrc : defaultAvatar(colorCode)}
               onLoad={(e) => { e.target.style.backgroundColor = 'transparent'; }}
               onError={(e) => { e.target.src = ImageBrokenSVG; }}
               alt={text || 'avatar'}
@@ -78,9 +79,9 @@ const Avatar = React.forwardRef(({
 
               animsrc={appearanceSettings.isAnimateAvatarsHidden !== true ? imageAnimSrc : null}
               normalsrc={appearanceSettings.isAnimateAvatarsHidden !== true ? imageSrc : null}
-              defaultavatar={appearanceSettings.isAnimateAvatarsHidden !== true ? defaultAvatar : null}
+              defaultavatar={appearanceSettings.isAnimateAvatarsHidden !== true ? tinyDa : null}
 
-              src={appearanceSettings.isAnimateAvatarsHidden !== true ? defaultAvatar : imageSrc}
+              src={appearanceSettings.isAnimateAvatarsHidden !== true ? tinyDa : imageSrc}
 
               onLoad={appearanceSettings.isAnimateAvatarsHidden !== true ? loadAvatar : null}
 

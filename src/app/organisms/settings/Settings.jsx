@@ -41,6 +41,7 @@ import { resizeWindowChecker, toast } from '../../../util/tools';
 import { getStatusCSS } from '../../../util/onlineStatus';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
+import defaultAvatar from '../../atoms/avatar/defaultAvatar';
 
 const toggleAction = (dataFolder, valueName, setToggle) => data => {
 
@@ -503,7 +504,7 @@ function ProfileSection() {
 
   const [customStatusIcon, setcustomStatusIcon] = useState(typeof userProfile.msgIcon === 'string' ?
     userProfile.msgIcon.length <= 2 ? twemojifyIcon(userProfile.msgIcon) : initMatrix.matrixClient.mxcUrlToHttp(userProfile.msgIcon)
-    : './img/default_avatar/1.jpg');
+    : defaultAvatar(1));
 
   const [customStatusValue, setcustomStatusValue] = useState(typeof userProfile.msgIcon === 'string' ? userProfile.msgIcon : null);
 
@@ -701,7 +702,7 @@ function ProfileSection() {
             <span className="input-group-text" id="basic-addon1">
 
               {customStatusValue ? <IconButton fa="fa-solid fa-xmark" className='btn-sm me-2' onClick={() => {
-                setcustomStatusIcon('./img/default_avatar/1.jpg');
+                setcustomStatusIcon(defaultAvatar(1));
                 setcustomStatusValue(null);
               }} /> : null}
 
@@ -722,7 +723,7 @@ function ProfileSection() {
                         setcustomStatusIcon(`${TWEMOJI_BASE_URL}72x72/${emoji.hexcode.toLowerCase()}.png`);
                         setcustomStatusValue(emoji.unicode);
                       } else {
-                        setcustomStatusIcon('./img/default_avatar/1.jpg');
+                        setcustomStatusIcon(defaultAvatar(1));
                         setcustomStatusValue(null);
                       }
 

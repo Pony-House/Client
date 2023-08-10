@@ -9,6 +9,7 @@ import { twemojifyReact } from '../../../util/twemojify';
 import jReact from '../../../../mods/lib/jReact';
 
 import openTinyURL from '../../../util/message/urlProtection';
+import defaultAvatar from '../../atoms/avatar/defaultAvatar';
 
 const tinyUrlAction = (event) => {
     const e = event.originalEvent;
@@ -77,7 +78,7 @@ function Embed({ embed }) {
         imgUrl = embed['og:image'];
     }
 
-    const defaultVideoAvatar = './img/default_avatar/1.jpg';
+    const defaultVideoAvatar = defaultAvatar(1);
     if (!imgUrl && isVideo) {
         imgUrl = defaultVideoAvatar;
     }
