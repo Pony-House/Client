@@ -29,6 +29,7 @@ import Dialog from '../../molecules/dialog/Dialog';
 
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
+import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 
 function ModerationTools({
   roomId, userId,
@@ -364,6 +365,7 @@ function ProfileViewer() {
   // Prepare
   const profileAvatar = useRef(null);
   const bioRef = useRef(null);
+  const noteRef = useRef(null);
   const customStatusRef = useRef(null);
   const statusRef = useRef(null);
   const profileBanner = useRef(null);
@@ -471,16 +473,24 @@ function ProfileViewer() {
         imageViewer(lightbox, $(profileAvatar.current).find('> img'), username, avatarUrl, true);
       };
 
+      // Update Note
+      const tinyNoteUpdate = (event) => {
+        addToDataFolder('user_cache', 'note', userId, $(event.target).val(), 500);
+      };
+
       // Read Events
       updateProfileStatus(null, user);
+      const tinyNote = getDataList('user_cache', 'note', userId);
 
       user.on('User.currentlyActive', updateProfileStatus);
       user.on('User.lastPresenceTs', updateProfileStatus);
       user.on('User.presence', updateProfileStatus);
 
       $(profileAvatar.current).on('click', tinyAvatarPreview);
+      $(noteRef.current).on('change', tinyNoteUpdate).val(tinyNote);
 
       return () => {
+        $(noteRef.current).off('change', tinyNoteUpdate);
         $(profileAvatar.current).off('click', tinyAvatarPreview);
         user.removeListener('User.currentlyActive', updateProfileStatus);
         user.removeListener('User.lastPresenceTs', updateProfileStatus);
@@ -610,7 +620,7 @@ function ProfileViewer() {
               <hr />
 
               <label for="tiny-note" class="form-label text-gray text-uppercase fw-bold very-small mb-2">Note</label>
-              <input type="email" class="form-control form-control-bg emoji-size-fix small" id="tiny-note" placeholder="Insert a note here" />
+              <input ref={noteRef} type="text" class="form-control form-control-bg emoji-size-fix small" id="tiny-note" placeholder="Insert a note here" />
 
             </div>
 

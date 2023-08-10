@@ -63,9 +63,6 @@ Made by Me
 
     --> Opção de desativar carregamento de embeds de mensagens
 
-    --> Criar sistema de notes
-    (limite de 500 itens no array)
-
     --> Criar filtro para desativar animação de gifs especificas. A gente vai usar a ID e dominio do arquivo para facilitar isso.
     (Limite de 600 itens por array) (Opçao alternativa de fazer a animação ser hover)
 
