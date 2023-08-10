@@ -47,6 +47,8 @@ Made by Me
 
     =======================================================
 
+    --> Ao acessar o perfil do usuário, se clicar no nickname ou username, vai copiar aquilo.
+
     --> Quando a configuração de avatar de canais em space é ativado. Está mostrando avatar de usuários aleatóriamente.
 
     --> Algumas alocações de avatar de repente ficaram desregulados.
