@@ -478,6 +478,12 @@ function ProfileViewer() {
         addToDataFolder('user_cache', 'note', userId, $(event.target).val(), 500);
       };
 
+      const tinyNoteSpacing = (event) => {
+        const element = event.target;
+        element.style.height = "5px";
+        element.style.height = `${Number(element.scrollHeight)}px`;
+      };
+
       // Read Events
       updateProfileStatus(null, user);
       const tinyNote = getDataList('user_cache', 'note', userId);
@@ -487,10 +493,11 @@ function ProfileViewer() {
       user.on('User.presence', updateProfileStatus);
 
       $(profileAvatar.current).on('click', tinyAvatarPreview);
-      $(noteRef.current).on('change', tinyNoteUpdate).val(tinyNote);
+      $(noteRef.current).on('change', tinyNoteUpdate).on('keypress keyup keydown', tinyNoteSpacing).val(tinyNote);
+      tinyNoteSpacing({ target: noteRef.current });
 
       return () => {
-        $(noteRef.current).off('change', tinyNoteUpdate);
+        $(noteRef.current).off('change', tinyNoteUpdate).off('keypress keyup keydown', tinyNoteSpacing);
         $(profileAvatar.current).off('click', tinyAvatarPreview);
         user.removeListener('User.currentlyActive', updateProfileStatus);
         user.removeListener('User.lastPresenceTs', updateProfileStatus);
@@ -620,7 +627,7 @@ function ProfileViewer() {
               <hr />
 
               <label for="tiny-note" class="form-label text-gray text-uppercase fw-bold very-small mb-2">Note</label>
-              <input ref={noteRef} type="text" class="form-control form-control-bg emoji-size-fix small" id="tiny-note" placeholder="Insert a note here" />
+              <textarea ref={noteRef} spellcheck="false" class="form-control form-control-bg emoji-size-fix small" id="tiny-note" placeholder="Insert a note here" />
 
             </div>
 

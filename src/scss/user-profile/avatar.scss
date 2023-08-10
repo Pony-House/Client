@@ -52,6 +52,8 @@
 }
 
 #tiny-note {
+  overflow: hidden;
+  resize: none;
   background-color: transparent;
   border: 1px solid transparent;
   padding: 0px;
