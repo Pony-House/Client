@@ -64,25 +64,26 @@ function ModerationTools({
   };
 
   return (
-    <div className="card-body">
-      {canIKick && (
-        <form onSubmit={handleKick}>
-          <div className="input-group mb-3">
-            <Input placeholder="Kick reason" name="kick-reason" />
-            <Button className="border-bg" variant='outline-secondary' type="submit">Kick</Button>
-          </div>
-        </form>
-      )}
-      {canIBan && (
-        <form onSubmit={handleBan}>
-          <div className="input-group mb-3">
-            <Input placeholder="Ban reason" name="ban-reason" />
-            <Button className="border-bg" variant='outline-secondary' type="submit">Ban</Button>
-          </div>
-        </form>
-      )}
-    </div>
-  );
+    (canIKick || canIBan) && (
+      <div className="card-body">
+        {canIKick && (
+          <form onSubmit={handleKick}>
+            <div className="input-group mb-3">
+              <Input placeholder="Kick reason" name="kick-reason" />
+              <Button className="border-bg" variant='outline-secondary' type="submit">Kick</Button>
+            </div>
+          </form>
+        )}
+        {canIBan && (
+          <form onSubmit={handleBan}>
+            <div className="input-group mb-3">
+              <Input placeholder="Ban reason" name="ban-reason" />
+              <Button className="border-bg" variant='outline-secondary' type="submit">Ban</Button>
+            </div>
+          </form>
+        )}
+      </div>
+    ));
 }
 ModerationTools.propTypes = {
   roomId: PropTypes.string.isRequired,
