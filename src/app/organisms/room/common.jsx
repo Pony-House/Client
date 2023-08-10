@@ -70,7 +70,7 @@ function getTimelineJSXMessages() {
           <strong>{twemojifyReact(actor)}</strong>
           {' banned '}
           <strong>{twemojifyReact(user)}</strong>
-          {twemojifyReactReact(reasonMsg)}
+          {twemojifyReact(reasonMsg)}
         </>
       );
     },
