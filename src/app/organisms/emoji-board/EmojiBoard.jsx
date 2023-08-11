@@ -382,7 +382,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             if (eventType === 'im.ponies.emote_rooms' || eventType === 'im.ponies.user_emotes') forceUpdate();
         };
 
-        const handleEvent2 = () => handleEvent({ eventType: 'im.ponies.user_emotes' });
+        const handleEvent2 = () => handleEvent({ getType: () => ({ eventType: 'im.ponies.user_emotes' }) });
         const updateAvailableEmoji = async (newRoomId) => setSelectedRoomId(newRoomId);
 
         const onOpen = (roomId, cords, requestEmojiCallback, dom) => {
