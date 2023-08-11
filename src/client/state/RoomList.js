@@ -289,6 +289,7 @@ class RoomList extends EventEmitter {
     });
 
     this.matrixClient.on('RoomState.events', (mEvent, state) => {
+
       if (mEvent.getType() === 'm.space.child') {
         const roomId = mEvent.event.room_id;
         const childId = mEvent.event.state_key;
@@ -304,16 +305,23 @@ class RoomList extends EventEmitter {
         this.emit(cons.events.roomList.ROOMLIST_UPDATED);
         return;
       }
+
       if (mEvent.getType() === 'm.room.join_rules') {
         this.emit(cons.events.roomList.ROOMLIST_UPDATED);
         return;
       }
+
       if (['m.room.avatar', 'm.room.topic'].includes(mEvent.getType())) {
         if (mEvent.getType() === 'm.room.avatar') {
           this.emit(cons.events.roomList.ROOMLIST_UPDATED);
         }
         this.emit(cons.events.roomList.ROOM_PROFILE_UPDATED, state.roomId);
       }
+
+      if (mEvent.getType() === 'im.ponies.room_emotes') {
+        this.emit(cons.events.navigation.UPDATED_EMOJI_LIST_DATA, state.roomId);
+      }
+
     });
 
     this.matrixClient.on('Room.myMembership', async (room, membership, prevMembership) => {

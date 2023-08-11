@@ -382,9 +382,8 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             if (eventType === 'im.ponies.emote_rooms' || eventType === 'im.ponies.user_emotes') forceUpdate();
         };
 
-        const updateAvailableEmoji = async (newRoomId) => {
-            setSelectedRoomId(newRoomId);
-        };
+        const handleEvent2 = () => handleEvent({ eventType: 'im.ponies.user_emotes' });
+        const updateAvailableEmoji = async (newRoomId) => setSelectedRoomId(newRoomId);
 
         const onOpen = (roomId, cords, requestEmojiCallback, dom) => {
             $(searchRef.current).val('');
@@ -393,14 +392,14 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         };
 
         mx.addListener('accountData', handleEvent);
-        // navigation.on(cons.events.navigation.UPDATED_EMOJI_LIST, updateAvailableEmoji);
+        navigation.on(cons.events.navigation.UPDATED_EMOJI_LIST_DATA, handleEvent2);
         navigation.on(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
         navigation.on(cons.events.navigation.EMOJIBOARD_OPENED, onOpen);
         $(scrollEmojisRef.current).on('scroll', onScroll);
         return () => {
             $(scrollEmojisRef.current).off('scroll', onScroll);
             mx.removeListener('accountData', handleEvent);
-            // navigation.removeListener(cons.events.navigation.UPDATED_EMOJI_LIST, updateAvailableEmoji);
+            navigation.removeListener(cons.events.navigation.UPDATED_EMOJI_LIST_DATA, handleEvent2);
             navigation.removeListener(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
             navigation.removeListener(cons.events.navigation.EMOJIBOARD_OPENED, onOpen);
         };

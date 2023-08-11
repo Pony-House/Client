@@ -217,6 +217,13 @@ export function updateEmojiList(roomId) {
   });
 }
 
+export function updateEmojiListData(roomId) {
+  appDispatcher.dispatch({
+    type: cons.actions.navigation.UPDATE_EMOJI_LIST_DATA,
+    roomId,
+  });
+}
+
 export function consoleNewData(content) {
   appDispatcher.dispatch({
     type: cons.actions.navigation.CONSOLE_NEW_DATA,
