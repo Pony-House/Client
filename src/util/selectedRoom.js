@@ -9,8 +9,8 @@ function getDataFolderRaw(dataFolder, where) {
 }
 
 let room;
-export function setSelectRoom(body) {
-    room = body;
+export function setSelectRoom(value) {
+    room = value;
 };
 
 export function getSelectRoom() {
@@ -18,8 +18,8 @@ export function getSelectRoom() {
 };
 
 let space;
-export function setSelectSpace(body) {
-    space = body;
+export function setSelectSpace(value) {
+    space = value;
 };
 
 export function getSelectSpace() {

@@ -88,10 +88,7 @@ function useRoomImagePack(roomId, stateKey) {
   ), [room, stateKey]);
 
   const sendPackContent = (content) => {
-    mx.sendStateEvent(roomId, 'im.ponies.room_emotes', content, stateKey).then(() => {
-      const roomData = getSelectRoom();
-      updateEmojiList(roomData && roomData.roomId ? roomData.roomId : undefined);
-    });
+    mx.sendStateEvent(roomId, 'im.ponies.room_emotes', content, stateKey).then(() => updateEmojiList(roomId));
   };
 
   return {
@@ -111,7 +108,7 @@ function useUserImagePack() {
   ), []);
 
   const sendPackContent = (content) => {
-    mx.setAccountData('im.ponies.user_emotes', content);
+    mx.setAccountData('im.ponies.user_emotes', content).then(() => updateEmojiList(getSelectRoom()));
   };
 
   return {
@@ -295,7 +292,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete }) {
         onEditProfile={canChange ? handleEditProfile : null}
       />
       {canChange && (
-        <ImagePackUpload onUpload={handleAddItem} />
+        <ImagePackUpload onUpload={handleAddItem} roomId={roomId} />
       )}
 
       {images.length === 0 ? null : (

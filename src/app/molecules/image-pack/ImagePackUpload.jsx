@@ -11,7 +11,7 @@ import IconButton from '../../atoms/button/IconButton';
 import { updateEmojiList } from '../../../client/action/navigation';
 import { getSelectRoom } from '../../../util/selectedRoom';
 
-function ImagePackUpload({ onUpload }) {
+function ImagePackUpload({ onUpload, roomId, }) {
   const mx = initMatrix.matrixClient;
   const inputRef = useRef(null);
   const shortcodeRef = useRef(null);
@@ -36,8 +36,11 @@ function ImagePackUpload({ onUpload }) {
     setImgFile(null);
     shortcodeRef.current.value = '';
 
-    const room = getSelectRoom();
-    updateEmojiList(room && room.roomId ? room.roomId : null);
+    if (!roomId) {
+      updateEmojiList(getSelectRoom());
+    } else {
+      updateEmojiList(roomId);
+    }
 
   };
 
@@ -73,6 +76,7 @@ function ImagePackUpload({ onUpload }) {
   );
 }
 ImagePackUpload.propTypes = {
+  roomId: PropTypes.string,
   onUpload: PropTypes.func.isRequired,
 };
 

@@ -17,8 +17,6 @@ import IconButton from '../../atoms/button/IconButton';
 import { MenuItem, MenuHeader } from '../../atoms/context-menu/ContextMenu';
 import SpaceOptions from '../../molecules/space-options/SpaceOptions';
 
-import { setSelectSpace } from '../../../util/selectedRoom';
-
 const HashPlusIC = './img/ic/outlined/hash-plus.svg';
 const HashGlobeIC = './img/ic/outlined/hash-globe.svg';
 const HashSearchIC = './img/ic/outlined/hash-search.svg';
@@ -105,7 +103,6 @@ function DrawerHeader({ selectedTab, spaceId, room, banner }) {
   const isDMTab = selectedTab === cons.tabs.DIRECTS;
 
   const spaceName = isDMTab ? null : (room?.name || null);
-  setSelectSpace(room);
 
   const openSpaceOptions = (e) => {
     e.preventDefault();
