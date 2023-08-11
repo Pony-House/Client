@@ -8,6 +8,7 @@ import Text from '../../atoms/text/Text';
 import Input from '../../atoms/input/Input';
 import Button from '../../atoms/button/Button';
 import ImagePack from '../image-pack/ImagePack';
+import { updateEmojiList } from '../../../client/action/navigation';
 
 function useRoomPacks(room) {
   const mx = initMatrix.matrixClient;
@@ -59,10 +60,12 @@ function useRoomPacks(room) {
       }
     }
     await mx.sendStateEvent(room.roomId, 'im.ponies.room_emotes', packContent, stateKey);
+    updateEmojiList(room.roomId);
   };
 
   const deletePack = async (stateKey) => {
     await mx.sendStateEvent(room.roomId, 'im.ponies.room_emotes', {}, stateKey);
+    updateEmojiList(room.roomId);
   };
 
   return {
