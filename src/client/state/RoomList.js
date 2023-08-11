@@ -1,6 +1,7 @@
 import EventEmitter from 'events';
 import appDispatcher from '../dispatcher';
 import cons from './cons';
+import { updateEmojiListData } from '../action/navigation';
 
 function isMEventSpaceChild(mEvent) {
   return mEvent.getType() === 'm.space.child' && Object.keys(mEvent.getContent()).length > 0;
@@ -319,7 +320,7 @@ class RoomList extends EventEmitter {
       }
 
       if (mEvent.getType() === 'im.ponies.room_emotes') {
-        this.emit(cons.events.navigation.UPDATED_EMOJI_LIST_DATA, state.roomId);
+        updateEmojiListData(state.roomId);
       }
 
     });
