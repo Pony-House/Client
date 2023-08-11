@@ -4,7 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 
 import initMatrix from '../../../client/initMatrix';
-import { openReusableDialog } from '../../../client/action/navigation';
+import { openReusableDialog, updateEmojiList } from '../../../client/action/navigation';
 import { suffixRename } from '../../../util/common';
 
 import Button from '../../atoms/button/Button';
@@ -17,6 +17,7 @@ import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
 import ImagePackProfile from './ImagePackProfile';
 import ImagePackItem from './ImagePackItem';
 import ImagePackUpload from './ImagePackUpload';
+import { getSelectRoom } from '../../../util/selectedRoom';
 
 const renameImagePackItem = (shortcode) => new Promise((resolve) => {
   let isCompleted = false;
@@ -27,12 +28,19 @@ const renameImagePackItem = (shortcode) => new Promise((resolve) => {
       <div style={{ padding: 'var(--sp-normal)' }}>
         <form
           onSubmit={(e) => {
+
             e.preventDefault();
             const sc = e.target.shortcode.value;
             if (sc.trim() === '') return;
+
             isCompleted = true;
             resolve(sc.trim());
+
+            const room = getSelectRoom();
+            updateEmojiList(room && room.roomId ? room.roomId : undefined);
+
             requestClose();
+
           }}
         >
           <div>
@@ -171,6 +179,10 @@ function useImagePackHandles(pack, sendPackContent) {
 
     sendPackContent(pack.getContent());
     forceUpdate();
+
+    const roomData = getSelectRoom();
+    updateEmojiList(roomData && roomData.roomId ? roomData.roomId : undefined);
+
   };
   const handleUsageItem = (key, newUsage) => {
     const usage = [];
@@ -256,7 +268,12 @@ function ImagePack({ roomId, stateKey, handlePackDelete }) {
       'danger',
     );
     if (!isConfirmed) return;
+
     handlePackDelete(stateKey);
+
+    const roomData = getSelectRoom();
+    updateEmojiList(roomData && roomData.roomId ? roomData.roomId : undefined);
+
   };
 
   const images = [...pack.images].slice(0, viewMore ? pack.images.size : 2);

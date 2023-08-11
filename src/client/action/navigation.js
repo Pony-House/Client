@@ -207,6 +207,13 @@ export function consoleRemoveData(content) {
   });
 }
 
+export function updateEmojiList(content) {
+  appDispatcher.dispatch({
+    type: cons.actions.navigation.UPDATE_EMOJI_LIST,
+    content,
+  });
+}
+
 export function consoleNewData(content) {
   appDispatcher.dispatch({
     type: cons.actions.navigation.CONSOLE_NEW_DATA,

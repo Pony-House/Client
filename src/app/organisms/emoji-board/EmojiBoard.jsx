@@ -383,11 +383,13 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             setBoardType(dom);
         };
 
+        navigation.on(cons.events.navigation.UPDATED_EMOJI_LIST, updateAvailableEmoji);
         navigation.on(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
         navigation.on(cons.events.navigation.EMOJIBOARD_OPENED, onOpen);
         $(scrollEmojisRef.current).on('scroll', onScroll);
         return () => {
             $(scrollEmojisRef.current).off('scroll', onScroll);
+            navigation.removeListener(cons.events.navigation.UPDATED_EMOJI_LIST, updateAvailableEmoji);
             navigation.removeListener(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
             navigation.removeListener(cons.events.navigation.EMOJIBOARD_OPENED, onOpen);
         };
