@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useReducer } from 'react';
 import PropTypes from 'prop-types';
 
 import parse from 'html-react-parser';
@@ -173,6 +173,7 @@ SearchedEmoji.propTypes = {
 function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
     // First Values
+    const [, forceUpdate] = useReducer((count) => count + 1, 0);
     const emojiInfo = useRef(null);
     const [boardType, setBoardType] = useState('emoji');
     const [selectedRoomId, setSelectedRoomId] = useState(null);
@@ -181,6 +182,8 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     const [emojiFav, setEmojiFav] = useState([]);
     const [emojiData, setEmojiData] = useState([]);
     const [emojiRecent, setEmojiRecent] = useState([]);
+
+    const mx = initMatrix.matrixClient;
 
     ROW_COUNT = (boardType !== 'sticker' ? ROW_EMOJIS_COUNT : ROW_STICKERS_COUNT);
     loadEmojiData(selectedRoomId);
@@ -373,6 +376,12 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     const favOffset = emojiFav.length > 0 ? 1 : 0;
 
     useEffect(() => {
+
+        const handleEvent = (event) => {
+            const eventType = event.getType();
+            if (eventType === 'im.ponies.emote_rooms' || eventType === 'im.ponies.user_emotes') forceUpdate();
+        };
+
         const updateAvailableEmoji = async (newRoomId) => {
             setSelectedRoomId(newRoomId);
         };
@@ -383,13 +392,15 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             setBoardType(dom);
         };
 
-        navigation.on(cons.events.navigation.UPDATED_EMOJI_LIST, updateAvailableEmoji);
+        mx.addListener('accountData', handleEvent);
+        // navigation.on(cons.events.navigation.UPDATED_EMOJI_LIST, updateAvailableEmoji);
         navigation.on(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
         navigation.on(cons.events.navigation.EMOJIBOARD_OPENED, onOpen);
         $(scrollEmojisRef.current).on('scroll', onScroll);
         return () => {
             $(scrollEmojisRef.current).off('scroll', onScroll);
-            navigation.removeListener(cons.events.navigation.UPDATED_EMOJI_LIST, updateAvailableEmoji);
+            mx.removeListener('accountData', handleEvent);
+            // navigation.removeListener(cons.events.navigation.UPDATED_EMOJI_LIST, updateAvailableEmoji);
             navigation.removeListener(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
             navigation.removeListener(cons.events.navigation.EMOJIBOARD_OPENED, onOpen);
         };
