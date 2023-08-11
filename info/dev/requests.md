@@ -57,8 +57,6 @@ Made by Me
 
     --> Os usuários que madam DM devem ser mostrados na lista de fixados. (Apenas os DMs marcados como da lsita de amigos)
 
-    --> Checar Sincronizador da lista de emojis quando um novo emoji ou lista de emoji é adicionado.
-
     --> Opção de desativar carregamento de embeds de mensagens
 
     --> Criar filtro para desativar animação de gifs especificas. A gente vai usar a ID e dominio do arquivo para facilitar isso.
