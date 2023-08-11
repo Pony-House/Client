@@ -35,10 +35,6 @@ const renameImagePackItem = (shortcode) => new Promise((resolve) => {
 
             isCompleted = true;
             resolve(sc.trim());
-
-            const room = getSelectRoom();
-            updateEmojiList(room && room.roomId ? room.roomId : undefined);
-
             requestClose();
 
           }}
@@ -92,7 +88,10 @@ function useRoomImagePack(roomId, stateKey) {
   ), [room, stateKey]);
 
   const sendPackContent = (content) => {
-    mx.sendStateEvent(roomId, 'im.ponies.room_emotes', content, stateKey);
+    mx.sendStateEvent(roomId, 'im.ponies.room_emotes', content, stateKey).then(() => {
+      const roomData = getSelectRoom();
+      updateEmojiList(roomData && roomData.roomId ? roomData.roomId : undefined);
+    });
   };
 
   return {
@@ -150,6 +149,7 @@ function useImagePackHandles(pack, sendPackContent) {
   };
 
   const handleUsageChange = (newUsage) => {
+
     const usage = [];
     if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
     if (newUsage === 'sticker' || newUsage === 'both') usage.push('sticker');
@@ -158,6 +158,7 @@ function useImagePackHandles(pack, sendPackContent) {
 
     sendPackContent(pack.getContent());
     forceUpdate();
+
   };
 
   const handleRenameItem = async (key) => {
@@ -168,9 +169,6 @@ function useImagePackHandles(pack, sendPackContent) {
 
     sendPackContent(pack.getContent());
     forceUpdate();
-
-    const roomData = getSelectRoom();
-    updateEmojiList(roomData && roomData.roomId ? roomData.roomId : undefined);
 
   };
 
@@ -187,12 +185,10 @@ function useImagePackHandles(pack, sendPackContent) {
     sendPackContent(pack.getContent());
     forceUpdate();
 
-    const roomData = getSelectRoom();
-    updateEmojiList(roomData && roomData.roomId ? roomData.roomId : undefined);
-
   };
 
   const handleUsageItem = (key, newUsage) => {
+
     const usage = [];
     if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
     if (newUsage === 'sticker' || newUsage === 'both') usage.push('sticker');
@@ -200,6 +196,7 @@ function useImagePackHandles(pack, sendPackContent) {
 
     sendPackContent(pack.getContent());
     forceUpdate();
+
   };
 
   const handleAddItem = (key, url) => {
@@ -211,10 +208,6 @@ function useImagePackHandles(pack, sendPackContent) {
     });
 
     sendPackContent(pack.getContent());
-
-    const roomData = getSelectRoom();
-    updateEmojiList(roomData && roomData.roomId ? roomData.roomId : undefined);
-
     forceUpdate();
   };
 
@@ -274,6 +267,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete }) {
   const canChange = room.currentState.maySendStateEvent('im.ponies.room_emotes', mx.getUserId());
 
   const handleDeletePack = async () => {
+
     const isConfirmed = await confirmDialog(
       'Delete Pack',
       `Are you sure that you want to delete "${pack.displayName}"?`,
@@ -283,9 +277,6 @@ function ImagePack({ roomId, stateKey, handlePackDelete }) {
     if (!isConfirmed) return;
 
     handlePackDelete(stateKey);
-
-    const roomData = getSelectRoom();
-    updateEmojiList(roomData && roomData.roomId ? roomData.roomId : undefined);
 
   };
 
