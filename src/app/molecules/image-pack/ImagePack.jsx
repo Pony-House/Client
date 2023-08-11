@@ -141,12 +141,14 @@ function useImagePackHandles(pack, sendPackContent) {
     sendPackContent(pack.getContent());
     forceUpdate();
   };
+
   const handleEditProfile = (name, attribution) => {
     pack.setDisplayName(name);
     pack.setAttribution(attribution);
     sendPackContent(pack.getContent());
     forceUpdate();
   };
+
   const handleUsageChange = (newUsage) => {
     const usage = [];
     if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
@@ -166,7 +168,12 @@ function useImagePackHandles(pack, sendPackContent) {
 
     sendPackContent(pack.getContent());
     forceUpdate();
+
+    const roomData = getSelectRoom();
+    updateEmojiList(roomData && roomData.roomId ? roomData.roomId : undefined);
+
   };
+
   const handleDeleteItem = async (key) => {
     const isConfirmed = await confirmDialog(
       'Delete',
@@ -184,6 +191,7 @@ function useImagePackHandles(pack, sendPackContent) {
     updateEmojiList(roomData && roomData.roomId ? roomData.roomId : undefined);
 
   };
+
   const handleUsageItem = (key, newUsage) => {
     const usage = [];
     if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
@@ -193,6 +201,7 @@ function useImagePackHandles(pack, sendPackContent) {
     sendPackContent(pack.getContent());
     forceUpdate();
   };
+
   const handleAddItem = (key, url) => {
     const newKey = getNewKey(key);
     if (!newKey || !url) return;
@@ -202,6 +211,10 @@ function useImagePackHandles(pack, sendPackContent) {
     });
 
     sendPackContent(pack.getContent());
+
+    const roomData = getSelectRoom();
+    updateEmojiList(roomData && roomData.roomId ? roomData.roomId : undefined);
+
     forceUpdate();
   };
 
