@@ -11,7 +11,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'url';
 
 import electron from 'vite-plugin-electron';
-import renderer from 'vite-plugin-electron-renderer';
+/* import renderer from 'vite-plugin-electron-renderer'; */
 import pkg from './package.json';
 
 // Insert utils
@@ -95,6 +95,7 @@ export default defineConfig(({ command, mode }) => {
 
   const env = loadEnv(mode, process.cwd(), '');
   const electronMode = (String(env.ELECTRON_MODE) === 'true');
+  console.log(`${colors.blue('[vite-config] [electron]')} ${electronMode}`);
 
   const envData = {
     mode,
@@ -106,7 +107,8 @@ export default defineConfig(({ command, mode }) => {
     }
   };
 
-  if (electronMode && mode === 'development') {
+  /*
+    if (electronMode && mode === 'development') {
 
     envData.maindir = __dirname;
 
@@ -121,13 +123,17 @@ export default defineConfig(({ command, mode }) => {
       dest: '',
     });
   }
+  */
+
+  copyFiles.targets.push({
+    src: 'node_modules/@matrix-org/olm/olm.wasm',
+    dest: '',
+  });
 
   // Result object
   const result = {
 
-    appType: 'spa',
     publicDir: true,
-    base: "",
 
     define: {
       __ENV_APP__: Object.freeze(envData),
@@ -146,9 +152,11 @@ export default defineConfig(({ command, mode }) => {
 
     optimizeDeps: {
       esbuildOptions: {
+
         define: {
           global: 'globalThis'
         },
+
         plugins: [
           // Enable esbuild polyfill plugins
           NodeGlobalsPolyfillPlugin({
@@ -156,6 +164,7 @@ export default defineConfig(({ command, mode }) => {
             buffer: true,
           }),
         ]
+
       }
     },
 
@@ -225,15 +234,20 @@ export default defineConfig(({ command, mode }) => {
 
     ]));
 
+    /*
     result.plugins.push(
       // Use Node.js API in the Renderer-process
       renderer()
     );
+    */
 
   }
 
   // Normal
   else {
+
+    result.appType = 'spa';
+    result.base = '';
 
     result.build = {
       outDir: 'dist',
