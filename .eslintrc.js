@@ -11,6 +11,7 @@ module.exports = {
     'getLogData': 'readonly',
     'playLogData': 'readonly',
     '__ENV_APP__': 'readonly',
+    'Olm': 'readonly',
   },
   env: {
     browser: true,

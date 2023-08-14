@@ -13,6 +13,7 @@ import logger from './logger';
 
 if (__ENV_APP__.electron_mode) {
   global.Olm = {
+
     // eslint-disable-next-line object-shorthand
     init: function () {
 
@@ -25,9 +26,12 @@ if (__ENV_APP__.electron_mode) {
       args[0].locateFile = () => '/olm.wasm';
 
       global.Olm = Olm;
+
+      // eslint-disable-next-line prefer-spread
       Olm.init.apply(Olm, args);
 
     }
+
   };
 } else {
   global.Olm = Olm;
