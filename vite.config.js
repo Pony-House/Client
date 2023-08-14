@@ -70,6 +70,11 @@ const copyFiles = {
     },
 
     {
+      src: 'node_modules/@matrix-org/olm/olm.wasm',
+      dest: '',
+    },
+
+    {
       src: 'config/config.json',
       dest: '',
     }
@@ -106,29 +111,6 @@ export default defineConfig(({ command, mode }) => {
       welcome: String(env.appWelcome)
     }
   };
-
-  /*
-    if (electronMode && mode === 'development') {
-
-    envData.maindir = __dirname;
-
-    copyFiles.targets.push({
-      src: 'node_modules/@matrix-org/olm/olm.wasm',
-      dest: path.join(envData.maindir, './node_modules/electron/dist/resources/electron.asar/renderer/'),
-    });
-
-  } else {
-    copyFiles.targets.push({
-      src: 'node_modules/@matrix-org/olm/olm.wasm',
-      dest: '',
-    });
-  }
-  */
-
-  copyFiles.targets.push({
-    src: 'node_modules/@matrix-org/olm/olm.wasm',
-    dest: '',
-  });
 
   // Result object
   const result = {
