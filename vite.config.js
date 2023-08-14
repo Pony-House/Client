@@ -11,7 +11,6 @@ import path from 'node:path';
 import { fileURLToPath } from 'url';
 
 import electron from 'vite-plugin-electron';
-/* import renderer from 'vite-plugin-electron-renderer'; */
 import pkg from './package.json';
 
 // Insert utils
@@ -215,13 +214,6 @@ export default defineConfig(({ command, mode }) => {
       }
 
     ]));
-
-    /*
-    result.plugins.push(
-      // Use Node.js API in the Renderer-process
-      renderer()
-    );
-    */
 
   }
 
