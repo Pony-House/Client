@@ -7,8 +7,7 @@
     "node": ">=16.0.0"
   },
   "scripts": {
-    "start": "vite",
-    "start-dev": "vite dev",
+    "start": "vite dev",
     "install": "( git submodule update --init --recursive && node -r esm ./build/index.js )",
     "build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
     "lint": "yarn check:eslint && yarn check:prettier",

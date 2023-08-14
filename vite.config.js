@@ -5,6 +5,7 @@ import { wasm } from '@rollup/plugin-wasm';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import inject from '@rollup/plugin-inject';
+import { rmSync } from 'node:fs';
 
 const copyFiles = {
   targets: [
@@ -71,15 +72,24 @@ const copyFiles = {
 
 export default defineConfig(({ command, mode }) => {
 
+  rmSync('dist-electron', { recursive: true, force: true });
+
+  const isServe = command === 'serve'
+  const isBuild = command === 'build'
+  const sourcemap = isServe || !!process.env.VSCODE_DEBUG;
+
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
   console.log(`${colors.blue('[vite-config]')} ${mode}`);
   console.log(`${colors.blue('[vite-config]')} [command] ${command}`);
 
+  console.log(`${colors.blue('[vite-config] [is-build]')} ${isBuild}`);
+  console.log(`${colors.blue('[vite-config] [source-map]')} ${sourcemap}`);
+
   const env = loadEnv(mode, process.cwd(), '');
 
-  // Complete
-  return {
+  // Result object
+  const result = {
 
     appType: 'spa',
     publicDir: true,
@@ -134,5 +144,8 @@ export default defineConfig(({ command, mode }) => {
     },
 
   };
+
+  // Complete
+  return result;
 
 });
