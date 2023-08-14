@@ -38,7 +38,7 @@ if (!app.requestSingleInstanceLock()) {
 let win: BrowserWindow | null = null;
 // Here, you can also use other preload
 const preload = join(__dirname, '../preload/index.js');
-const url = process.env.VITE_DEV_SERVER_URL;
+const tinyUrl = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
 
 async function createWindow() {
@@ -55,9 +55,9 @@ async function createWindow() {
     },
   });
 
-  if (url) {
+  if (tinyUrl) {
     // electron-vite-vue#298
-    win.loadURL(url);
+    win.loadURL(tinyUrl);
     // Open devTool if the app is not packaged
     win.webContents.openDevTools();
   } else {
@@ -70,8 +70,8 @@ async function createWindow() {
   });
 
   // Make all links open with the browser, not with the application
-  win.webContents.setWindowOpenHandler(({ webUrl }) => {
-    if (webUrl.startsWith('https:')) shell.openExternal(webUrl);
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith('https:')) shell.openExternal(url);
     return { action: 'deny' };
   });
 
@@ -114,7 +114,7 @@ ipcMain.handle('open-win', (_, arg) => {
   });
 
   if (process.env.VITE_DEV_SERVER_URL) {
-    childWindow.loadURL(`${url}#${arg}`);
+    childWindow.loadURL(`${tinyUrl}#${arg}`);
   } else {
     childWindow.loadFile(indexHtml, { hash: arg });
   }
