@@ -159,9 +159,12 @@ export default defineConfig(({ command, mode }) => {
     result.clearScreen = false;
 
     result.plugins.push(electron([
+
       {
+
         // Main-Process entry file of the Electron App.
         entry: 'electron/main/index.ts',
+
         onstart(options) {
           if (process.env.VSCODE_DEBUG) {
             console.log(/* For `.vscode/.debug.script.mjs` */'[startup] Electron App')
@@ -169,6 +172,7 @@ export default defineConfig(({ command, mode }) => {
             options.startup()
           }
         },
+
         vite: {
           build: {
             sourcemap,
@@ -179,14 +183,19 @@ export default defineConfig(({ command, mode }) => {
             },
           },
         },
+
       },
+
       {
+
         entry: 'electron/preload/index.ts',
+
         onstart(options) {
           // Notify the Renderer-Process to reload the page when the Preload-Scripts build is complete, 
           // instead of restarting the entire Electron App.
           options.reload()
         },
+
         vite: {
           build: {
             sourcemap: sourcemap ? 'inline' : undefined, // #332
@@ -197,7 +206,9 @@ export default defineConfig(({ command, mode }) => {
             },
           },
         },
+
       }
+
     ]));
 
     result.plugins.push(
