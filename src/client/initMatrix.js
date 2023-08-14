@@ -11,31 +11,7 @@ import { cryptoCallbacks } from './state/secretStorageKeys';
 import navigation from './state/navigation';
 import logger from './logger';
 
-if (__ENV_APP__.electron_mode) {
-  global.Olm = {
-
-    // eslint-disable-next-line object-shorthand
-    init: function () {
-
-      const args = [];
-      for (const item in arguments) {
-        args.push(arguments[item]);
-      }
-
-      if (!args[0]) args.push({});
-      args[0].locateFile = () => '/olm.wasm';
-
-      global.Olm = Olm;
-
-      // eslint-disable-next-line prefer-spread
-      Olm.init.apply(Olm, args);
-
-    }
-
-  };
-} else {
-  global.Olm = Olm;
-}
+global.Olm = Olm;
 
 class InitMatrix extends EventEmitter {
   constructor() {

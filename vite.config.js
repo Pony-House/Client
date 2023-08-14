@@ -70,10 +70,6 @@ const copyFiles = {
     },
 
     {
-      src: 'node_modules/@matrix-org/olm/olm.wasm',
-      dest: '',
-    },
-    {
       src: 'config/config.json',
       dest: '',
     }
@@ -100,6 +96,32 @@ export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const electronMode = (String(env.ELECTRON_MODE) === 'true');
 
+  const envData = {
+    mode,
+    command,
+    electron_mode: electronMode,
+    info: {
+      name: String(env.appName),
+      welcome: String(env.appWelcome)
+    }
+  };
+
+  if (electronMode && mode === 'development') {
+
+    envData.maindir = __dirname;
+
+    copyFiles.targets.push({
+      src: 'node_modules/@matrix-org/olm/olm.wasm',
+      dest: path.join(envData.maindir, './node_modules/electron/dist/resources/electron.asar/renderer/'),
+    });
+
+  } else {
+    copyFiles.targets.push({
+      src: 'node_modules/@matrix-org/olm/olm.wasm',
+      dest: '',
+    });
+  }
+
   // Result object
   const result = {
 
@@ -108,15 +130,7 @@ export default defineConfig(({ command, mode }) => {
     base: "",
 
     define: {
-      __ENV_APP__: Object.freeze({
-        mode,
-        command,
-        electron_mode: electronMode,
-        info: {
-          name: String(env.appName),
-          welcome: String(env.appWelcome)
-        }
-      }),
+      __ENV_APP__: Object.freeze(envData),
     },
 
     server: {
@@ -238,3 +252,33 @@ export default defineConfig(({ command, mode }) => {
   return result;
 
 });
+
+/*
+
+if (__ENV_APP__.electron_mode) {
+  global.Olm = {
+
+    // eslint-disable-next-line object-shorthand
+    init: function () {
+
+      const args = [];
+      for (const item in arguments) {
+        args.push(arguments[item]);
+      }
+
+      if (!args[0]) args.push({});
+      args[0].locateFile = () => '/olm.wasm';
+
+      global.Olm = Olm;
+
+      // eslint-disable-next-line prefer-spread
+      Olm.init.apply(Olm, args);
+
+    }
+
+  };
+} else {
+  global.Olm = Olm;
+}
+
+*/
