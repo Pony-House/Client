@@ -6,6 +6,17 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import inject from '@rollup/plugin-inject';
 import { rmSync } from 'node:fs';
+import path from 'node:path';
+
+import { fileURLToPath } from 'url';
+
+import electron from 'vite-plugin-electron';
+import renderer from 'vite-plugin-electron-renderer';
+import pkg from './package.json';
+
+// Insert utils
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const copyFiles = {
   targets: [
@@ -87,6 +98,7 @@ export default defineConfig(({ command, mode }) => {
   console.log(`${colors.blue('[vite-config] [source-map]')} ${sourcemap}`);
 
   const env = loadEnv(mode, process.cwd(), '');
+  const electronMode = (String(env.ELECTRON_MODE) === 'true');
 
   // Result object
   const result = {
@@ -99,6 +111,7 @@ export default defineConfig(({ command, mode }) => {
       __ENV_APP__: Object.freeze({
         mode,
         command,
+        electron_mode: electronMode,
         info: {
           name: String(env.appName),
           welcome: String(env.appWelcome)
@@ -132,7 +145,72 @@ export default defineConfig(({ command, mode }) => {
       }
     },
 
-    build: {
+  };
+
+  // Electron Mode
+  if (electronMode) {
+
+    result.resolve = {
+      alias: {
+        '@': path.join(__dirname, 'src')
+      },
+    };
+
+    result.clearScreen = false;
+
+    result.plugins.push(electron([
+      {
+        // Main-Process entry file of the Electron App.
+        entry: 'electron/main/index.ts',
+        onstart(options) {
+          if (process.env.VSCODE_DEBUG) {
+            console.log(/* For `.vscode/.debug.script.mjs` */'[startup] Electron App')
+          } else {
+            options.startup()
+          }
+        },
+        vite: {
+          build: {
+            sourcemap,
+            minify: isBuild,
+            outDir: 'dist-electron/main',
+            rollupOptions: {
+              external: Object.keys('dependencies' in pkg ? pkg.dependencies : {}),
+            },
+          },
+        },
+      },
+      {
+        entry: 'electron/preload/index.ts',
+        onstart(options) {
+          // Notify the Renderer-Process to reload the page when the Preload-Scripts build is complete, 
+          // instead of restarting the entire Electron App.
+          options.reload()
+        },
+        vite: {
+          build: {
+            sourcemap: sourcemap ? 'inline' : undefined, // #332
+            minify: isBuild,
+            outDir: 'dist-electron/preload',
+            rollupOptions: {
+              external: Object.keys('dependencies' in pkg ? pkg.dependencies : {}),
+            },
+          },
+        },
+      }
+    ]));
+
+    result.plugins.push(
+      // Use Node.js API in the Renderer-process
+      renderer()
+    );
+
+  }
+
+  // Normal
+  else {
+
+    result.build = {
       outDir: 'dist',
       sourcemap: true,
       copyPublicDir: true,
@@ -141,9 +219,9 @@ export default defineConfig(({ command, mode }) => {
           inject({ Buffer: ['buffer', 'Buffer'] })
         ]
       }
-    },
+    };
 
-  };
+  }
 
   // Complete
   return result;
