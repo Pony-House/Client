@@ -25,6 +25,12 @@ I am someone who is definitely tired of seeing censorship spread across the inte
 
 I see the Matrix project as one of the best alternatives to maintain at least try to keep communities and groups of friends on the internet. So my goal is to make this fork as good as possible so that not only can I be happy, but also all the people who are having a similar situation to me.
 
+## Electron Template Credits
+
+To facilitate the development of Electron + Vite integration I am using this template as base code to start development. This template was started on commit d548009
+
+https://github.com/electron-vite/electron-vite-react
+
 ## Getting started
 Web app is available at https://client.pony.house/ and gets updated on each new release.
 
