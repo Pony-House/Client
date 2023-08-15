@@ -1,4 +1,4 @@
-import { objType } from '@/util/tools';
+import { objType } from '../../../src/util/tools';
 import { Notification } from 'electron';
 
 // Module
@@ -25,9 +25,9 @@ export default function startNotifications(ipcMain) {
 
             const tinyE = {};
             // for (const item in event) {
-            //    if (objType(event, 'object')) {
-            //        tinyE[item] = event[item];
-            //    }
+            //     if (objType(event, 'object')) {
+            //         tinyE[item] = event[item];
+            //     }
             // }
 
             return tinyE;
