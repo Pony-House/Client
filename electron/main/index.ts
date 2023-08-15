@@ -3,6 +3,8 @@ import { release } from 'node:os';
 import { join } from 'node:path';
 import { update } from './update';
 
+import startNotifications from './notification';
+
 // The built directory structure
 //
 // ├─┬ dist-electron
@@ -42,6 +44,8 @@ const tinyUrl = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
 
 async function createWindow() {
+  startNotifications(ipcMain);
+
   win = new BrowserWindow({
     title: 'Main window',
     icon: join(process.env.VITE_PUBLIC, 'favicon.ico'),
@@ -51,6 +55,12 @@ async function createWindow() {
       nodeIntegration: true,
       contextIsolation: true,
     },
+  });
+
+  ipcMain.on('set-title', (event, title) => {
+    const webContents = event.sender;
+    const tinyWin = BrowserWindow.fromWebContents(webContents);
+    tinyWin.setTitle(title);
   });
 
   win.removeMenu();

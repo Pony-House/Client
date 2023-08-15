@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-undef */
-// import { Notification, contextBridge } from 'electron';
+import { contextBridge } from 'electron';
+import startNotifications from './notification';
 
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
   return new Promise((resolve) => {
@@ -94,6 +95,8 @@ window.onmessage = (ev) => {
   ev.data.payload === 'removeLoading' && removeLoading();
 };
 
-// contextBridge.exposeInMainWorld('NotificationPush', (options: object) => new Notification(options));
+contextBridge.exposeInMainWorld('desktopNotification', (options: object) =>
+  startNotifications(options),
+);
 
 setTimeout(removeLoading, 4999);
