@@ -11,6 +11,8 @@ ipcRenderer.on('tiny-notification-create-confirm', (_event, arg) => {
         notifications[arg.tag].validated = true;
         notifications[arg.tag].resolve({
 
+            isSupported: () => arg.isSupported,
+
             show: () => ipcRenderer.send('tiny-notification-show', arg.tag),
             close: () => ipcRenderer.send('tiny-notification-close', arg.tag),
 
