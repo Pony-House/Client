@@ -1,3 +1,4 @@
+import { objType } from '@/util/tools';
 import { Notification } from 'electron';
 
 // Module
@@ -20,36 +21,48 @@ export default function startNotifications(ipcMain) {
         notifications[tag] = new Notification(tinyData);
 
         // Events
+        const filterEvent = (event) => {
+
+            const tinyE = {};
+            // for (const item in event) {
+            //    if (objType(event, 'object')) {
+            //        tinyE[item] = event[item];
+            //    }
+            // }
+
+            return tinyE;
+
+        };
 
         // Show
         notifications[tag].on('show', (event) => {
-            e.reply('tiny-notification-show', { tag, event });
+            e.reply('tiny-notification-show', { tag, event: filterEvent(event) });
         });
 
         // Click
         notifications[tag].on('click', (event) => {
-            e.reply('tiny-notification-click', { tag, event });
+            e.reply('tiny-notification-click', { tag, event: filterEvent(event) });
         });
 
         // Close
         notifications[tag].on('close', (event) => {
-            e.reply('tiny-notification-close', { tag, event });
+            e.reply('tiny-notification-close', { tag, event: filterEvent(event) });
             if (notifications[tag]) delete notifications[tag];
         });
 
         // Reply
         notifications[tag].on('reply', (event, reply) => {
-            e.reply('tiny-notification-reply', { tag, event, reply });
+            e.reply('tiny-notification-reply', { tag, event: filterEvent(event), reply });
         });
 
         // Action
         notifications[tag].on('action', (event, index) => {
-            e.reply('tiny-notification-action', { tag, event, index });
+            e.reply('tiny-notification-action', { tag, event: filterEvent(event), index });
         });
 
         // Failed
         notifications[tag].on('failed', (event, error) => {
-            e.reply('tiny-notification-failed', { tag, event, error });
+            e.reply('tiny-notification-failed', { tag, event: filterEvent(event), error });
         });
 
         e.reply('tiny-notification-create-confirm', { tag, isSupported: Notification.isSupported() });
