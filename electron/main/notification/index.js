@@ -34,7 +34,7 @@ export default function startNotifications(ipcMain) {
         // Close
         notifications[tag].on('close', (event) => {
             event.reply('tiny-notification-close', { tag, event });
-            delete notifications[tag];
+            if (notifications[tag]) delete notifications[tag];
         });
 
         // Reply
