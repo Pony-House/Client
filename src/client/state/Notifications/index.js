@@ -356,7 +356,7 @@ class Notifications extends EventEmitter {
 
           // Play Notification
           if (settings.isNotificationSounds) {
-            noti.on('click', () => this._playNotiSound());
+            noti.on('show', () => this._playNotiSound());
           }
 
           noti.on('click', () => selectRoom(room.roomId, mEvent.getId()));

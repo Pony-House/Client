@@ -52,7 +52,7 @@ export default function startNotifications(ipcMain) {
             event.reply('tiny-notification-failed', { tag, event, error });
         });
 
-        e.reply('tiny-notification-create-confirm', { tag, isSupported: notifications[tag].isSupported() });
+        e.reply('tiny-notification-create-confirm', { tag, isSupported: Notification.isSupported() });
 
     });
 
