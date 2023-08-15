@@ -338,24 +338,37 @@ class Notifications extends EventEmitter {
           body: body.plain,
           icon,
           tag: mEvent.getId(),
+          silent: settings.isNotificationSounds,
         };
 
         // Silent Mode
+        let noti;
         if (__ENV_APP__.electron_mode) {
-          notiData.silent = true;
+          notiData.title = title;
+          noti = await window.desktopNotification(notiData);
         } else {
-          notiData.silent = settings.isNotificationSounds;
+          noti = new window.Notification(title, notiData);
         }
 
-        // Create Notification
-        const noti = new window.Notification(title, notiData);
+        if (__ENV_APP__.electron_mode) {
 
-        // Play Notification
-        if (settings.isNotificationSounds) {
-          noti.onshow = () => this._playNotiSound();
+          // Play Notification
+          if (settings.isNotificationSounds) {
+            noti.on('show', () => this._playNotiSound());
+          }
+
+          noti.on('click', () => selectRoom(room.roomId, mEvent.getId()));
+
+        } else {
+
+          // Play Notification
+          if (settings.isNotificationSounds) {
+            noti.onshow = () => this._playNotiSound();
+          }
+
+          noti.onclick = () => selectRoom(room.roomId, mEvent.getId());
+
         }
-
-        noti.onclick = () => selectRoom(room.roomId, mEvent.getId());
 
         // Set Event
         this.eventIdToPopupNoti.set(mEvent.getId(), noti);
@@ -363,6 +376,11 @@ class Notifications extends EventEmitter {
           this.roomIdToPopupNotis.get(room.roomId).push(noti);
         } else {
           this.roomIdToPopupNotis.set(room.roomId, [noti]);
+        }
+
+        // Send Notification
+        if (__ENV_APP__.electron_mode) {
+          noti.show();
         }
 
       }

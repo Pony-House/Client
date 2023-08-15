@@ -1,12 +1,24 @@
 import { objType } from '../../../src/util/tools';
-import { Notification } from 'electron';
+import { app, Notification } from 'electron';
+import fs from 'fs';
+import path from 'path';
+
+const tempFolder = path.join(app.getPath('temp'), './pony-house-matrix');
+if (!fs.existsSync(tempFolder)) {
+    fs.mkdirSync(tempFolder);
+}
+
+const tempFolderNoti = path.join(tempFolder, './notification');
+if (!fs.existsSync(tempFolderNoti)) {
+    fs.mkdirSync(tempFolderNoti);
+}
 
 // Module
 const notifications = {};
 export default function startNotifications(ipcMain) {
 
-    // Create
-    ipcMain.on('tiny-notification-create', (e, data) => {
+    // Create Start
+    const createNotification = (e, data) => {
 
         // Prepare Data
         const tinyData = {};
@@ -44,12 +56,6 @@ export default function startNotifications(ipcMain) {
             e.reply('tiny-notification-click', { tag, event: filterEvent(event) });
         });
 
-        // Close
-        notifications[tag].on('close', (event) => {
-            e.reply('tiny-notification-close', { tag, event: filterEvent(event) });
-            if (notifications[tag]) delete notifications[tag];
-        });
-
         // Reply
         notifications[tag].on('reply', (event, reply) => {
             e.reply('tiny-notification-reply', { tag, event: filterEvent(event), reply });
@@ -65,8 +71,54 @@ export default function startNotifications(ipcMain) {
             e.reply('tiny-notification-failed', { tag, event: filterEvent(event), error });
         });
 
+        // Close
+        notifications[tag].on('close', (event) => {
+            e.reply('tiny-notification-close', { tag, event: filterEvent(event) });
+            if (notifications[tag]) {
+
+                if (data.iconFromWeb && typeof data.iconFile === 'string') {
+
+                    const filePath = path.join(tempFolderNoti, `./${data.iconFile}`);
+                    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+
+                }
+
+                delete notifications[tag];
+
+            };
+        });
+
         e.reply('tiny-notification-create-confirm', { tag, isSupported: Notification.isSupported() });
 
+    };
+
+    // Create
+    ipcMain.on('tiny-notification-create', (e, data) => {
+        if (objType(data, 'object') && typeof data.tag === 'string') {
+
+            // Is Data Cache
+            if (data.icon.startsWith('data:image/')) {
+
+                const base64File = data.icon.split(';base64,');
+                const ext = base64File[0].split('data:image/')[1];
+
+                const filename = `${data.tag.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.${ext}`;
+                const tempFile = path.join(tempFolderNoti, `./${filename}`);
+
+                const binaryString = atob(base64File[1]);
+                fs.writeFileSync(tempFile, binaryString, 'binary');
+
+                data.iconFile = filename;
+                data.icon = tempFile;
+                data.iconFromWeb = true;
+
+            } else {
+                data.iconFromWeb = false;
+            }
+
+            createNotification(e, data);
+
+        }
     });
 
     // Show
