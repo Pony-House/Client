@@ -9,40 +9,69 @@ ipcRenderer.on('tiny-notification-create-confirm', (_event, arg) => {
     if (notifications[arg.tag] && !notifications[arg.tag].validated && typeof notifications[arg.tag].resolve === 'function') {
 
         notifications[arg.tag].validated = true;
+        notifications[arg.tag].resolve({
 
-        notifications[arg.tag].event.show = () => ipcRenderer.send('tiny-notification-show', arg.tag);
-        notifications[arg.tag].event.close = () => ipcRenderer.send('tiny-notification-close', arg.tag);
+            show: () => ipcRenderer.send('tiny-notification-show', arg.tag),
+            close: () => ipcRenderer.send('tiny-notification-close', arg.tag),
 
-        notifications[arg.tag].resolve(notifications[arg.tag].event);
+            addEventListener: (event, callback) => {
+                notifications[arg.tag].event.on(event, callback);
+                return true;
+            },
+
+            removeEventListener: (event, callback) => {
+                notifications[arg.tag].event.off(event, callback);
+                return true;
+            },
+
+            on: (event, callback) => {
+                notifications[arg.tag].event.on(event, callback);
+                return true;
+            },
+
+            off: (event, callback) => {
+                notifications[arg.tag].event.off(event, callback);
+                return true;
+            },
+
+            once: (event, callback) => {
+                notifications[arg.tag].event.once(event, callback);
+                return true;
+            }
+
+        });
 
     }
 });
 
 ipcRenderer.on('tiny-notification-close', (_event, arg) => {
     if (notifications[arg.tag]) {
-        if (notifications[arg.tag].event) delete notifications[arg.tag].event;
+        if (notifications[arg.tag].event) {
+            notifications[arg.tag].event.emit('close', arg.event);
+            delete notifications[arg.tag].event
+        };
         delete notifications[arg.tag];
     };
 });
 
 ipcRenderer.on('tiny-notification-show', (_event, arg) => {
-    if (notifications[arg.tag].event) notifications[arg.tag].event.emit('show', arg.event);
+    if (notifications[arg.tag]?.event) notifications[arg.tag].event.emit('show', arg.event);
 });
 
 ipcRenderer.on('tiny-notification-click', (_event, arg) => {
-    if (notifications[arg.tag].event) notifications[arg.tag].event.emit('click', arg.event);
+    if (notifications[arg.tag]?.event) notifications[arg.tag].event.emit('click', arg.event);
 });
 
 ipcRenderer.on('tiny-notification-reply', (_event, arg) => {
-    if (notifications[arg.tag].event) notifications[arg.tag].event.emit('reply', arg.event, arg.reply);
+    if (notifications[arg.tag]?.event) notifications[arg.tag].event.emit('reply', arg.event, arg.reply);
 });
 
 ipcRenderer.on('tiny-notification-action', (_event, arg) => {
-    if (notifications[arg.tag].event) notifications[arg.tag].event.emit('action', arg.event, arg.index);
+    if (notifications[arg.tag]?.event) notifications[arg.tag].event.emit('action', arg.event, arg.index);
 });
 
 ipcRenderer.on('tiny-notification-failed', (_event, arg) => {
-    if (notifications[arg.tag].event) notifications[arg.tag].event.emit('failed', arg.event, arg.error);
+    if (notifications[arg.tag]?.event) notifications[arg.tag].event.emit('failed', arg.event, arg.error);
 });
 
 // Module
