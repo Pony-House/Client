@@ -232,10 +232,10 @@
   .hc-time {
     display: block;
   }
-  .username {
+  .username:not(.disable-username) {
     display: none;
   }
-  .user-id {
+  .user-id:not(.disable-username) {
     display: inline-block;
   }
   .message__options {

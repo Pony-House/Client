@@ -76,8 +76,8 @@ const MessageHeader = React.memo(({
 
   return (
     <span className='username-base emoji-size-fix' style={{ color: colorMXID(userId) }}>
-      <span className='username'>{tinyUsername}</span>
-      <span className='user-id'>{!appAppearance.isUNhoverDisabled ? twemojifyReact(userId) : tinyUsername}</span>
+      <span className={`username${!appAppearance.isUNhoverDisabled ? '' : ' disable-username'}`}>{tinyUsername}</span>
+      <span className={`user-id${!appAppearance.isUNhoverDisabled ? '' : ' disable-username'}`}>{!appAppearance.isUNhoverDisabled ? twemojifyReact(userId) : tinyUsername}</span>
     </span>
   );
 
