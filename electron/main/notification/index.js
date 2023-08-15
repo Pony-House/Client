@@ -73,19 +73,18 @@ export default function startNotifications(ipcMain) {
 
         // Close
         notifications[tag].on('close', (event) => {
+
             e.reply('tiny-notification-close', { tag, event: filterEvent(event) });
-            if (notifications[tag]) {
 
-                if (data.iconFromWeb && typeof data.iconFile === 'string') {
+            if (data.iconFromWeb && typeof data.iconFile === 'string') {
 
-                    const filePath = path.join(tempFolderNoti, `./${data.iconFile}`);
-                    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+                const filePath = path.join(tempFolderNoti, `./${data.iconFile}`);
+                if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
 
-                }
+            }
 
-                delete notifications[tag];
+            if (notifications[tag]) delete notifications[tag];
 
-            };
         });
 
         e.reply('tiny-notification-create-confirm', { tag, isSupported: Notification.isSupported() });

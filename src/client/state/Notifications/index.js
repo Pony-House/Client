@@ -335,6 +335,7 @@ class Notifications extends EventEmitter {
 
         // Prepare Data
         const notiData = {
+          title,
           body: body.plain,
           icon,
           tag: mEvent.getId(),
@@ -344,7 +345,6 @@ class Notifications extends EventEmitter {
         // Silent Mode
         let noti;
         if (__ENV_APP__.electron_mode) {
-          notiData.title = title;
           noti = await window.desktopNotification(notiData);
         } else {
           noti = new window.Notification(title, notiData);
