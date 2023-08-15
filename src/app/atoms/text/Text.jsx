@@ -16,7 +16,7 @@ function Text({
   if (variant === 'h1') return <h1 className={textClass} style={style}>{children}</h1>;
   if (variant === 'h2') return <h2 className={textClass} style={style}>{children}</h2>;
   if (variant === 's1') return <h4 className={textClass} style={style}>{children}</h4>;
-  return <p className={textClass} style={style}>{children}</p>;
+  return (children && <p className={textClass} style={style}>{children}</p>);
 }
 
 Text.defaultProps = {

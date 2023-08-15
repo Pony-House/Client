@@ -68,12 +68,20 @@ const MessageAvatar = React.memo(({
 // Message Header
 const MessageHeader = React.memo(({
   userId, username,
-}) => (
-  <span className='username-base emoji-size-fix' style={{ color: colorMXID(userId) }}>
-    <span className='username'>{twemojifyReact(username)}</span>
-    <span className='user-id'>{twemojifyReact(userId)}</span>
-  </span>
-));
+}) => {
+
+  const mx = initMatrix.matrixClient;
+  const appAppearance = mx.getAccountData('pony.house.appearance')?.getContent() ?? {};
+  const tinyUsername = twemojifyReact(username);
+
+  return (
+    <span className='username-base emoji-size-fix' style={{ color: colorMXID(userId) }}>
+      <span className='username'>{tinyUsername}</span>
+      <span className='user-id'>{!appAppearance.isUNhoverDisabled ? twemojifyReact(userId) : tinyUsername}</span>
+    </span>
+  );
+
+});
 
 MessageHeader.propTypes = {
   userId: PropTypes.string.isRequired,
