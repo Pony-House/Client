@@ -413,25 +413,33 @@ function useWindowToggle() {
 function SpaceManage() {
   const mx = initMatrix.matrixClient;
   const [roomId, requestClose] = useWindowToggle();
-  const room = mx.getRoom(roomId);
 
-  return (
-    <PopupWindow
-      isOpen={roomId !== null}
-      className="modal-lg modal-dialog-scrollable noselect"
-      title={<>
-        {roomId && twemojifyReact(room.name)}
-        <span style={{ color: 'var(--tc-surface-low)' }}> — manage rooms</span>
-      </>}
-      onRequestClose={requestClose}
-    >
-      {
-        roomId
-          ? <SpaceManageContent roomId={roomId} requestClose={requestClose} />
-          : <div />
-      }
-    </PopupWindow>
-  );
+  if (mx) {
+
+    const room = mx.getRoom(roomId);
+
+    return (
+      <PopupWindow
+        isOpen={roomId !== null}
+        className="modal-lg modal-dialog-scrollable noselect"
+        title={<>
+          {roomId && twemojifyReact(room.name)}
+          <span style={{ color: 'var(--tc-surface-low)' }}> — manage rooms</span>
+        </>}
+        onRequestClose={requestClose}
+      >
+        {
+          roomId
+            ? <SpaceManageContent roomId={roomId} requestClose={requestClose} />
+            : <div />
+        }
+      </PopupWindow>
+    );
+
+  }
+
+  return null;
+
 }
 
 export default SpaceManage;

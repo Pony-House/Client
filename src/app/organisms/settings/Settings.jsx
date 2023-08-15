@@ -139,12 +139,14 @@ function AppearanceSection() {
   const [, updateState] = useState({});
   const [isAnimateAvatarsHidden, setAnimateAvatarsHidden] = useState(false);
   const [isEmbedDisabled, setEmbedDisabled] = useState(false);
+  const [isUNhoverDisabled, setUNhoverDisabled] = useState(false);
 
   useEffect(() => {
 
     const content = initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
     setAnimateAvatarsHidden((content.isAnimateAvatarsHidden === true));
     setEmbedDisabled((content.isEmbedDisabled === true));
+    setUNhoverDisabled((content.isUNhoverDisabled === true));
 
   }, []);
 
@@ -255,6 +257,18 @@ function AppearanceSection() {
               />
             )}
             content={<div className="very-small text-gray">All messages will no longer load embed.</div>}
+          />
+
+          <SettingTile
+            title="Disable username hover"
+            options={(
+              <Toggle
+                className='d-inline-flex'
+                isActive={isUNhoverDisabled}
+                onToggle={toggleAction('pony.house.appearance', 'isUNhoverDisabled', setUNhoverDisabled)}
+              />
+            )}
+            content={<div className="very-small text-gray">When you hover over a user nickname, the username will no longer be displayed. You will need to open the user&apos;s profile to see their identity.</div>}
           />
 
         </ul>

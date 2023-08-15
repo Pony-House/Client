@@ -98,7 +98,7 @@ export default defineConfig(({ command, mode }) => {
   console.log(`${colors.blue('[vite-config] [source-map]')} ${sourcemap}`);
 
   const env = loadEnv(mode, process.cwd(), '');
-  const electronMode = (String(env.ELECTRON_MODE) === 'true');
+  const electronMode = (String(env.ELECTRON_MODE) === 'true' || process?.versions.electron);
   console.log(`${colors.blue('[vite-config] [electron]')} ${electronMode}`);
 
   const envData = {

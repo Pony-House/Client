@@ -213,10 +213,12 @@ function InviteUser({
   }, [isOpen, searchTerm]);
 
   useEffect(() => {
-    initMatrix.roomList.on(cons.events.roomList.ROOM_CREATED, onDMCreated);
-    return () => {
-      initMatrix.roomList.removeListener(cons.events.roomList.ROOM_CREATED, onDMCreated);
-    };
+    if (initMatrix) {
+      initMatrix.roomList.on(cons.events.roomList.ROOM_CREATED, onDMCreated);
+      return () => {
+        initMatrix.roomList.removeListener(cons.events.roomList.ROOM_CREATED, onDMCreated);
+      };
+    }
   }, [isOpen, procUsers, createdDM, roomIdToUserId]);
 
   return (

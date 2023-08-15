@@ -93,6 +93,7 @@
     "react-google-recaptcha": "3.1.0",
     "sablejs": "1.1.0",
     "sanitize-html": "2.11.0",
+    "socket.io-client": "4.7.2",
     "tippy.js": "6.3.7",
     "twemoji": "14.0.2",
     "viem": "1.4.2",
