@@ -380,6 +380,11 @@ class Notifications extends EventEmitter {
           this.roomIdToPopupNotis.set(room.roomId, [noti]);
         }
 
+        // Send Notification
+        if (__ENV_APP__.electron_mode) {
+          noti.show();
+        }
+
       }
 
     }

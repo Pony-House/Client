@@ -23,33 +23,33 @@ export default function startNotifications(ipcMain) {
 
         // Show
         notifications[tag].on('show', (event) => {
-            event.reply('tiny-notification-show', { tag, event });
+            e.reply('tiny-notification-show', { tag, event });
         });
 
         // Click
         notifications[tag].on('click', (event) => {
-            event.reply('tiny-notification-click', { tag, event });
+            e.reply('tiny-notification-click', { tag, event });
         });
 
         // Close
         notifications[tag].on('close', (event) => {
-            event.reply('tiny-notification-close', { tag, event });
+            e.reply('tiny-notification-close', { tag, event });
             if (notifications[tag]) delete notifications[tag];
         });
 
         // Reply
         notifications[tag].on('reply', (event, reply) => {
-            event.reply('tiny-notification-reply', { tag, event, reply });
+            e.reply('tiny-notification-reply', { tag, event, reply });
         });
 
         // Action
         notifications[tag].on('action', (event, index) => {
-            event.reply('tiny-notification-action', { tag, event, index });
+            e.reply('tiny-notification-action', { tag, event, index });
         });
 
         // Failed
         notifications[tag].on('failed', (event, error) => {
-            event.reply('tiny-notification-failed', { tag, event, error });
+            e.reply('tiny-notification-failed', { tag, event, error });
         });
 
         e.reply('tiny-notification-create-confirm', { tag, isSupported: Notification.isSupported() });
