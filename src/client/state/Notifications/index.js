@@ -1,5 +1,6 @@
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
+// import { Notification as ElectronNoti } from 'electron';
 
 import EventEmitter from 'events';
 import renderAvatar from '../../../app/atoms/avatar/render';
@@ -253,13 +254,16 @@ class Notifications extends EventEmitter {
 
   async _displayPopupNoti(mEvent, room) {
 
+    // Data Prepare
     const body = $('body');
     const userStatus = getAccountStatus('status');
     if (!settings.showNotifications && !settings.isNotificationSounds) return;
 
+    // Actions
     const actions = this.matrixClient.getPushActionsForEvent(mEvent);
     if (!actions?.notify) return;
 
+    // Check Window
     if (
       !body.hasClass('modal-open') &&
       navigation.selectedRoomId === room.roomId &&
@@ -269,10 +273,12 @@ class Notifications extends EventEmitter {
 
     if (userStatus === 'dnd' || userStatus === '🔴') return;
 
+    // Encrypted
     if (mEvent.isEncrypted()) {
       await mEvent.attemptDecryption(this.matrixClient.crypto);
     }
 
+    // Show Notification
     if (settings.showNotifications) {
       let title;
       if (!mEvent.sender || room.name === mEvent.sender.name) {
@@ -310,6 +316,7 @@ class Notifications extends EventEmitter {
         body = plain(content.body, state);
       }
 
+      // Android Mode
       if (Capacitor.isNativePlatform()) {
 
         /* 
@@ -323,20 +330,53 @@ class Notifications extends EventEmitter {
         ]});
         */
 
-      } else {
+      }
 
-        const noti = new window.Notification(title, {
+      // Browser and Desktop
+      else {
+
+        // Prepare Data
+        const notiData = {
           body: body.plain,
           icon,
           tag: mEvent.getId(),
-          silent: settings.isNotificationSounds,
-        });
+        };
 
-        if (settings.isNotificationSounds) {
-          noti.onshow = () => this._playNotiSound();
+        // Silent Mode
+        let noti;
+        if (__ENV_APP__.electron_mode) {
+          notiData.silent = true;
+          // notiData.title = title;
+          // noti = new ElectronNoti(notiData);
+          noti = new window.Notification(title, notiData);
+        } else {
+          notiData.silent = settings.isNotificationSounds;
+          noti = new window.Notification(title, notiData);
         }
-        noti.onclick = () => selectRoom(room.roomId, mEvent.getId());
 
+        if (__ENV_APP__.electron_mode) {
+
+          // Play Notification
+          if (settings.isNotificationSounds) {
+            // noti.on('click', () => this._playNotiSound());
+            noti.onshow = () => this._playNotiSound();
+          }
+
+          // noti.on('click', () => selectRoom(room.roomId, mEvent.getId()));
+          noti.onclick = () => selectRoom(room.roomId, mEvent.getId());
+
+        } else {
+
+          // Play Notification
+          if (settings.isNotificationSounds) {
+            noti.onshow = () => this._playNotiSound();
+          }
+
+          noti.onclick = () => selectRoom(room.roomId, mEvent.getId());
+
+        }
+
+        // Set Event
         this.eventIdToPopupNoti.set(mEvent.getId(), noti);
         if (this.roomIdToPopupNotis.has(room.roomId)) {
           this.roomIdToPopupNotis.get(room.roomId).push(noti);
@@ -346,7 +386,10 @@ class Notifications extends EventEmitter {
 
       }
 
-    } else {
+    }
+
+    // Notification Sound Play
+    else {
       this._playNotiSound();
     }
 
