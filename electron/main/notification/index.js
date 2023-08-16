@@ -2,9 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import notifier from 'node-notifier';
 import { app, Notification } from 'electron';
+import { fileURLToPath } from 'url';
 
 import deleteAllFilesInDir from '../../fs/deleteAllFilesInDir';
 import { objType } from '../../../src/util/tools';
+
+// Insert utils
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Validate Folders
 const tempFolder = path.join(app.getPath('temp'), './pony-house-matrix');
@@ -67,7 +72,7 @@ const engines = {
             title: data?.title,
             subtitle: data?.subtitle,
             message: data?.body,
-            sound: data.silent ? false : data?.sound, // Case Sensitive string for location of sound file, or use one of macOS' native sounds (see below)
+            sound: data?.sound ? data.sound : path.join(__dirname, './sounds/notification.ogg'), // Case Sensitive string for location of sound file, or use one of macOS' native sounds (see below)
             icon: data?.icon, // Absolute Path to Triggering Icon
             contentImage: data?.image, // Absolute Path to Attached Image (Content Image)
             open: data?.url, // URL to open on Click

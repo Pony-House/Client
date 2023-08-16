@@ -5,7 +5,7 @@ import { wasm } from '@rollup/plugin-wasm';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import inject from '@rollup/plugin-inject';
-import { rmSync } from 'node:fs';
+import fs from 'node:fs';
 import path from 'node:path';
 
 import { fileURLToPath } from 'url';
@@ -16,6 +16,15 @@ import pkg from './package.json';
 // Insert utils
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Validate Sounds Folders
+const soundsFolder = path.join(__dirname, './electron/main/notification/sounds');
+if (!fs.existsSync(soundsFolder)) {
+  fs.mkdirSync(soundsFolder);
+}
+
+fs.copyFileSync(path.join(__dirname, './public/sound/notification.ogg'), path.join(soundsFolder, './notification.ogg'));
+fs.copyFileSync(path.join(__dirname, './public/sound/invite.ogg'), path.join(soundsFolder, './invite.ogg'));
 
 const copyFiles = {
   targets: [
@@ -83,7 +92,7 @@ const copyFiles = {
 
 export default defineConfig(({ command, mode }) => {
 
-  rmSync('dist-electron', { recursive: true, force: true });
+  fs.rmSync('dist-electron', { recursive: true, force: true });
 
   const isServe = command === 'serve'
   const isBuild = command === 'build'

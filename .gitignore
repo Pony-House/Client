@@ -3,6 +3,7 @@ dist
 node_modules
 devAssets
 public/img/twemoji
+electron/main/notification/sounds
 repositories
 
 mods/test
