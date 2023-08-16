@@ -41,6 +41,8 @@ To set default Homeserver on login and register page, place a customized [`confi
 ## Custom App Style
 Would you like to customize your login page to your website? Then you can check out some values available in the `config/custom-css.scss` file.
 
+Replace this value to change the appID: `pony-house-matrix`
+
 If you would like to edit the homeservers list, you can edit the `config/config.json` file.
 
 If you want to put a custom name or welcome message for the app, edit the .env file. (This will only affect the application within react.)

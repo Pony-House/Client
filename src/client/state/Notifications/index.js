@@ -351,18 +351,20 @@ class Notifications extends EventEmitter {
           noti = new window.Notification(title, notiData);
         }
 
+        // Play Notification
         if (__ENV_APP__.electron_mode) {
 
-          // Play Notification
           if (settings.isNotificationSounds) {
             noti.on('show', () => this._playNotiSound());
           }
 
           noti.on('click', () => selectRoom(room.roomId, mEvent.getId()));
 
+          // TEST!
+          noti.on('all', console.log);
+
         } else {
 
-          // Play Notification
           if (settings.isNotificationSounds) {
             noti.onshow = () => this._playNotiSound();
           }

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import notifier from 'node-notifier';
 import { app, Notification } from 'electron';
 
 import deleteAllFilesInDir from '../../fs/deleteAllFilesInDir';
@@ -18,6 +19,7 @@ if (!fs.existsSync(tempFolderNoti)) {
 
 deleteAllFilesInDir(tempFolderNoti);
 const notifications = {};
+let win;
 
 // Events
 const filterEvent = (event) => {
@@ -37,35 +39,76 @@ const filterEvent = (event) => {
 const engines = {
 
     // Electron
-    default: (e, tag, tinyData, closeNoti) => {
+    default: (tag, data, closeNoti) => {
 
-        notifications[tag] = new Notification(tinyData);
+        notifications[tag] = new Notification(data);
 
-        notifications[tag].on('show', (event) => e.reply('tiny-notification-show', { tag, event: filterEvent(event) }));
-        notifications[tag].on('click', (event) => e.reply('tiny-notification-click', { tag, event: filterEvent(event) }));
-        notifications[tag].on('reply', (event, reply) => e.reply('tiny-notification-reply', { tag, event: filterEvent(event), reply }));
-        notifications[tag].on('action', (event, index) => e.reply('tiny-notification-action', { tag, event: filterEvent(event), index }));
-        notifications[tag].on('failed', (event, error) => e.reply('tiny-notification-failed', { tag, event: filterEvent(event), error }));
+        notifications[tag].on('show', (event) => win.send('tiny-notification-show', { tag, event: filterEvent(event) }));
+        notifications[tag].on('click', (event) => win.send('tiny-notification-click', { tag, event: filterEvent(event) }));
+        notifications[tag].on('reply', (event, reply) => win.send('tiny-notification-reply', { tag, event: filterEvent(event), reply }));
+        notifications[tag].on('action', (event, index) => win.send('tiny-notification-action', { tag, event: filterEvent(event), index }));
+        notifications[tag].on('failed', (event, error) => win.send('tiny-notification-failed', { tag, event: filterEvent(event), error }));
 
         notifications[tag].on('close', closeNoti);
 
-    }
+    },
+
+    // Node Notifier
+    notifier: (tag, data, closeNoti, timeout, closeTimeout) => {
+
+        // Clear default timeout
+        clearTimeout(closeTimeout);
+
+        notifier.notify({
+
+            appID: 'pony-house-matrix',
+            id: tag,
+
+            title: data?.title,
+            subtitle: data?.subtitle,
+            message: data?.body,
+            sound: data?.sound, // Case Sensitive string for location of sound file, or use one of macOS' native sounds (see below)
+            icon: data?.icon, // Absolute Path to Triggering Icon
+            contentImage: data?.image, // Absolute Path to Attached Image (Content Image)
+            open: data?.url, // URL to open on Click
+            wait: data?.wait, // Wait for User Action against Notification or times out. Same as timeout = 5 seconds
+
+            timeout: timeout / 1000, // Takes precedence over wait if both are defined.
+            time: timeout,
+
+            closeLabel: data?.closeButtonText, // String. Label for cancel button
+            actions: data?.actions, // String | Array<String>. Action label or list of labels in case of dropdown
+            dropdownLabel: data?.dropdownLabel, // String. Label to be used if multiple actions
+            reply: data?.reply // Boolean. If notification should take input. Value passed as third argument in callback and event emitter.
+
+        }, (err, response, metadata) => {
+
+            if (err) {
+                win.send('tiny-notification-close', { tag, err, response, metadata })
+                return;
+            }
+
+            win.send('tiny-notification-all', { tag, response, metadata })
+
+        });
+
+    },
 
 };
 
 // Create Start
-const createNotification = (e, data) => {
+const createNotification = (data) => {
 
     // Prepare Data
     const tinyData = {};
     const tag = data.tag;
+    let timeout = data.timeout;
     for (const item in data) {
         if (item !== 'tag' && item !== 'timeout') {
             tinyData[item] = data[item];
         }
     }
 
-    let timeout = data.timeout;
     if (typeof timeout !== 'number' || Number.isNaN(timeout) || !Number.isFinite(timeout)) {
         timeout = 15000;
     } else if (timeout < 0) {
@@ -78,7 +121,7 @@ const createNotification = (e, data) => {
             if (notifications[tag]) {
 
                 delete notifications[tag];
-                e.reply(`tiny-notification-close${forceClose ? '-timeout' : ''}`, { tag, event: filterEvent(event) });
+                win.send(`tiny-notification-close${forceClose ? '-timeout' : ''}`, { tag, event: filterEvent(event) });
 
                 if (data.iconFromWeb && typeof data.iconFile === 'string') {
 
@@ -96,20 +139,24 @@ const createNotification = (e, data) => {
     // Select Engine
     const closeTimeout = setTimeout(() => closeNoti({}, true), timeout);
     if (typeof data.engine !== 'string' || !engines[data.engine]) {
-        engines.default(e, tag, tinyData, closeNoti);
+        delete data.engine;
+        engines.default(tag, tinyData, closeNoti);
     } else {
-        engines[data.engine](e, tag, tinyData, closeNoti, timeout, closeTimeout);
+        const engine = data.engine;
+        delete data.engine;
+        engines[engine](tag, tinyData, closeNoti, timeout, closeTimeout);
     }
 
     // Send Confirm
-    e.reply('tiny-notification-create-confirm', { tag, isSupported: Notification.isSupported() });
+    win.send('tiny-notification-create-confirm', { tag, isSupported: Notification.isSupported() });
 
 };
 
 // Module
-export default function startNotifications(ipcMain) {
+export default function startNotifications(ipcMain, newWin) {
 
     // Create
+    win = newWin;
     ipcMain.on('tiny-notification-create', (e, data) => {
         if (objType(data, 'object') && typeof data.tag === 'string') {
 
@@ -133,7 +180,7 @@ export default function startNotifications(ipcMain) {
                 data.iconFromWeb = false;
             }
 
-            createNotification(e, data);
+            createNotification(data);
 
         }
     });

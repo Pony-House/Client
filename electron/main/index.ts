@@ -44,7 +44,6 @@ const tinyUrl = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
 
 async function createWindow() {
-  startNotifications(ipcMain);
 
   win = new BrowserWindow({
     title: 'Main window',
@@ -63,6 +62,7 @@ async function createWindow() {
     tinyWin.setTitle(title);
   });
 
+  startNotifications(ipcMain, win);
   win.removeMenu();
 
   if (tinyUrl) {

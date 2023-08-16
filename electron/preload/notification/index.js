@@ -56,6 +56,10 @@ ipcRenderer.on('tiny-notification-close', (_event, arg) => {
     };
 });
 
+ipcRenderer.on('tiny-notification-all', (_event, arg) => {
+    if (notifications[arg.tag]?.event) notifications[arg.tag].event.emit('all', arg);
+});
+
 ipcRenderer.on('tiny-notification-show', (_event, arg) => {
     if (notifications[arg.tag]?.event) notifications[arg.tag].event.emit('show', arg.event);
 });
