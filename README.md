@@ -73,10 +73,23 @@ between multiple Node.js versions based on the needs of different projects you'r
 Execute the following commands to start a development server (or a Ionic environment):
 ```sh
 yarn # Installs all dependencies
-yarn start-dev # Serve a development version
+yarn start # Serve a development version
 ```
 
 To build the web app:
 ```sh
 yarn build # Compiles the app into the dist/ directory
+```
+
+### Electron (Desktop)
+> While you're using the app's dev mode, it's normal for the app to show that it's disconnected for a few seconds before fully loading the page. Notifications may not mute OS sound in application dev mode. The same thing can happen for notification click events to fail only in dev mode.
+
+Execute the following commands to start a development server (or a Ionic environment):
+```sh
+yarn electron:start # Serve a development version
+```
+
+To build the desktop app:
+```sh
+yarn electron:build # Compiles the app into the release/ directory
 ```
