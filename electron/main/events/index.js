@@ -11,7 +11,7 @@ export default function startEvents(ipcMain, newWin) {
     ipcMain.on('tiny-focus-window', (event) => {
         const webContents = event.sender;
         const tinyWin = BrowserWindow.fromWebContents(webContents);
-        if (tinyWin) setTimeout(() => { tinyWin.focus(); }, 200);
+        if (tinyWin) setTimeout(() => { tinyWin.show(); tinyWin.focus(); }, 200);
     });
 
 };
