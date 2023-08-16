@@ -40,6 +40,14 @@ const filterEvent = (event) => {
 
 };
 
+notifier.on('click', (notifierObject, options) => {
+    win.send('tiny-notification-all', { type: 'click', notifierObject, options });
+});
+
+notifier.on('timeout', (notifierObject, options) => {
+    win.send('tiny-notification-all', { type: 'timeout', notifierObject, options });
+});
+
 // Engines
 const engines = {
 
@@ -48,12 +56,31 @@ const engines = {
 
         notifications[tag] = new Notification(data);
 
-        notifications[tag].on('show', (event) => win.send('tiny-notification-show', { tag, event: filterEvent(event) }));
-        notifications[tag].on('click', (event) => win.send('tiny-notification-click', { tag, event: filterEvent(event) }));
-        notifications[tag].on('reply', (event, reply) => win.send('tiny-notification-reply', { tag, event: filterEvent(event), reply }));
-        notifications[tag].on('action', (event, index) => win.send('tiny-notification-action', { tag, event: filterEvent(event), index }));
-        notifications[tag].on('failed', (event, error) => win.send('tiny-notification-failed', { tag, event: filterEvent(event), error }));
+        notifications[tag].on('show', (event) => {
+            const newEvent = filterEvent(event);
+            win.send('tiny-notification-show', { tag, event: newEvent });
+            win.send('tiny-notification-all', { type: 'show', tag, event: newEvent });
+        });
 
+        notifications[tag].on('click', (event) => {
+            const newEvent = filterEvent(event);
+            win.send('tiny-notification-click', { tag, event: newEvent });
+            win.send('tiny-notification-all', { type: 'click', tag, event: newEvent });
+        });
+
+        notifications[tag].on('reply', (event, reply) => {
+            const newEvent = filterEvent(event);
+            win.send('tiny-notification-reply', { tag, event: newEvent, reply });
+            win.send('tiny-notification-all', { type: 'reply', tag, event: newEvent, reply });
+        });
+
+        notifications[tag].on('action', (event, index) => {
+            const newEvent = filterEvent(event);
+            win.send('tiny-notification-action', { tag, event: newEvent, index });
+            win.send('tiny-notification-all', { type: 'action', tag, event: newEvent, index });
+        });
+
+        notifications[tag].on('failed', (event, error) => win.send('tiny-notification-failed', { tag, event: filterEvent(event), error: { message: error.message, fileName: error.fileName, lineNumber: error.lineNumber } }));
         notifications[tag].on('close', closeNoti);
 
     },
@@ -89,11 +116,10 @@ const engines = {
         }, (err, response, metadata) => {
 
             if (err) {
-                win.send('tiny-notification-close', { tag, err, response, metadata })
-                return;
+                win.send('tiny-notification-failed', { tag, error: { message: err } });
             }
 
-            win.send('tiny-notification-all', { tag, response, metadata })
+            win.send('tiny-notification-all', { type: 'callback', tag, response, metadata });
 
         });
 

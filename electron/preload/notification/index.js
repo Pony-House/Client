@@ -69,15 +69,15 @@ ipcRenderer.on('tiny-notification-click', (_event, arg) => {
 });
 
 ipcRenderer.on('tiny-notification-reply', (_event, arg) => {
-    if (notifications[arg.tag]?.event) notifications[arg.tag].event.emit('reply', arg.event, arg.reply);
+    if (notifications[arg.tag]?.event) notifications[arg.tag].event.emit('reply', arg.reply);
 });
 
 ipcRenderer.on('tiny-notification-action', (_event, arg) => {
-    if (notifications[arg.tag]?.event) notifications[arg.tag].event.emit('action', arg.event, arg.index);
+    if (notifications[arg.tag]?.event) notifications[arg.tag].event.emit('action', arg.index);
 });
 
 ipcRenderer.on('tiny-notification-failed', (_event, arg) => {
-    if (notifications[arg.tag]?.event) notifications[arg.tag].event.emit('failed', arg.event, arg.error);
+    if (notifications[arg.tag]?.event) notifications[arg.tag].event.emit('failed', new Error(arg.error?.message ? arg.error.message : arg.error, arg.error?.fileName, arg.error?.lineNumber));
 });
 
 // Module
