@@ -64,31 +64,12 @@ export default function startNotifications(ipcMain) {
         };
 
         // Show
-        notifications[tag].on('show', (event) => {
-            e.reply('tiny-notification-show', { tag, event: filterEvent(event) });
-        });
+        notifications[tag].on('show', (event) => e.reply('tiny-notification-show', { tag, event: filterEvent(event) }));
+        notifications[tag].on('click', (event) => e.reply('tiny-notification-click', { tag, event: filterEvent(event) }));
+        notifications[tag].on('reply', (event, reply) => e.reply('tiny-notification-reply', { tag, event: filterEvent(event), reply }));
+        notifications[tag].on('action', (event, index) => e.reply('tiny-notification-action', { tag, event: filterEvent(event), index }));
+        notifications[tag].on('failed', (event, error) => e.reply('tiny-notification-failed', { tag, event: filterEvent(event), error }));
 
-        // Click
-        notifications[tag].on('click', (event) => {
-            e.reply('tiny-notification-click', { tag, event: filterEvent(event) });
-        });
-
-        // Reply
-        notifications[tag].on('reply', (event, reply) => {
-            e.reply('tiny-notification-reply', { tag, event: filterEvent(event), reply });
-        });
-
-        // Action
-        notifications[tag].on('action', (event, index) => {
-            e.reply('tiny-notification-action', { tag, event: filterEvent(event), index });
-        });
-
-        // Failed
-        notifications[tag].on('failed', (event, error) => {
-            e.reply('tiny-notification-failed', { tag, event: filterEvent(event), error });
-        });
-
-        // Close
         notifications[tag].on('close', closeNoti);
 
         e.reply('tiny-notification-create-confirm', { tag, isSupported: Notification.isSupported() });
