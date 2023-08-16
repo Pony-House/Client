@@ -33,8 +33,10 @@ const filterEvent = (event) => {
 
 };
 
+// Engines
 const engines = {
 
+    // Electron
     default: (e, tag, tinyData, closeNoti) => {
 
         notifications[tag] = new Notification(tinyData);
@@ -91,13 +93,15 @@ const createNotification = (e, data) => {
         }
     };
 
-    // Electron Native
+    // Select Engine
+    const closeTimeout = setTimeout(() => closeNoti({}, true), timeout);
     if (typeof data.engine !== 'string' || !engines[data.engine]) {
         engines.default(e, tag, tinyData, closeNoti);
+    } else {
+        engines[data.engine](e, tag, tinyData, closeNoti, timeout, closeTimeout);
     }
 
-    // Send Close
-    setTimeout(() => closeNoti({}, true), timeout);
+    // Send Confirm
     e.reply('tiny-notification-create-confirm', { tag, isSupported: Notification.isSupported() });
 
 };
