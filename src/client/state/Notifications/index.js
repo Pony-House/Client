@@ -344,7 +344,7 @@ class Notifications extends EventEmitter {
         // Silent Mode
         let noti;
         if (__ENV_APP__.electron_mode) {
-          notiData.engine = 'notifier';
+          // notiData.engine = 'notifier';
           notiData.silent = true;
           noti = await window.desktopNotification(notiData);
         } else {
@@ -360,9 +360,6 @@ class Notifications extends EventEmitter {
           }
 
           noti.on('click', () => selectRoom(room.roomId, mEvent.getId()));
-
-          // TEST!
-          noti.on('all', console.log);
 
         } else {
 
