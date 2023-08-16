@@ -2,8 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import { app, Notification } from 'electron';
 
+import deleteAllFilesInDir from '../../fs/deleteAllFilesInDir';
 import { objType } from '../../../src/util/tools';
 
+// Validate Folders
 const tempFolder = path.join(app.getPath('temp'), './pony-house-matrix');
 if (!fs.existsSync(tempFolder)) {
     fs.mkdirSync(tempFolder);
@@ -13,6 +15,8 @@ const tempFolderNoti = path.join(tempFolder, './notification');
 if (!fs.existsSync(tempFolderNoti)) {
     fs.mkdirSync(tempFolderNoti);
 }
+
+deleteAllFilesInDir(tempFolderNoti);
 
 // Module
 const notifications = {};
