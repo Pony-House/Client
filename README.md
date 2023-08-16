@@ -43,6 +43,8 @@ Would you like to customize your login page to your website? Then you can check 
 
 Replace this value to change the appID: `pony-house-matrix`
 
+App title in `electron/main/index.ts`.
+
 If you would like to edit the homeservers list, you can edit the `config/config.json` file.
 
 If you want to put a custom name or welcome message for the app, edit the .env file. (This will only affect the application within react.)

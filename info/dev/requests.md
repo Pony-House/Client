@@ -27,8 +27,6 @@ Made by Me
 
     Criar sistema de titulos (Algo parecido com cargos)
 
-    Criar o app desktop e mobile
-
     Criar leitor de mensagens fixadas
 
     Criar canais de galeria

@@ -1,6 +1,6 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, Tray, Menu } from 'electron';
 import { release } from 'node:os';
-import { join } from 'node:path';
+import path from 'node:path';
 import { update } from './update';
 
 import startNotifications from './notification';
@@ -17,10 +17,10 @@ import startResizeEvents from './events/resize';
 // ├─┬ dist
 // │ └── index.html    > Electron-Renderer
 //
-process.env.DIST_ELECTRON = join(__dirname, '../');
-process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');
+process.env.DIST_ELECTRON = path.join(__dirname, '../');
+process.env.DIST = path.join(process.env.DIST_ELECTRON, '../dist');
 process.env.VITE_PUBLIC = process.env.VITE_DEV_SERVER_URL
-  ? join(process.env.DIST_ELECTRON, '../public')
+  ? path.join(process.env.DIST_ELECTRON, '../public')
   : process.env.DIST;
 
 // Disable GPU Acceleration for Windows 7
@@ -34,16 +34,23 @@ if (process.platform === 'win32') app.setAppUserModelId(app.getName());
 // Read more on https://www.electronjs.org/docs/latest/tutorial/security
 // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
+const title = 'Pony House';
+let appShow: boolean;
+let isQuiting: boolean;
+let appStarted: boolean;
+
 let win: BrowserWindow | null = null;
 // Here, you can also use other preload
-const preload = join(__dirname, '../preload/index.js');
+const preload = path.join(__dirname, '../preload/index.js');
 const tinyUrl = process.env.VITE_DEV_SERVER_URL;
-const indexHtml = join(process.env.DIST, 'index.html');
+const indexHtml = path.join(process.env.DIST, 'index.html');
 
 async function createWindow() {
+  const icon = path.join(process.env.VITE_PUBLIC, 'favicon.ico');
   win = new BrowserWindow({
-    title: 'Main window',
-    icon: join(process.env.VITE_PUBLIC, 'favicon.ico'),
+    title,
+    icon,
+    show: false,
     webPreferences: {
       preload,
       // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
@@ -67,6 +74,13 @@ async function createWindow() {
     win.loadFile(indexHtml);
   }
 
+  // Show Page
+  win.once('ready-to-show', () => {
+    if (win) win.show();
+    appStarted = true;
+    appShow = true;
+  });
+
   // Make all links open with the browser, not with the application
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https:')) shell.openExternal(url);
@@ -80,6 +94,17 @@ async function createWindow() {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
+
+  // Prevent Close
+  win.on('close', (event) => {
+    if (!isQuiting) {
+      event.preventDefault();
+      if (win) win.hide();
+      appShow = false;
+    }
+
+    return false;
   });
 }
 
@@ -107,6 +132,7 @@ if (!gotTheLock) {
 
 app.on('window-all-closed', () => {
   win = null;
+  isQuiting = true;
   if (process.platform !== 'darwin') app.quit();
 });
 
@@ -127,13 +153,50 @@ app.on('activate', () => {
   }
 });
 
+// Create Tray
+const tray = new Tray(icon);
+const contextMenu = Menu.buildFromTemplate([
+  {
+    label: 'Show App',
+    click: () => {
+      if (appStarted) {
+        if (win) win.show();
+        appShow = true;
+      }
+    },
+  },
+  {
+    label: 'Quit',
+    click: () => {
+      isQuiting = true;
+      app.quit();
+    },
+  },
+]);
+
+tray.setToolTip(title);
+tray.setTitle(title);
+tray.setContextMenu(contextMenu);
+
+tray.on('double-click', () => {
+  if (appStarted) {
+    if (!appShow) {
+      if (win) win.show();
+      appShow = true;
+    } else {
+      if (win) win.hide();
+      appShow = false;
+    }
+  }
+});
+
 // New window example arg: new windows url
 ipcMain.handle('open-win', (_, arg) => {
   const childWindow = new BrowserWindow({
     webPreferences: {
       preload,
       nodeIntegration: true,
-      contextIsolation: false,
+      contextIsolation: true,
     },
   });
 
