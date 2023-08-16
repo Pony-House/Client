@@ -103,6 +103,10 @@ contextBridge.exposeInMainWorld('focusAppWindow', () =>
   ipcRenderer.send('tiny-focus-window', true),
 );
 
+ipcRenderer.on('ping', (_event, arg) => {
+  console.log('[electron] [ping] ', arg);
+});
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 let electronResize: Function | null = null;
 ipcRenderer.on('resize', (event, data) => {

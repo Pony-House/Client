@@ -44,9 +44,9 @@ let win: BrowserWindow | null = null;
 const preload = path.join(__dirname, '../preload/index.js');
 const tinyUrl = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = path.join(process.env.DIST, 'index.html');
+const icon = path.join(process.env.VITE_PUBLIC, './favicon.ico');
 
 async function createWindow() {
-  const icon = path.join(process.env.VITE_PUBLIC, 'favicon.ico');
   win = new BrowserWindow({
     title,
     icon,
@@ -79,6 +79,22 @@ async function createWindow() {
     if (win) win.show();
     appStarted = true;
     appShow = true;
+
+    // Ping
+    if (win) {
+      win.webContents.send('ping', {
+        DIST_ELECTRON: process.env.DIST_ELECTRON,
+        DIST: process.env.DIST,
+        VITE_DEV_SERVER_URL: process.env.VITE_DEV_SERVER_URL,
+        VITE_PUBLIC: process.env.VITE_PUBLIC,
+        platform: process.platform,
+        preload,
+        tinyUrl,
+        indexHtml,
+        icon,
+        title,
+      });
+    }
   });
 
   // Make all links open with the browser, not with the application
