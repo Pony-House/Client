@@ -24,9 +24,16 @@ export default function startNotifications(ipcMain) {
         const tinyData = {};
         const tag = data.tag;
         for (const item in data) {
-            if (item !== 'tag') {
+            if (item !== 'tag' && item !== 'timeout') {
                 tinyData[item] = data[item];
             }
+        }
+
+        let timeout = data.timeout;
+        if (typeof timeout !== 'number' || Number.isNaN(timeout) || !Number.isFinite(timeout)) {
+            timeout = 15000;
+        } else if (timeout < 0) {
+            timeout = 0;
         }
 
         // Create Item
@@ -71,6 +78,13 @@ export default function startNotifications(ipcMain) {
         notifications[tag].on('failed', (event, error) => e.reply('tiny-notification-failed', { tag, event: filterEvent(event), error }));
 
         notifications[tag].on('close', closeNoti);
+
+        // Close
+        setTimeout(() => {
+            if (notifications[tag]) { notifications[tag].close(); } else {
+                closeNoti({});
+            }
+        }, timeout);
 
         e.reply('tiny-notification-create-confirm', { tag, isSupported: Notification.isSupported() });
 
