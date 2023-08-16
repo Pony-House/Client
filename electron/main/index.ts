@@ -56,6 +56,10 @@ async function createWindow() {
       title,
       icon,
       show: true,
+      autoHideMenuBar: true,
+      width: 1200,
+      height: 700,
+      backgroundColor: '#282c34',
       webPreferences: {
         preload,
         // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
