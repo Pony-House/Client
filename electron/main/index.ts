@@ -5,6 +5,7 @@ import { update } from './update';
 
 import startNotifications from './notification';
 import startEvents from './events';
+import startResizeEvents from './events/resize';
 
 // The built directory structure
 //
@@ -51,8 +52,10 @@ async function createWindow() {
     },
   });
 
+  startResizeEvents(ipcMain, win);
   startEvents(ipcMain, win);
   startNotifications(ipcMain, win);
+
   win.removeMenu();
 
   if (tinyUrl) {

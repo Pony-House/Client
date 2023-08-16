@@ -23,6 +23,10 @@ import { startUserAfk, stopUserAfk } from '../../../util/userStatusEffects';
 import Mods from './Mods';
 import appLoadMsg from '../../../../mods/appLoadMsg';
 
+if (__ENV_APP__.electron_mode) {
+  window.setElectrnoResize(() => resizeWindowChecker());
+}
+
 function Client() {
   const [isLoading, changeLoading] = useState(true);
   const [loadingMsg, setLoadingMsg] = useState(appLoadMsg.en.items[dice(appLoadMsg.en.items.length) - 1]);

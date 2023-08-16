@@ -103,4 +103,17 @@ contextBridge.exposeInMainWorld('focusAppWindow', () =>
   ipcRenderer.send('tiny-focus-window', true),
 );
 
+// eslint-disable-next-line @typescript-eslint/ban-types
+let electronResize: Function | null = null;
+ipcRenderer.on('resize', (event, data) => {
+  if (typeof electronResize === 'function') {
+    electronResize(data);
+  }
+});
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+contextBridge.exposeInMainWorld('setElectrnoResize', (callback: Function) => {
+  electronResize = callback;
+});
+
 setTimeout(removeLoading, 4999);
