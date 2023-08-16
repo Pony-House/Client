@@ -90,6 +90,7 @@ function useLoading() {
 // ----------------------------------------------------------------------
 
 const { appendLoading, removeLoading } = useLoading();
+contextBridge.exposeInMainWorld('useLoadingElectron', { appendLoading, removeLoading });
 domReady().then(appendLoading);
 
 window.onmessage = (ev) => {
