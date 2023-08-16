@@ -1,7 +1,8 @@
-import { objType } from '../../../src/util/tools';
-import { app, Notification } from 'electron';
 import fs from 'fs';
 import path from 'path';
+import { app, Notification } from 'electron';
+
+import { objType } from '../../../src/util/tools';
 
 const tempFolder = path.join(app.getPath('temp'), './pony-house-matrix');
 if (!fs.existsSync(tempFolder)) {
