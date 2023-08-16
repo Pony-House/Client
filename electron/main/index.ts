@@ -46,7 +46,7 @@ let win: BrowserWindow | null = null;
 const preload = path.join(__dirname, '../preload/index.js');
 const tinyUrl = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = path.join(process.env.DIST, 'index.html');
-const icon = path.join(process.env.VITE_PUBLIC, './favicon.ico');
+const icon = path.join(process.env.VITE_PUBLIC, './img/png/cinny.png');
 
 async function createWindow() {
   if (!firstTime) {
@@ -55,7 +55,7 @@ async function createWindow() {
     win = new BrowserWindow({
       title,
       icon,
-      show: false,
+      show: true,
       webPreferences: {
         preload,
         // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
@@ -81,7 +81,7 @@ async function createWindow() {
 
     // Show Page
     win.once('ready-to-show', () => {
-      if (win) win.show();
+      // if (win) win.show();
       appStarted = true;
       appShow = true;
 
@@ -114,7 +114,7 @@ async function createWindow() {
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
-      if (BrowserWindow.getAllWindows().length === 0) createWindow('activate');
+      if (BrowserWindow.getAllWindows().length === 0) createWindow();
     });
 
     // Prevent Close
@@ -149,7 +149,7 @@ if (!gotTheLock) {
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
-  app.whenReady().then(() => createWindow('ready'));
+  app.whenReady().then(() => createWindow());
   app.on('ready', () => {
     if (!appReady) {
       appReady = true;
@@ -212,7 +212,7 @@ app.on('activate', () => {
   if (allWindows.length) {
     allWindows[0].focus();
   } else {
-    createWindow('activate-2');
+    createWindow();
   }
 });
 
