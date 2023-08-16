@@ -170,7 +170,6 @@ const createNotification = (data) => {
     // Select Engine
     const closeTimeout = setTimeout(() => closeNoti({}, true), timeout);
     if (typeof data.engine !== 'string' || !engines[data.engine]) {
-        delete data.engine;
         engines.default(tag, tinyData, closeNoti);
     } else {
         const engine = data.engine;

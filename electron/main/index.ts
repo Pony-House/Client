@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { update } from './update';
 
 import startNotifications from './notification';
+import startEvents from './events';
 
 // The built directory structure
 //
@@ -55,12 +56,7 @@ async function createWindow() {
     },
   });
 
-  ipcMain.on('set-title', (event, title) => {
-    const webContents = event.sender;
-    const tinyWin = BrowserWindow.fromWebContents(webContents);
-    if (tinyWin) tinyWin.setTitle(title);
-  });
-
+  startEvents(ipcMain, win);
   startNotifications(ipcMain, win);
   win.removeMenu();
 

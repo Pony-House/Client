@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-undef */
-import { contextBridge } from 'electron';
+import { contextBridge, ipcRenderer } from 'electron';
 import startNotifications from './notification';
 
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
@@ -97,6 +97,10 @@ window.onmessage = (ev) => {
 
 contextBridge.exposeInMainWorld('desktopNotification', (options: object) =>
   startNotifications(options),
+);
+
+contextBridge.exposeInMainWorld('focusAppWindow', () =>
+  ipcRenderer.send('tiny-focus-window', true),
 );
 
 setTimeout(removeLoading, 4999);
