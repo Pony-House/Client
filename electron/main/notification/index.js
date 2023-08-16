@@ -72,7 +72,7 @@ const engines = {
             title: data?.title,
             subtitle: data?.subtitle,
             message: data?.body,
-            sound: data?.sound ? data.sound : path.join(__dirname, './sounds/notification.ogg'), // Case Sensitive string for location of sound file, or use one of macOS' native sounds (see below)
+            sound: data?.silent === true ? false : data?.sound ? data.sound : path.join(__dirname, './sounds/notification.ogg'), // Case Sensitive string for location of sound file, or use one of macOS' native sounds (see below)
             icon: data?.icon, // Absolute Path to Triggering Icon
             contentImage: data?.image, // Absolute Path to Attached Image (Content Image)
             open: data?.url, // URL to open on Click

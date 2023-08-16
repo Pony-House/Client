@@ -339,15 +339,16 @@ class Notifications extends EventEmitter {
           body: body.plain,
           icon,
           tag: mEvent.getId(),
-          silent: settings.isNotificationSounds,
         };
 
         // Silent Mode
         let noti;
         if (__ENV_APP__.electron_mode) {
           notiData.engine = 'notifier';
+          notiData.silent = true;
           noti = await window.desktopNotification(notiData);
         } else {
+          notiData.silent = settings.isNotificationSounds;
           noti = new window.Notification(title, notiData);
         }
 
