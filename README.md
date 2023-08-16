@@ -1,6 +1,6 @@
 <center>
 
-<img align="center" src="https://github.com/Pony-House/Client/blob/dev/krita/banner/github.jpg?raw=true" height="380">
+<img align="center" src="https://github.com/Pony-House/Client/blob/dev/gallery/krita/banner/github.jpg?raw=true" height="380">
 
 <br/>
 
