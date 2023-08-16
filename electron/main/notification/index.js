@@ -46,6 +46,23 @@ export default function startNotifications(ipcMain) {
 
         };
 
+        const closeNoti = (event) => {
+            if (notifications[tag]) {
+
+                e.reply('tiny-notification-close', { tag, event: filterEvent(event) });
+
+                if (data.iconFromWeb && typeof data.iconFile === 'string') {
+
+                    const filePath = path.join(tempFolderNoti, `./${data.iconFile}`);
+                    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+
+                }
+
+                delete notifications[tag];
+
+            }
+        };
+
         // Show
         notifications[tag].on('show', (event) => {
             e.reply('tiny-notification-show', { tag, event: filterEvent(event) });
@@ -72,20 +89,7 @@ export default function startNotifications(ipcMain) {
         });
 
         // Close
-        notifications[tag].on('close', (event) => {
-
-            e.reply('tiny-notification-close', { tag, event: filterEvent(event) });
-
-            if (data.iconFromWeb && typeof data.iconFile === 'string') {
-
-                const filePath = path.join(tempFolderNoti, `./${data.iconFile}`);
-                if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-
-            }
-
-            if (notifications[tag]) delete notifications[tag];
-
-        });
+        notifications[tag].on('close', closeNoti);
 
         e.reply('tiny-notification-create-confirm', { tag, isSupported: Notification.isSupported() });
 
