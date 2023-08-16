@@ -58,12 +58,12 @@ export default function startNotifications(ipcMain) {
 
         };
 
-        const closeNoti = (event) => {
+        const closeNoti = (event, forceClose) => {
             try {
                 if (notifications[tag]) {
 
                     delete notifications[tag];
-                    e.reply('tiny-notification-close', { tag, event: filterEvent(event) });
+                    e.reply(`tiny-notification-close${forceClose ? '-timeout' : ''}`, { tag, event: filterEvent(event) });
 
                     if (data.iconFromWeb && typeof data.iconFile === 'string') {
 
@@ -88,7 +88,7 @@ export default function startNotifications(ipcMain) {
         notifications[tag].on('close', closeNoti);
 
         // Close
-        setTimeout(() => closeNoti({}), timeout);
+        setTimeout(() => closeNoti({}, true), timeout);
         e.reply('tiny-notification-create-confirm', { tag, isSupported: Notification.isSupported() });
 
     };
