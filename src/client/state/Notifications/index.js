@@ -345,6 +345,7 @@ class Notifications extends EventEmitter {
         // Silent Mode
         let noti;
         if (__ENV_APP__.electron_mode) {
+          notiData.engine = 'notifier';
           noti = await window.desktopNotification(notiData);
         } else {
           noti = new window.Notification(title, notiData);

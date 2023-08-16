@@ -17,68 +17,28 @@ if (!fs.existsSync(tempFolderNoti)) {
 }
 
 deleteAllFilesInDir(tempFolderNoti);
-
-// Module
 const notifications = {};
-export default function startNotifications(ipcMain) {
 
-    // Create Start
-    const createNotification = (e, data) => {
+// Events
+const filterEvent = (event) => {
 
-        // Prepare Data
-        const tinyData = {};
-        const tag = data.tag;
-        for (const item in data) {
-            if (item !== 'tag' && item !== 'timeout') {
-                tinyData[item] = data[item];
-            }
-        }
+    const tinyE = {};
+    // for (const item in event) {
+    //     if (objType(event, 'object')) {
+    //         tinyE[item] = event[item];
+    //     }
+    // }
 
-        let timeout = data.timeout;
-        if (typeof timeout !== 'number' || Number.isNaN(timeout) || !Number.isFinite(timeout)) {
-            timeout = 15000;
-        } else if (timeout < 0) {
-            timeout = 0;
-        }
+    return tinyE;
 
-        // Create Item
+};
+
+const engines = {
+
+    default: (e, tag, tinyData, closeNoti) => {
+
         notifications[tag] = new Notification(tinyData);
 
-        // Events
-        const filterEvent = (event) => {
-
-            const tinyE = {};
-            // for (const item in event) {
-            //     if (objType(event, 'object')) {
-            //         tinyE[item] = event[item];
-            //     }
-            // }
-
-            return tinyE;
-
-        };
-
-        const closeNoti = (event, forceClose) => {
-            try {
-                if (notifications[tag]) {
-
-                    delete notifications[tag];
-                    e.reply(`tiny-notification-close${forceClose ? '-timeout' : ''}`, { tag, event: filterEvent(event) });
-
-                    if (data.iconFromWeb && typeof data.iconFile === 'string') {
-
-                        const filePath = path.join(tempFolderNoti, `./${data.iconFile}`);
-                        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-
-                    }
-
-                }
-            } catch (err) {
-                console.error(err);
-            }
-        };
-
-        // Show
         notifications[tag].on('show', (event) => e.reply('tiny-notification-show', { tag, event: filterEvent(event) }));
         notifications[tag].on('click', (event) => e.reply('tiny-notification-click', { tag, event: filterEvent(event) }));
         notifications[tag].on('reply', (event, reply) => e.reply('tiny-notification-reply', { tag, event: filterEvent(event), reply }));
@@ -87,11 +47,63 @@ export default function startNotifications(ipcMain) {
 
         notifications[tag].on('close', closeNoti);
 
-        // Close
-        setTimeout(() => closeNoti({}, true), timeout);
-        e.reply('tiny-notification-create-confirm', { tag, isSupported: Notification.isSupported() });
+    }
 
+};
+
+// Create Start
+const createNotification = (e, data) => {
+
+    // Prepare Data
+    const tinyData = {};
+    const tag = data.tag;
+    for (const item in data) {
+        if (item !== 'tag' && item !== 'timeout') {
+            tinyData[item] = data[item];
+        }
+    }
+
+    let timeout = data.timeout;
+    if (typeof timeout !== 'number' || Number.isNaN(timeout) || !Number.isFinite(timeout)) {
+        timeout = 15000;
+    } else if (timeout < 0) {
+        timeout = 0;
+    }
+
+    // Close Event
+    const closeNoti = (event, forceClose) => {
+        try {
+            if (notifications[tag]) {
+
+                delete notifications[tag];
+                e.reply(`tiny-notification-close${forceClose ? '-timeout' : ''}`, { tag, event: filterEvent(event) });
+
+                if (data.iconFromWeb && typeof data.iconFile === 'string') {
+
+                    const filePath = path.join(tempFolderNoti, `./${data.iconFile}`);
+                    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+
+                }
+
+            }
+        } catch (err) {
+            console.error(err);
+        }
     };
+
+    // Electron Native
+    if (typeof data.engine !== 'string' || !engines[data.engine]) {
+        engines.default(e, tag, tinyData, closeNoti);
+    }
+
+    // Send Close
+    setTimeout(() => closeNoti({}, true), timeout);
+    e.reply('tiny-notification-create-confirm', { tag, isSupported: Notification.isSupported() });
+
+};
+
+// Module
+export default function startNotifications(ipcMain) {
 
     // Create
     ipcMain.on('tiny-notification-create', (e, data) => {
