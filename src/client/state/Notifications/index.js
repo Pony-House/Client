@@ -359,7 +359,10 @@ class Notifications extends EventEmitter {
             noti.on('show', () => this._playNotiSound());
           }
 
-          noti.on('click', () => selectRoom(room.roomId, mEvent.getId()));
+          noti.on('click', () => {
+            selectRoom(room.roomId, mEvent.getId());
+            window.focusAppWindow();
+          });
 
         } else {
 
