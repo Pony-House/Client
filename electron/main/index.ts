@@ -44,7 +44,6 @@ const tinyUrl = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
 
 async function createWindow() {
-
   win = new BrowserWindow({
     title: 'Main window',
     icon: join(process.env.VITE_PUBLIC, 'favicon.ico'),
@@ -59,7 +58,7 @@ async function createWindow() {
   ipcMain.on('set-title', (event, title) => {
     const webContents = event.sender;
     const tinyWin = BrowserWindow.fromWebContents(webContents);
-    tinyWin.setTitle(title);
+    if (tinyWin) tinyWin.setTitle(title);
   });
 
   startNotifications(ipcMain, win);
