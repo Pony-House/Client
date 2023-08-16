@@ -122,6 +122,43 @@ async function createWindow() {
 
     return false;
   });
+
+  // Create Tray
+  const tray = new Tray(icon);
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Show App',
+      click: () => {
+        if (appStarted) {
+          if (win) win.show();
+          appShow = true;
+        }
+      },
+    },
+    {
+      label: 'Quit',
+      click: () => {
+        isQuiting = true;
+        app.quit();
+      },
+    },
+  ]);
+
+  tray.setToolTip(title);
+  tray.setTitle(title);
+  tray.setContextMenu(contextMenu);
+
+  tray.on('double-click', () => {
+    if (appStarted) {
+      if (!appShow) {
+        if (win) win.show();
+        appShow = true;
+      } else {
+        if (win) win.hide();
+        appShow = false;
+      }
+    }
+  });
 }
 
 // Anti Multi Same App
