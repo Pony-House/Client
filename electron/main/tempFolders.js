@@ -4,8 +4,11 @@ import { app } from 'electron';
 import { fileURLToPath } from 'url';
 
 // Insert utils
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const createDirName = (where) => {
+    const __filename = fileURLToPath(where);
+    const __dirname = path.dirname(__filename);
+    return { __filename, __dirname };
+};
 
 // Validate Folders
 const tempFolder = path.join(app.getPath('temp'), './pony-house-matrix');
@@ -18,4 +21,4 @@ if (!fs.existsSync(tempFolderNoti)) {
     fs.mkdirSync(tempFolderNoti);
 }
 
-export { __filename, __dirname, tempFolder, tempFolderNoti };
+export { createDirName, tempFolder, tempFolderNoti };

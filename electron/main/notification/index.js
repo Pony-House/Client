@@ -5,8 +5,9 @@ import { Notification } from 'electron';
 
 import deleteAllFilesInDir from '../../fs/deleteAllFilesInDir';
 import { objType } from '../../../src/util/tools';
-import { __dirname, tempFolderNoti } from '../tempFolders';
+import { createDirName, tempFolderNoti } from '../tempFolders';
 
+const { __dirname } = createDirName(import.meta.url);
 deleteAllFilesInDir(tempFolderNoti);
 const notifications = {};
 let win;
