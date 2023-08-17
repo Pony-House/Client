@@ -1,4 +1,6 @@
 import { app, BrowserWindow, shell, ipcMain, Tray, Menu } from 'electron';
+
+import fs from 'node:fs';
 import { release } from 'node:os';
 import path from 'node:path';
 import { update } from './update';
@@ -6,6 +8,7 @@ import { update } from './update';
 import startNotifications from './notification';
 import startEvents from './events';
 import startResizeEvents from './events/resize';
+import { tempFolder } from './tempFolders';
 
 // The built directory structure
 //
@@ -50,15 +53,35 @@ const icon = path.join(process.env.VITE_PUBLIC, './img/png/cinny.png');
 
 async function createWindow() {
   if (!firstTime) {
+    // Mark First time
     firstTime = true;
 
+    // Get Data
+    const initFile = path.join(tempFolder, 'init.json');
+    let data = null;
+    try {
+      data = JSON.parse(fs.readFileSync(initFile, 'utf8'));
+    } catch (e) {
+      data = {};
+    }
+
+    // Bounds
+    const bounds =
+      data &&
+      data.bounds &&
+      typeof data.bounds.width === 'number' &&
+      typeof data.bounds.height === 'number'
+        ? data.bounds
+        : { width: 1200, height: 700 };
+
+    // Create Window
     win = new BrowserWindow({
       title,
       icon,
       show: true,
       autoHideMenuBar: true,
-      width: 1200,
-      height: 700,
+      width: bounds.width,
+      height: bounds.height,
       backgroundColor: '#282c34',
       webPreferences: {
         preload,
@@ -68,10 +91,12 @@ async function createWindow() {
       },
     });
 
+    // Start modules
     startResizeEvents(ipcMain, win);
     startEvents(ipcMain, win);
     startNotifications(ipcMain, win);
 
+    // Remove Menu
     win.removeMenu();
 
     if (tinyUrl) {
@@ -123,6 +148,11 @@ async function createWindow() {
 
     // Prevent Close
     win.on('close', (event) => {
+      if (win) {
+        const winData = { bounds: win.getBounds() };
+        fs.writeFileSync(initFile, JSON.stringify(winData));
+      }
+
       if (!isQuiting) {
         event.preventDefault();
         if (win) win.hide();
