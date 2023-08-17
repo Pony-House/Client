@@ -12,6 +12,14 @@ const userInteractions = {
         isActive: true,
     },
 
+    vc: {
+        isActive: false,
+    },
+
+    desktop: {
+        isActive: true,
+    },
+
     afkTime: {
         value: null,
         interval: null
@@ -29,6 +37,11 @@ App.addListener('appStateChange', ({ isActive }) => {
 // Update
 const lastTimestampUpdate = () => {
     userInteractions.afkTime.value = moment().valueOf();
+};
+
+// Voice Chat Mode
+export function setVoiceChatMode(value = true) {
+    if (typeof value === 'boolean') userInteractions.vc.isActive = value;
 };
 
 // Get
@@ -60,7 +73,12 @@ const intervalTimestamp = () => {
             tinyAPI.emit('afkTimeCounterProgress', counter);
 
             // 10 Minutes later...
-            if ((content.status === '🟢' || content.status === 'online') && (counter > 600 || content.status === '🟠' || content.status === 'idle' || !userInteractions.mobile.isActive)) {
+            if (
+                !userInteractions.vc.isActive &&
+                (!__ENV_APP__.electron_mode || !userInteractions.desktop.isActive) &&
+                (content.status === '🟢' || content.status === 'online') &&
+                (counter > 600 || content.status === '🟠' || content.status === 'idle' || !userInteractions.mobile.isActive)
+            ) {
                 content.afk = true;
             }
 
