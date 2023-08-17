@@ -53,7 +53,7 @@ const icon = path.join(process.env.VITE_PUBLIC, './img/png/cinny.png');
 const appShow = {
   change: (value: boolean) => {
     appShow.enabled = value;
-    if (win) win.webContents.send('tiny-app-is-show', value);
+    if (win && win.webContents) win.webContents.send('tiny-app-is-show', value);
   },
 
   enabled: false,
@@ -123,7 +123,7 @@ async function createWindow() {
       appShow.change(true);
 
       // Ping
-      if (win) {
+      if (win && win.webContents) {
         win.webContents.send('ping', {
           DIST_ELECTRON: process.env.DIST_ELECTRON,
           DIST: process.env.DIST,
