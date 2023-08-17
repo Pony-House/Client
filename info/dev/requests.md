@@ -45,8 +45,8 @@ Made by Me
 
     =======================================================
 
+    --> Adicionar opção para suporte de thumbs com parametros de animação.
     --> Adicionar detecção desktop ao sistema de inativo do app.
-    --> Criar o ícone que fala quando o app tem novas notificações.
     --> Fazer a opção para o app iniciar sozinho com o sistema operacional.
     --> Fazer lista de seleção de microfones.
 

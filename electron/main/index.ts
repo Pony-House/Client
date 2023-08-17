@@ -38,8 +38,8 @@ if (process.platform === 'win32') app.setAppUserModelId(app.getName());
 // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 const title = 'Pony House';
-let isQuiting: boolean;
-let appStarted: boolean;
+let isQuiting = false;
+let appStarted = false;
 let firstTime = false;
 let appReady = false;
 
@@ -161,13 +161,15 @@ async function createWindow() {
         fs.writeFileSync(initFile, JSON.stringify(winData));
       }
 
-      if (!isQuiting) {
-        event.preventDefault();
-        if (win) win.hide();
-        appShow.change(false);
-      }
+      if (appStarted) {
+        if (!isQuiting) {
+          event.preventDefault();
+          if (win) win.hide();
+          appShow.change(false);
+        }
 
-      return false;
+        return false;
+      }
     });
   }
 }
