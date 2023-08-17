@@ -126,8 +126,8 @@ setTimeout(removeLoading, 4999);
 
 // App Status
 let appShow = true;
-ipcRenderer.on('tiny-app-is-show', (event, data: boolean) => {
-  appShow = data;
+ipcRenderer.on('tiny-app-is-show', (event, data) => {
+  if (typeof data === 'boolean') appShow = data;
 });
 
 contextBridge.exposeInMainWorld('getElectronShowStatus', () => appShow);
