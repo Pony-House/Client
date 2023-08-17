@@ -118,8 +118,16 @@ ipcRenderer.on('resize', (event, data) => {
 });
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-contextBridge.exposeInMainWorld('setElectrnoResize', (callback: Function) => {
+contextBridge.exposeInMainWorld('setElectronResize', (callback: Function) => {
   electronResize = callback;
 });
 
 setTimeout(removeLoading, 4999);
+
+// App Status
+let appShow = true;
+ipcRenderer.on('tiny-app-is-show', (event, data: boolean) => {
+  appShow = data;
+});
+
+contextBridge.exposeInMainWorld('getElectronShowStatus', () => appShow);

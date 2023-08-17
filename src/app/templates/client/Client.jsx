@@ -24,7 +24,7 @@ import Mods from './Mods';
 import appLoadMsg from '../../../../mods/appLoadMsg';
 
 if (__ENV_APP__.electron_mode) {
-  window.setElectrnoResize(() => resizeWindowChecker());
+  window.setElectronResize(() => resizeWindowChecker());
 }
 
 function Client() {

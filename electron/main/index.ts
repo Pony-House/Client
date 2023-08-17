@@ -38,7 +38,6 @@ if (process.platform === 'win32') app.setAppUserModelId(app.getName());
 // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 const title = 'Pony House';
-let appShow: boolean;
 let isQuiting: boolean;
 let appStarted: boolean;
 let firstTime = false;
@@ -50,6 +49,15 @@ const preload = path.join(__dirname, '../preload/index.js');
 const tinyUrl = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = path.join(process.env.DIST, 'index.html');
 const icon = path.join(process.env.VITE_PUBLIC, './img/png/cinny.png');
+
+const appShow = {
+  change: (value: boolean) => {
+    appShow.enabled = value;
+    if (win) win.webContents.send('tiny-app-is-show', value);
+  },
+
+  enabled: false,
+};
 
 async function createWindow() {
   if (!firstTime) {
@@ -112,7 +120,7 @@ async function createWindow() {
     win.once('ready-to-show', () => {
       // if (win) win.show();
       appStarted = true;
-      appShow = true;
+      appShow.change(true);
 
       // Ping
       if (win) {
@@ -156,7 +164,7 @@ async function createWindow() {
       if (!isQuiting) {
         event.preventDefault();
         if (win) win.hide();
-        appShow = false;
+        appShow.change(false);
       }
 
       return false;
@@ -195,7 +203,7 @@ if (!gotTheLock) {
           click: () => {
             if (appStarted) {
               if (win) win.show();
-              appShow = true;
+              appShow.change(true);
             }
           },
         },
@@ -214,12 +222,12 @@ if (!gotTheLock) {
 
       tray.on('double-click', () => {
         if (appStarted) {
-          if (!appShow) {
+          if (!appShow.enabled) {
             if (win) win.show();
-            appShow = true;
+            appShow.change(true);
           } else {
             if (win) win.hide();
-            appShow = false;
+            appShow.change(false);
           }
         }
       });

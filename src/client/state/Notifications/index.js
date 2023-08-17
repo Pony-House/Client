@@ -263,10 +263,12 @@ class Notifications extends EventEmitter {
 
     // Check Window
     if (
-      !$('body').hasClass('modal-open') &&
-      navigation.selectedRoomId === room.roomId &&
-      document.visibilityState === 'visible' &&
-      !$('body').hasClass('windowHidden')
+      (__ENV_APP__.electron_mode && !window.getElectronShowStatus()) || (
+        !$('body').hasClass('modal-open') &&
+        navigation.selectedRoomId === room.roomId &&
+        document.visibilityState === 'visible' &&
+        !$('body').hasClass('windowHidden')
+      )
     ) return;
 
     if (userStatus === 'dnd' || userStatus === '🔴') return;
