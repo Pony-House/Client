@@ -1,33 +1,18 @@
 import fs from 'fs';
 import path from 'path';
 import notifier from 'node-notifier';
-import { app, Notification } from 'electron';
-import { fileURLToPath } from 'url';
+import { Notification } from 'electron';
 
 import deleteAllFilesInDir from '../../fs/deleteAllFilesInDir';
 import { objType } from '../../../src/util/tools';
-
-// Insert utils
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Validate Folders
-const tempFolder = path.join(app.getPath('temp'), './pony-house-matrix');
-if (!fs.existsSync(tempFolder)) {
-    fs.mkdirSync(tempFolder);
-}
-
-const tempFolderNoti = path.join(tempFolder, './notification');
-if (!fs.existsSync(tempFolderNoti)) {
-    fs.mkdirSync(tempFolderNoti);
-}
+import { __dirname, tempFolderNoti } from '../tempFolders';
 
 deleteAllFilesInDir(tempFolderNoti);
 const notifications = {};
 let win;
 
 // Events
-const filterEvent = (event) => {
+const filterEvent = () => {
 
     const tinyE = {};
     // for (const item in event) {
