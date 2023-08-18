@@ -1,20 +1,30 @@
 import React, { useState, useEffect } from 'react';
 
+let loadingDevices = false;
+let devices;
 const listDevices = async () => {
 
-    const devices = await navigator.mediaDevices?.enumerateDevices?.();
-    if (devices) {
+    loadingDevices = true;
+    const devicesResult = await navigator.mediaDevices?.enumerateDevices?.();
+    if (devicesResult) {
+
         const video = [];
         const audio = [];
-        for (const device of devices) {
+
+        for (const device of devicesResult) {
             switch (device.kind) {
                 case 'videoinput': video.push(device); break;
                 case 'audioinput': audio.push(device); break;
             }
         }
-        return { video, audio };
+
+        loadingDevices = false;
+        devices = { video, audio };
+        return devices;
+
     }
 
+    loadingDevices = false;
     throw new Error('Media Devices API is not supported.');
 
 };
@@ -22,22 +32,25 @@ const listDevices = async () => {
 
 function VoiceVideoSection() {
 
-    const [selectedAudio, setselectedAudio] = useState(null);
-    const [selectedVideo, setselectedVideo] = useState(null);
-
+    const [devicesItem, setDevicesItem] = useState(null);
     useEffect(() => {
-        listDevices().then(devices => {
 
-            const video = devices.video;  // input video devices as array (e.g. web cameras)
-            const audio = devices.audio;  // input audio devices as array (e.g. microphones)
-            console.log('video:', video);
-            console.log('audio:', audio);
+        if (!loadingDevices && devicesItem === null) {
+            listDevices().then(devices2 => {
+                setDevicesItem(devices2);
+            }).catch(err => {
+                console.error(err);
+                alert(err.message);
+            });
+        } else {
+            setDevicesItem(devices);
+        }
 
-        }).catch(err => {
-            console.error(err);
-            alert(err.message);
-        });
-    }, []);
+        return () => { if (devicesItem !== null) setDevicesItem(null); };
+
+    });
+
+    console.log(devicesItem);
 
     return (
         <div className="noselect">
