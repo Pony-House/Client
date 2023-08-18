@@ -199,10 +199,12 @@ function VoiceVideoSection() {
                     <div class="my-3">
                         <button class="btn btn-sm btn-outline-primary" type="button" id="button-addon1">Let&apos;s Check</button>
                     </div>
-                    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress justify-content-end" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style={{
+                        background: `linear-gradient(90deg, var(--sound-bar-0) 0%, var(--sound-bar-50) 50%, var(--sound-bar-100) 100%)`
+                    }}>
                         <div class="progress-bar" style={{
-                            width: '0%',
-                            background: `linear-gradient(90deg, rgba(186,136,0,1) 0%, rgba(4,107,23,1) 50%, rgba(163,0,0,1) 100%);`
+                            width: '100%',
+                            background: `var(--sound-bar-base)`
                         }} />
                     </div>
 
