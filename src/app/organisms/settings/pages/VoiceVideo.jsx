@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 let loadingDevices = false;
 let devices;
@@ -31,14 +31,46 @@ const listDevices = async () => {
 
 };
 
+const validatorVolume = (value) => {
+
+    if (typeof value === 'number' || typeof value === 'string') {
+
+        const newValue = Number(value);
+
+        return !Number.isNaN(newValue) && Number.isFinite(newValue) ?
+            newValue >= 0 ? newValue <= 100 ? newValue : 100 : 0 : 100;
+
+    }
+
+    return 100;
+
+};
+
 function VoiceVideoSection() {
 
     const [devicesItem, setDevicesItem] = useState(null);
-    const [audioDevice, setAudioDevice] = useState(global.localStorage.getItem('tinyAudioDevice'));
-    const [speakerDevice, setSpeakerDevice] = useState(global.localStorage.getItem('tinySpeakerDevice'));
+
     const [videoDevice, setVideoDevice] = useState(global.localStorage.getItem('tinyVideoDevice'));
 
+    const [audioDevice, setAudioDevice] = useState(global.localStorage.getItem('tinyAudioDevice'));
+    const [speakerDevice, setSpeakerDevice] = useState(global.localStorage.getItem('tinySpeakerDevice'));
+
+    const audioVolumeRef = useRef(null);
+    const speakerVolumeRef = useRef(null);
+
     useEffect(() => {
+
+        const audioVolume = $(audioVolumeRef.current);
+        const speakerVolume = $(speakerVolumeRef.current);
+
+        let tinyAudioVolume = global.localStorage.getItem('tinyAudioVolume');
+        let tinySpeakerVolume = global.localStorage.getItem('tinySpeakerVolume');
+
+        tinyAudioVolume = validatorVolume(tinyAudioVolume);
+        tinySpeakerVolume = validatorVolume(tinySpeakerVolume);
+
+        audioVolume.val(tinyAudioVolume);
+        speakerVolume.val(tinySpeakerVolume);
 
         if (!loadingDevices && devicesItem === null) {
             listDevices().then(devices2 => {
@@ -96,12 +128,12 @@ function VoiceVideoSection() {
 
                         <div className='col-md-6'>
                             <div className='very-small text-uppercase fw-bold mb-2'>Input Volume</div>
-                            <input type="range" class="form-range" />
+                            <input ref={audioVolumeRef} type="range" class="form-range" min={0} max={100} />
                         </div>
 
                         <div className='col-md-6'>
                             <div className='very-small text-uppercase fw-bold mb-2'>Output Volume</div>
-                            <input type="range" class="form-range" />
+                            <input ref={speakerVolumeRef} type="range" class="form-range" min={0} max={100} />
                         </div>
 
                     </div>
@@ -129,7 +161,7 @@ function VoiceVideoSection() {
 
                 <li className="list-group-item border-0">
 
-                    <div class="ratio ratio-16x9 w-50 border border-bg mb-2">
+                    <div className="ratio ratio-16x9 w-50 border border-bg mb-2">
 
 
 
