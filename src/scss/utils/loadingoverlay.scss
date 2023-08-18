@@ -12,3 +12,21 @@
     color: var(--bg-loadingoverlay-text) !important;
   }
 }
+
+.audio-progress-bar {
+  background: linear-gradient(
+    90deg,
+    var(--sound-bar-0) 0%,
+    var(--sound-bar-50) 54%,
+    var(--sound-bar-100) 100%
+  );
+
+  .progress-bar {
+    background: var(--sound-bar-base);
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none;
+  }
+}
