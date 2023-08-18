@@ -45,6 +45,8 @@ Made by Me
 
     =======================================================
 
+    --> Fazer funcionar a lista de videos e audios e salvar no localStorage
+
     --> Adicionar opção para suporte de thumbs com parametros de animação.
     --> Adicionar detecção desktop ao sistema de inativo do app.
     --> Fazer a opção para o app iniciar sozinho com o sistema operacional.
