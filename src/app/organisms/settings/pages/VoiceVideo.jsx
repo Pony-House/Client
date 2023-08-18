@@ -100,6 +100,10 @@ function VoiceVideoSection() {
         speakerSelect.val(tinySpeakerDevice);
         audioSelect.val(tinyAudioDevice);
 
+        const updateVolDevice = updateTinyVolume(audioSelect, 'tinyAudioDevice');
+        const updateSpeakerDevice = updateTinyVolume(speakerSelect, 'tinySpeakerDevice');
+        const updateVideoDevice = updateTinyVolume(videoSelect, 'tinyVideoVolume');
+
         // Get Devices List
         if (!loadingDevices && devicesItem === null) {
             listDevices().then(devices2 => {
@@ -112,13 +116,25 @@ function VoiceVideoSection() {
             setDevicesItem(devices);
         }
 
+        // Events
+        videoSelect.on('change', updateVideoDevice);
+        speakerSelect.on('change', updateSpeakerDevice);
+        audioSelect.on('change', updateVolDevice);
+
         audioVolume.on('change', updateVolAudio);
         speakerVolume.on('change', updateSpeakerAudio);
 
         return () => {
+
             if (devicesItem !== null) setDevicesItem(null);
+
+            videoSelect.off('change', updateVideoDevice);
+            speakerSelect.off('change', updateSpeakerDevice);
+            audioSelect.off('change', updateVolDevice)
+                ;
             audioVolume.off('change', updateVolAudio);
             speakerVolume.off('change', updateSpeakerAudio);
+
         };
 
     });
