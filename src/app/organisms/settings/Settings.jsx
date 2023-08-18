@@ -19,6 +19,7 @@ import PrivacySection from './pages/Privacy';
 import DonateSection from './pages/Donate';
 import AboutSection from './pages/About';
 import ExperimentalSection from './pages/Experimental';
+import VoiceVideoSection from './pages/VoiceVideo';
 
 function EmojiSection() {
   return (
@@ -57,6 +58,13 @@ const tabItems = [
     faSrc: "fa-solid fa-sun",
     disabled: false,
     render: () => <AppearanceSection />,
+  },
+
+  {
+    text: tabText.VOICEVIDEO,
+    faSrc: "bi bi-optical-audio-fill",
+    disabled: false,
+    render: () => <VoiceVideoSection />,
   },
 
   {
