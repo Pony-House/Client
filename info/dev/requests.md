@@ -48,7 +48,6 @@ Made by Me
     --> Adicionar opção para suporte de thumbs com parametros de animação.
     --> Adicionar detecção desktop ao sistema de inativo do app.
     --> Fazer a opção para o app iniciar sozinho com o sistema operacional.
-    --> Fazer lista de seleção de microfones.
 
     --> Ajeitar... Ao criar uma sala, o app está jogando para o menu de homes. Isso não pode acotecer se a room for dentro de um space.
     (Isso também acontece quando tenta criar uma DM)

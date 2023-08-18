@@ -10,16 +10,18 @@ const listDevices = async () => {
 
         const video = [];
         const audio = [];
+        const speaker = [];
 
         for (const device of devicesResult) {
             switch (device.kind) {
                 case 'videoinput': video.push(device); break;
                 case 'audioinput': audio.push(device); break;
+                case 'audiooutput': speaker.push(device); break;
             }
         }
 
         loadingDevices = false;
-        devices = { video, audio };
+        devices = { video, audio, speaker };
         return devices;
 
     }
@@ -33,6 +35,7 @@ function VoiceVideoSection() {
 
     const [devicesItem, setDevicesItem] = useState(null);
     const [audioDevice, setAudioDevice] = useState(global.localStorage.getItem('tinyAudioDevice'));
+    const [speakerDevice, setSpeakerDevice] = useState(global.localStorage.getItem('tinySpeakerDevice'));
     const [videoDevice, setVideoDevice] = useState(global.localStorage.getItem('tinyVideoDevice'));
 
     useEffect(() => {
@@ -52,8 +55,6 @@ function VoiceVideoSection() {
 
     });
 
-    console.log(devicesItem);
-
     return (<>
 
         <div className="card noselect">
@@ -68,20 +69,20 @@ function VoiceVideoSection() {
                         <div className='col-md-6'>
                             <div className='very-small text-uppercase fw-bold mb-2'>Input Device</div>
                             <select class="form-select form-control-bg">
-                                <option selected>Choose...</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                                <option>Choose...</option>
+                                {devicesItem && Array.isArray(devicesItem.audio) && devicesItem.audio.length > 0 ?
+                                    devicesItem.audio.map(item => <option value={item.deviceId}>{item.label}</option>)
+                                    : null}
                             </select>
                         </div>
 
                         <div className='col-md-6'>
                             <div className='very-small text-uppercase fw-bold mb-2'>Output Device</div>
                             <select class="form-select form-control-bg">
-                                <option selected>Choose...</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                                <option>Choose...</option>
+                                {devicesItem && Array.isArray(devicesItem.speaker) && devicesItem.speaker.length > 0 ?
+                                    devicesItem.speaker.map(item => <option value={item.deviceId}>{item.label}</option>)
+                                    : null}
                             </select>
                         </div>
 
