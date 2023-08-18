@@ -80,8 +80,12 @@ function VoiceVideoSection() {
         tinyAudioVolume = validatorVolume(tinyAudioVolume);
         tinySpeakerVolume = validatorVolume(tinySpeakerVolume);
 
+        const updateTinyVolume = (target, where) => () => global.localStorage.setItem(where, target.val());
         audioVolume.val(tinyAudioVolume);
         speakerVolume.val(tinySpeakerVolume);
+
+        const updateVolAudio = updateTinyVolume(audioVolume, 'tinyAudioVolume');
+        const updateSpeakerAudio = updateTinyVolume(speakerVolume, 'tinySpeakerVolume');
 
         // Insert Selectors
         let tinyAudioDevice = global.localStorage.getItem('tinyAudioDevice');
@@ -108,7 +112,14 @@ function VoiceVideoSection() {
             setDevicesItem(devices);
         }
 
-        return () => { if (devicesItem !== null) setDevicesItem(null); };
+        audioVolume.on('change', updateVolAudio);
+        speakerVolume.on('change', updateSpeakerAudio);
+
+        return () => {
+            if (devicesItem !== null) setDevicesItem(null);
+            audioVolume.off('change', updateVolAudio);
+            speakerVolume.off('change', updateSpeakerAudio);
+        };
 
     });
 
