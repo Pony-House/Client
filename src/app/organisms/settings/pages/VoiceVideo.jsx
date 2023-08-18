@@ -196,10 +196,16 @@ function VoiceVideoSection() {
                 <li className="list-group-item border-0">
                     <div className='very-small text-uppercase fw-bold mb-1'>Mic Test</div>
                     <div className='very-small mb-2'>Having mic issues? Start a test and say something fun. Your voice will be played back to you.</div>
-                    <div class="input-group input-group-sm mb-3">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon1">Let&apos;s Check</button>
-                        <input type="text" class="form-control form-control-bg" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" />
+                    <div class="my-3">
+                        <button class="btn btn-sm btn-outline-primary" type="button" id="button-addon1">Let&apos;s Check</button>
                     </div>
+                    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" style={{
+                            width: '0%',
+                            background: `linear-gradient(90deg, rgba(186,136,0,1) 0%, rgba(4,107,23,1) 50%, rgba(163,0,0,1) 100%);`
+                        }} />
+                    </div>
+
                 </li>
 
 
