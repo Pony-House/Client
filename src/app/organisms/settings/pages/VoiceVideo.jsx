@@ -48,21 +48,32 @@ const validatorVolume = (value) => {
 
 function VoiceVideoSection() {
 
+    // Prepare React
     const [devicesItem, setDevicesItem] = useState(null);
 
-    const [videoDevice, setVideoDevice] = useState(global.localStorage.getItem('tinyVideoDevice'));
+    const audioSelectRef = useRef(null);
+    const speakerSelectRef = useRef(null);
+    const videoSelectRef = useRef(null);
 
-    const [audioDevice, setAudioDevice] = useState(global.localStorage.getItem('tinyAudioDevice'));
-    const [speakerDevice, setSpeakerDevice] = useState(global.localStorage.getItem('tinySpeakerDevice'));
+    const videoMonitorRef = useRef(null);
 
     const audioVolumeRef = useRef(null);
     const speakerVolumeRef = useRef(null);
 
+    // Effects
     useEffect(() => {
 
+        // jQuery prepare
         const audioVolume = $(audioVolumeRef.current);
         const speakerVolume = $(speakerVolumeRef.current);
 
+        const videoMonitor = $(videoMonitorRef.current);
+
+        const videoSelect = $(videoSelectRef.current);
+        const speakerSelect = $(speakerSelectRef.current);
+        const audioSelect = $(audioSelectRef.current);
+
+        // Insert Volume
         let tinyAudioVolume = global.localStorage.getItem('tinyAudioVolume');
         let tinySpeakerVolume = global.localStorage.getItem('tinySpeakerVolume');
 
@@ -72,6 +83,20 @@ function VoiceVideoSection() {
         audioVolume.val(tinyAudioVolume);
         speakerVolume.val(tinySpeakerVolume);
 
+        // Insert Selectors
+        let tinyAudioDevice = global.localStorage.getItem('tinyAudioDevice');
+        let tinySpeakerDevice = global.localStorage.getItem('tinySpeakerDevice');
+        let tinyVideoVolume = global.localStorage.getItem('tinyVideoVolume');
+
+        if (typeof tinyAudioDevice !== 'string' || tinyAudioDevice.length < 1) tinyAudioDevice = 'default';
+        if (typeof tinySpeakerDevice !== 'string' || tinySpeakerDevice.length < 1) tinySpeakerDevice = 'default';
+        if (typeof tinyVideoVolume !== 'string' || tinyVideoVolume.length < 1) tinyVideoVolume = 'default';
+
+        videoSelect.val(tinyVideoVolume);
+        speakerSelect.val(tinySpeakerDevice);
+        audioSelect.val(tinyAudioDevice);
+
+        // Get Devices List
         if (!loadingDevices && devicesItem === null) {
             listDevices().then(devices2 => {
                 setDevicesItem(devices2);
@@ -87,6 +112,7 @@ function VoiceVideoSection() {
 
     });
 
+    // Complete Render
     return (<>
 
         <div className="card noselect">
@@ -100,7 +126,7 @@ function VoiceVideoSection() {
 
                         <div className='col-md-6'>
                             <div className='very-small text-uppercase fw-bold mb-2'>Input Device</div>
-                            <select class="form-select form-control-bg">
+                            <select ref={audioSelectRef} class="form-select form-control-bg">
                                 <option>Choose...</option>
                                 {devicesItem && Array.isArray(devicesItem.audio) && devicesItem.audio.length > 0 ?
                                     devicesItem.audio.map(item => <option value={item.deviceId}>{item.label}</option>)
@@ -110,7 +136,7 @@ function VoiceVideoSection() {
 
                         <div className='col-md-6'>
                             <div className='very-small text-uppercase fw-bold mb-2'>Output Device</div>
-                            <select class="form-select form-control-bg">
+                            <select ref={speakerSelectRef} class="form-select form-control-bg">
                                 <option>Choose...</option>
                                 {devicesItem && Array.isArray(devicesItem.speaker) && devicesItem.speaker.length > 0 ?
                                     devicesItem.speaker.map(item => <option value={item.deviceId}>{item.label}</option>)
@@ -161,14 +187,14 @@ function VoiceVideoSection() {
 
                 <li className="list-group-item border-0">
 
-                    <div className="ratio ratio-16x9 w-50 border border-bg mb-2">
+                    <div ref={videoMonitorRef} className="ratio ratio-16x9 w-50 border border-bg mb-2">
 
 
 
                     </div>
 
                     <div className='very-small text-uppercase fw-bold mb-2'>Camera</div>
-                    <select class="form-select form-control-bg">
+                    <select ref={videoSelectRef} class="form-select form-control-bg">
                         <option selected>Choose...</option>
                         {devicesItem && Array.isArray(devicesItem.video) && devicesItem.video.length > 0 ?
                             devicesItem.video.map(item => <option value={item.deviceId}>{item.label}</option>)
