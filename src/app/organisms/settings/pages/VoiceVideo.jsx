@@ -187,12 +187,7 @@ function VoiceVideoSection() {
 
                 <li className="list-group-item border-0">
 
-                    <div ref={videoMonitorRef} className="ratio ratio-16x9 w-50 border border-bg mb-2">
-
-
-
-                    </div>
-
+                    <div ref={videoMonitorRef} className="ratio ratio-16x9 w-50 border border-bg mb-2" />
                     <div className='very-small text-uppercase fw-bold mb-2'>Camera</div>
                     <select ref={videoSelectRef} class="form-select form-control-bg">
                         <option selected>Choose...</option>
