@@ -56,6 +56,7 @@ function VoiceVideoSection() {
     const videoSelectRef = useRef(null);
 
     const videoMonitorRef = useRef(null);
+    const audioMonitorRef = useRef(null);
 
     const audioVolumeRef = useRef(null);
     const speakerVolumeRef = useRef(null);
@@ -68,6 +69,7 @@ function VoiceVideoSection() {
         const speakerVolume = $(speakerVolumeRef.current);
 
         const videoMonitor = $(videoMonitorRef.current);
+        const audioMonitor = $(audioMonitorRef.current);
 
         const videoSelect = $(videoSelectRef.current);
         const speakerSelect = $(speakerSelectRef.current);
@@ -194,12 +196,15 @@ function VoiceVideoSection() {
                 </li>
 
                 <li className="list-group-item border-0">
+
                     <div className='very-small text-uppercase fw-bold mb-1'>Mic Test</div>
+
                     <div className='very-small mb-2'>Having mic issues? Start a test and say something fun. Your voice will be played back to you.</div>
                     <div class="my-3">
                         <button class="btn btn-sm btn-outline-primary" type="button" id="button-addon1">Let&apos;s Check</button>
                     </div>
-                    <div class="progress justify-content-end audio-progress-bar" role="progressbar">
+
+                    <div ref={audioMonitorRef} class="progress justify-content-end audio-progress-bar" role="progressbar">
                         <div class="progress-bar" style={{ width: '100%' }} />
                     </div>
 

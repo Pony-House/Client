@@ -880,6 +880,9 @@ function Message({
   const eventId = mEvent.getId();
   const msgType = content?.msgtype;
   const senderId = mEvent.getSender();
+  const yourId = mx.getUserId();
+
+  if (yourId === senderId) classList.push('your-message');
 
   let { body } = content;
 
