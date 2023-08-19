@@ -10,10 +10,16 @@ export default {
 
         items: [
 
+            '23:1',
+            '2019',
             '8469',
+
             'Vires in numerics',
             'Pika a boo!',
             'Yay!',
+
+            'Someone up there wants to help you.',
+            'Have you ever thought that he can forgive you?',
 
             'Have you ever tried typing 8469 on some old keyboard?',
             '8469 was JasminDreasond\'s old Discord discriminator. Tiny Jasmini#8469',
@@ -24,6 +30,14 @@ export default {
             'The founder of Pony House just started this project as a response to the country\'s government trying to censor the entire country\'s internet.',
             'Dont be silly! Do not use a letter as a name for your app.',
             'Do you know what an X-Tudo is for brazilians?',
+
+            'Do not give up.',
+            'It fills you with determination.',
+            'You are filled with determination.',
+
+            'Will gold be precious forever?',
+
+            'They will one day look at these messages.',
 
             'Why are you reading this?',
             'Looking for your ponies...',
@@ -37,6 +51,7 @@ export default {
 
             'The name of the founder of the Pony House project is JasminDreasond.',
             'The Pony House founder will always want your puddings! Keep your puddings safe!',
+
         ],
 
     }
