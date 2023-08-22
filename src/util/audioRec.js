@@ -32,7 +32,12 @@ const audioRecorder = {
         // Feature is supported in browser
 
         // create an audio stream
-        return navigator.mediaDevices.getUserMedia({ audio: true }/* of type MediaStreamConstraints */)
+        const tinyAudioDeviceUse = global.localStorage.getItem('tinyAudioDevice');
+        return navigator.mediaDevices.getUserMedia({
+            audio: {
+                deviceId: { exact: typeof tinyAudioDeviceUse === 'string' && tinyAudioDeviceUse.length > 0 ? tinyAudioDeviceUse : 'default' }
+            }
+        }/* of type MediaStreamConstraints */)
             // returns a promise that resolves to the audio stream
             .then(stream /* of type MediaStream */ => {
 

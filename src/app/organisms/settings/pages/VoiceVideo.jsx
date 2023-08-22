@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 let testingMicro = false;
-let aCtx;
-let microphone;
+let aCtx = null;
+let microphone = null;
+let stream;
 
 let loadingDevices = false;
 let devices;
@@ -49,6 +50,27 @@ const validatorVolume = (value) => {
     return 100;
 
 };
+
+// eslint-disable-next-line no-async-promise-executor
+const stopMicroTest = (testingValue = false) => new Promise(async (resolve, reject) => {
+    try {
+
+        if (stream) {
+            await stream.getTracks().forEach(async (track) => {
+                await track.stop();
+            });
+        }
+
+        microphone = null;
+        testingMicro = testingValue;
+        aCtx = null;
+
+        resolve(true);
+
+    } catch (err) {
+        reject(err);
+    }
+});
 
 function VoiceVideoSection() {
 
@@ -126,52 +148,72 @@ function VoiceVideoSection() {
 
             // Prepare Micro
             testMicroButton.removeClass('btn-outline-primary').removeClass('btn-outline-danger');
-            if (!testingMicro) {
+            if (!testingMicro && !microphone && !aCtx) {
+                stopMicroTest(true).then(() => {
 
-                // Get Value
-                testMicroButton.addClass('disabled');
-                const tinyAudioDeviceUse = global.localStorage.getItem('tinyAudioDevice');
+                    // Get Value
+                    testMicroButton.addClass('disabled');
+                    const tinyAudioDeviceUse = global.localStorage.getItem('tinyAudioDevice');
 
-                // Start Media
-                navigator.getUserMedia({
-                    audio: {
-                        deviceId: typeof tinyAudioDeviceUse === 'string' && tinyAudioDeviceUse.length > 0 ? tinyAudioDeviceUse : 'default'
+                    // Start Media
+                    navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia);
+                    navigator.getUserMedia({
+                        audio: {
+                            deviceId: { exact: typeof tinyAudioDeviceUse === 'string' && tinyAudioDeviceUse.length > 0 ? tinyAudioDeviceUse : 'default' }
+                        }
+                    }, (newStream) => {
+
+                        // End
+                        newStream.onended = () => {
+                            console.log('Stream ended');
+                        };
+
+                        stream = newStream;
+
+                        // Prepare Audio
+                        aCtx = new AudioContext();
+                        microphone = aCtx.createMediaStreamSource(stream);
+
+                        // Start Audio
+                        const destination = aCtx.destination;
+                        microphone.connect(destination);
+
+                        // Complete
+                        testMicroButton.addClass('btn-outline-danger');
+                        testMicroButton.removeClass('disabled');
+
+                    }, (err) => {
+
+
+
+                        testMicroButton.addClass('btn-outline-primary');
+                        testMicroButton.removeClass('disabled');
+
+                        console.error(err);
+                        alert(err.message);
                     }
-                }, (stream) => {
+                    );
 
-                    // Prepare Audio
-                    aCtx = new AudioContext();
-                    microphone = aCtx.createMediaStreamSource(stream);
-
-                    // Start Audio
-                    const destination = aCtx.destination;
-                    microphone.connect(destination);
-
-                    // Complete
-                    testMicroButton.addClass('btn-outline-danger');
-                    testMicroButton.removeClass('disabled');
-                    testingMicro = true;
-
-                }, (err) => {
-
-                    testingMicro = false;
-                    testMicroButton.addClass('btn-outline-primary');
-                    testMicroButton.removeClass('disabled');
-
+                }).catch(err => {
                     console.error(err);
                     alert(err.message);
-                }
-                );
-
-
+                });
             }
 
             // Disable
             else {
+                stopMicroTest(true).then(() => {
 
-                testingMicro = false;
-                testMicroButton.addClass('btn-outline-primary');
+                    aCtx = null;
+                    microphone = null;
+                    testingMicro = false;
 
+                    testMicroButton.addClass('btn-outline-primary');
+
+                }).catch(err => {
+                    console.error(err);
+                    alert(err.message);
+                });
             }
 
         };
