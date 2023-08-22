@@ -25,28 +25,26 @@ VolumeMeter.prototype.connectToSource = function (stream, hearVoice, callback) {
         this.stream = stream;
 
         this.mic = this.context.createMediaStreamSource(stream);
-        this.dest = this.context.createMediaStreamDestination();
-
         this.gainNode = this.context.createGain();
 
         this.mic.connect(this.gainNode);
-        this.gainNode.connect(this.dest);
-
         this.mic.connect(this.script);
 
         if (hearVoice) this.mic.connect(this.context.destination);
 
         this.script.connect(this.context.destination);
-        if (typeof callback !== 'undefined') {
+        if (typeof callback === 'function') {
             callback(null);
         }
 
-    } catch (e) {
-        // what to do on error?
+    } catch (err) {
+        console.error(err);
+        alert(err.message);
     }
 };
 
 VolumeMeter.prototype.setVolume = function (value) {
+    console.log(this.gainNode);
     if (this.gainNode) this.gainNode.gain.value = micVolumeFilter(value);
 };
 
