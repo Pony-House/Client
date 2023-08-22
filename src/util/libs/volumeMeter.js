@@ -13,14 +13,19 @@ function VolumeMeter(context) {
     };
 };
 
-VolumeMeter.prototype.connectToSource = function (stream, callback) {
+VolumeMeter.prototype.connectToSource = function (stream, hearVoice, callback) {
     try {
+
         this.mic = this.context.createMediaStreamSource(stream);
         this.mic.connect(this.script);
+
+        if (hearVoice) this.mic.connect(this.context.destination);
+
         this.script.connect(this.context.destination);
         if (typeof callback !== 'undefined') {
             callback(null);
         }
+
     } catch (e) {
         // what to do on error?
     }

@@ -180,7 +180,7 @@ function VoiceVideoSection() {
 
                         // Micro
                         microphone = new VolumeMeter(aCtx);
-                        microphone.connectToSource(newStream, () => {
+                        microphone.connectToSource(newStream, true, () => {
                             microInterval = setInterval(() => {
 
                                 let volumeValue = microphone.volume * 1000;
