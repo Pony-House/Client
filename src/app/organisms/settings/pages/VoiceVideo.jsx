@@ -82,7 +82,15 @@ function VoiceVideoSection() {
         tinyAudioVolume = validatorVolume(tinyAudioVolume);
         tinySpeakerVolume = validatorVolume(tinySpeakerVolume);
 
-        const updateTinyVolume = (target, where) => () => global.localStorage.setItem(where, target.val());
+        const updateTinyVolume = (target, where) => () => {
+
+            const oldValue = global.localStorage.getItem(where);
+            const newValue = target.val();
+
+            if (oldValue !== newValue) global.localStorage.setItem(where, newValue);
+
+        };
+
         audioVolume.val(tinyAudioVolume);
         speakerVolume.val(tinySpeakerVolume);
 

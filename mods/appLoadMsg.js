@@ -10,6 +10,7 @@ export default {
 
         items: [
 
+            '59:15',
             '23:1',
             '2019',
             '8469',
@@ -30,6 +31,8 @@ export default {
             'The founder of Pony House just started this project as a response to the country\'s government trying to censor the entire country\'s internet.',
             'Dont be silly! Do not use a letter as a name for your app.',
             'Do you know what an X-Tudo is for brazilians?',
+
+            'Never look at the moon in 2022. The moon melted and was never the same.',
 
             'Do not give up.',
             'It fills you with determination.',
