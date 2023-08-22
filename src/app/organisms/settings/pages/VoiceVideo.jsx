@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
+import VolumeMeter from '../../../../util/libs/volumeMeter';
 
 let testingMicro = false;
 let aCtx = null;
 let microphone = null;
+let microInterval = null;
 let stream;
 
 let loadingDevices = false;
@@ -52,7 +54,7 @@ const validatorVolume = (value) => {
 };
 
 // eslint-disable-next-line no-async-promise-executor
-const stopMicroTest = (testingValue = false) => new Promise(async (resolve, reject) => {
+const stopMicroTest = (testingValue = false, audioMonitor = null) => new Promise(async (resolve, reject) => {
     try {
 
         if (stream) {
@@ -61,9 +63,16 @@ const stopMicroTest = (testingValue = false) => new Promise(async (resolve, reje
             });
         }
 
+        if (audioMonitor) audioMonitor.find('.progress-bar').css('width', '100%');
+
         microphone = null;
         testingMicro = testingValue;
         aCtx = null;
+
+        if (microInterval) {
+            clearInterval(microInterval);
+            microInterval = null;
+        }
 
         resolve(true);
 
@@ -149,7 +158,7 @@ function VoiceVideoSection() {
             // Prepare Micro
             testMicroButton.removeClass('btn-outline-primary').removeClass('btn-outline-danger');
             if (!testingMicro && !microphone && !aCtx) {
-                stopMicroTest(true).then(() => {
+                stopMicroTest(true, audioMonitor).then(() => {
 
                     // Get Value
                     testMicroButton.addClass('disabled');
@@ -168,15 +177,19 @@ function VoiceVideoSection() {
 
                         // Prepare Audio
                         if (!aCtx) aCtx = new AudioContext();
-                        if (!microphone) {
 
-                            // Micro
-                            microphone = aCtx.createMediaStreamSource(stream);
+                        // Micro
+                        microphone = new VolumeMeter(aCtx);
+                        microphone.connectToSource(newStream, () => {
+                            microInterval = setInterval(() => {
 
-                            // Start Audio
-                            microphone.connect(aCtx.destination);
+                                let volumeValue = microphone.volume * 1000;
+                                volumeValue = volumeValue < 100 ? volumeValue > 0 ? volumeValue : 0 : 100;
 
-                        }
+                                audioMonitor.find('.progress-bar').css('width', `${100 - volumeValue}%`)
+
+                            }, 1);
+                        });
 
                         // Complete
                         testMicroButton.addClass('btn-outline-danger');
@@ -202,7 +215,7 @@ function VoiceVideoSection() {
 
             // Disable
             else {
-                stopMicroTest(true).then(() => {
+                stopMicroTest(true, audioMonitor).then(() => {
 
                     aCtx = null;
                     microphone = null;
