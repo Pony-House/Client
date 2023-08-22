@@ -163,20 +163,21 @@ function VoiceVideoSection() {
                         }
                     }, (newStream) => {
 
-                        // End
-                        newStream.onended = () => {
-                            console.log('Stream ended');
-                        };
-
+                        // Insert Stream
                         stream = newStream;
 
                         // Prepare Audio
-                        aCtx = new AudioContext();
-                        microphone = aCtx.createMediaStreamSource(stream);
+                        if (!aCtx) aCtx = new AudioContext();
+                        if (!microphone) {
 
-                        // Start Audio
-                        const destination = aCtx.destination;
-                        microphone.connect(destination);
+                            // Micro
+                            microphone = aCtx.createMediaStreamSource(stream);
+
+                            // Start Audio
+                            const destination = aCtx.destination;
+                            microphone.connect(destination);
+
+                        }
 
                         // Complete
                         testMicroButton.addClass('btn-outline-danger');
