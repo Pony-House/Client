@@ -4,10 +4,10 @@ const micVolumeFilter = (tinyVideoVolumeUse) => !Number.isNaN(tinyVideoVolumeUse
         : 100
     : 100;
 
-function VolumeMeter(context) {
-    this.context = context;
+function VolumeMeter() {
+    this.context = new AudioContext();
     this.volume = 0.0;
-    this.script = context.createScriptProcessor(2048, 1, 1);
+    this.script = this.context.createScriptProcessor(2048, 1, 1);
     const that = this;
     this.script.onaudioprocess = function (event) {
         const input = event.inputBuffer.getChannelData(0);

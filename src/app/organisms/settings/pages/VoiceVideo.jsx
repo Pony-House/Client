@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import VolumeMeter from '../../../../util/libs/volumeMeter';
 
 let testingMicro = false;
-let aCtx = null;
 let microphone = null;
 let microInterval = null;
 
@@ -61,7 +60,6 @@ const stopMicroTest = (testingValue = false, audioMonitor = null) => new Promise
 
         microphone = null;
         testingMicro = testingValue;
-        aCtx = null;
 
         if (microInterval) {
             clearInterval(microInterval);
@@ -152,7 +150,7 @@ function VoiceVideoSection() {
 
             // Prepare Micro
             testMicroButton.removeClass('btn-outline-primary').removeClass('btn-outline-danger');
-            if (!testingMicro && !microphone && !aCtx) {
+            if (!testingMicro && !microphone) {
                 stopMicroTest(true, audioMonitor).then(() => {
 
                     // Get Value
@@ -184,13 +182,9 @@ function VoiceVideoSection() {
                     }, (stream) => {
 
                         // Prepare Audio
-                        if (!aCtx) aCtx = new AudioContext();
-
-                        // Micro
-                        microphone = new VolumeMeter(aCtx);
-                        microphone.setVolume(Number(global.localStorage.getItem('tinyAudioDevice')));
-
+                        microphone = new VolumeMeter();
                         microphone.connectToSource(stream, true, () => {
+                            microphone.setVolume(Number(global.localStorage.getItem('tinyAudioDevice')));
                             microInterval = setInterval(() => {
 
                                 let volumeValue = microphone.volume * 1000;
@@ -227,7 +221,6 @@ function VoiceVideoSection() {
             else {
                 stopMicroTest(true, audioMonitor).then(() => {
 
-                    aCtx = null;
                     microphone = null;
                     testingMicro = false;
 
