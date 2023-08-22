@@ -5,7 +5,6 @@ let testingMicro = false;
 let aCtx = null;
 let microphone = null;
 let microInterval = null;
-let stream;
 
 let loadingDevices = false;
 let devices;
@@ -57,12 +56,7 @@ const validatorVolume = (value) => {
 const stopMicroTest = (testingValue = false, audioMonitor = null) => new Promise(async (resolve, reject) => {
     try {
 
-        if (stream) {
-            await stream.getTracks().forEach(async (track) => {
-                await track.stop();
-            });
-        }
-
+        if (microphone) await microphone.stop();
         if (audioMonitor) audioMonitor.find('.progress-bar').css('width', '100%');
 
         microphone = null;
@@ -80,13 +74,6 @@ const stopMicroTest = (testingValue = false, audioMonitor = null) => new Promise
         reject(err);
     }
 });
-
-// Volume Filter
-const micVolumeFilter = (tinyVideoVolumeUse) => !Number.isNaN(tinyVideoVolumeUse) && Number.isFinite(tinyVideoVolumeUse) ?
-    tinyVideoVolumeUse < 100 ?
-        tinyVideoVolumeUse > 0 ? tinyVideoVolumeUse : 0
-        : 100
-    : 100;
 
 function VoiceVideoSection() {
 
@@ -133,6 +120,7 @@ function VoiceVideoSection() {
             const newValue = target.val();
 
             if (oldValue !== newValue) global.localStorage.setItem(where, newValue);
+            if (microphone) microphone.setVolume(Number(newValue));
 
         };
 
@@ -193,17 +181,16 @@ function VoiceVideoSection() {
                             deviceId: { exact: typeof tinyAudioDeviceUse === 'string' && tinyAudioDeviceUse.length > 0 ? tinyAudioDeviceUse : 'default' }
 
                         }
-                    }, (newStream) => {
-
-                        // Insert Stream
-                        stream = newStream;
+                    }, (stream) => {
 
                         // Prepare Audio
                         if (!aCtx) aCtx = new AudioContext();
 
                         // Micro
                         microphone = new VolumeMeter(aCtx);
-                        microphone.connectToSource(newStream, true, () => {
+                        microphone.setVolume(Number(global.localStorage.getItem('tinyAudioDevice')));
+
+                        microphone.connectToSource(stream, true, () => {
                             microInterval = setInterval(() => {
 
                                 let volumeValue = microphone.volume * 1000;
