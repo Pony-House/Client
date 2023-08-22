@@ -22,18 +22,23 @@ function VolumeMeter() {
 VolumeMeter.prototype.connectToSource = function (stream, hearVoice, callback) {
     try {
 
+        // Stream
         this.stream = stream;
 
-        this.mic = this.context.createMediaStreamSource(stream);
+        // Source
+        this.source = this.context.createMediaStreamSource(stream);
+
+        // Effect
         this.gainNode = this.context.createGain();
         this.gainNode.gain.value = 1.0;
 
-        this.mic.connect(this.gainNode);
-        this.mic.connect(this.script);
+        // Connect Effects
+        this.source.connect(this.gainNode);
+        this.gainNode.connect(this.context.destination);
 
-        if (hearVoice) this.mic.connect(this.context.destination);
-
+        this.source.connect(this.script);
         this.script.connect(this.context.destination);
+
         if (typeof callback === 'function') {
             callback(null);
         }
@@ -54,8 +59,9 @@ VolumeMeter.prototype.stop = function () {
     return new Promise(async (resolve, reject) => {
         try {
 
-            that.mic.disconnect();
+            that.source.disconnect();
             that.script.disconnect();
+            this.gainNode.disconnect();
 
             if (that.stream) {
                 await that.stream.getTracks().forEach(async (track) => {
