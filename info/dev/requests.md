@@ -45,7 +45,7 @@ Made by Me
 
     =======================================================
 
-    --> Fazer funcionar a lista de videos e audios e salvar no localStorage
+    --> Fazer o volume da configuração do Microfone funcionar. Depois fazer o restante funcionar.
 
     --> Adicionar opção para suporte de thumbs com parametros de animação.
     --> Adicionar detecção desktop ao sistema de inativo do app.
