@@ -36,9 +36,13 @@ VolumeMeter.prototype.connectToSource = function (stream, hearVoice, callback) {
         this.source.connect(this.gainNode);
         this.gainNode.connect(this.context.destination);
 
-        this.source.connect(this.script);
+        // Connect Effect into script
+        this.gainNode.connect(this.script);
+
+        // Connect script into destination
         this.script.connect(this.context.destination);
 
+        // Complete
         if (typeof callback === 'function') {
             callback(null);
         }
