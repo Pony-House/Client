@@ -174,8 +174,7 @@ function VoiceVideoSection() {
                             microphone = aCtx.createMediaStreamSource(stream);
 
                             // Start Audio
-                            const destination = aCtx.destination;
-                            microphone.connect(destination);
+                            microphone.connect(aCtx.destination);
 
                         }
 
@@ -253,8 +252,7 @@ function VoiceVideoSection() {
             speakerVolume.off('change', updateSpeakerAudio);
 
             testMicroButton.off('click', tinyTestMicro);
-
-            testingMicro = false;
+            stopMicroTest();
 
         };
 
