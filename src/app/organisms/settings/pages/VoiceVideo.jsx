@@ -168,7 +168,23 @@ function VoiceVideoSection() {
                     navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia);
                     navigator.getUserMedia({
                         audio: {
+
+                            /*
+                            mandatory: {
+                                googEchoCancellation: false,
+                                googAutoGainControl: false,
+                                googNoiseSuppression: false,
+                                googHighpassFilter: false
+                            },
+                            */
+
+                            echoCancellation: false,
+                            autoGainControl: false,
+                            noiseSuppression: false,
+                            highpassFilter: false,
+
                             deviceId: { exact: typeof tinyAudioDeviceUse === 'string' && tinyAudioDeviceUse.length > 0 ? tinyAudioDeviceUse : 'default' }
+
                         }
                     }, (newStream) => {
 
