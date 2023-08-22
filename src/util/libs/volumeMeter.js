@@ -25,12 +25,12 @@ VolumeMeter.prototype.connectToSource = function (stream, hearVoice, callback) {
         this.stream = stream;
 
         this.mic = this.context.createMediaStreamSource(stream);
-        // this.dest = stream.createMediaStreamDestination();
+        this.dest = this.context.createMediaStreamDestination();
 
-        // this.gainNode = stream.createGain();
+        this.gainNode = this.context.createGain();
 
-        // this.mic.connect(this.gainNode);
-        // this.gainNode.connect(this.dest);
+        this.mic.connect(this.gainNode);
+        this.gainNode.connect(this.dest);
 
         this.mic.connect(this.script);
 

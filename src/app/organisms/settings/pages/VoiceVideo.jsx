@@ -184,7 +184,7 @@ function VoiceVideoSection() {
                         // Prepare Audio
                         microphone = new VolumeMeter();
                         microphone.connectToSource(stream, true, () => {
-                            microphone.setVolume(Number(global.localStorage.getItem('tinyAudioDevice')));
+                            microphone.setVolume(Number(global.localStorage.getItem('tinyAudioVolume')));
                             microInterval = setInterval(() => {
 
                                 let volumeValue = microphone.volume * 1000;
