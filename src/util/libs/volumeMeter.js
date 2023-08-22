@@ -1,8 +1,8 @@
-const micVolumeFilter = (tinyVideoVolumeUse) => !Number.isNaN(tinyVideoVolumeUse) && Number.isFinite(tinyVideoVolumeUse) ?
+const micVolumeFilter = (tinyVideoVolumeUse) => Number(!Number.isNaN(tinyVideoVolumeUse) && Number.isFinite(tinyVideoVolumeUse) ?
     tinyVideoVolumeUse < 100 ?
         tinyVideoVolumeUse > 0 ? tinyVideoVolumeUse : 0
         : 100
-    : 100;
+    : 100) / 100;
 
 function VolumeMeter() {
     this.context = new AudioContext();
@@ -26,6 +26,7 @@ VolumeMeter.prototype.connectToSource = function (stream, hearVoice, callback) {
 
         this.mic = this.context.createMediaStreamSource(stream);
         this.gainNode = this.context.createGain();
+        this.gainNode.gain.value = 1.0;
 
         this.mic.connect(this.gainNode);
         this.mic.connect(this.script);
@@ -44,7 +45,6 @@ VolumeMeter.prototype.connectToSource = function (stream, hearVoice, callback) {
 };
 
 VolumeMeter.prototype.setVolume = function (value) {
-    console.log(this.gainNode);
     if (this.gainNode) this.gainNode.gain.value = micVolumeFilter(value);
 };
 
