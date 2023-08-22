@@ -81,6 +81,13 @@ const stopMicroTest = (testingValue = false, audioMonitor = null) => new Promise
     }
 });
 
+// Volume Filter
+const micVolumeFilter = (tinyVideoVolumeUse) => !Number.isNaN(tinyVideoVolumeUse) && Number.isFinite(tinyVideoVolumeUse) ?
+    tinyVideoVolumeUse < 100 ?
+        tinyVideoVolumeUse > 0 ? tinyVideoVolumeUse : 0
+        : 100
+    : 100;
+
 function VoiceVideoSection() {
 
     // Prepare React
