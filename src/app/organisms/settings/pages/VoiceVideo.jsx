@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import VolumeMeter from '../../../../util/libs/volumeMeter';
+import SettingTile from '../../../molecules/setting-tile/SettingTile';
+import Toggle from '../../../atoms/button/Toggle';
+import { toggleActionLocal } from '../Api';
 
 let testingMicro = false;
 let microphone = null;
@@ -76,7 +79,10 @@ const stopMicroTest = (testingValue = false, audioMonitor = null) => new Promise
 function VoiceVideoSection() {
 
     // Prepare React
+    const audioMediaSettings = toggleActionLocal('ponyHouse-usermedia')();
     const [devicesItem, setDevicesItem] = useState(null);
+
+    const [echoCancellation, setEchoCancellation] = useState((audioMediaSettings.echoCancellation === true));
 
     const audioSelectRef = useRef(null);
     const speakerSelectRef = useRef(null);
@@ -369,6 +375,26 @@ function VoiceVideoSection() {
                     </select>
 
                 </li>
+
+            </ul>
+        </div>
+
+        <div className="card noselect mt-3">
+            <ul className="list-group list-group-flush">
+
+                <li className="list-group-item very-small text-gray">User Media Settings</li>
+
+                <SettingTile
+                    title="Echo Cancellation"
+                    options={(
+                        <Toggle
+                            className='d-inline-flex'
+                            isActive={echoCancellation}
+                            onToggle={toggleActionLocal('ponyHouse-usermedia', 'echoCancellation', setEchoCancellation)}
+                        />
+                    )}
+                    content={<div className="very-small text-gray">Yay</div>}
+                />
 
             </ul>
         </div>

@@ -1,3 +1,4 @@
+import { objType } from '../../../util/tools';
 import initMatrix from '../../../client/initMatrix';
 
 const toggleAction = (dataFolder, valueName, setToggle) => data => {
@@ -10,4 +11,33 @@ const toggleAction = (dataFolder, valueName, setToggle) => data => {
 
 };
 
-export { toggleAction };
+const toggleActionLocal = (dataFolder, valueName, setToggle) => data => {
+
+    let content = global.localStorage.getItem(dataFolder);
+
+    try {
+        content = JSON.parse(content) ?? {};
+    } catch (err) {
+        content = {};
+    }
+
+    if (!objType(content, 'object')) { content = {}; }
+    if (typeof setToggle !== 'undefined') {
+
+        content[valueName] = data;
+
+        global.localStorage.setItem(dataFolder, JSON.stringify(content));
+        setToggle((data === true));
+        return;
+
+    }
+
+    if (valueName) {
+        return content[valueName];
+    }
+
+    return content;
+
+};
+
+export { toggleAction, toggleActionLocal };
