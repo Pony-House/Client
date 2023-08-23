@@ -83,6 +83,7 @@ function VoiceVideoSection() {
     const [devicesItem, setDevicesItem] = useState(null);
 
     const [echoCancellation, setEchoCancellation] = useState((audioMediaSettings.echoCancellation === true));
+    const [noiseSuppression, setNoiseSuppression] = useState((audioMediaSettings.noiseSuppression === true));
 
     const audioSelectRef = useRef(null);
     const speakerSelectRef = useRef(null);
@@ -278,7 +279,9 @@ function VoiceVideoSection() {
             speakerVolume.off('change', updateSpeakerAudio);
 
             testMicroButton.off('click', tinyTestMicro);
-            stopMicroTest();
+
+            testMicroButton.removeClass('btn-outline-primary').removeClass('btn-outline-danger').addClass('btn-outline-primary');
+            stopMicroTest(false, audioMonitor);
 
         };
 
@@ -393,7 +396,19 @@ function VoiceVideoSection() {
                             onToggle={toggleActionLocal('ponyHouse-usermedia', 'echoCancellation', setEchoCancellation)}
                         />
                     )}
-                    content={<div className="very-small text-gray">Yay</div>}
+                    content={<div className="very-small text-gray">Echo cancellation is a feature which attempts to prevent echo effects on a two-way audio connection by attempting to reduce or eliminate crosstalk between the user's output device and their input device.</div>}
+                />
+
+                <SettingTile
+                    title="Noise Suppression"
+                    options={(
+                        <Toggle
+                            className='d-inline-flex'
+                            isActive={noiseSuppression}
+                            onToggle={toggleActionLocal('ponyHouse-usermedia', 'noiseSuppression', setNoiseSuppression)}
+                        />
+                    )}
+                    content={<div className="very-small text-gray">Noise suppression automatically filters the audio to remove background noise, hum caused by equipment.</div>}
                 />
 
             </ul>
