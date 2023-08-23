@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import VolumeMeter from '../../../../util/libs/volumeMeter';
-import SettingTile from '../../../molecules/setting-tile/SettingTile';
-import Toggle from '../../../atoms/button/Toggle';
-import { toggleActionLocal } from '../Api';
+import VolumeMeter from '../../../../../util/libs/volumeMeter';
+import SettingTile from '../../../../molecules/setting-tile/SettingTile';
+import Toggle from '../../../../atoms/button/Toggle';
+import { toggleActionLocal } from '../../Api';
 
 let testingMicro = false;
 let microphone = null;
