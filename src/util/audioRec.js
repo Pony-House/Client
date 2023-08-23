@@ -1,3 +1,5 @@
+import { toggleActionLocal } from "../app/organisms/settings/Api";
+
 // Console Values
 const prefixConsole = (text, type = 'log') => console[type](`[audioRec.js] ${text}`);
 
@@ -33,9 +35,12 @@ const audioRecorder = {
 
         // create an audio stream
         const tinyAudioDeviceUse = global.localStorage.getItem('tinyAudioDevice');
+        const audioMediaSettings = toggleActionLocal('ponyHouse-usermedia')();
         return navigator.mediaDevices.getUserMedia({
             audio: {
-                deviceId: { exact: typeof tinyAudioDeviceUse === 'string' && tinyAudioDeviceUse.length > 0 ? tinyAudioDeviceUse : 'default' }
+                deviceId: { exact: typeof tinyAudioDeviceUse === 'string' && tinyAudioDeviceUse.length > 0 ? tinyAudioDeviceUse : 'default' },
+                echoCancellation: (audioMediaSettings.echoCancellation === true),
+                noiseSuppression: (audioMediaSettings.noiseSuppression === true),
             }
         }/* of type MediaStreamConstraints */)
             // returns a promise that resolves to the audio stream
