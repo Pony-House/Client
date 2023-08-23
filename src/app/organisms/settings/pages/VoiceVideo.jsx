@@ -105,52 +105,12 @@ function VoiceVideoSection() {
         const speakerSelect = $(speakerSelectRef.current);
         const audioSelect = $(audioSelectRef.current);
 
-        // Insert Volume
-        let tinyAudioVolume = global.localStorage.getItem('tinyAudioVolume');
-        let tinySpeakerVolume = global.localStorage.getItem('tinySpeakerVolume');
-
-        tinyAudioVolume = validatorVolume(tinyAudioVolume);
-        tinySpeakerVolume = validatorVolume(tinySpeakerVolume);
-
-        const updateTinyVolume = (target, where) => () => {
-
-            const oldValue = global.localStorage.getItem(where);
-            const newValue = target.val();
-
-            if (oldValue !== newValue) global.localStorage.setItem(where, newValue);
-            if (microphone) microphone.setVolume(Number(newValue));
-
-        };
-
-        audioVolume.val(tinyAudioVolume);
-        speakerVolume.val(tinySpeakerVolume);
-
-        const updateVolAudio = updateTinyVolume(audioVolume, 'tinyAudioVolume');
-        const updateSpeakerAudio = updateTinyVolume(speakerVolume, 'tinySpeakerVolume');
-
-        // Insert Selectors
-        let tinyAudioDevice = global.localStorage.getItem('tinyAudioDevice');
-        let tinySpeakerDevice = global.localStorage.getItem('tinySpeakerDevice');
-        let tinyVideoVolume = global.localStorage.getItem('tinyVideoVolume');
-
-        if (typeof tinyAudioDevice !== 'string' || tinyAudioDevice.length < 1) tinyAudioDevice = 'default';
-        if (typeof tinySpeakerDevice !== 'string' || tinySpeakerDevice.length < 1) tinySpeakerDevice = 'default';
-        if (typeof tinyVideoVolume !== 'string' || tinyVideoVolume.length < 1) tinyVideoVolume = 'default';
-
-        videoSelect.val(tinyVideoVolume);
-        speakerSelect.val(tinySpeakerDevice);
-        audioSelect.val(tinyAudioDevice);
-
-        const updateVolDevice = updateTinyVolume(audioSelect, 'tinyAudioDevice');
-        const updateSpeakerDevice = updateTinyVolume(speakerSelect, 'tinySpeakerDevice');
-        const updateVideoDevice = updateTinyVolume(videoSelect, 'tinyVideoVolume');
-
         // Test Microphone
-        const tinyTestMicro = () => {
+        const tinyTestMicro = (forced = false) => {
 
             // Prepare Micro
             testMicroButton.removeClass('btn-outline-primary').removeClass('btn-outline-danger');
-            if (!testingMicro && !microphone) {
+            if ((!testingMicro && !microphone) || (typeof forced === 'boolean' && forced)) {
                 stopMicroTest(true, audioMonitor).then(() => {
 
                     // Get Value
@@ -233,6 +193,50 @@ function VoiceVideoSection() {
             }
 
         };
+
+        // Insert Volume
+        let tinyAudioVolume = global.localStorage.getItem('tinyAudioVolume');
+        let tinySpeakerVolume = global.localStorage.getItem('tinySpeakerVolume');
+
+        tinyAudioVolume = validatorVolume(tinyAudioVolume);
+        tinySpeakerVolume = validatorVolume(tinySpeakerVolume);
+
+        const updateTinyVolume = (target, where, updateVolume = false, forceUpdate = false) => () => {
+
+            const oldValue = global.localStorage.getItem(where);
+            const newValue = target.val();
+
+            if (oldValue !== newValue) global.localStorage.setItem(where, newValue);
+            if (updateVolume && microphone) microphone.setVolume(Number(newValue));
+
+            if (testingMicro && microphone && forceUpdate) {
+                tinyTestMicro(true);
+            }
+
+        };
+
+        audioVolume.val(tinyAudioVolume);
+        speakerVolume.val(tinySpeakerVolume);
+
+        const updateVolAudio = updateTinyVolume(audioVolume, 'tinyAudioVolume', true);
+        const updateSpeakerAudio = updateTinyVolume(speakerVolume, 'tinySpeakerVolume');
+
+        // Insert Selectors
+        let tinyAudioDevice = global.localStorage.getItem('tinyAudioDevice');
+        let tinySpeakerDevice = global.localStorage.getItem('tinySpeakerDevice');
+        let tinyVideoVolume = global.localStorage.getItem('tinyVideoVolume');
+
+        if (typeof tinyAudioDevice !== 'string' || tinyAudioDevice.length < 1) tinyAudioDevice = 'default';
+        if (typeof tinySpeakerDevice !== 'string' || tinySpeakerDevice.length < 1) tinySpeakerDevice = 'default';
+        if (typeof tinyVideoVolume !== 'string' || tinyVideoVolume.length < 1) tinyVideoVolume = 'default';
+
+        videoSelect.val(tinyVideoVolume);
+        speakerSelect.val(tinySpeakerDevice);
+        audioSelect.val(tinyAudioDevice);
+
+        const updateVolDevice = updateTinyVolume(audioSelect, 'tinyAudioDevice', false, true);
+        const updateSpeakerDevice = updateTinyVolume(speakerSelect, 'tinySpeakerDevice', false, true);
+        const updateVideoDevice = updateTinyVolume(videoSelect, 'tinyVideoVolume');
 
         // Get Devices List
         if (!loadingDevices && devicesItem === null) {
