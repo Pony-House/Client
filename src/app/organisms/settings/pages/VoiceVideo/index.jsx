@@ -77,6 +77,12 @@ const stopMicroTest = (testingValue = false, audioMonitor = null) => new Promise
     }
 });
 
+const stopWebcamTest = () => {
+
+
+
+};
+
 function VoiceVideoSection() {
 
     // Prepare React
@@ -119,8 +125,29 @@ function VoiceVideoSection() {
         // Test Webcam
         const tinyTestWebcam = () => {
 
-            // Clear Base
-            videoMonitorRef.empty();
+            // Start
+            testWebcamButton.addClass('disabled');
+            const tinyVideoDeviceUse = global.localStorage.getItem('tinyVideoDevice');
+
+            // Start Media
+            navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia);
+            navigator.getUserMedia({
+                video: {
+
+                    deviceId: { exact: typeof tinyVideoDeviceUse === 'string' && tinyVideoDeviceUse.length > 0 ? tinyVideoDeviceUse : 'default' }
+
+                }
+            }, (stream) => {
+
+                const video = $('<video>', { class: 'h-100 w-100' }).prop('autoplay', true);
+                videoMonitor.empty().append(video);
+                video[0].srcObject = stream;
+
+            }, (err) => {
+                testWebcamButton.removeClass('disabled');
+                console.error(err);
+                alert(err.message);
+            });
 
         };
 
@@ -180,15 +207,12 @@ function VoiceVideoSection() {
 
                     }, (err) => {
 
-
-
                         testMicroButton.addClass('btn-outline-primary');
                         testMicroButton.removeClass('disabled');
 
                         console.error(err);
                         alert(err.message);
-                    }
-                    );
+                    });
 
                 }).catch(err => {
                     console.error(err);
@@ -243,19 +267,19 @@ function VoiceVideoSection() {
         // Insert Selectors
         let tinyAudioDevice = global.localStorage.getItem('tinyAudioDevice');
         let tinySpeakerDevice = global.localStorage.getItem('tinySpeakerDevice');
-        let tinyVideoVolume = global.localStorage.getItem('tinyVideoVolume');
+        let tinyVideoDevice = global.localStorage.getItem('tinyVideoDevice');
 
         if (typeof tinyAudioDevice !== 'string' || tinyAudioDevice.length < 1) tinyAudioDevice = 'default';
         if (typeof tinySpeakerDevice !== 'string' || tinySpeakerDevice.length < 1) tinySpeakerDevice = 'default';
-        if (typeof tinyVideoVolume !== 'string' || tinyVideoVolume.length < 1) tinyVideoVolume = 'default';
+        if (typeof tinyVideoDevice !== 'string' || tinyVideoDevice.length < 1) tinyVideoDevice = 'default';
 
-        videoSelect.val(tinyVideoVolume);
+        videoSelect.val(tinyVideoDevice);
         speakerSelect.val(tinySpeakerDevice);
         audioSelect.val(tinyAudioDevice);
 
         const updateVolDevice = updateTinyVolume(audioSelect, 'tinyAudioDevice', false, true);
         const updateSpeakerDevice = updateTinyVolume(speakerSelect, 'tinySpeakerDevice', false, true);
-        const updateVideoDevice = updateTinyVolume(videoSelect, 'tinyVideoVolume');
+        const updateVideoDevice = updateTinyVolume(videoSelect, 'tinyVideoDevice');
 
         // Get Devices List
         if (!loadingDevices && devicesItem === null) {
@@ -383,7 +407,7 @@ function VoiceVideoSection() {
                 <li className="list-group-item border-0">
                     <center>
                         <div className="ratio ratio-16x9 w-50 border border-bg mb-2">
-                            <div ref={videoMonitorRef} className='d-flex justify-content-center align-items-center text-center tiny-welcome'>
+                            <div ref={videoMonitorRef} className='d-flex justify-content-center align-items-center text-center'>
 
                                 <Button
                                     ref={testWebcamRefButton}
