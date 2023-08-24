@@ -7,8 +7,8 @@ import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
 const Button = React.forwardRef(({
   id, className, variant, iconSrc, faSrc,
-  type, onClick, children, disabled, size, ref
-}) => {
+  type, onClick, children, disabled, size
+}, ref) => {
 
   const iconClass = (iconSrc === null) ? '' : `btn-${variant}--icon`;
 

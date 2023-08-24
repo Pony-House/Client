@@ -5,7 +5,6 @@ import Toggle from '../../../../atoms/button/Toggle';
 import Button from '../../../../atoms/button/Button';
 import { toggleActionLocal } from '../../Api';
 
-let testingWebcam = false;
 let testingMicro = false;
 let microphone = null;
 let microInterval = null;
@@ -120,7 +119,8 @@ function VoiceVideoSection() {
         // Test Webcam
         const tinyTestWebcam = () => {
 
-
+            // Clear Base
+            videoMonitorRef.empty();
 
         };
 
@@ -382,21 +382,17 @@ function VoiceVideoSection() {
 
                 <li className="list-group-item border-0">
                     <center>
-                        <div ref={videoMonitorRef} className="ratio ratio-16x9 w-50 border border-bg mb-2">
-                            <div className='d-flex justify-content-center align-items-center text-center tiny-welcome'>
+                        <div className="ratio ratio-16x9 w-50 border border-bg mb-2">
+                            <div ref={videoMonitorRef} className='d-flex justify-content-center align-items-center text-center tiny-welcome'>
 
-                                {!testingWebcam ?
-
-                                    <Button
-                                        ref={testWebcamRefButton}
-                                        variant='primary'
-                                        className='btn-sm'
-                                        size="extra-small"
-                                        tooltip="Open in new tab"
-                                        faSrc="fa-solid fa-video"
-                                    >Test Video</Button>
-
-                                    : null}
+                                <Button
+                                    ref={testWebcamRefButton}
+                                    variant='primary'
+                                    className='btn-sm'
+                                    size="extra-small"
+                                    tooltip="Open in new tab"
+                                    faSrc="fa-solid fa-video"
+                                >Test Video</Button>
 
                             </div>
                         </div>
