@@ -45,8 +45,6 @@ Made by Me
 
     =======================================================
 
-    --> Fazer o volume da configuração do Microfone funcionar. Depois fazer o restante funcionar.
-
     --> Adicionar opção para suporte de thumbs com parametros de animação.
     --> Adicionar detecção desktop ao sistema de inativo do app.
     --> Fazer a opção para o app iniciar sozinho com o sistema operacional.

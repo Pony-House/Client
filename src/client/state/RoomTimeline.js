@@ -4,6 +4,8 @@ import cons from './cons';
 
 import settings from './settings';
 
+let timeoutForceChatbox = null;
+
 function isEdited(mEvent) {
   return mEvent.getRelation()?.rel_type === 'm.replace';
 }
@@ -170,20 +172,31 @@ class RoomTimeline extends EventEmitter {
   }
 
   async loadEventTimeline(eventId) {
+
     // we use first unfiltered EventTimelineSet for room pagination.
     $('body').addClass('force-no-chatbox-top-page');
+    if (timeoutForceChatbox) {
+      clearTimeout(timeoutForceChatbox);
+    }
+
     const timelineSet = this.getUnfilteredTimelineSet();
+
     try {
+
       const eventTimeline = await this.matrixClient.getEventTimeline(timelineSet, eventId);
       this.activeTimeline = eventTimeline;
       await this._reset();
       this.emit(cons.events.roomTimeline.READY, eventId);
-      $('body').removeClass('force-no-chatbox-top-page');
+
+      timeoutForceChatbox = setTimeout(() => $('body').removeClass('force-no-chatbox-top-page'), 500);
+
       return true;
+
     } catch {
-      $('body').removeClass('force-no-chatbox-top-page');
+      timeoutForceChatbox = setTimeout(() => $('body').removeClass('force-no-chatbox-top-page'), 500);
       return false;
     }
+
   }
 
   async paginateTimeline(backwards = false, limit = 30) {
