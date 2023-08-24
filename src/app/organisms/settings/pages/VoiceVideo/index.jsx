@@ -140,7 +140,7 @@ function VoiceVideoSection() {
             }, (stream) => {
 
                 const video = $('<video>', { class: 'h-100 w-100' }).prop('autoplay', true);
-                videoMonitor.empty().append(video);
+                videoMonitor.empty().append(video).css('background-color', '#000');
                 video[0].srcObject = stream;
 
             }, (err) => {
@@ -449,7 +449,7 @@ function VoiceVideoSection() {
                             onToggle={toggleActionLocal('ponyHouse-usermedia', 'echoCancellation', setEchoCancellation)}
                         />
                     )}
-                    content={<div className="very-small text-gray">Echo cancellation is a feature which attempts to prevent echo effects on a two-way audio connection by attempting to reduce or eliminate crosstalk between the user's output device and their input device.</div>}
+                    content={<div className="very-small text-gray">Echo cancellation is a feature which attempts to prevent echo effects on a two-way audio connection by attempting to reduce or eliminate crosstalk between the user&apos;s output device and their input device.</div>}
                 />
 
                 <SettingTile
