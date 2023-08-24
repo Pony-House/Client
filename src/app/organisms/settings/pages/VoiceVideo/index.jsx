@@ -88,7 +88,8 @@ const stopWebcamTest = (stream) => new Promise(async (resolve, reject) => {
             });
         }
 
-        resolve();
+        webcamStream = null;
+        resolve(true);
 
     } catch (err) {
         reject(err);
