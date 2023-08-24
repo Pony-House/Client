@@ -1,17 +1,24 @@
+import { compareVersions } from 'compare-versions';
+
 const cons = {
+
   version: '1.3.19',
+
   secretKey: {
     ACCESS_TOKEN: 'cinny_access_token',
     DEVICE_ID: 'cinny_device_id',
     USER_ID: 'cinny_user_id',
     BASE_URL: 'cinny_hs_base_url',
   },
+
   DEVICE_DISPLAY_NAME: __ENV_APP__.info.name,
   IN_CINNY_SPACES: 'in.cinny.spaces',
+
   tabs: {
     HOME: 'home',
     DIRECTS: 'dm',
   },
+
   supportEventTypes: [
     'm.room.create',
     'm.room.message',
@@ -19,23 +26,28 @@ const cons = {
     'm.room.member',
     'm.sticker',
   ],
+
   supportReceiptTypes: [
     'm.read',
     'm.read.private',
   ],
+
   notifs: {
     DEFAULT: 'default',
     ALL_MESSAGES: 'all_messages',
     MENTIONS_AND_KEYWORDS: 'mentions_and_keywords',
     MUTE: 'mute',
   },
+
   status: {
     PRE_FLIGHT: 'pre-flight',
     IN_FLIGHT: 'in-flight',
     SUCCESS: 'success',
     ERROR: 'error',
   },
+
   actions: {
+
     navigation: {
       UPDATE_EMOJI_LIST_DATA: 'UPDATE_EMOJI_LIST_DATA',
       UPDATE_EMOJI_LIST: 'UPDATE_EMOJI_LIST',
@@ -69,11 +81,13 @@ const cons = {
       CONSOLE_NEW_DATA: 'CONSOLE_NEW_DATA',
       CONSOLE_UPDATE: 'CONSOLE_UPDATE',
     },
+
     room: {
       JOIN: 'JOIN',
       LEAVE: 'LEAVE',
       CREATE: 'CREATE',
     },
+
     accountData: {
       CREATE_SPACE_SHORTCUT: 'CREATE_SPACE_SHORTCUT',
       DELETE_SPACE_SHORTCUT: 'DELETE_SPACE_SHORTCUT',
@@ -81,6 +95,7 @@ const cons = {
       CATEGORIZE_SPACE: 'CATEGORIZE_SPACE',
       UNCATEGORIZE_SPACE: 'UNCATEGORIZE_SPACE',
     },
+
     settings: {
       TOGGLE_SYSTEM_THEME: 'TOGGLE_SYSTEM_THEME',
       TOGGLE_MARKDOWN: 'TOGGLE_MARKDOWN',
@@ -90,8 +105,11 @@ const cons = {
       TOGGLE_NOTIFICATIONS: 'TOGGLE_NOTIFICATIONS',
       TOGGLE_NOTIFICATION_SOUNDS: 'TOGGLE_NOTIFICATION_SOUNDS',
     },
+
   },
+
   events: {
+
     navigation: {
       CONSOLE_REMOVED_DATA: 'CONSOLE_REMOVED_DATA',
       CONSOLE_NEW_DATA_CREATED: 'CONSOLE_NEW_DATA_CREATED',
@@ -125,6 +143,7 @@ const cons = {
       EMOJI_VERIFICATION_OPENED: 'EMOJI_VERIFICATION_OPENED',
       PROFILE_UPDATED: 'PROFILE_UPDATED',
     },
+
     roomList: {
       ROOMLIST_UPDATED: 'ROOMLIST_UPDATED',
       INVITELIST_UPDATED: 'INVITELIST_UPDATED',
@@ -133,15 +152,18 @@ const cons = {
       ROOM_CREATED: 'ROOM_CREATED',
       ROOM_PROFILE_UPDATED: 'ROOM_PROFILE_UPDATED',
     },
+
     accountData: {
       SPACE_SHORTCUT_UPDATED: 'SPACE_SHORTCUT_UPDATED',
       CATEGORIZE_SPACE_UPDATED: 'CATEGORIZE_SPACE_UPDATED',
     },
+
     notifications: {
       NOTI_CHANGED: 'NOTI_CHANGED',
       FULL_READ: 'FULL_READ',
       MUTE_TOGGLED: 'MUTE_TOGGLED',
     },
+
     roomTimeline: {
       READY: 'READY',
       EVENT: 'EVENT',
@@ -152,6 +174,7 @@ const cons = {
       AT_BOTTOM: 'AT_BOTTOM',
       SCROLL_TO_LIVE: 'SCROLL_TO_LIVE',
     },
+
     roomsInput: {
       MESSAGE_SENT: 'MESSAGE_SENT',
       ATTACHMENT_SET: 'ATTACHMENT_SET',
@@ -160,6 +183,7 @@ const cons = {
       FILE_UPLOAD_CANCELED: 'FILE_UPLOAD_CANCELED',
       ATTACHMENT_CANCELED: 'ATTACHMENT_CANCELED',
     },
+
     settings: {
       SYSTEM_THEME_TOGGLED: 'SYSTEM_THEME_TOGGLED',
       MARKDOWN_TOGGLED: 'MARKDOWN_TOGGLED',
@@ -169,9 +193,41 @@ const cons = {
       NOTIFICATIONS_TOGGLED: 'NOTIFICATIONS_TOGGLED',
       NOTIFICATION_SOUNDS_TOGGLED: 'NOTIFICATION_SOUNDS_TOGGLED',
     },
+
   },
+
 };
 
 Object.freeze(cons);
+
+// https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repository-tags
+global.checkVersions = () => new Promise((resolve, reject) => {
+
+  fetch(`https://api.github.com/repos/Pony-House/Client/tags`, {
+    method: 'GET',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/vnd.github+json',
+    },
+  }).then(response => {
+    response.json().then((data) => {
+      if (Array.isArray(data) && data.length > 0) {
+        resolve({
+          data, // Data Viewer
+          value: data[0], // Data selected
+          comparation: compareVersions(data[0].name, cons.version), // Version Compare
+        });
+      } else {
+        resolve({
+          data: null,
+          comparation: null,
+        });
+      }
+    }).catch(reject);
+  }).catch(reject);
+
+});
 
 export default cons;

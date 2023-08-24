@@ -62,6 +62,7 @@
     "bootstrap-icons": "1.10.5",
     "browser-encrypt-attachment": "0.3.0",
     "clone": "2.1.2",
+    "compare-versions": "6.1.0",
     "console-log-colors": "0.4.0",
     "cross-env": "7.0.3",
     "electron-updater": "6.1.1",

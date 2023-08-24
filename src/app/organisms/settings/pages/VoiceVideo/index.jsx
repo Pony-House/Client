@@ -79,7 +79,7 @@ const stopMicroTest = (testingValue = false, audioMonitor = null) => new Promise
 });
 
 // eslint-disable-next-line no-async-promise-executor
-const stopWebcamTest = (stream) => new Promise(async (resolve, reject) => {
+const stopWebcamTest = () => new Promise(async (resolve, reject) => {
     try {
 
         if (webcamStream) {
