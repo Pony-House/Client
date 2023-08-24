@@ -5,6 +5,7 @@ import Toggle from '../../../../atoms/button/Toggle';
 import Button from '../../../../atoms/button/Button';
 import { toggleActionLocal } from '../../Api';
 
+let webcamStream = null;
 let testingMicro = false;
 let microphone = null;
 let microInterval = null;
@@ -77,11 +78,22 @@ const stopMicroTest = (testingValue = false, audioMonitor = null) => new Promise
     }
 });
 
-const stopWebcamTest = () => {
+// eslint-disable-next-line no-async-promise-executor
+const stopWebcamTest = (stream) => new Promise(async (resolve, reject) => {
+    try {
 
+        if (webcamStream) {
+            await webcamStream.getTracks().forEach(async (track) => {
+                await track.stop();
+            });
+        }
 
+        resolve();
 
-};
+    } catch (err) {
+        reject(err);
+    }
+});
 
 function VoiceVideoSection() {
 
@@ -139,6 +151,7 @@ function VoiceVideoSection() {
                 }
             }, (stream) => {
 
+                webcamStream = stream;
                 const video = $('<video>', { class: 'h-100 w-100' }).prop('autoplay', true);
                 videoMonitor.empty().append(video).css('background-color', '#000');
                 video[0].srcObject = stream;
@@ -320,6 +333,7 @@ function VoiceVideoSection() {
 
             testMicroButton.removeClass('btn-outline-primary').removeClass('btn-outline-danger').addClass('btn-outline-primary');
             stopMicroTest(false, audioMonitor);
+            stopWebcamTest();
 
         };
 
