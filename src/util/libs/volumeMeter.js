@@ -54,7 +54,9 @@ VolumeMeter.prototype.connectToSource = function (stream, hearVoice, callback) {
 };
 
 VolumeMeter.prototype.setVolume = function (value) {
-    if (this.gainNode) this.gainNode.gain.value = micVolumeFilter(value);
+    if (this.gainNode) this.gainNode.gain.value = typeof value === 'number' || (
+        typeof value === 'string' && value.length > 0
+    ) ? micVolumeFilter(Number(value)) : 1.0;
 };
 
 VolumeMeter.prototype.stop = function () {

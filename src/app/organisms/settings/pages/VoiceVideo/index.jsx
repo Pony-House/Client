@@ -204,7 +204,7 @@ function VoiceVideoSection() {
                         // Prepare Audio
                         microphone = new VolumeMeter();
                         microphone.connectToSource(stream, true, () => {
-                            microphone.setVolume(Number(global.localStorage.getItem('tinyAudioVolume')));
+                            microphone.setVolume(global.localStorage.getItem('tinyAudioVolume'));
                             microInterval = setInterval(() => {
 
                                 let volumeValue = microphone.volume * 1000;
@@ -264,7 +264,7 @@ function VoiceVideoSection() {
             const newValue = target.val();
 
             if (oldValue !== newValue) global.localStorage.setItem(where, newValue);
-            if (updateVolume && microphone) microphone.setVolume(Number(newValue));
+            if (updateVolume && microphone) microphone.setVolume(newValue);
 
             if (testingMicro && microphone && forceUpdate) {
                 tinyTestMicro(true);
