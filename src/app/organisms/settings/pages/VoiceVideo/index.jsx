@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import VolumeMeter from '../../../../../util/libs/volumeMeter';
 import SettingTile from '../../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../../atoms/button/Toggle';
+import Button from '../../../../atoms/button/Button';
 import { toggleActionLocal } from '../../Api';
 
+let testingWebcam = false;
 let testingMicro = false;
 let microphone = null;
 let microInterval = null;
@@ -94,13 +96,16 @@ function VoiceVideoSection() {
 
     const audioVolumeRef = useRef(null);
     const speakerVolumeRef = useRef(null);
+
     const testMicroRefButton = useRef(null);
+    const testWebcamRefButton = useRef(null);
 
     // Effects
     useEffect(() => {
 
         // jQuery prepare
         const testMicroButton = $(testMicroRefButton.current);
+        const testWebcamButton = $(testWebcamRefButton.current);
 
         const audioVolume = $(audioVolumeRef.current);
         const speakerVolume = $(speakerVolumeRef.current);
@@ -111,6 +116,13 @@ function VoiceVideoSection() {
         const videoSelect = $(videoSelectRef.current);
         const speakerSelect = $(speakerSelectRef.current);
         const audioSelect = $(audioSelectRef.current);
+
+        // Test Webcam
+        const tinyTestWebcam = () => {
+
+
+
+        };
 
         // Test Microphone
         const tinyTestMicro = (forced = false) => {
@@ -266,6 +278,7 @@ function VoiceVideoSection() {
         speakerVolume.on('change', updateSpeakerAudio);
 
         testMicroButton.on('click', tinyTestMicro);
+        testWebcamButton.on('click', tinyTestWebcam);
 
         return () => {
 
@@ -279,6 +292,7 @@ function VoiceVideoSection() {
             speakerVolume.off('change', updateSpeakerAudio);
 
             testMicroButton.off('click', tinyTestMicro);
+            testWebcamButton.off('click', tinyTestWebcam);
 
             testMicroButton.removeClass('btn-outline-primary').removeClass('btn-outline-danger').addClass('btn-outline-primary');
             stopMicroTest(false, audioMonitor);
@@ -367,8 +381,27 @@ function VoiceVideoSection() {
                 <li className="list-group-item very-small text-gray">Video Settings</li>
 
                 <li className="list-group-item border-0">
+                    <center>
+                        <div ref={videoMonitorRef} className="ratio ratio-16x9 w-50 border border-bg mb-2">
+                            <div className='d-flex justify-content-center align-items-center text-center tiny-welcome'>
 
-                    <div ref={videoMonitorRef} className="ratio ratio-16x9 w-50 border border-bg mb-2" />
+                                {!testingWebcam ?
+
+                                    <Button
+                                        ref={testWebcamRefButton}
+                                        variant='primary'
+                                        className='btn-sm'
+                                        size="extra-small"
+                                        tooltip="Open in new tab"
+                                        faSrc="fa-solid fa-video"
+                                    >Test Video</Button>
+
+                                    : null}
+
+                            </div>
+                        </div>
+                    </center>
+
                     <div className='very-small text-uppercase fw-bold mb-2'>Camera</div>
                     <select ref={videoSelectRef} className="form-select form-control-bg">
                         <option selected>Choose...</option>
