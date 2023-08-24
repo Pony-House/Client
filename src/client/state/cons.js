@@ -210,6 +210,7 @@ global.checkVersions = () => new Promise((resolve, reject) => {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
     },
   }).then(response => {
     response.json().then((data) => {
@@ -217,7 +218,7 @@ global.checkVersions = () => new Promise((resolve, reject) => {
         resolve({
           data, // Data Viewer
           value: data[0], // Data selected
-          comparation: compareVersions(data[0].name, cons.version), // Version Compare
+          result: compareVersions(data[0].name, cons.version), // Version Compare
         });
       } else {
         resolve({
