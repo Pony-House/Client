@@ -18,10 +18,12 @@ import initMatrix from '../../../client/initMatrix';
 import navigation from '../../../client/state/navigation';
 import cons from '../../../client/state/cons';
 import DragDrop from './DragDrop';
-import { dice, resizeWindowChecker, scrollFixer } from '../../../util/tools';
+import { btModal, dice, resizeWindowChecker, scrollFixer } from '../../../util/tools';
 import { startUserAfk, stopUserAfk } from '../../../util/userStatusEffects';
 import Mods from './Mods';
 import appLoadMsg from '../../../../mods/appLoadMsg';
+
+let versionChecked = false;
 
 if (__ENV_APP__.electron_mode) {
   window.setElectronResize(() => resizeWindowChecker());
@@ -120,6 +122,36 @@ function Client() {
         </div>
       </div>
     );
+  }
+
+  if (__ENV_APP__.electron_mode && !versionChecked && global.checkVersions) {
+    versionChecked = true;
+    global.checkVersions().then(versionData => {
+      if (versionData && typeof versionData.value.name === 'string' && versionData.result === 1) {
+        const tinyUrl = `https://github.com/Pony-House/Client/releases/tag/${versionData.value.name}`;
+        const tinyModal = btModal({
+
+          id: 'tiny-update-warn',
+          title: `New version available!`,
+
+          dialog: 'modal-dialog-centered modal-lg',
+          body: [
+            $('<p>', { class: 'small' }).text(`Version ${versionData.value.name} of the app is now available for download! Click the button below to be sent to the update page.`),
+            $('<center>').append(
+              $('<a>', { href: tinyUrl, class: 'btn btn-primary text-bg-force' }).on('click', () => {
+                global.open(tinyUrl, '_target');
+                tinyModal.hide();
+                return false;
+              }).text('Open download page')
+            ),
+          ],
+
+        });
+      }
+    }).catch(err => {
+      console.error(err);
+      alert(err.message);
+    });
   }
 
   resizeWindowChecker();
