@@ -5,3 +5,6 @@
 - Profile note added.
 - Notification pings when you're on a popup now.
 - Username copy function on the profile is added now.
+- Audio and Video page added.
+- Desktop version support added.
+- Version checker to desktop version added.
