@@ -47,9 +47,10 @@ function PeopleDrawer({ roomId }) {
   ];
 
   tinyAPI.emit('roomMembersOptions', newValues);
+  const defaultMembership = newValues.find(item => item.value === 'join');
 
   const [itemCount, setItemCount] = useState(PER_PAGE_MEMBER);
-  const [membership, setMembership] = useState(newValues.find(item => item.value === 'join'));
+  const [membership, setMembership] = useState(defaultMembership);
   const [memberList, setMemberList] = useState([]);
   const [searchedMembers, setSearchedMembers] = useState(null);
   const searchRef = useRef(null);
@@ -142,7 +143,7 @@ function PeopleDrawer({ roomId }) {
   }, [roomId, membership]);
 
   useEffect(() => {
-    setMembership('join');
+    setMembership(defaultMembership);
   }, [roomId]);
 
   const segments = [];

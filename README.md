@@ -34,7 +34,7 @@ https://github.com/electron-vite/electron-vite-react
 ## Getting started
 Web app is available at https://client.pony.house/ and gets updated on each new release.
 
-To host Cinny on your own, download tarball of the app from [GitHub release](https://github.com/Pony-House/Client/releases/latest).
+To host Pony House on your own, download tarball of the app from [GitHub release](https://github.com/Pony-House/Client/releases/latest).
 You can serve the application with a webserver of your choice by simply copying `dist/` directory to the webroot. 
 To set default Homeserver on login and register page, place a customized [`config.json`](config.json) in webroot of your choice.
 
