@@ -186,7 +186,7 @@ function PeopleDrawer({ roomId }) {
 
       </Header>
 
-      <div className="people-drawer__content-wrapper">
+      <div className={`people-drawer__content-wrapper people-drawer-select-${membership.value}`}>
 
         <center className='p-3 w-100' style={{
           'height': '100%',
@@ -210,15 +210,28 @@ function PeopleDrawer({ roomId }) {
 
           {
             mList.map((member) => (
-              <PeopleSelector
-                key={member.userId}
-                user={member.user}
-                onClick={() => typeof member.customClick !== 'function' ? openProfileViewer(member.userId, roomId) : member.customClick()}
-                avatarSrc={member.avatarSrc}
-                name={member.name}
-                color={colorMXID(member.userId)}
-                peopleRole={member.peopleRole}
-              />
+              !member.customSelector ?
+
+                <PeopleSelector
+                  key={member.userId}
+                  user={member.user}
+                  onClick={() => typeof member.customClick !== 'function' ? openProfileViewer(member.userId, roomId) : member.customClick()}
+                  avatarSrc={member.avatarSrc}
+                  name={member.name}
+                  color={colorMXID(member.userId)}
+                  peopleRole={member.peopleRole}
+                /> :
+
+                <member.customSelector
+                  key={member.userId}
+                  user={member.user}
+                  onClick={() => typeof member.customClick !== 'function' ? openProfileViewer(member.userId, roomId) : member.customClick()}
+                  avatarSrc={member.avatarSrc}
+                  name={member.name}
+                  color={colorMXID(member.userId)}
+                  peopleRole={member.peopleRole}
+                />
+
             ))
           }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { twemojifyReact, twemojify } from '../../../util/twemojify';
@@ -14,8 +14,8 @@ function PeopleSelector({
   avatarSrc, avatarAnimSrc, name, color, peopleRole, onClick, user, disableStatus
 }) {
 
-  const statusRef = React.useRef(null);
-  const customStatusRef = React.useRef(null);
+  const statusRef = useRef(null);
+  const customStatusRef = useRef(null);
 
   const getCustomStatus = (content) => {
 
@@ -71,7 +71,7 @@ function PeopleSelector({
     getCustomStatus(getPresence(user));
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (user) {
 
       // Update Status Profile
