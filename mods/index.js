@@ -4,10 +4,10 @@
 // import helloWorld from './hello-world';
 // import sinkingYachts from './sinking.yachts';
 
-export default function startMods() {
+export default function startMods(firstTime) {
 
-    // sinkingYachts();
-    // helloWorld();
-    // startTest();
+    // sinkingYachts(firstTime);
+    // helloWorld(firstTime);
+    // startTest(firstTime);
 
 };

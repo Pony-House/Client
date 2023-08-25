@@ -1,8 +1,10 @@
 import React from 'react';
+import tinyAPI from '../../../util/mods';
 
 function Welcome() {
-  return (
-    <div className="tiny-welcome p-3 border-0 rounded d-flex justify-content-center w-100 h-100 noselect" style={{ alignItems: 'center' }}>
+
+  const tinyWelcome = {
+    html: <div className="tiny-welcome p-3 border-0 rounded d-flex justify-content-center w-100 h-100 noselect" style={{ alignItems: 'center' }}>
       <center>
         <img className="app-welcome__logo noselect" src="./favicon.ico" alt="Cinny logo" />
 
@@ -12,7 +14,11 @@ function Welcome() {
 
       </center>
     </div>
-  );
+  };
+
+  tinyAPI.emit('startWelcomePage', tinyWelcome);
+  return tinyWelcome.html;
+
 }
 
 export default Welcome;

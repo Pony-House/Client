@@ -5,6 +5,7 @@ import startMods from '../../../../mods';
 import tinyAPI from '../../../util/mods';
 
 export default function Mods() {
+    startMods(true);
     useEffect(() => {
         tinyAPI.resetAll();
         startMods();

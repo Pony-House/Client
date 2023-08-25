@@ -154,8 +154,11 @@ function Client() {
     });
   }
 
+  const tinyMod = <Mods />;
+
   resizeWindowChecker();
-  return (
+  return <>
+    {tinyMod}
     <DragDrop navWrapperRef={navWrapperRef} >
       <div className="navigation-wrapper">
         <Navigation />
@@ -167,9 +170,8 @@ function Client() {
       <Dialogs />
       <EmojiBoardOpener />
       <ReusableContextMenu />
-      <Mods />
     </DragDrop>
-  );
+  </>;
 }
 
 export default Client;
