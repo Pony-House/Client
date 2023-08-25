@@ -40,15 +40,23 @@ function PeopleDrawer({ roomId }) {
   const room = mx.getRoom(roomId);
   const canInvite = room?.canInvite(mx.getUserId());
 
+  const newValues = [
+    { name: 'Joined', value: 'join' },
+    { name: 'Invited', value: 'invite' },
+    { name: 'Banned', value: 'ban' },
+  ];
+
+  tinyAPI.emit('roomMembersOptions', newValues);
+
   const [itemCount, setItemCount] = useState(PER_PAGE_MEMBER);
-  const [membership, setMembership] = useState('join');
+  const [membership, setMembership] = useState(newValues.find(item => item.value === 'join'));
   const [memberList, setMemberList] = useState([]);
   const [searchedMembers, setSearchedMembers] = useState(null);
   const searchRef = useRef(null);
 
   const getMembersWithMembership = useCallback(
     (mship) => room.getMembersWithMembership(mship),
-    [roomId, membership],
+    [roomId, membership.value],
   );
 
   function loadMorePeople() {
@@ -85,14 +93,25 @@ function PeopleDrawer({ roomId }) {
     let isRoomChanged = false;
 
     const updateMemberList = (event) => {
+
       if (isLoadingMembers) return;
       if (event && event?.getRoomId() !== roomId) return;
-      setMemberList(
-        simplyfiMembers(
-          getMembersWithMembership(membership)
-            .sort(memberByAtoZ).sort(memberByPowerLevel),
-        ),
-      );
+
+      // Default
+      if (!Array.isArray(membership.custom)) {
+
+        setMemberList(
+          simplyfiMembers(
+            getMembersWithMembership(membership.value)
+              .sort(memberByAtoZ).sort(memberByPowerLevel),
+          ),
+        );
+
+      }
+
+      // Custom
+      else setMemberList(membership.custom);
+
     };
 
     searchRef.current.value = '';
@@ -126,25 +145,17 @@ function PeopleDrawer({ roomId }) {
     setMembership('join');
   }, [roomId]);
 
-  let segmentIndexCounter = 0;
-  const newValues = [
-    { name: 'Joined', value: 'join' },
-    { name: 'Invited', value: 'invite' },
-    { name: 'Banned', value: 'ban' },
-  ];
-
-  tinyAPI.emit('roomMembersOptions', newValues);
-
   const segments = [];
   const segmentsIndex = {};
   const selectMembership = [];
 
+  let segmentIndexCounter = 0;
   for (const item in newValues) {
     const vl = newValues[item];
     if (typeof vl.name === 'string' && typeof vl.value === 'string') {
 
       segments.push({ text: vl.name });
-      selectMembership.push(() => setMembership(vl.value));
+      selectMembership.push(() => setMembership(vl));
 
       segmentsIndex[vl.value] = segmentIndexCounter;
       segmentIndexCounter++;
@@ -186,7 +197,7 @@ function PeopleDrawer({ roomId }) {
             selected={
               (() => {
                 const getSegmentIndex = segmentsIndex;
-                return getSegmentIndex[membership];
+                return getSegmentIndex[membership.value];
               })()
             }
             segments={segments}
