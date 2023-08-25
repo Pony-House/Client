@@ -96,6 +96,12 @@ console object = level, message
 
     console cache
 
+`src/app/organisms/room/PeopleDrawer.jsx`
+
+### roomMembersOptions
+
+    segments
+
 `src/client/state/navigation.js`
 
 ### roomSettingsToggled (Not ready for production)

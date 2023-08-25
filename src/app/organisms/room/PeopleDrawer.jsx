@@ -17,6 +17,7 @@ import Button from '../../atoms/button/Button';
 import Input from '../../atoms/input/Input';
 import SegmentedControl from '../../atoms/segmented-controls/SegmentedControls';
 import PeopleSelector from '../../molecules/people-selector/PeopleSelector';
+import tinyAPI from '../../../util/mods';
 
 function simplyfiMembers(members) {
   const mx = initMatrix.matrixClient;
@@ -125,6 +126,32 @@ function PeopleDrawer({ roomId }) {
     setMembership('join');
   }, [roomId]);
 
+  let segmentIndexCounter = 0;
+  const newValues = [
+    { name: 'Joined', value: 'join' },
+    { name: 'Invited', value: 'invite' },
+    { name: 'Banned', value: 'ban' },
+  ];
+
+  tinyAPI.emit('roomMembersOptions', newValues);
+
+  const segments = [];
+  const segmentsIndex = {};
+  const selectMembership = [];
+
+  for (const item in newValues) {
+    const vl = newValues[item];
+    if (typeof vl.name === 'string' && typeof vl.value === 'string') {
+
+      segments.push({ text: vl.name });
+      selectMembership.push(() => setMembership(vl.value));
+
+      segmentsIndex[vl.value] = segmentIndexCounter;
+      segmentIndexCounter++;
+
+    }
+  }
+
   const mList = searchedMembers !== null ? searchedMembers.data : memberList.slice(0, itemCount);
   return (
     <div className="people-drawer">
@@ -158,21 +185,13 @@ function PeopleDrawer({ roomId }) {
             className='pb-3'
             selected={
               (() => {
-                const getSegmentIndex = {
-                  join: 0,
-                  invite: 1,
-                  ban: 2,
-                };
+                const getSegmentIndex = segmentsIndex;
                 return getSegmentIndex[membership];
               })()
             }
-            segments={[{ text: 'Joined' }, { text: 'Invited' }, { text: 'Banned' }]}
+            segments={segments}
             onSelect={(index) => {
-              const selectSegment = [
-                () => setMembership('join'),
-                () => setMembership('invite'),
-                () => setMembership('ban'),
-              ];
+              const selectSegment = selectMembership;
               selectSegment[index]?.();
             }}
           />

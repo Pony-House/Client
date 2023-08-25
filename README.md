@@ -90,6 +90,7 @@ yarn build # Compiles the app into the dist/ directory
 
 Execute the following commands to start a development server (or a Ionic environment):
 ```sh
+yarn # Installs all dependencies
 yarn electron:start # Serve a development version
 ```
 
