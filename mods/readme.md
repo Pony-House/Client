@@ -132,6 +132,30 @@ console object = level, message
 
     roomType
 
+### selectTab
+
+    tabInfo
+
+### selectTab[After]
+
+    tabInfo
+
+### selectedSpace
+
+    roomId
+
+### selectedSpace[After]
+
+    roomId
+
+### selectedRoom 
+
+    roomId
+
+### selectedRoom[After]
+
+    roomId
+
 ### spaceSettingsOpened (Not ready for production)
 
     roomId

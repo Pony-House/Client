@@ -366,8 +366,10 @@ class Navigation extends EventEmitter {
           action.tabId !== cons.tabs.HOME && action.tabId !== cons.tabs.DIRECTS
         ) ? action.tabId : null;
 
+        tinyAPI.emit('selectTab', { roomId, tabId: action.tabId });
         this._selectSpace(roomId, true);
         this._selectTab(action.tabId);
+        setTimeout(() => tinyAPI.emit('selectTabAfter', { roomId, tabId: action.tabId }), 100);
       },
 
       [cons.actions.navigation.UPDATE_EMOJI_LIST]: () => {
@@ -397,12 +399,16 @@ class Navigation extends EventEmitter {
       },
 
       [cons.actions.navigation.SELECT_SPACE]: () => {
+        tinyAPI.emit('selectedSpace', action.roomId);
         this._selectSpace(action.roomId, false);
+        setTimeout(() => tinyAPI.emit('selectedSpaceAfter', action.roomId), 100);
       },
 
       [cons.actions.navigation.SELECT_ROOM]: () => {
+        tinyAPI.emit('selectedRoom', action.roomId);
         if (action.roomId) this._selectTabWithRoom(action.roomId);
         this._selectRoom(action.roomId, action.eventId);
+        setTimeout(() => tinyAPI.emit('selectedRoomAfter', action.roomId), 100);
       },
 
       [cons.actions.navigation.OPEN_SPACE_SETTINGS]: () => {
