@@ -13,7 +13,7 @@ import defaultAvatar from '../../atoms/avatar/defaultAvatar';
 
 const tinyUrlAction = (event) => {
     const e = event.originalEvent;
-    e.preventDefault(); openTinyURL($(event.currentTarget).attr('href')); return false;
+    e.preventDefault(); openTinyURL($(event.currentTarget).attr('href'), $(event.currentTarget).attr('href')); return false;
 };
 
 // Embed Data
