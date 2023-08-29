@@ -2,8 +2,7 @@ import * as linkify from 'linkifyjs';
 
 import initMatrix from '../../client/initMatrix';
 import { objType } from '../tools';
-
-import { convertIpfsGateway } from './ipfs';
+import convertProtocols from './convertProtocols';
 
 const tinyCache = {};
 setInterval(() => {
@@ -25,7 +24,7 @@ export default function getUrlPreview(newUrl, ts = 0) {
         const mx = initMatrix.matrixClient;
         if (typeof newUrl === 'string' && linkify.test(newUrl)) {
 
-            const url = convertIpfsGateway(newUrl, newUrl);
+            const url = convertProtocols(newUrl, newUrl);
 
             if (
                 tinyCache[url.href] &&

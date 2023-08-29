@@ -4,7 +4,7 @@ import { Browser } from '@capacitor/browser';
 
 import { btModal, objType } from '../tools';
 import tinyAPI from '../mods';
-import { convertIpfsGateway } from '../libs/ipfs';
+import convertProtocols from '../libs/convertProtocols';
 
 const openUrl = (url) => new Promise((resolve, reject) => {
 
@@ -29,7 +29,7 @@ export default async (url, vanillaUrl) => {
 
         // Checker Value
         const tinyUrl = new URL(url);
-        convertIpfsGateway(tinyUrl, vanillaUrl);
+        convertProtocols(tinyUrl, vanillaUrl);
 
         let tinyValue = tinyUrl.origin;
         if (typeof tinyValue !== 'string' || tinyValue === 'null') {
