@@ -37,10 +37,10 @@ function IpfsSection() {
         const clickLocalGateway = clickGenerator('localGateway', htmlLocalGateway);
 
         // Events
-        htmlPublicGateway.val(typeof ipfsSettings.publicGateway === 'string' && ipfsSettings.publicGateway.length > 0 ? ipfsSettings.publicGateway : 'https://ipfs.io/').on('change', clickPublicGateway);
-        htmlSubdomainPublicGateway.val(typeof ipfsSettings.subdomainPublicGateway === 'string' && ipfsSettings.subdomainPublicGateway.length > 0 ? ipfsSettings.subdomainPublicGateway : 'https://dweb.link/').on('change', clickSubdomainPublicGateway);
-        htmlApiIpfs.val(typeof ipfsSettings.apiIpfs === 'string' && ipfsSettings.apiIpfs.length > 0 ? ipfsSettings.apiIpfs : 'http://127.0.0.1:5001/').on('change', clickApiIpfs);
-        htmlLocalGateway.val(typeof ipfsSettings.localGateway === 'string' && ipfsSettings.localGateway.length > 0 ? ipfsSettings.localGateway : 'http://localhost:8080/').on('change', clickLocalGateway);
+        htmlPublicGateway.val(ipfsSettings.publicGateway).on('change', clickPublicGateway);
+        htmlSubdomainPublicGateway.val(ipfsSettings.subdomainPublicGateway).on('change', clickSubdomainPublicGateway);
+        htmlApiIpfs.val(ipfsSettings.apiIpfs).on('change', clickApiIpfs);
+        htmlLocalGateway.val(ipfsSettings.localGateway).on('change', clickLocalGateway);
 
         // Complete
         return () => {
