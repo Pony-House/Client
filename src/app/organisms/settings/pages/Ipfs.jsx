@@ -8,7 +8,7 @@ function IpfsSection() {
 
     // Prepare React
     const ipfsSettings = getIpfsCfg();
-    const [ipfsDisabled, setIpfsDisabled] = useState(ipfsSettings.ipfsDisabled);
+    const [ipfsEnabled, setIpfsEnabled] = useState(ipfsSettings.ipfsEnabled);
 
     const publicGatewayRef = useRef(null);
     const subdomainPublicGatewayRef = useRef(null);
@@ -61,15 +61,15 @@ function IpfsSection() {
                 <li className="list-group-item very-small text-gray">Main Settings</li>
 
                 <SettingTile
-                    title="Disabled"
+                    title="Enabled"
                     options={(
                         <Toggle
                             className='d-inline-flex'
-                            isActive={ipfsDisabled}
-                            onToggle={toggleActionLocal('ponyHouse-ipfs', 'ipfsDisabled', setIpfsDisabled)}
+                            isActive={ipfsEnabled}
+                            onToggle={toggleActionLocal('ponyHouse-ipfs', 'ipfsEnabled', setIpfsEnabled)}
                         />
                     )}
-                    content={<div className="very-small text-gray">Disable ipfs protocol compatibility. (This will not disable IPFS urls format)</div>}
+                    content={<div className="very-small text-gray">Enable ipfs protocol compatibility. (This will not disable IPFS urls format)</div>}
                 />
 
             </ul>

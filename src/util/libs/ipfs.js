@@ -9,10 +9,14 @@ export function getIpfsCfg(folder, getDefault = true) {
     }
 
     if (getDefault) {
+
+        content.ipfsEnabled = typeof content.ipfsEnabled === 'boolean' ? content.ipfsEnabled : true;
+
         content.publicGateway = typeof content.publicGateway === 'string' && content.publicGateway.length > 0 ? content.publicGateway : 'https://ipfs.io/';
         content.subdomainPublicGateway = typeof content.subdomainPublicGateway === 'string' && content.subdomainPublicGateway.length > 0 ? content.subdomainPublicGateway : 'https://dweb.link/';
         content.apiIpfs = typeof content.apiIpfs === 'string' && content.apiIpfs.length > 0 ? content.apiIpfs : 'http://127.0.0.1:5001/';
         content.localGateway = typeof content.localGateway === 'string' && content.localGateway.length > 0 ? content.localGateway : 'http://localhost:8080/';
+
     }
 
     if (typeof folder === 'string' && folder.length > 0) {
