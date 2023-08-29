@@ -517,7 +517,7 @@ function RoomViewContent({ eventId, roomTimeline }) {
     const tinyScroll = $('#chatbox-scroll');
     const body = $('body');
 
-    if (!body.hasClass('force-no-chatbox-top-page')) {
+    if (!body.hasClass('force-no-chatbox-top-page') && !body.hasClass('force-no-chatbox-top-page-render')) {
       if (tinyScroll.length > 0) {
 
         const scrollSize = tinyScroll.prop('scrollHeight') - $(window).height();
@@ -638,11 +638,12 @@ function RoomViewContent({ eventId, roomTimeline }) {
     }
 
     if (renderingHolders) {
-      body.removeClass('chatbox-top-page');
-      body.addClass('force-no-chatbox-top-page');
+      body.addClass('force-no-chatbox-top-page-render');
     } else {
-      body.removeClass('force-no-chatbox-top-page');
+      body.removeClass('force-no-chatbox-top-page-render');
     }
+
+    body.removeClass('chatbox-top-page');
 
     return tl;
 

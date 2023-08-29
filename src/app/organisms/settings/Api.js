@@ -27,7 +27,7 @@ const toggleActionLocal = (dataFolder, valueName, setToggle) => data => {
         content[valueName] = data;
 
         global.localStorage.setItem(dataFolder, JSON.stringify(content));
-        setToggle((data === true));
+        if (typeof setToggle === 'function') setToggle((data === true));
         return;
 
     }

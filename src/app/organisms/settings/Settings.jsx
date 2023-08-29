@@ -20,6 +20,7 @@ import DonateSection from './pages/Donate';
 import AboutSection from './pages/About';
 import ExperimentalSection from './pages/Experimental';
 import VoiceVideoSection from './pages/VoiceVideo';
+import IpfsSection from './pages/Ipfs';
 
 function EmojiSection() {
   return (
@@ -33,6 +34,7 @@ function EmojiSection() {
 export const tabText = {
   APPEARANCE: 'Appearance',
   VOICEVIDEO: 'Voice & Video',
+  IPFS: 'IPFS Protocol',
   PRIVACY: 'Privacy',
   NOTIFICATIONS: 'Notifications',
   EMOJI: 'Emoji',
@@ -72,6 +74,15 @@ const tabItems = [
     faSrc: "fa-solid fa-face-smile",
     disabled: false,
     render: () => <EmojiSection />,
+  },
+
+  { type: 'divider', },
+
+  {
+    text: tabText.IPFS,
+    faSrc: "fa-solid fa-cube",
+    disabled: false,
+    render: () => <IpfsSection />,
   },
 
   { type: 'divider', },

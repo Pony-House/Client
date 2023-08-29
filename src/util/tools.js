@@ -49,7 +49,7 @@ export function chatboxScrollToBottom(forceScroll = false) {
     if (forceScroll || body.hasClass('chatbox-top-page')) {
         for (let i = 0; i < 60; i++) {
             setTimeout(() => {
-                if (!body.hasClass('force-no-chatbox-top-page')) {
+                if (!body.hasClass('force-no-chatbox-top-page') && !body.hasClass('force-no-chatbox-top-page-render')) {
                     $('#chatbox-scroll').scrollTop(99999);
                 }
             }, 3 * Number(i + 1));

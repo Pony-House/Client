@@ -174,7 +174,7 @@ class RoomTimeline extends EventEmitter {
   async loadEventTimeline(eventId) {
 
     // we use first unfiltered EventTimelineSet for room pagination.
-    $('body').addClass('force-no-chatbox-top-page');
+    $('body').addClass('force-no-chatbox-top-page').removeClass('chatbox-top-page');
     if (timeoutForceChatbox) {
       clearTimeout(timeoutForceChatbox);
     }
