@@ -96,8 +96,8 @@ export function convertIpfsGateway(tinyUrl, vanillaUrl, type = 'base32') {
 
         if (typeof CIDTool[type] === 'function') {
 
-            url.host = `${CIDTool[type](hash)}.${cfg.subdomainPublicGateway.host}`;
-            url.hostname = `${CIDTool[type](hash)}.${cfg.subdomainPublicGateway.hostname}`;
+            url.host = `${CIDTool[type](hash)}.ipfs.${cfg.subdomainPublicGateway.host}`;
+            url.hostname = `${CIDTool[type](hash)}.ipfs.${cfg.subdomainPublicGateway.hostname}`;
 
             url.port = cfg.subdomainPublicGateway.port;
             url.protocol = cfg.subdomainPublicGateway.protocol;
