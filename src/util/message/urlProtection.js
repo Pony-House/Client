@@ -4,6 +4,7 @@ import { Browser } from '@capacitor/browser';
 
 import { btModal, objType } from '../tools';
 import tinyAPI from '../mods';
+import { convertIpfsGateway } from '../libs/ipfs';
 
 const openUrl = (url) => new Promise((resolve, reject) => {
 
@@ -19,7 +20,7 @@ const openUrl = (url) => new Promise((resolve, reject) => {
 
 });
 
-export default async (url) => {
+export default async (url, vanillaUrl) => {
     try {
 
         // Prepare Whitelist
@@ -28,6 +29,8 @@ export default async (url) => {
 
         // Checker Value
         const tinyUrl = new URL(url);
+        convertIpfsGateway(tinyUrl, vanillaUrl);
+
         let tinyValue = tinyUrl.origin;
         if (typeof tinyValue !== 'string' || tinyValue === 'null') {
             tinyValue = tinyUrl.protocol;
@@ -87,7 +90,7 @@ export default async (url) => {
                             global.localStorage.setItem('pony-house-urls-whitelist', JSON.stringify(whiteList));
                         }
 
-                        openUrl(url).then(() => {
+                        openUrl(tinyUrl.href).then(() => {
                             tinyModal.hide();
                             $.LoadingOverlay('hide');
                         }).catch(err => {
@@ -106,7 +109,7 @@ export default async (url) => {
             $.LoadingOverlay('hide');
 
         } else if (urlAllowed) {
-            openUrl(url).then(() => {
+            openUrl(tinyUrl.href).then(() => {
                 $.LoadingOverlay('hide');
             }).catch(err => {
                 console.error(err);

@@ -9,6 +9,7 @@ function IpfsSection() {
     // Prepare React
     const ipfsSettings = getIpfsCfg();
     const [ipfsEnabled, setIpfsEnabled] = useState(ipfsSettings.ipfsEnabled);
+    const [useGatewayOnOpen, setUseGatewayOnOpen] = useState(ipfsSettings.useGatewayOnOpen);
 
     const publicGatewayRef = useRef(null);
     const subdomainPublicGatewayRef = useRef(null);
@@ -72,6 +73,18 @@ function IpfsSection() {
                     content={<div className="very-small text-gray">Enable ipfs protocol compatibility. (This will not disable IPFS urls format)</div>}
                 />
 
+                <SettingTile
+                    title="Open IPFS Url using Gateway"
+                    options={(
+                        <Toggle
+                            className='d-inline-flex'
+                            isActive={useGatewayOnOpen}
+                            onToggle={toggleActionLocal('ponyHouse-ipfs', 'useGatewayOnOpen', setUseGatewayOnOpen)}
+                        />
+                    )}
+                    content={<div className="very-small text-gray">Instead of trying to open the protocol directly, use the gateway settings to open the url using a http protocol.</div>}
+                />
+
             </ul>
         </div>
 
@@ -113,7 +126,7 @@ function IpfsSection() {
                 <li className="list-group-item border-0">
 
                     <div class="mb-3">
-                        <label for="apiIpfs" class="form-label small">API Urls</label>
+                        <label for="apiIpfs" class="form-label small">API Url</label>
                         <input ref={apiIpfsRef} type="text" class="form-control form-control-bg" id="apiIpfs" placeholder="http://127.0.0.1:5001/" />
                         <div className="very-small text-gray">Set the URL of your IPFS API. (Hint: this is where /api/v0/config lives.)</div>
                     </div>

@@ -121,7 +121,7 @@ const tinyRender = {
   react: type => ({ attributes, content }) => {
     const { href, ...props } = attributes;
     const db = tinywordsDB[content.toLowerCase()];
-    const result = <a href={href} onClick={(e) => { e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; }} {...props} iskeyword={type === 'keyword' ? 'true' : 'false'} className='lk-href'>{content}</a>;
+    const result = <a href={href} onClick={(e) => { e.preventDefault(); openTinyURL($(e.target).attr('href'), $(e.target).attr('href')); return false; }} {...props} iskeyword={type === 'keyword' ? 'true' : 'false'} className='lk-href'>{content}</a>;
     return db?.title ? <Tooltip content={<small>{db.title}</small>} >{result}</Tooltip> : result;
   }
 
@@ -224,7 +224,7 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
   // Final Result
   msgContent = $('<span>', { class: 'linkify-base' }).html(msgContent);
   const tinyUrls = msgContent.find('.lk-href');
-  tinyUrls.on('click', event => { const e = event.originalEvent; e.preventDefault(); openTinyURL($(e.target).attr('href')); return false; });
+  tinyUrls.on('click', event => { const e = event.originalEvent; e.preventDefault(); openTinyURL($(e.target).attr('href'), $(e.target).attr('href')); return false; });
   tinyUrls.each(() => $(this).attr('title') && $(this).tooltip());
 
   // Complete
