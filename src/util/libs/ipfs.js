@@ -114,7 +114,6 @@ export function convertIpfsGateway(tinyUrl, vanillaUrl, type = 'base32') {
 
         }
 
-        url.origin = `${url.protocol}//${url.hostname}${typeof url.port === 'string' && url.port.length > 0 ? `:${url.port}` : ''}`;
         url.href = `${url.protocol}//${url.hostname}${typeof url.port === 'string' && url.port.length > 0 ? `:${url.port}` : ''}${url.pathname}${url.search}`;
 
     }
