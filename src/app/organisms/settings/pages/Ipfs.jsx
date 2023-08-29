@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import SettingTile from '../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../atoms/button/Toggle';
 import { toggleActionLocal } from '../Api';
+import { getIpfsCfg, setIpfsCfg } from '../../../../util/libs/ipfs';
 
 function IpfsSection() {
 
     // Prepare React
-    const ipfsSettings = toggleActionLocal('ponyHouse-ipfs')();
+    const ipfsSettings = getIpfsCfg();
     const [ipfsDisabled, setIpfsDisabled] = useState(ipfsSettings.ipfsDisabled);
 
     const publicGatewayRef = useRef(null);
@@ -18,12 +19,9 @@ function IpfsSection() {
     useEffect(() => {
 
         // Template
-        const clickGenerator = (where, item) => {
-            const tinyAction = toggleActionLocal('ponyHouse-ipfs', where, null);
-            return () => {
-                const value = item.val();
-                tinyAction(typeof value === 'string' && value.length > 0 ? value : undefined);
-            };
+        const clickGenerator = (where, item) => () => {
+            const value = item.val();
+            setIpfsCfg(where, typeof value === 'string' && value.length > 0 ? value : undefined);
         };
 
         // jQuery
