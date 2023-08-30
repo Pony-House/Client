@@ -117,6 +117,12 @@ export function convertIpfsGateway(tinyUrl, vanillaUrl, type = 'base32') {
         }
 
         finalResult.search = url.search;
+        finalResult.hash = url.hash;
+
+        finalResult.password = url.password;
+        finalResult.username = url.username;
+
+        finalResult.searchParams = url.searchParams;
 
         finalResult.origin = `${finalResult.protocol}//${finalResult.hostname}${typeof finalResult.port === 'string' && finalResult.port.length > 0 ? `:${finalResult.port}` : ''}`;
         finalResult.href = `${finalResult.origin}${finalResult.pathname}${finalResult.search}`;

@@ -28,8 +28,7 @@ export default async (url, vanillaUrl) => {
         let urlAllowed = false;
 
         // Checker Value
-        const tinyUrl = new URL(url);
-        convertProtocols(tinyUrl, vanillaUrl);
+        const tinyUrl = convertProtocols(url, vanillaUrl);
 
         let tinyValue = tinyUrl.origin;
         if (typeof tinyValue !== 'string' || tinyValue === 'null') {
