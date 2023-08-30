@@ -2,11 +2,11 @@
 /* eslint-disable no-bitwise */
 
 // https://www.npmjs.com/package/rainbow-colors-array
-function rgbToHex(r, g, b) {
+export function rgbToHex(r, g, b) {
   return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-}
+};
 
-function rgbToHsl(gr, gg, gb) {
+export function rgbToHsl(gr, gg, gb) {
 
   let r = gr;
   let g = gg;
@@ -40,9 +40,9 @@ function rgbToHsl(gr, gg, gb) {
 
   return { "h": h, "s": s, "l": l };
 
-}
+};
 
-function rca(len, type, pastel) {
+export function rca(len, type, pastel) {
 
   let eq1 = 127;
   let eq2 = 128;
@@ -76,21 +76,10 @@ function rca(len, type, pastel) {
 
 };
 
-const rainbowColors = [
-  '#e81416',
-  '#ffa500',
-  '#faeb36',
-  '#79c314',
-  '#487de7',
-  '#4b369d',
-  '#70369d',
-];
-
 export function randomColor() {
   return `#${(0x1000000 + Math.random() * 0xffffff).toString(16).substring(1, 6)}`;
 };
 
-export { rainbowColors, rca };
 export default function rainbowText(value, amount = 24) {
 
   const rainbowData = rca(amount, 'hex');

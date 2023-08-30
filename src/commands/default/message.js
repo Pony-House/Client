@@ -1,5 +1,3 @@
-import rainbowText from "../../util/libs/rainbowText";
-
 const rainbowCommand = {
     category: 'default',
     sub_category: 'message',
