@@ -77,7 +77,6 @@ export function convertIpfsGateway(tinyUrl, vanillaUrl, type = 'base32') {
 
     const cfg = getIpfsCfg(null, true, true);
 
-
     let url;
     if (typeof tinyUrl === 'string') {
         url = new URL(tinyUrl);
@@ -87,6 +86,7 @@ export function convertIpfsGateway(tinyUrl, vanillaUrl, type = 'base32') {
 
     if (typeof vanillaUrl === 'string' && url.protocol === 'ipfs:' && cfg.ipfsEnabled && cfg.useGatewayOnOpen && cfg.subdomainPublicGateway) {
 
+        const finalResult = {};
         const hash = vanillaUrl.substring(
             url.protocol.length + 2,
             vanillaUrl.length -
@@ -96,25 +96,33 @@ export function convertIpfsGateway(tinyUrl, vanillaUrl, type = 'base32') {
 
         if (typeof CIDTool[type] === 'function') {
 
-            url.host = `${CIDTool[type](hash)}.ipfs.${cfg.subdomainPublicGateway.host}`;
-            url.hostname = `${CIDTool[type](hash)}.ipfs.${cfg.subdomainPublicGateway.hostname}`;
+            finalResult.host = `${CIDTool[type](hash)}.ipfs.${cfg.subdomainPublicGateway.host}`;
+            finalResult.hostname = `${CIDTool[type](hash)}.ipfs.${cfg.subdomainPublicGateway.hostname}`;
 
-            url.port = cfg.subdomainPublicGateway.port;
-            url.protocol = cfg.subdomainPublicGateway.protocol;
+            finalResult.port = cfg.subdomainPublicGateway.port;
+            finalResult.protocol = cfg.subdomainPublicGateway.protocol;
+
+            finalResult.pathname = url.pathname;
 
         } else {
 
-            url.host = cfg.publicGateway.host;
-            url.hostname = cfg.publicGateway.hostname;
+            finalResult.host = cfg.publicGateway.host;
+            finalResult.hostname = cfg.publicGateway.hostname;
 
-            url.pathname = `/ipfs/${hash}${url.pathname}`;
+            finalResult.pathname = `/ipfs/${hash}${url.pathname}`;
 
-            url.port = cfg.publicGateway.port;
-            url.protocol = cfg.publicGateway.protocol;
+            finalResult.port = cfg.publicGateway.port;
+            finalResult.protocol = cfg.publicGateway.protocol;
 
         }
 
-        url.href = `${url.protocol}//${url.hostname}${typeof url.port === 'string' && url.port.length > 0 ? `:${url.port}` : ''}${url.pathname}${url.search}`;
+        finalResult.search = url.search;
+
+        finalResult.origin = `${finalResult.protocol}//${finalResult.hostname}${typeof finalResult.port === 'string' && finalResult.port.length > 0 ? `:${finalResult.port}` : ''}`;
+        finalResult.href = `${finalResult.origin}${finalResult.pathname}${finalResult.search}`;
+        finalResult.origin += '/';
+
+        return finalResult;
 
     }
 
