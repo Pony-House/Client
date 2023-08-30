@@ -16,24 +16,27 @@ function Room() {
   const [roomInfo, setRoomInfo] = useState({
     roomTimeline: null,
     eventId: null,
+    forceScroll: null,
   });
   const [isDrawer, setIsDrawer] = useState(settings.isPeopleDrawer);
 
   const mx = initMatrix.matrixClient;
 
   useEffect(() => {
-    const handleRoomSelected = (rId, pRoomId, eId) => {
+    const handleRoomSelected = (rId, pRoomId, eId, forceScroll) => {
       roomInfo.roomTimeline?.removeInternalListeners();
       if (mx.getRoom(rId)) {
         setRoomInfo({
           roomTimeline: new RoomTimeline(rId),
           eventId: eId ?? null,
+          forceScroll,
         });
       } else {
         // TODO: add ability to join room if roomId is invalid
         setRoomInfo({
           roomTimeline: null,
           eventId: null,
+          forceScroll,
         });
       }
     };

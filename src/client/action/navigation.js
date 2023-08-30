@@ -24,12 +24,13 @@ export function selectSpace(roomId) {
   });
 }
 
-export function selectRoom(roomId, eventId) {
+export function selectRoom(roomId, eventId, forceScroll = false) {
   setSelectRoom(roomId);
   appDispatcher.dispatch({
     type: cons.actions.navigation.SELECT_ROOM,
     roomId,
     eventId,
+    forceScroll,
   });
 }
 

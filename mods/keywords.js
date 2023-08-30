@@ -144,6 +144,18 @@ export default [
     },
 
     {
+        title: `Telegram`,
+        name: `telegram`,
+        href: `https://telegram.org/`
+    },
+
+    {
+        title: `Blue Sky - Social Media`,
+        name: `bluesky`,
+        href: `https://bsky.app/`
+    },
+
+    {
         title: `Discord`,
         name: `discord`,
         href: `https://discord.com/`
@@ -213,7 +225,7 @@ export default [
 
     {
         title: `CoinMarketCap`,
-        name: `crypto prices`,
+        name: [`crypto prices`, `marketcap`, `market cap`, `market capital`],
         href: `https://coinmarketcap.com/`
     },
 

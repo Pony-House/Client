@@ -113,12 +113,14 @@ console object = level, message
 ### roomSettingsToggled (Not ready for production)
 
     isRoomSettings
+    forceScroll
 
 ### roomSelected (Not ready for production)
 
     selectedRoomId
     prevSelectedRoomId
     eventId
+    forceScroll
 
 ### tabSelected (Not ready for production)
 
@@ -151,6 +153,7 @@ console object = level, message
 ### selectedRoom 
 
     roomId
+    forceScroll
 
 ### selectedRoom[After]
 
@@ -174,6 +177,7 @@ console object = level, message
 
     isRoomSettings
     tabText
+    forceScroll
 
 ### shortcutSpacesOpened (Not ready for production)
 

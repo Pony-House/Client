@@ -102,7 +102,7 @@ class Navigation extends EventEmitter {
 
   }
 
-  _selectRoom(roomId, eventId) {
+  _selectRoom(roomId, eventId, forceScroll) {
 
     const prevSelectedRoomId = this.selectedRoomId;
     this.selectedRoomId = roomId;
@@ -114,8 +114,8 @@ class Navigation extends EventEmitter {
 
     if (this.isRoomSettings && typeof this.selectedRoomId === 'string') {
       this.isRoomSettings = !this.isRoomSettings;
-      tinyAPI.emit('roomSettingsToggled', this.isRoomSettings);
-      this.emit(cons.events.navigation.ROOM_SETTINGS_TOGGLED, this.isRoomSettings);
+      tinyAPI.emit('roomSettingsToggled', this.isRoomSettings, null, forceScroll);
+      this.emit(cons.events.navigation.ROOM_SETTINGS_TOGGLED, this.isRoomSettings, null, forceScroll);
     }
 
     tinyAPI.emit(
@@ -123,6 +123,7 @@ class Navigation extends EventEmitter {
       this.selectedRoomId,
       prevSelectedRoomId,
       eventId,
+      forceScroll,
     );
 
     this.emit(
@@ -130,6 +131,7 @@ class Navigation extends EventEmitter {
       this.selectedRoomId,
       prevSelectedRoomId,
       eventId,
+      forceScroll,
     );
 
   }
@@ -405,10 +407,10 @@ class Navigation extends EventEmitter {
       },
 
       [cons.actions.navigation.SELECT_ROOM]: () => {
-        tinyAPI.emit('selectedRoom', action.roomId);
-        if (action.roomId) this._selectTabWithRoom(action.roomId);
-        this._selectRoom(action.roomId, action.eventId);
-        setTimeout(() => tinyAPI.emit('selectedRoomAfter', action.roomId), 100);
+        tinyAPI.emit('selectedRoom', action.roomId, action.forceScroll);
+        if (action.roomId) this._selectTabWithRoom(action.roomId, action.forceScroll);
+        this._selectRoom(action.roomId, action.eventId, action.forceScroll);
+        setTimeout(() => tinyAPI.emit('selectedRoomAfter', action.roomId, action.forceScroll), 100);
       },
 
       [cons.actions.navigation.OPEN_SPACE_SETTINGS]: () => {

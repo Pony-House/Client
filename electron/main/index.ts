@@ -91,6 +91,8 @@ async function createWindow() {
       width: bounds.width,
       height: bounds.height,
       backgroundColor: '#282c34',
+      minWidth: 700,
+      minHeight: 400,
       webPreferences: {
         preload,
         // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
