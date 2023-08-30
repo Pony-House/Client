@@ -1,4 +1,4 @@
-import rainbowText from "../../util/libs/rainbow";
+import rainbowText from "../../util/libs/rainbowText";
 
 const rainbowCommand = {
     category: 'default',

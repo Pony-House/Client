@@ -4,7 +4,7 @@ import hljs from 'highlight.js';
 import SimpleMarkdown from '@khanacademy/simple-markdown';
 import { idRegex, parseIdUri } from './common';
 import { resizeWindowChecker } from './tools';
-import rainbowText from './libs/rainbow';
+import rainbowText from './libs/rainbowText';
 
 moment.locale('en');
 const timestampFormats = {
