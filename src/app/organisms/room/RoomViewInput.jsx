@@ -586,9 +586,11 @@ function RoomViewInput({
       return;
     }
 
-    if (['me', 'shrug', 'plain'].includes(cmdName)) {
-      commands[cmdName].exe(roomId, cmdData, sendBody);
-      return;
+    if (typeof commands[cmdName].type === 'string') {
+      if (commands[cmdName].type === 'msg') {
+        commands[cmdName].exe(roomId, cmdData, sendBody);
+        return;
+      }
     }
 
     commands[cmdName].exe(roomId, cmdData);

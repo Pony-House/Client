@@ -3,6 +3,7 @@ const messageCommands = {
     me: {
         category: 'default',
         sub_category: 'message',
+        type: 'msg',
         name: 'me',
         description: 'Display action',
         exe: (roomId, data, onSuccess) => {
@@ -15,6 +16,7 @@ const messageCommands = {
     shrug: {
         category: 'default',
         sub_category: 'message',
+        type: 'msg',
         name: 'shrug',
         description: 'Send ¯\\_(ツ)_/¯ as message',
         exe: (roomId, data, onSuccess) => onSuccess(
@@ -26,6 +28,7 @@ const messageCommands = {
     plain: {
         sub_category: 'message',
         name: 'plain',
+        type: 'msg',
         description: 'Send plain text message',
         exe: (roomId, data, onSuccess) => {
             const body = data.trim();
