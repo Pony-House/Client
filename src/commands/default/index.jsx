@@ -62,17 +62,24 @@ export function removeCommand(name) {
 };
 
 function openHelpDialog() {
+    const comamndsList = {};
     openReusableDialog(
         <Text variant="s1" weight="medium">Commands</Text>,
         () => (
             <div className="commands-dialog">
-                {Object.keys(commands).map((cmdName) => (
-                    <SettingTile
-                        key={cmdName}
-                        title={cmdName}
-                        content={<div className="very-small text-gray">{commands[cmdName].description}</div>}
-                    />
-                ))}
+                {Object.keys(commands).map((cmdName) => {
+                    if (!comamndsList[commands[cmdName].name]) {
+
+                        comamndsList[commands[cmdName].name] = true;
+
+                        return <SettingTile
+                            key={cmdName}
+                            title={cmdName}
+                            content={<div className="very-small text-gray">{commands[cmdName].description}</div>}
+                        />;
+
+                    }
+                })}
             </div>
         ),
     );
