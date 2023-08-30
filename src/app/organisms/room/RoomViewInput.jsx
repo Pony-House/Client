@@ -425,11 +425,13 @@ function RoomViewInput({
 
     const textArea = $(textAreaRef.current);
     const msg = textArea.val();
-    textArea.val(replaceCmdWith(
-      msg,
-      cmdCursorPos,
-      typeof cmdData?.replace !== 'undefined' ? cmdData.replace : '',
-    ));
+    textArea.val(
+      `${replaceCmdWith(
+        msg,
+        cmdCursorPos,
+        typeof cmdData?.replace !== 'undefined' ? cmdData.replace : '',
+      )}${typeof cmdData?.type === 'string' && cmdData.type === 'msg' ? ' ' : ''}`
+    );
 
     textArea.focus();
 
@@ -551,7 +553,6 @@ function RoomViewInput({
     if (attachment !== null) {
       roomsInput.setAttachment(roomId, attachment);
     }
-
 
     // Prepare Message
     const textArea = $(textAreaRef.current);

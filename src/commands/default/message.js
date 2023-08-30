@@ -1,4 +1,23 @@
+import rainbowText from "../../util/libs/rainbow";
+
+const rainbowCommand = {
+    category: 'default',
+    sub_category: 'message',
+    type: 'msg',
+    name: 'rainbowme',
+    description: 'Send a rainbow message',
+    exe: (roomId, data, onSuccess) => {
+        const body = data.trim();
+        if (body === '') return;
+        console.log(rainbowText(body));
+        onSuccess(`[rainbow]${body}[/rainbow]`, { msgType: 'm.text' });
+    },
+};
+
 const messageCommands = {
+
+    rainbow: rainbowCommand,
+    rainbowme: rainbowCommand,
 
     me: {
         category: 'default',

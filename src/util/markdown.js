@@ -4,6 +4,7 @@ import hljs from 'highlight.js';
 import SimpleMarkdown from '@khanacademy/simple-markdown';
 import { idRegex, parseIdUri } from './common';
 import { resizeWindowChecker } from './tools';
+import rainbowText from './libs/rainbow';
 
 moment.locale('en');
 const timestampFormats = {
@@ -410,6 +411,17 @@ const markdownRules = {
   del: {
     ...defaultRules.del,
     plain: (node, output, state) => `~~${output(node.content, state)}~~`,
+  },
+
+  // Rainbow
+  rainbow: {
+    order: defaultRules.inlineCode.order + 0.1,
+    match: inlineRegex(/\[rainbow\]([\s\S]+?)\[\/rainbow\]/g),
+    parse: (capture, parse, state) => ({
+      content: parse(capture[1], state)
+    }),
+    plain: (node, output, state) => output(node.content, state),
+    html: (node, output, state) => rainbowText(output(node.content, state)),
   },
 
   // Inline Code
