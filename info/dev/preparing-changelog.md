@@ -9,3 +9,4 @@
 - Desktop version support added.
 - Version checker to desktop version added.
 - IPFS Gateway support added
+- New rainbow text command added
