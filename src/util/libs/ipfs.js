@@ -87,11 +87,13 @@ export function convertIpfsGateway(tinyUrl, vanillaUrl, type = 'base32') {
     if (typeof vanillaUrl === 'string' && url.protocol === 'ipfs:' && cfg.ipfsEnabled && cfg.useGatewayOnOpen && cfg.subdomainPublicGateway) {
 
         const finalResult = {};
+
+        const tinyPath = url.pathname.replace(vanillaUrl.substring(url.protocol.length), '');
         const hash = vanillaUrl.substring(
             url.protocol.length + 2,
             vanillaUrl.length -
             Number(typeof url.port === 'string' && url.port.length > 0 ? url.port.length + 1 : 0) - url.search.length -
-            Number(typeof url.pathname === 'string' && url.pathname !== '/' ? url.pathname.length : 0)
+            Number(typeof tinyPath === 'string' && tinyPath !== '/' ? tinyPath.length : 0)
         );
 
         if (typeof CIDTool[type] === 'function') {
@@ -102,14 +104,14 @@ export function convertIpfsGateway(tinyUrl, vanillaUrl, type = 'base32') {
             finalResult.port = cfg.subdomainPublicGateway.port;
             finalResult.protocol = cfg.subdomainPublicGateway.protocol;
 
-            finalResult.pathname = url.pathname;
+            finalResult.pathname = tinyPath;
 
         } else {
 
             finalResult.host = cfg.publicGateway.host;
             finalResult.hostname = cfg.publicGateway.hostname;
 
-            finalResult.pathname = `/ipfs/${hash}${url.pathname}`;
+            finalResult.pathname = `/ipfs/${hash}${tinyPath}`;
 
             finalResult.port = cfg.publicGateway.port;
             finalResult.protocol = cfg.publicGateway.protocol;
