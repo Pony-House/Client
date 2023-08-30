@@ -88,7 +88,7 @@ export default function rainbowText(value, amount = 24) {
   let text = '';
   for (let i = 0; i < value.length; i++) {
     if (!rainbowData[color]) color = 0;
-    text += `<font color="${rainbowData[color].hex}">${value[i]}</font>`;
+    text += `<font color="#${rainbowData[color].hex}">${value[i]}</font>`;
     color++;
   }
 
