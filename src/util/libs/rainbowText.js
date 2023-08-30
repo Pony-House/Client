@@ -44,8 +44,8 @@ function rgbToHsl(gr, gg, gb) {
 
 function rca(len, type, pastel) {
 
-  let eq1 = 127
-  let eq2 = 128
+  let eq1 = 127;
+  let eq2 = 128;
   if (len === undefined) { len = 24 };
   if (type === undefined) { type = "rgb" };
   if (pastel === true) { eq1 = 55; eq2 = 200 };
@@ -54,9 +54,9 @@ function rca(len, type, pastel) {
   const cvparr = [];
   for (let i = 0; i < len; ++i) {
 
-    const red = Math.sin(frequency * i + 2) * eq1 + eq2
-    const green = Math.sin(frequency * i + 0) * eq1 + eq2
-    const blue = Math.sin(frequency * i + 4) * eq1 + eq2
+    const red = Math.sin(frequency * i + 2) * eq1 + eq2;
+    const green = Math.sin(frequency * i + 0) * eq1 + eq2;
+    const blue = Math.sin(frequency * i + 4) * eq1 + eq2;
 
     switch (type) {
       case "hex":
@@ -91,16 +91,16 @@ export function randomColor() {
 };
 
 export { rainbowColors, rca };
-export default function rainbowText(value) {
+export default function rainbowText(value, amount = 24) {
 
-  const rainbowData = rca(50, 'hex', true);
+  const rainbowData = rca(amount, 'hex');
 
   let color = 0;
   let text = '';
   for (let i = 0; i < value.length; i++) {
+    if (!rainbowData[color]) color = 0;
     text += `<font color="${rainbowData[color].hex}">${value[i]}</font>`;
     color++;
-    if (color > rainbowData.length) color = 0;
   }
 
   return text;

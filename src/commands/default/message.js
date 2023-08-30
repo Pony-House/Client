@@ -9,7 +9,6 @@ const rainbowCommand = {
     exe: (roomId, data, onSuccess) => {
         const body = data.trim();
         if (body === '') return;
-        console.log(rainbowText(body));
         onSuccess(`[rainbow]${body}[/rainbow]`, { msgType: 'm.text' });
     },
 };
