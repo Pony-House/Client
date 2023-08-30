@@ -13,7 +13,7 @@ import Text from '../../atoms/text/Text';
 import ScrollView from '../../atoms/scroll/ScrollView';
 import FollowingMembers from '../../molecules/following-members/FollowingMembers';
 import { addToEmojiList, getEmojisList } from '../emoji-board/recent';
-import commands from './commands';
+import commands from '../../../commands';
 
 function CmdItem({ onClick, children }) {
   return (

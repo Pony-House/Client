@@ -23,7 +23,7 @@ import { MessageReply } from '../../molecules/message/Message';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
-import commands from './commands';
+import commands from '../../../commands';
 
 // Variables
 const CMD_REGEX = /(^\/|:|@)(\S*)$/;

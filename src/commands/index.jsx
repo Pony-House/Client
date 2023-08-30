@@ -1,12 +1,12 @@
 import React from 'react';
 
-import initMatrix from '../../../client/initMatrix';
-import * as roomActions from '../../../client/action/room';
-import { hasDMWith, hasDevices } from '../../../util/matrixUtil';
-import { selectRoom, openReusableDialog, selectRoomMode } from '../../../client/action/navigation';
+import initMatrix from '../client/initMatrix';
+import * as roomActions from '../client/action/room';
+import { hasDMWith, hasDevices } from '../util/matrixUtil';
+import { selectRoom, openReusableDialog, selectRoomMode } from '../client/action/navigation';
 
-import Text from '../../atoms/text/Text';
-import SettingTile from '../../molecules/setting-tile/SettingTile';
+import Text from '../app/atoms/text/Text';
+import SettingTile from '../app/molecules/setting-tile/SettingTile';
 
 const MXID_REG = /^@\S+:\S+$/;
 const ROOM_ID_ALIAS_REG = /^(#|!)\S+:\S+$/;
