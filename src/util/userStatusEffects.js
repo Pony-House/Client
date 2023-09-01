@@ -106,8 +106,11 @@ export function startUserAfk() {
         userInteractions.afkTime.interval = null;
     }
 
-    $(window).on("mousemove", lastTimestampUpdate);
-    userInteractions.afkTime.value = moment().valueOf();
+    if (!__ENV_APP__.electron_mode) {
+        $(window).on("mousemove", lastTimestampUpdate);
+        userInteractions.afkTime.value = moment().valueOf();
+    }
+
     userInteractions.afkTime.interval = setInterval(intervalTimestamp, 1000);
 
 };
@@ -115,13 +118,13 @@ export function startUserAfk() {
 // Stop
 export function stopUserAfk() {
 
-    $(window).on("mousemove", lastTimestampUpdate);
+    if (!__ENV_APP__.electron_mode) $(window).on("mousemove", lastTimestampUpdate);
     if (userInteractions.afkTime.interval) {
         clearInterval(userInteractions.afkTime.interval);
         userInteractions.afkTime.interval = null;
     }
 
-    userInteractions.afkTime.value = null;
+    if (!__ENV_APP__.electron_mode) userInteractions.afkTime.value = null;
 
 };
 
