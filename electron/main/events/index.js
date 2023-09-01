@@ -1,4 +1,4 @@
-import { BrowserWindow } from 'electron';
+import { BrowserWindow, powerMonitor } from 'electron';
 
 export default function startEvents(ipcMain, newWin) {
 
@@ -12,6 +12,16 @@ export default function startEvents(ipcMain, newWin) {
         const webContents = event.sender;
         const tinyWin = BrowserWindow.fromWebContents(webContents);
         if (tinyWin) setTimeout(() => { tinyWin.show(); tinyWin.focus(); }, 200);
+    });
+
+    ipcMain.on('systemIdleTime', () => {
+        const idleSecs = powerMonitor.getSystemIdleTime();
+        newWin.webContents.send('systemIdleTime', idleSecs);
+    });
+
+    ipcMain.on('systemIdleState', (event, value) => {
+        const idleSecs = powerMonitor.getSystemIdleState(value);
+        newWin.webContents.send('systemIdleState', idleSecs);
     });
 
 };

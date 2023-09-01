@@ -4,6 +4,8 @@
 import * as colors from 'console-log-colors';
 import { contextBridge, ipcRenderer } from 'electron';
 import startNotifications from './notification';
+import './idle/seconds';
+import './idle/status';
 
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
   return new Promise((resolve) => {
