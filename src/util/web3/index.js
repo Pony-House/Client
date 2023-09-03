@@ -1,4 +1,126 @@
 import { EventEmitter } from 'events';
+import clone from 'clone';
+import { objType } from '../tools';
+
+const defaultNetworks = {
+
+  // Ethereum
+  ethereum: {
+
+    chainId: '1',
+    chainIdInt: 1,
+    rpcUrls: ['https://cloudflare-eth.com/'],
+    chainName: 'Ethereum Mainnet',
+    nativeCurrency: {
+      name: 'ETH',
+      symbol: 'ETH',
+      decimals: 18
+    },
+    blockExplorerUrls: ['https://etherscan.com/'],
+    blockExplorerApis: ['https://api.etherscan.io/'],
+
+    // https://docs.uniswap.org/contracts/v2/reference/smart-contracts/factory
+    factory: ['0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'],
+
+  },
+
+  // Polygon (MATIC)
+  matic: {
+
+    chainId: '0x89',
+    chainIdInt: 137,
+    rpcUrls: ['https://polygon-rpc.com/'],
+    chainName: 'Polygon Mainnet',
+    nativeCurrency: {
+      name: 'MATIC',
+      symbol: 'MATIC',
+      decimals: 18
+    },
+    blockExplorerUrls: ['https://polygonscan.com/'],
+    blockExplorerApis: ['https://api.polygonscan.com/'],
+
+    // https://docs.quickswap.exchange/reference/smart-contracts/v3/01-factory
+    factory: ['0x411b0fAcC3489691f28ad58c47006AF5E3Ab3A28'],
+
+  },
+
+  // Binsnace Smart Chain (BEP20)
+  bsc: {
+
+    chainId: '56',
+    chainIdInt: 56,
+    rpcUrls: ['https://bsc-dataseed.binance.org/'],
+    chainName: 'Smart Chain',
+    nativeCurrency: {
+      name: 'BNB',
+      symbol: 'BNB',
+      decimals: 18
+    },
+    blockExplorerUrls: ['https://bscscan.com/'],
+    blockExplorerApis: ['https://api.bscscan.com/'],
+
+    // https://docs.pancakeswap.finance/code/smart-contracts/pancakeswap-exchange/v2/factory-v2
+    factory: ['0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'],
+
+  },
+
+  // Gnosis Chain (USD)
+  gnosis: {
+
+    chainId: '100',
+    chainIdInt: 100,
+    rpcUrls: ['https://rpc.gnosischain.com/'],
+    chainName: 'Gnosis',
+    nativeCurrency: {
+      name: 'xDai',
+      symbol: 'xDAI',
+      decimals: 18
+    },
+    blockExplorerUrls: ['https://gnosisscan.io/'],
+    blockExplorerApis: ['https://api.gnosisscan.io/'],
+
+    factory: [],
+
+  },
+
+};
+
+export function getWeb3Cfg(folder, getDefault = true) {
+
+  let content = global.localStorage.getItem('ponyHouse-web3');
+
+  try {
+    content = JSON.parse(content) ?? {};
+  } catch (err) {
+    content = {};
+  }
+
+  if (getDefault) {
+
+    content.web3Enabled = typeof content.web3Enabled === 'boolean' ? content.web3Enabled : true;
+    content.networks = objType(content.networks, 'object') ? content.networks : {};
+    for (const item in defaultNetworks) {
+      if (!objType(content.networks[item], 'object')) {
+        content.networks[item] = clone(defaultNetworks[item]);
+      }
+    }
+
+  }
+
+  if (typeof folder === 'string' && folder.length > 0) {
+    if (typeof content[folder] !== 'undefined') return content[folder];
+    return null;
+  }
+
+  return content;
+
+};
+
+export function setWeb3Cfg(folder, value) {
+  const content = getWeb3Cfg(null, false);
+  content[folder] = value;
+  global.localStorage.setItem('ponyHouse-web3', JSON.stringify(content));
+};
 
 // Module
 const startWeb3 = () => {
@@ -37,88 +159,7 @@ const startWeb3 = () => {
       },
 
       // Networks List
-      networks: {
-
-        // Ethereum
-        ethereum: {
-
-          chainId: '1',
-          chainIdInt: 1,
-          rpcUrls: ['https://cloudflare-eth.com/'],
-          chainName: 'Ethereum Mainnet',
-          nativeCurrency: {
-            name: 'ETH',
-            symbol: 'ETH',
-            decimals: 18
-          },
-          blockExplorerUrls: ['https://etherscan.com/'],
-          blockExplorerApis: ['https://api.etherscan.io/'],
-
-          // https://docs.uniswap.org/contracts/v2/reference/smart-contracts/factory
-          factory: ['0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'],
-
-        },
-
-        // Polygon (MATIC)
-        matic: {
-
-          chainId: '0x89',
-          chainIdInt: 137,
-          rpcUrls: ['https://polygon-rpc.com/'],
-          chainName: 'Polygon Mainnet',
-          nativeCurrency: {
-            name: 'MATIC',
-            symbol: 'MATIC',
-            decimals: 18
-          },
-          blockExplorerUrls: ['https://polygonscan.com/'],
-          blockExplorerApis: ['https://api.polygonscan.com/'],
-
-          // https://docs.quickswap.exchange/reference/smart-contracts/v3/01-factory
-          factory: ['0x411b0fAcC3489691f28ad58c47006AF5E3Ab3A28'],
-
-        },
-
-        // Binsnace Smart Chain (BEP20)
-        bsc: {
-
-          chainId: '56',
-          chainIdInt: 56,
-          rpcUrls: ['https://bsc-dataseed.binance.org/'],
-          chainName: 'Smart Chain',
-          nativeCurrency: {
-            name: 'BNB',
-            symbol: 'BNB',
-            decimals: 18
-          },
-          blockExplorerUrls: ['https://bscscan.com/'],
-          blockExplorerApis: ['https://api.bscscan.com/'],
-
-          // https://docs.pancakeswap.finance/code/smart-contracts/pancakeswap-exchange/v2/factory-v2
-          factory: ['0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'],
-
-        },
-
-        // Gnosis Chain (USD)
-        gnosis: {
-
-          chainId: '100',
-          chainIdInt: 100,
-          rpcUrls: ['https://rpc.gnosischain.com/'],
-          chainName: 'Gnosis',
-          nativeCurrency: {
-            name: 'xDai',
-            symbol: 'xDAI',
-            decimals: 18
-          },
-          blockExplorerUrls: ['https://gnosisscan.io/'],
-          blockExplorerApis: ['https://api.gnosisscan.io/'],
-
-          factory: [],
-
-        },
-
-      }
+      networks: getWeb3Cfg()?.networks ?? {},
 
     }),
 
@@ -480,6 +521,9 @@ const startWeb3 = () => {
   // Freeze
   tinyCrypto.call = Object.freeze(tinyCrypto.call);
   tinyCrypto.get = Object.freeze(tinyCrypto.get);
+
+  tinyCrypto.getCfg = getWeb3Cfg;
+  tinyCrypto.setCfg = setWeb3Cfg;
 
   // Insert into global
   global.tinyCrypto = tinyCrypto;

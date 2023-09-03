@@ -21,6 +21,7 @@ import AboutSection from './pages/About';
 import ExperimentalSection from './pages/Experimental';
 import VoiceVideoSection from './pages/VoiceVideo';
 import IpfsSection from './pages/Ipfs';
+import Web3Section from './pages/Web3';
 
 function EmojiSection() {
   return (
@@ -32,6 +33,7 @@ function EmojiSection() {
 };
 
 export const tabText = {
+  WEB3: 'Web3',
   APPEARANCE: 'Appearance',
   VOICEVIDEO: 'Voice & Video',
   IPFS: 'IPFS Protocol',
@@ -83,6 +85,13 @@ const tabItems = [
     faSrc: "fa-solid fa-cube",
     disabled: false,
     render: () => <IpfsSection />,
+  },
+
+  {
+    text: tabText.WEB3,
+    faSrc: "fa-brands fa-ethereum",
+    disabled: false,
+    render: () => <Web3Section />,
   },
 
   { type: 'divider', },
