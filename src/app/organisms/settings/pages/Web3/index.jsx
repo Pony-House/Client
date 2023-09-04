@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import SettingTile from '../../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../../atoms/button/Toggle';
 import { toggleActionLocal } from '../../Api';
-import { getWeb3Cfg, setWeb3Cfg } from '../../../../../util/web3';
+import { getWeb3Cfg } from '../../../../../util/web3';
+import Web3Item from './Web3Item';
 
 function Web3Section() {
 
@@ -10,13 +11,14 @@ function Web3Section() {
     const web3Settings = getWeb3Cfg();
     const [web3Enabled, setWeb3Enabled] = useState(web3Settings.web3Enabled);
 
-    // Effects
-    useEffect(() => {
-
-    });
+    const networks = { keys: [], values: [] };
+    for (const item in web3Settings.networks) {
+        networks.values.push(web3Settings.networks[item]);
+        networks.keys.push(item);
+    }
 
     // Complete Render
-    return (<>
+    return <>
 
         <div className="card noselect mb-3">
             <ul className="list-group list-group-flush">
@@ -38,8 +40,9 @@ function Web3Section() {
             </ul>
         </div>
 
-    </>
-    );
+        {networks.values.map((item, index) => <Web3Item item={item} networkId={networks.keys[index]} />)}
+
+    </>;
 
 };
 
