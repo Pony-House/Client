@@ -10,6 +10,9 @@ function Web3Item({ item, networkId }) {
     const explorerUrlApiRef = useRef(null);
     const chainRpcRef = useRef(null);
     const factoryScRef = useRef(null);
+    const tokenNameRef = useRef(null);
+    const tokenSymbolRef = useRef(null);
+    const tokenDecimalsRef = useRef(null);
 
     console.log(item);
 
@@ -24,6 +27,15 @@ function Web3Item({ item, networkId }) {
 
         const blockName = $(blockNameRef.current);
         blockName.val(item.chainName);
+
+        const tokenName = $(tokenNameRef.current);
+        tokenName.val(item.nativeCurrency?.name);
+
+        const tokenSymbol = $(tokenSymbolRef.current);
+        tokenSymbol.val(item.nativeCurrency?.symbol);
+
+        const tokenDecimals = $(tokenDecimalsRef.current);
+        tokenDecimals.val(item.nativeCurrency?.decimals);
 
         const explorerUrl = $(explorerUrlRef.current);
         explorerUrl.val(item?.blockExplorerUrls.join(','));
@@ -84,6 +96,24 @@ function Web3Item({ item, networkId }) {
                     <label for={`chain_rpc_id_${item.chainId}`} className="form-label small">RPC Url</label>
                     <input ref={chainRpcRef} type="text" className="form-control form-control-bg" id={`chain_rpc_id_${item.chainId}`} />
                     <div className="very-small text-gray">The RPC url of the blockchain server.</div>
+                </div>
+
+                <div className="mb-3">
+                    <label for={`chain_name_${item.chainId}`} className="form-label small">Name</label>
+                    <input ref={tokenNameRef} type="text" className="form-control form-control-bg" id={`chain_name_${item.chainId}`} />
+                    <div className="very-small text-gray">The token name.</div>
+                </div>
+
+                <div className="mb-3">
+                    <label for={`chain_symbol_${item.chainId}`} className="form-label small">Symbol</label>
+                    <input ref={tokenSymbolRef} type="text" className="form-control form-control-bg" id={`chain_symbol_${item.chainId}`} />
+                    <div className="very-small text-gray">The token symbol.</div>
+                </div>
+
+                <div className="mb-3">
+                    <label for={`chain_decimals_${item.chainId}`} className="form-label small">Decimals</label>
+                    <input ref={tokenDecimalsRef} type="number" min={0} className="form-control form-control-bg" id={`chain_decimals_${item.chainId}`} />
+                    <div className="very-small text-gray">The token decimals.</div>
                 </div>
 
             </li>
