@@ -140,8 +140,12 @@ function Web3Item({ item, networkId }) {
 
     return <div className="card noselect mb-3">
         <ul className="list-group list-group-flush">
-            <li className="list-group-item very-small text-gray">{item.chainName} <img src={`${item?.blockExplorerUrls}images/favicon.ico`} className='ms-2 img-fluid' style={{ height: 20 }} alt='logo' /></li>
-            <li className="list-group-item">
+            <li className="list-group-item very-small text-gray">
+                <a data-bs-toggle="collapse" href={`#chain_collapse_${item.chainId}`} role="button" aria-expanded="false" aria-controls={`chain_collapse_${item.chainId}`}>
+                    {item.chainName} <img src={`${item?.blockExplorerUrls}images/favicon.ico`} className='ms-2 img-fluid' style={{ height: 20 }} alt='logo' />
+                </a>
+            </li>
+            <li id={`chain_collapse_${item.chainId}`} className="list-group-item collapse">
 
                 <div className="mb-3">
                     <label for={`chain_name_id_${item.chainId}`} className="form-label small">Chain Name</label>
