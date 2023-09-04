@@ -102,6 +102,25 @@ const defaultNetworks = {
 
   },
 
+  // Optimism Mainnet
+  op: {
+
+    chainId: '10',
+    chainIdInt: 10,
+    rpcUrls: ['https://mainnet.optimism.io/'],
+    chainName: 'Optimism Mainnet',
+    nativeCurrency: {
+      name: 'ETH',
+      symbol: 'ETH',
+      decimals: 18
+    },
+    blockExplorerUrls: ['https://explorer.optimism.io/'],
+    blockExplorerApis: ['https://api-optimistic.etherscan.io/'],
+
+    factory: [],
+
+  },
+
 };
 
 export function getWeb3Cfg(folder, getDefault = true) {
