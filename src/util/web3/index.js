@@ -83,6 +83,25 @@ const defaultNetworks = {
 
   },
 
+  // Avalanche Network
+  avax: {
+
+    chainId: '43114',
+    chainIdInt: 43114,
+    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
+    chainName: 'Avalanche Network',
+    nativeCurrency: {
+      name: 'AVAX',
+      symbol: 'AVAX',
+      decimals: 18
+    },
+    blockExplorerUrls: ['https://snowtrace.io/'],
+    blockExplorerApis: ['https://api.snowtrace.io/'],
+
+    factory: [],
+
+  },
+
 };
 
 export function getWeb3Cfg(folder, getDefault = true) {

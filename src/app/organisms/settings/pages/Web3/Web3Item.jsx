@@ -5,6 +5,7 @@ function Web3Item({ item, networkId }) {
 
     const idValueRef = useRef(null);
     const blockIdRef = useRef(null);
+    const blockIdNumberRef = useRef(null);
     const blockNameRef = useRef(null);
     const explorerUrlRef = useRef(null);
     const explorerUrlApiRef = useRef(null);
@@ -32,6 +33,14 @@ function Web3Item({ item, networkId }) {
         blockId.val(item.chainId);
 
         const blockIdChange = () => {
+
+        };
+
+        // Blockchain Id Int
+        const blockIdNumber = $(blockIdNumberRef.current);
+        blockIdNumber.val(item.chainIdInt);
+
+        const blockIdNumberChange = () => {
 
         };
 
@@ -102,6 +111,7 @@ function Web3Item({ item, networkId }) {
         // Turn On
         idValue.on('change', idValueChange);
         blockId.on('change', blockIdChange);
+        blockIdNumber.on('change', blockIdNumberChange);
         blockName.on('change', blockNameChange);
         tokenName.on('change', tokenNameChange);
         tokenSymbol.on('change', tokenSymbolChange);
@@ -115,6 +125,7 @@ function Web3Item({ item, networkId }) {
         return () => {
             idValue.off('change', idValueChange);
             blockId.off('change', blockIdChange);
+            blockIdNumber.off('change', blockIdNumberChange);
             blockName.off('change', blockNameChange);
             tokenName.off('change', tokenNameChange);
             tokenSymbol.off('change', tokenSymbolChange);
@@ -148,6 +159,12 @@ function Web3Item({ item, networkId }) {
                     <label for={`chain_block_id_${item.chainId}`} className="form-label small">Blockchain Id</label>
                     <input ref={blockIdRef} type="text" className="form-control form-control-bg" id={`chain_block_id_${item.chainId}`} />
                     <div className="very-small text-gray">This is the blockchain identifier value within the Ethereum network. Enter a chain value here.</div>
+                </div>
+
+                <div className="mb-3">
+                    <label for={`chain_block_id_number_${item.chainId}`} className="form-label small">Blockchain Id</label>
+                    <input ref={blockIdNumberRef} type="text" className="form-control form-control-bg" id={`chain_block_id_number_${item.chainId}`} />
+                    <div className="very-small text-gray">This is the blockchain identifier value (Number) within the Ethereum network. Enter a chain value here.</div>
                 </div>
 
                 <div className="mb-3">
