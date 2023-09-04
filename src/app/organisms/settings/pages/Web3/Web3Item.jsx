@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { setWeb3Cfg } from '../../../../../util/web3';
+import React, { useEffect, useRef } from 'react';
+import { setWeb3Cfg, getWeb3Cfg } from '../../../../../util/web3';
 
 function Web3Item({ item, networkId }) {
 
@@ -19,35 +19,111 @@ function Web3Item({ item, networkId }) {
     // Effects
     useEffect(() => {
 
+        // Object Id
         const idValue = $(idValueRef.current);
         idValue.val(networkId);
 
+        const idValueChange = () => {
+
+        };
+
+        // Blockchain Id
         const blockId = $(blockIdRef.current);
         blockId.val(item.chainId);
 
+        const blockIdChange = () => {
+
+        };
+
+        // Blockchain Name
         const blockName = $(blockNameRef.current);
         blockName.val(item.chainName);
 
+        const blockNameChange = () => {
+
+        };
+
+        // Token Name
         const tokenName = $(tokenNameRef.current);
         tokenName.val(item.nativeCurrency?.name);
 
+        const tokenNameChange = () => {
+
+        };
+
+        // Token Symbol
         const tokenSymbol = $(tokenSymbolRef.current);
         tokenSymbol.val(item.nativeCurrency?.symbol);
 
+        const tokenSymbolChange = () => {
+
+        };
+
+        // Token Decimals
         const tokenDecimals = $(tokenDecimalsRef.current);
         tokenDecimals.val(item.nativeCurrency?.decimals);
 
+        const tokenDecimalsChange = () => {
+
+        };
+
+        // Explorer Url
         const explorerUrl = $(explorerUrlRef.current);
         explorerUrl.val(item?.blockExplorerUrls.join(','));
 
+        const explorerUrlChange = () => {
+
+        };
+
+        // Explorer Url - API
         const explorerUrlApi = $(explorerUrlApiRef.current);
         explorerUrlApi.val(item?.blockExplorerApis.join(','));
 
+        const explorerUrlApiChange = () => {
+
+        };
+
+        // Chain RPC
         const chainRpc = $(chainRpcRef.current);
         chainRpc.val(item?.rpcUrls.join(','));
 
+        const chainRpcChange = () => {
+
+        };
+
+        // Factory Smart Contract
         const factorySc = $(factoryScRef.current);
         factorySc.val(item?.factory.join(','));
+
+        const factoryScChange = () => {
+
+        };
+
+        // Turn On
+        idValue.on('change', idValueChange);
+        blockId.on('change', blockIdChange);
+        blockName.on('change', blockNameChange);
+        tokenName.on('change', tokenNameChange);
+        tokenSymbol.on('change', tokenSymbolChange);
+        tokenDecimals.on('change', tokenDecimalsChange);
+        explorerUrl.on('change', explorerUrlChange);
+        explorerUrlApi.on('change', explorerUrlApiChange);
+        chainRpc.on('change', chainRpcChange);
+        factorySc.on('change', factoryScChange);
+
+        // Complete
+        return () => {
+            idValue.off('change', idValueChange);
+            blockId.off('change', blockIdChange);
+            blockName.off('change', blockNameChange);
+            tokenName.off('change', tokenNameChange);
+            tokenSymbol.off('change', tokenSymbolChange);
+            tokenDecimals.off('change', tokenDecimalsChange);
+            explorerUrl.off('change', explorerUrlChange);
+            explorerUrlApi.off('change', explorerUrlApiChange);
+            chainRpc.off('change', chainRpcChange);
+            factorySc.off('change', factoryScChange);
+        };
 
     });
 
