@@ -4,9 +4,9 @@ import objectHash from 'object-hash';
 import SettingTile from '../../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../../atoms/button/Toggle';
 import { toggleActionLocal } from '../../Api';
-import { getWeb3Cfg, deleteWeb3Cfg } from '../../../../../util/web3';
+import { getWeb3Cfg, deleteWeb3Cfg, setWeb3Cfg } from '../../../../../util/web3';
 import Web3Item from './Web3Item';
-import { tinyConfirm } from '../../../../../util/tools';
+import { tinyConfirm, tinyPrompt } from '../../../../../util/tools';
 
 function Web3Section() {
 
@@ -55,15 +55,23 @@ function Web3Section() {
                 <li className="list-group-item very-small text-gray">
 
                     <button type="button" class="btn btn-sm btn-danger me-3 my-1 my-sm-0" onClick={async () => {
-                        const isConfirmed = await tinyConfirm('Are you sure you want to reset this? All your data will be lost forever!', 'Reset Web3 Config');
+                        const isConfirmed = await tinyConfirm('Are you sure you want to reset this? All your data will be lost forever!', 'Reset web3 config');
                         if (isConfirmed) {
                             deleteWeb3Cfg('networks');
                             setNetworks({ keys: [], values: [] });
                         }
                     }}>Reset config</button>
 
-                    <button type="button" class="btn btn-sm btn-success me-3 my-1 my-sm-0" onClick={() => {
+                    <button type="button" class="btn btn-sm btn-success me-3 my-1 my-sm-0" onClick={async () => {
+                        const newNetwork = await tinyPrompt('Choose an Object Id for your new network', 'New web3 network', 'ethereum');
+                        if (typeof newNetwork === 'string' && newNetwork.length > 0) {
 
+                            const newWeb3Settings = getWeb3Cfg();
+                            newWeb3Settings.networks[newNetwork] = { chainName: newNetwork };
+                            setWeb3Cfg('networks', newWeb3Settings.networks);
+                            setNetworks({ keys: [], values: [] });
+
+                        }
                     }}>Create</button>
 
                     <button type="button" class="btn btn-sm btn-secondary me-3 my-1 my-sm-0" onClick={() => {

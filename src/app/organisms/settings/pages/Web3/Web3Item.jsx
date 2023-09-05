@@ -197,13 +197,13 @@ function Web3Item({ item, networkId }) {
             explorerUrl.val(blockchainExplorer);
 
             // Explorer Url - API
-            explorerUrlApi.val(newItem?.blockExplorerApis.join(', '));
+            explorerUrlApi.val(Array.isArray(newItem?.blockExplorerApis) ? newItem.blockExplorerApis.join(', ') : '');
 
             // Chain RPC
-            chainRpc.val(newItem?.rpcUrls.join(', '));
+            chainRpc.val(Array.isArray(newItem?.rpcUrls) ? newItem.rpcUrls.join(', ') : '');
 
             // Factory Smart Contract
-            factorySc.val(item?.factory.join(', '));
+            factorySc.val(Array.isArray(newItem?.factory) ? newItem.factory.join(', ') : '');
 
         };
 
@@ -328,7 +328,7 @@ function Web3Item({ item, networkId }) {
                     {defaultNetworks[tinyNetwork] ?
 
                         <button type="button" className="btn btn-sm btn-danger" onClick={async () => {
-                            const isConfirmed = await tinyConfirm('Are you sure you want to reset this network data?', 'Web3 Network');
+                            const isConfirmed = await tinyConfirm('Are you sure you want to reset this network data?', 'Web3 network');
                             if (isConfirmed) {
 
                                 const web3Settings = getWeb3Cfg();
@@ -348,7 +348,7 @@ function Web3Item({ item, networkId }) {
                         }}>Reset Data</button> :
 
                         <button type="button" className={`btn btn-sm btn-danger${defaultNetworks[tinyNetwork] ? ' me-3' : ''} my-1 my-sm-0`} onClick={async () => {
-                            const isConfirmed = await tinyConfirm('Are you sure you want to delete this network?', 'Web3 Network');
+                            const isConfirmed = await tinyConfirm('Are you sure you want to delete this network?', 'Web3 network');
                             if (isConfirmed) {
 
                                 $(divBaseRef.current).addClass('d-none');
