@@ -38,7 +38,9 @@ function Web3Section() {
                 />
 
                 <li className="list-group-item very-small text-gray">
-                    <button type="button" class="btn btn-sm btn-danger">Reset Config</button>
+                    <button type="button" class="btn btn-sm btn-danger me-3">Reset Config</button>
+                    <button type="button" class="btn btn-sm btn-secondary me-3">Export</button>
+                    <button type="button" class="btn btn-sm btn-secondary">Import</button>
                 </li>
 
                 <li className="list-group-item very-small text-gray">

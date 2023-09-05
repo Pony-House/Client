@@ -86,6 +86,7 @@ function Web3Item({ item, networkId }) {
             // Reset Data
             if (web3Settings.networks[tinyNetwork]) delete web3Settings.networks[tinyNetwork];
             web3Settings.networks[tinyNetwork] = newData;
+            setWeb3Cfg('networks', web3Settings.networks);
 
         };
 
@@ -106,6 +107,7 @@ function Web3Item({ item, networkId }) {
 
                 delete web3Settings.networks[tinyNetwork];
                 web3Settings.networks[newId] = tinyData;
+                setWeb3Cfg('networks', web3Settings.networks);
 
                 setTinyNetwork(newId);
 
@@ -270,7 +272,8 @@ function Web3Item({ item, networkId }) {
                 </div>
 
                 <div className="mb-3">
-                    <button type="button" class="btn btn-sm btn-danger">Delete Blockchain</button>
+                    <button type="button" class="btn btn-sm btn-danger me-3">Delete Data</button>
+                    <button type="button" class="btn btn-sm btn-danger">Reset Data</button>
                 </div>
 
             </li>
