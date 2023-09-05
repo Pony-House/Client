@@ -12,6 +12,9 @@ import RoomView from './RoomView';
 import RoomSettings from './RoomSettings';
 import PeopleDrawer from './PeopleDrawer';
 
+let resetRoomInfo;
+global.resetRoomInfo = () => typeof resetRoomInfo === 'function' ? resetRoomInfo() : null;
+
 function Room() {
   const [roomInfo, setRoomInfo] = useState({
     roomTimeline: null,
@@ -21,6 +24,17 @@ function Room() {
   const [isDrawer, setIsDrawer] = useState(settings.isPeopleDrawer);
 
   const mx = initMatrix.matrixClient;
+  resetRoomInfo = () => {
+
+    $('#space-header .space-drawer-body .room-selector--selected').removeClass('room-selector--selected');
+
+    setRoomInfo({
+      roomTimeline: null,
+      eventId: null,
+      forceScroll: null,
+    });
+
+  };
 
   useEffect(() => {
     const handleRoomSelected = (rId, pRoomId, eId, forceScroll) => {
