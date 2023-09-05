@@ -13,6 +13,8 @@ import DrawerBreadcrumb from './DrawerBreadcrumb';
 import Home from './Home';
 import Directs from './Directs';
 
+import IconButton from '../../atoms/button/IconButton';
+
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { useSelectedTab } from '../../hooks/useSelectedTab';
 import { useSelectedSpace } from '../../hooks/useSelectedSpace';
@@ -100,6 +102,16 @@ function Drawer() {
         {navigation.selectedSpacePath.length > 1 && selectedTab !== cons.tabs.DIRECTS && (
           <DrawerBreadcrumb spaceId={spaceId} />
         )}
+
+        {
+          !spaceId ? <center className='small text-start d-grid w-100'>
+
+            <IconButton fa="fa-solid fa-house" className='text-start mt-3 mx-3' onClick={() => global.resetRoomInfo()}>
+              <span className='ms-3'>Home</span>
+            </IconButton>
+
+          </center> : null
+        }
 
         {
           selectedTab !== cons.tabs.DIRECTS

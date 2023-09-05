@@ -81,14 +81,14 @@ function Home({ spaceId }) {
   return (
     <>
       {!isCategorized && spaceIds.length !== 0 && (
-        <RoomsCategory notSpace={roomSettings.notSpace} name="Spaces" roomIds={spaceIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
+        <RoomsCategory notSpace={roomSettings.notSpace} type='home' name="Spaces" roomIds={spaceIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
       )}
 
       {
 
         (
           roomIds.length !== 0 && (
-            <RoomsCategory notSpace={roomSettings.notSpace} name="Rooms" roomIds={roomIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
+            <RoomsCategory notSpace={roomSettings.notSpace} type='home' name="Rooms" roomIds={roomIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
           )
         ) ||
 
@@ -104,7 +104,7 @@ function Home({ spaceId }) {
       }
 
       {directIds.length !== 0 && (
-        <RoomsCategory notSpace={roomSettings.notSpace} name="People" roomIds={directIds.sort(roomIdByActivity)} drawerPostie={drawerPostie} />
+        <RoomsCategory notSpace={roomSettings.notSpace} type='home' name="People" roomIds={directIds.sort(roomIdByActivity)} drawerPostie={drawerPostie} />
       )}
 
       {isCategorized && [...categories.keys()].sort(roomIdByAtoZ).map((catId) => {
@@ -118,6 +118,7 @@ function Home({ spaceId }) {
         dms.sort(roomIdByActivity);
         return (
           <RoomsCategory
+            type='home'
             notSpace={roomSettings.notSpace}
             key={catId}
             spaceId={catId}

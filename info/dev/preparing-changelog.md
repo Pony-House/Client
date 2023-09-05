@@ -8,5 +8,7 @@
 - Audio and Video page added.
 - Desktop version support added.
 - Version checker to desktop version added.
-- IPFS Gateway support added
-- New rainbow text command added
+- IPFS Gateway support added.
+- New rainbow text command added.
+- Home button added.
+- Web3 network config added.

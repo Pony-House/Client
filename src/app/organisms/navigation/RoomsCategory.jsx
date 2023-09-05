@@ -47,7 +47,7 @@ setCategoryOpen.propTypes = {
 };
 
 function RoomsCategory({
-  spaceId, name, hideHeader, roomIds, drawerPostie, notSpace,
+  spaceId, name, hideHeader, roomIds, drawerPostie, notSpace, type,
 }) {
 
   // Prepare Code Base
@@ -195,7 +195,7 @@ function RoomsCategory({
 
   // Complete
   return (
-    <div className="p-3 pe-2">
+    <div className={`${type !== 'directs' ? 'p-3 ' : 'px-3 pb-3 '}pe-2`}>
       {!hideHeader && (
         <table className='category-button space-buttons w-100 m-0 p-0'>
           <tbody>
@@ -223,11 +223,13 @@ function RoomsCategory({
   );
 }
 RoomsCategory.defaultProps = {
+  type: null,
   notSpace: false,
   spaceId: null,
   hideHeader: false,
 };
 RoomsCategory.propTypes = {
+  type: PropTypes.string,
   notSpace: PropTypes.bool,
   spaceId: PropTypes.string,
   name: PropTypes.string.isRequired,
