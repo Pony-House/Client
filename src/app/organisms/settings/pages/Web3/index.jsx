@@ -131,7 +131,22 @@ function Web3Section() {
             </ul>
         </div>
 
-        {networks.values.map((item, index) => <Web3Item item={item} networkId={networks.keys[index]} />)}
+        {networks && Array.isArray(networks.values) && networks.values.length > 0 ? networks.values.map((item, index) => <Web3Item item={item} networkId={networks.keys[index]} />) : <p className="placeholder-glow m-0">
+            <span className="placeholder col-12" />
+            <span className="placeholder col-12" />
+            <span className="placeholder col-12" />
+            <span className="placeholder col-12" />
+            <span className="placeholder col-12" />
+            <span className="placeholder col-12" />
+            <span className="placeholder col-12" />
+            <span className="placeholder col-12" />
+            <span className="placeholder col-12" />
+            <span className="placeholder col-12" />
+            <span className="placeholder col-12" />
+            <span className="placeholder col-12" />
+            <span className="placeholder col-12" />
+            <span className="placeholder col-12" />
+        </p>}
 
     </>;
 
