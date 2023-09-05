@@ -139,7 +139,7 @@ tinyAPI.emit = function (event) {
     if (Array.isArray(tinyPlugins.order[event])) {
         for (const item in tinyPlugins.order[event]) {
 
-            result = tinyPlugins.order[event][item].callback.apply({}, argumentsFix(arguments, result));
+            tinyPlugins.order[event][item].callback.apply({}, argumentsFix(arguments, result));
             if (!objType(result, 'object')) result = null;
 
             if (tinyPlugins.order[event][item].type === 'once') {

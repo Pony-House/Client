@@ -40,6 +40,7 @@ import { html, plain } from '../../../util/markdown';
 import getUrlPreview from '../../../util/libs/getUrlPreview';
 
 import Embed from './Embed';
+import tinyAPI from '../../../util/mods';
 
 function PlaceholderMessage() {
   return (
@@ -261,13 +262,23 @@ const MessageBody = React.memo(({
   let msgData = null;
   if (isCustomHTML) {
     try {
-      msgData = twemojifyReact(
+
+      const insertMsg = () => twemojifyReact(
         sanitizeCustomHtml(initMatrix.matrixClient, body),
         undefined,
         true,
         false,
         true,
       );
+
+      const msgOptions = tinyAPI.emit('messageBody', content, insertMsg);
+
+      if (typeof msgOptions.custom === 'undefined') {
+        msgData = insertMsg();
+      } else {
+        msgData = msgOptions.custom;
+      }
+
     } catch {
       console.error(`${colors.grey('[matrix]')} ${colors.blue('[msg]')} Malformed custom html: `, body);
       msgData = twemojifyReact(body, undefined);

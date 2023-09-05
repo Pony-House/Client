@@ -96,6 +96,17 @@ console object = level, message
 
     console cache
 
+`src/app/molecules/message/Message.jsx`
+
+### messageBody
+
+    content
+    insertMsg
+
+The value "content" contains the data of the received message. The value "insertMsg" contains the default function of creating the message.
+
+Use the msgOptions.custom object to customize the final result of your message. You can optionally combine this together with "insertMsg".
+
 `src/app/organisms/welcome/Welcome.jsx`
 
 ### startWelcomePage
