@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clone from 'clone';
 
 import { setWeb3Cfg, getWeb3Cfg } from '../../../../../util/web3';
@@ -18,7 +18,7 @@ function Web3Item({ item, networkId }) {
     const tokenSymbolRef = useRef(null);
     const tokenDecimalsRef = useRef(null);
 
-    let tinyNetwork = networkId;
+    const [tinyNetwork, setTinyNetwork] = useState(networkId);
 
     // Effects
     useEffect(() => {
@@ -105,9 +105,9 @@ function Web3Item({ item, networkId }) {
                 }
 
                 delete web3Settings.networks[tinyNetwork];
-                tinyNetwork = newId;
+                web3Settings.networks[newId] = tinyData;
 
-                web3Settings.networks[tinyNetwork] = tinyData;
+                setTinyNetwork(newId);
 
             }
         };
