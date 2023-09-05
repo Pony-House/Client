@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import objectHash from 'object-hash';
 import FileSaver from 'file-saver';
 
@@ -7,7 +7,7 @@ import Toggle from '../../../../atoms/button/Toggle';
 import { toggleActionLocal } from '../../Api';
 import { getWeb3Cfg, deleteWeb3Cfg, setWeb3Cfg } from '../../../../../util/web3';
 import Web3Item from './Web3Item';
-import { tinyConfirm, tinyPrompt } from '../../../../../util/tools';
+import { objType, tinyConfirm, tinyPrompt } from '../../../../../util/tools';
 
 function Web3Section() {
 
@@ -15,6 +15,9 @@ function Web3Section() {
     const web3Settings = getWeb3Cfg();
     const [networks, setNetworks] = useState({ keys: [], values: [] });
     const [web3Enabled, setWeb3Enabled] = useState(web3Settings.web3Enabled);
+    const [, setUploadPromise] = useState(null);
+
+    const web3ConfigUploadRef = useRef(null);
 
     useEffect(() => {
 
@@ -82,12 +85,41 @@ function Web3Section() {
                             type: 'text/plain;charset=us-ascii',
                         });
 
-                        FileSaver.saveAs(blob, 'pony-house-web3-networks.txt');
+                        FileSaver.saveAs(blob, 'pony-house-web3-networks.json');
 
                     }}>Export</button>
 
-                    <button type="button" class="btn btn-sm btn-secondary my-1 my-sm-0" onClick={() => {
+                    <input onChange={async (e) => {
 
+                        const file = e.target.files.item(0);
+                        if (file === null) return;
+                        try {
+
+                            const reader = new FileReader();
+                            reader.onload = (event) => {
+                                const obj = JSON.parse(event.target.result);
+                                if (objType(obj, 'object')) {
+
+                                    setWeb3Cfg('networks', obj);
+                                    setUploadPromise(null);
+                                    setNetworks({ keys: [], values: [] });
+
+                                }
+                            };
+
+                            reader.readAsText(file);
+
+                        } catch (err) {
+                            console.error(err);
+                            alert(err.message);
+                            setUploadPromise(null);
+                        }
+
+                        web3ConfigUploadRef.current.value = null;
+
+                    }} style={{ display: 'none' }} ref={web3ConfigUploadRef} type="file" accept="application/JSON" />
+                    <button type="button" class="btn btn-sm btn-secondary my-1 my-sm-0" onClick={() => {
+                        web3ConfigUploadRef.current.click();
                     }}>Import</button>
 
                 </li>
