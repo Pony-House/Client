@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import objectHash from 'object-hash';
+import FileSaver from 'file-saver';
 
 import SettingTile from '../../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../../atoms/button/Toggle';
@@ -75,6 +76,13 @@ function Web3Section() {
                     }}>Create</button>
 
                     <button type="button" class="btn btn-sm btn-secondary me-3 my-1 my-sm-0" onClick={() => {
+
+                        const newWeb3Settings = getWeb3Cfg();
+                        const blob = new Blob([JSON.stringify(newWeb3Settings.networks, null, 4)], {
+                            type: 'text/plain;charset=us-ascii',
+                        });
+
+                        FileSaver.saveAs(blob, 'pony-house-web3-networks.txt');
 
                     }}>Export</button>
 
