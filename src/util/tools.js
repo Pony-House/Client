@@ -424,6 +424,8 @@ export function tinyPrompt(text = '', title = 'App Alert', placeholder = '') {
             if (e.key === 'Enter' || e.keyCode === 13) tinyComplete();
         });
 
+        setTimeout(() => input.focus(), 500);
+
     });
 };
 
