@@ -7,7 +7,7 @@ const defaultNetworks = {
   // Ethereum
   ethereum: {
 
-    chainId: '1',
+    chainId: '0x1',
     chainIdInt: 1,
     rpcUrls: ['https://cloudflare-eth.com/'],
     chainName: 'Ethereum Mainnet',
@@ -47,7 +47,7 @@ const defaultNetworks = {
   // Binsnace Smart Chain (BEP20)
   bsc: {
 
-    chainId: '56',
+    chainId: '0x38',
     chainIdInt: 56,
     rpcUrls: ['https://bsc-dataseed.binance.org/'],
     chainName: 'Smart Chain',
@@ -67,7 +67,7 @@ const defaultNetworks = {
   // Gnosis Chain (USD)
   gnosis: {
 
-    chainId: '100',
+    chainId: '0x64',
     chainIdInt: 100,
     rpcUrls: ['https://rpc.gnosischain.com/'],
     chainName: 'Gnosis',
@@ -86,7 +86,7 @@ const defaultNetworks = {
   // Avalanche Network
   avax: {
 
-    chainId: '43114',
+    chainId: '0xa86a',
     chainIdInt: 43114,
     rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
     chainName: 'Avalanche Network',
@@ -105,7 +105,7 @@ const defaultNetworks = {
   // Optimism Mainnet
   op: {
 
-    chainId: '10',
+    chainId: '0xa',
     chainIdInt: 10,
     rpcUrls: ['https://mainnet.optimism.io/'],
     chainName: 'Optimism Mainnet',
@@ -116,6 +116,25 @@ const defaultNetworks = {
     },
     blockExplorerUrls: ['https://explorer.optimism.io/'],
     blockExplorerApis: ['https://api-optimistic.etherscan.io/'],
+
+    factory: [],
+
+  },
+
+  // Base
+  base: {
+
+    chainId: '0x2105',
+    chainIdInt: 8453,
+    rpcUrls: ['https://mainnet.base.org/'],
+    chainName: 'Base Mainnet',
+    nativeCurrency: {
+      name: 'ETH',
+      symbol: 'ETH',
+      decimals: 18
+    },
+    blockExplorerUrls: ['https://basescan.org/'],
+    blockExplorerApis: ['https://api.basescan.org/'],
 
     factory: [],
 

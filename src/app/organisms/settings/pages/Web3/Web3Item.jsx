@@ -4,6 +4,7 @@ import clone from 'clone';
 import { setWeb3Cfg, getWeb3Cfg, getDefaultNetworks } from '../../../../../util/web3';
 import { objType } from '../../../../../util/tools';
 
+// https://chainlist.org/
 function Web3Item({ item, networkId }) {
 
     // Data React
