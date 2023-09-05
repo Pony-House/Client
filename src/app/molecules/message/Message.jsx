@@ -204,6 +204,7 @@ MessageReplyWrapper.propTypes = {
 
 // Message Body
 const MessageBody = React.memo(({
+  content,
   className,
   senderName,
   body,
@@ -257,10 +258,10 @@ const MessageBody = React.memo(({
   // if body is not string it is a React element.
   if (typeof body !== 'string') return <div className="message__body">{body}</div>;
 
-  let content = null;
+  let msgData = null;
   if (isCustomHTML) {
     try {
-      content = twemojifyReact(
+      msgData = twemojifyReact(
         sanitizeCustomHtml(initMatrix.matrixClient, body),
         undefined,
         true,
@@ -269,12 +270,12 @@ const MessageBody = React.memo(({
       );
     } catch {
       console.error(`${colors.grey('[matrix]')} ${colors.blue('[msg]')} Malformed custom html: `, body);
-      content = twemojifyReact(body, undefined);
+      msgData = twemojifyReact(body, undefined);
     }
   } else if (!isSystem) {
-    content = twemojifyReact(body, undefined, true);
+    msgData = twemojifyReact(body, undefined, true);
   } else {
-    content = twemojifyReact(body, undefined, true, false, true);
+    msgData = twemojifyReact(body, undefined, true, false, true);
   }
 
   // Determine if this message should render with large emojis
@@ -282,7 +283,7 @@ const MessageBody = React.memo(({
   // - Contains only emoji
   // - Contains no more than 10 emoji
   let emojiOnly = false;
-  const msgContent = content?.props?.children?.props?.children;
+  const msgContent = msgData?.props?.children?.props?.children;
   if (msgContent) {
     if (msgContent.type === 'img') {
       // If this messages contains only a single (inline) image
@@ -306,9 +307,9 @@ const MessageBody = React.memo(({
   if (!isCustomHTML) {
     // If this is a plaintext message, wrap it in a <p> element (automatically applying
     // white-space: pre-wrap) in order to preserve newlines
-    content = (<p ref={messageBody} className="m-0">{content}</p>);
+    msgData = (<p ref={messageBody} className="m-0">{msgData}</p>);
   } else {
-    content = (<span ref={messageBody} className="custom-html">{content}</span>);
+    msgData = (<span ref={messageBody} className="custom-html">{msgData}</span>);
   }
 
   return (
@@ -320,19 +321,23 @@ const MessageBody = React.memo(({
           {' '}
         </>
       )}
-      {content}
+      {msgData}
       {isEdited && <div className="very-small text-gray">(edited)</div>}
     </div>
   );
+
 });
+
 MessageBody.defaultProps = {
   className: '',
   isCustomHTML: false,
   isSystem: false,
   isEdited: false,
   msgType: null,
+  content: {},
 };
 MessageBody.propTypes = {
+  content: PropTypes.object,
   senderName: PropTypes.string.isRequired,
   body: PropTypes.node.isRequired,
   isSystem: PropTypes.bool,
@@ -1115,6 +1120,7 @@ function Message({
               senderName={username}
               isCustomHTML={isCustomHTML}
               body={isMedia(mEvent) ? genMediaContent(mEvent) : customHTML ?? body}
+              content={content}
               msgType={msgType}
               isEdited={isEdited}
             />
@@ -1234,6 +1240,7 @@ function Message({
             senderName={username}
             isSystem={isCustomHTML}
             body={errorMessage}
+            content={content}
             msgType={msgType}
             isEdited={isEdited}
           />
