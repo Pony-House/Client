@@ -37,6 +37,14 @@ function Web3Section() {
                     content={<div className="very-small text-gray">All Pony House web3 features require this setting enabled. If you disable this option, everything related to web3 will be limited to native Pony House features only.</div>}
                 />
 
+                <li className="list-group-item very-small text-gray">
+                    <button type="button" class="btn btn-sm btn-danger">Reset Config</button>
+                </li>
+
+                <li className="list-group-item very-small text-gray">
+                    For the settings to take effect, please restart the app.
+                </li>
+
             </ul>
         </div>
 

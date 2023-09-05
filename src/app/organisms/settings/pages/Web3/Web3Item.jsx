@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { setWeb3Cfg, getWeb3Cfg } from '../../../../../util/web3';
+import { objType } from '../../../../../util/tools';
 
 function Web3Item({ item, networkId }) {
 
@@ -20,10 +21,77 @@ function Web3Item({ item, networkId }) {
     // Effects
     useEffect(() => {
 
+        // Template
+        const valueTemplate = (where, type, data, folder) => {
+
+            // Prepare Config Base
+            const web3Settings = getWeb3Cfg();
+
+            // Get New Item
+            const newData = { nativeCurrency: {} };
+            if (web3Settings.networks[networkId]) {
+                for (const titem in web3Settings.networks[networkId]) {
+                    newData[titem] = web3Settings.networks[networkId][titem];
+                }
+            }
+
+            // Insert new data
+            if (typeof data === 'string' || typeof data === 'number') {
+
+                if (type === 'array') {
+
+                    if (typeof folder === 'string') {
+
+                        if (!objType(newData[where], 'object')) { newData[where] = {}; }
+                        newData[where][folder] = data.split(',');
+
+                        for (const item2 in newData[where][folder]) {
+                            newData[where][folder][item2] = newData[where][folder][item2].trim();
+                        }
+
+                    } else {
+
+                        newData[where] = data.split(',');
+
+                        for (const item2 in newData[where]) {
+                            newData[where][item2] = newData[where][item2].trim();
+                        }
+
+                    }
+
+                } else if (type === 'number') {
+
+                    if (typeof folder === 'string') {
+                        if (!objType(newData[where], 'object')) { newData[where] = {}; }
+                        newData[where][folder] = Number(data);
+                    } else {
+                        newData[where] = Number(data);
+                    }
+
+                } else if (typeof folder === 'string') {
+                    if (!objType(newData[where], 'object')) { newData[where] = {}; }
+                    newData[where][folder] = data;
+                } else {
+                    newData[where] = data;
+                }
+
+            } else if (typeof newData[where][folder] !== 'undefined') {
+                delete newData[where][folder];
+            } else if (typeof newData[where] !== 'undefined') {
+                delete newData[where];
+            }
+
+            // Reset Data
+            if (web3Settings.networks[networkId]) delete web3Settings.networks[networkId];
+            web3Settings.networks[networkId] = newData;
+
+            console.log(newData);
+
+        };
+
         // Object Id
         const idValue = $(idValueRef.current);
         idValue.val(networkId);
-
         const idValueChange = () => {
 
         };
@@ -31,82 +99,52 @@ function Web3Item({ item, networkId }) {
         // Blockchain Id
         const blockId = $(blockIdRef.current);
         blockId.val(item.chainId);
-
-        const blockIdChange = () => {
-
-        };
+        const blockIdChange = (event) => valueTemplate('chainId', 'string', $(event.target).val());
 
         // Blockchain Id Int
         const blockIdNumber = $(blockIdNumberRef.current);
         blockIdNumber.val(item.chainIdInt);
-
-        const blockIdNumberChange = () => {
-
-        };
+        const blockIdNumberChange = (event) => valueTemplate('chainIdInt', 'number', $(event.target).val());
 
         // Blockchain Name
         const blockName = $(blockNameRef.current);
         blockName.val(item.chainName);
-
-        const blockNameChange = () => {
-
-        };
+        const blockNameChange = (event) => valueTemplate('chainName', 'string', $(event.target).val());
 
         // Token Name
         const tokenName = $(tokenNameRef.current);
         tokenName.val(item.nativeCurrency?.name);
-
-        const tokenNameChange = () => {
-
-        };
+        const tokenNameChange = (event) => valueTemplate('nativeCurrency', 'string', $(event.target).val(), 'name');
 
         // Token Symbol
         const tokenSymbol = $(tokenSymbolRef.current);
         tokenSymbol.val(item.nativeCurrency?.symbol);
-
-        const tokenSymbolChange = () => {
-
-        };
+        const tokenSymbolChange = (event) => valueTemplate('nativeCurrency', 'string', $(event.target).val(), 'symbol');
 
         // Token Decimals
         const tokenDecimals = $(tokenDecimalsRef.current);
         tokenDecimals.val(item.nativeCurrency?.decimals);
-
-        const tokenDecimalsChange = () => {
-
-        };
+        const tokenDecimalsChange = (event) => valueTemplate('nativeCurrency', 'number', $(event.target).val(), 'decimals');
 
         // Explorer Url
         const explorerUrl = $(explorerUrlRef.current);
-        explorerUrl.val(item?.blockExplorerUrls.join(','));
-
-        const explorerUrlChange = () => {
-
-        };
+        explorerUrl.val(item?.blockExplorerUrls.join(', '));
+        const explorerUrlChange = (event) => valueTemplate('blockExplorerUrls', 'array', $(event.target).val());
 
         // Explorer Url - API
         const explorerUrlApi = $(explorerUrlApiRef.current);
-        explorerUrlApi.val(item?.blockExplorerApis.join(','));
-
-        const explorerUrlApiChange = () => {
-
-        };
+        explorerUrlApi.val(item?.blockExplorerApis.join(', '));
+        const explorerUrlApiChange = (event) => valueTemplate('blockExplorerApis', 'array', $(event.target).val());
 
         // Chain RPC
         const chainRpc = $(chainRpcRef.current);
-        chainRpc.val(item?.rpcUrls.join(','));
-
-        const chainRpcChange = () => {
-
-        };
+        chainRpc.val(item?.rpcUrls.join(', '));
+        const chainRpcChange = (event) => valueTemplate('rpcUrls', 'array', $(event.target).val());
 
         // Factory Smart Contract
         const factorySc = $(factoryScRef.current);
-        factorySc.val(item?.factory.join(','));
-
-        const factoryScChange = () => {
-
-        };
+        factorySc.val(item?.factory.join(', '));
+        const factoryScChange = (event) => valueTemplate('factory', 'array', $(event.target).val());
 
         // Turn On
         idValue.on('change', idValueChange);
@@ -168,8 +206,8 @@ function Web3Item({ item, networkId }) {
                 </div>
 
                 <div className="mb-3">
-                    <label for={`chain_block_id_number_${item.chainId}`} className="form-label small">Blockchain Id</label>
-                    <input ref={blockIdNumberRef} type="text" className="form-control form-control-bg" id={`chain_block_id_number_${item.chainId}`} />
+                    <label for={`chain_block_id_number_${item.chainId}`} className="form-label small">Blockchain Id (Number)</label>
+                    <input ref={blockIdNumberRef} type="number" className="form-control form-control-bg" id={`chain_block_id_number_${item.chainId}`} />
                     <div className="very-small text-gray">This is the blockchain identifier value (Number) within the Ethereum network. Enter a chain value here.</div>
                 </div>
 
@@ -213,6 +251,10 @@ function Web3Item({ item, networkId }) {
                     <label for={`chain_decimals_${item.chainId}`} className="form-label small">Decimals</label>
                     <input ref={tokenDecimalsRef} type="number" min={0} className="form-control form-control-bg" id={`chain_decimals_${item.chainId}`} />
                     <div className="very-small text-gray">The token decimals.</div>
+                </div>
+
+                <div className="mb-3">
+                    <button type="button" class="btn btn-sm btn-danger">Delete Blockchain</button>
                 </div>
 
             </li>
