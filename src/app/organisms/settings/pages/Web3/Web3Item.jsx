@@ -2,12 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import clone from 'clone';
 
 import { setWeb3Cfg, getWeb3Cfg, getDefaultNetworks } from '../../../../../util/web3';
-import { objType } from '../../../../../util/tools';
+import { objType, tinyConfirm } from '../../../../../util/tools';
+
+let loadData = null;
 
 // https://chainlist.org/
 function Web3Item({ item, networkId }) {
 
     // Data React
+    const divBaseRef = useRef(null);
     const idValueRef = useRef(null);
     const blockIdRef = useRef(null);
     const blockIdNumberRef = useRef(null);
@@ -26,6 +29,7 @@ function Web3Item({ item, networkId }) {
     const [blockchainName, setBlockchainName] = useState(typeof item.chainName === 'string' ? item.chainName : '');
     const [blockchainId, setBlockId] = useState(typeof item.chainId === 'string' ? item.chainId : '');
     const [blockchainExplorer, setBlockchainExplorer] = useState(Array.isArray(item?.blockExplorerUrls) ? item.blockExplorerUrls : ['']);
+    let explorerImageErrorLoad = 0;
 
     // Effects
     useEffect(() => {
@@ -128,55 +132,84 @@ function Web3Item({ item, networkId }) {
 
         // Blockchain Id
         const blockId = $(blockIdRef.current);
-        blockId.val(blockchainId);
         const blockIdChange = (event) => valueTemplate('chainId', 'string', $(event.target).val(), undefined, setBlockId);
 
         // Blockchain Id Int
         const blockIdNumber = $(blockIdNumberRef.current);
-        blockIdNumber.val(item.chainIdInt);
         const blockIdNumberChange = (event) => valueTemplate('chainIdInt', 'number', $(event.target).val());
 
         // Blockchain Name
         const blockName = $(blockNameRef.current);
-        blockName.val(blockchainName);
         const blockNameChange = (event) => valueTemplate('chainName', 'string', $(event.target).val(), undefined, setBlockchainName);
 
         // Token Name
         const tokenName = $(tokenNameRef.current);
-        tokenName.val(item.nativeCurrency?.name);
         const tokenNameChange = (event) => valueTemplate('nativeCurrency', 'string', $(event.target).val(), 'name');
 
         // Token Symbol
         const tokenSymbol = $(tokenSymbolRef.current);
-        tokenSymbol.val(item.nativeCurrency?.symbol);
         const tokenSymbolChange = (event) => valueTemplate('nativeCurrency', 'string', $(event.target).val(), 'symbol');
 
         // Token Decimals
         const tokenDecimals = $(tokenDecimalsRef.current);
-        tokenDecimals.val(item.nativeCurrency?.decimals);
         const tokenDecimalsChange = (event) => valueTemplate('nativeCurrency', 'number', $(event.target).val(), 'decimals');
 
         // Explorer Url
         const explorerUrl = $(explorerUrlRef.current);
-        explorerUrl.val(blockchainExplorer);
         const explorerUrlChange = (event) => valueTemplate('blockExplorerUrls', 'array', $(event.target).val(), undefined, setBlockchainExplorer);
 
         // Explorer Url - API
         const explorerUrlApi = $(explorerUrlApiRef.current);
-        explorerUrlApi.val(item?.blockExplorerApis.join(', '));
         const explorerUrlApiChange = (event) => valueTemplate('blockExplorerApis', 'array', $(event.target).val());
 
         // Chain RPC
         const chainRpc = $(chainRpcRef.current);
-        chainRpc.val(item?.rpcUrls.join(', '));
         const chainRpcChange = (event) => valueTemplate('rpcUrls', 'array', $(event.target).val());
 
         // Factory Smart Contract
         const factorySc = $(factoryScRef.current);
-        factorySc.val(item?.factory.join(', '));
         const factoryScChange = (event) => valueTemplate('factory', 'array', $(event.target).val());
 
+        loadData = () => {
+
+            const web3Settings = getWeb3Cfg();
+            const newItem = web3Settings.networks[tinyNetwork];
+
+            // Blockchain Id
+            blockId.val(blockchainId);
+
+            // Blockchain Id Int
+            blockIdNumber.val(newItem.chainIdInt);
+
+            // Blockchain Name
+            blockName.val(blockchainName);
+
+            // Token Name
+            tokenName.val(newItem.nativeCurrency?.name);
+
+            // Token Symbol
+            tokenSymbol.val(newItem.nativeCurrency?.symbol);
+
+            // Token Decimals
+            tokenDecimals.val(newItem.nativeCurrency?.decimals);
+
+            // Explorer Url
+            explorerUrl.val(blockchainExplorer);
+
+            // Explorer Url - API
+            explorerUrlApi.val(newItem?.blockExplorerApis.join(', '));
+
+            // Chain RPC
+            chainRpc.val(newItem?.rpcUrls.join(', '));
+
+            // Factory Smart Contract
+            factorySc.val(item?.factory.join(', '));
+
+        };
+
         // Turn On
+        loadData();
+
         idValue.on('change', idValueChange);
         blockId.on('change', blockIdChange);
         blockIdNumber.on('change', blockIdNumberChange);
@@ -206,12 +239,19 @@ function Web3Item({ item, networkId }) {
 
     });
 
-    return <div className="card noselect mb-3">
+    return <div ref={divBaseRef} className="card noselect mb-3">
         <ul className="list-group list-group-flush">
 
             <li className="list-group-item very-small text-gray">
                 <a data-bs-toggle="collapse" href={`#chain_collapse_${blockchainId}`} role="button" aria-expanded="false" aria-controls={`chain_collapse_${blockchainId}`}>
-                    {blockchainName} {blockchainExplorer && typeof blockchainExplorer[0] === 'string' && blockchainExplorer[0].length > 0 ? <img src={`${blockchainExplorer[0]}images/favicon.ico`} className='ms-2 img-fluid' style={{ height: 20 }} alt='logo' /> : null}
+                    {blockchainName} {blockchainExplorer && typeof blockchainExplorer[0] === 'string' && blockchainExplorer[0].length > 0 ? <img src={`${blockchainExplorer[0]}favicon.ico`} onError={(event) => {
+                        if (explorerImageErrorLoad === 0) {
+                            $(event.target).attr('src', `${blockchainExplorer[0]}images/favicon.ico`);
+                            explorerImageErrorLoad = 1;
+                        } else {
+                            $(event.target).remove();
+                        }
+                    }} className='ms-2 img-fluid' style={{ height: 20 }} height={20} alt='logo' /> : null}
                 </a>
             </li>
 
@@ -284,8 +324,40 @@ function Web3Item({ item, networkId }) {
                 </div>
 
                 <div className="mb-3">
-                    <button type="button" class={`btn btn-sm btn-danger${defaultNetworks[tinyNetwork] ? ' me-3' : ''} my-1 my-sm-0`}>Delete Data</button>
-                    {defaultNetworks[tinyNetwork] ? <button type="button" class="btn btn-sm btn-danger my-1 my-sm-0">Reset Data</button> : null}
+
+                    <button type="button" className={`btn btn-sm btn-danger${defaultNetworks[tinyNetwork] ? ' me-3' : ''} my-1 my-sm-0`} onClick={async () => {
+                        const isConfirmed = await tinyConfirm('Are you sure you want to delete this network?');
+                        if (isConfirmed) {
+
+                            $(divBaseRef.current).addClass('d-none');
+                            const web3Settings = getWeb3Cfg();
+
+                            if (web3Settings.networks[tinyNetwork]) delete web3Settings.networks[tinyNetwork];
+                            setWeb3Cfg('networks', web3Settings.networks);
+
+                        }
+                    }}>Delete Data</button>
+
+                    {defaultNetworks[tinyNetwork] ? <button type="button" className="btn btn-sm btn-danger my-1 my-sm-0" onClick={async () => {
+                        const isConfirmed = await tinyConfirm('Are you sure you want to reset this network data?');
+                        if (isConfirmed) {
+
+                            const web3Settings = getWeb3Cfg();
+
+                            if (web3Settings.networks[tinyNetwork]) delete web3Settings.networks[tinyNetwork];
+                            web3Settings.networks[tinyNetwork] = defaultNetworks[tinyNetwork];
+
+                            setWeb3Cfg('networks', web3Settings.networks);
+                            const newItem = web3Settings.networks[tinyNetwork];
+
+                            setBlockchainName(typeof newItem.chainName === 'string' ? newItem.chainName : '');
+                            setBlockId(typeof newItem.chainId === 'string' ? newItem.chainId : '');
+                            setBlockchainExplorer(Array.isArray(newItem?.blockExplorerUrls) ? newItem.blockExplorerUrls : ['']);
+                            if (typeof loadData === 'function') loadData();
+
+                        }
+                    }}>Reset Data</button> : null}
+
                 </div>
 
             </li>

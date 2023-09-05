@@ -389,3 +389,71 @@ export function scrollFollower(where, where2, time1 = 60, time2 = 8.33) {
         }, time2 * i);
     }
 };
+
+// Tiny Confirm
+export function tinyPrompt(text = '', title = 'App Alert', placeholder = '') {
+    return new Promise((resolve) => {
+
+        let value = null;
+        let tinyModal;
+
+        const input = $('<input>', { placeholder, class: 'form-control form-control-bg mt-2' });
+        const tinyComplete = () => {
+            value = input.val();
+            tinyModal.hide();
+        };
+
+        tinyModal = btModal({
+
+            id: 'browser-alert',
+            dialog: 'modal-dialog-centered modal-dialog-scrollable',
+            bodyClass: 'small text-freedom noselect p-4',
+            title,
+            body: [twemojify(text), input,],
+
+            footer: [
+                $('<button>', { class: 'btn btn-bg mx-2' }).text('Cancel').on('click', () => tinyModal.hide()),
+                $('<button>', { class: `btn btn-primary mx-2` }).text('Confirm').on('click', tinyComplete),
+            ],
+
+            hidden: () => resolve(value)
+
+        });
+
+        input.on('keyup', (e) => {
+            if (e.key === 'Enter' || e.keyCode === 13) tinyComplete();
+        });
+
+    });
+};
+
+export function tinyConfirm(text = '', title = 'App Alert') {
+    return new Promise((resolve) => {
+
+        let isConfirmed = false;
+        let tinyModal;
+
+        const tinyComplete = () => {
+            isConfirmed = true;
+            tinyModal.hide();
+        };
+
+        tinyModal = btModal({
+
+            id: 'browser-alert',
+            dialog: 'modal-dialog-centered modal-dialog-scrollable',
+            bodyClass: 'small text-freedom noselect p-4',
+            title,
+            body: twemojify(text),
+
+            footer: [
+                $('<button>', { class: 'btn btn-bg mx-2' }).text('Cancel').on('click', () => tinyModal.hide()),
+                $('<button>', { class: `btn btn-primary mx-2` }).text('Confirm').on('click', tinyComplete),
+            ],
+
+            hidden: () => resolve(isConfirmed)
+
+        });
+
+    });
+};
