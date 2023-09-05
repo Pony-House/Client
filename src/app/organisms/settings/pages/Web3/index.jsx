@@ -1,24 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import objectHash from 'object-hash';
+
 import SettingTile from '../../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../../atoms/button/Toggle';
 import { toggleActionLocal } from '../../Api';
-import { getWeb3Cfg } from '../../../../../util/web3';
+import { getWeb3Cfg, deleteWeb3Cfg } from '../../../../../util/web3';
 import Web3Item from './Web3Item';
+import { tinyConfirm } from '../../../../../util/tools';
 
 function Web3Section() {
 
     // Prepare React
     const web3Settings = getWeb3Cfg();
+    const [networks, setNetworks] = useState({ keys: [], values: [] });
     const [web3Enabled, setWeb3Enabled] = useState(web3Settings.web3Enabled);
 
-    const networks = { keys: [], values: [] };
-    for (const item in web3Settings.networks) {
-        networks.values.push(web3Settings.networks[item]);
-        networks.keys.push(item);
-    }
+    useEffect(() => {
 
-    networks.keys.sort((a, b) => web3Settings.networks[a].chainIdInt - web3Settings.networks[b].chainIdInt);
-    networks.values.sort((a, b) => a.chainIdInt - b.chainIdInt);
+        const newWeb3Settings = getWeb3Cfg();
+
+        const newNetworks = { keys: [], values: [] };
+        for (const item in newWeb3Settings.networks) {
+            newNetworks.values.push(newWeb3Settings.networks[item]);
+            newNetworks.keys.push(item);
+        }
+
+        newNetworks.keys.sort((a, b) => newWeb3Settings.networks[a].chainIdInt - newWeb3Settings.networks[b].chainIdInt);
+        newNetworks.values.sort((a, b) => a.chainIdInt - b.chainIdInt);
+
+        if (objectHash(newNetworks) !== objectHash(networks)) setNetworks(newNetworks);
+
+    });
 
     // Complete Render
     return <>
@@ -41,10 +53,27 @@ function Web3Section() {
                 />
 
                 <li className="list-group-item very-small text-gray">
-                    <button type="button" class="btn btn-sm btn-danger me-3 my-1 my-sm-0">Reset config</button>
-                    <button type="button" class="btn btn-sm btn-success me-3 my-1 my-sm-0">Create</button>
-                    <button type="button" class="btn btn-sm btn-secondary me-3 my-1 my-sm-0">Export</button>
-                    <button type="button" class="btn btn-sm btn-secondary my-1 my-sm-0">Import</button>
+
+                    <button type="button" class="btn btn-sm btn-danger me-3 my-1 my-sm-0" onClick={async () => {
+                        const isConfirmed = await tinyConfirm('Are you sure you want to reset this? All your data will be lost forever!', 'Reset Web3 Config');
+                        if (isConfirmed) {
+                            deleteWeb3Cfg('networks');
+                            setNetworks({ keys: [], values: [] });
+                        }
+                    }}>Reset config</button>
+
+                    <button type="button" class="btn btn-sm btn-success me-3 my-1 my-sm-0" onClick={() => {
+
+                    }}>Create</button>
+
+                    <button type="button" class="btn btn-sm btn-secondary me-3 my-1 my-sm-0" onClick={() => {
+
+                    }}>Export</button>
+
+                    <button type="button" class="btn btn-sm btn-secondary my-1 my-sm-0" onClick={() => {
+
+                    }}>Import</button>
+
                 </li>
 
                 <li className="list-group-item very-small text-gray">

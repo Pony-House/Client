@@ -328,7 +328,7 @@ function Web3Item({ item, networkId }) {
                     {defaultNetworks[tinyNetwork] ?
 
                         <button type="button" className="btn btn-sm btn-danger" onClick={async () => {
-                            const isConfirmed = await tinyConfirm('Are you sure you want to reset this network data?');
+                            const isConfirmed = await tinyConfirm('Are you sure you want to reset this network data?', 'Web3 Network');
                             if (isConfirmed) {
 
                                 const web3Settings = getWeb3Cfg();
@@ -348,7 +348,7 @@ function Web3Item({ item, networkId }) {
                         }}>Reset Data</button> :
 
                         <button type="button" className={`btn btn-sm btn-danger${defaultNetworks[tinyNetwork] ? ' me-3' : ''} my-1 my-sm-0`} onClick={async () => {
-                            const isConfirmed = await tinyConfirm('Are you sure you want to delete this network?');
+                            const isConfirmed = await tinyConfirm('Are you sure you want to delete this network?', 'Web3 Network');
                             if (isConfirmed) {
 
                                 $(divBaseRef.current).addClass('d-none');

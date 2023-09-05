@@ -183,6 +183,12 @@ export function setWeb3Cfg(folder, value) {
   global.localStorage.setItem('ponyHouse-web3', JSON.stringify(content));
 };
 
+export function deleteWeb3Cfg(folder) {
+  const content = getWeb3Cfg(null, false);
+  if (typeof content[folder] !== 'undefined') delete content[folder];
+  global.localStorage.setItem('ponyHouse-web3', JSON.stringify(content));
+};
+
 // Module
 const startWeb3 = () => {
 
@@ -585,6 +591,7 @@ const startWeb3 = () => {
 
   tinyCrypto.getCfg = getWeb3Cfg;
   tinyCrypto.setCfg = setWeb3Cfg;
+  tinyCrypto.deleteCfg = deleteWeb3Cfg;
 
   // Insert into global
   global.tinyCrypto = tinyCrypto;
