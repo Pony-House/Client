@@ -325,38 +325,42 @@ function Web3Item({ item, networkId }) {
 
                 <div className="mb-3">
 
-                    <button type="button" className={`btn btn-sm btn-danger${defaultNetworks[tinyNetwork] ? ' me-3' : ''} my-1 my-sm-0`} onClick={async () => {
-                        const isConfirmed = await tinyConfirm('Are you sure you want to delete this network?');
-                        if (isConfirmed) {
+                    {defaultNetworks[tinyNetwork] ?
 
-                            $(divBaseRef.current).addClass('d-none');
-                            const web3Settings = getWeb3Cfg();
+                        <button type="button" className="btn btn-sm btn-danger" onClick={async () => {
+                            const isConfirmed = await tinyConfirm('Are you sure you want to reset this network data?');
+                            if (isConfirmed) {
 
-                            if (web3Settings.networks[tinyNetwork]) delete web3Settings.networks[tinyNetwork];
-                            setWeb3Cfg('networks', web3Settings.networks);
+                                const web3Settings = getWeb3Cfg();
 
-                        }
-                    }}>Delete Data</button>
+                                if (web3Settings.networks[tinyNetwork]) delete web3Settings.networks[tinyNetwork];
+                                web3Settings.networks[tinyNetwork] = defaultNetworks[tinyNetwork];
 
-                    {defaultNetworks[tinyNetwork] ? <button type="button" className="btn btn-sm btn-danger my-1 my-sm-0" onClick={async () => {
-                        const isConfirmed = await tinyConfirm('Are you sure you want to reset this network data?');
-                        if (isConfirmed) {
+                                setWeb3Cfg('networks', web3Settings.networks);
+                                const newItem = web3Settings.networks[tinyNetwork];
 
-                            const web3Settings = getWeb3Cfg();
+                                setBlockchainName(typeof newItem.chainName === 'string' ? newItem.chainName : '');
+                                setBlockId(typeof newItem.chainId === 'string' ? newItem.chainId : '');
+                                setBlockchainExplorer(Array.isArray(newItem?.blockExplorerUrls) ? newItem.blockExplorerUrls : ['']);
+                                if (typeof loadData === 'function') loadData();
 
-                            if (web3Settings.networks[tinyNetwork]) delete web3Settings.networks[tinyNetwork];
-                            web3Settings.networks[tinyNetwork] = defaultNetworks[tinyNetwork];
+                            }
+                        }}>Reset Data</button> :
 
-                            setWeb3Cfg('networks', web3Settings.networks);
-                            const newItem = web3Settings.networks[tinyNetwork];
+                        <button type="button" className={`btn btn-sm btn-danger${defaultNetworks[tinyNetwork] ? ' me-3' : ''} my-1 my-sm-0`} onClick={async () => {
+                            const isConfirmed = await tinyConfirm('Are you sure you want to delete this network?');
+                            if (isConfirmed) {
 
-                            setBlockchainName(typeof newItem.chainName === 'string' ? newItem.chainName : '');
-                            setBlockId(typeof newItem.chainId === 'string' ? newItem.chainId : '');
-                            setBlockchainExplorer(Array.isArray(newItem?.blockExplorerUrls) ? newItem.blockExplorerUrls : ['']);
-                            if (typeof loadData === 'function') loadData();
+                                $(divBaseRef.current).addClass('d-none');
+                                const web3Settings = getWeb3Cfg();
 
-                        }
-                    }}>Reset Data</button> : null}
+                                if (web3Settings.networks[tinyNetwork]) delete web3Settings.networks[tinyNetwork];
+                                setWeb3Cfg('networks', web3Settings.networks);
+
+                            }
+                        }}>Delete Data</button>
+
+                    }
 
                 </div>
 
