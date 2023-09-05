@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clone from 'clone';
 
-import { setWeb3Cfg, getWeb3Cfg } from '../../../../../util/web3';
+import { setWeb3Cfg, getWeb3Cfg, getDefaultNetworks } from '../../../../../util/web3';
 import { objType } from '../../../../../util/tools';
 
 function Web3Item({ item, networkId }) {
@@ -19,6 +19,7 @@ function Web3Item({ item, networkId }) {
     const tokenDecimalsRef = useRef(null);
 
     const [tinyNetwork, setTinyNetwork] = useState(networkId);
+    const defaultNetworks = getDefaultNetworks();
 
     // Effects
     useEffect(() => {
@@ -272,8 +273,8 @@ function Web3Item({ item, networkId }) {
                 </div>
 
                 <div className="mb-3">
-                    <button type="button" class="btn btn-sm btn-danger me-3">Delete Data</button>
-                    <button type="button" class="btn btn-sm btn-danger">Reset Data</button>
+                    <button type="button" class={`btn btn-sm btn-danger${defaultNetworks[tinyNetwork] ? ' me-3' : ''} my-1 my-sm-0`}>Delete Data</button>
+                    {defaultNetworks[tinyNetwork] ? <button type="button" class="btn btn-sm btn-danger my-1 my-sm-0">Reset Data</button> : null}
                 </div>
 
             </li>

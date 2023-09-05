@@ -123,6 +123,10 @@ const defaultNetworks = {
 
 };
 
+export function getDefaultNetworks() {
+  return clone(defaultNetworks);
+};
+
 export function getWeb3Cfg(folder, getDefault = true) {
 
   let content = global.localStorage.getItem('ponyHouse-web3');
