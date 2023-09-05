@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import clone from 'clone';
+
 import { setWeb3Cfg, getWeb3Cfg } from '../../../../../util/web3';
 import { objType } from '../../../../../util/tools';
 
@@ -16,7 +18,7 @@ function Web3Item({ item, networkId }) {
     const tokenSymbolRef = useRef(null);
     const tokenDecimalsRef = useRef(null);
 
-    console.log(item);
+    let tinyNetwork = networkId;
 
     // Effects
     useEffect(() => {
@@ -29,9 +31,9 @@ function Web3Item({ item, networkId }) {
 
             // Get New Item
             const newData = { nativeCurrency: {} };
-            if (web3Settings.networks[networkId]) {
-                for (const titem in web3Settings.networks[networkId]) {
-                    newData[titem] = web3Settings.networks[networkId][titem];
+            if (web3Settings.networks[tinyNetwork]) {
+                for (const titem in web3Settings.networks[tinyNetwork]) {
+                    newData[titem] = web3Settings.networks[tinyNetwork][titem];
                 }
             }
 
@@ -82,18 +84,32 @@ function Web3Item({ item, networkId }) {
             }
 
             // Reset Data
-            if (web3Settings.networks[networkId]) delete web3Settings.networks[networkId];
-            web3Settings.networks[networkId] = newData;
-
-            console.log(newData);
+            if (web3Settings.networks[tinyNetwork]) delete web3Settings.networks[tinyNetwork];
+            web3Settings.networks[tinyNetwork] = newData;
 
         };
 
         // Object Id
         const idValue = $(idValueRef.current);
-        idValue.val(networkId);
-        const idValueChange = () => {
+        idValue.val(tinyNetwork);
+        const idValueChange = (event) => {
+            const newId = $(event.target).val();
+            if (typeof newId === 'string' && newId.length > 0) {
 
+                // Prepare Config Base
+                const web3Settings = getWeb3Cfg();
+                const tinyData = {};
+
+                for (const item2 in web3Settings.networks[tinyNetwork]) {
+                    tinyData[item2] = clone(web3Settings.networks[tinyNetwork][item2]);
+                }
+
+                delete web3Settings.networks[tinyNetwork];
+                tinyNetwork = newId;
+
+                web3Settings.networks[tinyNetwork] = tinyData;
+
+            }
         };
 
         // Blockchain Id
