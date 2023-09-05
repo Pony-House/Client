@@ -29,7 +29,6 @@ function Web3Item({ item, networkId }) {
     const [blockchainName, setBlockchainName] = useState(typeof item.chainName === 'string' ? item.chainName : '');
     const [blockchainId, setBlockId] = useState(typeof item.chainId === 'string' ? item.chainId : '');
     const [blockchainExplorer, setBlockchainExplorer] = useState(Array.isArray(item?.blockExplorerUrls) ? item.blockExplorerUrls : ['']);
-    let explorerImageErrorLoad = 0;
 
     // Effects
     useEffect(() => {
@@ -244,13 +243,8 @@ function Web3Item({ item, networkId }) {
 
             <li className="list-group-item very-small text-gray">
                 <a data-bs-toggle="collapse" href={`#chain_collapse_${blockchainId}`} role="button" aria-expanded="false" aria-controls={`chain_collapse_${blockchainId}`}>
-                    {blockchainName} {blockchainExplorer && typeof blockchainExplorer[0] === 'string' && blockchainExplorer[0].length > 0 ? <img src={`${blockchainExplorer[0]}favicon.ico`} onError={(event) => {
-                        if (explorerImageErrorLoad === 0) {
-                            $(event.target).attr('src', `${blockchainExplorer[0]}images/favicon.ico`);
-                            explorerImageErrorLoad = 1;
-                        } else {
-                            $(event.target).remove();
-                        }
+                    {blockchainName} {blockchainExplorer && typeof blockchainExplorer[0] === 'string' && blockchainExplorer[0].length > 0 ? <img src={`${blockchainExplorer[0]}images/favicon.ico`} onError={(event) => {
+                        $(event.target).remove();
                     }} className='ms-2 img-fluid' style={{ height: 20 }} height={20} alt='logo' /> : null}
                 </a>
             </li>
