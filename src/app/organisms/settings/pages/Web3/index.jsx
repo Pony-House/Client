@@ -17,6 +17,9 @@ function Web3Section() {
         networks.keys.push(item);
     }
 
+    networks.keys.sort((a, b) => web3Settings.networks[a].chainIdInt - web3Settings.networks[b].chainIdInt);
+    networks.values.sort((a, b) => a.chainIdInt - b.chainIdInt);
+
     // Complete Render
     return <>
 

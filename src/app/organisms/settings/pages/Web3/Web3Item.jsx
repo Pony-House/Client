@@ -6,6 +6,7 @@ import { objType } from '../../../../../util/tools';
 
 function Web3Item({ item, networkId }) {
 
+    // Data React
     const idValueRef = useRef(null);
     const blockIdRef = useRef(null);
     const blockIdNumberRef = useRef(null);
