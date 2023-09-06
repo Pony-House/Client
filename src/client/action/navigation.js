@@ -3,6 +3,7 @@ import appDispatcher from '../dispatcher';
 import cons from '../state/cons';
 
 export function selectTab(tabId) {
+  $('.space-drawer-menu-item').removeClass('active');
   appDispatcher.dispatch({
     type: cons.actions.navigation.SELECT_TAB,
     tabId,
@@ -17,6 +18,7 @@ export function selectRoomMode(roomType) {
 }
 
 export function selectSpace(roomId) {
+  $('.space-drawer-menu-item').removeClass('active');
   setSelectSpace(roomId);
   appDispatcher.dispatch({
     type: cons.actions.navigation.SELECT_SPACE,
@@ -25,6 +27,7 @@ export function selectSpace(roomId) {
 }
 
 export function selectRoom(roomId, eventId, forceScroll = false) {
+  $('.space-drawer-menu-item').removeClass('active');
   setSelectRoom(roomId);
   appDispatcher.dispatch({
     type: cons.actions.navigation.SELECT_ROOM,

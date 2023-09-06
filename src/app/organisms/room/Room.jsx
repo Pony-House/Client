@@ -39,6 +39,7 @@ function Room() {
   useEffect(() => {
     const handleRoomSelected = (rId, pRoomId, eId, forceScroll) => {
       roomInfo.roomTimeline?.removeInternalListeners();
+      $('.space-drawer-menu-item').removeClass('active');
       if (mx.getRoom(rId)) {
         setRoomInfo({
           roomTimeline: new RoomTimeline(rId),
@@ -46,12 +47,16 @@ function Room() {
           forceScroll,
         });
       } else {
+
         // TODO: add ability to join room if roomId is invalid
         setRoomInfo({
           roomTimeline: null,
           eventId: null,
           forceScroll,
         });
+
+        $('#space-drawer-home-button').addClass('active');
+
       }
     };
 

@@ -3,7 +3,8 @@
   text-decoration: none !important;
 }
 
-.btn-bg:hover {
+.btn-bg:hover,
+.btn-bg.active {
   color: var(--tc-surface-high) !important;
   background-color: var(--bg-surface-hover);
 }

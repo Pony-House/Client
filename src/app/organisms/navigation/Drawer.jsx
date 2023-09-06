@@ -18,6 +18,7 @@ import IconButton from '../../atoms/button/IconButton';
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { useSelectedTab } from '../../hooks/useSelectedTab';
 import { useSelectedSpace } from '../../hooks/useSelectedSpace';
+import { getSelectRoom, getSelectSpace } from '../../../util/selectedRoom';
 
 function useSystemState() {
   const [systemState, setSystemState] = useState({ status: null, value: null });
@@ -51,11 +52,15 @@ function useSystemState() {
 }
 
 function Drawer() {
+
   const [systemState] = useSystemState();
   const [selectedTab] = useSelectedTab();
   const [spaceId] = useSelectedSpace();
   const [, forceUpdate] = useForceUpdate();
   const scrollRef = useRef(null);
+
+  const homeClickRef = useRef(null);
+
   const { roomList } = initMatrix;
 
   useEffect(() => {
@@ -106,7 +111,10 @@ function Drawer() {
         {
           !spaceId ? <center className='small text-start d-grid w-100'>
 
-            <IconButton fa="fa-solid fa-house" className='text-start mt-3 mx-3' onClick={() => global.resetRoomInfo()}>
+            <IconButton ref={homeClickRef} fa="fa-solid fa-house" id='space-drawer-home-button' className={`text-start mt-3 mx-3 space-drawer-menu-item${!getSelectRoom() && !getSelectSpace() ? ' active' : ''}`} onClick={() => {
+              global.resetRoomInfo();
+              $(homeClickRef.current).addClass('active');
+            }}>
               <span className='ms-3'>Home</span>
             </IconButton>
 
