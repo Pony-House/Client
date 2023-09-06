@@ -69,10 +69,34 @@
   .room-view--dropped > .navbar {
     top: 2px;
   }
+
+  .room-view .nav-sidebar-2 {
+    display: none !important;
+  }
+}
+
+/* Navigation Wrapper hide */
+body:not(.disable-navigation-wrapper) {
+  .room-view .nav-sidebar-2 {
+    display: none !important;
+  }
 }
 
 @media (min-width: 768px) {
   .room-view > .navbar {
     background-color: var(--bg-surface);
+  }
+
+  .disable-navigation-wrapper {
+    #space-header,
+    #profile-sidebar {
+      display: none;
+    }
+    .navigation-wrapper {
+      width: 80px;
+    }
+    .room-view .nav-sidebar-1 {
+      display: none !important;
+    }
   }
 }

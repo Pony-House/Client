@@ -59,28 +59,40 @@ function RoomViewHeader({ roomId }) {
 
   setTimeout(forceUnloadedAvatars, 200);
 
+  const navigationSidebarCallback = () => {
+    if (window.matchMedia('screen and (max-width: 768px)').matches) {
+      selectRoomMode('navigation');
+      openNavigation();
+    } else if ($('body').hasClass('disable-navigation-wrapper')) {
+      $('body').removeClass('disable-navigation-wrapper');
+    } else {
+      $('body').addClass('disable-navigation-wrapper');
+    }
+  };
+
   return (
     <Header>
 
       <ul className='navbar-nav mr-auto'>
 
         <li className="nav-item back-navigation">
+
           <IconButton
-            className="nav-link"
+            className="nav-link nav-sidebar-1"
             fa="fa-solid fa-chevron-left"
             tooltip="Navigation sidebar"
             tooltipPlacement="bottom"
-            onClick={() => {
-              if (window.matchMedia('screen and (max-width: 768px)').matches) {
-                selectRoomMode('navigation');
-                openNavigation();
-              } else if ($('body').hasClass('disable-navigation-wrapper')) {
-                $('body').removeClass('disable-navigation-wrapper');
-              } else {
-                $('body').addClass('disable-navigation-wrapper');
-              }
-            }}
+            onClick={navigationSidebarCallback}
           />
+
+          <IconButton
+            className="nav-link nav-sidebar-2"
+            fa="fa-solid fa-chevron-right"
+            tooltip="Navigation sidebar"
+            tooltipPlacement="bottom"
+            onClick={navigationSidebarCallback}
+          />
+
         </li>
 
         <li className="nav-item avatar-base">
