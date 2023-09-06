@@ -12,3 +12,4 @@
 - New rainbow text command added.
 - Home button added.
 - Web3 network config added.
+- HookshotFeeds Mod support.
