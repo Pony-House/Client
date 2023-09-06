@@ -5,7 +5,7 @@ import cons from '../../../client/state/cons';
 import settings from '../../../client/state/settings';
 import RoomTimeline from '../../../client/state/RoomTimeline';
 import navigation from '../../../client/state/navigation';
-import { openNavigation } from '../../../client/action/navigation';
+import { openNavigation, selectRoomMode } from '../../../client/action/navigation';
 
 import Welcome from '../welcome/Welcome';
 import RoomView from './RoomView';
@@ -27,6 +27,7 @@ function Room() {
   resetRoomInfo = () => {
 
     $('#space-header .space-drawer-body .room-selector--selected').removeClass('room-selector--selected');
+    selectRoomMode('navigation');
 
     setRoomInfo({
       roomTimeline: null,

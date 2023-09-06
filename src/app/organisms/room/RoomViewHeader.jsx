@@ -68,11 +68,17 @@ function RoomViewHeader({ roomId }) {
           <IconButton
             className="nav-link"
             fa="fa-solid fa-chevron-left"
-            tooltip="Return to navigation"
+            tooltip="Navigation sidebar"
             tooltipPlacement="bottom"
             onClick={() => {
-              selectRoomMode('navigation');
-              openNavigation();
+              if (window.matchMedia('screen and (max-width: 768px)').matches) {
+                selectRoomMode('navigation');
+                openNavigation();
+              } else if ($('body').hasClass('disable-navigation-wrapper')) {
+                $('body').removeClass('disable-navigation-wrapper');
+              } else {
+                $('body').addClass('disable-navigation-wrapper');
+              }
             }}
           />
         </li>
