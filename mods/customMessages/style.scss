@@ -1,0 +1,14 @@
+.hookshot-feeds {
+  max-width: 550px;
+  .card-img-top {
+    cursor: pointer;
+
+    &:hover {
+      filter: brightness(85%);
+    }
+  }
+
+  .btn:hover {
+    text-decoration: none !important;
+  }
+}

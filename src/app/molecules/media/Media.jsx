@@ -129,7 +129,7 @@ File.propTypes = {
 };
 
 function Image({
-  name, width, height, link, file, type, blurhash, className, classImage, disableChatScroll,
+  name, width, height, link, file, type, blurhash, className, classImage, disableChatScroll, ignoreContainer
 }) {
   const [url, setUrl] = useState(null);
   const [blur, setBlur] = useState(true);
@@ -155,47 +155,57 @@ function Image({
 
   if (!disableChatScroll) chatboxScrollToBottom();
 
-  return (
-    <div className={`file-container${className ? ` ${className}` : ''}`}>
-      <div
-        style={{ height: width !== null ? getNativeHeight(width, height) : 'unset' }}
-        className="image-container"
-        role="button"
-        tabIndex="0"
-        onClick={toggleLightbox}
-        onKeyDown={toggleLightbox}
-      >
-        {blurhash && blur && <BlurhashCanvas hash={blurhash} punch={1} />}
-        {url !== null && (
-          <img
-            className={classImage}
-            draggable="false"
-            style={{ display: blur ? 'none' : 'unset' }}
-            onLoad={event => {
+  const imgData = url !== null && (
+    <img
+      className={`${classImage}${ignoreContainer ? ` ${className}` : ''}`}
+      draggable="false"
+      style={{ display: blur ? 'none' : 'unset' }}
+      onLoad={event => {
 
-              setBlur(false);
-              let imageLoaded = false;
-              if (!imageLoaded && event.target) {
+        setBlur(false);
+        let imageLoaded = false;
+        if (!imageLoaded && event.target) {
 
-                imageLoaded = true;
-                const img = $(event.target);
-                const imgAction = () => { imageViewer(lightbox, img, name, url); };
+          imageLoaded = true;
+          const img = $(event.target);
+          const imgAction = () => { imageViewer(lightbox, img, name, url); };
 
-                img.off('click', imgAction);
-                img.on('click', imgAction);
+          img.off('click', imgAction);
+          img.on('click', imgAction);
 
-              }
+        }
 
-            }}
-            src={url || link}
-            alt={name}
-          />
-        )}
-      </div>
-    </div>
+      }}
+      src={url || link}
+      alt={name}
+    />
   );
+
+  if (!ignoreContainer) {
+
+    return (
+      <div className={`file-container${className ? ` ${className}` : ''}`}>
+        <div
+          style={{ height: width !== null ? getNativeHeight(width, height) : 'unset' }}
+          className="image-container"
+          role="button"
+          tabIndex="0"
+          onClick={toggleLightbox}
+          onKeyDown={toggleLightbox}
+        >
+          {blurhash && blur && <BlurhashCanvas hash={blurhash} punch={1} />}
+          {imgData}
+        </div>
+      </div>
+    );
+
+  }
+
+  return imgData;
+
 }
 Image.defaultProps = {
+  ignoreContainer: false,
   disableChatScroll: false,
   file: null,
   width: null,
@@ -206,6 +216,7 @@ Image.defaultProps = {
   blurhash: '',
 };
 Image.propTypes = {
+  ignoreContainer: PropTypes.bool,
   disableChatScroll: PropTypes.bool,
   name: PropTypes.string.isRequired,
   width: PropTypes.number,
