@@ -3,6 +3,7 @@
  */
 {
   appId: 'pony-house-matrix',
+  productName: 'Pony House',
   asar: true,
   directories: {
     output: 'release/${version}',
@@ -26,6 +27,7 @@
     perMachine: false,
     allowToChangeInstallationDirectory: true,
     deleteAppDataOnUninstall: false,
+    uninstallDisplayName: 'Pony House',
   },
   publish: {
     provider: 'generic',
