@@ -43,6 +43,8 @@ Would you like to customize your login page to your website? Then you can check 
 
 Replace this value to change the appID: `pony-house-matrix`
 
+Replace some values in the file: `electron-builder.json5`
+
 App title in `electron/main/index.ts`.
 
 If you would like to edit the version checker url, you can edit the `src/client/state/cons.js` file.

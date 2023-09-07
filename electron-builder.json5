@@ -4,6 +4,7 @@
 {
   appId: 'pony-house-matrix',
   productName: 'Pony House',
+  copyright: 'Copyright © 2023 ${author}',
   asar: true,
   directories: {
     output: 'release/${version}',
