@@ -3914,6 +3914,11 @@ es-iterator-helpers@^1.0.12:
     iterator.prototype "^1.1.0"
     safe-array-concat "^1.0.0"
 
+es-module-shims@1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/es-module-shims/-/es-module-shims-1.8.0.tgz#c0c8e7f5a0d041998b9410879619ab745cb76a3a"
+  integrity sha512-5l/AqgnWvYFF38qkK8VNoQ8BL3LkJ8bAJuxhOKA/JqoLC4bcaeJeLwMkhEcrDsf5IUCDdwZ6eEG40+Xuh/APcQ==
+
 es-set-tostringtag@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/es-set-tostringtag/-/es-set-tostringtag-2.0.1.tgz#338d502f6f674301d710b80c8592de8a15f09cd8"
@@ -4968,6 +4973,11 @@ ignore@^5.2.0:
   version "5.2.4"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.4.tgz#a291c0c6178ff1b960befe47fcdec301674a6324"
   integrity sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==
+
+immutable@5.0.0-beta.4:
+  version "5.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-5.0.0-beta.4.tgz#6c12ac4ad8b16aeec4d064c9d2f4024bb270b7ca"
+  integrity sha512-sl9RE3lqd2LoQSESc8VV0k8qE9y57iT7dinq3Q+8mR2dqReHDZlgUrudzmFfZhDXBLXlNJMVWv3SG1YpQIokig==
 
 immutable@^4.0.0:
   version "4.3.0"

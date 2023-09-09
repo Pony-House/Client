@@ -35,6 +35,21 @@ const copyFiles = {
     },
 
     {
+      src: 'node_modules/es-module-shims/dist/es-module-shims.js',
+      dest: 'js/',
+    },
+
+    {
+      src: 'node_modules/immutable/dist/immutable.es.js',
+      dest: 'js/',
+    },
+
+    {
+      src: 'node_modules/sass/sass.default.js',
+      dest: 'js/',
+    },
+
+    {
       src: 'node_modules/moment-timezone/builds/*',
       dest: 'js/moment/',
     },
