@@ -12,6 +12,7 @@ module.exports = {
     'playLogData': 'readonly',
     '__ENV_APP__': 'readonly',
     'Olm': 'readonly',
+    'sass': 'readonly',
   },
   env: {
     browser: true,
