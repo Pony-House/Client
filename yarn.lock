@@ -244,10 +244,10 @@
   resolved "https://registry.yarnpkg.com/@capacitor/browser/-/browser-5.0.6.tgz#d936c4951e5a14f3cc841853c3424e29dfa17d88"
   integrity sha512-wEI7Na6PVzSP/00ud7pjbBwXwVG7HywCdy2fJT/hzF6yuHn4tDirbOvbr1JKd9LZqKs2Xn+TapV38JhBRhX6YA==
 
-"@capacitor/cli@5.2.2":
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-5.2.2.tgz#7799e4bfccc8a5bd7f51df1c6ea74d9505a5aae9"
-  integrity sha512-h/cefX3sefLcmd4VI2h+fNIYKWH1QCUACWAH8bkdJ+aEL+x2xYbGlqeW6Belb3E2Uvu9OA+cz7YVDnNRcjyQyw==
+"@capacitor/cli@5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-5.3.0.tgz#6ee30148a8a6f9317056c8d9d1591ac04783f088"
+  integrity sha512-ku23HPqUHUnSgo/SyEWxVviEAxb4ieWvAVMI3KfrrBoinAhTOvNSZwT346rIpxZ9Xj3Qp41UjdIz0ME+DYwhfA==
   dependencies:
     "@ionic/cli-framework-output" "^2.2.5"
     "@ionic/utils-fs" "^3.1.6"
@@ -6389,20 +6389,12 @@ playwright-core@1.37.0:
   resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.37.0.tgz#a0a009b840076706452e29aab0efe0ebf5d45ab1"
   integrity sha512-1c46jhTH/myQw6sesrcuHVtLoSNfJv8Pfy9t3rs6subY7kARv0HRw5PpyfPYPpPtQvBOmgbE6K+qgYUpj81LAA==
 
-plist@^3.0.1, plist@^3.0.4:
+plist@^3.0.1, plist@^3.0.4, plist@^3.0.5, plist@^3.0.6:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/plist/-/plist-3.1.0.tgz#797a516a93e62f5bde55e0b9cc9c967f860893c9"
   integrity sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==
   dependencies:
     "@xmldom/xmldom" "^0.8.8"
-    base64-js "^1.5.1"
-    xmlbuilder "^15.1.1"
-
-plist@^3.0.5, plist@^3.0.6:
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/plist/-/plist-3.0.6.tgz#7cfb68a856a7834bca6dbfe3218eb9c7740145d3"
-  integrity sha512-WiIVYyrp8TD4w8yCvyeIr+lkmrGRd5u0VbRnU+tP/aRLxP/YadJUYOMZJ/6hIa3oUyVCsycXvtNRgd5XBJIbiA==
-  dependencies:
     base64-js "^1.5.1"
     xmlbuilder "^15.1.1"
 
