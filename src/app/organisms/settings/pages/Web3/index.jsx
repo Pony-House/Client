@@ -56,6 +56,14 @@ function Web3Section() {
                     content={<div className="very-small text-gray">All Pony House web3 features require this setting enabled. If you disable this option, everything related to web3 will be limited to native Pony House features only.</div>}
                 />
 
+            </ul>
+        </div>
+
+        <div className="card noselect mb-3">
+            <ul className="list-group list-group-flush">
+
+                <li className="list-group-item very-small text-gray">Network Settings</li>
+
                 <li className="list-group-item very-small text-gray">
 
                     <button type="button" class="btn btn-sm btn-danger me-3 my-1 my-sm-0" onClick={async () => {
