@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SideBar from './SideBar';
+import SideBar from './Sidebar';
 import Drawer from './Drawer';
 import ProfileAvatarMenu from './ProfileAvatarMenu';
 

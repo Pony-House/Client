@@ -4,27 +4,27 @@ import PropTypes from 'prop-types';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import initMatrix from '../../../client/initMatrix';
-import cons from '../../../client/state/cons';
-import { colorMXID } from '../../../util/colorMXID';
+import initMatrix from '../../../../client/initMatrix';
+import cons from '../../../../client/state/cons';
+import { colorMXID } from '../../../../util/colorMXID';
 import {
   selectTab, openShortcutSpaces, openInviteList,
   openSearch, openSettings, openReusableContextMenu,
-} from '../../../client/action/navigation';
-import { moveSpaceShortcut } from '../../../client/action/accountData';
-import { abbreviateNumber, getEventCords } from '../../../util/common';
-import { isCrossVerified } from '../../../util/matrixUtil';
+} from '../../../../client/action/navigation';
+import { moveSpaceShortcut } from '../../../../client/action/accountData';
+import { abbreviateNumber, getEventCords } from '../../../../util/common';
+import { isCrossVerified } from '../../../../util/matrixUtil';
 
-import Avatar from '../../atoms/avatar/Avatar';
-import NotificationBadge from '../../atoms/badge/NotificationBadge';
-import ScrollView from '../../atoms/scroll/ScrollView';
-import SidebarAvatar from '../../molecules/sidebar-avatar/SidebarAvatar';
-import SpaceOptions from '../../molecules/space-options/SpaceOptions';
+import Avatar from '../../../atoms/avatar/Avatar';
+import NotificationBadge from '../../../atoms/badge/NotificationBadge';
+import ScrollView from '../../../atoms/scroll/ScrollView';
+import SidebarAvatar from '../../../molecules/sidebar-avatar/SidebarAvatar';
+import SpaceOptions from '../../../molecules/space-options/SpaceOptions';
 
-import { useSelectedTab } from '../../hooks/useSelectedTab';
-import { useDeviceList } from '../../hooks/useDeviceList';
+import { useSelectedTab } from '../../../hooks/useSelectedTab';
+import { useDeviceList } from '../../../hooks/useDeviceList';
 
-import { tabText as settingTabText } from '../settings/Settings';
+import { tabText as settingTabText } from '../../settings/Settings';
 
 // Classes
 const notificationClasses = 'position-absolute top-0 start-100 translate-middle badge rounded-pill sidebar-mode';
