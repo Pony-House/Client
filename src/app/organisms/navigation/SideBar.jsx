@@ -26,8 +26,10 @@ import { useDeviceList } from '../../hooks/useDeviceList';
 
 import { tabText as settingTabText } from '../settings/Settings';
 
+// Classes
 const notificationClasses = 'position-absolute top-0 start-100 translate-middle badge rounded-pill sidebar-mode';
 
+// Notification Update
 function useNotificationUpdate() {
   const { notifications } = initMatrix;
   const [, forceUpdate] = useState({});
@@ -43,6 +45,7 @@ function useNotificationUpdate() {
   }, []);
 }
 
+// Cross Sigin Alert
 function CrossSigninAlert() {
   const deviceList = useDeviceList();
   const unverified = deviceList?.filter((device) => isCrossVerified(device.device_id) === false);
@@ -59,11 +62,15 @@ function CrossSigninAlert() {
   );
 }
 
+// Featured Tab
 function FeaturedTab() {
+
+  // Data
   const { roomList, accountData, notifications } = initMatrix;
   const [selectedTab] = useSelectedTab();
   useNotificationUpdate();
 
+  // Home
   function getHomeNoti() {
     const orphans = roomList.getOrphans();
     let noti = null;
@@ -79,6 +86,8 @@ function FeaturedTab() {
 
     return noti;
   }
+
+  // DMs
   function getDMsNoti() {
     if (roomList.directs.size === 0) return null;
     let noti = null;
@@ -94,11 +103,14 @@ function FeaturedTab() {
     return noti;
   }
 
+  // Get Data
   const dmsNoti = getDMsNoti();
   const homeNoti = getHomeNoti();
 
+  // Complete
   return (
     <>
+
       <SidebarAvatar
         tooltip="Direct Messages"
         active={selectedTab === cons.tabs.DIRECTS}
@@ -112,6 +124,7 @@ function FeaturedTab() {
           />
         ) : null}
       />
+
       <SidebarAvatar
         tooltip="Home"
         active={selectedTab === cons.tabs.HOME}
@@ -125,19 +138,24 @@ function FeaturedTab() {
           />
         ) : null}
       />
+
     </>
   );
 }
 
+// Draggable Space Shortcut
 function DraggableSpaceShortcut({
   isActive, spaceId, index, moveShortcut, onDrop,
 }) {
+
+  // Data
   const mx = initMatrix.matrixClient;
   const { notifications } = initMatrix;
   const room = mx.getRoom(spaceId);
   const shortcutRef = useRef(null);
   const avatarRef = useRef(null);
 
+  // Options
   const openSpaceOptions = (e, sId) => {
     e.preventDefault();
     openReusableContextMenu(
@@ -147,6 +165,7 @@ function DraggableSpaceShortcut({
     );
   };
 
+  // Drop
   const [, drop] = useDrop({
     accept: 'SPACE_SHORTCUT',
     collect(monitor) {
@@ -179,6 +198,8 @@ function DraggableSpaceShortcut({
       item.index = hoverIndex;
     },
   });
+
+  // Dragging
   const [{ isDragging }, drag] = useDrag({
     type: 'SPACE_SHORTCUT',
     item: () => ({ spaceId, index }),
@@ -187,42 +208,44 @@ function DraggableSpaceShortcut({
     }),
   });
 
+  // Final Drag Drop
   drag(avatarRef);
   drop(shortcutRef);
 
+  // Style
   if (shortcutRef.current) {
     if (isDragging) shortcutRef.current.style.opacity = 0;
     else shortcutRef.current.style.opacity = 1;
   }
 
-  return (
-    <SidebarAvatar
-      ref={shortcutRef}
-      active={isActive}
-      tooltip={room.name}
-      onClick={() => selectTab(spaceId)}
-      onContextMenu={(e) => openSpaceOptions(e, spaceId)}
-      avatar={(
-        <Avatar
-          ref={avatarRef}
-          text={room.name}
-          bgColor={colorMXID(room.roomId)}
-          size="normal"
-          animParentsCount={2}
-          imageAnimSrc={room.getAvatarUrl(initMatrix.matrixClient.baseUrl) || null}
-          imageSrc={room.getAvatarUrl(initMatrix.matrixClient.baseUrl, 42, 42, 'crop') || null}
-          isDefaultImage
-        />
-      )}
-      notificationBadge={notifications.hasNoti(spaceId) ? (
-        <NotificationBadge
-          className={notificationClasses}
-          alert={notifications.getHighlightNoti(spaceId) > 0}
-          content={abbreviateNumber(notifications.getTotalNoti(spaceId)) || null}
-        />
-      ) : null}
-    />
-  );
+  // Complete
+  return <SidebarAvatar
+    ref={shortcutRef}
+    active={isActive}
+    tooltip={room.name}
+    onClick={() => selectTab(spaceId)}
+    onContextMenu={(e) => openSpaceOptions(e, spaceId)}
+    avatar={(
+      <Avatar
+        ref={avatarRef}
+        text={room.name}
+        bgColor={colorMXID(room.roomId)}
+        size="normal"
+        animParentsCount={2}
+        imageAnimSrc={room.getAvatarUrl(initMatrix.matrixClient.baseUrl) || null}
+        imageSrc={room.getAvatarUrl(initMatrix.matrixClient.baseUrl, 42, 42, 'crop') || null}
+        isDefaultImage
+      />
+    )}
+    notificationBadge={notifications.hasNoti(spaceId) ? (
+      <NotificationBadge
+        className={notificationClasses}
+        alert={notifications.getHighlightNoti(spaceId) > 0}
+        content={abbreviateNumber(notifications.getTotalNoti(spaceId)) || null}
+      />
+    ) : null}
+  />;
+
 }
 
 DraggableSpaceShortcut.propTypes = {
@@ -233,12 +256,16 @@ DraggableSpaceShortcut.propTypes = {
   onDrop: PropTypes.func.isRequired,
 };
 
+// Space Shortcut
 function SpaceShortcut() {
+
+  // Data
   const { accountData } = initMatrix;
   const [selectedTab] = useSelectedTab();
   useNotificationUpdate();
   const [spaceShortcut, setSpaceShortcut] = useState([...accountData.spaceShortcut]);
 
+  // Effect
   useEffect(() => {
     const handleShortcut = () => setSpaceShortcut([...accountData.spaceShortcut]);
     accountData.on(cons.events.accountData.SPACE_SHORTCUT_UPDATED, handleShortcut);
@@ -247,6 +274,7 @@ function SpaceShortcut() {
     };
   }, []);
 
+  // Move Data
   const moveShortcut = (dragIndex, hoverIndex) => {
     const dragSpaceId = spaceShortcut[dragIndex];
     const newShortcuts = [...spaceShortcut];
@@ -255,50 +283,62 @@ function SpaceShortcut() {
     setSpaceShortcut(newShortcuts);
   };
 
+  // Drop Move Data
   const handleDrop = (dragIndex, dragSpaceId) => {
     if ([...accountData.spaceShortcut][dragIndex] === dragSpaceId) return;
     moveSpaceShortcut(dragSpaceId, dragIndex);
   };
 
-  return (
-    <DndProvider backend={HTML5Backend}>
-      {
-        spaceShortcut.map((shortcut, index) => (
-          <DraggableSpaceShortcut
-            key={shortcut}
-            index={index}
-            spaceId={shortcut}
-            isActive={selectedTab === shortcut}
-            moveShortcut={moveShortcut}
-            onDrop={handleDrop}
-          />
-        ))
-      }
-    </DndProvider>
-  );
+  // Complete
+  return <DndProvider backend={HTML5Backend}>{
+    spaceShortcut.map((shortcut, index) => (
+      <DraggableSpaceShortcut
+        key={shortcut}
+        index={index}
+        spaceId={shortcut}
+        isActive={selectedTab === shortcut}
+        moveShortcut={moveShortcut}
+        onDrop={handleDrop}
+      />
+    ))
+  }</DndProvider>;
+
 }
 
+// Total Invites
 function useTotalInvites() {
+
+  // Rooms
   const { roomList } = initMatrix;
   const totalInviteCount = () => roomList.inviteRooms.size
     + roomList.inviteSpaces.size
     + roomList.inviteDirects.size;
   const [totalInvites, updateTotalInvites] = useState(totalInviteCount());
 
+  // Effect
   useEffect(() => {
+
+    // Change
     const onInviteListChange = () => {
       updateTotalInvites(totalInviteCount());
     };
+
+    // Events
     roomList.on(cons.events.roomList.INVITELIST_UPDATED, onInviteListChange);
     return () => {
       roomList.removeListener(cons.events.roomList.INVITELIST_UPDATED, onInviteListChange);
     };
+
   }, []);
 
+  // Complete
   return [totalInvites];
+
 }
 
+// Sidebar
 function SideBar() {
+
   const [totalInvites] = useTotalInvites();
 
   return (
@@ -306,8 +346,11 @@ function SideBar() {
       <center className='sidebar-item-1 h-100'>
         <ScrollView invisible>
           <div className="scrollable-content">
+
             <div id='space-feature' className="featured-container">
+
               <FeaturedTab />
+
               {totalInvites !== 0 && (
                 <SidebarAvatar
                   tooltip="Invites"
@@ -316,9 +359,13 @@ function SideBar() {
                   notificationBadge={<NotificationBadge className={notificationClasses} alert content={totalInvites} />}
                 />
               )}
+
               <CrossSigninAlert />
+
             </div>
+
             <div className="sidebar-divider" />
+
             <div id='space-container' className="space-container">
               <SpaceShortcut />
               <SidebarAvatar
@@ -327,19 +374,24 @@ function SideBar() {
                 avatar={<Avatar faSrc="bi bi-bookmark-plus-fill" size="normal" />}
               />
             </div>
+
           </div>
         </ScrollView>
       </center>
+
       <center className='sidebar-item-2'>
         <div className="sidebar-divider" />
         <div id='space-container-2' className="sticky-container">
+
           <SidebarAvatar
             tooltip="Search"
             onClick={() => openSearch()}
             avatar={<Avatar faSrc="fa-solid fa-magnifying-glass" size="normal" />}
           />
+
         </div>
       </center>
+
     </>
   );
 }
