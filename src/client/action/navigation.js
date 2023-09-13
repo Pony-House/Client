@@ -141,6 +141,13 @@ export function openEmojiBoard(roomId, cords, dom, requestEmojiCallback) {
   });
 }
 
+export function ethereumUpdate(address) {
+  appDispatcher.dispatch({
+    type: cons.actions.navigation.ETHEREUM_UPDATE,
+    address,
+  });
+}
+
 export function openReadReceipts(roomId, userIds) {
   appDispatcher.dispatch({
     type: cons.actions.navigation.OPEN_READRECEIPTS,

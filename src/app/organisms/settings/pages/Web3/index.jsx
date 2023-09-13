@@ -8,6 +8,7 @@ import { toggleActionLocal } from '../../Api';
 import { getWeb3Cfg, deleteWeb3Cfg, setWeb3Cfg } from '../../../../../util/web3';
 import Web3Item from './Web3Item';
 import { objType, tinyConfirm, tinyPrompt } from '../../../../../util/tools';
+import { ethereumUpdate } from '../../../../../client/action/navigation';
 
 function Web3Section() {
 

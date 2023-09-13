@@ -124,6 +124,10 @@ Use the msgOptions.custom object to customize the final result of your message. 
 
 `src/client/state/navigation.js`
 
+### ethereumUpdated
+
+    address
+
 ### roomSettingsToggled (Not ready for production)
 
     isRoomSettings

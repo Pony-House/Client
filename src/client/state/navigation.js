@@ -510,6 +510,14 @@ class Navigation extends EventEmitter {
         this.emit(cons.events.navigation.NAVIGATION_OPENED);
       },
 
+      [cons.actions.navigation.ETHEREUM_UPDATE]: () => {
+        tinyAPI.emit('ethereumUpdated', action.address);
+        this.emit(
+          cons.events.navigation.ETHEREUM_UPDATED,
+          action.address
+        );
+      },
+
       [cons.actions.navigation.OPEN_EMOJIBOARD]: () => {
 
         tinyAPI.emit(
