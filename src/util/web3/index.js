@@ -262,6 +262,11 @@ const startWeb3 = () => {
   // Check if Web3 has been injected by the browser (Mist/MetaMask).
   if (typeof ethereum !== 'undefined' && window.ethereum.isMetaMask) {
 
+    // Checker
+    tinyCrypto.existEthereum = () => (typeof window.ethereum !== 'undefined');
+    tinyCrypto.isUnlocked = () => (window.ethereum._isUnlocked);
+    tinyCrypto.existWalletApp = () => (tinyCrypto.existEthereum() && tinyCrypto.isUnlocked());
+
     // Emitter
     class MyEmitter extends EventEmitter { }
     const myEmitter = new MyEmitter();
@@ -583,6 +588,13 @@ const startWeb3 = () => {
       myEmitter.emit('readyProvider');
     });
 
+  }
+
+  // Nothing
+  else {
+    tinyCrypto.existEthereum = () => false;
+    tinyCrypto.isUnlocked = () => false;
+    tinyCrypto.existWalletApp = () => false;
   }
 
   // Freeze
