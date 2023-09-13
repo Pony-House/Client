@@ -21,7 +21,7 @@ import { useSelectedTab } from '../../../hooks/useSelectedTab';
 import { abbreviateNumber, getEventCords } from '../../../../util/common';
 import cons from '../../../../client/state/cons';
 
-import { notificationClasses, useNotificationUpdate } from '.';
+import { notificationClasses, useNotificationUpdate } from './Notification';
 
 // Draggable Space Shortcut
 function DraggableSpaceShortcut({

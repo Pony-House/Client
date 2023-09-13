@@ -20,28 +20,9 @@ import { useSelectedTab } from '../../../hooks/useSelectedTab';
 import { useDeviceList } from '../../../hooks/useDeviceList';
 
 import { tabText as settingTabText } from '../../settings/Settings';
+
 import SpaceShortcut from './SpaceShortcut';
-
-// Classes
-const notificationClasses = 'position-absolute top-0 start-100 translate-middle badge rounded-pill sidebar-mode';
-
-export { notificationClasses }
-
-// Notification Update
-export function useNotificationUpdate() {
-  const { notifications } = initMatrix;
-  const [, forceUpdate] = useState({});
-  useEffect(() => {
-    function onNotificationChanged(roomId, total, prevTotal) {
-      if (total === prevTotal) return;
-      forceUpdate({});
-    }
-    notifications.on(cons.events.notifications.NOTI_CHANGED, onNotificationChanged);
-    return () => {
-      notifications.removeListener(cons.events.notifications.NOTI_CHANGED, onNotificationChanged);
-    };
-  }, []);
-};
+import { notificationClasses, useNotificationUpdate } from './Notification';
 
 // Cross Sigin Alert
 function CrossSigninAlert() {
