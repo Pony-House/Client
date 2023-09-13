@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import clone from 'clone';
 import { objType } from '../tools';
+import startStatus from './status';
 
 const defaultNetworks = {
 
@@ -607,6 +608,9 @@ const startWeb3 = () => {
 
   // Insert into global
   global.tinyCrypto = tinyCrypto;
+
+  // Start Status
+  startStatus();
 
 };
 
