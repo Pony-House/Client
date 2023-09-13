@@ -62,6 +62,18 @@ function Web3Section() {
         <div className="card noselect mb-3">
             <ul className="list-group list-group-flush">
 
+                <li className="list-group-item very-small text-gray">Integration Settings</li>
+
+                <li className="list-group-item very-small text-gray">
+
+                </li>
+
+            </ul>
+        </div>
+
+        <div className="card noselect mb-3">
+            <ul className="list-group list-group-flush">
+
                 <li className="list-group-item very-small text-gray">Network Settings</li>
 
                 <li className="list-group-item very-small text-gray">
