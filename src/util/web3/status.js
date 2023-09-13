@@ -2,7 +2,7 @@ import { toast } from "../tools";
 
 // Detect Meta to Update Icon
 const checkConnection = function () {
-    const existMetaEthereum = $('#ethereum-icon-status');
+    const existMetaEthereum = $('meta[name="user-ethereum-address"]');
     if (existMetaEthereum) {
 
         // jQuery values
@@ -17,7 +17,7 @@ const checkConnection = function () {
 
                 // Update Data
                 if (!global.tinyCrypto.matrixEthereum) {
-                    global.tinyCrypto.matrixEthereum = existMetaEthereum.attributes.content.value.toLowerCase();
+                    global.tinyCrypto.matrixEthereum = existMetaEthereum.attr('content').toLowerCase();
                 }
 
                 // Check Data and Insert Warn
