@@ -14,6 +14,7 @@ import Avatar from '../../../atoms/avatar/Avatar';
 import { notificationClasses, useNotificationUpdate } from './Notification';
 import SidebarAvatar from '../../../molecules/sidebar-avatar/SidebarAvatar';
 import NotificationBadge from '../../../atoms/badge/NotificationBadge';
+// import { getWeb3Cfg } from '../../../../util/web3';
 
 // Featured Tab
 export default function FeaturedTab() {
@@ -60,6 +61,9 @@ export default function FeaturedTab() {
     const dmsNoti = getDMsNoti();
     const homeNoti = getHomeNoti();
 
+    // Ethereum
+    let ethereumIcon = null;
+
     // Complete
     return (
         <>
@@ -91,6 +95,8 @@ export default function FeaturedTab() {
                     />
                 ) : null}
             />
+
+            {ethereumIcon}
 
         </>
     );

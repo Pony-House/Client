@@ -2,7 +2,74 @@ import { EventEmitter } from 'events';
 import clone from 'clone';
 import { objType } from '../tools';
 import startStatus from './status';
+import initMatrix from '../../client/initMatrix';
 
+// Signature Template
+const signTemplate = (userId, unix) => `Matrix Client - Ethereum Account:
+user: ${userId}
+unix: ${unix || moment().unix()}`;
+
+// Validate Account
+export function validateWeb3Account(ethereumData, userId) {
+
+  if (objType(ethereumData, 'object')) {
+
+    // Validator
+    if (typeof ethereumData.sign !== 'string') ethereumData.sign = null;
+    if (typeof ethereumData.address !== 'string') ethereumData.address = null;
+    if (typeof ethereumData.register_time !== 'number') ethereumData.register_time = null;
+
+    // Check
+    if (ethereumData.sign && ethereumData.address && ethereumData.register_time) {
+
+      // Fix Address
+      ethereumData.address = ethereumData.address.toLowerCase();
+
+      // Final Validate
+      ethereumData.valid = global.tinyCrypto.recover(signTemplate(userId, ethereumData.register_time), ethereumData.sign);
+      if (typeof ethereumData.valid === 'string') {
+        ethereumData.valid = (ethereumData.valid.toLowerCase() === ethereumData.address);
+        return ethereumData.valid;
+      }
+
+      // Nope
+      ethereumData.valid = false;
+      return false;
+
+    }
+
+    // Nope
+    ethereumData.valid = false;
+    return false;
+
+  }
+
+  return false;
+
+};
+
+// Account
+export function getWeb3Account() {
+
+  // Data Base
+  const mx = initMatrix.matrixClient;
+  const ethereumData = mx.getAccountData('pony.house.ethereum')?.getContent() ?? {};
+  if (objType(ethereumData, 'object')) {
+
+    // Validator
+    validateWeb3Account(ethereumData, mx.getUserId());
+
+    // Complete
+    return ethereumData;
+
+  }
+
+  // Nothing
+  return { sign: null, id: null };
+
+};
+
+// Networks
 const defaultNetworks = {
 
   // Ethereum
@@ -147,6 +214,7 @@ export function getDefaultNetworks() {
   return clone(defaultNetworks);
 };
 
+// Config
 export function getWeb3Cfg(folder, getDefault = true) {
 
   let content = global.localStorage.getItem('ponyHouse-web3');
@@ -557,6 +625,9 @@ const startWeb3 = () => {
 
     });
 
+    // Recover Signature
+    tinyCrypto.recover = (msg, sign) => tinyCrypto.provider.eth.accounts.recover(msg, sign);
+
     // Data
     tinyCrypto.get.provider = () => tinyCrypto.provider;
     tinyCrypto.get.address = () => tinyCrypto.address;
@@ -596,6 +667,8 @@ const startWeb3 = () => {
     tinyCrypto.existEthereum = () => false;
     tinyCrypto.isUnlocked = () => false;
     tinyCrypto.existWalletApp = () => false;
+    tinyCrypto.validateAccount = () => false;
+    tinyCrypto.recover = () => '';
   }
 
   // Freeze
@@ -605,6 +678,9 @@ const startWeb3 = () => {
   tinyCrypto.getCfg = getWeb3Cfg;
   tinyCrypto.setCfg = setWeb3Cfg;
   tinyCrypto.deleteCfg = deleteWeb3Cfg;
+
+  tinyCrypto.getMatrixAccount = getWeb3Account;
+  tinyCrypto.validateAccount = validateWeb3Account;
 
   // Insert into global
   global.tinyCrypto = tinyCrypto;
