@@ -21,6 +21,7 @@ import {
 import tinyAPI from '../../../util/mods';
 import { enableAfkSystem } from '../../../util/userStatusEffects';
 
+// Account Status
 const accountStatus = { status: null, data: null };
 export function getAccountStatus(where) {
 
@@ -37,6 +38,7 @@ export function getAccountStatus(where) {
 
 };
 
+// Profile Avatar Menu
 function ProfileAvatarMenu() {
     const mx = initMatrix.matrixClient;
     const user = mx.getUser(mx.getUserId());
@@ -50,6 +52,7 @@ function ProfileAvatarMenu() {
         displayName: user.displayName,
     });
 
+    // Effect
     useEffect(() => {
 
         // Get User and update data
@@ -58,22 +61,28 @@ function ProfileAvatarMenu() {
         // Set New User Status
         const onProfileUpdate = (event = {}) => {
 
+            // Exist
             if (event) {
 
+                // Clone Event
                 const tinyEvent = event;
-
                 const tinyClone = clone(event);
-                if (tinyClone.afk) tinyClone.status = '🟠';
-                const eventJSON = JSON.stringify(tinyClone);
 
+                // Afk Fix
+                if (tinyClone.afk) tinyClone.status = '🟠';
+
+                // String Version
+                const eventJSON = JSON.stringify(tinyClone);
                 if (eventJSON.length > 0) {
 
+                    // Status Fix
                     let presenceStatus = 'online';
                     if (typeof tinyEvent.status === 'string') {
                         tinyEvent.status = tinyEvent.status.trim();
                         if (tinyEvent.status === '🔘') presenceStatus = 'offline';
                     }
 
+                    // Set Presence
                     mx.setPresence({
                         presence: presenceStatus,
                         status_msg: eventJSON,
@@ -81,45 +90,58 @@ function ProfileAvatarMenu() {
 
                 }
 
+                // Custom Status data
                 if (customStatusRef && customStatusRef.current && (
                     (typeof event.msg === 'string' && event.msg.length > 0) ||
                     (typeof event.msgIcon === 'string' && event.msgIcon.length > 0)
                 )) {
 
+                    // Get Presence
                     const content = getPresence({ presenceStatusMsg: eventJSON });
                     const htmlStatus = [];
 
+                    // Image HTML
                     if (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0) {
                         htmlStatus.push($('<img>', { src: content.presenceStatusMsg.msgIcon, alt: 'icon', class: 'emoji me-1' }));
                     }
 
+                    // Text HTML
                     if (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) {
                         htmlStatus.push(jReact(<span className='text-truncate cs-text'>
                             {twemojifyReact(content.presenceStatusMsg.msg.substring(0, 100))}
                         </span>));
                     }
 
+                    // Insert Data
                     $(customStatusRef.current).html(htmlStatus);
                     accountStatus.data = content.presenceStatusMsg;
                     accountStatus.status = event.status;
 
-                } else {
+                }
+
+                // Nope
+                else {
                     $(customStatusRef.current).html(jReact(twemojifyReact(user2.userId)));
                     accountStatus.data = null;
                     accountStatus.status = null;
                 }
 
+                // JSON Status
                 if (statusRef && statusRef.current && typeof event.status === 'string' && event.status.length > 0) {
                     const tinyUser = mx.getUser(mx.getUserId());
                     tinyUser.presenceStatusMsg = JSON.stringify(event);
                     statusRef.current.className = getUserStatus(user2);
                 }
 
-            } else {
+            }
+
+            // Nope
+            else {
                 accountStatus.data = null;
                 accountStatus.status = null;
             }
 
+            // Status update
             tinyAPI.emit('userStatusUpdate', accountStatus);
             enableAfkSystem();
 
@@ -153,6 +175,7 @@ function ProfileAvatarMenu() {
 
     }, []);
 
+    // User Presence
     const content = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
     user.presence = 'online';
     user.presenceStatusMsg = JSON.stringify(content);
