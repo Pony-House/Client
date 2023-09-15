@@ -54,7 +54,7 @@ export function validateWeb3Account(ethereumData, userId) {
 };
 
 // Account
-export function getWeb3Account() {
+export function getUserWeb3Account() {
 
   // Data Base
   const mx = initMatrix.matrixClient;
@@ -672,7 +672,8 @@ const startWeb3 = () => {
     tinyCrypto.existEthereum = () => false;
     tinyCrypto.isUnlocked = () => false;
     tinyCrypto.existWalletApp = () => false;
-    tinyCrypto.validateAccount = () => false;
+    tinyCrypto.validateMatrixAccount = () => false;
+    tinyCrypto.getUser = () => ({ sign: null, id: null });
     tinyCrypto.recover = () => '';
   }
 
@@ -684,8 +685,8 @@ const startWeb3 = () => {
   tinyCrypto.setCfg = setWeb3Cfg;
   tinyCrypto.deleteCfg = deleteWeb3Cfg;
 
-  tinyCrypto.getMatrixAccount = getWeb3Account;
-  tinyCrypto.validateAccount = validateWeb3Account;
+  tinyCrypto.getUser = getUserWeb3Account;
+  tinyCrypto.validateMatrixAccount = validateWeb3Account;
 
   // Insert into global
   global.tinyCrypto = tinyCrypto;
