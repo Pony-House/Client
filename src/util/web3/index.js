@@ -11,25 +11,32 @@ unix: ${unix || moment().unix()}`;
 
 // Validate Account
 export function validateWeb3Account(ethereumData, userId) {
+  try {
 
-  if (objType(ethereumData, 'object')) {
+    if (objType(ethereumData, 'object')) {
 
-    // Validator
-    if (typeof ethereumData.sign !== 'string') ethereumData.sign = null;
-    if (typeof ethereumData.address !== 'string') ethereumData.address = null;
-    if (typeof ethereumData.register_time !== 'number') ethereumData.register_time = null;
+      // Validator
+      if (typeof ethereumData.sign !== 'string') ethereumData.sign = null;
+      if (typeof ethereumData.address !== 'string') ethereumData.address = null;
+      if (typeof ethereumData.register_time !== 'number') ethereumData.register_time = null;
 
-    // Check
-    if (ethereumData.sign && ethereumData.address && ethereumData.register_time) {
+      // Check
+      if (ethereumData.sign && ethereumData.address && ethereumData.register_time) {
 
-      // Fix Address
-      ethereumData.address = ethereumData.address.toLowerCase();
+        // Fix Address
+        ethereumData.address = ethereumData.address.toLowerCase();
 
-      // Final Validate
-      ethereumData.valid = global.tinyCrypto.recover(signTemplate(userId, ethereumData.register_time), ethereumData.sign);
-      if (typeof ethereumData.valid === 'string') {
-        ethereumData.valid = (ethereumData.valid.toLowerCase() === ethereumData.address);
-        return ethereumData.valid;
+        // Final Validate
+        ethereumData.valid = global.tinyCrypto.recover(signTemplate(userId, ethereumData.register_time), ethereumData.sign);
+        if (typeof ethereumData.valid === 'string') {
+          ethereumData.valid = (ethereumData.valid.toLowerCase() === ethereumData.address);
+          return ethereumData.valid;
+        }
+
+        // Nope
+        ethereumData.valid = false;
+        return false;
+
       }
 
       // Nope
@@ -38,14 +45,12 @@ export function validateWeb3Account(ethereumData, userId) {
 
     }
 
-    // Nope
-    ethereumData.valid = false;
     return false;
 
+  } catch (err) {
+    console.error(err);
+    return false;
   }
-
-  return false;
-
 };
 
 // Account
