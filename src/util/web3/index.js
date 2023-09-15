@@ -5,7 +5,8 @@ import startStatus from './status';
 import initMatrix from '../../client/initMatrix';
 
 // Signature Template
-const signTemplate = (userId, unix) => `Matrix Client - Ethereum Account:
+const signTemplate = (userId, unix) => `Matrix Client - Ethereum Account
+
 user: ${userId}
 unix: ${unix || moment().unix()}`;
 
@@ -116,13 +117,16 @@ export function setUserWeb3Account() {
       ethereumData.register_time = now;
 
       initMatrix.matrixClient.setAccountData('pony.house.ethereum', ethereumData);
+      resolve(ethereumData);
 
     }).catch(reject);
   });
 };
 
 export function resetUserWeb3Account() {
-  initMatrix.matrixClient.setAccountData('pony.house.ethereum', { register_time: moment().unix() });
+  const ethereumData = { register_time: moment().unix() };
+  initMatrix.matrixClient.setAccountData('pony.house.ethereum', ethereumData);
+  return ethereumData;
 };
 
 // Networks
