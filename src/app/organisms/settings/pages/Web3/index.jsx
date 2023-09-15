@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import objectHash from 'object-hash';
 import FileSaver from 'file-saver';
+import clone from 'clone';
 
 import SettingTile from '../../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../../atoms/button/Toggle';
 import { toggleActionLocal } from '../../Api';
-import { getWeb3Cfg, deleteWeb3Cfg, setWeb3Cfg } from '../../../../../util/web3';
+import { getWeb3Cfg, deleteWeb3Cfg, setWeb3Cfg, getUserWeb3Account, setUserWeb3Account, resetUserWeb3Account } from '../../../../../util/web3';
 import Web3Item from './Web3Item';
 import { objType, tinyConfirm, tinyPrompt } from '../../../../../util/tools';
 import { ethereumUpdate } from '../../../../../client/action/navigation';
+import initMatrix from '../../../../../client/initMatrix';
 
 function Web3Section() {
 
@@ -16,6 +18,7 @@ function Web3Section() {
     const web3Settings = getWeb3Cfg();
     const [networks, setNetworks] = useState({ keys: [], values: [] });
     const [web3Enabled, setWeb3Enabled] = useState(web3Settings.web3Enabled);
+    const [userWeb3, setUserWeb3] = useState(getUserWeb3Account());
     const [, setUploadPromise] = useState(null);
 
     const web3ConfigUploadRef = useRef(null);
@@ -66,6 +69,43 @@ function Web3Section() {
                 <li className="list-group-item very-small text-gray">Integration Settings</li>
 
                 <li className="list-group-item very-small text-gray">
+
+                    {userWeb3.address ? <>
+
+                        <p>Wallet connected: <strong>{userWeb3.address}</strong></p>
+
+                        <button type="button" class="btn btn-sm btn-danger my-1 my-sm-0" onClick={async () => {
+                            const isConfirmed = await tinyConfirm('Are you sure you want to reset your ethereum wallet storage? All your data will be lost forever!', 'Reset Ethereum Wallet');
+                            if (isConfirmed) {
+                                const newAccount = resetUserWeb3Account();
+                                ethereumUpdate(newAccount);
+                                setUserWeb3(newAccount);
+                            }
+                        }}>Disconnect Wallet</button>
+
+                    </> : <>
+
+                        <p>Connect your wallet to start configuring your account integration.</p>
+
+                        <button type="button" class="btn btn-sm btn-primary my-1 my-sm-0" onClick={() => {
+                            $.LoadingOverlay('show');
+                            setUserWeb3Account().then((userData) => {
+
+                                const newUser = clone(userData);
+                                const newAccount = getUserWeb3Account(newUser, initMatrix.matrixClient.getUserId());
+
+                                ethereumUpdate(newAccount);
+                                setUserWeb3(newAccount);
+                                $.LoadingOverlay('hide');
+
+                            }).catch(err => {
+                                $.LoadingOverlay('hide');
+                                console.error(err);
+                                alert(err.message);
+                            })
+                        }}>Connect Wallet (Metamask)</button>
+
+                    </>}
 
                 </li>
 
