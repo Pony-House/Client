@@ -74,7 +74,7 @@ function Web3Section() {
 
                         <p>Wallet connected: <strong className={userWeb3.valid ? 'text-success' : 'text-danger'}>{userWeb3.address}</strong></p>
 
-                        <button type="button" class="btn btn-sm btn-danger my-1 my-sm-0" onClick={async () => {
+                        <button type="button" className="btn btn-sm btn-danger my-1 my-sm-0" onClick={async () => {
                             const isConfirmed = await tinyConfirm('Are you sure you want to reset your ethereum wallet storage? All your data will be lost forever!', 'Reset Ethereum Wallet');
                             if (isConfirmed) {
                                 const newAccount = resetUserWeb3Account();
@@ -87,7 +87,7 @@ function Web3Section() {
 
                         <p>Connect your wallet to start configuring your account integration.</p>
 
-                        <button type="button" class="btn btn-sm btn-primary my-1 my-sm-0" onClick={() => {
+                        <button type="button" className="btn btn-sm btn-primary my-1 my-sm-0" onClick={() => {
                             $.LoadingOverlay('show');
                             setUserWeb3Account().then((userData) => {
 
@@ -119,7 +119,7 @@ function Web3Section() {
 
                 <li className="list-group-item very-small text-gray">
 
-                    <button type="button" class="btn btn-sm btn-danger me-3 my-1 my-sm-0" onClick={async () => {
+                    <button type="button" className="btn btn-sm btn-danger me-3 my-1 my-sm-0" onClick={async () => {
                         const isConfirmed = await tinyConfirm('Are you sure you want to reset this? All your data will be lost forever!', 'Reset web3 config');
                         if (isConfirmed) {
                             deleteWeb3Cfg('networks');
@@ -127,7 +127,7 @@ function Web3Section() {
                         }
                     }}>Reset config</button>
 
-                    <button type="button" class="btn btn-sm btn-success me-3 my-1 my-sm-0" onClick={async () => {
+                    <button type="button" className="btn btn-sm btn-success me-3 my-1 my-sm-0" onClick={async () => {
                         const newNetwork = await tinyPrompt('Choose an Object Id for your new network', 'New web3 network', 'ethereum');
                         if (typeof newNetwork === 'string' && newNetwork.length > 0) {
 
@@ -139,7 +139,7 @@ function Web3Section() {
                         }
                     }}>Create</button>
 
-                    <button type="button" class="btn btn-sm btn-secondary me-3 my-1 my-sm-0" onClick={() => {
+                    <button type="button" className="btn btn-sm btn-secondary me-3 my-1 my-sm-0" onClick={() => {
 
                         const newWeb3Settings = getWeb3Cfg();
                         const blob = new Blob([JSON.stringify(newWeb3Settings.networks, null, 4)], {
@@ -179,7 +179,7 @@ function Web3Section() {
                         web3ConfigUploadRef.current.value = null;
 
                     }} style={{ display: 'none' }} ref={web3ConfigUploadRef} type="file" accept="application/JSON" />
-                    <button type="button" class="btn btn-sm btn-secondary my-1 my-sm-0" onClick={() => {
+                    <button type="button" className="btn btn-sm btn-secondary my-1 my-sm-0" onClick={() => {
                         web3ConfigUploadRef.current.click();
                     }}>Import</button>
 
