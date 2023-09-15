@@ -115,6 +115,7 @@ export function setUserWeb3Account() {
       ethereumData.sign = sign;
       ethereumData.address = global.tinyCrypto.address;
       ethereumData.register_time = now;
+      if (typeof ethereumData.valid !== 'undefined') delete ethereumData.valid;
 
       initMatrix.matrixClient.setAccountData('pony.house.ethereum', ethereumData);
       resolve(ethereumData);
