@@ -9,6 +9,19 @@ const signTemplate = (userId, unix) => `Matrix Client - Ethereum Account:
 user: ${userId}
 unix: ${unix || moment().unix()}`;
 
+// Sign user account
+export function signUserWeb3Account(unix) {
+  return new Promise((resolve, reject) => {
+
+    if (global.tinyCrypto.call && typeof global.tinyCrypto.call.sign === 'function') {
+      global.tinyCrypto.call.sign(signTemplate(initMatrix.matrixClient.getUserId(), unix)).then(resolve).catch(reject);
+    } else {
+      resolve(null);
+    }
+
+  });
+};
+
 // Validate Account
 export function validateWeb3Account(ethereumData, userId) {
   try {
@@ -57,7 +70,7 @@ export function validateWeb3Account(ethereumData, userId) {
 export function getUserWeb3Account(userData, userId) {
 
   // Get User
-  if (!objType(userData, 'object') && typeof userId === 'string') {
+  if (!objType(userData, 'object') && typeof userId !== 'string') {
 
     // Data Base
     const mx = initMatrix.matrixClient;
@@ -66,6 +79,7 @@ export function getUserWeb3Account(userData, userId) {
 
       // Validator
       validateWeb3Account(ethereumData, mx.getUserId());
+      if (!objType(ethereumData.data, 'object')) ethereumData.data = {};
 
       // Complete
       return ethereumData;
@@ -88,6 +102,27 @@ export function getUserWeb3Account(userData, userId) {
   // Nothing
   return { sign: null, id: null };
 
+};
+
+export function setUserWeb3Account() {
+  return new Promise((resolve, reject) => {
+    const now = moment().unix();
+    signUserWeb3Account(now).then(sign => {
+
+      const ethereumData = getUserWeb3Account();
+
+      ethereumData.sign = sign;
+      ethereumData.address = global.tinyCrypto.address;
+      ethereumData.register_time = now;
+
+      initMatrix.matrixClient.setAccountData('pony.house.ethereum', ethereumData);
+
+    }).catch(reject);
+  });
+};
+
+export function resetUserWeb3Account() {
+  initMatrix.matrixClient.setAccountData('pony.house.ethereum', { register_time: moment().unix() });
 };
 
 // Networks
@@ -691,6 +726,8 @@ const startWeb3 = () => {
     tinyCrypto.validateMatrixAccount = () => false;
     tinyCrypto.getUser = () => ({ sign: null, id: null });
     tinyCrypto.recover = () => '';
+    tinyCrypto.signUserAccount = () => new Promise(resolve => { resolve(null); });
+    tinyCrypto.setUser = () => null;
   }
 
   // Freeze
@@ -703,6 +740,10 @@ const startWeb3 = () => {
 
   tinyCrypto.getUser = getUserWeb3Account;
   tinyCrypto.validateMatrixAccount = validateWeb3Account;
+  tinyCrypto.signUserAccount = signUserWeb3Account;
+
+  tinyCrypto.setUser = setUserWeb3Account;
+  tinyCrypto.resetUser = resetUserWeb3Account;
 
   // Insert into global
   global.tinyCrypto = tinyCrypto;
