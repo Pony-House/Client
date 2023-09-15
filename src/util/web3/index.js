@@ -54,18 +54,34 @@ export function validateWeb3Account(ethereumData, userId) {
 };
 
 // Account
-export function getUserWeb3Account() {
+export function getUserWeb3Account(userData, userId) {
 
-  // Data Base
-  const mx = initMatrix.matrixClient;
-  const ethereumData = mx.getAccountData('pony.house.ethereum')?.getContent() ?? {};
-  if (objType(ethereumData, 'object')) {
+  // Get User
+  if (!objType(userData, 'object') && typeof userId === 'string') {
+
+    // Data Base
+    const mx = initMatrix.matrixClient;
+    const ethereumData = mx.getAccountData('pony.house.ethereum')?.getContent() ?? {};
+    if (objType(ethereumData, 'object')) {
+
+      // Validator
+      validateWeb3Account(ethereumData, mx.getUserId());
+
+      // Complete
+      return ethereumData;
+
+    }
+
+  }
+
+  // Other User
+  else {
 
     // Validator
-    validateWeb3Account(ethereumData, mx.getUserId());
+    validateWeb3Account(userData, userId);
 
     // Complete
-    return ethereumData;
+    return userData;
 
   }
 
