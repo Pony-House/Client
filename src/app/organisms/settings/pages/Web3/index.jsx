@@ -72,7 +72,7 @@ function Web3Section() {
 
                     {userWeb3.address ? <>
 
-                        <p>Wallet connected: <strong>{userWeb3.address}</strong></p>
+                        <p>Wallet connected: <strong className={userWeb3.valid ? 'text-success' : 'text-danger'}>{userWeb3.address}</strong></p>
 
                         <button type="button" class="btn btn-sm btn-danger my-1 my-sm-0" onClick={async () => {
                             const isConfirmed = await tinyConfirm('Are you sure you want to reset your ethereum wallet storage? All your data will be lost forever!', 'Reset Ethereum Wallet');
