@@ -95,7 +95,7 @@ audio:not([controls]) {
   padding: 3.4px;
 }
 
-.form-control-bg {
+.form-control-bg:not(.form-control-color) {
   font-size: 9pt;
   padding: 12px;
 }
