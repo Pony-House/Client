@@ -11,7 +11,7 @@ export default function startStatus() {
 
             if (!global.tinyCrypto.existEthereum()) {
 
-                toast('You don\'t have a ethereum Wallet installed in your browser!', 'Ethereum Wallet');
+                if (!__ENV_APP__.electron_mode) toast('You don\'t have a ethereum Wallet installed in your browser!', 'Ethereum Wallet');
 
                 if (header) header.addClass('ethereum-none');
                 global.tinyCrypto.allowActions = false;
