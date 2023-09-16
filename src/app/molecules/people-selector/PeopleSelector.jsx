@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import clone from 'clone';
 
 import { twemojifyReact, twemojify } from '../../../util/twemojify';
 
@@ -9,6 +10,7 @@ import Text from '../../atoms/text/Text';
 import Avatar from '../../atoms/avatar/Avatar';
 import { getUserStatus, updateUserStatusIcon, getPresence } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
+import { getUserWeb3Account } from '../../../util/web3';
 
 function PeopleSelector({
   avatarSrc, avatarAnimSrc, name, color, peopleRole, onClick, user, disableStatus
@@ -84,7 +86,9 @@ function PeopleSelector({
 
         // Is You
         if (tinyUser.userId === mx.getUserId()) {
-          const yourData = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
+          const yourData = clone(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
+          yourData.ethereum = getUserWeb3Account();
+          if (typeof yourData.ethereum.valid !== 'undefined') delete yourData.ethereum.valid;
           tinyUser.presenceStatusMsg = JSON.stringify(yourData);
         }
 

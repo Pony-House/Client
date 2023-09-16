@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import initMatrix from '../../../../client/initMatrix';
 import cons from '../../../../client/state/cons';
@@ -17,11 +17,13 @@ import SidebarAvatar from '../../../molecules/sidebar-avatar/SidebarAvatar';
 import NotificationBadge from '../../../atoms/badge/NotificationBadge';
 import { getUserWeb3Account } from '../../../../util/web3';
 import navigation from '../../../../client/state/navigation';
+import { setEthereumStatusButton } from '../../../../util/web3/status';
 
 // Featured Tab
 export default function FeaturedTab() {
 
     // Data
+    const ethereumButton = useRef(null);
     const [userWeb3, setUserWeb3] = useState(getUserWeb3Account());
     const { roomList, accountData, notifications } = initMatrix;
     const [selectedTab] = useSelectedTab();
@@ -66,11 +68,20 @@ export default function FeaturedTab() {
 
     // Ethereum
     useEffect(() => {
+
+        if (ethereumButton.current) {
+            setEthereumStatusButton($(ethereumButton.current));
+        } else {
+            setEthereumStatusButton(null);
+        }
+
         const ethereumGetUpdate = (ethereumData) => setUserWeb3(ethereumData);
         navigation.on(cons.events.navigation.ETHEREUM_UPDATED, ethereumGetUpdate);
+
         return () => {
             navigation.removeListener(cons.events.navigation.ETHEREUM_UPDATED, ethereumGetUpdate);
         };
+
     });
 
     // Complete
@@ -106,8 +117,9 @@ export default function FeaturedTab() {
             />
 
             {userWeb3.address ? <SidebarAvatar
+                ref={ethereumButton}
                 tooltip={`Ethereum${!userWeb3.valid ? ' (INVALID ACCOUNT)' : ''}`}
-                className={`ethereum-sidebar-icon ${userWeb3.valid ? 'ethereum-valid' : 'ethereum-invalid'}`}
+                className={`ethereum-sidebar-icon ${userWeb3.valid ? 'ethereum-valid' : 'ethereum-invalid'}${!global.tinyCrypto.existEthereum() ? ' ethereum-none' : ''}`}
                 active={null}
                 onClick={() => openSettings(settingTabText.WEB3)}
                 avatar={<Avatar faSrc="fa-brands fa-ethereum" size="normal" />}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import clone from 'clone';
 
 import { twemojifyReact, twemojify } from '../../../util/twemojify';
 import { getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
@@ -31,6 +32,7 @@ import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 import { toast } from '../../../util/tools';
+import { getUserWeb3Account } from '../../../util/web3';
 
 function ModerationTools({
   roomId, userId,
@@ -396,7 +398,9 @@ function ProfileViewer() {
 
         // Is You
         if (tinyUser.userId === mx.getUserId()) {
-          const yourData = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
+          const yourData = clone(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
+          yourData.ethereum = getUserWeb3Account();
+          if (typeof yourData.ethereum.valid !== 'undefined') delete yourData.ethereum.valid;
           tinyUser.presenceStatusMsg = JSON.stringify(yourData);
         }
 

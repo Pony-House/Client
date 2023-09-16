@@ -1,5 +1,7 @@
 import initMatrix from '../client/initMatrix';
 import { twemojifyIcon } from './twemojify';
+import { getUserWeb3Account } from './web3';
+
 
 // Status Builder
 const statusList = {
@@ -52,7 +54,7 @@ export function validatorStatusIcon(presence) {
 }
 
 // Parse Status
-export function parsePresenceStatus(presence) {
+export function parsePresenceStatus(presence, userId) {
     if (typeof presence === 'string') {
 
         const mx = initMatrix.matrixClient;
@@ -60,6 +62,9 @@ export function parsePresenceStatus(presence) {
         try {
             const tinyParse = JSON.parse(presence);
             if (tinyParse) {
+
+                // Ethereum
+                if (tinyParse.ethereum) tinyParse.ethereum = getUserWeb3Account(tinyParse.ethereum, userId);
 
                 // Status Profile
                 if (typeof tinyParse.status === 'string') {
@@ -141,7 +146,7 @@ export function getPresence(user, canStatus = true, canPresence = true) {
 
         if (typeof content.presenceStatusMsg === 'string') {
 
-            content.presenceStatusMsg = parsePresenceStatus(content.presenceStatusMsg);
+            content.presenceStatusMsg = parsePresenceStatus(content.presenceStatusMsg, user.userId);
             if (content.presence !== 'offline' && content.presence !== 'unavailable' && content.presenceStatusMsg.status) {
 
                 content.presence = content.presenceStatusMsg.status;

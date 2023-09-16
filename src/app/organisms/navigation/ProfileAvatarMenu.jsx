@@ -20,6 +20,7 @@ import {
 } from '../../../client/action/navigation';
 import tinyAPI from '../../../util/mods';
 import { enableAfkSystem } from '../../../util/userStatusEffects';
+import { getUserWeb3Account } from '../../../util/web3';
 
 // Account Status
 const accountStatus = { status: null, data: null };
@@ -70,6 +71,8 @@ function ProfileAvatarMenu() {
 
                 // Afk Fix
                 if (tinyClone.afk) tinyClone.status = '🟠';
+                tinyClone.ethereum = getUserWeb3Account();
+                if (typeof tinyClone.ethereum.valid !== 'undefined') delete tinyClone.ethereum.valid;
 
                 // String Version
                 const eventJSON = JSON.stringify(tinyClone);
