@@ -1,5 +1,9 @@
 /* Banner Profile */
 .modal-dialog-user-profile {
+  .modal-header {
+    display: none !important;
+  }
+
   .username:hover,
   .display-name:hover {
     cursor: pointer;
