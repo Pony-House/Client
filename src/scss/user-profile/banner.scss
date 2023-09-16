@@ -10,6 +10,13 @@
     color: var(--tc-link);
   }
 
+  #ethereum-icon:hover {
+    cursor: pointer;
+    i {
+      color: var(--bs-primary) !important;
+    }
+  }
+
   .profile-banner {
     height: 212px;
     min-height: 212px;

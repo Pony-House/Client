@@ -415,9 +415,19 @@ function ProfileViewer() {
             let ethereumIcon = displayName.find('#ethereum-icon');
             if (ethereumIcon.length < 1) {
 
-              ethereumIcon = $('<span>', { id: 'ethereum-icon', class: 'ms-2' }).append(
+              ethereumIcon = $('<span>', { id: 'ethereum-icon', class: 'ms-2', title: content.presenceStatusMsg.ethereum.address }).append(
                 $('<i>', { class: 'fa-brands fa-ethereum' })
               );
+
+              ethereumIcon.on('click', () => {
+                try {
+                  copyToClipboard(content.presenceStatusMsg.ethereum.address);
+                  toast('Ethereum address successfully copied to the clipboard.');
+                } catch (err) {
+                  console.error(err);
+                  alert(err.message);
+                }
+              }).tooltip();
 
               displayName.append(ethereumIcon);
 
