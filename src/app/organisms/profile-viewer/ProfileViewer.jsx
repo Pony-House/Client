@@ -408,6 +408,23 @@ function ProfileViewer() {
         const content = updateUserStatusIcon(status, tinyUser);
         if (content && content.presenceStatusMsg) {
 
+          // Ethereum
+          if (content.presenceStatusMsg.ethereum && content.presenceStatusMsg.ethereum.valid) {
+
+            const displayName = $(displayNameRef.current);
+            let ethereumIcon = displayName.find('#ethereum-icon');
+            if (ethereumIcon.length < 1) {
+
+              ethereumIcon = $('<span>', { id: 'ethereum-icon', class: 'ms-2' }).append(
+                $('<i>', { class: 'fa-brands fa-ethereum' })
+              );
+
+              displayName.append(ethereumIcon);
+
+            }
+
+          }
+
           // Get Banner Data
           const bannerDOM = $(profileBanner.current);
 
@@ -539,16 +556,16 @@ function ProfileViewer() {
       user.on('User.lastPresenceTs', updateProfileStatus);
       user.on('User.presence', updateProfileStatus);
 
-      $(displayNameRef.current).on('click', copyUsername.display);
-      $(userNameRef.current).on('click', copyUsername.tag);
+      $(displayNameRef.current).find('> .button').on('click', copyUsername.display);
+      $(userNameRef.current).find('> .button').on('click', copyUsername.tag);
 
       $(profileAvatar.current).on('click', tinyAvatarPreview);
       $(noteRef.current).on('change', tinyNoteUpdate).on('keypress keyup keydown', tinyNoteSpacing).val(tinyNote);
       tinyNoteSpacing({ target: noteRef.current });
 
       return () => {
-        $(displayNameRef.current).off('click', copyUsername.display);
-        $(userNameRef.current).off('click', copyUsername.tag);
+        $(displayNameRef.current).find('> .button').off('click', copyUsername.display);
+        $(userNameRef.current).find('> .button').off('click', copyUsername.tag);
         $(noteRef.current).off('change', tinyNoteUpdate).off('keypress keyup keydown', tinyNoteSpacing);
         $(profileAvatar.current).off('click', tinyAvatarPreview);
         user.removeListener('User.currentlyActive', updateProfileStatus);
@@ -662,8 +679,8 @@ function ProfileViewer() {
                 </Button>
               </div>
 
-              <h6 ref={displayNameRef} className='emoji-size-fix m-0 mb-1 fw-bold display-name'>{twemojifyReact(username)}</h6>
-              <small ref={userNameRef} className='text-gray emoji-size-fix username'>{twemojifyReact(userId)}</small>
+              <h6 ref={displayNameRef} className='emoji-size-fix m-0 mb-1 fw-bold display-name'><span className='button'>{twemojifyReact(username)}</span></h6>
+              <small ref={userNameRef} className='text-gray emoji-size-fix username'><span className='button'>{twemojifyReact(userId)}</span></small>
 
               <div ref={customStatusRef} className='d-none mt-2 emoji-size-fix small user-custom-status' />
 
@@ -700,7 +717,7 @@ function ProfileViewer() {
   return (
     <Dialog
       bodyClass='bg-bg2 p-0'
-      className="modal-dialog-scrollable modal-lg noselect modal-dialog-user-profile"
+      className="modal-dialog-scrollable modal-dialog-centered modal-lg noselect modal-dialog-user-profile"
       isOpen={isOpen}
       title='User Profile'
       onAfterClose={handleAfterClose}

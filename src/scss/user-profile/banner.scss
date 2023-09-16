@@ -4,8 +4,8 @@
     display: none !important;
   }
 
-  .username:hover,
-  .display-name:hover {
+  .username > .button:hover,
+  .display-name > .button:hover {
     cursor: pointer;
     color: var(--tc-link);
   }
