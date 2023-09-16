@@ -64,7 +64,7 @@ export function parsePresenceStatus(presence, userId) {
             if (tinyParse) {
 
                 // Ethereum
-                if (tinyParse.ethereum) tinyParse.ethereum = getUserWeb3Account(tinyParse.ethereum, userId);
+                if (tinyParse.ethereum) tinyResult.ethereum = getUserWeb3Account(tinyParse.ethereum, userId);
 
                 // Status Profile
                 if (typeof tinyParse.status === 'string') {
