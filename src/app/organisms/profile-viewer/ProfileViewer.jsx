@@ -700,7 +700,7 @@ function ProfileViewer() {
   return (
     <Dialog
       bodyClass='bg-bg2 p-0'
-      className="modal-dialog-scrollable modal-lg noselect user-profile"
+      className="modal-dialog-scrollable modal-lg noselect modal-dialog-user-profile"
       isOpen={isOpen}
       title='User Profile'
       onAfterClose={handleAfterClose}

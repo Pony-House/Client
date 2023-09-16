@@ -1,4 +1,4 @@
-.user-profile {
+.modal-dialog-user-profile {
   .profile-bg {
     &--mx-uc-1 {
       background-color: var(--mx-uc-1);
@@ -459,7 +459,7 @@ a {
 
 /* Banner Profile */
 
-.user-profile {
+.modal-dialog-user-profile {
   .username:hover,
   .display-name:hover {
     cursor: pointer;
