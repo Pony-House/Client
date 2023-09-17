@@ -53,6 +53,7 @@ const copyFiles = {
       src: 'node_modules/moment-timezone/builds/*',
       dest: 'js/moment/',
     },
+
     {
       src: 'node_modules/moment/min/*',
       dest: 'js/moment/',
@@ -77,6 +78,7 @@ const copyFiles = {
       src: 'node_modules/jquery/dist/jquery.min.js',
       dest: 'js/',
     },
+
     {
       src: 'node_modules/jquery-ui/dist/jquery-ui.min.js',
       dest: 'js/',
@@ -105,7 +107,12 @@ const copyFiles = {
     {
       src: 'config/config.json',
       dest: '',
-    }
+    },
+
+    {
+      src: 'README.md',
+      dest: '',
+    },
 
   ],
 }

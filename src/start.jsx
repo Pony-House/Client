@@ -1,5 +1,4 @@
 import * as colors from 'console-log-colors';
-import { HTML } from '@use-gpu/react';
 import React from 'react';
 import * as ReactDOM from 'react-dom/client';
 
@@ -11,9 +10,6 @@ import { getPWADisplayMode } from "./util/PWA.js";
 
 import App from './app/pages/App';
 import isDevMode from './util/isDevMode';
-
-const isEnabledgpu = global.localStorage.getItem('usingUseGPU');
-const useGPU = (typeof isEnabledgpu === 'string' && isEnabledgpu === 'on');
 
 function startApp(appProtocol) {
 
@@ -27,7 +23,7 @@ function startApp(appProtocol) {
     global.isDevMode = isDevMode;
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
-    return useGPU ? <HTML> {root.render(<App />)} </HTML> : root.render(<App />);
+    return root.render(<App />);
 
 }
 
