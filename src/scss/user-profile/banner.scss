@@ -25,6 +25,10 @@
     background-size: 100% auto;
   }
 
+  .profile-banner.exist-banner {
+    background-color: transparent !important;
+  }
+
   @media (max-width: 991px) {
     .profile-banner {
       height: 166px;

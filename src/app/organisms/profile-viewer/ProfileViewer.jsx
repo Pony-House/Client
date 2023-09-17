@@ -440,9 +440,9 @@ function ProfileViewer() {
 
           if (bannerDOM.length > 0) {
             if (typeof content.presenceStatusMsg.banner === 'string' && content.presenceStatusMsg.banner.length > 0) {
-              bannerDOM.css('background-image', `url("${content.presenceStatusMsg.banner}")`);
+              bannerDOM.css('background-image', `url("${content.presenceStatusMsg.banner}")`).addClass('exist-banner');
             } else {
-              bannerDOM.css('background-image', '');
+              bannerDOM.css('background-image', '').removeClass('exist-banner');
             }
           }
 
