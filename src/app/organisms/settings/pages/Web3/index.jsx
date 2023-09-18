@@ -66,7 +66,7 @@ function Web3Section() {
         <div className="card noselect mb-3">
             <ul className="list-group list-group-flush">
 
-                <li className="list-group-item very-small text-gray">Integration Settings</li>
+                <li className="list-group-item very-small text-gray">Ethereum Settings</li>
 
                 <li className="list-group-item very-small text-gray">
 
@@ -81,7 +81,7 @@ function Web3Section() {
                                 ethereumUpdate(newAccount);
                                 setUserWeb3(newAccount);
                             }
-                        }}>Disconnect Wallet</button>
+                        }}><i className="fa-brands fa-ethereum" /> Disconnect Wallet</button>
 
                     </> : <>
 
@@ -103,7 +103,7 @@ function Web3Section() {
                                 console.error(err);
                                 alert(err.message);
                             })
-                        }}>Connect Wallet (Metamask)</button>
+                        }}><i className="fa-brands fa-ethereum" /> Connect Wallet (Metamask)</button>
 
                     </>}
 

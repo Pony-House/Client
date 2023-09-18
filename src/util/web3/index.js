@@ -5,7 +5,7 @@ import startStatus from './status';
 import initMatrix from '../../client/initMatrix';
 
 // Signature Template
-const signTemplate = (userId, unix) => `Matrix Client - Ethereum Account
+const web3SignTemplate = (userId, unix, title = 'Matrix Client - Ethereum Account') => `${title}
 
 user: ${userId}
 unix: ${unix || moment().unix()}`;
@@ -15,7 +15,7 @@ export function signUserWeb3Account(unix) {
   return new Promise((resolve, reject) => {
 
     if (global.tinyCrypto.call && typeof global.tinyCrypto.call.sign === 'function') {
-      global.tinyCrypto.call.sign(signTemplate(initMatrix.matrixClient.getUserId(), unix)).then(resolve).catch(reject);
+      global.tinyCrypto.call.sign(web3SignTemplate(initMatrix.matrixClient.getUserId(), unix)).then(resolve).catch(reject);
     } else {
       resolve(null);
     }
@@ -34,6 +34,10 @@ export function validateWeb3Account(ethereumData, userId) {
       if (typeof ethereumData.address !== 'string') ethereumData.address = null;
       if (typeof ethereumData.register_time !== 'number') ethereumData.register_time = null;
 
+      if (!objType(ethereumData.btc, 'object')) ethereumData.btc = {};
+      if (typeof ethereumData.btc.sign !== 'string') ethereumData.btc.sign = null;
+      if (typeof ethereumData.btc.address !== 'string') ethereumData.btc.address = null;
+
       // Check
       if (ethereumData.sign && ethereumData.address && ethereumData.register_time) {
 
@@ -41,7 +45,7 @@ export function validateWeb3Account(ethereumData, userId) {
         ethereumData.address = ethereumData.address.toLowerCase();
 
         // Final Validate
-        ethereumData.valid = global.tinyCrypto.recover(signTemplate(userId, ethereumData.register_time), ethereumData.sign);
+        ethereumData.valid = global.tinyCrypto.recover(web3SignTemplate(userId, ethereumData.register_time), ethereumData.sign);
         if (typeof ethereumData.valid === 'string') {
           ethereumData.valid = (ethereumData.valid.toLowerCase() === ethereumData.address);
           return ethereumData.valid;
@@ -759,4 +763,4 @@ const startWeb3 = () => {
 };
 
 // Export Module
-export { startWeb3, tinyCrypto };
+export { startWeb3, tinyCrypto, web3SignTemplate };

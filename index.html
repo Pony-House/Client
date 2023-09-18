@@ -52,7 +52,11 @@
 
   <!-- Support browsers like Safari 16.3 without import maps support. -->
   <script async src="./js/es-module-shims.js" crossorigin="anonymous"></script>
-  <script type="module">import * as sass from 'sass'; global.sass = sass;</script>
+
+  <script type="module">
+    import * as sass from 'sass';
+    global.sass = sass;
+  </script>
 
   <script src="./js/moment/moment-with-locales.min.js"></script>
   <script src="./js/moment/moment-timezone-with-data.min.js"></script>

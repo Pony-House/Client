@@ -54,7 +54,6 @@
     "@khanacademy/simple-markdown": "0.9.2",
     "@matrix-org/olm": "3.2.15",
     "@tippyjs/react": "4.2.6",
-    "bitcoinjs-message": "2.2.0",
     "blurhash": "2.0.5",
     "bootstrap": "5.3.0",
     "bootstrap-icons": "1.10.5",
