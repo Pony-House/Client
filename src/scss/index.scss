@@ -36,6 +36,11 @@ audio:not([controls]) {
 }
 
 /* Bootstrap Fix */
+.table-td-hover {
+  td:hover {
+    background-color: var(--bs-table-hover-bg);
+  }
+}
 
 .input-group-text {
   color: var(--ic-surface-low);
