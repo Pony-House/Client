@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain, Tray, Menu } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, Tray, Menu, session } from 'electron';
 
 import fs from 'node:fs';
 import { release } from 'node:os';
@@ -63,6 +63,8 @@ async function createWindow() {
   if (!firstTime) {
     // Mark First time
     firstTime = true;
+
+    // const cryptoFrame = await session.defaultSession.loadExtension('path/to/unpacked/extension');
 
     // Get Data
     const initFile = path.join(tempFolder, 'init.json');

@@ -46,5 +46,3 @@ release
 
 #lockfile
 /test-results/
-/playwright-report/
-/playwright/.cache/
