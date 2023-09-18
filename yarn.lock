@@ -865,10 +865,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@khanacademy/simple-markdown@0.9.2":
-  version "0.9.2"
-  resolved "https://registry.yarnpkg.com/@khanacademy/simple-markdown/-/simple-markdown-0.9.2.tgz#9ffdf66d2b68ba8047825f93b5d1b571596b96df"
-  integrity sha512-iRkSaVuUT+ho8B0aY0uLGgfS1YU84l/mSwjJTh0N0k0WzjdJUJY4+Eh56kn8whwD8QX6uNblAT0lT5ICATLtZg==
+"@khanacademy/simple-markdown@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@khanacademy/simple-markdown/-/simple-markdown-0.10.0.tgz#e1e89b9594d1114ed71a966e88548626f8f321f9"
+  integrity sha512-ux/bi1ihZFQsetQLksmkEQ2pR2Un6fC1crM5OinzPHNPgGU301UhqEPVkW1JoftBe4fXVOiUjxwKmpxps4/+DA==
   dependencies:
     "@types/react" ">=16.0.0"
 
