@@ -374,10 +374,15 @@ function ProfileViewer() {
   const customStatusRef = useRef(null);
   const statusRef = useRef(null);
   const profileBanner = useRef(null);
+
+  const customPlaceRef = useRef(null);
+
   const [isOpen, roomId, userId, closeDialog, handleAfterClose] = useToggleDialog();
   const [lightbox, setLightbox] = useState(false);
+
   const userNameRef = useRef(null);
   const displayNameRef = useRef(null);
+
   useRerenderOnProfileChange(roomId, userId);
 
   // Get Data
@@ -392,28 +397,28 @@ function ProfileViewer() {
 
       // Menu Bar
       const menubar = $(menubarRef.current);
-      const menuItems = [];
 
       // Create menu
-      const menuItem = (name, openItem, isActive = false) => {
-        if (openItem) {
+      const menuItem = (name, openItem = null) => $('<li>', { class: 'nav-item' }).append(
+        $('<a>', { class: `nav-link ${typeof openItem !== 'function' ? ' active text-bg-force' : ''}`, href: '#' }).on('click', () => {
 
-          menuItems.push(openItem);
+          // Get refs
+          const bioPlace = $(bioRef.current);
+          const customPlace = $(customPlaceRef.current);
 
-          return $('<li>', { class: 'nav-item' }).append(
-            $('<a>', { class: `nav-link ${isActive ? ' active text-bg-force' : ''}`, href: '#' }).on('click', () => {
+          // Hide items
+          bioPlace.addClass('d-none');
+          customPlace.addClass('d-none');
 
-              for (const item in menuItems) {
-                menuItems[item].addClass('d-none');
-              }
+          // Show items back
+          if (typeof openItem === 'function') {
+            customPlace.find('#insert-custom-place').empty().append(openItem()).removeClass('d-none');
+          } else {
+            bioPlace.removeClass('d-none');
+          }
 
-              openItem.removeClass('d-none');
-
-            }).text(name)
-          );
-
-        }
-      }
+        }).text(name)
+      );
 
       // Create Menu Bar Time
       const enableMenuBar = (menubarReasons = 0) => {
@@ -425,7 +430,7 @@ function ProfileViewer() {
         if (menubarReasons > 0) {
 
           // User info
-          menubar.append(menuItem('User info', $(bioRef.current), true));
+          menubar.append(menuItem('User info'));
 
         }
 
@@ -459,7 +464,7 @@ function ProfileViewer() {
           // Ethereum
           if (content.presenceStatusMsg.ethereum && content.presenceStatusMsg.ethereum.valid) {
 
-            menubarReasons++;
+            // menubarReasons++;
             const displayName = $(displayNameRef.current);
             let ethereumIcon = displayName.find('#ethereum-icon');
             if (ethereumIcon.length < 1) {
@@ -746,6 +751,11 @@ function ProfileViewer() {
 
               <div ref={customStatusRef} className='d-none mt-2 emoji-size-fix small user-custom-status' />
               <ul ref={menubarRef} id='usertabs' className='nav nav-underline mt-2 small' />
+
+              <div ref={customPlaceRef} className='d-none'>
+                <hr />
+                <div id='insert-custom-place' />
+              </div>
 
               <div ref={bioRef} className='d-none'>
 
