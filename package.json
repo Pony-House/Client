@@ -83,7 +83,7 @@
     "moment-timezone": "0.5.43",
     "node-notifier": "10.0.1",
     "object-hash": "3.0.0",
-    "photoswipe": "5.3.9",
+    "photoswipe": "5.4.0",
     "prop-types": "15.8.1",
     "react": "18.2.0",
     "react-autosize-textarea": "7.1.0",
