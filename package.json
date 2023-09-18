@@ -43,7 +43,7 @@
     "@capacitor/cli": "5.4.0",
     "@capacitor/core": "5.2.2",
     "@capacitor/haptics": "5.0.6",
-    "@capacitor/ios": "5.2.2",
+    "@capacitor/ios": "5.2.3",
     "@capacitor/local-notifications": "5.0.6",
     "@capacitor/status-bar": "5.0.6",
     "@capacitor/toast": "5.0.6",
