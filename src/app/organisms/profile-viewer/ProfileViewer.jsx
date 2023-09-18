@@ -392,11 +392,28 @@ function ProfileViewer() {
 
       // Menu Bar
       const menubar = $(menubarRef.current);
+      const menuItems = [];
 
       // Create menu
-      const menuItem = (name, openItem, isActive = false) => $('<li>', { class: 'nav-item' }).append(
-        $('<a>', { class: `nav-link ${isActive ? ' active text-bg-force' : ''}`, href: '#' }).text(name)
-      );
+      const menuItem = (name, openItem, isActive = false) => {
+        if (openItem) {
+
+          menuItems.push(openItem);
+
+          return $('<li>', { class: 'nav-item' }).append(
+            $('<a>', { class: `nav-link ${isActive ? ' active text-bg-force' : ''}`, href: '#' }).on('click', () => {
+
+              for (const item in menuItems) {
+                menuItems[item].addClass('d-none');
+              }
+
+              openItem.removeClass('d-none');
+
+            }).text(name)
+          );
+
+        }
+      }
 
       // Create Menu Bar Time
       const enableMenuBar = (menubarReasons = 0) => {
@@ -408,7 +425,7 @@ function ProfileViewer() {
         if (menubarReasons > 0) {
 
           // User info
-          menubar.append(menuItem('User info', null, true));
+          menubar.append(menuItem('User info', $(bioRef.current), true));
 
         }
 
