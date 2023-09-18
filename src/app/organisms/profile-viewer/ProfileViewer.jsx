@@ -367,6 +367,7 @@ function useRerenderOnProfileChange(roomId, userId) {
 function ProfileViewer() {
 
   // Prepare
+  const menubarRef = useRef(null);
   const profileAvatar = useRef(null);
   const bioRef = useRef(null);
   const noteRef = useRef(null);
@@ -389,10 +390,40 @@ function ProfileViewer() {
   useEffect(() => {
     if (user) {
 
+      // Menu Bar
+      const menubar = $(menubarRef.current);
+
+      // Create menu
+      const menuItem = (name, openItem, isActive = false) => $('<li>', { class: 'nav-item' }).append(
+        $('<a>', { class: `nav-link ${isActive ? ' active text-bg-force' : ''}`, href: '#' }).text(name)
+      );
+
+      // Create Menu Bar Time
+      const enableMenuBar = (menubarReasons = 0) => {
+
+        // Clear Menu bar
+        menubar.empty().removeClass('d-none');
+
+        // Start functions
+        if (menubarReasons > 0) {
+
+          // User info
+          menubar.append(menuItem('User info', null, true));
+
+        }
+
+        // Nope
+        else {
+          menubar.addClass('d-none');
+        }
+
+      };
+
       // Update Status Profile
       const updateProfileStatus = (mEvent, tinyData) => {
 
         // Get Status
+        let menubarReasons = 0;
         const tinyUser = tinyData;
         const status = $(statusRef.current);
 
@@ -411,6 +442,7 @@ function ProfileViewer() {
           // Ethereum
           if (content.presenceStatusMsg.ethereum && content.presenceStatusMsg.ethereum.valid) {
 
+            menubarReasons++;
             const displayName = $(displayNameRef.current);
             let ethereumIcon = displayName.find('#ethereum-icon');
             if (ethereumIcon.length < 1) {
@@ -501,6 +533,8 @@ function ProfileViewer() {
 
         }
 
+        enableMenuBar(menubarReasons);
+
       };
 
       // Copy Profile Username
@@ -574,6 +608,7 @@ function ProfileViewer() {
       tinyNoteSpacing({ target: noteRef.current });
 
       return () => {
+        menubar.empty();
         $(displayNameRef.current).find('> .button').off('click', copyUsername.display);
         $(userNameRef.current).find('> .button').off('click', copyUsername.tag);
         $(noteRef.current).off('change', tinyNoteUpdate).off('keypress keyup keydown', tinyNoteSpacing);
@@ -693,6 +728,7 @@ function ProfileViewer() {
               <small ref={userNameRef} className='text-gray emoji-size-fix username'><span className='button'>{twemojifyReact(userId)}</span></small>
 
               <div ref={customStatusRef} className='d-none mt-2 emoji-size-fix small user-custom-status' />
+              <ul ref={menubarRef} id='usertabs' className='nav nav-underline mt-2 small' />
 
               <div ref={bioRef} className='d-none'>
 

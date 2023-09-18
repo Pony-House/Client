@@ -1,39 +1,3 @@
-.modal-dialog-user-profile {
-  .profile-bg {
-    &--mx-uc-1 {
-      background-color: var(--mx-uc-1);
-    }
-
-    &--mx-uc-2 {
-      background-color: var(--mx-uc-2);
-    }
-
-    &--mx-uc-3 {
-      background-color: var(--mx-uc-3);
-    }
-
-    &--mx-uc-4 {
-      background-color: var(--mx-uc-4);
-    }
-
-    &--mx-uc-5 {
-      background-color: var(--mx-uc-5);
-    }
-
-    &--mx-uc-6 {
-      background-color: var(--mx-uc-6);
-    }
-
-    &--mx-uc-7 {
-      background-color: var(--mx-uc-7);
-    }
-
-    &--mx-uc-8 {
-      background-color: var(--mx-uc-8);
-    }
-  }
-}
-
 .profile-icon-fa {
   font-size: 16px !important;
   color: var(--ic-surface-low) !important;
@@ -457,6 +421,7 @@ a {
   }
 }
 
+@import './user-profile/profile.scss';
 @import './user-profile/banner.scss';
 
 @import './room/banner.scss';

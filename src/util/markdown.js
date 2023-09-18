@@ -424,6 +424,19 @@ const markdownRules = {
     html: (node, output, state) => rainbowText(output(node.content, state)),
   },
 
+  fixprotection: {
+    order: defaultRules.inlineCode.order + 0.1,
+    match: inlineRegex(/^\<([\s\S]+?)\>/g),
+    parse: (capture, parse, state) => ({
+      content: parse(capture[1], state)
+    }),
+    plain: (node, output, state) => `<${output(node.content, state)}>`,
+    html: (node, output, state) => htmlTag(
+      'span',
+      output(node.content, state),
+    ),
+  },
+
   // Inline Code
   inlineCode: {
     ...defaultRules.inlineCode,
