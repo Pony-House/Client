@@ -13,6 +13,9 @@ module.exports = {
     '__ENV_APP__': 'readonly',
     'Olm': 'readonly',
     'sass': 'readonly',
+    'vega': 'readonly',
+    'vegaLite': 'readonly',
+    'vegaEmbed': 'readonly',
   },
   env: {
     browser: true,
