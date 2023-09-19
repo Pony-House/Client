@@ -132,7 +132,7 @@
     "sass": "1.66.1",
     "typescript": "5.2.2",
     "vite": "4.4.9",
-    "vite-plugin-electron": "^0.11.2",
+    "vite-plugin-electron": "^0.14.1",
     "vite-plugin-electron-renderer": "^0.14.1",
     "vite-plugin-static-copy": "0.16.0"
   }

@@ -7560,10 +7560,10 @@ vite-plugin-electron-renderer@^0.14.1:
   resolved "https://registry.yarnpkg.com/vite-plugin-electron-renderer/-/vite-plugin-electron-renderer-0.14.5.tgz#2ac36f31773cb23a09353fabb6fb788bdad94f50"
   integrity sha512-EQ7ORuPp8vFPCqfuGnVo7d36fXS0IFH4/RUlKb1drseix3TQEPcgwEuFADdXBxRgqMp70njz/1m0kdf5lEsm8w==
 
-vite-plugin-electron@^0.11.2:
-  version "0.11.2"
-  resolved "https://registry.yarnpkg.com/vite-plugin-electron/-/vite-plugin-electron-0.11.2.tgz#bdb14aeb011fbea0f7cfec0550110fc111951c15"
-  integrity sha512-umQRmSuA80JVxKB3PfO55o8mFTrW+sEtu7kZ5TYKAnkuYpKw7qgxl4f/65gp8x5BGHJjYh/iIRIE26x3Xqc4mQ==
+vite-plugin-electron@^0.14.1:
+  version "0.14.1"
+  resolved "https://registry.yarnpkg.com/vite-plugin-electron/-/vite-plugin-electron-0.14.1.tgz#faad1e26d853ea7960b812272c19521c7f180482"
+  integrity sha512-QGQ2nJ4wjMf1FaDSkdoC/UskQGiYGcAToATJqJXvqrL4Jmt0CFaZqoDjh1xLicUWEo/X7urHYjhKTqwEeP7F7g==
 
 vite-plugin-static-copy@0.16.0:
   version "0.16.0"
@@ -7969,15 +7969,15 @@ y18n@^5.0.5:
   resolved "https://registry.yarnpkg.com/y18n/-/y18n-5.0.8.tgz#7f4934d0f7ca8c56f95314939ddcd2dd91ce1d55"
   integrity sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==
 
-yallist@*, yallist@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
-  integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
-
 yallist@^3.0.2:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-3.1.1.tgz#dbb7daf9bfd8bac9ab45ebf602b8cbad0d5d08fd"
   integrity sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
+
+yallist@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
+  integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
 
 yargs-parser@^20.2.2:
   version "20.2.9"
