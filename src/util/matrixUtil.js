@@ -95,12 +95,23 @@ export function hasDMWith(userId) {
   const directIds = [...initMatrix.roomList.directs];
 
   return directIds.find((roomId) => {
+
     const dRoom = mx.getRoom(roomId);
     const roomMembers = dRoom.getMembers();
-    if (roomMembers.length <= 2 && dRoom.getMember(userId)) {
+
+    let members = 0;
+    for (const item in roomMembers) {
+      if (roomMembers[item].membership === 'join') {
+        members++
+      }
+    }
+
+    if (members <= 2 && dRoom.getMember(userId)) {
       return true;
     }
+
     return false;
+
   });
 }
 

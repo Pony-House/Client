@@ -1,3 +1,0 @@
-[submodule "repositories/twemoji"]
-	path = repositories/twemoji
-	url = https://github.com/twitter/twemoji.git

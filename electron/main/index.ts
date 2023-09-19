@@ -64,7 +64,8 @@ async function createWindow() {
     // Mark First time
     firstTime = true;
 
-    // const cryptoFrame = await session.defaultSession.loadExtension('path/to/unpacked/extension');
+    // Load Frame Extension
+    await session.defaultSession.loadExtension(path.join(__dirname, '../extensions/frame'));
 
     // Get Data
     const initFile = path.join(tempFolder, 'init.json');

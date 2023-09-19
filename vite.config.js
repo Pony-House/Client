@@ -10,6 +10,7 @@ import path from 'node:path';
 
 import { fileURLToPath } from 'url';
 
+import fse from 'fs-extra';
 import electron from 'vite-plugin-electron';
 import pkg from './package.json';
 
@@ -206,6 +207,7 @@ export default defineConfig(({ command, mode }) => {
         entry: 'electron/main/index.ts',
 
         onstart(options) {
+          fse.copySync(path.join(__dirname, './electron/extensions/frame/dist'), path.join(__dirname, './dist-electron/extensions/frame'), { overwrite: true });
           if (process.env.VSCODE_DEBUG) {
             console.log(/* For `.vscode/.debug.script.mjs` */'[startup] Electron App')
           } else {
