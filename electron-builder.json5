@@ -35,5 +35,5 @@
     channel: 'latest',
     url: 'https://github.com/Pony-House/Client/releases/latest',
   },
-  asarUnpack: ['./node_modules/node-notifier/vendor/**'],
+  asarUnpack: ['./node_modules/node-notifier/vendor/**', './dist-electron/extensions/**'],
 }

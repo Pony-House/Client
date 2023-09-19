@@ -191,6 +191,18 @@ export default defineConfig(({ command, mode }) => {
   // Electron Mode
   if (electronMode) {
 
+    // Extensions
+    const extensions = [
+
+      // Frame Wallet
+      { dist: path.join(__dirname, './electron/extensions/frame/dist'), path: 'frame' }
+
+    ];
+
+    for (const item in extensions) {
+      fse.copySync(extensions[item].dist, path.join(__dirname, `./dist-electron/extensions/${extensions[item].path}`), { overwrite: true });
+    }
+
     result.resolve = {
       alias: {
         '@': path.join(__dirname, 'src')
@@ -207,7 +219,6 @@ export default defineConfig(({ command, mode }) => {
         entry: 'electron/main/index.ts',
 
         onstart(options) {
-          fse.copySync(path.join(__dirname, './electron/extensions/frame/dist'), path.join(__dirname, './dist-electron/extensions/frame'), { overwrite: true });
           if (process.env.VSCODE_DEBUG) {
             console.log(/* For `.vscode/.debug.script.mjs` */'[startup] Electron App')
           } else {
