@@ -28,11 +28,11 @@ const gitBuild = (rep, name) => new Promise((resolve, reject) => {
     });
 
     ls.stdout.on('data', data => {
-        if (typeof data === 'string' && data.trim().length > 0) console.log(`${colors.blue(`[${name}]`)} ${data}`);
+        console.log(`${colors.blue(`[${name}]`)} ${data}`);
     });
 
     ls.stderr.on('data', data => {
-        if (typeof data === 'string' && data.trim().length > 0) console.log(`${colors.blue(`[${name}]`)} ${data}`);
+        console.log(`${colors.blue(`[${name}]`)} ${data}`);
     });
 
     ls.on('error', (err) => {
