@@ -56,6 +56,31 @@ const copyFiles = {
     },
 
     {
+      src: 'node_modules/vega/build/*',
+      dest: 'js/vega/',
+    },
+
+    {
+      src: 'node_modules/vega-embed/build/*',
+      dest: 'js/vega/',
+    },
+
+    {
+      src: 'node_modules/vega-lite/build/vega-lite.min.js',
+      dest: 'js/vega/',
+    },
+
+    {
+      src: 'node_modules/vega-lite/build/vega-lite.min.js.map',
+      dest: 'js/vega/',
+    },
+
+    {
+      src: 'node_modules/vega-lite/build/vega-lite-schema.json',
+      dest: 'js/vega/',
+    },
+
+    {
       src: 'node_modules/moment/min/*',
       dest: 'js/moment/',
     },

@@ -33,6 +33,9 @@ console.log(tinyAPI);
 
 Here is the list of libraries that are available to use natively within the application.
 
+#### Vega
+https://vega.github.io/vega-lite/usage/embed.html
+
 #### MomentJS (with timezone)
 https://momentjs.com/
 
