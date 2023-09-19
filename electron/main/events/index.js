@@ -24,4 +24,8 @@ export default function startEvents(ipcMain, newWin) {
         newWin.webContents.send('systemIdleState', idleSecs);
     });
 
+    ipcMain.on('openDevTools', () => {
+        newWin.webContents.openDevTools();
+    });
+
 };

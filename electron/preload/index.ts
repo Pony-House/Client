@@ -107,6 +107,8 @@ contextBridge.exposeInMainWorld('focusAppWindow', () =>
   ipcRenderer.send('tiny-focus-window', true),
 );
 
+contextBridge.exposeInMainWorld('openDevTools', () => ipcRenderer.send('openDevTools', true));
+
 ipcRenderer.on('ping', (_event, arg) => {
   console.log(colors.green('[electron] [ping] '), arg);
 });

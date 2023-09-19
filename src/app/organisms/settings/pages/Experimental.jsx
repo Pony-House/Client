@@ -53,6 +53,17 @@ function ExperimentalSection() {
                 </ul>
             </div>
 
+            {__ENV_APP__.electron_mode ? <div className="card noselect mt-3">
+                <ul className="list-group list-group-flush">
+                    <li className="list-group-item very-small text-gray">DevTools</li>
+                    <li className="list-group-item small">
+                        This is an area for developers only! If some strange person is asking you to click here for some mysterious reason, ask them!
+                        <br />
+                        <button className='btn btn-sm btn-primary mt-2' onClick={() => global.openDevTools()}>Open DevTools</button>
+                    </li>
+                </ul>
+            </div> : null}
+
         </div>
     );
 };
