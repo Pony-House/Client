@@ -15,10 +15,10 @@
     "check:eslint": "eslint src/*",
     "check:prettier": "prettier --check .",
     "fix:prettier": "prettier --write .",
-    "ionic:build": "tsc && cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
+    "ionic:build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
     "ionic:serve": "vite dev --host",
     "electron:start": "cross-env ELECTRON_MODE=true vite dev",
-    "electron:build": "tsc && cross-env ELECTRON_MODE=true vite build && electron-builder",
+    "electron:build": "cross-env ELECTRON_MODE=true vite build && electron-builder",
     "electron:preview": "cross-env ELECTRON_MODE=true vite preview",
     "electron:pree2e": "cross-env ELECTRON_MODE=true vite build --mode=test"
   },
