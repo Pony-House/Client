@@ -65,6 +65,7 @@
     "download-git-repo": "3.0.2",
     "electron-updater": "6.1.4",
     "es-module-shims": "1.8.0",
+    "eth-provider": "0.13.6",
     "file-saver": "2.0.5",
     "flux": "4.0.4",
     "formik": "2.4.4",

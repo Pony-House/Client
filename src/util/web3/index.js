@@ -1,5 +1,7 @@
 import { EventEmitter } from 'events';
 import clone from 'clone';
+import provider from 'eth-provider';
+
 import { objType } from '../tools';
 import startStatus from './status';
 import initMatrix from '../../client/initMatrix';
@@ -394,7 +396,7 @@ const tinyCrypto = {
 const startWeb3 = () => {
 
   // Check if Web3 has been injected by the browser (Mist/MetaMask).
-  if (typeof ethereum !== 'undefined' && window.ethereum.isMetaMask) {
+  if (typeof ethereum !== 'undefined' && (window.ethereum.isMetaMask || window.ethereum.isFrame)) {
 
     // Checker
     tinyCrypto.existEthereum = () => (typeof window.ethereum !== 'undefined');
@@ -704,7 +706,12 @@ const startWeb3 = () => {
 
     // Insert Provider
     // eslint-disable-next-line no-undef
-    tinyCrypto.provider = new Web3(window.ethereum);
+    if (window.ethereum.isMetaMask) {
+      tinyCrypto.provider = new Web3(window.ethereum);
+    } else if (window.ethereum.isFrame) {
+      tinyCrypto.provider = new Web3(provider('frame'));
+    }
+
     tinyCrypto.providerConnected = true;
 
     // Insert Protocol
