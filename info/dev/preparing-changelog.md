@@ -1,2 +1,4 @@
 - Sass Browser Version added.
 - Ethereum support added.
+- Frame wallet support added.
+- Profile tabs added.
