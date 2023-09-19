@@ -97,7 +97,7 @@ try {
                     if (err1) {
                         console.error(err1);
                     } else {
-                        gitBuild(twemoji.srcRep, 'frame-labs-extension').then(() => {
+                        gitBuild(framelabs.srcDir, 'frame-labs-extension').then(() => {
                             console.log(`${colors.blue('[deps]')} Complete!`);
                         }).catch(console.error);
                         console.log(`${colors.blue('[deps]')} Complete!`);
