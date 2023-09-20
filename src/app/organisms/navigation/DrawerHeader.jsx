@@ -16,6 +16,7 @@ import { Header } from '../../atoms/header/Header';
 import IconButton from '../../atoms/button/IconButton';
 import { MenuItem, MenuHeader } from '../../atoms/context-menu/ContextMenu';
 import SpaceOptions from '../../molecules/space-options/SpaceOptions';
+import { getCurrentState } from '../../../util/matrixUtil';
 
 const HashPlusIC = './img/ic/outlined/hash-plus.svg';
 const HashGlobeIC = './img/ic/outlined/hash-globe.svg';
@@ -26,7 +27,7 @@ export function HomeSpaceOptions({ spaceId, afterOptionSelect }) {
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(spaceId);
   const canManage = room
-    ? room.currentState.maySendStateEvent('m.space.child', mx.getUserId())
+    ? getCurrentState(room).maySendStateEvent('m.space.child', mx.getUserId())
     : true;
 
   return (

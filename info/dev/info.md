@@ -45,3 +45,5 @@ If you are a developer interested in contributing to the project, I'll let the P
 ## Timeline
 
     src/client/state/RoomTimeline.js
+
+room.getLiveTimeline().getEvents(EventTimeline.FORWARDS)

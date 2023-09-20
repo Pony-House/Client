@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import initMatrix from '../../../client/initMatrix';
+import { getCurrentState } from '../../../util/matrixUtil';
 
 import RadioButton from '../../atoms/button/RadioButton';
 import { MenuItem } from '../../atoms/context-menu/ContextMenu';
@@ -16,7 +17,7 @@ function setJoinRule(roomId, type) {
   const mx = initMatrix.matrixClient;
   let allow;
   if (type === visibility.RESTRICTED) {
-    const { currentState } = mx.getRoom(roomId);
+    const currentState = getCurrentState(mx.getRoom(roomId));
     const mEvent = currentState.getStateEvents('m.space.parent')[0];
     if (!mEvent) return Promise.resolve(undefined);
 
@@ -58,14 +59,14 @@ function RoomVisibility({ roomId }) {
   const [activeType, setVisibility] = useVisibility(roomId);
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
-  const { currentState } = room;
+  const currentState = getCurrentState(room);
 
   const noSpaceParent = currentState.getStateEvents('m.space.parent').length === 0;
   const mCreate = currentState.getStateEvents('m.room.create')[0]?.getContent();
   const roomVersion = Number(mCreate?.room_version ?? 0);
 
   const myPowerlevel = room.getMember(mx.getUserId())?.powerLevel || 0;
-  const canChange = room.currentState.hasSufficientPowerLevelFor('state_default', myPowerlevel);
+  const canChange = getCurrentState(room).hasSufficientPowerLevelFor('state_default', myPowerlevel);
 
   const items = [{
     className: 'text-start',

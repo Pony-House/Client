@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import { Debounce } from '../../../util/common';
-import { isRoomAliasAvailable } from '../../../util/matrixUtil';
+import { isRoomAliasAvailable, getCurrentState } from '../../../util/matrixUtil';
 
 import Text from '../../atoms/text/Text';
 import Button from '../../atoms/button/Button';
@@ -106,7 +106,7 @@ function RoomAliases({ roomId }) {
   const [deleteAlias, setDeleteAlias] = useState(null);
   const [validate, setValidateToDefault, handleAliasChange] = useValidate(hsString);
 
-  const canPublishAlias = room.currentState.maySendStateEvent('m.room.canonical_alias', userId);
+  const canPublishAlias = getCurrentState(room).maySendStateEvent('m.room.canonical_alias', userId);
 
   useEffect(() => {
     isMountedStore.setItem(true);

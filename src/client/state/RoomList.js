@@ -2,6 +2,7 @@ import EventEmitter from 'events';
 import appDispatcher from '../dispatcher';
 import cons from './cons';
 import { updateEmojiListData } from '../action/navigation';
+import { getCurrentState } from '../../util/matrixUtil';
 
 function isMEventSpaceChild(mEvent) {
   return mEvent.getType() === 'm.space.child' && Object.keys(mEvent.getContent()).length > 0;
@@ -68,7 +69,7 @@ class RoomList extends EventEmitter {
   getSpaceChildren(roomId) {
     const space = this.matrixClient.getRoom(roomId);
     if (space === null) return null;
-    const mSpaceChild = space?.currentState.getStateEvents('m.space.child');
+    const mSpaceChild = getCurrentState(space)?.getStateEvents('m.space.child');
 
     const children = [];
     mSpaceChild.forEach((mEvent) => {
@@ -221,7 +222,7 @@ class RoomList extends EventEmitter {
     this.inviteRooms.clear();
     this.matrixClient.getRooms().forEach((room) => {
       const { roomId } = room;
-      const tombstone = room.currentState.events.get('m.room.tombstone');
+      const tombstone = getCurrentState(room).events.get('m.room.tombstone');
       if (tombstone?.get('') !== undefined) {
         const repRoomId = tombstone.get('').getContent().replacement_room;
         const repRoomMembership = this.matrixClient.getRoom(repRoomId)?.getMyMembership();

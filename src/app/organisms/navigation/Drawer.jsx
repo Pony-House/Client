@@ -19,6 +19,7 @@ import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { useSelectedTab } from '../../hooks/useSelectedTab';
 import { useSelectedSpace } from '../../hooks/useSelectedSpace';
 import { getSelectRoom, getSelectSpace } from '../../../util/selectedRoom';
+import { getCurrentState } from '../../../util/matrixUtil';
 
 function useSystemState() {
   const [systemState, setSystemState] = useState({ status: null, value: null });
@@ -86,7 +87,7 @@ function Drawer() {
 
   let bannerCfg;
   if (room) {
-    bannerCfg = room.currentState.getStateEvents('pony.house.settings', 'banner')?.getContent();
+    bannerCfg = getCurrentState(room).getStateEvents('pony.house.settings', 'banner')?.getContent();
   }
 
   let avatarSrc = '';

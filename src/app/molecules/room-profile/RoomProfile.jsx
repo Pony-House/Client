@@ -17,6 +17,7 @@ import ImageUpload from '../image-upload/ImageUpload';
 import { useStore } from '../../hooks/useStore';
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
+import { getCurrentState } from '../../../util/matrixUtil';
 
 function RoomProfile({ roomId, profileMode, isSpace }) {
 
@@ -37,7 +38,7 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
   avatarSrc = isDM ? mx.getRoom(roomId).getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : avatarSrc;
 
   const room = mx.getRoom(roomId);
-  const { currentState } = room;
+  const currentState = getCurrentState(room);
 
   // Strings
   const roomName = room.name;

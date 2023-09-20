@@ -13,6 +13,7 @@ import { useCategorizedSpaces } from '../../hooks/useCategorizedSpaces';
 
 import { openSpaceManage } from '../../../client/action/navigation';
 import Button from '../../atoms/button/Button';
+import { getCurrentState } from '../../../util/matrixUtil';
 
 const drawerPostie = new Postie();
 function Home({ spaceId }) {
@@ -74,7 +75,7 @@ function Home({ spaceId }) {
   const room = mx.getRoom(spaceId);
 
   if (room) {
-    const roomIconCfg = room.currentState.getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ?? {};
+    const roomIconCfg = getCurrentState(room).getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ?? {};
     roomSettings.notSpace = (roomIconCfg.isActive === true);
   }
 

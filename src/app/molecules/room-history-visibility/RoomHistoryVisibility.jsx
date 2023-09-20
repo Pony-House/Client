@@ -5,6 +5,7 @@ import initMatrix from '../../../client/initMatrix';
 
 import RadioButton from '../../atoms/button/RadioButton';
 import { MenuItem } from '../../atoms/context-menu/ContextMenu';
+import { getCurrentState } from '../../../util/matrixUtil';
 
 const visibility = {
   WORLD_READABLE: 'world_readable',
@@ -65,7 +66,7 @@ function RoomHistoryVisibility({ roomId }) {
   const mx = initMatrix.matrixClient;
   const userId = mx.getUserId();
   const room = mx.getRoom(roomId);
-  const { currentState } = room;
+  const currentState = getCurrentState(room);
 
   const canChange = currentState.maySendStateEvent('m.room.history_visibility', userId);
 

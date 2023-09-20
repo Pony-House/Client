@@ -2,7 +2,7 @@ import * as colors from 'console-log-colors';
 import initMatrix from '../initMatrix';
 import appDispatcher from '../dispatcher';
 import cons from '../state/cons';
-import { getIdServer } from '../../util/matrixUtil';
+import { getIdServer, getCurrentState } from '../../util/matrixUtil';
 
 /**
  * https://github.com/matrix-org/matrix-react-sdk/blob/1e6c6e9d800890c732d60429449bc280de01a647/src/Rooms.js#L73
@@ -67,7 +67,7 @@ function guessDMRoomTargetId(room, myUserId) {
   if (oldestMember) return oldestMember.userId;
 
   // if there are no joined members other than us, use the oldest member
-  room.currentState.getMembers().forEach((member) => {
+  getCurrentState(room).getMembers().forEach((member) => {
     if (member.userId === myUserId) return;
 
     if (typeof oldestMemberTs === 'undefined' || (member.events.member && member.events.member.getTs() < oldestMemberTs)) {
@@ -316,7 +316,7 @@ async function setPowerLevel(roomId, userId, powerLevel) {
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
 
-  const powerlevelEvent = room.currentState.getStateEvents('m.room.power_levels')[0];
+  const powerlevelEvent = getCurrentState(room).getStateEvents('m.room.power_levels')[0];
 
   const result = await mx.setPowerLevel(roomId, userId, powerLevel, powerlevelEvent);
   return result;
@@ -325,7 +325,7 @@ async function setPowerLevel(roomId, userId, powerLevel) {
 async function setMyRoomNick(roomId, nick) {
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
-  const mEvent = room.currentState.getStateEvents('m.room.member', mx.getUserId());
+  const mEvent = getCurrentState(room).getStateEvents('m.room.member', mx.getUserId());
   const content = mEvent?.getContent();
   if (!content) return;
   await mx.sendStateEvent(roomId, 'm.room.member', {
@@ -337,7 +337,7 @@ async function setMyRoomNick(roomId, nick) {
 async function setMyRoomAvatar(roomId, mxc) {
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
-  const mEvent = room.currentState.getStateEvents('m.room.member', mx.getUserId());
+  const mEvent = getCurrentState(room).getStateEvents('m.room.member', mx.getUserId());
   const content = mEvent?.getContent();
   if (!content) return;
   await mx.sendStateEvent(roomId, 'm.room.member', {

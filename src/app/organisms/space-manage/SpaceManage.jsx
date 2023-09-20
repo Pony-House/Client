@@ -9,7 +9,7 @@ import navigation from '../../../client/state/navigation';
 import { colorMXID } from '../../../util/colorMXID';
 import { selectRoom, selectTab, selectRoomMode } from '../../../client/action/navigation';
 import RoomsHierarchy from '../../../client/state/RoomsHierarchy';
-import { joinRuleToIconSrc } from '../../../util/matrixUtil';
+import { joinRuleToIconSrc, getCurrentState } from '../../../util/matrixUtil';
 import { join } from '../../../client/action/room';
 import { Debounce } from '../../../util/common';
 
@@ -66,8 +66,8 @@ function SpaceManageItem({
   const parentRoom = mx.getRoom(parentId);
   const isSpace = roomInfo.room_type === 'm.space';
   const roomId = roomInfo.room_id;
-  const canManage = parentRoom?.currentState.maySendStateEvent('m.space.child', mx.getUserId()) || false;
-  const isSuggested = parentRoom?.currentState.getStateEvents('m.space.child', roomId)?.getContent().suggested === true;
+  const canManage = getCurrentState(parentRoom)?.maySendStateEvent('m.space.child', mx.getUserId()) || false;
+  const isSuggested = getCurrentState(parentRoom)?.getStateEvents('m.space.child', roomId)?.getContent().suggested === true;
 
   const room = mx.getRoom(roomId);
   const isJoined = !!(room?.getMyMembership() === 'join' || null);
@@ -176,7 +176,7 @@ function SpaceManageFooter({ parentId, selected }) {
   const [process, setProcess] = useState(null);
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(parentId);
-  const { currentState } = room;
+  const currentState = getCurrentState(room);
 
   const allSuggested = selected.every((roomId) => {
     const sEvent = currentState.getStateEvents('m.space.child', roomId);
@@ -194,7 +194,7 @@ function SpaceManageFooter({ parentId, selected }) {
     if (isMark) setProcess(`Marking as suggested ${selected.length} items`);
     else setProcess(`Marking as not suggested ${selected.length} items`);
     selected.forEach((roomId) => {
-      const sEvent = room.currentState.getStateEvents('m.space.child', roomId);
+      const sEvent = getCurrentState(room).getStateEvents('m.space.child', roomId);
       if (!sEvent) return;
       const content = { ...sEvent.getContent() };
       if (isMark && content.suggested) return;
@@ -352,7 +352,7 @@ function SpaceManageContent({ roomId, requestClose }) {
       <div className="space-manage__content-items">
         {!isLoading && currentHierarchy?.rooms?.length === 1 && (
           <Text>
-            Either the space contains private rooms or you need to join space to view it's rooms.
+            Either the space contains private rooms or you need to join space to view it&apos;s rooms.
           </Text>
         )}
         {currentHierarchy && (currentHierarchy.rooms?.map((roomInfo) => (

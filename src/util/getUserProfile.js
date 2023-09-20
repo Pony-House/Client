@@ -1,5 +1,6 @@
 
 import initMatrix from "../client/initMatrix";
+import { getCurrentState } from './matrixUtil';
 
 export function getUserProfile(content, profileRoom) {
 
@@ -18,8 +19,8 @@ export function getUserProfile(content, profileRoom) {
 
             if (room && room.roomId) {
 
-                const roomTopic = room.currentState.getStateEvents('m.room.topic')[0]?.getContent() ?? {};
-                const bannerCfg = room.currentState.getStateEvents('pony.house.settings', 'banner')?.getContent() ?? {};
+                const roomTopic = getCurrentState(room).getStateEvents('m.room.topic')[0]?.getContent() ?? {};
+                const bannerCfg = getCurrentState(room).getStateEvents('pony.house.settings', 'banner')?.getContent() ?? {};
 
                 let bannerSrc = '';
                 let topic = '';

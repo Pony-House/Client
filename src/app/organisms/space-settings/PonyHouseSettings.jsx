@@ -10,6 +10,7 @@ import SettingTile from '../../molecules/setting-tile/SettingTile';
 import initMatrix from '../../../client/initMatrix';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
+import { getCurrentState } from '../../../util/matrixUtil';
 
 function PonyHouseSettings({ roomId, room }) {
 
@@ -67,17 +68,17 @@ function PonyHouseSettings({ roomId, room }) {
     };
 
     // Pony Config
-    const canPonyHouse = room.currentState.maySendStateEvent('pony.house.settings', userId);
+    const canPonyHouse = getCurrentState(room).maySendStateEvent('pony.house.settings', userId);
     let avatarSrc;
 
-    const bannerCfg = room.currentState.getStateEvents('pony.house.settings', 'banner')?.getContent() ?? {};
+    const bannerCfg = getCurrentState(room).getStateEvents('pony.house.settings', 'banner')?.getContent() ?? {};
     if (typeof bannerCfg?.url === 'string' && bannerCfg?.url.length > 0) {
         avatarSrc = mx.mxcUrlToHttp(bannerCfg.url, 400, 227);
     }
 
     useEffect(() => {
 
-        const roomIconCfg = room.currentState.getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ?? {};
+        const roomIconCfg = getCurrentState(room).getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ?? {};
         setRoomIconsVisible((roomIconCfg.isActive === true));
 
     }, [room]);

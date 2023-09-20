@@ -23,7 +23,7 @@ export async function getBaseUrl(servername) {
   } catch (e) {
     return `${protocol}${servername}`;
   }
-}
+};
 
 export function getUsername(userId) {
   const mx = initMatrix.matrixClient;
@@ -34,11 +34,11 @@ export function getUsername(userId) {
     username = userId;
   }
   return username;
-}
+};
 
 export function getUsernameOfRoomMember(roomMember) {
   return roomMember.name || roomMember.userId;
-}
+};
 
 export async function isRoomAliasAvailable(alias) {
   try {
@@ -49,7 +49,7 @@ export async function isRoomAliasAvailable(alias) {
     if (e.errcode === 'M_NOT_FOUND') return true;
     return false;
   }
-}
+};
 
 export function getPowerLabel(powerLevel) {
   if (powerLevel > 9000) return 'Goku';
@@ -57,7 +57,7 @@ export function getPowerLabel(powerLevel) {
   if (powerLevel === 100) return 'Admin';
   if (powerLevel >= 50) return 'Mod';
   return null;
-}
+};
 
 export function parseReply(rawBody) {
   if (rawBody?.indexOf('>') !== 0) return null;
@@ -78,7 +78,7 @@ export function parseReply(rawBody) {
     replyBody,
     body,
   };
-}
+};
 
 export function trimHTMLReply(html) {
   if (!html) return html;
@@ -88,7 +88,7 @@ export function trimHTMLReply(html) {
     return html;
   }
   return html.slice(i + suffix.length);
-}
+};
 
 export function hasDMWith(userId) {
   const mx = initMatrix.matrixClient;
@@ -113,7 +113,11 @@ export function hasDMWith(userId) {
     return false;
 
   });
-}
+};
+
+export function getCurrentState(room) {
+  return room?.getLiveTimeline()?.endState;
+};
 
 export function joinRuleToIconSrc(joinRule, isSpace) {
   return ({
@@ -122,11 +126,11 @@ export function joinRuleToIconSrc(joinRule, isSpace) {
     invite: () => (isSpace ? SpaceLockIC : HashLockIC),
     public: () => (isSpace ? SpaceGlobeIC : HashGlobeIC),
   }[joinRule]?.() || null);
-}
+};
 
 // NOTE: it gives userId with minimum power level 50;
 function getHighestPowerUserId(room) {
-  const userIdToPower = room.currentState.getStateEvents('m.room.power_levels', '')?.getContent().users;
+  const userIdToPower = getCurrentState(room).getStateEvents('m.room.power_levels', '')?.getContent().users;
   let powerUserId = null;
   if (!userIdToPower) return powerUserId;
 
@@ -141,12 +145,12 @@ function getHighestPowerUserId(room) {
     }
   });
   return powerUserId;
-}
+};
 
 export function getIdServer(userId) {
   const idParts = userId.split(':');
   return idParts[1];
-}
+};
 
 export function getServerToPopulation(room) {
   const members = room.getMembers();
@@ -164,7 +168,7 @@ export function getServerToPopulation(room) {
   });
 
   return serverToPop;
-}
+};
 
 export function genRoomVia(room) {
   const via = [];
@@ -183,7 +187,7 @@ export function genRoomVia(room) {
     mostPop3.splice(mostPop3.indexOf(via[0]), 1);
   }
   return via.concat(mostPop3.slice(0, 2));
-}
+};
 
 export function isCrossVerified(deviceId) {
   try {
@@ -196,13 +200,13 @@ export function isCrossVerified(deviceId) {
     // device does not support encryption
     return null;
   }
-}
+};
 
 export function hasCrossSigningAccountData() {
   const mx = initMatrix.matrixClient;
   const masterKeyData = mx.getAccountData('m.cross_signing.master');
   return !!masterKeyData;
-}
+};
 
 export function getDefaultSSKey() {
   const mx = initMatrix.matrixClient;
@@ -211,7 +215,7 @@ export function getDefaultSSKey() {
   } catch {
     return undefined;
   }
-}
+};
 
 export function getSSKeyInfo(key) {
   const mx = initMatrix.matrixClient;
@@ -220,7 +224,7 @@ export function getSSKeyInfo(key) {
   } catch {
     return undefined;
   }
-}
+};
 
 export async function hasDevices(userId) {
   const mx = initMatrix.matrixClient;
@@ -233,4 +237,4 @@ export async function hasDevices(userId) {
     console.error(`${colors.grey('[matrix]')} Error determining if it's possible to encrypt to all users: `, e);
     return false;
   }
-}
+};

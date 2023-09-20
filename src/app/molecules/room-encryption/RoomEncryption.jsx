@@ -7,13 +7,14 @@ import Toggle from '../../atoms/button/Toggle';
 import SettingTile from '../setting-tile/SettingTile';
 
 import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
+import { getCurrentState } from '../../../util/matrixUtil';
 
 function RoomEncryption({ roomId }) {
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
-  const encryptionEvents = room.currentState.getStateEvents('m.room.encryption');
+  const encryptionEvents = getCurrentState(room).getStateEvents('m.room.encryption');
   const [isEncrypted, setIsEncrypted] = useState(encryptionEvents.length > 0);
-  const canEnableEncryption = room.currentState.maySendStateEvent('m.room.encryption', mx.getUserId());
+  const canEnableEncryption = getCurrentState(room).maySendStateEvent('m.room.encryption', mx.getUserId());
 
   const handleEncryptionEnable = async () => {
     const joinRule = room.getJoinRule();

@@ -9,12 +9,13 @@ import Input from '../../atoms/input/Input';
 import Button from '../../atoms/button/Button';
 import ImagePack from '../image-pack/ImagePack';
 import { updateEmojiList } from '../../../client/action/navigation';
+import { getCurrentState } from '../../../util/matrixUtil';
 
 function useRoomPacks(room) {
   const mx = initMatrix.matrixClient;
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
-  const packEvents = room.currentState.getStateEvents('im.ponies.room_emotes');
+  const packEvents = getCurrentState(room).getStateEvents('im.ponies.room_emotes');
   const unUsablePacks = [];
   const usablePacks = packEvents.filter((mEvent) => {
     if (typeof mEvent.getContent()?.images !== 'object') {
@@ -39,7 +40,7 @@ function useRoomPacks(room) {
     };
   }, [room, mx]);
 
-  const isStateKeyAvailable = (key) => !room.currentState.getStateEvents('im.ponies.room_emotes', key);
+  const isStateKeyAvailable = (key) => !getCurrentState(room).getStateEvents('im.ponies.room_emotes', key);
 
   const createPack = async (name) => {
     const packContent = {
@@ -80,7 +81,7 @@ function RoomEmojis({ roomId, profileMode }) {
   const room = mx.getRoom(roomId);
 
   const { usablePacks, createPack, deletePack } = useRoomPacks(room);
-  const canChange = room.currentState.maySendStateEvent('im.ponies.emote_rooms', mx.getUserId());
+  const canChange = getCurrentState(room).maySendStateEvent('im.ponies.emote_rooms', mx.getUserId());
 
   const handlePackCreate = (e) => {
     e.preventDefault();

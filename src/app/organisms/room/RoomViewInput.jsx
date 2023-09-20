@@ -9,7 +9,7 @@ import settings from '../../../client/state/settings';
 import { openEmojiBoard } from '../../../client/action/navigation';
 import navigation from '../../../client/state/navigation';
 import { bytesToSize, getEventCords } from '../../../util/common';
-import { getUsername } from '../../../util/matrixUtil';
+import { getUsername, getCurrentState } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
 import { shiftNuller } from '../../../util/shortcut';
 import audioRecorder from '../../../util/audioRec';
@@ -798,8 +798,8 @@ function RoomViewInput({
   function renderInputs() {
 
     // Check Perm
-    const canISend = roomTimeline.room.currentState.maySendMessage(mx.getUserId());
-    const tombstoneEvent = roomTimeline.room.currentState.getStateEvents('m.room.tombstone')[0];
+    const canISend = getCurrentState(roomTimeline.room).maySendMessage(mx.getUserId());
+    const tombstoneEvent = getCurrentState(roomTimeline.room).getStateEvents('m.room.tombstone')[0];
 
     // Nope
     if (!canISend || tombstoneEvent) {

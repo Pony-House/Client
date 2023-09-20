@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import initMatrix from '../../../client/initMatrix';
-import { getPowerLabel } from '../../../util/matrixUtil';
+import { getPowerLabel, getCurrentState } from '../../../util/matrixUtil';
 import { openReusableContextMenu } from '../../../client/action/navigation';
 import { getEventCords } from '../../../util/common';
 
@@ -215,9 +215,9 @@ function RoomPermissions({ roomId, profileMode }) {
   useRoomStateUpdate(roomId);
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
-  const pLEvent = room.currentState.getStateEvents('m.room.power_levels')[0];
+  const pLEvent = getCurrentState(room).getStateEvents('m.room.power_levels')[0];
   const permissions = pLEvent.getContent();
-  const canChangePermission = room.currentState.maySendStateEvent('m.room.power_levels', mx.getUserId());
+  const canChangePermission = getCurrentState(room).maySendStateEvent('m.room.power_levels', mx.getUserId());
   const myPowerLevel = room.getMember(mx.getUserId())?.powerLevel ?? 100;
 
   const handlePowerSelector = (e, permKey, parentKey, powerLevel) => {

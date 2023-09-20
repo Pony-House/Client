@@ -1,4 +1,5 @@
 import { defaultEmojis } from './emoji';
+import { getCurrentState } from '../../../util/matrixUtil';
 
 // https://github.com/Sorunome/matrix-doc/blob/soru/emotes/proposals/2545-emotes.md
 
@@ -157,7 +158,7 @@ function getGlobalImagePacks(mx) {
     const stateKeys = Object.keys(rooms[roomId]);
 
     return stateKeys.map((stateKey) => {
-      const data = room.currentState.getStateEvents('im.ponies.room_emotes', stateKey);
+      const data = getCurrentState(room).getStateEvents('im.ponies.room_emotes', stateKey);
       const pack = ImagePack.parsePack(data?.getId(), data?.getContent());
       if (pack) {
         pack.displayName ??= room.name;
@@ -182,7 +183,7 @@ function getUserImagePack(mx) {
 }
 
 function getRoomImagePacks(room) {
-  const dataEvents = room.currentState.getStateEvents('im.ponies.room_emotes');
+  const dataEvents = getCurrentState(room).getStateEvents('im.ponies.room_emotes');
 
   return dataEvents
     .map((data) => {

@@ -13,7 +13,7 @@ import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import {
-  getUsername, getUsernameOfRoomMember, parseReply, trimHTMLReply,
+  getUsername, getUsernameOfRoomMember, parseReply, trimHTMLReply, getCurrentState,
 } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
 import { getEventCords, copyToClipboard } from '../../../util/common';
@@ -526,7 +526,7 @@ function MessageReactionGroup({ roomTimeline, mEvent }) {
   const { roomId, room, reactionTimeline } = roomTimeline;
   const mx = initMatrix.matrixClient;
   const reactions = {};
-  const canSendReaction = room.currentState.maySendEvent('m.reaction', mx.getUserId());
+  const canSendReaction = getCurrentState(room).maySendEvent('m.reaction', mx.getUserId());
 
   const eventReactions = reactionTimeline.get(mEvent.getId());
   const addReaction = (key, shortcode, count, senderId, isActive) => {
@@ -637,8 +637,8 @@ const MessageOptions = React.memo(({
   const senderId = mEvent.getSender();
 
   const myPowerlevel = room.getMember(mx.getUserId())?.powerLevel;
-  const canIRedact = room.currentState.hasSufficientPowerLevelFor('redact', myPowerlevel);
-  const canSendReaction = room.currentState.maySendEvent('m.reaction', mx.getUserId());
+  const canIRedact = getCurrentState(room).hasSufficientPowerLevelFor('redact', myPowerlevel);
+  const canSendReaction = getCurrentState(room).maySendEvent('m.reaction', mx.getUserId());
 
   return (
     <div className="message__options">

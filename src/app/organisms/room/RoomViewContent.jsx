@@ -23,6 +23,7 @@ import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { parseTimelineChange } from './common';
 import TimelineScroll from './TimelineScroll';
 import EventLimit from './EventLimit';
+import { getCurrentState } from '../../../util/matrixUtil';
 
 moment.locale('en');
 
@@ -53,7 +54,7 @@ function RoomIntroContainer({ event, timeline }) {
   const mx = initMatrix.matrixClient;
   const { roomList } = initMatrix;
   const { room } = timeline;
-  const roomTopic = room.currentState.getStateEvents('m.room.topic')[0]?.getContent().topic;
+  const roomTopic = getCurrentState(room).getStateEvents('m.room.topic')[0]?.getContent().topic;
   const isDM = roomList.directs.has(timeline.roomId);
   let avatarSrc = room.getAvatarUrl(mx.baseUrl, 80, 80, 'crop');
   avatarSrc = isDM ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 80, 80, 'crop') : avatarSrc;

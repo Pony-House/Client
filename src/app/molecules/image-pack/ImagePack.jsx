@@ -18,6 +18,7 @@ import ImagePackProfile from './ImagePackProfile';
 import ImagePackItem from './ImagePackItem';
 import ImagePackUpload from './ImagePackUpload';
 import { getSelectRoom } from '../../../util/selectedRoom';
+import { getCurrentState } from '../../../util/matrixUtil';
 
 const renameImagePackItem = (shortcode) => new Promise((resolve) => {
   let isCompleted = false;
@@ -82,7 +83,7 @@ function useRoomImagePack(roomId, stateKey) {
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
 
-  const packEvent = room.currentState.getStateEvents('im.ponies.room_emotes', stateKey);
+  const packEvent = getCurrentState(room).getStateEvents('im.ponies.room_emotes', stateKey);
   const pack = useMemo(() => (
     ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent())
   ), [room, stateKey]);
@@ -261,7 +262,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete }) {
     else removeGlobalImagePack(mx, roomId, stateKey);
   };
 
-  const canChange = room.currentState.maySendStateEvent('im.ponies.room_emotes', mx.getUserId());
+  const canChange = getCurrentState(room).maySendStateEvent('im.ponies.room_emotes', mx.getUserId());
 
   const handleDeletePack = async () => {
 
@@ -479,7 +480,7 @@ function ImagePackGlobal() {
 
                 return (
                   stateKeys.map((stateKey) => {
-                    const data = room.currentState.getStateEvents('im.ponies.room_emotes', stateKey);
+                    const data = getCurrentState(room).getStateEvents('im.ponies.room_emotes', stateKey);
                     const pack = ImagePackBuilder.parsePack(data?.getId(), data?.getContent());
                     if (!pack) return null;
                     return (

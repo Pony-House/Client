@@ -14,7 +14,7 @@ import { selectRoom, openReusableContextMenu, selectRoomMode } from '../../../cl
 import * as roomActions from '../../../client/action/room';
 
 import {
-  getUsername, getUsernameOfRoomMember, getPowerLabel, hasDMWith, hasDevices,
+  getUsername, getUsernameOfRoomMember, getPowerLabel, hasDMWith, hasDevices, getCurrentState,
 } from '../../../util/matrixUtil';
 import { copyToClipboard, getEventCords } from '../../../util/common';
 import { colorMXID, cssColorMXID } from '../../../util/colorMXID';
@@ -45,12 +45,12 @@ function ModerationTools({
   const powerLevel = roomMember?.powerLevel || 0;
   const canIKick = (
     roomMember?.membership === 'join'
-    && room.currentState.hasSufficientPowerLevelFor('kick', myPowerLevel)
+    && getCurrentState(room).hasSufficientPowerLevelFor('kick', myPowerLevel)
     && powerLevel < myPowerLevel
   );
   const canIBan = (
     ['join', 'leave'].includes(roomMember?.membership)
-    && room.currentState.hasSufficientPowerLevelFor('ban', myPowerLevel)
+    && getCurrentState(room).hasSufficientPowerLevelFor('ban', myPowerLevel)
     && powerLevel < myPowerLevel
   );
 
@@ -175,7 +175,7 @@ function ProfileFooter({ roomId, userId, onRequestClose }) {
 
   const myPowerlevel = room.getMember(mx.getUserId())?.powerLevel || 0;
   const userPL = room.getMember(userId)?.powerLevel || 0;
-  const canIKick = room.currentState.hasSufficientPowerLevelFor('kick', myPowerlevel) && userPL < myPowerlevel;
+  const canIKick = getCurrentState(room).hasSufficientPowerLevelFor('kick', myPowerlevel) && userPL < myPowerlevel;
 
   const isBanned = member?.membership === 'ban';
 
@@ -656,7 +656,7 @@ function ProfileViewer() {
     const myPowerLevel = room.getMember(mx.getUserId())?.powerLevel || 0;
 
     const canChangeRole = (
-      room.currentState.maySendEvent('m.room.power_levels', mx.getUserId())
+      getCurrentState(room).maySendEvent('m.room.power_levels', mx.getUserId())
       && (powerLevel < myPowerLevel || userId === mx.getUserId())
     );
 

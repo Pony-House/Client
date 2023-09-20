@@ -7,6 +7,7 @@ import { sanitizeText } from '../../util/sanitize';
 import cons from './cons';
 import settings from './settings';
 import { markdown, plain } from '../../util/markdown';
+import { getCurrentState } from '../../util/matrixUtil';
 
 const blurhashField = 'xyz.amorgan.blurhash';
 
@@ -193,7 +194,7 @@ class RoomsInput extends EventEmitter {
 
     const room = this.matrixClient.getRoom(roomId);
 
-    const userNames = room.currentState.userIdsToDisplayNames;
+    const userNames = getCurrentState(room).userIdsToDisplayNames;
     const parentIds = this.roomList.getAllParentSpaces(room.roomId);
     const parentRooms = [...parentIds].map((id) => this.matrixClient.getRoom(id));
     const emojis = getShortcodeToEmoji(this.matrixClient, [room, ...parentRooms]);
