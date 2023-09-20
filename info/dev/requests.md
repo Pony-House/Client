@@ -37,8 +37,6 @@ Made by Me
 
     Sistema de trocar o tamanho da imagem antes de enviar.
 
-    https://github.com/electron-vite/electron-vite-react
-
     https://docs.walletconnect.com/2.0/web/web3modal/react/wagmi/installation
 
     https://github.com/YousefED/Matrix-CRDT
@@ -57,8 +55,6 @@ Made by Me
     --> Fazer uma configuração se o usuário vai ou não receber notificação de DMs estranhos.
 
     --> Os usuários que madam DM devem ser mostrados na lista de fixados. (Apenas os DMs marcados como da lsita de amigos)
-
-    --> Opção de desativar carregamento de embeds de mensagens
 
     --> Criar filtro para desativar animação de gifs especificas. A gente vai usar a ID e dominio do arquivo para facilitar isso.
     (Limite de 600 itens por array) (Opçao alternativa de fazer a animação ser hover)
