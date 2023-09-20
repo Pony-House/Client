@@ -1,12 +1,6 @@
     Twitter: (https://twitter.com)
     twitter://
 
-    Bitcoin: (https://bitcoin.org/)
-    bitcoin://
-
-    Dogecoin: (https://dogecoin.com/)
-    dogecoin://
-
     Ethereum: ()
     ethereum://
 
@@ -18,9 +12,6 @@
 
     Arweave: (https://arweave.app/welcome)
     ar://
-
-    IPFS: (https://ipfs.io/)
-    ipfs://
 
     LBRY Crypto File: (https://lbry.com/)
     lbry://

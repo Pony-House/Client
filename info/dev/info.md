@@ -41,3 +41,7 @@ If you are a developer interested in contributing to the project, I'll let the P
 ## Input send message manager
 
     src/app/organisms/room/RoomViewInput.jsx
+
+## Timeline
+
+    src/client/state/RoomTimeline.js
