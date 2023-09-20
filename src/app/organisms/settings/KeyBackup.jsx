@@ -27,18 +27,16 @@ function CreateKeyBackupDialog({ keyData }) {
     setDone(false);
     let info;
 
+    const CryptoApi = mx.getCrypto();
+
     try {
-      info = await mx.prepareKeyBackupVersion(
-        null,
-        { secureSecretStorage: true },
-      );
-      info = await mx.createKeyBackupVersion(info);
+      info = await CryptoApi.resetKeyBackup();
       await mx.scheduleAllGroupSessionsForBackup();
       if (!mountStore.getItem()) return;
       setDone(true);
     } catch (e) {
       deletePrivateKey(keyData.keyId);
-      await mx.deleteKeyBackupVersion(info.version);
+      await CryptoApi.deleteKeyBackupVersion(info && typeof info.version === 'string' ? info.version : undefined);
       if (!mountStore.getItem()) return;
       setDone(null);
     }
