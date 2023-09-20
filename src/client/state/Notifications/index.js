@@ -274,7 +274,7 @@ class Notifications extends EventEmitter {
 
     // Encrypted
     if (mEvent.isEncrypted()) {
-      await mEvent.attemptDecryption(this.matrixClient.crypto);
+      await mEvent.attemptDecryption(this.matrixClient.getCrypto());
     }
 
     // Show Notification
