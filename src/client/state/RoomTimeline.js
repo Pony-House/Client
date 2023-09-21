@@ -165,7 +165,6 @@ class RoomTimeline extends EventEmitter {
 
     // Get Message Type
     const msgType = mEvent.getContent()?.msgtype;
-    console.log(msgType);
 
     // Filter Room Member Event and Matrix CRDT Events
     if ((mEvent.getType() === 'm.room.member' && hideMemberEvents(mEvent)) || (typeof msgType === 'string' && msgType.startsWith('matrix-crdt.'))) {
