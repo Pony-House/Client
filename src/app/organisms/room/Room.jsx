@@ -11,17 +11,29 @@ import Welcome from '../welcome/Welcome';
 import RoomView from './RoomView';
 import RoomSettings from './RoomSettings';
 import PeopleDrawer from './PeopleDrawer';
+import tinyAPI from '../../../util/mods';
 
 let resetRoomInfo;
 global.resetRoomInfo = () => typeof resetRoomInfo === 'function' ? resetRoomInfo() : null;
 
 function Room() {
-  const [roomInfo, setRoomInfo] = useState({
+
+  const defaultRoomInfo = {
     roomTimeline: null,
     eventId: null,
     forceScroll: null,
-  });
+  };
+
+  const [roomInfo, setRoomInfo] = useState(defaultRoomInfo);
+  tinyAPI.emit('setRoomInfo', defaultRoomInfo);
+
   const [isDrawer, setIsDrawer] = useState(settings.isPeopleDrawer);
+
+  const sendRoomInfo = (newData) => {
+    if (roomInfo.roomTimeline) roomInfo.roomTimeline?.destroyProvider();
+    setRoomInfo(newData);
+    tinyAPI.emit('setRoomInfo', newData);
+  };
 
   const mx = initMatrix.matrixClient;
   resetRoomInfo = () => {
@@ -29,9 +41,7 @@ function Room() {
     $('#space-header .space-drawer-body .room-selector--selected').removeClass('room-selector--selected');
     selectRoomMode('navigation');
 
-    roomInfo.roomTimeline?.destroyProvider();
-
-    setRoomInfo({
+    sendRoomInfo({
       roomTimeline: null,
       eventId: null,
       forceScroll: null,
@@ -44,10 +54,9 @@ function Room() {
 
       roomInfo.roomTimeline?.removeInternalListeners();
       $('.space-drawer-menu-item').removeClass('active');
-      roomInfo.roomTimeline?.destroyProvider();
 
       if (mx.getRoom(rId)) {
-        setRoomInfo({
+        sendRoomInfo({
           roomTimeline: new RoomTimeline(rId),
           eventId: eId ?? null,
           forceScroll,
@@ -55,7 +64,7 @@ function Room() {
       } else {
 
         // TODO: add ability to join room if roomId is invalid
-        setRoomInfo({
+        sendRoomInfo({
           roomTimeline: null,
           eventId: null,
           forceScroll,

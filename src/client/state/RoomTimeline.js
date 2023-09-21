@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
-import { MatrixProvider } from "matrix-crdt";
-import * as Y from "yjs";
+import { MatrixProvider } from 'matrix-crdt';
+import * as Y from 'yjs';
 
 import initMatrix from '../initMatrix';
 import cons from './cons';
@@ -129,6 +129,10 @@ class RoomTimeline extends EventEmitter {
   initProvider() { return this.provider.initialize(); }
 
   isProviderDestroyed() { return this.isPvDestroyed; }
+
+  getProvider() { return this.provider; }
+
+  getYdoc() { return this.ydoc; }
 
   destroyProvider() {
     if (!this.isPvDestroyed) {

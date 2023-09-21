@@ -86,6 +86,12 @@ Display the matrix-sdk logs.
 
 ## Events
 
+`src/app/organisms/room/Room.jsx`
+
+### setRoomInfo
+
+    roomInfo
+
 `src/client/logger/index.js`
 
 console object = level, message
