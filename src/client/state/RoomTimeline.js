@@ -100,13 +100,20 @@ class RoomTimeline extends EventEmitter {
     this.liveTimeline = this.room.getLiveTimeline();
     this.activeTimeline = this.liveTimeline;
 
-    this.ydoc = new Y.Doc();
-    this.isPvDestroyed = false;
+    try {
 
-    this.provider = new MatrixProvider(this.ydoc, this.matrixClient, {
-      type: 'id',
-      id: this.room.roomId,
-    });
+      this.ydoc = new Y.Doc();
+      this.isPvDestroyed = false;
+
+      this.provider = new MatrixProvider(this.ydoc, this.matrixClient, {
+        type: 'id',
+        id: this.room.roomId,
+      });
+
+    } catch (err) {
+      console.error(err);
+      setTimeout(() => this.destroyProvider, 1000);
+    }
 
     this.isOngoingPagination = false;
     this.ongoingDecryptionCount = 0;
@@ -124,9 +131,9 @@ class RoomTimeline extends EventEmitter {
   isProviderDestroyed() { return this.isPvDestroyed; }
 
   destroyProvider() {
-    if (!this.isPvDestroyed && this.ydoc && typeof this.ydoc.destroy === 'function') {
-      this.provider.dispose();
-      this.ydoc.destroy();
+    if (!this.isPvDestroyed) {
+      if (this.provider && typeof this.provider.dispose === 'function') this.provider.dispose();
+      if (this.ydoc && typeof this.ydoc.destroy === 'function') this.ydoc.destroy();
       this.isPvDestroyed = true;
     }
   }
@@ -158,6 +165,7 @@ class RoomTimeline extends EventEmitter {
 
     // Get Message Type
     const msgType = mEvent.getContent()?.msgtype;
+    console.log(msgType);
 
     // Filter Room Member Event and Matrix CRDT Events
     if ((mEvent.getType() === 'm.room.member' && hideMemberEvents(mEvent)) || (typeof msgType === 'string' && msgType.startsWith('matrix-crdt.'))) {
