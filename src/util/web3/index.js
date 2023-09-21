@@ -414,6 +414,11 @@ const startWeb3 = () => {
     tinyCrypto.on = Object.freeze(tinyCrypto.on);
     tinyCrypto.once = Object.freeze(tinyCrypto.once);
 
+    tinyCrypto.validateMatrixAddress = () => {
+      const userWeb3 = getUserWeb3Account();
+      return (userWeb3.valid && tinyCrypto.address === userWeb3.address);
+    };
+
     // Calls
 
     // Account Change
@@ -555,31 +560,40 @@ const startWeb3 = () => {
 
         // Loading
         tinyCrypto.get.signerAddress().then(address => {
+
           tinyCrypto.address = address;
-          tinyCrypto.provider.eth.getTransactionCount(address).then(nonce => {
-            tinyCrypto.provider.eth.getGasPrice().then(currentGasPrice => {
 
-              // construct the transaction data
-              const tx = {
+          if (tinyCrypto.validateMatrixAddress()) {
 
-                nonce,
-                gasLimit: tinyCrypto.provider.utils.toHex(gasLimit),
+            tinyCrypto.provider.eth.getTransactionCount(address).then(nonce => {
+              tinyCrypto.provider.eth.getGasPrice().then(currentGasPrice => {
 
-                // eslint-disable-next-line radix
-                gasPrice: tinyCrypto.provider.utils.toHex(parseInt(currentGasPrice)),
+                // construct the transaction data
+                const tx = {
 
-                from: address,
-                to: contract,
-                value: tinyCrypto.constants.HexZero,
-                data: tinyCrypto.provider.eth.abi.encodeFunctionCall(abi, data),
+                  nonce,
+                  gasLimit: tinyCrypto.provider.utils.toHex(gasLimit),
 
-              };
+                  // eslint-disable-next-line radix
+                  gasPrice: tinyCrypto.provider.utils.toHex(parseInt(currentGasPrice)),
 
-              // Complete
-              tinyCrypto.provider.eth.sendTransaction(tx).then(resolve).catch(reject);
+                  from: address,
+                  to: contract,
+                  value: tinyCrypto.constants.HexZero,
+                  data: tinyCrypto.provider.eth.abi.encodeFunctionCall(abi, data),
 
+                };
+
+                // Complete
+                tinyCrypto.provider.eth.sendTransaction(tx).then(resolve).catch(reject);
+
+              }).catch(reject);
             }).catch(reject);
-          }).catch(reject);
+
+          } else {
+            reject(new Error('INVALID MATRIX ETHEREUM ADDRESS!'));
+          }
+
         }).catch(reject);
 
       }
@@ -613,49 +627,57 @@ const startWeb3 = () => {
         // Result
         tinyCrypto.get.signerAddress().then(mainWallet => {
 
-          // Address
-          const tinyAddress = address.toLowerCase();
+          tinyCrypto.address = mainWallet;
 
-          // Token Mode
-          if (contract) {
+          if (tinyCrypto.validateMatrixAddress()) {
 
-            // Contract Value
-            let tinyContract = contract;
+            // Address
+            const tinyAddress = address.toLowerCase();
 
-            // Connect to the contract
-            if (typeof tinyContract === 'string') { tinyContract = { value: contract, decimals: 18 }; }
-            if (typeof tinyContract.value !== 'string') { tinyContract.value = ''; }
-            if (typeof tinyContract.decimals !== 'number') { tinyContract.decimals = 18; }
+            // Token Mode
+            if (contract) {
 
-            // Transaction
-            tinyCrypto.call.executeContract(tinyContract.value, {
-              type: 'function',
-              name: 'transfer',
-              stateMutability: 'nonpayable',
-              payable: false,
-              constant: false,
-              outputs: [{ type: 'uint8' }],
-              inputs: [{
-                name: '_to',
-                type: 'address'
-              }, {
-                name: '_value',
-                type: 'uint256'
-              }]
-            }, [
-              tinyAddress,
-              tinyCrypto.provider.utils.toWei(String(amount), tinyCrypto.decimals[tinyContract.decimals])
-            ], gasLimit).then(resolve).catch(reject);
+              // Contract Value
+              let tinyContract = contract;
 
-          }
+              // Connect to the contract
+              if (typeof tinyContract === 'string') { tinyContract = { value: contract, decimals: 18 }; }
+              if (typeof tinyContract.value !== 'string') { tinyContract.value = ''; }
+              if (typeof tinyContract.decimals !== 'number') { tinyContract.decimals = 18; }
 
-          // Normal Mode
-          else {
-            tinyCrypto.provider.eth.sendTransaction({
-              from: mainWallet,
-              to: tinyAddress,
-              value: tinyCrypto.provider.utils.toWei(String(amount)),
-            }).then(resolve).catch(reject);
+              // Transaction
+              tinyCrypto.call.executeContract(tinyContract.value, {
+                type: 'function',
+                name: 'transfer',
+                stateMutability: 'nonpayable',
+                payable: false,
+                constant: false,
+                outputs: [{ type: 'uint8' }],
+                inputs: [{
+                  name: '_to',
+                  type: 'address'
+                }, {
+                  name: '_value',
+                  type: 'uint256'
+                }]
+              }, [
+                tinyAddress,
+                tinyCrypto.provider.utils.toWei(String(amount), tinyCrypto.decimals[tinyContract.decimals])
+              ], gasLimit).then(resolve).catch(reject);
+
+            }
+
+            // Normal Mode
+            else {
+              tinyCrypto.provider.eth.sendTransaction({
+                from: mainWallet,
+                to: tinyAddress,
+                value: tinyCrypto.provider.utils.toWei(String(amount)),
+              }).then(resolve).catch(reject);
+            }
+
+          } else {
+            reject(new Error('INVALID MATRIX ETHEREUM ADDRESS!'));
           }
 
         }).catch(reject);
@@ -761,6 +783,7 @@ const startWeb3 = () => {
   // Nothing
   else {
     tinyCrypto.protocol = null;
+    tinyCrypto.validateMatrixAddress = () => false;
     tinyCrypto.existEthereum = () => false;
     tinyCrypto.isUnlocked = () => false;
     tinyCrypto.existWalletApp = () => false;

@@ -125,6 +125,7 @@ export function openProfileViewer(userId, roomId) {
 }
 
 export function openSettings(tabText) {
+  if (global.tinyCrypto && global.tinyCrypto.call && typeof global.tinyCrypto.call.requestAccounts === 'function') global.tinyCrypto.call.requestAccounts();
   appDispatcher.dispatch({
     type: cons.actions.navigation.OPEN_SETTINGS,
     tabText,
