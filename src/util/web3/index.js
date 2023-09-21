@@ -767,6 +767,23 @@ const startWeb3 = () => {
       }]
     });
 
+    /*
+    tinyCrypto.provider.extend({
+      property: 'eth',
+      methods: [{
+        name: 'addEthereumChain',
+        call: 'wallet_switchEthereumChain',
+        params: 1,
+        inputFormatter: [{
+          chainName: tinyCrypto.provider.utils.toString,
+          chainId: tinyCrypto.provider.utils.numberToHex,
+          nativeCurrency: { name: tinyCrypto.provider.utils.toString, decimals: tinyCrypto.provider.utils.toNumber, symbol: tinyCrypto.provider.utils.toString },
+          rpcUrls: [tinyCrypto.provider.utils.toString]
+        }],
+      }]
+    });
+    */
+
     // Provider Connected
     tinyCrypto.providerConnected = true;
 
