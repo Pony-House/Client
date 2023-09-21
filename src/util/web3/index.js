@@ -719,7 +719,7 @@ const startWeb3 = () => {
     // Electron Mode
     else if (__ENV_APP__.electron_mode) {
       tinyCrypto.protocol = 'frame';
-      tinyCrypto.provider = new Web3(provider('frame'));
+      tinyCrypto.provider = new Web3(provider(['frame', 'direct'], { origin: __ENV_APP__.info.name }));
       tinyCrypto.isUnlocked = () => true;
     }
 
@@ -740,7 +740,14 @@ const startWeb3 = () => {
 
     } else {
 
+      tinyCrypto.provider.on('accountsChanged', accounts => {
+        tinyCrypto.call.accountsChanged(accounts);
+      });
 
+      // Network Change
+      tinyCrypto.provider.on('networkChanged', networkId => {
+        tinyCrypto.call.networkChanged(networkId);
+      });
 
     }
 
