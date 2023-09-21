@@ -78,8 +78,11 @@ function isTimelineLinked(tm1, tm2) {
   return false;
 }
 
+// Class
 class RoomTimeline extends EventEmitter {
+
   constructor(roomId) {
+
     super();
     // These are local timelines
     this.timeline = [];
@@ -102,6 +105,7 @@ class RoomTimeline extends EventEmitter {
 
     // TODO: remove below line
     window.selectedRoom = this;
+
   }
 
   isServingLiveTimeline() {
@@ -126,23 +130,39 @@ class RoomTimeline extends EventEmitter {
     this.timeline = [];
   }
 
+  // Add to timeline
   addToTimeline(mEvent) {
-    if (mEvent.getType() === 'm.room.member' && hideMemberEvents(mEvent)) {
+
+    // Get Message Type
+    const msgType = mEvent.getContent()?.msgtype;
+
+    // Filter Room Member Event and Matrix CRDT Events
+    if ((mEvent.getType() === 'm.room.member' && hideMemberEvents(mEvent)) || (typeof msgType === 'string' && msgType.startsWith('matrix-crdt.'))) {
       return;
     }
+
+    // Redacted
     if (mEvent.isRedacted()) return;
+
+    // Is Reaction
     if (isReaction(mEvent)) {
       addToMap(this.reactionTimeline, mEvent);
       return;
     }
+
+    // Support event types filter
     if (!cons.supportEventTypes.includes(mEvent.getType())) return;
     if (isEdited(mEvent)) {
       addToMap(this.editedTimeline, mEvent);
       return;
     }
+
+    // Timeline insert
     this.timeline.push(mEvent);
+
   }
 
+  // Populate Functions
   _populateAllLinkedEvents(timeline) {
     const firstTimeline = getFirstLinkedTimeline(timeline);
     iterateLinkedTimelines(firstTimeline, false, (tm) => {
@@ -155,15 +175,20 @@ class RoomTimeline extends EventEmitter {
     this._populateAllLinkedEvents(this.activeTimeline);
   }
 
+  // Reset
   async _reset() {
+
     if (this.isEncrypted()) await this.decryptAllEventsOfTimeline(this.activeTimeline);
     this._populateTimelines();
+
     if (!this.initialized) {
       this.initialized = true;
       this._listenEvents();
     }
+
   }
 
+  // Load live timeline
   async loadLiveTimeline() {
     this.activeTimeline = this.liveTimeline;
     await this._reset();
@@ -171,6 +196,7 @@ class RoomTimeline extends EventEmitter {
     return true;
   }
 
+  // Load Event timeline
   async loadEventTimeline(eventId) {
 
     // we use first unfiltered EventTimelineSet for room pagination.
@@ -199,40 +225,60 @@ class RoomTimeline extends EventEmitter {
 
   }
 
+  // Pagination
   async paginateTimeline(backwards = false, limit = 30) {
+
+    // Initialization
     if (this.initialized === false) return false;
     if (this.isOngoingPagination) return false;
 
     this.isOngoingPagination = true;
 
+    // Get timeline
     const timelineToPaginate = backwards
       ? getFirstLinkedTimeline(this.activeTimeline)
       : getLastLinkedTimeline(this.activeTimeline);
 
+    // Token Type
     if (timelineToPaginate.getPaginationToken(backwards ? 'b' : 'f') === null) {
       this.emit(cons.events.roomTimeline.PAGINATED, backwards, 0);
       this.isOngoingPagination = false;
       return false;
     }
 
+    // Old Size
     const oldSize = this.timeline.length;
+
+    // Try time
     try {
+
+      // Paginate time
       await this.matrixClient.paginateEventTimeline(timelineToPaginate, { backwards, limit });
 
+      // Decrypt time
       if (this.isEncrypted()) await this.decryptAllEventsOfTimeline(this.activeTimeline);
       this._populateTimelines();
 
+      // Loaded Check
       const loaded = this.timeline.length - oldSize;
+
+      // Complete
       this.emit(cons.events.roomTimeline.PAGINATED, backwards, loaded);
       this.isOngoingPagination = false;
       return true;
-    } catch {
+
+    }
+
+    // Error
+    catch {
       this.emit(cons.events.roomTimeline.PAGINATED, backwards, 0);
       this.isOngoingPagination = false;
       return false;
     }
+
   }
 
+  // Decrypt Events
   decryptAllEventsOfTimeline(eventTimeline) {
     const decryptionPromises = eventTimeline
       .getEvents()
@@ -243,6 +289,7 @@ class RoomTimeline extends EventEmitter {
     return Promise.allSettled(decryptionPromises);
   }
 
+  // Has Event timeline
   hasEventInTimeline(eventId, timeline = this.activeTimeline) {
     const timelineSet = this.getUnfilteredTimelineSet();
     const eventTimeline = timelineSet.getTimelineForEvent(eventId);
@@ -250,11 +297,14 @@ class RoomTimeline extends EventEmitter {
     return isTimelineLinked(eventTimeline, timeline);
   }
 
+  // Get without filter
   getUnfilteredTimelineSet() {
     return this.room.getUnfilteredTimelineSet();
   }
 
+  // Get User renders
   getEventReaders(mEvent) {
+
     const liveEvents = this.liveTimeline.getEvents();
     const readers = [];
     if (!mEvent) return [];
@@ -265,30 +315,39 @@ class RoomTimeline extends EventEmitter {
     }
 
     return [...new Set(readers)];
+
   }
 
   getLiveReaders() {
+
     const liveEvents = this.liveTimeline.getEvents();
     const getLatestVisibleEvent = () => {
+
       for (let i = liveEvents.length - 1; i >= 0; i -= 1) {
+
         const mEvent = liveEvents[i];
         if (mEvent.getType() === 'm.room.member' && hideMemberEvents(mEvent)) {
           // eslint-disable-next-line no-continue
           continue;
         }
+
         if (!mEvent.isRedacted()
           && !isReaction(mEvent)
           && !isEdited(mEvent)
           && cons.supportEventTypes.includes(mEvent.getType())
         ) return mEvent;
+
       }
+
       return liveEvents[liveEvents.length - 1];
+
     };
 
     return this.getEventReaders(getLatestVisibleEvent());
   }
 
   getUnreadEventIndex(readUpToEventId) {
+
     if (!this.hasEventInTimeline(readUpToEventId)) return -1;
 
     const readUpToEvent = this.findEventByIdInTimelineSet(readUpToEventId);
@@ -301,9 +360,12 @@ class RoomTimeline extends EventEmitter {
       const mEvent = this.timeline[i];
       if (mEvent.getTs() > rTs) return i;
     }
+
     return -1;
+
   }
 
+  // Events
   getReadUpToEventId() {
     return this.room.getEventReadUpTo(this.matrixClient.getUserId());
   }
@@ -326,8 +388,11 @@ class RoomTimeline extends EventEmitter {
     return this.timeline.splice(i, 1)[0];
   }
 
+  // Active Listens
   _listenEvents() {
+
     this._listenRoomTimeline = (event, room, toStartOfTimeline, removed, data) => {
+
       if (room.roomId !== this.roomId) return;
       if (this.isOngoingPagination) return;
 
@@ -354,9 +419,11 @@ class RoomTimeline extends EventEmitter {
 
       this.addToTimeline(event);
       this.emit(cons.events.roomTimeline.EVENT, event);
+
     };
 
     this._listenDecryptEvent = (event) => {
+
       if (event.getRoomId() !== this.roomId) return;
       if (this.isOngoingPagination) return;
 
@@ -367,8 +434,10 @@ class RoomTimeline extends EventEmitter {
       if (this.ongoingDecryptionCount > 0) {
         this.ongoingDecryptionCount -= 1;
       }
+
       this.addToTimeline(event);
       this.emit(cons.events.roomTimeline.EVENT, event);
+
     };
 
     this._listenRedaction = (mEvent, room) => {
@@ -380,14 +449,18 @@ class RoomTimeline extends EventEmitter {
     };
 
     this._listenTypingEvent = (event, member) => {
+
       if (member.roomId !== this.roomId) return;
 
       const isTyping = member.typing;
       if (isTyping) this.typingMembers.add(member.userId);
       else this.typingMembers.delete(member.userId);
       this.emit(cons.events.roomTimeline.TYPING_MEMBERS_UPDATED, new Set([...this.typingMembers]));
+
     };
+
     this._listenReciptEvent = (event, room) => {
+
       // we only process receipt for latest message here.
       if (room.roomId !== this.roomId) return;
       const receiptContent = event.getContent();
@@ -401,15 +474,19 @@ class RoomTimeline extends EventEmitter {
       if (lastEventRecipt['m.read']) {
         this.emit(cons.events.roomTimeline.LIVE_RECEIPT);
       }
+
     };
 
+    // Insert events
     this.matrixClient.on('Room.timeline', this._listenRoomTimeline);
     this.matrixClient.on('Room.redaction', this._listenRedaction);
     this.matrixClient.on('Event.decrypted', this._listenDecryptEvent);
     this.matrixClient.on('RoomMember.typing', this._listenTypingEvent);
     this.matrixClient.on('Room.receipt', this._listenReciptEvent);
+
   }
 
+  // Remove events
   removeInternalListeners() {
     if (!this.initialized) return;
     this.matrixClient.removeListener('Room.timeline', this._listenRoomTimeline);
@@ -418,6 +495,7 @@ class RoomTimeline extends EventEmitter {
     this.matrixClient.removeListener('RoomMember.typing', this._listenTypingEvent);
     this.matrixClient.removeListener('Room.receipt', this._listenReciptEvent);
   }
+
 }
 
 export default RoomTimeline;
