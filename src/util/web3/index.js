@@ -729,6 +729,12 @@ const startWeb3 = () => {
     // Insert Provider
     // eslint-disable-next-line no-undef
     if (window.ethereum) {
+
+      tinyCrypto.changeNetwork = (chainId) => window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: tinyCrypto.provider.utils.toHex(chainId) }]
+      });
+
       if (window.ethereum.isMetaMask) {
         tinyCrypto.protocol = 'metamask';
         tinyCrypto.provider = new Web3(window.ethereum);
@@ -736,14 +742,30 @@ const startWeb3 = () => {
         tinyCrypto.protocol = 'frame';
         tinyCrypto.provider = new Web3(provider('frame'));
       }
+
     }
 
     // Electron Mode
     else if (__ENV_APP__.electron_mode) {
+
+      tinyCrypto.changeNetwork = (chainId) => tinyCrypto.provider.eth.switchEthereumChain({ chainId: tinyCrypto.provider.utils.toHex(chainId) });
+
       tinyCrypto.protocol = 'frame';
       tinyCrypto.provider = new Web3(provider(['frame', 'direct'], { origin: __ENV_APP__.info.name }));
       tinyCrypto.isUnlocked = () => true;
+
     }
+
+    // Extend
+    tinyCrypto.provider.extend({
+      property: 'eth',
+      methods: [{
+        name: 'switchEthereumChain',
+        call: 'wallet_switchEthereumChain',
+        params: 1,
+        inputFormatter: [{ chainId: tinyCrypto.provider.utils.numberToHex }],
+      }]
+    });
 
     // Provider Connected
     tinyCrypto.providerConnected = true;
@@ -791,6 +813,7 @@ const startWeb3 = () => {
     tinyCrypto.getUser = () => ({ sign: null, id: null });
     tinyCrypto.recover = () => '';
     tinyCrypto.signUserAccount = () => new Promise(resolve => { resolve(null); });
+    tinyCrypto.changeNetwork = () => new Promise(resolve => { resolve(null); });
     tinyCrypto.setUser = () => null;
   }
 
