@@ -1,4 +1,7 @@
 import EventEmitter from 'events';
+import { MatrixProvider } from "matrix-crdt";
+import * as Y from "yjs";
+
 import initMatrix from '../initMatrix';
 import cons from './cons';
 
@@ -97,6 +100,14 @@ class RoomTimeline extends EventEmitter {
     this.liveTimeline = this.room.getLiveTimeline();
     this.activeTimeline = this.liveTimeline;
 
+    this.ydoc = new Y.Doc();
+    this.isPvDestroyed = false;
+
+    this.provider = new MatrixProvider(this.ydoc, this.matrixClient, {
+      type: 'id',
+      id: this.room.roomId,
+    });
+
     this.isOngoingPagination = false;
     this.ongoingDecryptionCount = 0;
     this.initialized = false;
@@ -106,6 +117,18 @@ class RoomTimeline extends EventEmitter {
     // TODO: remove below line
     window.selectedRoom = this;
 
+  }
+
+  initProvider() { return this.provider.initialize(); }
+
+  isProviderDestroyed() { return this.isPvDestroyed; }
+
+  destroyProvider() {
+    if (!this.isPvDestroyed && this.ydoc && typeof this.ydoc.destroy === 'function') {
+      this.provider.dispose();
+      this.ydoc.destroy();
+      this.isPvDestroyed = true;
+    }
   }
 
   isServingLiveTimeline() {

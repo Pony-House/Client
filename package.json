@@ -80,6 +80,7 @@
     "linkify-plugin-keyword": "4.1.1",
     "linkify-react": "4.1.1",
     "linkifyjs": "4.1.1",
+    "matrix-crdt": "0.2.1-alpha.1",
     "matrix-js-sdk": "28.1.0",
     "matrix-widget-api": "1.5.0",
     "moment-timezone": "0.5.43",
@@ -103,7 +104,8 @@
     "vega": "5.25.0",
     "vega-embed": "6.22.2",
     "vega-lite": "5.15.0",
-    "web3": "4.1.2"
+    "web3": "4.1.2",
+    "yjs": "13.6.8"
   },
   "devDependencies": {
     "@babel/core": "^7.22.20",

@@ -29,6 +29,8 @@ function Room() {
     $('#space-header .space-drawer-body .room-selector--selected').removeClass('room-selector--selected');
     selectRoomMode('navigation');
 
+    roomInfo.roomTimeline?.destroyProvider();
+
     setRoomInfo({
       roomTimeline: null,
       eventId: null,
@@ -39,8 +41,11 @@ function Room() {
 
   useEffect(() => {
     const handleRoomSelected = (rId, pRoomId, eId, forceScroll) => {
+
       roomInfo.roomTimeline?.removeInternalListeners();
       $('.space-drawer-menu-item').removeClass('active');
+      roomInfo.roomTimeline?.destroyProvider();
+
       if (mx.getRoom(rId)) {
         setRoomInfo({
           roomTimeline: new RoomTimeline(rId),
@@ -59,6 +64,7 @@ function Room() {
         $('#space-drawer-home-button').addClass('active');
 
       }
+
     };
 
     navigation.on(cons.events.navigation.ROOM_SELECTED, handleRoomSelected);
