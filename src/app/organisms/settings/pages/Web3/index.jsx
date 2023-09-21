@@ -88,7 +88,7 @@ function Web3Section() {
 
                         <p>Connect your wallet to start configuring your account integration.{__ENV_APP__.electron_mode ? ' It looks like you are using the desktop version! To use the application with your web3 wallet, you need to have the frame wallet installed on your computer.' : ''}</p>
 
-                        <button type="button" className="btn btn-sm btn-primary my-1 my-sm-0" onClick={() => {
+                        <button type="button" className={`btn btn-sm btn-primary my-1 my-sm-0${global.tinyCrypto.protocol === null ? ' disabled' : ''}`} disabled={global.tinyCrypto.protocol === null} onClick={() => {
                             $.LoadingOverlay('show');
                             setUserWeb3Account().then((userData) => {
 
@@ -104,7 +104,7 @@ function Web3Section() {
                                 console.error(err);
                                 alert(err.message);
                             })
-                        }}><i className="fa-brands fa-ethereum" /> Connect Wallet {window.ethereum && window.ethereum.isFrame ? '(Frame)' : '(Metamask)'}</button>
+                        }}><i className="fa-brands fa-ethereum" /> Connect Wallet{global.tinyCrypto.protocol === 'frame' ? ' (Frame)' : global.tinyCrypto.protocol === 'metamask' ? ' (Metamask)' : ''}</button>
 
                     </>}
 

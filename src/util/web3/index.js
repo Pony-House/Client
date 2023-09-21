@@ -396,11 +396,11 @@ const tinyCrypto = {
 const startWeb3 = () => {
 
   // Check if Web3 has been injected by the browser (Mist/MetaMask).
-  if (typeof ethereum !== 'undefined' && (window.ethereum.isMetaMask || window.ethereum.isFrame)) {
+  if ((typeof ethereum !== 'undefined' && (window.ethereum.isMetaMask || window.ethereum.isFrame)) || __ENV_APP__.electron_mode) {
 
     // Checker
-    tinyCrypto.existEthereum = () => (typeof window.ethereum !== 'undefined');
-    tinyCrypto.isUnlocked = () => (window.ethereum._isUnlocked);
+    tinyCrypto.existEthereum = () => (typeof window.ethereum !== 'undefined' || __ENV_APP__.electron_mode);
+    tinyCrypto.isUnlocked = () => (window.ethereum && window.ethereum._isUnlocked);
     tinyCrypto.existWalletApp = () => (tinyCrypto.existEthereum() && tinyCrypto.isUnlocked());
 
     // Emitter
@@ -706,26 +706,43 @@ const startWeb3 = () => {
 
     // Insert Provider
     // eslint-disable-next-line no-undef
-    if (window.ethereum.isMetaMask) {
-      tinyCrypto.provider = new Web3(window.ethereum);
-    } else if (window.ethereum.isFrame) {
-      tinyCrypto.provider = new Web3(provider('frame'));
+    if (window.ethereum) {
+      if (window.ethereum.isMetaMask) {
+        tinyCrypto.protocol = 'metamask';
+        tinyCrypto.provider = new Web3(window.ethereum);
+      } else if (window.ethereum.isFrame) {
+        tinyCrypto.protocol = 'frame';
+        tinyCrypto.provider = new Web3(provider('frame'));
+      }
     }
 
+    // Electron Mode
+    else if (__ENV_APP__.electron_mode) {
+      tinyCrypto.protocol = 'frame';
+      tinyCrypto.provider = new Web3(provider('frame'));
+      tinyCrypto.isUnlocked = () => true;
+    }
+
+    // Provider Connected
     tinyCrypto.providerConnected = true;
 
-    // Insert Protocol
-    tinyCrypto.protocol = 'metamask';
-
     // Change Account Detector
-    window.ethereum.on('accountsChanged', accounts => {
-      tinyCrypto.call.accountsChanged(accounts);
-    });
+    if (window.ethereum) {
 
-    // Network Change
-    window.ethereum.on('networkChanged', networkId => {
-      tinyCrypto.call.networkChanged(networkId);
-    });
+      window.ethereum.on('accountsChanged', accounts => {
+        tinyCrypto.call.accountsChanged(accounts);
+      });
+
+      // Network Change
+      window.ethereum.on('networkChanged', networkId => {
+        tinyCrypto.call.networkChanged(networkId);
+      });
+
+    } else {
+
+
+
+    }
 
     // Ready Provider and check the connection
     tinyCrypto.call.checkConnection().then(() => {
@@ -736,6 +753,7 @@ const startWeb3 = () => {
 
   // Nothing
   else {
+    tinyCrypto.protocol = null;
     tinyCrypto.existEthereum = () => false;
     tinyCrypto.isUnlocked = () => false;
     tinyCrypto.existWalletApp = () => false;
