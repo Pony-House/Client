@@ -2,3 +2,5 @@
 - Ethereum support added.
 - Frame wallet support added.
 - Profile tabs added.
+- Matrix SDK updated.
+- Frame Wallet Desktop support fixed on the Electron Version.
