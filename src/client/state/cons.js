@@ -2,7 +2,7 @@ import { compareVersions } from 'compare-versions';
 
 const cons = {
 
-  version: '1.3.20',
+  version: __ENV_APP__.version,
 
   secretKey: {
     ACCESS_TOKEN: 'cinny_access_token',

@@ -167,8 +167,14 @@ export default defineConfig(({ command, mode }) => {
     mode,
     command,
     electron_mode: electronMode,
+    version: pkg.version,
+    deps: pkg.dependencies,
     info: {
-      name: String(env.appName),
+      name: String(pkg.short_name),
+      description: pkg.description,
+      keywords: pkg.keywords,
+      author: pkg.author,
+      license: pkg.license,
       welcome: String(env.appWelcome)
     }
   };
