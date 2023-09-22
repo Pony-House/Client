@@ -740,7 +740,7 @@ const startWeb3 = () => {
         tinyCrypto.provider = new Web3(window.ethereum);
       } else if (window.ethereum.isFrame) {
         tinyCrypto.protocol = 'frame';
-        tinyCrypto.provider = new Web3(window.ethereum);
+        tinyCrypto.provider = new Web3(provider('frame'));
       }
 
     }
