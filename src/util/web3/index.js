@@ -737,11 +737,11 @@ const startWeb3 = () => {
 
       if (window.ethereum.isMetaMask) {
         tinyCrypto.protocol = 'metamask';
-        tinyCrypto.provider = new Web3(window.ethereum);
       } else if (window.ethereum.isFrame) {
         tinyCrypto.protocol = 'frame';
-        tinyCrypto.provider = new Web3(provider('frame'));
       }
+
+      tinyCrypto.provider = new Web3(window.ethereum);
 
     }
 
@@ -751,7 +751,15 @@ const startWeb3 = () => {
       tinyCrypto.changeNetwork = (chainId) => tinyCrypto.provider.eth.switchEthereumChain({ chainId: tinyCrypto.provider.utils.toHex(chainId) });
 
       tinyCrypto.protocol = 'frame';
+
+      /*
+      tinyCrypto.provider = new Web3(new WebSocket('ws://127.0.0.1:1248', {
+        headers: { Origin: __ENV_APP__.info.name }
+      }));
+      */
+
       tinyCrypto.provider = new Web3(provider(['frame', 'direct'], { origin: __ENV_APP__.info.name }));
+
       tinyCrypto.isUnlocked = () => true;
 
     }
