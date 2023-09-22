@@ -5,6 +5,30 @@ import cons from '../../../../client/state/cons';
 import Button from '../../../atoms/button/Button';
 
 function AboutSection() {
+
+    const deps = [
+        ['Matrix JS SDK', __ENV_APP__.deps['matrix-js-sdk']],
+        ['Matrix CRDT', __ENV_APP__.deps['matrix-crdt']],
+        ['Matrix Widget API', __ENV_APP__.deps['matrix-widget-api']],
+        ['Moment Timezone', __ENV_APP__.deps['moment-timezone']],
+        ['Photo Swipe', __ENV_APP__.deps.photoswipe],
+        ['Socket.IO Client', __ENV_APP__.deps.photoswipe],
+        ['Vega', __ENV_APP__.deps.vega],
+        ['Web3.js', __ENV_APP__.deps.web3],
+        ['Yjs', __ENV_APP__.deps.yjs],
+        ['Bootstrap UI', __ENV_APP__.deps.bootstrap],
+        ['Bootstrap Icons', __ENV_APP__.deps['bootstrap-icons']],
+        ['Font Awesome', __ENV_APP__.deps['@fortawesome/fontawesome-free']],
+        ['Crypto Fonts', __ENV_APP__.deps.cryptofonts],
+        ['Emoji Mart Data', __ENV_APP__.deps['@emoji-mart/data']],
+        ['Jitsi', __ENV_APP__.deps['@jitsi/react-sdk']],
+        ['jQuery', __ENV_APP__.deps.jquery],
+        ['jQuery UI', __ENV_APP__.deps['jquery-ui']],
+        ['Linkifyjs', __ENV_APP__.deps.linkifyjs],
+        ['OLM Version', initMatrix.matrixClient.olmVersion.join('.')],
+        ['Verification Methods', initMatrix.matrixClient.verificationMethods.join(', ')],
+    ];
+
     return (
         <div className="noselect">
 
@@ -52,86 +76,9 @@ function AboutSection() {
                 <ul className="list-group list-group-flush">
 
                     <li className="list-group-item very-small text-gray">Matrix Client</li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Matrix JS SDK - {__ENV_APP__.deps['matrix-js-sdk']}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Matrix CRDT - {__ENV_APP__.deps['matrix-crdt']}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Matrix Widget API - {__ENV_APP__.deps['matrix-widget-api']}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Moment Timezone - {__ENV_APP__.deps['moment-timezone']}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Photo Swipe - {__ENV_APP__.deps.photoswipe}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Socket.IO Client - {__ENV_APP__.deps.photoswipe}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Vega - {__ENV_APP__.deps.vega}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Web3.js - {__ENV_APP__.deps.web3}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Yjs - {__ENV_APP__.deps.yjs}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Bootstrap UI - {__ENV_APP__.deps.bootstrap}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Bootstrap Icons - {__ENV_APP__.deps['bootstrap-icons']}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Font Awesome - {__ENV_APP__.deps['@fortawesome/fontawesome-free']}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Crypto Fonts - {__ENV_APP__.deps.cryptofonts}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Emoji Mart Data - {__ENV_APP__.deps['@emoji-mart/data']}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Jitsi - {__ENV_APP__.deps['@jitsi/react-sdk']}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>jQuery - {__ENV_APP__.deps.jquery}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>jQuery UI - {__ENV_APP__.deps['jquery-ui']}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Linkifyjs - {__ENV_APP__.deps.linkifyjs}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>OLM Version - {initMatrix.matrixClient.olmVersion.join('.')}</div>
-                    </li>
-
-                    <li className="list-group-item border-0">
-                        <div className='small'>Verification Methods - {initMatrix.matrixClient.verificationMethods.join(', ')}</div>
-                    </li>
+                    {deps.map((dep => <li className="list-group-item border-0">
+                        <div className='small'><strong>{dep[0]}</strong> - {dep[1]}</div>
+                    </li>))}
 
                 </ul>
 
