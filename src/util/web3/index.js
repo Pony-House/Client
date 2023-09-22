@@ -764,7 +764,7 @@ const startWeb3 = () => {
         reconnect: {
           auto: true,
           delay: 5000, // ms
-          maxAttempts: 99999999,
+          maxAttempts: 999,
           onTimeout: false
         }
 
