@@ -19,7 +19,7 @@ function AboutSection() {
         ['Bootstrap UI', __ENV_APP__.deps.bootstrap],
         ['Bootstrap Icons', __ENV_APP__.deps['bootstrap-icons']],
         ['Font Awesome', __ENV_APP__.deps['@fortawesome/fontawesome-free']],
-        ['Crypto Fonts', __ENV_APP__.deps.cryptofonts],
+        ['Crypto Fonts', __ENV_APP__.deps['@cryptofonts/cryptofont']],
         ['Emoji Mart Data', __ENV_APP__.deps['@emoji-mart/data']],
         ['Jitsi', __ENV_APP__.deps['@jitsi/react-sdk']],
         ['jQuery', __ENV_APP__.deps.jquery],

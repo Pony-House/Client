@@ -3,3 +3,4 @@
 - Frame wallet support added.
 - Profile tabs added.
 - Matrix SDK updated.
+- About page updated.
