@@ -737,11 +737,11 @@ const startWeb3 = () => {
 
       if (window.ethereum.isMetaMask) {
         tinyCrypto.protocol = 'metamask';
+        tinyCrypto.provider = new Web3(window.ethereum);
       } else if (window.ethereum.isFrame) {
         tinyCrypto.protocol = 'frame';
+        tinyCrypto.provider = new Web3(window.ethereum);
       }
-
-      tinyCrypto.provider = new Web3(window.ethereum);
 
     }
 
