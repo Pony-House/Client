@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import clone from 'clone';
 import provider from 'eth-provider';
+import Web3WsProvider from 'web3-providers-ws';
 
 import { objType } from '../tools';
 import startStatus from './status';
@@ -751,14 +752,23 @@ const startWeb3 = () => {
       tinyCrypto.changeNetwork = (chainId) => tinyCrypto.provider.eth.switchEthereumChain({ chainId: tinyCrypto.provider.utils.toHex(chainId) });
 
       tinyCrypto.protocol = 'frame';
+      tinyCrypto.provider = new Web3(new Web3WsProvider('ws://127.0.0.1:1248', {
 
-      /*
-      tinyCrypto.provider = new Web3(new WebSocket('ws://127.0.0.1:1248', {
-        headers: { Origin: __ENV_APP__.info.name }
+        headers: { Origin: __ENV_APP__.info.name },
+
+        clientConfig: {
+          maxReceivedFrameSize: 100000000,   // bytes - default: 1MiB
+          maxReceivedMessageSize: 100000000, // bytes - default: 8MiB
+        },
+
+        reconnect: {
+          auto: true,
+          delay: 5000, // ms
+          maxAttempts: 99999999,
+          onTimeout: false
+        }
+
       }));
-      */
-
-      tinyCrypto.provider = new Web3(provider(['frame', 'direct'], { origin: __ENV_APP__.info.name }));
 
       tinyCrypto.isUnlocked = () => true;
 

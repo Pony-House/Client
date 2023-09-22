@@ -7724,7 +7724,7 @@ web3-providers-ipc@^4.0.6:
     web3-types "^1.2.0"
     web3-utils "^4.0.6"
 
-web3-providers-ws@^4.0.6:
+web3-providers-ws@4.0.6, web3-providers-ws@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/web3-providers-ws/-/web3-providers-ws-4.0.6.tgz#ec989f962f62e1801aef88584c3e72ee1a073373"
   integrity sha512-0Q0SuKpr05gK+tUXdzPNmYlDV3exdqxnHx3f8p3cqz+v66J04EOT31bbETS0VcpDiQ9YaVS8FVSjT4PaseuNag==
