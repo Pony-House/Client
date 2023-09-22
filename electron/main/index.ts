@@ -97,7 +97,7 @@ async function createWindow() {
     firstTime = true;
 
     // Load Frame Extension
-    await loadExtension('frame');
+    // await loadExtension('frame');
 
     // Get Data
     const initFile = path.join(tempFolder, 'init.json');
