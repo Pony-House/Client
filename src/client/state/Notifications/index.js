@@ -12,6 +12,7 @@ import { updateName } from '../../../util/roomName';
 
 import { html, plain } from '../../../util/markdown';
 import { getAccountStatus } from '../../../app/organisms/navigation/ProfileAvatarMenu';
+import { messageIsCrdt } from '../../../util/libs/crdt';
 
 const LogoSVG = './img/png/cinny.png';
 
@@ -441,6 +442,7 @@ class Notifications extends EventEmitter {
 
       if (mEvent.isRedaction()) this._deletePopupNoti(mEvent.event.redacts);
 
+      if (messageIsCrdt(mEvent)) return;
       if (room.isSpaceRoom()) return;
       if (!isNotifEvent(mEvent)) return;
 

@@ -39,8 +39,6 @@ Made by Me
 
     https://docs.walletconnect.com/2.0/web/web3modal/react/wagmi/installation
 
-    https://github.com/YousefED/Matrix-CRDT
-
     =======================================================
 
     --> Adicionar opção para suporte de thumbs com parametros de animação.
