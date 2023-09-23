@@ -1177,7 +1177,7 @@ function Message({
 
   }
 
-  chatboxScrollToBottom();
+  setTimeout(() => chatboxScrollToBottom(), 400);
 
   // Bad Message
   const errorMessage = `<i class="bi bi-key-fill text-warning"></i> <strong>Unable to decrypt message.</strong>`;

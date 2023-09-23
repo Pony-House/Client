@@ -518,7 +518,7 @@ function RoomViewContent({ eventId, roomTimeline }) {
 
     const tinyScroll = $('#chatbox-scroll');
     const body = $('body');
-    body.addClass('cb-temp-noscroll');
+    if (!body.hasClass('fo-cb-top-render')) body.addClass('cb-temp-noscroll');
 
     if (!body.hasClass('fo-cb-top') && !body.hasClass('fo-cb-top-render')) {
       if (tinyScroll.length > 0) {
@@ -547,12 +547,7 @@ function RoomViewContent({ eventId, roomTimeline }) {
       handleScroll(backwards);
     }, 200)();
 
-    if (scrollProtection) {
-      clearTimeout(scrollProtection);
-      scrollProtection = null;
-    }
-
-    scrollProtection = setTimeout(() => body.removeClass('cb-temp-noscroll'), 1000);
+    scrollProtection = setTimeout(() => body.removeClass('cb-temp-noscroll'), 100);
 
   };
 
