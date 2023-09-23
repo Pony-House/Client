@@ -1,24 +1,19 @@
 import React from 'react';
+import LibMessages from './LibMessages';
 import { twemojifyReact } from '../../../../util/twemojify';
-import { textValueToNumber } from '../../../../util/tools';
-import appLoadMsg from '../../../../../mods/appLoadMsg';
 
 export default function JoinMessage({ user, date }) {
+    return <LibMessages
 
-    let textIndex = textValueToNumber(`${user}_${date}`, appLoadMsg.en.welcomeUser.length);
-    if (textIndex > appLoadMsg.en.welcomeUser.length) {
-        textIndex = appLoadMsg.en.welcomeUser.length - 1;
-    } else if (textIndex < 0) {
-        textIndex = 0;
-    }
+        user={user}
+        date={date}
+        where='welcomeUser'
 
-    const msg = appLoadMsg.en.welcomeUser[textIndex].split('[!!{username}!!](usernameOnClick)');
-    if (msg.length === 2) {
-        return <>{`${msg[0]} `}<strong>{twemojifyReact(user)}</strong>{` ${msg[1]}`}</>;
-    }
+        defaultMessage={
+            <><strong>{twemojifyReact(user)}</strong>
+                {' joined the room'}
+            </>
+        }
 
-    return <><strong>{twemojifyReact(user)}</strong>
-        {' joined the room'}
-    </>;
-
+    />
 };
