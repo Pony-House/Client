@@ -32,6 +32,7 @@ const MAX_MSG_DIFF_MINUTES = 5;
 const PLACEHOLDER_COUNT = 2;
 const PLACEHOLDERS_HEIGHT = 96 * PLACEHOLDER_COUNT;
 const SCROLL_TRIGGER_POS = PLACEHOLDERS_HEIGHT * 4;
+let scrollProtection = null;
 
 function loadingMsgPlaceholders(key, count = 2) {
   const pl = [];
@@ -517,6 +518,7 @@ function RoomViewContent({ eventId, roomTimeline }) {
 
     const tinyScroll = $('#chatbox-scroll');
     const body = $('body');
+    body.addClass('stop-chatbox-page-render-scroll');
 
     if (!body.hasClass('force-no-chatbox-top-page') && !body.hasClass('force-no-chatbox-top-page-render')) {
       if (tinyScroll.length > 0) {
@@ -544,6 +546,13 @@ function RoomViewContent({ eventId, roomTimeline }) {
       if (typeof backwards !== 'boolean') return;
       handleScroll(backwards);
     }, 200)();
+
+    if (scrollProtection) {
+      clearTimeout(scrollProtection);
+      scrollProtection = null;
+    }
+
+    scrollProtection = setTimeout(() => body.removeClass('stop-chatbox-page-render-scroll'), 1000);
 
   };
 
