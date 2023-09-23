@@ -6,6 +6,7 @@ import Web3WsProvider from 'web3-providers-ws';
 import { objType } from '../tools';
 import startStatus from './status';
 import initMatrix from '../../client/initMatrix';
+import isDevMode from '../isDevMode';
 
 const tinyCrypto = {};
 
@@ -891,6 +892,7 @@ const startWeb3 = () => {
   };
 
   tinyCrypto.updateProviders();
+  if (isDevMode) global.tinyCrypto = tinyCrypto;
 
   // Start Status
   startStatus();

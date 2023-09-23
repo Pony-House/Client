@@ -1,4 +1,5 @@
 /* eslint-disable no-await-in-loop */
+import isDevMode from '../isDevMode';
 import { objType } from '../tools';
 
 const tinyAPI = {};
@@ -181,5 +182,5 @@ tinyAPI.emitAsync = async function (event) {
 };
 
 // API Insert
-global.tinyAPI = { on: tinyAPI.on, off: tinyAPI.off, once: tinyAPI.once };
+if (isDevMode) global.tinyAPI = { on: tinyAPI.on, off: tinyAPI.off, once: tinyAPI.once };
 export default tinyAPI;

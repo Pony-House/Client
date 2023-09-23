@@ -19,6 +19,7 @@ To find out what global values are available, use this console debug.
 Emitters are always reset when you edit mod files via react. But remember that page elements will not have the same effect.
 
 ```ts
+import tinyAPI from '../../src/util/mods';
 console.log(tinyAPI);
 ```
 
