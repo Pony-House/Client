@@ -28,7 +28,14 @@ export default {
 
         leave_user: [
             '[!!{username}!!](usernameOnClick) left the room.',
+            '[!!{username}!!](usernameOnClick) left the room without closing the door.',
+            '[!!{username}!!](usernameOnClick) jumped out of the window like Papyrus.',
+            '[!!{username}!!](usernameOnClick) self destroyed.',
+            '[!!{username}!!](usernameOnClick) disappeared from the room!',
+            '[!!{username}!!](usernameOnClick)! Where are you!',
+            'Slender found [!!{username}!!](usernameOnClick). It seems this one has disappeared.',
             'Oh no! [!!{username}!!](usernameOnClick) left the room.',
+            'Noooo! [!!{username}!!](usernameOnClick)! Came back here! The silly one left the room! >:c',
         ],
 
         loading: [
