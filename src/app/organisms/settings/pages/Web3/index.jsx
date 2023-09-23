@@ -6,7 +6,7 @@ import clone from 'clone';
 import SettingTile from '../../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../../atoms/button/Toggle';
 import { toggleActionLocal } from '../../Api';
-import { getWeb3Cfg, deleteWeb3Cfg, setWeb3Cfg, getUserWeb3Account, setUserWeb3Account, resetUserWeb3Account } from '../../../../../util/web3';
+import { getWeb3Cfg, deleteWeb3Cfg, setWeb3Cfg, getUserWeb3Account, setUserWeb3Account, resetUserWeb3Account, tinyCrypto } from '../../../../../util/web3';
 import Web3Item from './Web3Item';
 import { objType, tinyConfirm, tinyPrompt } from '../../../../../util/tools';
 import { ethereumUpdate } from '../../../../../client/action/navigation';
@@ -39,7 +39,7 @@ function Web3Section() {
         if (objectHash(newNetworks) !== objectHash(networks)) {
             setNetworks(newNetworks);
         } else {
-            global.tinyCrypto.updateProviders();
+            tinyCrypto.updateProviders();
         }
 
     });
@@ -92,7 +92,7 @@ function Web3Section() {
 
                         <p>Connect your wallet to start configuring your account integration.{__ENV_APP__.electron_mode ? ' It looks like you are using the desktop version! To use the application with your web3 wallet, you need to have the frame wallet installed on your computer.' : ''}</p>
 
-                        <button type="button" className={`btn btn-sm btn-primary my-1 my-sm-0${global.tinyCrypto.protocol === null ? ' disabled' : ''}`} disabled={global.tinyCrypto.protocol === null} onClick={() => {
+                        <button type="button" className={`btn btn-sm btn-primary my-1 my-sm-0${tinyCrypto.protocol === null ? ' disabled' : ''}`} disabled={tinyCrypto.protocol === null} onClick={() => {
                             $.LoadingOverlay('show');
                             setUserWeb3Account().then((userData) => {
 
@@ -108,7 +108,7 @@ function Web3Section() {
                                 console.error(err);
                                 alert(err.message);
                             })
-                        }}><i className="fa-brands fa-ethereum" /> Connect Wallet{global.tinyCrypto.protocol === 'frame' ? ' (Frame)' : global.tinyCrypto.protocol === 'metamask' ? ' (Metamask)' : ''}</button>
+                        }}><i className="fa-brands fa-ethereum" /> Connect Wallet{tinyCrypto.protocol === 'frame' ? ' (Frame)' : tinyCrypto.protocol === 'metamask' ? ' (Metamask)' : ''}</button>
 
                     </>}
 

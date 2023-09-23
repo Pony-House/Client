@@ -1,3 +1,4 @@
+import { tinyCrypto } from '../../util/web3';
 import { setSelectRoom, setSelectSpace } from '../../util/selectedRoom';
 import appDispatcher from '../dispatcher';
 import cons from '../state/cons';
@@ -125,7 +126,7 @@ export function openProfileViewer(userId, roomId) {
 }
 
 export function openSettings(tabText) {
-  if (global.tinyCrypto && global.tinyCrypto.call && typeof global.tinyCrypto.call.requestAccounts === 'function' && global.tinyCrypto.isUnlocked()) global.tinyCrypto.call.requestAccounts();
+  if (tinyCrypto && tinyCrypto.call && typeof tinyCrypto.call.requestAccounts === 'function' && tinyCrypto.isUnlocked()) tinyCrypto.call.requestAccounts();
   appDispatcher.dispatch({
     type: cons.actions.navigation.OPEN_SETTINGS,
     tabText,

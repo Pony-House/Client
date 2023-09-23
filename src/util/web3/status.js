@@ -1,7 +1,7 @@
+import { tinyCrypto } from ".";
 import { toast } from "../tools";
 
 let header;
-
 export function setEthereumStatusButton(newHeader) { header = newHeader; };
 export default function startStatus() {
 
@@ -9,25 +9,25 @@ export default function startStatus() {
     const checkConnection = function () {
         if (header) {
 
-            if (!global.tinyCrypto.existEthereum()) {
+            if (!tinyCrypto.existEthereum()) {
 
                 if (!__ENV_APP__.electron_mode) toast('You don\'t have a ethereum Wallet installed in your browser!', 'Ethereum Wallet');
 
                 if (header) header.addClass('ethereum-none');
-                global.tinyCrypto.allowActions = false;
+                tinyCrypto.allowActions = false;
 
             } else {
                 if (header) header.removeClass('ethereum-none');
-                global.tinyCrypto.allowActions = true;
+                tinyCrypto.allowActions = true;
             }
 
         }
     };
 
-    if (global.tinyCrypto.existEthereum()) {
-        global.tinyCrypto.on('readyProvider', checkConnection);
-        global.tinyCrypto.on('checkConnection', checkConnection);
-        global.tinyCrypto.on('accountsChanged', checkConnection);
+    if (tinyCrypto.existEthereum()) {
+        tinyCrypto.on('readyProvider', checkConnection);
+        tinyCrypto.on('checkConnection', checkConnection);
+        tinyCrypto.on('accountsChanged', checkConnection);
     }
 
 };

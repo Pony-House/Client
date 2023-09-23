@@ -15,7 +15,7 @@ import Avatar from '../../../atoms/avatar/Avatar';
 import { notificationClasses, useNotificationUpdate } from './Notification';
 import SidebarAvatar from '../../../molecules/sidebar-avatar/SidebarAvatar';
 import NotificationBadge from '../../../atoms/badge/NotificationBadge';
-import { getUserWeb3Account } from '../../../../util/web3';
+import { getUserWeb3Account, tinyCrypto } from '../../../../util/web3';
 import navigation from '../../../../client/state/navigation';
 import { setEthereumStatusButton } from '../../../../util/web3/status';
 
@@ -119,7 +119,7 @@ export default function FeaturedTab() {
             {userWeb3.address ? <SidebarAvatar
                 ref={ethereumButton}
                 tooltip={`Ethereum${!userWeb3.valid ? ' (INVALID ACCOUNT)' : ''}`}
-                className={`ethereum-sidebar-icon ${userWeb3.valid ? 'ethereum-valid' : 'ethereum-invalid'}${!global.tinyCrypto.existEthereum() ? ' ethereum-none' : ''}`}
+                className={`ethereum-sidebar-icon ${userWeb3.valid ? 'ethereum-valid' : 'ethereum-invalid'}${!tinyCrypto.existEthereum() ? ' ethereum-none' : ''}`}
                 active={null}
                 onClick={() => openSettings(settingTabText.WEB3)}
                 avatar={<Avatar faSrc="fa-brands fa-ethereum" size="normal" />}
