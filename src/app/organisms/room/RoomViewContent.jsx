@@ -518,23 +518,23 @@ function RoomViewContent({ eventId, roomTimeline }) {
 
     const tinyScroll = $('#chatbox-scroll');
     const body = $('body');
-    body.addClass('stop-chatbox-page-render-scroll');
+    body.addClass('cb-temp-noscroll');
 
-    if (!body.hasClass('force-no-chatbox-top-page') && !body.hasClass('force-no-chatbox-top-page-render')) {
+    if (!body.hasClass('fo-cb-top') && !body.hasClass('fo-cb-top-render')) {
       if (tinyScroll.length > 0) {
 
         const scrollSize = tinyScroll.prop('scrollHeight') - $(window).height();
         if (tinyScroll.scrollTop() >= scrollSize - 300) {
-          body.addClass('chatbox-top-page');
+          body.addClass('cb-top-page');
         } else {
-          body.removeClass('chatbox-top-page');
+          body.removeClass('cb-top-page');
         }
 
       } else {
-        body.addClass('chatbox-top-page');
+        body.addClass('cb-top-page');
       }
     } else {
-      body.removeClass('chatbox-top-page');
+      body.removeClass('cb-top-page');
     }
 
     const timelineScroll = timelineScrollRef.current;
@@ -552,7 +552,7 @@ function RoomViewContent({ eventId, roomTimeline }) {
       scrollProtection = null;
     }
 
-    scrollProtection = setTimeout(() => body.removeClass('stop-chatbox-page-render-scroll'), 1000);
+    scrollProtection = setTimeout(() => body.removeClass('cb-temp-noscroll'), 1000);
 
   };
 
@@ -648,12 +648,12 @@ function RoomViewContent({ eventId, roomTimeline }) {
     }
 
     if (renderingHolders) {
-      body.addClass('force-no-chatbox-top-page-render');
+      body.addClass('fo-cb-top-render');
     } else {
-      body.removeClass('force-no-chatbox-top-page-render');
+      body.removeClass('fo-cb-top-render');
     }
 
-    body.removeClass('chatbox-top-page');
+    body.removeClass('cb-top-page');
 
     return tl;
 

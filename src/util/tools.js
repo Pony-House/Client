@@ -63,10 +63,10 @@ export function hljsFixer(el, where) {
 
 export function chatboxScrollToBottom(forceScroll = false) {
     const body = $('body');
-    if (forceScroll || body.hasClass('chatbox-top-page')) {
+    if (forceScroll || body.hasClass('cb-top-page')) {
         for (let i = 0; i < 60; i++) {
             setTimeout(() => {
-                if (!body.hasClass('force-no-chatbox-top-page') && !body.hasClass('force-no-chatbox-top-page-render') && !body.hasClass('stop-chatbox-page-render-scroll')) {
+                if (!body.hasClass('fo-cb-top') && !body.hasClass('fo-cb-top-render') && !body.hasClass('cb-temp-noscroll')) {
                     $('#chatbox-scroll').scrollTop(99999);
                 }
             }, 3 * Number(i + 1));

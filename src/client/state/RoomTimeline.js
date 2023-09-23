@@ -232,7 +232,7 @@ class RoomTimeline extends EventEmitter {
   async loadEventTimeline(eventId) {
 
     // we use first unfiltered EventTimelineSet for room pagination.
-    $('body').addClass('force-no-chatbox-top-page').removeClass('chatbox-top-page');
+    $('body').addClass('fo-cb-top').removeClass('cb-top-page');
     if (timeoutForceChatbox) {
       clearTimeout(timeoutForceChatbox);
     }
@@ -246,12 +246,12 @@ class RoomTimeline extends EventEmitter {
       await this._reset();
       this.emit(cons.events.roomTimeline.READY, eventId);
 
-      timeoutForceChatbox = setTimeout(() => $('body').removeClass('force-no-chatbox-top-page'), 500);
+      timeoutForceChatbox = setTimeout(() => $('body').removeClass('fo-cb-top'), 500);
 
       return true;
 
     } catch {
-      timeoutForceChatbox = setTimeout(() => $('body').removeClass('force-no-chatbox-top-page'), 500);
+      timeoutForceChatbox = setTimeout(() => $('body').removeClass('fo-cb-top'), 500);
       return false;
     }
 
