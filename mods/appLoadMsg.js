@@ -2,7 +2,7 @@ export default {
 
     en: {
 
-        welcomeUser: [
+        join_user: [
             '[!!{username}!!](usernameOnClick) just joined the server - glhf!',
             '[!!{username}!!](usernameOnClick) just joined. Everyone, look busy!',
             '[!!{username}!!](usernameOnClick) just joined. Can I get a heal?',
@@ -24,6 +24,11 @@ export default {
             'Where’s [!!{username}!!](usernameOnClick)? In the server!',
             '[!!{username}!!](usernameOnClick) hopped into the server. Kangaroo!!',
             '[!!{username}!!](usernameOnClick) just showed up. Hold my beer.',
+        ],
+
+        leave_user: [
+            '[!!{username}!!](usernameOnClick) left the room.',
+            'Oh no! [!!{username}!!](usernameOnClick) left the room.',
         ],
 
         loading: [

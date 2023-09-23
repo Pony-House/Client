@@ -7,7 +7,7 @@ export default function JoinMessage({ user, date }) {
 
         user={user}
         date={date}
-        where='welcomeUser'
+        where='join_user'
 
         defaultMessage={
             <><strong>{twemojifyReact(user)}</strong>
