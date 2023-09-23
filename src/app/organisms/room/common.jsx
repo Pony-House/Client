@@ -51,11 +51,13 @@ function getTimelineJSXMessages() {
 }
 
 function getUsersActionJsx(roomId, userIds, actionStr) {
+
   const room = initMatrix.matrixClient.getRoom(roomId);
   const getUserDisplayName = (userId) => {
     if (room?.getMember(userId)) return getUsernameOfRoomMember(room.getMember(userId));
     return getUsername(userId);
   };
+
   const getUserJSX = (userId) => <strong>{twemojifyReact(getUserDisplayName(userId))}</strong>;
   if (!Array.isArray(userIds)) return 'Idle';
   if (userIds.length === 0) return 'Idle';
@@ -78,14 +80,17 @@ function getUsersActionJsx(roomId, userIds, actionStr) {
   const othersCount = userIds.length - MAX_VISIBLE_COUNT;
   // eslint-disable-next-line react/jsx-one-expression-per-line
   return <>{u1Jsx}, {u2Jsx}, {u3Jsx} and {othersCount} others are {actionStr}</>;
+
 }
 
 function parseTimelineChange(mEvent) {
+
   const tJSXMsgs = getTimelineJSXMessages();
   const makeReturnObj = (variant, content) => ({
     variant,
     content,
   });
+
   const content = mEvent.getContent();
   const prevContent = mEvent.getPrevContent();
   const sender = mEvent.getSender();
@@ -93,8 +98,10 @@ function parseTimelineChange(mEvent) {
   const userName = getUsername(mEvent.getStateKey());
 
   switch (content.membership) {
+
     case 'invite': return makeReturnObj('invite', tJSXMsgs.invite(senderName, userName));
     case 'ban': return makeReturnObj('leave', tJSXMsgs.ban(senderName, userName, content.reason));
+
     case 'join':
       if (prevContent.membership === 'join') {
         if (content.displayname !== prevContent.displayname) {
@@ -110,6 +117,7 @@ function parseTimelineChange(mEvent) {
         return null;
       }
       return makeReturnObj('join', tJSXMsgs.join(senderName));
+
     case 'leave':
       if (sender === mEvent.getStateKey()) {
         switch (prevContent.membership) {
@@ -124,8 +132,11 @@ function parseTimelineChange(mEvent) {
         // if not from invite/ban then this is a kick
         default: return makeReturnObj('leave', tJSXMsgs.kick(senderName, userName, content.reason));
       }
+
     default: return null;
+
   }
+
 }
 
 export {
