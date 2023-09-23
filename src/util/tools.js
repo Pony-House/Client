@@ -11,7 +11,7 @@ let head;
 // Message to number
 export function textValueToNumber(text = '', nb = 11) {
 
-    const encodedMsg = Buffer.from(text)
+    const encodedMsg = Buffer.from(String(text))
         .toString('base64')
         .split('');
 

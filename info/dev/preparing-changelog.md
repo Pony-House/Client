@@ -4,3 +4,4 @@
 - Profile tabs added.
 - Matrix SDK updated.
 - About page updated.
+- Fun join messages added.
