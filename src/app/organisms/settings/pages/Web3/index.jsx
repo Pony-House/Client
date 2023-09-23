@@ -36,7 +36,11 @@ function Web3Section() {
         newNetworks.keys.sort((a, b) => newWeb3Settings.networks[a].chainIdInt - newWeb3Settings.networks[b].chainIdInt);
         newNetworks.values.sort((a, b) => a.chainIdInt - b.chainIdInt);
 
-        if (objectHash(newNetworks) !== objectHash(networks)) setNetworks(newNetworks);
+        if (objectHash(newNetworks) !== objectHash(networks)) {
+            setNetworks(newNetworks);
+        } else {
+            global.tinyCrypto.updateProviders();
+        }
 
     });
 
@@ -184,10 +188,6 @@ function Web3Section() {
                         web3ConfigUploadRef.current.click();
                     }}>Import</button>
 
-                </li>
-
-                <li className="list-group-item very-small text-gray">
-                    For the settings to take effect, please restart the app.
                 </li>
 
             </ul>

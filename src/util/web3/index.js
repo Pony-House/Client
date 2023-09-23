@@ -856,6 +856,7 @@ const startWeb3 = () => {
   tinyCrypto.call = Object.freeze(tinyCrypto.call);
   tinyCrypto.get = Object.freeze(tinyCrypto.get);
 
+  // Functions
   tinyCrypto.getCfg = getWeb3Cfg;
   tinyCrypto.setCfg = setWeb3Cfg;
   tinyCrypto.deleteCfg = deleteWeb3Cfg;
@@ -866,6 +867,32 @@ const startWeb3 = () => {
 
   tinyCrypto.setUser = setUserWeb3Account;
   tinyCrypto.resetUser = resetUserWeb3Account;
+
+  // Providers
+  tinyCrypto.updateProviders = () => {
+
+    const config = tinyCrypto.getCfg();
+    tinyCrypto.networks = config?.networks;
+
+    if (objType(tinyCrypto.userProviders, 'object')) {
+      for (const item in tinyCrypto.userProviders) {
+        if (typeof tinyCrypto.userProviders[item] !== 'undefined') delete tinyCrypto.userProviders[item];
+      }
+    }
+
+    tinyCrypto.userProviders = {};
+
+    if (config.web3Enabled && objType(tinyCrypto.networks, 'object')) {
+      for (const item in tinyCrypto.networks) {
+        if (Array.isArray(tinyCrypto.networks[item].rpcUrls) && typeof tinyCrypto.networks[item].rpcUrls[0] === 'string') {
+          tinyCrypto.userProviders[item] = new Web3(tinyCrypto.networks[item].rpcUrls[0]);
+        }
+      }
+    }
+
+  };
+
+  tinyCrypto.updateProviders();
 
   // Insert into global
   global.tinyCrypto = tinyCrypto;
