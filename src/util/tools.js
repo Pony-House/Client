@@ -8,6 +8,23 @@ let resizePlace = null;
 let resizeTimeout = null;
 let head;
 
+// Message to number
+export function textValueToNumber(text = '', nb = 11) {
+
+    const encodedMsg = Buffer.from(text)
+        .toString('base64')
+        .split('');
+
+    encodedMsg.forEach((item, index, array) => {
+        array[index] = item.charCodeAt(0);
+    });
+
+    return encodedMsg.reduce((a, b) => a + b, 0) % nb;
+
+}
+
+global.textValueToNumber = textValueToNumber;
+
 // Check DOM Visible
 export function checkVisible(elm) {
     const rect = elm.getBoundingClientRect();

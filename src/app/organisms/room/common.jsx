@@ -5,136 +5,49 @@ import { twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 import { getUsername, getUsernameOfRoomMember } from '../../../util/matrixUtil';
 
+import JoinMessage from './chat-messages/Join';
+import LeaveMessage from './chat-messages/Leave';
+
+import InviteMessage from './chat-messages/Invite';
+import CancelInviteMessage from './chat-messages/CancelInvite';
+import RejectInviteMessage from './chat-messages/RejectInvite';
+
+import BanMessage from './chat-messages/Ban';
+import UnbanMessage from './chat-messages/Unban';
+
+import AvatarSetsMessage from './chat-messages/AvatarSets';
+import AvatarChangedMessage from './chat-messages/AvatarChanged';
+import AvatarRemovedMessage from './chat-messages/AvatarRemoved';
+
+import NameSetsMessage from './chat-messages/NameSets';
+import NameChangedMessage from './chat-messages/NameChanged';
+import NameRemovedMessage from './chat-messages/NameRemoved';
+
 function getTimelineJSXMessages() {
+
   return {
-    join(user) {
-      return (
-        <>
-          <strong>{twemojifyReact(user)}</strong>
-          {' joined the room'}
-        </>
-      );
-    },
-    leave(user, reason) {
-      const reasonMsg = (typeof reason === 'string') ? `: ${reason}` : '';
-      return (
-        <>
-          <strong>{twemojifyReact(user)}</strong>
-          {' left the room'}
-          {twemojifyReact(reasonMsg)}
-        </>
-      );
-    },
-    invite(inviter, user) {
-      return (
-        <>
-          <strong>{twemojifyReact(inviter)}</strong>
-          {' invited '}
-          <strong>{twemojifyReact(user)}</strong>
-        </>
-      );
-    },
-    cancelInvite(inviter, user) {
-      return (
-        <>
-          <strong>{twemojifyReact(inviter)}</strong>
-          {' canceled '}
-          <strong>{twemojifyReact(user)}</strong>
-          {'\'s invite'}
-        </>
-      );
-    },
-    rejectInvite(user) {
-      return (
-        <>
-          <strong>{twemojifyReact(user)}</strong>
-          {' rejected the invitation'}
-        </>
-      );
-    },
-    kick(actor, user, reason) {
-      const reasonMsg = (typeof reason === 'string') ? `: ${reason}` : '';
-      return (
-        <>
-          <strong>{twemojifyReact(actor)}</strong>
-          {' kicked '}
-          <strong>{twemojifyReact(user)}</strong>
-          {twemojifyReact(reasonMsg)}
-        </>
-      );
-    },
-    ban(actor, user, reason) {
-      const reasonMsg = (typeof reason === 'string') ? `: ${reason}` : '';
-      return (
-        <>
-          <strong>{twemojifyReact(actor)}</strong>
-          {' banned '}
-          <strong>{twemojifyReact(user)}</strong>
-          {twemojifyReact(reasonMsg)}
-        </>
-      );
-    },
-    unban(actor, user) {
-      return (
-        <>
-          <strong>{twemojifyReact(actor)}</strong>
-          {' unbanned '}
-          <strong>{twemojifyReact(user)}</strong>
-        </>
-      );
-    },
-    avatarSets(user) {
-      return (
-        <>
-          <strong>{twemojifyReact(user)}</strong>
-          {' set a avatar'}
-        </>
-      );
-    },
-    avatarChanged(user) {
-      return (
-        <>
-          <strong>{twemojifyReact(user)}</strong>
-          {' changed their avatar'}
-        </>
-      );
-    },
-    avatarRemoved(user) {
-      return (
-        <>
-          <strong>{twemojifyReact(user)}</strong>
-          {' removed their avatar'}
-        </>
-      );
-    },
-    nameSets(user, newName) {
-      return (
-        <>
-          <strong>{twemojifyReact(user)}</strong>
-          {' set display name to '}
-          <strong>{twemojifyReact(newName)}</strong>
-        </>
-      );
-    },
-    nameChanged(user, newName) {
-      return (
-        <>
-          <strong>{twemojifyReact(user)}</strong>
-          {' changed their display name to '}
-          <strong>{twemojifyReact(newName)}</strong>
-        </>
-      );
-    },
-    nameRemoved(user, lastName) {
-      return (
-        <>
-          <strong>{twemojifyReact(user)}</strong>
-          {' removed their display name '}
-          <strong>{twemojifyReact(lastName)}</strong>
-        </>
-      );
-    },
+
+    join(user) { return <JoinMessage user={user} />; },
+    leave(user, reason) { return <LeaveMessage user={user} reason={reason} />; },
+
+    invite(inviter, user) { return <InviteMessage user={user} inviter={inviter} />; },
+    cancelInvite(inviter, user) { return <CancelInviteMessage user={user} inviter={inviter} />; },
+    rejectInvite(user) { return <RejectInviteMessage user={user} />; },
+
+    kick(actor, user, reason) { return <RejectInviteMessage actor={actor} user={user} reason={reason} />; },
+    ban(actor, user, reason) { return <BanMessage actor={actor} user={user} reason={reason} />; },
+    unban(actor, user) { return <UnbanMessage actor={actor} user={user} />; },
+
+    avatarSets(user) { return <AvatarSetsMessage user={user} />; },
+    avatarChanged(user) { return <AvatarChangedMessage user={user} />; },
+    avatarRemoved(user) { return <AvatarRemovedMessage user={user} />; },
+
+    nameSets(user, newName) { return <NameSetsMessage newName={newName} user={user} />; },
+    nameChanged(user, newName) { return <NameChangedMessage newName={newName} user={user} />; },
+    nameRemoved(user, lastName) { return <NameRemovedMessage lastName={lastName} user={user} />; },
+
   };
+
 }
 
 function getUsersActionJsx(roomId, userIds, actionStr) {

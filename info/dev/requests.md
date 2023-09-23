@@ -37,8 +37,6 @@ Made by Me
 
     Sistema de trocar o tamanho da imagem antes de enviar.
 
-    https://docs.walletconnect.com/2.0/web/web3modal/react/wagmi/installation
-
     =======================================================
 
     --> Adicionar opção para suporte de thumbs com parametros de animação.
