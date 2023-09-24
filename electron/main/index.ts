@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain, Tray, Menu, session } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, Tray, Menu } from 'electron';
 
 import fs from 'node:fs';
 import { release } from 'node:os';
@@ -57,38 +57,6 @@ const appShow = {
   },
 
   enabled: false,
-};
-
-const unPackedFolder = path
-  .join(app.getAppPath(), './dist-electron')
-  .replace('app.asar', 'app.asar.unpacked');
-const isUnpacked = unPackedFolder.includes('app.asar.unpacked');
-
-const loadExtension = async (where: string) => {
-  if (isUnpacked) {
-    try {
-      await session.defaultSession.loadExtension(
-        path.join(unPackedFolder, `./extensions/${where}`),
-      );
-      return true;
-    } catch {
-      try {
-        await session.defaultSession.loadExtension(path.join(__dirname, `../extensions/${where}`));
-        return true;
-      } catch (err) {
-        console.error(err);
-        return false;
-      }
-    }
-  } else {
-    try {
-      await session.defaultSession.loadExtension(path.join(__dirname, `../extensions/${where}`));
-      return true;
-    } catch (err) {
-      console.error(err);
-      return false;
-    }
-  }
 };
 
 async function createWindow() {
@@ -162,8 +130,6 @@ async function createWindow() {
       // Ping
       if (win && win.webContents) {
         win.webContents.send('ping', {
-          isUnpacked,
-          unPackedFolder,
           DIST_ELECTRON: process.env.DIST_ELECTRON,
           DIST: process.env.DIST,
           VITE_DEV_SERVER_URL: process.env.VITE_DEV_SERVER_URL,

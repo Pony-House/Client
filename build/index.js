@@ -16,10 +16,6 @@ twemoji.srcRep = path.join(__dirname, '../repositories/twemoji');
 twemoji.srcDir = path.join(__dirname, '../repositories/twemoji/assets');
 twemoji.destDir = path.join(__dirname, '../public/img/twemoji');
 
-// Frame labs
-const framelabs = {};
-framelabs.srcDir = path.join(__dirname, '../electron/extensions/frame');
-
 // Git Build
 const gitBuild = (rep, name) => new Promise((resolve, reject) => {
     const ls = spawn(`cd "${rep}" && npm install && npm run build`, {
@@ -63,12 +59,6 @@ try {
         fse.rmSync(twemoji.destDir, { recursive: true, force: true });
     }
 
-    if (fse.existsSync(framelabs.srcDir)) {
-        oldVersionsCount++;
-        console.log(`[deps] Removing old frame labs cache...`);
-        fse.rmSync(framelabs.srcDir, { recursive: true, force: true });
-    }
-
     if (oldVersionsCount > 0) {
         console.log(`[deps] Cache removed!`);
     }
@@ -91,17 +81,7 @@ try {
                 console.log(`[twemoji] Success!`);
 
                 // Frame extension
-                console.log(`[frame-labs-extension] Installing chrome extension files into the electron folder...`);
-                download('direct:https://github.com/frame-labs/frame-extension/archive/refs/tags/v0.10.2.zip', framelabs.srcDir, (err1) => {
-                    if (err1) {
-                        console.error(err1);
-                    } else {
-                        gitBuild(framelabs.srcDir, 'frame-labs-extension').then(() => {
-                            console.log(`[deps] Complete!`);
-                        }).catch(console.error);
-                        console.log(`[deps] Complete!`);
-                    }
-                });
+                console.log(`[deps] Complete!`);
 
             }).catch(console.error);
         }

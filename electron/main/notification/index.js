@@ -1,13 +1,11 @@
 import fs from 'fs';
 import path from 'path';
-import notifier from 'node-notifier';
 import { Notification } from 'electron';
 
 import deleteAllFilesInDir from '../../fs/deleteAllFilesInDir';
 import { objType } from '../../../src/util/tools';
-import { createDirName, tempFolderNoti } from '../tempFolders';
+import { tempFolderNoti } from '../tempFolders';
 
-const { __dirname } = createDirName(import.meta.url);
 deleteAllFilesInDir(tempFolderNoti);
 const notifications = {};
 let win;
@@ -25,14 +23,6 @@ const filterEvent = () => {
     return tinyE;
 
 };
-
-notifier.on('click', (notifierObject, options) => {
-    win.send('tiny-notification-all', { type: 'click', notifierObject, options });
-});
-
-notifier.on('timeout', (notifierObject, options) => {
-    win.send('tiny-notification-all', { type: 'timeout', notifierObject, options });
-});
 
 // Engines
 const engines = {
@@ -68,46 +58,6 @@ const engines = {
 
         notifications[tag].on('failed', (event, error) => win.send('tiny-notification-failed', { tag, event: filterEvent(event), error: { message: error.message, fileName: error.fileName, lineNumber: error.lineNumber } }));
         notifications[tag].on('close', closeNoti);
-
-    },
-
-    // Node Notifier
-    notifier: (tag, data, closeNoti, timeout, closeTimeout) => {
-
-        // Clear default timeout
-        clearTimeout(closeTimeout);
-
-        notifier.notify({
-
-            appID: 'pony-house-matrix',
-            id: tag,
-
-            title: data?.title,
-            subtitle: data?.subtitle,
-            message: data?.body,
-            sound: data?.silent === true ? false : data?.sound ? data.sound : path.join(__dirname, './sounds/notification.ogg'), // Case Sensitive string for location of sound file, or use one of macOS' native sounds (see below)
-            icon: data?.icon, // Absolute Path to Triggering Icon
-            contentImage: data?.image, // Absolute Path to Attached Image (Content Image)
-            open: data?.url, // URL to open on Click
-            wait: data?.wait, // Wait for User Action against Notification or times out. Same as timeout = 5 seconds
-
-            timeout: timeout / 1000, // Takes precedence over wait if both are defined.
-            time: timeout,
-
-            closeLabel: data?.closeButtonText, // String. Label for cancel button
-            actions: data?.actions, // String | Array<String>. Action label or list of labels in case of dropdown
-            dropdownLabel: data?.dropdownLabel, // String. Label to be used if multiple actions
-            reply: data?.reply // Boolean. If notification should take input. Value passed as third argument in callback and event emitter.
-
-        }, (err, response, metadata) => {
-
-            if (err) {
-                win.send('tiny-notification-failed', { tag, error: { message: err } });
-            }
-
-            win.send('tiny-notification-all', { type: 'callback', tag, response, metadata });
-
-        });
 
     },
 

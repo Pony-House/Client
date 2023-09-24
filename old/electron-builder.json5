@@ -1,0 +1,3 @@
+{
+  asarUnpack: ['./node_modules/node-notifier/vendor/**', './dist-electron/extensions/**'],
+}
