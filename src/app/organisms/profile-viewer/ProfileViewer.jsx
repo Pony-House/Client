@@ -477,8 +477,9 @@ function ProfileViewer() {
 
         // Update Status Icon
         const content = updateUserStatusIcon(status, tinyUser);
-        const ethereumValid = (content && content.presenceStatusMsg.ethereum && content.presenceStatusMsg.ethereum.valid);
-        if (content && content.presenceStatusMsg) {
+        const existPresence = (content && content.presenceStatusMsg);
+        const ethereumValid = (existPresence && content.presenceStatusMsg.ethereum && content.presenceStatusMsg.ethereum.valid);
+        if (existPresence) {
 
           // Ethereum
           if (ethereumValid) {
