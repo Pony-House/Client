@@ -63,9 +63,10 @@ export function hljsFixer(el, where) {
 
 export function chatboxScrollToBottom(forceScroll = false, scrollTime = 400) {
 
+    const body = $('body');
+    const checker = forceScroll || body.hasClass('cb-top-page');
     const tinyAction = () => {
-        const body = $('body');
-        if (forceScroll || body.hasClass('cb-top-page')) {
+        if (checker) {
             for (let i = 0; i < 60; i++) {
                 setTimeout(() => {
                     if (!body.hasClass('fo-cb-top') && !body.hasClass('fo-cb-top-render') && !body.hasClass('cb-temp-noscroll')) {
