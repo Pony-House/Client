@@ -1,6 +1,7 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import clone from 'clone';
+import { Buffer } from 'buffer';
 
 import { startWeb3 } from './util/web3';
 import startQuery from './util/libs/jquery';
@@ -19,6 +20,7 @@ function startApp(appProtocol) {
 
     console.log(`[app] Starting app using the protocol "${appProtocol}" mode.`);
     global.getEnvApp = () => clone(__ENV_APP__);
+    if (__ENV_APP__.electron_mode) { global.Buffer = Buffer; }
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
     return root.render(<App />);
