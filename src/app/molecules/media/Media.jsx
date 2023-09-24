@@ -61,7 +61,7 @@ function FileHeader({
     }
   }
 
-  if (!disableChatScroll) setTimeout(() => chatboxScrollToBottom(), 400);
+  if (!disableChatScroll) chatboxScrollToBottom();
   return (
     <div className="file-header">
       <Text className="file-name" variant="b3">{name}</Text>
@@ -108,7 +108,7 @@ FileHeader.propTypes = {
 function File({
   name, link, file, type, disableChatScroll,
 }) {
-  if (!disableChatScroll) setTimeout(() => chatboxScrollToBottom(), 400);
+  if (!disableChatScroll) chatboxScrollToBottom();
   return (
     <div className="file-container">
       <FileHeader name={name} link={link} file={file} type={type} />
@@ -153,7 +153,7 @@ function Image({
     setLightbox(!lightbox);
   };
 
-  if (!disableChatScroll) setTimeout(() => chatboxScrollToBottom(), 400);
+  if (!disableChatScroll) chatboxScrollToBottom();
 
   const imgData = url !== null && (
     <img
@@ -247,7 +247,7 @@ function Sticker({
     };
   }, []);
 
-  if (!disableChatScroll) setTimeout(() => chatboxScrollToBottom(), 400);
+  if (!disableChatScroll) chatboxScrollToBottom();
 
   return (
     <Tooltip
@@ -293,7 +293,7 @@ function Audio({
     loadAudio();
   }
 
-  if (!disableChatScroll) setTimeout(() => chatboxScrollToBottom(), 400);
+  if (!disableChatScroll) chatboxScrollToBottom();
 
   return (
     <div className="file-container">
@@ -356,7 +356,7 @@ function Video({
     loadVideo();
   };
 
-  if (!disableChatScroll) setTimeout(() => chatboxScrollToBottom(), 400);
+  if (!disableChatScroll) chatboxScrollToBottom();
 
   return (
     url === null ? (
