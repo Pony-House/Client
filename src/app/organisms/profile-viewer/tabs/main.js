@@ -2,10 +2,10 @@ import { twemojify } from '../../../../util/twemojify';
 import { copyToClipboard } from '../../../../util/common';
 import { toast } from '../../../../util/tools';
 
-export default function renderAbout(displayNameRef, customStatusRef, profileBanner, bioRef, content) {
+export default function renderAbout(ethereumValid, displayNameRef, customStatusRef, profileBanner, bioRef, content) {
 
     // Ethereum
-    if (content.presenceStatusMsg.ethereum && content.presenceStatusMsg.ethereum.valid) {
+    if (ethereumValid) {
 
         const displayName = $(displayNameRef.current);
         let ethereumIcon = displayName.find('#ethereum-icon');

@@ -33,7 +33,9 @@ import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 import { toast } from '../../../util/tools';
 import { getUserWeb3Account } from '../../../util/web3';
+
 import renderAbout from './tabs/main';
+import renderEthereum from './tabs/ethereum';
 
 function ModerationTools({
   roomId, userId,
@@ -398,10 +400,12 @@ function ProfileViewer() {
 
       // Menu Bar
       const menubar = $(menubarRef.current);
+      const menuBarItems = [];
 
       // Create menu
-      const menuItem = (name, openItem = null) => $('<li>', { class: 'nav-item' }).append(
-        $('<a>', { class: `nav-link ${typeof openItem !== 'function' ? ' active text-bg-force' : ''}`, href: '#' }).on('click', () => {
+      const menuItem = (name, openItem = null) => {
+
+        const button = $('<a>', { class: `nav-link text-bg-force ${typeof openItem !== 'function' ? ' active' : ''}`, href: '#' }).on('click', (event) => {
 
           // Get refs
           const bioPlace = $(bioRef.current);
@@ -411,6 +415,12 @@ function ProfileViewer() {
           bioPlace.addClass('d-none');
           customPlace.addClass('d-none');
 
+          for (const item in menuBarItems) {
+            menuBarItems[item].removeClass('active');
+          }
+
+          button.addClass('active');
+
           // Show items back
           if (typeof openItem === 'function') {
             customPlace.find('#insert-custom-place').empty().append(openItem()).removeClass('d-none');
@@ -418,11 +428,15 @@ function ProfileViewer() {
             bioPlace.removeClass('d-none');
           }
 
-        }).text(name)
-      );
+        });
+
+        menuBarItems.push(button);
+        return $('<li>', { class: 'nav-item' }).append(button.text(name));
+
+      };
 
       // Create Menu Bar Time
-      const enableMenuBar = (menubarReasons = 0) => {
+      const enableMenuBar = (ethereumValid, menubarReasons = 0) => {
 
         // Clear Menu bar
         menubar.empty().removeClass('d-none');
@@ -432,6 +446,9 @@ function ProfileViewer() {
 
           // User info
           menubar.append(menuItem('User info'));
+
+          // Ethereum
+          if (ethereumValid) menubar.append(menuItem('Ethereum', renderEthereum));
 
         }
 
@@ -460,19 +477,20 @@ function ProfileViewer() {
 
         // Update Status Icon
         const content = updateUserStatusIcon(status, tinyUser);
+        const ethereumValid = (content && content.presenceStatusMsg.ethereum && content.presenceStatusMsg.ethereum.valid);
         if (content && content.presenceStatusMsg) {
 
           // Ethereum
-          if (content.presenceStatusMsg.ethereum && content.presenceStatusMsg.ethereum.valid) {
+          if (ethereumValid) {
             menubarReasons++;
           }
 
           // About Page
-          renderAbout(displayNameRef, customStatusRef, profileBanner, bioRef, content);
+          renderAbout(ethereumValid, displayNameRef, customStatusRef, profileBanner, bioRef, content);
 
         }
 
-        enableMenuBar(menubarReasons);
+        enableMenuBar(ethereumValid, menubarReasons);
 
       };
 
