@@ -1,5 +1,4 @@
 import { defineConfig, loadEnv } from 'vite';
-import * as colors from 'console-log-colors';
 import react from '@vitejs/plugin-react';
 import { wasm } from '@rollup/plugin-wasm';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
@@ -153,15 +152,15 @@ export default defineConfig(({ command, mode }) => {
 
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
-  console.log(`${colors.blue('[vite-config]')} ${mode}`);
-  console.log(`${colors.blue('[vite-config]')} [command] ${command}`);
+  console.log(`[vite-config] ${mode}`);
+  console.log(`[vite-config] [command] ${command}`);
 
-  console.log(`${colors.blue('[vite-config] [is-build]')} ${isBuild}`);
-  console.log(`${colors.blue('[vite-config] [source-map]')} ${sourcemap}`);
+  console.log(`[vite-config] [is-build] ${isBuild}`);
+  console.log(`[vite-config] [source-map] ${sourcemap}`);
 
   const env = loadEnv(mode, process.cwd(), '');
   const electronMode = (String(env.ELECTRON_MODE) === 'true' || process?.versions.electron);
-  console.log(`${colors.blue('[vite-config] [electron]')} ${electronMode}`);
+  console.log(`[vite-config] [electron] ${electronMode}`);
 
   const envData = {
     mode,

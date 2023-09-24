@@ -1,5 +1,4 @@
 // Checker
-import * as colors from 'console-log-colors';
 import clone from 'clone';
 import { objType } from '../util/tools';
 
@@ -79,7 +78,7 @@ export function refreshLang() {
 
                         } else {
                             langs.loading = false;
-                            console.error(new Error(`${colors.green(`[${langs.selected}]`)} INVALID LANG JSON! THIS NEED TO BE OBJECT WITH STRINGS! USING DEFAULT LANG FOR NOW. (${langs.default})`));
+                            console.error(new Error(`[${langs.selected}] INVALID LANG JSON! THIS NEED TO BE OBJECT WITH STRINGS! USING DEFAULT LANG FOR NOW. (${langs.default})`));
                             resolve(false);
                         }
 

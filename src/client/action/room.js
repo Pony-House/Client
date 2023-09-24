@@ -1,4 +1,3 @@
-import * as colors from 'console-log-colors';
 import initMatrix from '../initMatrix';
 import appDispatcher from '../dispatcher';
 import cons from '../state/cons';
@@ -135,7 +134,7 @@ async function leave(roomId) {
       isDM,
     });
   } catch {
-    console.error(`${colors.grey('[matrix]')} Unable to leave room.`);
+    console.error(`[matrix] Unable to leave room.`);
   }
 }
 

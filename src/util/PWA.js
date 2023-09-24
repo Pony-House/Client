@@ -1,5 +1,3 @@
-import * as colors from 'console-log-colors';
-
 let deferredPrompt;
 window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt) => {
 
@@ -12,7 +10,7 @@ window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt)
     }
 
     // Log display mode change to analytics
-    console.log(`${colors.green('[PWA]')} DISPLAY_MODE_CHANGED`, displayMode);
+    console.log(`[PWA] DISPLAY_MODE_CHANGED`, displayMode);
     body.addClass(`window-${displayMode}`);
 
 });
@@ -29,7 +27,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
     // showInstallPromotion();
 
     // Optionally, send analytics event that PWA install promo was shown.
-    console.log(`${colors.green('[PWA]')} 'beforeinstallprompt' event was fired.`);
+    console.log(`[PWA] 'beforeinstallprompt' event was fired.`);
 
 });
 
@@ -42,15 +40,15 @@ window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
 
     // Optionally, send analytics event to indicate successful install
-    console.log(`${colors.green('[PWA]')} PWA was installed`);
+    console.log(`[PWA] PWA was installed`);
 
 });
 
 if (window.matchMedia('(display-mode: standalone)').matches) {
-    console.log(`${colors.green('[PWA]')} This is running as standalone.`);
+    console.log(`[PWA] This is running as standalone.`);
     $('body').addClass(`window-standalone`);
 } else {
-    console.log(`${colors.green('[PWA]')} This is running as browser.`);
+    console.log(`[PWA] This is running as browser.`);
     $('body').addClass(`window-browser`);
 }
 

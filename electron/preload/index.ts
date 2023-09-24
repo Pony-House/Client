@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-undef */
-import * as colors from 'console-log-colors';
 import { contextBridge, ipcRenderer } from 'electron';
 import startNotifications from './notification';
 import './idle/seconds';
@@ -110,7 +109,7 @@ contextBridge.exposeInMainWorld('focusAppWindow', () =>
 contextBridge.exposeInMainWorld('openDevTools', () => ipcRenderer.send('openDevTools', true));
 
 ipcRenderer.on('ping', (_event, arg) => {
-  console.log(colors.green('[electron] [ping] '), arg);
+  console.log('[electron] [ping] ', arg);
 });
 
 // eslint-disable-next-line @typescript-eslint/ban-types

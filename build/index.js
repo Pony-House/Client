@@ -1,5 +1,4 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import * as colors from 'console-log-colors';
 import fse from 'fs-extra';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -28,20 +27,20 @@ const gitBuild = (rep, name) => new Promise((resolve, reject) => {
     });
 
     ls.stdout.on('data', data => {
-        console.log(`${colors.blue(`[${name}]`)} ${data}`);
+        console.log(`[${name}] ${data}`);
     });
 
     ls.stderr.on('data', data => {
-        console.log(`${colors.blue(`[${name}]`)} ${data}`);
+        console.log(`[${name}] ${data}`);
     });
 
     ls.on('error', (err) => {
-        console.log(`${colors.blue(`[${name}]`)} ${err.message}`);
+        console.log(`[${name}] ${err.message}`);
         reject(err);
     });
 
     ls.on('close', code => {
-        console.log(`${colors.blue(`[${name}]`)} child process exited with code ${code}`);
+        console.log(`[${name}] child process exited with code ${code}`);
         resolve(code);
     });
 });
@@ -54,53 +53,53 @@ try {
 
     if (fse.existsSync(twemoji.srcRep)) {
         oldVersionsCount++;
-        console.log(`${colors.blue('[deps]')} Removing old twemoji cache...`);
+        console.log(`[deps] Removing old twemoji cache...`);
         fse.rmSync(twemoji.srcRep, { recursive: true, force: true });
     }
 
     if (fse.existsSync(twemoji.destDir)) {
         oldVersionsCount++;
-        console.log(`${colors.blue('[deps]')} Removing old twemoji assets cache...`);
+        console.log(`[deps] Removing old twemoji assets cache...`);
         fse.rmSync(twemoji.destDir, { recursive: true, force: true });
     }
 
     if (fse.existsSync(framelabs.srcDir)) {
         oldVersionsCount++;
-        console.log(`${colors.blue('[deps]')} Removing old frame labs cache...`);
+        console.log(`[deps] Removing old frame labs cache...`);
         fse.rmSync(framelabs.srcDir, { recursive: true, force: true });
     }
 
     if (oldVersionsCount > 0) {
-        console.log(`${colors.blue('[deps]')} Cache removed!`);
+        console.log(`[deps] Cache removed!`);
     }
 
     // Start deps
-    console.log(`${colors.blue('[deps]')} Component installation has started!`);
+    console.log(`[deps] Component installation has started!`);
 
     // Twemoji
-    console.log(`${colors.blue('[twemoji]')} Installing twemoji repository into the repositories folder...`);
+    console.log(`[twemoji] Installing twemoji repository into the repositories folder...`);
     download('direct:https://github.com/twitter/twemoji/archive/refs/tags/v14.0.2.zip', twemoji.srcRep, (err2) => {
         if (err2) {
             console.error(err2);
         } else {
-            console.log(`${colors.blue('[twemoji]')} Twemoji repository complete!`);
+            console.log(`[twemoji] Twemoji repository complete!`);
             gitBuild(twemoji.srcRep, 'twemoji').then(() => {
 
                 // Copying twemoji folders
-                console.log(`${colors.blue('[twemoji]')} Installing assets files into the public folder...`);
+                console.log(`[twemoji] Installing assets files into the public folder...`);
                 fse.copySync(twemoji.srcDir, twemoji.destDir, { overwrite: true });
-                console.log(`${colors.blue('[twemoji]')} Success!`);
+                console.log(`[twemoji] Success!`);
 
                 // Frame extension
-                console.log(`${colors.blue('[frame-labs-extension]')} Installing chrome extension files into the electron folder...`);
+                console.log(`[frame-labs-extension] Installing chrome extension files into the electron folder...`);
                 download('direct:https://github.com/frame-labs/frame-extension/archive/refs/tags/v0.10.2.zip', framelabs.srcDir, (err1) => {
                     if (err1) {
                         console.error(err1);
                     } else {
                         gitBuild(framelabs.srcDir, 'frame-labs-extension').then(() => {
-                            console.log(`${colors.blue('[deps]')} Complete!`);
+                            console.log(`[deps] Complete!`);
                         }).catch(console.error);
-                        console.log(`${colors.blue('[deps]')} Complete!`);
+                        console.log(`[deps] Complete!`);
                     }
                 });
 

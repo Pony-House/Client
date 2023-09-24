@@ -1,11 +1,10 @@
-import * as colors from 'console-log-colors';
 import { objType } from '../../src/util/tools';
 import tinyAPI from '../../src/util/mods';
 
 export default function sinkingYachts() {
 
     // Welcome
-    console.log(`${colors.cyan('[Sinking Yachts]')} Scammers protection mod activated! https://sinking.yachts/`);
+    console.log(`[Sinking Yachts] Scammers protection mod activated! https://sinking.yachts/`);
 
     // Function
     tinyAPI.on('openUrlChecker', (data, host, protocol) => new Promise((resolve, reject) => {

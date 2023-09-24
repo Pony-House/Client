@@ -1,4 +1,3 @@
-import * as colors from 'console-log-colors';
 import React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import clone from 'clone';
@@ -18,7 +17,7 @@ function startApp(appProtocol) {
     startWeb3();
     startQuery();
 
-    console.log(`${colors.green('[app]')} Starting app using the protocol "${appProtocol}" mode.`);
+    console.log(`[app] Starting app using the protocol "${appProtocol}" mode.`);
     global.getEnvApp = () => clone(__ENV_APP__);
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
