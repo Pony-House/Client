@@ -225,7 +225,7 @@ export default defineConfig(({ command, mode }) => {
     const extensions = [
 
       // Frame Wallet
-      { dist: path.join(__dirname, './electron/extensions/frame/dist'), path: 'frame' }
+      // { dist: path.join(__dirname, './electron/extensions/frame/dist'), path: 'frame' }
 
     ];
 
