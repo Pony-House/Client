@@ -12,7 +12,6 @@ function AboutSection() {
         ['Matrix Widget API', __ENV_APP__.deps['matrix-widget-api']],
         ['Moment Timezone', __ENV_APP__.deps['moment-timezone']],
         ['Photo Swipe', __ENV_APP__.deps.photoswipe],
-        ['Socket.IO Client', __ENV_APP__.deps.photoswipe],
         ['Vega', __ENV_APP__.deps.vega],
         ['Web3.js', __ENV_APP__.deps.web3],
         ['Yjs', __ENV_APP__.deps.yjs],
