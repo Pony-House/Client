@@ -1,7 +1,7 @@
 import FileSaver from 'file-saver';
 import PhotoSwipeLightbox from 'photoswipe';
 import { getFileContentType } from './fileMime';
-import { toast } from './tools';
+import { chatboxScrollToBottom, toast } from './tools';
 
 export default async function imageViewer(lightbox, imgQuery, name, url, readMime = false) {
     try {
@@ -83,6 +83,7 @@ export default async function imageViewer(lightbox, imgQuery, name, url, readMim
             // Init lightbox now
             pswp.init();
             if (lightbox && lightbox.loadAndOpen) lightbox.loadAndOpen(0);
+            setTimeout(() => chatboxScrollToBottom(), 400);
 
         }
 
