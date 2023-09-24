@@ -1,0 +1,1 @@
+- homeserver list - using .env now

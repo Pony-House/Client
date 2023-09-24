@@ -163,11 +163,13 @@ export default defineConfig(({ command, mode }) => {
   console.log(`[vite-config] [electron] ${electronMode}`);
 
   const envData = {
+
     mode,
     command,
     electron_mode: electronMode,
     version: pkg.version,
     deps: pkg.dependencies,
+
     info: {
       name: String(pkg.short_name),
       description: pkg.description,
@@ -175,8 +177,21 @@ export default defineConfig(({ command, mode }) => {
       author: pkg.author,
       license: pkg.license,
       welcome: String(env.appWelcome)
-    }
+    },
+
+    login: {
+      defaultHomeserver: Number(env.defaultHomeserver),
+      allowCustomHomeservers: !!(typeof env.allowCustomHomeservers === 'string' && env.allowCustomHomeservers === 'true'),
+      homeserverList: [],
+    },
+
   };
+
+  let homeserverList = 0;
+  while (typeof env[`homeserverList${homeserverList}`] === 'string') {
+    envData.login.homeserverList.push(env[`homeserverList${homeserverList}`]);
+    homeserverList++;
+  }
 
   // Result object
   const result = {

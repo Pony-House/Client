@@ -51,37 +51,28 @@ function Homeserver({ onChange }) {
     }, [hs]);
 
     useEffect(() => {
+        try {
 
-        const authSync = async () => {
+            const result = __ENV_APP__.login ?? {};
+            const selectedHs = !Number.isNaN(result.defaultHomeserver) && Number.isFinite(result.defaultHomeserver) ? result.defaultHomeserver : 0;
+            const allowCustom = result.allowCustomHomeservers;
+            const hsList = Array.isArray(result.homeserverList) ? result.homeserverList : [];
 
-            try {
-
-                const result = await (await fetch(`${window.location.origin}${window.location.pathname}config.json`, { method: 'GET' })).json();
-
-                const selectedHs = result?.defaultHomeserver;
-                const hsList = result?.homeserverList;
-                const allowCustom = result?.allowCustomHomeservers ?? true;
-
-                if (!hsList?.length > 0 || selectedHs < 0 || selectedHs >= hsList?.length) {
-                    throw new Error();
-                }
-
-                let selectedServer = hsList[selectedHs];
-                if (typeof window.location.hash === 'string' && window.location.hash.startsWith('#') && window.location.hash.length > 1) {
-                    selectedServer = window.location.hash.substring(1);
-                    if (hsList.indexOf(selectedServer) < 0) hsList.push(selectedServer);
-                }
-
-                setHs({ selected: selectedServer, list: hsList, allowCustom });
-
-            } catch {
-                setHs({ selected: '', list: [''], allowCustom: true });
+            if (!hsList?.length > 0 || selectedHs < 0 || selectedHs >= hsList?.length) {
+                throw new Error();
             }
 
-        };
+            let selectedServer = hsList[selectedHs];
+            if (typeof window.location.hash === 'string' && window.location.hash.startsWith('#') && window.location.hash.length > 1) {
+                selectedServer = window.location.hash.substring(1);
+                if (hsList.indexOf(selectedServer) < 0) hsList.push(selectedServer);
+            }
 
-        authSync();
+            setHs({ selected: selectedServer, list: hsList, allowCustom });
 
+        } catch {
+            setHs({ selected: '', list: [''], allowCustom: true });
+        }
     }, []);
 
     const handleHsInput = (e) => {
