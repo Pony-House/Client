@@ -7,3 +7,4 @@
 - Fun join messages added.
 - Tiny issues on the scroll was fixed.
 - Console Colors removed.
+- Buffer issue on the Electron Mode is fixed.
