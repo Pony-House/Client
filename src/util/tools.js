@@ -61,7 +61,7 @@ export function hljsFixer(el, where) {
 
 };
 
-export function chatboxScrollToBottom(forceScroll = false, scrollTime = 400) {
+export function chatboxScrollToBottom(forceScroll = false, scrollTime = 200) {
 
     const body = $('body');
     const checker = forceScroll || body.hasClass('cb-top-page');
