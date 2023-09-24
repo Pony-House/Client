@@ -77,7 +77,7 @@ export function chatboxScrollToBottom(forceScroll = false, scrollTime = 400) {
     };
 
     if (typeof scrollTime === 'number') {
-        setTimeout(() => tinyAction, scrollTime);
+        setTimeout(() => tinyAction(), scrollTime);
     } else { tinyAction(); }
 
 };
