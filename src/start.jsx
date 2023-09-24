@@ -10,7 +10,6 @@ import settings from './client/state/settings';
 import { getPWADisplayMode } from "./util/PWA.js";
 
 import App from './app/pages/App';
-import isDevMode from './util/isDevMode';
 
 function startApp(appProtocol) {
 
@@ -20,8 +19,6 @@ function startApp(appProtocol) {
     startQuery();
 
     console.log(`${colors.green('[app]')} Starting app using the protocol "${appProtocol}" mode.`);
-    console.log(`${colors.green('[app]')} Dev Mode: ${isDevMode}`);
-    global.isDevMode = isDevMode;
     global.getEnvApp = () => clone(__ENV_APP__);
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
