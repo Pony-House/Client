@@ -32,7 +32,7 @@ import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 import { toast } from '../../../util/tools';
-import { getUserWeb3Account } from '../../../util/web3';
+import { getUserWeb3Account, getWeb3Cfg } from '../../../util/web3';
 
 import renderAbout from './tabs/main';
 import renderEthereum from './tabs/ethereum';
@@ -462,6 +462,9 @@ function ProfileViewer() {
       // Update Status Profile
       const updateProfileStatus = (mEvent, tinyData) => {
 
+        // Ethereum Config
+        const ethConfig = getWeb3Cfg();
+
         // Get Status
         let menubarReasons = 0;
         const tinyUser = tinyData;
@@ -482,7 +485,7 @@ function ProfileViewer() {
         if (existPresence) {
 
           // Ethereum
-          if (ethereumValid) {
+          if (ethConfig.web3Enabled && ethereumValid) {
             menubarReasons++;
           }
 
