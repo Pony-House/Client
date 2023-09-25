@@ -382,6 +382,7 @@ function ProfileViewer() {
 
   const [isOpen, roomId, userId, closeDialog, handleAfterClose] = useToggleDialog();
   const [lightbox, setLightbox] = useState(false);
+  const [tinyMenuId, setTinyMenuId] = useState('default');
 
   const userNameRef = useRef(null);
   const displayNameRef = useRef(null);
@@ -402,18 +403,35 @@ function ProfileViewer() {
       const menubar = $(menubarRef.current);
       const menuBarItems = [];
 
+      // Get refs
+      const bioPlace = $(bioRef.current);
+      const customPlace = $(customPlaceRef.current);
+
+      // Actions
+      const actions = {
+        ethereum: renderEthereum
+      };
+
+      // Execute Menu
+      const executeMenu = (where) => {
+
+        // Hide items
+        bioPlace.addClass('d-none');
+        customPlace.addClass('d-none');
+
+        // Show items back
+        if (typeof actions[where] === 'function') {
+          customPlace.find('#insert-custom-place').empty().append(actions[where]()).removeClass('d-none');
+        } else {
+          bioPlace.removeClass('d-none');
+        }
+
+      };
+
       // Create menu
       const menuItem = (name, openItem = null) => {
 
-        const button = $('<a>', { class: `nav-link text-bg-force ${typeof openItem !== 'function' ? ' active' : ''}`, href: '#' }).on('click', (event) => {
-
-          // Get refs
-          const bioPlace = $(bioRef.current);
-          const customPlace = $(customPlaceRef.current);
-
-          // Hide items
-          bioPlace.addClass('d-none');
-          customPlace.addClass('d-none');
+        const button = $('<a>', { class: `nav-link text-bg-force ${openItem === tinyMenuId ? ' active' : ''}`, href: '#' }).on('click', () => {
 
           for (const item in menuBarItems) {
             menuBarItems[item].removeClass('active');
@@ -421,12 +439,8 @@ function ProfileViewer() {
 
           button.addClass('active');
 
-          // Show items back
-          if (typeof openItem === 'function') {
-            customPlace.find('#insert-custom-place').empty().append(openItem()).removeClass('d-none');
-          } else {
-            bioPlace.removeClass('d-none');
-          }
+          executeMenu(openItem);
+          setTinyMenuId(openItem);
 
         });
 
@@ -445,10 +459,13 @@ function ProfileViewer() {
         if (menubarReasons > 0) {
 
           // User info
-          menubar.append(menuItem('User info'));
+          menubar.append(menuItem('User info', 'default'));
 
           // Ethereum
-          if (ethereumValid) menubar.append(menuItem('Ethereum', renderEthereum));
+          if (ethereumValid) menubar.append(menuItem('Ethereum', 'ethereum'));
+
+          // First Execute
+          executeMenu(tinyMenuId);
 
         }
 
@@ -554,7 +571,6 @@ function ProfileViewer() {
       };
 
       // Read Events
-      updateProfileStatus(null, user);
       const tinyNote = getDataList('user_cache', 'note', userId);
 
       user.on('User.currentlyActive', updateProfileStatus);
@@ -566,9 +582,12 @@ function ProfileViewer() {
 
       $(profileAvatar.current).on('click', tinyAvatarPreview);
       $(noteRef.current).on('change', tinyNoteUpdate).on('keypress keyup keydown', tinyNoteSpacing).val(tinyNote);
+
       tinyNoteSpacing({ target: noteRef.current });
+      updateProfileStatus(null, user);
 
       return () => {
+        setTinyMenuId('default');
         menubar.empty();
         $(displayNameRef.current).find('> .button').off('click', copyUsername.display);
         $(userNameRef.current).find('> .button').off('click', copyUsername.tag);
