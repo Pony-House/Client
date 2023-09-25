@@ -1,4 +1,3 @@
-import moment from 'moment-timezone';
 import clone from 'clone';
 
 import { logger as mxLogger } from 'matrix-js-sdk/lib/logger';

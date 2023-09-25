@@ -1,4 +1,4 @@
-import { tinyCrypto } from "../../../../util/web3";
+import { getWeb3Cfg, tinyCrypto } from "../../../../util/web3";
 import { btModal, objType, toast } from "../../../../util/tools";
 
 import getUdManager from "../../../../util/web3/abi/polygon/0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f";
@@ -130,8 +130,8 @@ const getUserBalance = (chain, address) => new Promise((resolve, reject) => {
             let balance = tinyCrypto.userProviders[chain].utils.fromWei(n, 'ether');
             if (balance.endsWith('.')) balance = `${balance}00`;
 
-            chainBalance[chain][address] = { value: balance, timeout: 60 };
-            resolve(chainBalance[chain][address].value);
+            chainBalance[chain][address] = { value: balance, timeout: 60, date: moment() };
+            resolve({ value: chainBalance[chain][address].value, date: chainBalance[chain][address].date });
 
         }).catch(reject);
 
@@ -144,6 +144,9 @@ const getUserBalance = (chain, address) => new Promise((resolve, reject) => {
 export { getEnsDomain, getUdDomain };
 export default function renderEthereum(tinyPlace, user, presenceStatus) {
     if (user) {
+
+        // Config
+        const web3Cfg = getWeb3Cfg();
 
         // Domain
         const udDomain = $('<div>', { class: 'small' });
@@ -202,10 +205,12 @@ export default function renderEthereum(tinyPlace, user, presenceStatus) {
 
         // Ethereum Wallets
         for (const chain in tinyCrypto.userProviders) {
-            getUserBalance(chain, ethereum.address).then(balance => {
-                console.log(chain, balance);
+            getUserBalance(chain, ethereum.address).then(data => {
+                console.log(chain, data);
             });
         }
+
+        console.log(web3Cfg);
 
     }
 };
