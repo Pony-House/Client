@@ -367,6 +367,7 @@ function useRerenderOnProfileChange(roomId, userId) {
 }
 
 // Read Profile
+let tinyMenuId = 'default';
 function ProfileViewer() {
 
   // Prepare
@@ -382,7 +383,6 @@ function ProfileViewer() {
 
   const [isOpen, roomId, userId, closeDialog, handleAfterClose] = useToggleDialog();
   const [lightbox, setLightbox] = useState(false);
-  const [tinyMenuId, setTinyMenuId] = useState('default');
 
   const userNameRef = useRef(null);
   const displayNameRef = useRef(null);
@@ -395,6 +395,8 @@ function ProfileViewer() {
   const room = mx.getRoom(roomId);
   let avatarUrl;
   let username;
+
+  if (!isOpen) tinyMenuId = 'default';
 
   useEffect(() => {
     if (user) {
@@ -431,7 +433,7 @@ function ProfileViewer() {
       // Create menu
       const menuItem = (name, openItem = null) => {
 
-        const button = $('<a>', { class: `nav-link text-bg-force ${openItem === tinyMenuId ? ' active' : ''}`, href: '#' }).on('click', () => {
+        const button = $('<a>', { class: `nav-link text-bg-force${openItem === tinyMenuId ? ' active' : ''}${openItem !== 'default' ? ' ms-3' : ''}`, href: '#' }).on('click', () => {
 
           for (const item in menuBarItems) {
             menuBarItems[item].removeClass('active');
@@ -440,7 +442,7 @@ function ProfileViewer() {
           button.addClass('active');
 
           executeMenu(openItem);
-          setTinyMenuId(openItem);
+          tinyMenuId = openItem;
 
         });
 
@@ -587,7 +589,6 @@ function ProfileViewer() {
       updateProfileStatus(null, user);
 
       return () => {
-        setTinyMenuId('default');
         menubar.empty();
         $(displayNameRef.current).find('> .button').off('click', copyUsername.display);
         $(userNameRef.current).find('> .button').off('click', copyUsername.tag);
