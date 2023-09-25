@@ -988,12 +988,14 @@
     estree-walker "^2.0.2"
     magic-string "^0.27.0"
 
-"@rollup/plugin-wasm@6.1.3":
-  version "6.1.3"
-  resolved "https://registry.yarnpkg.com/@rollup/plugin-wasm/-/plugin-wasm-6.1.3.tgz#8d26a320780b15bf89d8d266ceda50823d5f978b"
-  integrity sha512-7ItTTeyauE6lwdDtQWceEHZ9+txbi4RRy0mYPFn9BW7rD7YdgBDu7HTHsLtHrRzJc313RM/1m6GKgV3np/aEaw==
+"@rollup/plugin-wasm@6.2.1":
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/@rollup/plugin-wasm/-/plugin-wasm-6.2.1.tgz#877015cc0099df7b9e67af47258603516b66a04d"
+  integrity sha512-WDMmM+4121/DId2uLdhvhC08SqaZVoYfLr1IeVj28jJn9GqPoJCdVzUaaevhIU6nJiZ+EYPZT0xOxsNQUFrQsQ==
+  dependencies:
+    "@rollup/pluginutils" "^5.0.2"
 
-"@rollup/pluginutils@^5.0.1":
+"@rollup/pluginutils@^5.0.1", "@rollup/pluginutils@^5.0.2":
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-5.0.4.tgz#74f808f9053d33bafec0cc98e7b835c9667d32ba"
   integrity sha512-0KJnIoRI8A+a1dqOYLxH8vBf8bphDmty5QvIm2hqm7oFCFYKCAZWWd2hXgMibaPsNDhI0AtpYfQZJG47pt/k4g==
