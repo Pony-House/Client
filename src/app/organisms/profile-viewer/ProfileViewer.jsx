@@ -423,7 +423,9 @@ function ProfileViewer() {
 
         // Show items back
         if (typeof actions[where] === 'function') {
-          customPlace.find('#insert-custom-place').empty().append(actions[where](user, tinyData.content?.presenceStatusMsg, tinyData.ethereumValid)).removeClass('d-none');
+          const tinyPlace = customPlace.find('#insert-custom-place');
+          tinyPlace.empty().append(actions[where](tinyPlace, user, tinyData.content?.presenceStatusMsg, tinyData.ethereumValid));
+          customPlace.removeClass('d-none');
         } else {
           bioPlace.removeClass('d-none');
         }

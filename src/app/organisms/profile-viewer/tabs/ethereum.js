@@ -1,11 +1,20 @@
+import { objType } from "../../../../util/tools";
+
 const unstoppableDomains = {
     reverseName: {}
 };
 
-export default function renderEthereum(user, presenceStatus) {
+export default function renderEthereum(tinyPlace, user, presenceStatus) {
     if (user) {
 
-        // console.log(presenceStatus);
+        // Ethereum
+        const ethereum = presenceStatus.ethereum;
+
+        tinyPlace.append(
+            $('<span>', { class: 'small' }).text(ethereum.address)
+        );
+
+        console.log(presenceStatus);
 
     }
 };
