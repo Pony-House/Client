@@ -14,6 +14,8 @@ const ens = {
     reverseName: {},
 };
 
+const chainBalance = {};
+
 // Clear cache
 setInterval(() => {
 
@@ -30,6 +32,16 @@ setInterval(() => {
             delete ens.reverseName[address];
         } else {
             ens.reverseName[address].timeout--;
+        }
+    }
+
+    for (const chain in chainBalance) {
+        for (const address in chainBalance[chain]) {
+            if (chainBalance[chain][address].timeout < 1) {
+                delete chainBalance[chain][address];
+            } else {
+                chainBalance[chain][address].timeout--;
+            }
         }
     }
 
@@ -87,6 +99,41 @@ const getEnsDomain = (address) => new Promise((resolve, reject) => {
         } else {
             resolve(null);
         }
+
+    } else {
+        resolve(null);
+    }
+
+});
+
+const getUserBalance = (chain, address) => new Promise((resolve, reject) => {
+
+    // Insert Chain
+    if (!chainBalance[chain]) chainBalance[chain] = {};
+
+    // Exist cache?
+    if (chainBalance[chain][address] && (
+        typeof chainBalance[chain][address].value === 'string' ||
+        typeof chainBalance[chain][address].value === 'number'
+    )) {
+        resolve(chainBalance[chain][address].value);
+    }
+
+    // Nope
+    else if (objType(tinyCrypto.userProviders, 'object') && tinyCrypto.userProviders.ethereum) {
+
+        // Provider
+        const eth = tinyCrypto.userProviders[chain].eth;
+
+        eth.getBalance(address).then(n => {
+
+            let balance = tinyCrypto.userProviders[chain].utils.fromWei(n, 'ether');
+            if (balance.endsWith('.')) balance = `${balance}00`;
+
+            chainBalance[chain][address] = { value: balance, timeout: 60 };
+            resolve(chainBalance[chain][address].value);
+
+        }).catch(reject);
 
     } else {
         resolve(null);
@@ -152,6 +199,13 @@ export default function renderEthereum(tinyPlace, user, presenceStatus) {
             udDomain,
 
         );
+
+        // Ethereum Wallets
+        for (const chain in tinyCrypto.userProviders) {
+            getUserBalance(chain, ethereum.address).then(balance => {
+                console.log(chain, balance);
+            });
+        }
 
     }
 };
