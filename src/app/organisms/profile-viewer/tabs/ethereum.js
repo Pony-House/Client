@@ -212,7 +212,7 @@ export default function renderEthereum(tinyPlace, user, presenceStatus) {
 
             balances.removeClass('d-none');
             const balanceDiv = $('<a>', { href: `${web3Cfg.networks[chain]?.blockExplorerUrls[0]}address/${ethereum.address}`, target: '_blank' }).text(`?.?? ${web3Cfg.networks[chain]?.nativeCurrency?.symbol}`);
-            const timeDiv = $('<div>', { class: 'very-small' }).text('Updated at...');
+            const timeDiv = $('<div>', { class: 'very-small text-bg-low' }).text('Updated at...');
 
             getUserBalance(chain, ethereum.address).then(data => {
                 if (data) {
@@ -226,7 +226,7 @@ export default function renderEthereum(tinyPlace, user, presenceStatus) {
 
             balances.append($('<div>', { class: 'col-md-6 mt-3' }).append($('<div>', { class: 'border border-bg p-3 ' }).append(
 
-                $('<div>', { class: 'fw-bold' }).text(web3Cfg.networks[chain]?.chainName),
+                $('<div>', { class: 'fw-bold' }).text(web3Cfg.networks[chain]?.chainName).prepend($('<i>', { class: `me-2 cf cf-${web3Cfg.networks[chain]?.nativeCurrency?.symbol ? web3Cfg.networks[chain]?.nativeCurrency?.symbol.toLowerCase() : ''}` })),
                 balanceDiv,
                 timeDiv,
 
