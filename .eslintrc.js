@@ -16,6 +16,7 @@ module.exports = {
     'vega': 'readonly',
     'vegaLite': 'readonly',
     'vegaEmbed': 'readonly',
+    'qrcode': 'readonly',
   },
   env: {
     browser: true,

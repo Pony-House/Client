@@ -45,7 +45,8 @@
     {
       "imports": {
         "immutable": "./js/immutable.es.js",
-        "sass": "./js/sass.default.js"
+        "sass": "./js/sass.default.js",
+        "qrcode": "./js/qrcode/browser.js"
       }
     }
   </script>
@@ -54,8 +55,13 @@
   <script async src="./js/es-module-shims.js" crossorigin="anonymous"></script>
 
   <script type="module">
+
     import * as sass from 'sass';
     global.sass = sass;
+
+    import * as qrcode from 'qrcode';
+    global.qrcode = qrcode;
+
   </script>
 
   <script src="./js/vega/vega.min.js"></script>

@@ -1,5 +1,5 @@
 import { tinyCrypto } from "../../../../util/web3";
-import { objType } from "../../../../util/tools";
+import { btModal, objType, toast } from "../../../../util/tools";
 import udPolygonAbi from "../../../../util/web3/abi/polygon/0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f";
 import copyText from '../copyText';
 
@@ -66,10 +66,43 @@ export default function renderEthereum(tinyPlace, user, presenceStatus) {
             }
         }).catch(console.error);
 
+        // Add Place
         tinyPlace.append(
+
             $('<strong>', { class: 'small' }).text('Address: '),
-            $('<a>', { class: 'small text-click' }).text(ethereum.address).on('click', (event) => copyText(event, 'Ethereum address successfully copied to the clipboard.')),
+            $('<a>', { class: 'small text-click' }).text(ethereum.address).on('click', () => {
+
+                const qrcodeCanvas = $('<canvas>');
+                qrcode.toCanvas(qrcodeCanvas[0], ethereum.address, (error) => {
+                    if (error) { toast(error) } else {
+
+                        // Prepare Text
+                        btModal({
+
+                            title: 'Ethereum Address',
+
+                            id: 'user-eth-address',
+                            dialog: 'modal-lg modal-dialog-centered',
+
+                            body: $('<center>', { class: 'small' }).append(
+
+                                $('<h6>', { class: 'mb-4 noselect' }).text('Please enter the address correctly! Any type issue will be permanent loss of your funds!'),
+                                $('<span>').text(user.displayName ? user.displayName : user.userId),
+                                $('<br/>'),
+                                $('<span>').text(ethereum.address),
+                                $('<div>', { class: 'mt-3' }).append(qrcodeCanvas)
+
+                            ),
+
+                        });
+
+                    }
+                });
+
+            }),
+
             udDomain,
+
         );
 
     }

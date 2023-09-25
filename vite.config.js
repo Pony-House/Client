@@ -50,6 +50,11 @@ const copyFiles = {
     },
 
     {
+      src: 'node_modules/qrcode/lib/browser.js',
+      dest: 'js/qrcode/',
+    },
+
+    {
       src: 'node_modules/moment-timezone/builds/*',
       dest: 'js/moment/',
     },
