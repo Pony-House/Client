@@ -116,7 +116,7 @@ const getUserBalance = (chain, address) => new Promise((resolve, reject) => {
         typeof chainBalance[chain][address].value === 'string' ||
         typeof chainBalance[chain][address].value === 'number'
     )) {
-        resolve(chainBalance[chain][address].value);
+        resolve({ value: chainBalance[chain][address].value, date: chainBalance[chain][address].date });
     }
 
     // Nope
@@ -151,14 +151,17 @@ export default function renderEthereum(tinyPlace, user, presenceStatus) {
         // Domain
         const udDomain = $('<div>', { class: 'small' });
 
+        // Balances
+        const balances = $('<div>', { class: 'd-none small row' });
+
         // Ethereum
         const ethereum = presenceStatus.ethereum;
         getUdDomain(ethereum.address).then(domain => {
             if (typeof domain === 'string' && domain.length > 0) {
 
                 udDomain.append(
-                    $('<strong>', { class: 'small' }).text('UD Domain: '),
-                    $('<a>', { class: 'small text-click' }).text(domain).on('click', (event) => copyText(event, 'Ethereum domain successfully copied to the clipboard.'))
+                    $('<strong>', { class: 'very-small' }).text('UD Domain: '),
+                    $('<a>', { class: 'very-small text-click' }).text(domain).on('click', (event) => copyText(event, 'Ethereum domain successfully copied to the clipboard.'))
                 );
 
             }
@@ -200,18 +203,35 @@ export default function renderEthereum(tinyPlace, user, presenceStatus) {
             }),
 
             udDomain,
+            balances,
 
         );
 
         // Ethereum Wallets
         for (const chain in tinyCrypto.userProviders) {
+
+            balances.removeClass('d-none');
+            const balanceDiv = $('<a>', { href: `${web3Cfg.networks[chain]?.blockExplorerUrls[0]}address/${ethereum.address}`, target: '_blank' }).text(`?.?? ${web3Cfg.networks[chain]?.nativeCurrency?.symbol}`);
+            const timeDiv = $('<div>', { class: 'very-small' }).text('Updated at...');
+
             getUserBalance(chain, ethereum.address).then(data => {
                 if (data) {
-
-                    console.log(`${chain} ${data.value} ${web3Cfg.networks[chain].nativeCurrency.symbol}`, `${web3Cfg.networks[chain]?.blockExplorerUrls[0]}address/${ethereum.address}`, data);
-
+                    balanceDiv.text(`${data.value} ${web3Cfg.networks[chain]?.nativeCurrency?.symbol}`);
+                    timeDiv.text(`Updated at ${data.date.fromNow()}`);
                 }
+            }).catch(err => {
+                balanceDiv.text('ERROR!');
+                console.error(err);
             });
+
+            balances.append($('<div>', { class: 'col-md-6 mt-3' }).append($('<div>', { class: 'border border-bg p-3 ' }).append(
+
+                $('<div>', { class: 'fw-bold' }).text(web3Cfg.networks[chain]?.chainName),
+                balanceDiv,
+                timeDiv,
+
+            )));
+
         }
 
         console.log(web3Cfg);
