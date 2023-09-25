@@ -16,7 +16,7 @@ import * as roomActions from '../../../client/action/room';
 import {
   getUsername, getUsernameOfRoomMember, getPowerLabel, hasDMWith, hasDevices, getCurrentState,
 } from '../../../util/matrixUtil';
-import { copyToClipboard, getEventCords } from '../../../util/common';
+import { getEventCords } from '../../../util/common';
 import { colorMXID, cssColorMXID } from '../../../util/colorMXID';
 
 import Text from '../../atoms/text/Text';
@@ -31,11 +31,11 @@ import Dialog from '../../molecules/dialog/Dialog';
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
-import { toast } from '../../../util/tools';
 import { getUserWeb3Account, getWeb3Cfg } from '../../../util/web3';
 
 import renderAbout from './tabs/main';
 import renderEthereum from './tabs/ethereum';
+import copyText from './copyText';
 
 function ModerationTools({
   roomId, userId,
@@ -523,41 +523,8 @@ function ProfileViewer() {
 
       // Copy Profile Username
       const copyUsername = {
-
-        tag: (event) => {
-          try {
-
-            const target = $(event.target);
-            const tinyUsername = target.text().trim();
-
-            if (tinyUsername.length > 0) {
-              copyToClipboard(tinyUsername);
-              toast('Username successfully copied to the clipboard.');
-            }
-
-          } catch (err) {
-            console.error(err);
-            alert(err.message);
-          }
-        },
-
-        display: (event) => {
-          try {
-
-            const target = $(event.target);
-            const displayName = target.text().trim();
-
-            if (displayName.length > 0) {
-              copyToClipboard(displayName);
-              toast('Display name successfully copied to the clipboard.');
-            }
-
-          } catch (err) {
-            console.error(err);
-            alert(err.message);
-          }
-        }
-
+        tag: (event) => copyText(event, 'Username successfully copied to the clipboard.'),
+        display: (event) => copyText(event, 'Display name successfully copied to the clipboard.'),
       };
 
       // Avatar Preview

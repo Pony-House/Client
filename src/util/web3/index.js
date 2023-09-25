@@ -163,7 +163,7 @@ const defaultNetworks = {
   },
 
   // Polygon (MATIC)
-  matic: {
+  polygon: {
 
     chainId: '0x89',
     chainIdInt: 137,

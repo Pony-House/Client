@@ -39,7 +39,8 @@
   }
 
   .username > .button:hover,
-  .display-name > .button:hover {
+  .display-name > .button:hover,
+  .text-click:hover {
     cursor: pointer;
     color: var(--tc-link);
   }
