@@ -1,44 +1,83 @@
 import { tinyCrypto } from "../../../../util/web3";
 import { btModal, objType, toast } from "../../../../util/tools";
-import udPolygonAbi from "../../../../util/web3/abi/polygon/0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f";
+
+import getUdManager from "../../../../util/web3/abi/polygon/0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f";
+import getEnsManager from "../../../../util/web3/abi/ethereum/0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb";
+
 import copyText from '../copyText';
 
-const unstoppableDomains = {
+const ud = {
+    reverseName: {},
+};
+
+const ens = {
     reverseName: {},
 };
 
 // Clear cache
 setInterval(() => {
 
-    for (const address in unstoppableDomains.reverseName) {
-        if (unstoppableDomains.reverseName[address].timeout < 1) {
-            delete unstoppableDomains.reverseName[address];
+    for (const address in ud.reverseName) {
+        if (ud.reverseName[address].timeout < 1) {
+            delete ud.reverseName[address];
         } else {
-            unstoppableDomains.reverseName[address].timeout--;
+            ud.reverseName[address].timeout--;
+        }
+    }
+
+    for (const address in ens.reverseName) {
+        if (ens.reverseName[address].timeout < 1) {
+            delete ens.reverseName[address];
+        } else {
+            ens.reverseName[address].timeout--;
         }
     }
 
 }, 60000);
 
 // Get Domain
-const getDomain = (address) => new Promise((resolve, reject) => {
+const getUdDomain = (address) => new Promise((resolve, reject) => {
 
     // Exist cache?
-    if (unstoppableDomains.reverseName[address] && typeof unstoppableDomains.reverseName[address].value === 'string') {
-        resolve(unstoppableDomains.reverseName[address].value);
+    if (ud.reverseName[address] && typeof ud.reverseName[address].value === 'string') {
+        resolve(ud.reverseName[address].value);
     }
 
     // Nope
     else if (objType(tinyCrypto.userProviders, 'object') && tinyCrypto.userProviders.polygon) {
 
-        const eth = tinyCrypto.userProviders.polygon.eth;
-        if (!unstoppableDomains.polygon) {
-            unstoppableDomains.polygon = new eth.Contract(udPolygonAbi, '0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f');
+        if (!ud.polygon) {
+            ud.polygon = getUdManager();
         }
 
-        unstoppableDomains.polygon.methods.reverseNameOf(address).call().then(domain => {
-            unstoppableDomains.reverseName[address] = { value: domain, timeout: 60 };
-            resolve(unstoppableDomains.reverseName[address].value);
+        ud.polygon.reverseNameOf(address).call().then(domain => {
+            ud.reverseName[address] = { value: domain, timeout: 60 };
+            resolve(ud.reverseName[address].value);
+        }).catch(reject);
+
+    } else {
+        resolve(null);
+    }
+
+});
+
+const getEnsDomain = (address) => new Promise((resolve, reject) => {
+
+    // Exist cache?
+    if (ens.reverseName[address] && typeof ens.reverseName[address].value === 'string') {
+        resolve(ens.reverseName[address].value);
+    }
+
+    // Nope
+    else if (objType(tinyCrypto.userProviders, 'object') && tinyCrypto.userProviders.polygon) {
+
+        if (!ens.polygon) {
+            ens.polygon = getEnsManager();
+        }
+
+        ens.polygon.reverseNameOf(address).call().then(domain => {
+            ens.reverseName[address] = { value: domain, timeout: 60 };
+            resolve(ens.reverseName[address].value);
         }).catch(reject);
 
     } else {
@@ -55,7 +94,7 @@ export default function renderEthereum(tinyPlace, user, presenceStatus) {
 
         // Ethereum
         const ethereum = presenceStatus.ethereum;
-        getDomain(ethereum.address).then(domain => {
+        getUdDomain(ethereum.address).then(domain => {
             if (typeof domain === 'string' && domain.length > 0) {
 
                 udDomain.append(

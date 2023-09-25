@@ -1,3 +1,6 @@
+import { objType } from "../../../tools";
+import { tinyCrypto } from "../..";
+
 const udPolygonAbi = [
 
     {
@@ -269,4 +272,14 @@ const udPolygonAbi = [
 
 ];
 
-export default udPolygonAbi;
+let udManager = null;
+export default function getUdManager() {
+
+    const eth = tinyCrypto.userProviders.polygon.eth;
+    if (!udManager && objType(tinyCrypto.userProviders, 'object') && tinyCrypto.userProviders.polygon) {
+        udManager = new eth.Contract(udPolygonAbi, '0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f');
+    }
+
+    return udManager ? udManager.methods : null;
+
+};
