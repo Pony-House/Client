@@ -1,2 +1,3 @@
-- homeserver list - using .env now
-- image embed load fix
+- homeserver list - using .env now.
+- image embed load fix,
+- Ethereum tab added.
