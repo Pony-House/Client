@@ -53,6 +53,6 @@ export default function getEnsManager() {
         ensManager = new eth.Contract(ensAbi, '0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb');
     }
 
-    return ensManager ? ensManager.methods : null;
+    return ensManager ? ensManager.methods : {};
 
 };

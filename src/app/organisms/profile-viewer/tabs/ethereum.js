@@ -50,10 +50,14 @@ const getUdDomain = (address) => new Promise((resolve, reject) => {
             ud.polygon = getUdManager();
         }
 
-        ud.polygon.reverseNameOf(address).call().then(domain => {
-            ud.reverseName[address] = { value: domain, timeout: 60 };
-            resolve(ud.reverseName[address].value);
-        }).catch(reject);
+        if (ud.polygon.reverseNameOf) {
+            ud.polygon.reverseNameOf(address).call().then(domain => {
+                ud.reverseName[address] = { value: domain, timeout: 60 };
+                resolve(ud.reverseName[address].value);
+            }).catch(reject);
+        } else {
+            resolve(null);
+        }
 
     } else {
         resolve(null);
@@ -69,16 +73,20 @@ const getEnsDomain = (address) => new Promise((resolve, reject) => {
     }
 
     // Nope
-    else if (objType(tinyCrypto.userProviders, 'object') && tinyCrypto.userProviders.polygon) {
+    else if (objType(tinyCrypto.userProviders, 'object') && tinyCrypto.userProviders.ethereum) {
 
-        if (!ens.polygon) {
-            ens.polygon = getEnsManager();
+        if (!ens.ethereum) {
+            ens.ethereum = getEnsManager();
         }
 
-        ens.polygon.reverseNameOf(address).call().then(domain => {
-            ens.reverseName[address] = { value: domain, timeout: 60 };
-            resolve(ens.reverseName[address].value);
-        }).catch(reject);
+        if (ens.ethereum.node) {
+            ens.ethereum.node(address).call().then(domain => {
+                ens.reverseName[address] = { node: domain, timeout: 60 };
+                resolve(ens.reverseName[address].node);
+            }).catch(reject);
+        } else {
+            resolve(null);
+        }
 
     } else {
         resolve(null);
@@ -86,6 +94,7 @@ const getEnsDomain = (address) => new Promise((resolve, reject) => {
 
 });
 
+export { getEnsDomain, getUdDomain };
 export default function renderEthereum(tinyPlace, user, presenceStatus) {
     if (user) {
 

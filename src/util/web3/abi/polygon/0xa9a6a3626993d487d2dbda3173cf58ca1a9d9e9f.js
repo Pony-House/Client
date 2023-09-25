@@ -280,6 +280,6 @@ export default function getUdManager() {
         udManager = new eth.Contract(udPolygonAbi, '0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f');
     }
 
-    return udManager ? udManager.methods : null;
+    return udManager ? udManager.methods : {};
 
 };
