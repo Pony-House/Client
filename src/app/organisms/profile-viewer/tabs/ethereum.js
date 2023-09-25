@@ -206,7 +206,11 @@ export default function renderEthereum(tinyPlace, user, presenceStatus) {
         // Ethereum Wallets
         for (const chain in tinyCrypto.userProviders) {
             getUserBalance(chain, ethereum.address).then(data => {
-                console.log(chain, data);
+                if (data) {
+
+                    console.log(`${chain} ${data.value} ${web3Cfg.networks[chain].nativeCurrency.symbol}`, `${web3Cfg.networks[chain]?.blockExplorerUrls[0]}address/${ethereum.address}`, data);
+
+                }
             });
         }
 
