@@ -415,7 +415,7 @@ function ProfileViewer() {
       };
 
       // Execute Menu
-      const executeMenu = (where) => {
+      const executeMenu = (where, tinyData) => {
 
         // Hide items
         bioPlace.addClass('d-none');
@@ -423,7 +423,7 @@ function ProfileViewer() {
 
         // Show items back
         if (typeof actions[where] === 'function') {
-          customPlace.find('#insert-custom-place').empty().append(actions[where]()).removeClass('d-none');
+          customPlace.find('#insert-custom-place').empty().append(actions[where](user, tinyData.content?.presenceStatusMsg, tinyData.ethereumValid)).removeClass('d-none');
         } else {
           bioPlace.removeClass('d-none');
         }
@@ -431,7 +431,7 @@ function ProfileViewer() {
       };
 
       // Create menu
-      const menuItem = (name, openItem = null) => {
+      const menuItem = (name, openItem = null, tinyData = {}) => {
 
         const button = $('<a>', { class: `nav-link text-bg-force${openItem === tinyMenuId ? ' active' : ''}${openItem !== 'default' ? ' ms-3' : ''}`, href: '#' }).on('click', () => {
 
@@ -441,7 +441,7 @@ function ProfileViewer() {
 
           button.addClass('active');
 
-          executeMenu(openItem);
+          executeMenu(openItem, tinyData);
           tinyMenuId = openItem;
 
         });
@@ -452,7 +452,7 @@ function ProfileViewer() {
       };
 
       // Create Menu Bar Time
-      const enableMenuBar = (ethereumValid, menubarReasons = 0) => {
+      const enableMenuBar = (content, ethereumValid, menubarReasons = 0) => {
 
         // Clear Menu bar
         menubar.empty().removeClass('d-none');
@@ -460,14 +460,16 @@ function ProfileViewer() {
         // Start functions
         if (menubarReasons > 0) {
 
+          const tinyData = { content, ethereumValid };
+
           // User info
-          menubar.append(menuItem('User info', 'default'));
+          menubar.append(menuItem('User info', 'default', tinyData));
 
           // Ethereum
-          if (ethereumValid) menubar.append(menuItem('Ethereum', 'ethereum'));
+          if (ethereumValid) menubar.append(menuItem('Ethereum', 'ethereum', tinyData));
 
           // First Execute
-          executeMenu(tinyMenuId);
+          executeMenu(tinyMenuId, tinyData);
 
         }
 
@@ -513,7 +515,7 @@ function ProfileViewer() {
 
         }
 
-        enableMenuBar(ethereumValid, menubarReasons);
+        enableMenuBar(content, ethereumValid, menubarReasons);
 
       };
 
