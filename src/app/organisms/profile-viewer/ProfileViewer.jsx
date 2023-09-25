@@ -35,6 +35,8 @@ import { getUserWeb3Account, getWeb3Cfg } from '../../../util/web3';
 
 import renderAbout from './tabs/main';
 import renderEthereum from './tabs/ethereum';
+// import renderUd from './tabs/unstoppableDomains';
+
 import copyText from './copyText';
 
 function ModerationTools({
@@ -411,7 +413,8 @@ function ProfileViewer() {
 
       // Actions
       const actions = {
-        ethereum: renderEthereum
+        ethereum: renderEthereum,
+        // ud: renderUd,
       };
 
       // Execute Menu
@@ -468,7 +471,10 @@ function ProfileViewer() {
           menubar.append(menuItem('User info', 'default', tinyData));
 
           // Ethereum
-          if (ethereumValid) menubar.append(menuItem('Ethereum', 'ethereum', tinyData));
+          if (ethereumValid) {
+            menubar.append(menuItem('Ethereum', 'ethereum', tinyData));
+            // menubar.append(menuItem('UD', 'ud', tinyData));
+          }
 
           // First Execute
           executeMenu(tinyMenuId, tinyData);

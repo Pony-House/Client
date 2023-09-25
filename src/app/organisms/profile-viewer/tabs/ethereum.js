@@ -165,7 +165,10 @@ export default function renderEthereum(tinyPlace, user, presenceStatus) {
                 );
 
             }
-        }).catch(console.error);
+        }).catch(err => {
+            toast(err.message);
+            console.error(err);
+        });
 
         // Add Place
         tinyPlace.append(
@@ -221,6 +224,7 @@ export default function renderEthereum(tinyPlace, user, presenceStatus) {
                 }
             }).catch(err => {
                 balanceDiv.text('ERROR!');
+                toast(err.message);
                 console.error(err);
             });
 
@@ -233,8 +237,6 @@ export default function renderEthereum(tinyPlace, user, presenceStatus) {
             )));
 
         }
-
-        console.log(web3Cfg);
 
     }
 };
