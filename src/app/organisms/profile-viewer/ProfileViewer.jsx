@@ -448,6 +448,7 @@ function ProfileViewer() {
 
           executeMenu(openItem, tinyData);
           tinyMenuId = openItem;
+          return false;
 
         });
 
