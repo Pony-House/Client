@@ -39,6 +39,8 @@ Made by Me
 
     =======================================================
 
+    --> Criar sistema de alterar o tamanho da fonte do aplicativo (de 50% para 200%) (CSS zoom)
+
     --> Adicionar opção para suporte de thumbs com parametros de animação.
     --> Fazer a opção para o app iniciar sozinho com o sistema operacional.
 
@@ -57,8 +59,6 @@ Made by Me
 
     --> Opção de desativar ou ativar animação de emojis ou stickers
     (Também ser possível banir animação de usuários individualmente - limite de 600 itens por array) (Opçao alternativa de fazer a animação ser hover)
-
-    --> Criar sistema de alterar o tamanho da fonte do aplicativo
 
     --> Tema https://github.com/catppuccin/cinny
 
