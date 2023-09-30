@@ -1,0 +1,2 @@
+- electron version update.
+- new zoom config.

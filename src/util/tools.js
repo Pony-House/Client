@@ -8,6 +8,10 @@ let resizePlace = null;
 let resizeTimeout = null;
 let head;
 
+// Zoom Validator
+const tinyAppZoomValidator = (value) => !Number.isNaN(value) && Number.isFinite(value) ? value >= 50 ? value <= 200 ? value : 200 : 100 : 100;
+export { tinyAppZoomValidator };
+
 // Message to number
 export function textValueToNumber(text = '', nb = 11) {
 

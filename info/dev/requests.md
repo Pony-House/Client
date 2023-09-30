@@ -39,8 +39,6 @@ Made by Me
 
     =======================================================
 
-    --> Criar sistema de alterar o tamanho da fonte do aplicativo (de 50% para 200%) (CSS zoom)
-
     --> Adicionar opção para suporte de thumbs com parametros de animação.
     --> Fazer a opção para o app iniciar sozinho com o sistema operacional.
 

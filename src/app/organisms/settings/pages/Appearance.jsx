@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import initMatrix from '../../../../client/initMatrix';
 
@@ -12,19 +12,50 @@ import { toggleAction } from '../Api';
 import {
     toggleSystemTheme, toggleMarkdown, toggleMembershipEvents, toggleNickAvatarEvents,
 } from '../../../../client/action/settings';
+import { tinyAppZoomValidator } from '../../../../util/tools';
 
 function AppearanceSection() {
+
     const [, updateState] = useState({});
+
     const [isAnimateAvatarsHidden, setAnimateAvatarsHidden] = useState(false);
     const [isEmbedDisabled, setEmbedDisabled] = useState(false);
     const [isUNhoverDisabled, setUNhoverDisabled] = useState(false);
 
+    const ponyHouseZoomRef = useRef(null);
+    const ponyHouseZoomRangeRef = useRef(null);
+
     useEffect(() => {
 
         const content = initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
+        const zoomApp = Number(global.localStorage.getItem('pony-house-zoom'));
+
         setAnimateAvatarsHidden((content.isAnimateAvatarsHidden === true));
         setEmbedDisabled((content.isEmbedDisabled === true));
         setUNhoverDisabled((content.isUNhoverDisabled === true));
+
+        const ponyHouseZoom = $(ponyHouseZoomRef.current);
+        const ponyHouseZoomRange = $(ponyHouseZoomRangeRef.current);
+
+        ponyHouseZoom.val(tinyAppZoomValidator(zoomApp));
+        ponyHouseZoomRange.val(tinyAppZoomValidator(zoomApp));
+
+        ponyHouseZoomRange.on('change keyup keydown keypress input', () => {
+
+            const newValue = Number(ponyHouseZoomRange.val());
+            const value = tinyAppZoomValidator(newValue);
+            ponyHouseZoom.val(value);
+
+        });
+
+        ponyHouseZoom.on('change keyup keydown keypress', () => {
+
+            const newValue = Number(ponyHouseZoom.val());
+            const value = tinyAppZoomValidator(newValue);
+            if (newValue !== value) ponyHouseZoom.val(value);
+            ponyHouseZoomRange.val(value);
+
+        });
 
     }, []);
 
@@ -34,6 +65,7 @@ function AppearanceSection() {
             <div className="card noselect mb-3">
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item very-small text-gray">Theme</li>
+
                     <SettingTile
                         title="Follow system theme"
                         options={(
@@ -45,6 +77,7 @@ function AppearanceSection() {
                         )}
                         content={<div className="very-small text-gray">Use light or dark mode based on the system settings.</div>}
                     />
+
                     <SettingTile
                         title="Theme"
                         content={(
@@ -67,6 +100,30 @@ function AppearanceSection() {
                             </div>
                         )}
                     />
+
+                    <li className="list-group-item">
+
+                        <label for='pony_house_zoom' className="form-label small">Zoom</label>
+
+                        <input ref={ponyHouseZoomRef} type="number" max={200} min={50} className="form-control form-control-bg" id='pony_house_zoom' />
+                        <input ref={ponyHouseZoomRangeRef} max={200} min={50} type="range" class="form-range" />
+
+                        <div className="very-small text-gray">
+                            {`Set the application zoom. If the configuration doesn't work, it's because your ${__ENV_APP__.electron_mode ? 'client' : 'browser'} is not compatible. (Beta)`}
+                            <button type="button" className="ms-3 btn btn-sm btn-secondary" onClick={async () => {
+
+                                const ponyHouseZoomRange = $(ponyHouseZoomRangeRef.current);
+                                const newValue = Number(ponyHouseZoomRange.val());
+                                const value = tinyAppZoomValidator(newValue);
+
+                                global.localStorage.setItem('pony-house-zoom', value);
+                                $('body').css('zoom', `${value}%`);
+
+                            }}>Change zoom</button>
+                        </div>
+
+                    </li>
+
                 </ul>
             </div>
 
