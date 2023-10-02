@@ -1,5 +1,15 @@
 export default {
 
+    // EUR Tokens
+    eur: {
+
+        eurc: {
+            ethereum: '0x1abaea1f7c830bd89acc67ec4af516284b1bc33c',
+            avax: '0xC891EB4cbdEFf6e073e859e987815Ed1505c2ACD',
+        },
+
+    },
+
     // USD Tokens
     usd: {
 
