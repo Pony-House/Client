@@ -57,11 +57,20 @@ setInterval(() => {
 export default function renderUd(tinyPlace, user, presenceStatus) {
     if (user) {
 
+        // Tiny Error
+        const tinyError = (err) => {
+            toast(err.message);
+            console.error(err);
+        };
+
         // Ethereum
         const ethereum = presenceStatus.ethereum;
         getUdDomain(ethereum.address).then(domain => {
             if (typeof domain === 'string' && domain.length > 0) {
                 getUdDomains(ethereum.address, domain).then(addresses => {
+
+                    // Address Base
+                    const balances = $('<div>', { class: 'small row' });
 
                     // Check Wallets
                     for (const item in getWallets) {
@@ -69,20 +78,20 @@ export default function renderUd(tinyPlace, user, presenceStatus) {
                         const walletInfo = getWallets[item].split('.');
                         if (typeof address === 'string' && address.length > 0 && walletInfo[0] === 'crypto' && walletInfo[2] === 'address') {
 
-                            console.log(walletInfo[1], address);
+                            // Insert Item
+                            balances.append($('<div>', { class: 'col-md-6 mt-3' }).append($('<div>', { class: 'border border-bg p-3 ' }).append(
+                                $('<div>', { class: 'fw-bold' }).text(walletInfo[1]).prepend($('<i>', { class: `me-2 cf cf-${walletInfo[1].toLowerCase()}` })),
+                                $('<span>', { class: 'small' }).text(address),
+                            )));
 
                         }
                     }
 
-                }).catch(err => {
-                    toast(err.message);
-                    console.error(err);
-                })
+                    tinyPlace.append(balances);
+
+                }).catch(tinyError)
             }
-        }).catch(err => {
-            toast(err.message);
-            console.error(err);
-        });
+        }).catch(tinyError);
 
 
     }
