@@ -53,7 +53,6 @@
     "@khanacademy/simple-markdown": "0.10.0",
     "@matrix-org/olm": "3.2.15",
     "@tippyjs/react": "4.2.6",
-    "@unstoppabledomains/resolution": "9.1.0",
     "blurhash": "2.0.5",
     "bootstrap": "5.3.2",
     "bootstrap-icons": "1.11.1",
