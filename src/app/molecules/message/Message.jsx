@@ -882,7 +882,7 @@ function Message({
 }) {
 
   // Get Room Data
-  $(timelineSVRef.current).trigger('scroll');
+  $(timelineSVRef?.current).trigger('scroll');
   const mx = initMatrix.matrixClient;
   const roomId = mEvent.getRoomId();
   const { editedTimeline, reactionTimeline } = roomTimeline ?? {};
