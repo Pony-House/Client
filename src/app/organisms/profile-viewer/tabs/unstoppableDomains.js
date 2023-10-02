@@ -95,10 +95,23 @@ setInterval(() => {
 export default function renderUd(tinyPlace, user, presenceStatus) {
     if (user) {
 
+        // Loading Message
+        tinyPlace.append(
+            $('<strong>', { class: 'small' }).text('Loading data...')
+        );
+
         // Tiny Error
         const tinyError = (err) => {
-            toast(err.message);
-            console.error(err);
+
+            if (err) {
+                toast(err.message);
+                console.error(err);
+            } else {
+                tinyPlace.empty().append(
+                    $('<strong>', { class: 'small' }).text('No reverse UD domains were found linked to this wallet.')
+                );
+            }
+
         };
 
         // Ethereum
@@ -106,34 +119,36 @@ export default function renderUd(tinyPlace, user, presenceStatus) {
         getUdDomain(ethereum.address).then(domain => {
             if (typeof domain === 'string' && domain.length > 0) {
                 getUdDomains(ethereum.address, domain).then(addresses => {
+                    if (Array.isArray(addresses) && addresses.length > 0) {
 
-                    tinyPlace.append(
-                        $('<strong>', { class: 'small' }).text('UD Domain: '),
-                        $('<a>', { class: 'small text-click' }).text(domain).on('click', (event) => copyText(event, 'Ethereum domain successfully copied to the clipboard.'))
-                    );
+                        tinyPlace.empty().append(
+                            $('<strong>', { class: 'small' }).text('UD Domain: '),
+                            $('<a>', { class: 'small text-click' }).text(domain).on('click', (event) => copyText(event, 'Ethereum domain successfully copied to the clipboard.'))
+                        );
 
-                    // Address Base
-                    const balances = $('<div>', { class: 'small row' });
+                        // Address Base
+                        const balances = $('<div>', { class: 'small row' });
 
-                    // Check Wallets
-                    for (const item in getWallets) {
-                        const address = addresses[item];
-                        const walletInfo = getWallets[item].split('.');
-                        if (typeof address === 'string' && address.length > 0 && walletInfo[0] === 'crypto' && walletInfo[2] === 'address') {
+                        // Check Wallets
+                        for (const item in getWallets) {
+                            const address = addresses[item];
+                            const walletInfo = getWallets[item].split('.');
+                            if (typeof address === 'string' && address.length > 0 && walletInfo[0] === 'crypto' && walletInfo[2] === 'address') {
 
-                            // Insert Item
-                            balances.append($('<div>', { class: 'col-md-6 mt-3' }).append($('<div>', { class: 'border border-bg p-3 ' }).append(
-                                $('<div>', { class: 'fw-bold' }).text(walletInfo[1]).prepend($('<i>', { class: `me-2 cf cf-${walletInfo[1].toLowerCase()}` })),
-                                $('<span>', { class: 'small' }).text(address),
-                            )));
+                                // Insert Item
+                                balances.append($('<div>', { class: 'col-md-6 mt-3' }).append($('<div>', { class: 'border border-bg p-3 ' }).append(
+                                    $('<div>', { class: 'fw-bold' }).text(walletInfo[1]).prepend($('<i>', { class: `me-2 cf cf-${walletInfo[1].toLowerCase()}` })),
+                                    $('<span>', { class: 'small' }).text(address),
+                                )));
 
+                            }
                         }
-                    }
 
-                    tinyPlace.append(balances);
+                        tinyPlace.append(balances);
 
+                    } else { tinyError(); }
                 }).catch(tinyError)
-            }
+            } else { tinyError(); }
         }).catch(tinyError);
 
 
