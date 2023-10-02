@@ -1,4 +1,5 @@
 // https://docs.unstoppabledomains.com/manage-domains/managing-domain-records/
+// https://docs.unstoppabledomains.com/resolution/guides/records-reference/
 export default [
     'crypto.ETH.address',
     'crypto.BTC.address',
