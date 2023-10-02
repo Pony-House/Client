@@ -2,19 +2,49 @@ import { tinyCrypto } from "../../../../util/web3";
 import getUdManager from "../../../../util/web3/abi/polygon/0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f";
 import { objType, toast } from "../../../../util/tools";
 
-import { getUdDomain } from './ethereum';
 import getWallets from '../../../../../mods/ud';
+import copyText from '../copyText';
 
 const ud = {
     addressList: {},
+    reverseName: {},
 };
 
+// Get Domain
+const getUdDomain = (address) => new Promise((resolve, reject) => {
+
+    // Exist cache?
+    if (ud.reverseName[address] && typeof ud.reverseName[address].value === 'string') {
+        resolve(ud.reverseName[address].value);
+    }
+
+    // Nope
+    else if (objType(tinyCrypto.userProviders, 'object') && tinyCrypto.userProviders.polygon) {
+
+        if (!ud.polygon) {
+            ud.polygon = getUdManager();
+        }
+
+        if (ud.polygon.reverseNameOf) {
+            ud.polygon.reverseNameOf(address).call().then(domain => {
+                ud.reverseName[address] = { value: domain, timeout: 60 };
+                resolve(ud.reverseName[address].value);
+            }).catch(reject);
+        } else {
+            resolve(null);
+        }
+
+    } else {
+        resolve(null);
+    }
+
+});
 // Get Domain
 const getUdDomains = (address, domain) => new Promise((resolve, reject) => {
 
     // Exist cache?
-    if (ud.addressList[address] && typeof ud.addressList[address].value === 'string') {
-        resolve(ud.addressList[address].value);
+    if (ud.addressList[address] && Array.isArray(ud.addressList[address].domains)) {
+        resolve(ud.addressList[address].domains);
     }
 
     // Nope
@@ -52,6 +82,14 @@ setInterval(() => {
         }
     }
 
+    for (const address in ud.reverseName) {
+        if (ud.reverseName[address].timeout < 1) {
+            delete ud.reverseName[address];
+        } else {
+            ud.reverseName[address].timeout--;
+        }
+    }
+
 }, 60000);
 
 export default function renderUd(tinyPlace, user, presenceStatus) {
@@ -68,6 +106,11 @@ export default function renderUd(tinyPlace, user, presenceStatus) {
         getUdDomain(ethereum.address).then(domain => {
             if (typeof domain === 'string' && domain.length > 0) {
                 getUdDomains(ethereum.address, domain).then(addresses => {
+
+                    tinyPlace.append(
+                        $('<strong>', { class: 'small' }).text('UD Domain: '),
+                        $('<a>', { class: 'small text-click' }).text(domain).on('click', (event) => copyText(event, 'Ethereum domain successfully copied to the clipboard.'))
+                    );
 
                     // Address Base
                     const balances = $('<div>', { class: 'small row' });

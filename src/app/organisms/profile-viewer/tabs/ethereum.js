@@ -1,14 +1,7 @@
 import { getWeb3Cfg, tinyCrypto } from "../../../../util/web3";
 import { btModal, objType, toast } from "../../../../util/tools";
 
-import getUdManager from "../../../../util/web3/abi/polygon/0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f";
 import getEnsManager from "../../../../util/web3/abi/ethereum/0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb";
-
-import copyText from '../copyText';
-
-const ud = {
-    reverseName: {},
-};
 
 const ens = {
     reverseName: {},
@@ -18,14 +11,6 @@ const chainBalance = {};
 
 // Clear cache
 setInterval(() => {
-
-    for (const address in ud.reverseName) {
-        if (ud.reverseName[address].timeout < 1) {
-            delete ud.reverseName[address];
-        } else {
-            ud.reverseName[address].timeout--;
-        }
-    }
 
     for (const address in ens.reverseName) {
         if (ens.reverseName[address].timeout < 1) {
@@ -46,36 +31,6 @@ setInterval(() => {
     }
 
 }, 60000);
-
-// Get Domain
-const getUdDomain = (address) => new Promise((resolve, reject) => {
-
-    // Exist cache?
-    if (ud.reverseName[address] && typeof ud.reverseName[address].value === 'string') {
-        resolve(ud.reverseName[address].value);
-    }
-
-    // Nope
-    else if (objType(tinyCrypto.userProviders, 'object') && tinyCrypto.userProviders.polygon) {
-
-        if (!ud.polygon) {
-            ud.polygon = getUdManager();
-        }
-
-        if (ud.polygon.reverseNameOf) {
-            ud.polygon.reverseNameOf(address).call().then(domain => {
-                ud.reverseName[address] = { value: domain, timeout: 60 };
-                resolve(ud.reverseName[address].value);
-            }).catch(reject);
-        } else {
-            resolve(null);
-        }
-
-    } else {
-        resolve(null);
-    }
-
-});
 
 const getEnsDomain = (address) => new Promise((resolve, reject) => {
 
@@ -141,34 +96,18 @@ const getUserBalance = (chain, address) => new Promise((resolve, reject) => {
 
 });
 
-export { getEnsDomain, getUdDomain };
+export { getEnsDomain };
 export default function renderEthereum(tinyPlace, user, presenceStatus) {
     if (user) {
 
         // Config
         const web3Cfg = getWeb3Cfg();
 
-        // Domain
-        const udDomain = $('<div>', { class: 'small' });
-
         // Balances
         const balances = $('<div>', { class: 'd-none small row' });
 
         // Ethereum
         const ethereum = presenceStatus.ethereum;
-        getUdDomain(ethereum.address).then(domain => {
-            if (typeof domain === 'string' && domain.length > 0) {
-
-                udDomain.append(
-                    $('<strong>', { class: 'very-small' }).text('UD Domain: '),
-                    $('<a>', { class: 'very-small text-click' }).text(domain).on('click', (event) => copyText(event, 'Ethereum domain successfully copied to the clipboard.'))
-                );
-
-            }
-        }).catch(err => {
-            toast(err.message);
-            console.error(err);
-        });
 
         // Add Place
         tinyPlace.append(
@@ -205,7 +144,6 @@ export default function renderEthereum(tinyPlace, user, presenceStatus) {
 
             }),
 
-            udDomain,
             balances,
 
         );
