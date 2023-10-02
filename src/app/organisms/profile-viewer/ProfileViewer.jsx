@@ -473,11 +473,13 @@ function ProfileViewer() {
           menubar.append(menuItem('User info', 'default', tinyData));
 
           // Ethereum
+          tinyAPI.emit('profileTabsSpawnBefore', tinyData, user, (name, id) => menubar.append(menuItem(name, id, tinyData)));
           if (ethereumValid) {
-            tinyAPI.emit('profileTabsSpawnBefore', tinyData, user, (name, id) => menubar.append(menuItem(name, id, tinyData)));
+            tinyAPI.emit('profileTabsSpawnEthereumBefore', tinyData, user, (name, id) => menubar.append(menuItem(name, id, tinyData)));
             menubar.append(menuItem('Ethereum', 'ethereum', tinyData));
-            tinyAPI.emit('profileTabsSpawnAfter', tinyData, user, (name, id) => menubar.append(menuItem(name, id, tinyData)));
+            tinyAPI.emit('profileTabsSpawnEthereumAfter', tinyData, user, (name, id) => menubar.append(menuItem(name, id, tinyData)));
           }
+          tinyAPI.emit('profileTabsSpawnAfter', tinyData, user, (name, id) => menubar.append(menuItem(name, id, tinyData)));
 
           // First Execute
           executeMenu(tinyMenuId, tinyData);

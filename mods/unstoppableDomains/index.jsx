@@ -9,7 +9,7 @@ export default function startMod() {
     });
 
     // Spawn UD Menu
-    tinyAPI.on('profileTabsSpawnAfter', (data, tinyData, user, menuItem) => {
+    tinyAPI.on('profileTabsSpawnEthereumAfter', (data, tinyData, user, menuItem) => {
         menuItem('UD', 'ud');
     });
 

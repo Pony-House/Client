@@ -367,7 +367,7 @@ tinyPlace is a jQuery script. Use this to insert the html for your profile tab.
     Example:
     actions.example_id = function(tinyPlace, user, presenceStatus) {};
 
-### profileTabsSpawnBefore or profileTabsSpawnAfter
+### profileTabsSpawn(Ethereum)Before or profileTabs(Ethereum)SpawnAfter
 
     tinyData (Parsed information about user presence)
     user (User matrix object)
