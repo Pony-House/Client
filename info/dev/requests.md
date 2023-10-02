@@ -42,6 +42,8 @@ Made by Me
 
     =======================================================
 
+    --> Ajeitar o atualizador de Status quando o usuário abre o app.
+
     --> Adicionar opção para suporte de thumbs com parametros de animação.
     --> Fazer a opção para o app iniciar sozinho com o sistema operacional.
 
