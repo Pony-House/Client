@@ -3,6 +3,7 @@
 // import helloWorld from './hello-world';
 // import sinkingYachts from './sinking.yachts';
 import customMessages from './customMessages';
+import unstoppableDomains from './unstoppableDomains';
 
 export default function startMods(firstTime) {
 
@@ -11,5 +12,6 @@ export default function startMods(firstTime) {
     // startTest(firstTime);
 
     customMessages(firstTime);
+    unstoppableDomains(firstTime);
 
 }; 

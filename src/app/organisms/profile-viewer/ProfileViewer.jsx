@@ -35,9 +35,9 @@ import { getUserWeb3Account, getWeb3Cfg } from '../../../util/web3';
 
 import renderAbout from './tabs/main';
 import renderEthereum from './tabs/ethereum';
-import renderUd from './tabs/unstoppableDomains';
 
 import copyText from './copyText';
+import tinyAPI from '../../../util/mods';
 
 function ModerationTools({
   roomId, userId,
@@ -414,8 +414,9 @@ function ProfileViewer() {
       // Actions
       const actions = {
         ethereum: renderEthereum,
-        ud: renderUd,
       };
+
+      tinyAPI.emit('profileTabs', actions);
 
       // Execute Menu
       const executeMenu = (where, tinyData) => {
@@ -473,8 +474,9 @@ function ProfileViewer() {
 
           // Ethereum
           if (ethereumValid) {
+            tinyAPI.emit('profileTabsSpawnBefore', (name, id) => menubar.append(menuItem(name, id, tinyData)));
             menubar.append(menuItem('Ethereum', 'ethereum', tinyData));
-            menubar.append(menuItem('UD', 'ud', tinyData));
+            tinyAPI.emit('profileTabsSpawnAfter', (name, id) => menubar.append(menuItem(name, id, tinyData)));
           }
 
           // First Execute
