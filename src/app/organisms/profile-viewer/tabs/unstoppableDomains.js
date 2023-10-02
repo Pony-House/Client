@@ -1,6 +1,6 @@
 import { tinyCrypto } from "../../../../util/web3";
 import getUdManager from "../../../../util/web3/abi/polygon/0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f";
-import { objType, toast } from "../../../../util/tools";
+import { objType, toast, btModal } from "../../../../util/tools";
 
 import getWallets from '../../../../../mods/ud';
 import copyText from '../copyText';
@@ -138,7 +138,36 @@ export default function renderUd(tinyPlace, user, presenceStatus) {
                                 // Insert Item
                                 balances.append($('<div>', { class: 'col-md-6 mt-3' }).append($('<div>', { class: 'border border-bg p-3 ' }).append(
                                     $('<div>', { class: 'fw-bold' }).text(walletInfo[1]).prepend($('<i>', { class: `me-2 cf cf-${walletInfo[1].toLowerCase()}` })),
-                                    $('<span>', { class: 'small' }).text(address),
+                                    $('<span>', { class: 'small text-click' }).text(address).on('click', () => {
+
+                                        const qrcodeCanvas = $('<canvas>');
+                                        qrcode.toCanvas(qrcodeCanvas[0], address, (error) => {
+                                            if (error) { toast(error) } else {
+
+                                                // Prepare Text
+                                                btModal({
+
+                                                    title: `${walletInfo[1]} Address`,
+
+                                                    id: 'user-eth-address',
+                                                    dialog: 'modal-lg modal-dialog-centered',
+
+                                                    body: $('<center>', { class: 'small' }).append(
+
+                                                        $('<h6>', { class: 'mb-4 noselect' }).text('Please enter the address correctly! Any type issue will be permanent loss of your funds!'),
+                                                        $('<span>').text(user.displayName ? user.displayName : user.userId),
+                                                        $('<br/>'),
+                                                        $('<span>').text(address),
+                                                        $('<div>', { class: 'mt-3' }).append(qrcodeCanvas)
+
+                                                    ),
+
+                                                });
+
+                                            }
+                                        });
+
+                                    }),
                                 )));
 
                             }
