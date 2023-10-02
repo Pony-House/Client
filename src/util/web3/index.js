@@ -341,21 +341,32 @@ tinyCrypto.config = Object.freeze({
   usd: {
 
     dai: {
+      base: '0x50c5725949a6f0c72e6c4a641f24049a917db0cb',
+      op: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
       ethereum: '0x6b175474e89094c44da98b954eedeac495271d0f',
       polygon: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
-      bsc: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3'
+      bsc: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
     },
 
     usdt: {
+      avax: '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7',
+      op: '0x94b008aa00579c1307b0ef2c499ad98a8ce58e58',
       ethereum: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-      polygon: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f'
+      polygon: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
     },
 
     usdc: {
+      base: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+      avax: '0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e',
+      op: '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
       ethereum: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
       polygon: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
-      bsc: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d'
-    }
+      bsc: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+    },
+
+    usdbc: {
+      base: '0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca',
+    },
 
   },
 
