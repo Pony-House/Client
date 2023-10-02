@@ -80,7 +80,7 @@
     "linkifyjs": "4.1.1",
     "matrix-crdt": "0.2.1-alpha.1",
     "matrix-js-sdk": "28.1.0",
-    "matrix-widget-api": "1.5.0",
+    "matrix-widget-api": "1.6.0",
     "moment-timezone": "0.5.43",
     "object-hash": "3.0.0",
     "photoswipe": "5.4.1",
