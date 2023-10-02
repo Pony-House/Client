@@ -95,6 +95,9 @@ setInterval(() => {
 export default function renderUd(tinyPlace, user, presenceStatus) {
     if (user) {
 
+        // Powered by
+        const poweredBy = $('<div>', { class: 'very-small text-center mt-3' }).text('Powered by ').append($('<a>', { href: 'https://unstoppabledomains.com', target: '_blank', class: 'text-bg-force' }).text('Unstoppable Domains'));
+
         // Loading Message
         tinyPlace.append(
             $('<strong>', { class: 'small' }).text('Loading data...')
@@ -106,9 +109,14 @@ export default function renderUd(tinyPlace, user, presenceStatus) {
             if (err) {
                 toast(err.message);
                 console.error(err);
+                tinyPlace.empty().append(
+                    $('<strong>', { class: 'small text-danger' }).text('ERROR LOADING!'),
+                    poweredBy
+                );
             } else {
                 tinyPlace.empty().append(
-                    $('<strong>', { class: 'small' }).text('No reverse UD domains were found linked to this wallet.')
+                    $('<strong>', { class: 'small' }).text('No reverse UD domains were found linked to this wallet.'),
+                    poweredBy
                 );
             }
 
@@ -173,7 +181,7 @@ export default function renderUd(tinyPlace, user, presenceStatus) {
                             }
                         }
 
-                        tinyPlace.append(balances);
+                        tinyPlace.append(balances, poweredBy);
 
                     } else { tinyError(); }
                 }).catch(tinyError)
