@@ -354,6 +354,28 @@ When a connection status occurs in the system, a warning will be emitted.
 
     systemStatus (object with status value)
 
+`src/app/organisms/profile-viewer/ProfileViewer.jsx`
+
+When a user opens the profile, these events will be called.
+
+tinyPlace is a jQuery script. Use this to insert the html for your profile tab.
+
+### profileTabs
+
+    actions (List of tab functions to be invoked when a user click on this.)
+
+    Example:
+    actions.example_id = function(tinyPlace, user, presenceStatus) {};
+
+### profileTabsSpawnBefore or profileTabsSpawnAfter
+
+    tinyData (Parsed information about user presence)
+    user (User matrix object)
+    menuItem (Function to add to your script in the profile tab)
+
+    Example:
+    menuItem('Tiny Example', 'example_id')
+
 `others`
 
 ### mouseWheel

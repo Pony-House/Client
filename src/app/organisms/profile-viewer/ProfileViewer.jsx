@@ -474,9 +474,9 @@ function ProfileViewer() {
 
           // Ethereum
           if (ethereumValid) {
-            tinyAPI.emit('profileTabsSpawnBefore', (name, id) => menubar.append(menuItem(name, id, tinyData)));
+            tinyAPI.emit('profileTabsSpawnBefore', tinyData, user, (name, id) => menubar.append(menuItem(name, id, tinyData)));
             menubar.append(menuItem('Ethereum', 'ethereum', tinyData));
-            tinyAPI.emit('profileTabsSpawnAfter', (name, id) => menubar.append(menuItem(name, id, tinyData)));
+            tinyAPI.emit('profileTabsSpawnAfter', tinyData, user, (name, id) => menubar.append(menuItem(name, id, tinyData)));
           }
 
           // First Execute
