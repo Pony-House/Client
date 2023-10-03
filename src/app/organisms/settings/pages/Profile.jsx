@@ -21,6 +21,7 @@ function ProfileSection() {
 
     const customStatusRef = useRef(null);
     const bioRef = useRef(null);
+    const timezoneRef = useRef(null);
 
     const [customStatusIcon, setcustomStatusIcon] = useState(typeof userProfile.msgIcon === 'string' ?
         userProfile.msgIcon.length <= 2 ? twemojifyIcon(userProfile.msgIcon) : initMatrix.matrixClient.mxcUrlToHttp(userProfile.msgIcon)
@@ -32,6 +33,7 @@ function ProfileSection() {
     const [banner, setBanner] = useState(userProfile.banner);
     const [customStatus, setCustomStatus] = useState(userProfile.msg);
     const [userBio, setUserBio] = useState(userProfile.bio);
+    const [userTimezone, setUserTimezone] = useState(userProfile.timezone);
 
     const sendSetStatus = (item) => {
         const content = initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
@@ -102,6 +104,30 @@ function ProfileSection() {
             emitUpdateProfile(content);
 
             toast('The biography of your profile has been successfully updated.');
+
+        }
+    };
+
+    const sendTimezone = () => {
+        if (timezoneRef && timezoneRef.current) {
+
+            const content = initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
+
+            const { value } = timezoneRef.current;
+
+            if (typeof value === 'string' && value.length > 0) {
+                const newValue = value.substring(0, 100);
+                setUserTimezone(newValue);
+                content.timezone = newValue;
+            } else {
+                setUserTimezone(null);
+                content.timezone = null;
+            }
+
+            initMatrix.matrixClient.setAccountData('pony.house.profile', content);
+            emitUpdateProfile(content);
+
+            toast('The timezone of your profile has been successfully updated.');
 
         }
     };
@@ -274,6 +300,16 @@ function ProfileSection() {
                     <div className='very-small text-gray'>Enter a small biography about you.</div>
                     <textarea ref={bioRef} className="form-control form-control-bg" placeholder="" rows="7" maxLength="190" defaultValue={userBio} />
                     <Button className='mt-2' onClick={sendBio} variant="primary">Submit</Button>
+                </li>
+
+                <li className="list-group-item border-0">
+                    <div className='small'>Timezone</div>
+                    <div className='very-small text-gray'>Add timezone to your profile.</div>
+                    <select ref={timezoneRef} className="form-select form-control-bg" defaultValue={userTimezone}>
+                        <option>Choose...</option>
+                        {moment.tz.names().map(item => <option value={item}>{item}</option>)}
+                    </select>
+                    <Button className='mt-2' onClick={sendTimezone} variant="primary">Submit</Button>
                 </li>
 
                 <li className="list-group-item border-0">
