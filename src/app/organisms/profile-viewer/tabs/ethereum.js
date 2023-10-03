@@ -162,7 +162,6 @@ export default function renderEthereum(tinyPlace, user, presenceStatus) {
                 }
             }).catch(err => {
                 balanceDiv.text('ERROR!');
-                toast(err.message);
                 console.error(err);
             });
 

@@ -2,6 +2,33 @@ import { twemojify } from '../../../../util/twemojify';
 import { copyToClipboard } from '../../../../util/common';
 import { toast } from '../../../../util/tools';
 
+const timezoneAutoUpdate = { text: null, html: null, value: null };
+setInterval(() => {
+    if (timezoneAutoUpdate.html && timezoneAutoUpdate.value) {
+
+        let timezoneText = 'null';
+        try {
+            timezoneText = moment().tz(timezoneAutoUpdate.value).format('MMMM Do YYYY, hh:mm a');
+        } catch {
+            timezoneText = 'ERROR!';
+        }
+
+        timezoneAutoUpdate.text = timezoneText;
+        timezoneAutoUpdate.html.text(timezoneText);
+
+    }
+}, 60000);
+
+const dNoneChange = (ref, enabled) => {
+
+    if (enabled || ref.hasClass('no-show')) {
+        ref.addClass('d-none');
+    } else {
+        ref.removeClass('d-none');
+    }
+
+};
+
 export default function renderAbout(ethereumValid, displayNameRef, customStatusRef, profileBanner, bioRef, timezoneRef, content) {
 
     // Ethereum
@@ -50,16 +77,16 @@ export default function renderAbout(ethereumValid, displayNameRef, customStatusR
 
         if (tinyBio.length > 0) {
 
-            bioDOM.removeClass('d-none');
+            dNoneChange(bioDOM, false);
             if (typeof content.presenceStatusMsg.bio === 'string' && content.presenceStatusMsg.bio.length > 0) {
                 tinyBio.html(twemojify(content.presenceStatusMsg.bio.substring(0, 190), undefined, true, false));
             } else {
-                bioDOM.addClass('d-none');
+                dNoneChange(bioDOM, true);
                 tinyBio.html('');
             }
 
         } else {
-            bioDOM.addClass('d-none');
+            dNoneChange(bioDOM, true);
         }
 
     }
@@ -72,25 +99,32 @@ export default function renderAbout(ethereumValid, displayNameRef, customStatusR
 
         if (tinyTimezone.length > 0) {
 
-            timezoneDOM.removeClass('d-none');
+            dNoneChange(timezoneDOM, false);
             if (typeof content.presenceStatusMsg.timezone === 'string' && content.presenceStatusMsg.timezone.length > 0) {
 
                 let timezoneText = 'null';
                 try {
-                    timezoneText = moment().tz(content.presenceStatusMsg.timezone).format('MMMM Do YYYY, h:mm:ss a');
+                    timezoneText = moment().tz(content.presenceStatusMsg.timezone).format('MMMM Do YYYY, hh:mm a');
                 } catch {
                     timezoneText = 'ERROR!';
+                    dNoneChange(timezoneDOM, true);
                 }
+
+                if (timezoneAutoUpdate.html) delete timezoneAutoUpdate.html;
+
+                timezoneAutoUpdate.html = tinyTimezone;
+                timezoneAutoUpdate.value = content.presenceStatusMsg.timezone;
+                timezoneAutoUpdate.text = timezoneText;
 
                 tinyTimezone.text(timezoneText);
 
             } else {
-                timezoneDOM.addClass('d-none');
+                dNoneChange(timezoneDOM, true);
                 tinyTimezone.html('');
             }
 
         } else {
-            timezoneDOM.addClass('d-none');
+            dNoneChange(timezoneDOM, true);
         }
 
     }
