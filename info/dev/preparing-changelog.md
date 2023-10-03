@@ -1,1 +1,3 @@
 - Timezone profile added.
+- Loading icon added to ud tab.
+- Ethereum error window hidden.
