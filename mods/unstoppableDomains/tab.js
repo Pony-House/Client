@@ -101,7 +101,9 @@ export default function renderUd(tinyPlace, user, presenceStatus) {
 
         // Loading Message
         tinyPlace.append(
-            $('<strong>', { class: 'small' }).text('Loading data...')
+            $('<strong>', { class: 'small' }).text('Loading data...').prepend(
+                $('<div>', { class: 'me-2 spinner-border spinner-border-sm d-inline-block', role: 'status' }).append($('<span>', { class: 'visually-hidden' }).text('Loading...'))
+            )
         );
 
         // Tiny Error
