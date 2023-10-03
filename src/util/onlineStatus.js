@@ -58,7 +58,7 @@ export function parsePresenceStatus(presence, userId) {
     if (typeof presence === 'string') {
 
         const mx = initMatrix.matrixClient;
-        const tinyResult = { status: null, msg: null, bio: null, banner: null };
+        const tinyResult = { status: null, msg: null, bio: null, timezone: null, banner: null };
         try {
             const tinyParse = JSON.parse(presence);
             if (tinyParse) {
@@ -97,6 +97,11 @@ export function parsePresenceStatus(presence, userId) {
                 // Profile Bio
                 if (typeof tinyParse.bio === 'string' && tinyParse.bio.length > 0) {
                     tinyResult.bio = tinyParse.bio.substring(0, 190);
+                }
+
+                // Profile Timezone
+                if (typeof tinyParse.timezone === 'string' && tinyParse.timezone.length > 0) {
+                    tinyResult.timezone = tinyParse.timezone.substring(0, 100);
                 }
 
                 // User AFK

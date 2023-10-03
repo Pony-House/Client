@@ -2,7 +2,7 @@ import { twemojify } from '../../../../util/twemojify';
 import { copyToClipboard } from '../../../../util/common';
 import { toast } from '../../../../util/tools';
 
-export default function renderAbout(ethereumValid, displayNameRef, customStatusRef, profileBanner, bioRef, content) {
+export default function renderAbout(ethereumValid, displayNameRef, customStatusRef, profileBanner, bioRef, timezoneRef, content) {
 
     // Ethereum
     if (ethereumValid) {
@@ -60,6 +60,37 @@ export default function renderAbout(ethereumValid, displayNameRef, customStatusR
 
         } else {
             bioDOM.addClass('d-none');
+        }
+
+    }
+
+    // Get Timezone Data
+    if (timezoneRef.current) {
+
+        const timezoneDOM = $(timezoneRef.current);
+        const tinyTimezone = $('#tiny-timezone');
+
+        if (tinyTimezone.length > 0) {
+
+            timezoneDOM.removeClass('d-none');
+            if (typeof content.presenceStatusMsg.timezone === 'string' && content.presenceStatusMsg.timezone.length > 0) {
+
+                let timezoneText = 'null';
+                try {
+                    timezoneText = moment().tz(content.presenceStatusMsg.timezone).format('MMMM Do YYYY, h:mm:ss a');
+                } catch {
+                    timezoneText = 'ERROR!';
+                }
+
+                tinyTimezone.text(timezoneText);
+
+            } else {
+                timezoneDOM.addClass('d-none');
+                tinyTimezone.html('');
+            }
+
+        } else {
+            timezoneDOM.addClass('d-none');
         }
 
     }
