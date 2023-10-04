@@ -10,7 +10,32 @@ let head;
 
 // Zoom Validator
 const tinyAppZoomValidator = (value) => !Number.isNaN(value) && Number.isFinite(value) ? value >= 50 ? value <= 200 ? value : 200 : 100 : 100;
-export { tinyAppZoomValidator };
+
+// Blob Creator
+const blobCreator = (result) => {
+
+    if (typeof result === 'string') {
+
+        const arr = result.split(',');
+        const mime = arr[0].match(/:(.*?);/)[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        return new Blob([u8arr], { type: mime });
+
+    }
+
+    return new Blob([], { type: 'text/plain' });
+
+};
+
+// Export
+export { tinyAppZoomValidator, blobCreator };
 
 // Message to number
 export function textValueToNumber(text = '', nb = 11) {
