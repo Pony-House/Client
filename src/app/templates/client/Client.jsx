@@ -47,14 +47,38 @@ function Client() {
   }
 
   useEffect(() => {
+
     startUserAfk();
     navigation.on(cons.events.navigation.SELECTED_ROOM_MODE, onRoomModeSelected);
-    $(window).on('resize', resizeWindowChecker).on('mousewheel', scrollFixer);
+    const keypressDetector = (event) => {
+
+      const e = event.originalEvent;
+
+      const body = $('body');
+
+      if (e.shiftKey) {
+        body.addClass('shiftKey');
+      } else {
+        body.removeClass('shiftKey');
+      }
+
+
+      if (e.ctrlKey) {
+        body.addClass('ctrlKey');
+      } else {
+        body.removeClass('ctrlKey');
+      }
+
+    };
+
+    $(window).on('resize', resizeWindowChecker).on('mousewheel', scrollFixer).on('keypress keyup keydown', keypressDetector);
+
     return (() => {
       stopUserAfk();
-      $(window).off('resize', resizeWindowChecker).on('mousewheel', scrollFixer);
+      $(window).off('resize', resizeWindowChecker).on('mousewheel', scrollFixer).off('keypress keyup keydown', keypressDetector);
       navigation.removeListener(cons.events.navigation.SELECTED_ROOM_MODE, onRoomModeSelected);
     });
+
   }, []);
 
   useEffect(() => {
