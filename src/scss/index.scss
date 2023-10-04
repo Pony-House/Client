@@ -470,3 +470,9 @@ body:not(.shiftKey) {
     display: none !important;
   }
 }
+
+body:not(.ctrlKey) {
+  .need-ctrl {
+    display: none !important;
+  }
+}
