@@ -641,6 +641,7 @@ const MessageOptions = React.memo(({
 
   return (
     <div className="message__options">
+
       {canSendReaction && (
         <IconButton
           onClick={(e) => pickEmoji(e, roomId, mEvent.getId(), roomTimeline)}
@@ -649,12 +650,14 @@ const MessageOptions = React.memo(({
           tooltip="Add reaction"
         />
       )}
+
       <IconButton
         onClick={() => reply()}
         fa="fa-solid fa-reply"
         size="normal"
         tooltip="Reply"
       />
+
       {(senderId === mx.getUserId() && !isMedia(mEvent)) && (
         <IconButton
           onClick={() => edit(true)}
@@ -663,10 +666,22 @@ const MessageOptions = React.memo(({
           tooltip="Edit"
         />
       )}
+
+      {(canIRedact || senderId === mx.getUserId()) && (
+        <IconButton
+          className='need-shift'
+          onClick={() => redactEvent(roomId, mEvent.getId())}
+          fa="fa-solid fa-trash-can btn-text-danger"
+          size="normal"
+          tooltip="Delete"
+        />
+      )}
+
       <ContextMenu
         content={() => (
           <>
             <MenuHeader>Options</MenuHeader>
+
             <MenuItem
               className="text-start"
               faSrc="fa-solid fa-copy"
@@ -684,6 +699,7 @@ const MessageOptions = React.memo(({
             >
               Copy text
             </MenuItem>
+
             <MenuItem
               className="text-start"
               faSrc="fa-solid fa-check-double"
@@ -691,6 +707,7 @@ const MessageOptions = React.memo(({
             >
               Read receipts
             </MenuItem>
+
             <MenuItem
               className="text-start"
               faSrc="fa-solid fa-code"
@@ -698,6 +715,7 @@ const MessageOptions = React.memo(({
             >
               View source
             </MenuItem>
+
             {(canIRedact || senderId === mx.getUserId()) && (
               <>
                 <MenuBorder />
@@ -721,6 +739,7 @@ const MessageOptions = React.memo(({
             )}
           </>
         )}
+
         render={(toggleMenu) => (
           <IconButton
             onClick={toggleMenu}
@@ -729,6 +748,7 @@ const MessageOptions = React.memo(({
             tooltip="Options"
           />
         )}
+
       />
     </div>
   );

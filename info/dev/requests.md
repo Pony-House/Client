@@ -44,8 +44,6 @@ Made by Me
 
     --> Sistema de bordas personalizadas que pode ser facilmente pega em qualquer servidor.
 
-    --> Shift para deletar mensagem mais rápido.
-
     --> Quando enviar arquivo para o upload, focus na caixa de digitar mensagem.
 
     --> Ajeitar o atualizador de Status quando o usuário abre o app.
