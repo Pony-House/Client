@@ -814,6 +814,8 @@ function RoomViewInput({
       );
     }
 
+    setTimeout(() => $('#message-textarea').focus(), 100);
+
     // Complete
     return (
       <>
@@ -916,7 +918,10 @@ function RoomViewInput({
 
   // Insert File
   function attachFile() {
+
     const fileType = attachment.type.slice(0, attachment.type.indexOf('/'));
+    $('#message-textarea').focus();
+
     return (
       <div className="room-attachment">
         <div className={`room-attachment__preview${fileType !== 'image' ? ' room-attachment__icon' : ''}`}>

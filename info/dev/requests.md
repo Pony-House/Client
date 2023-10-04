@@ -44,8 +44,6 @@ Made by Me
 
     --> Sistema de bordas personalizadas que pode ser facilmente pega em qualquer servidor.
 
-    --> Quando enviar arquivo para o upload, focus na caixa de digitar mensagem.
-
     --> Ajeitar o atualizador de Status quando o usuário abre o app.
 
     --> Adicionar opção para suporte de thumbs com parametros de animação.
