@@ -424,8 +424,8 @@ function ProfileViewer() {
       const executeMenu = (where, tinyData) => {
 
         // Hide items
-        bioPlace.addClass('no-show');
-        timezonePlace.addClass('no-show');
+        bioPlace.addClass('no-show').addClass('d-none');
+        timezonePlace.addClass('no-show').addClass('d-none');
         customPlace.addClass('d-none');
 
         // Show items back
@@ -434,8 +434,8 @@ function ProfileViewer() {
           tinyPlace.empty().append(actions[where](tinyPlace, user, tinyData.content?.presenceStatusMsg, tinyData.ethereumValid));
           customPlace.removeClass('d-none');
         } else {
-          timezonePlace.removeClass('no-show');
-          bioPlace.removeClass('no-show');
+          timezonePlace.removeClass('no-show').removeClass('d-none');
+          bioPlace.removeClass('no-show').removeClass('d-none');
         }
 
       };
