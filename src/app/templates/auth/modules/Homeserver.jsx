@@ -19,33 +19,41 @@ function Homeserver({ onChange }) {
     const hsRef = useRef();
 
     const setupHsConfig = async (servername) => {
-        setProcess({ isLoading: true, message: 'Looking for homeserver...' });
-        let baseUrl = null;
-        baseUrl = await getBaseUrl(servername);
 
-        if (searchingHs !== servername) return;
-        setProcess({ isLoading: true, message: `Connecting to ${baseUrl}...` });
-        const tempClient = auth.createTemporaryClient(baseUrl);
+        if (servername !== '') {
 
-        Promise.allSettled([tempClient.loginFlows(), tempClient.register()])
-            .then((values) => {
-                const loginFlow = values[0].status === 'fulfilled' ? values[0]?.value : undefined;
-                const registerFlow = values[1].status === 'rejected' ? values[1]?.reason?.data : undefined;
-                if (loginFlow === undefined || registerFlow === undefined) throw new Error();
+            setProcess({ isLoading: true, message: 'Looking for homeserver...' });
+            let baseUrl = null;
+            baseUrl = await getBaseUrl(servername);
 
-                if (searchingHs !== servername) return;
-                onChange({ baseUrl, login: loginFlow, register: registerFlow });
-                setProcess({ isLoading: false });
-            }).catch(() => {
-                if (searchingHs !== servername) return;
-                onChange(null);
-                setProcess({ isLoading: false, error: 'Unable to connect. Please check your input.' });
-            });
+            if (searchingHs !== servername) return;
+            setProcess({ isLoading: true, message: `Connecting to ${baseUrl}...` });
+            const tempClient = auth.createTemporaryClient(baseUrl);
+
+            Promise.allSettled([tempClient.loginFlows(), tempClient.register()])
+                .then((values) => {
+                    const loginFlow = values[0].status === 'fulfilled' ? values[0]?.value : undefined;
+                    const registerFlow = values[1].status === 'rejected' ? values[1]?.reason?.data : undefined;
+                    if (loginFlow === undefined || registerFlow === undefined) throw new Error();
+
+                    if (searchingHs !== servername) return;
+                    onChange({ baseUrl, login: loginFlow, register: registerFlow });
+                    setProcess({ isLoading: false });
+                }).catch(() => {
+                    if (searchingHs !== servername) return;
+                    onChange(null);
+                    setProcess({ isLoading: false, error: 'Unable to connect. Please check your input.' });
+                });
+
+        } else {
+            setProcess({ isLoading: false });
+        }
+
     };
 
     useEffect(() => {
         onChange(null);
-        if (hs === null || hs?.selected.trim() === '') return;
+        if (hs === null) return;
         searchingHs = hs.selected;
         setupHsConfig(hs.selected);
     }, [hs]);
@@ -88,6 +96,7 @@ function Homeserver({ onChange }) {
             <div className="homeserver-form">
                 <div className='w-100'>
                     <Input
+                        placeholder='Type the homeserver address here'
                         name="homeserver"
                         onChange={handleHsInput}
                         value={hs?.selected}
@@ -96,7 +105,7 @@ function Homeserver({ onChange }) {
                         disabled={hs === null || !hs.allowCustom}
                     />
                 </div>
-                <ContextMenu
+                {Array.isArray(hs?.list) && hs.list.length > 1 ? <ContextMenu
                     placement="right"
                     content={(hideMenu) => (
                         <>
@@ -118,7 +127,7 @@ function Homeserver({ onChange }) {
                         </>
                     )}
                     render={(toggleMenu) => <IconButton onClick={toggleMenu} fa="fa-solid fa-server" />}
-                />
+                /> : null}
             </div>
             {process.error !== undefined && <Text className="homeserver-form__error" variant="b3">{process.error}</Text>}
             {process.isLoading && (

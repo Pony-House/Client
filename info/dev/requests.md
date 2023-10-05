@@ -42,6 +42,10 @@ Made by Me
 
     =======================================================
 
+    --> Corrigir profile que não esconde o User Data.
+
+    --> Philomena.
+
     --> Sistema de bordas personalizadas que pode ser facilmente pega em qualquer servidor.
 
     --> Ajeitar o atualizador de Status quando o usuário abre o app.
