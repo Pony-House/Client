@@ -3,3 +3,4 @@
 - Ethereum error window hidden.
 - Faster delete button on shift added.
 - Focus textarea on chatroom added.
+- Empty homeserver list support added.
