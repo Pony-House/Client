@@ -33,6 +33,20 @@
       background-color: var(--mx-uc-8);
     }
   }
+
+  .username > .button:hover,
+  .display-name > .button:hover,
+  .text-click:hover {
+    cursor: pointer;
+    color: var(--tc-link);
+  }
+
+  #ethereum-icon:hover {
+    cursor: pointer;
+    i {
+      color: var(--bs-primary) !important;
+    }
+  }
 }
 
 /* DM Banner */
@@ -46,14 +60,20 @@
 
   .profile-user-profile-avatar {
     margin-top: -60px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    left: -95px;
   }
 
   .profile-user-profile-avatar,
   .avatar-container,
   .avatar-react {
     height: 87px !important;
-    width: 87px !important;
+    width: 101px !important;
+  }
+
+  .avatar-container {
+    padding: 7px;
   }
 
   .user-status {
@@ -68,20 +88,6 @@
 .modal-dialog-user-profile {
   .modal-header {
     display: none !important;
-  }
-
-  .username > .button:hover,
-  .display-name > .button:hover,
-  .text-click:hover {
-    cursor: pointer;
-    color: var(--tc-link);
-  }
-
-  #ethereum-icon:hover {
-    cursor: pointer;
-    i {
-      color: var(--bs-primary) !important;
-    }
   }
 
   .profile-banner {

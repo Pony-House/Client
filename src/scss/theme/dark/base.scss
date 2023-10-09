@@ -333,8 +333,11 @@
     --bs-gradient: none;
   }
 
-  .modal-dialog-user-profile .avatar-container {
-    background-color: #1b1b1b;
+  .modal-dialog-user-profile,
+  .people-drawer-banner {
+    .avatar-container {
+      background-color: #1b1b1b;
+    }
   }
 }
 

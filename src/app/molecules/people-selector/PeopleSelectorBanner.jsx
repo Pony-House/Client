@@ -120,8 +120,14 @@ function PeopleSelectorBanner({
       <i ref={statusRef} className={`user-status pe-2 ${getUserStatus(user)}`} />
     </div>
 
-    <h6 ref={displayNameRef} className='emoji-size-fix m-0 mb-1 fw-bold display-name'><span className='button'>{twemojifyReact(name)}</span></h6>
-    <small ref={userNameRef} className='text-gray emoji-size-fix username'><span className='button'>{twemojifyReact(user.userId)}</span></small>
+    <div className='card bg-bg mx-3 text-start'>
+      <div className='card-body'>
+
+        <h6 ref={displayNameRef} className='emoji-size-fix m-0 mb-1 fw-bold display-name'><span className='button'>{twemojifyReact(name)}</span></h6>
+        <small ref={userNameRef} className='text-gray emoji-size-fix username'><span className='button'>{twemojifyReact(user.userId)}</span></small>
+
+      </div>
+    </div>
 
   </>;
 
