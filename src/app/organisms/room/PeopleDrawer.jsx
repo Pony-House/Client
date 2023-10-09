@@ -47,7 +47,10 @@ function PeopleDrawer({ roomId }) {
     { name: 'Banned', value: 'ban' },
   ];
 
-  tinyAPI.emit('roomMembersOptions', newValues);
+  const usersCount = room.getJoinedMemberCount();
+  let isUserList = true;
+
+  tinyAPI.emit('roomMembersOptions', newValues, isUserList);
   const defaultMembership = newValues.find(item => item.value === 'join');
 
   const [itemCount, setItemCount] = useState(PER_PAGE_MEMBER);
@@ -56,6 +59,7 @@ function PeopleDrawer({ roomId }) {
   const [searchedMembers, setSearchedMembers] = useState(null);
   const searchRef = useRef(null);
 
+  isUserList = (usersCount !== 2 || membership.value !== 'join');
   const getMembersWithMembership = useCallback(
     (mship) => room.getMembersWithMembership(mship),
     [roomId, membership.value],
@@ -74,7 +78,7 @@ function PeopleDrawer({ roomId }) {
 
   function handleSearch(e) {
     const term = e.target.value;
-    if (term === '' || term === undefined) {
+    if (searchRef.current && term === '' || term === undefined) {
       searchRef.current.value = '';
       searchRef.current.focus();
       setSearchedMembers(null);
@@ -116,7 +120,7 @@ function PeopleDrawer({ roomId }) {
 
     };
 
-    searchRef.current.value = '';
+    if (searchRef.current) searchRef.current.value = '';
     updateMemberList();
     isLoadingMembers = true;
     room.loadMembersIfNeeded().then(() => {
@@ -166,8 +170,6 @@ function PeopleDrawer({ roomId }) {
   }
 
   const mList = searchedMembers !== null ? searchedMembers.data : memberList.slice(0, itemCount);
-  const usersCount = room.getJoinedMemberCount();
-  const isUserList = (usersCount !== 2 || membership.value !== 'join');
 
   return (
     <div className={`people-drawer${!isUserList ? ' people-drawer-banner' : ''}`}>
@@ -253,29 +255,31 @@ function PeopleDrawer({ roomId }) {
             ))
           }
 
-          {
-            (searchedMembers?.data.length === 0 || memberList.length === 0)
-            && (
-              <div className="people-drawer__noresult">
-                <Text variant="b2">No results found!</Text>
-              </div>
-            )
-          }
-
-          <div className="people-drawer__load-more">
+          {isUserList ? <>
             {
-              mList.length !== 0
-              && memberList.length > itemCount
-              && searchedMembers === null
+              (searchedMembers?.data.length === 0 || memberList.length === 0)
               && (
-                <Button onClick={loadMorePeople}>View more</Button>
+                <div className="people-drawer__noresult">
+                  <Text variant="b2">No results found!</Text>
+                </div>
               )
             }
-          </div>
+
+            <div className="people-drawer__load-more">
+              {
+                mList.length !== 0
+                && memberList.length > itemCount
+                && searchedMembers === null
+                && (
+                  <Button onClick={loadMorePeople}>View more</Button>
+                )
+              }
+            </div>
+          </> : null}
 
         </center>
 
-        <div className="pt-1">
+        {isUserList ? <div className="pt-1">
           <form onSubmit={(e) => e.preventDefault()} className="people-search">
             <div><Input forwardRef={searchRef} type="text" onChange={handleSearch} placeholder="Search" required /></div>
             {
@@ -283,7 +287,7 @@ function PeopleDrawer({ roomId }) {
               && <center><IconButton onClick={handleSearch} size="small" fa="fa-solid fa-xmark" /></center>
             }
           </form>
-        </div>
+        </div> : null}
 
       </div>
 

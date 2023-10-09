@@ -131,6 +131,7 @@ Use the msgOptions.custom object to customize the final result of your message. 
 ### roomMembersOptions
 
     segments
+    isUserList
 
 `src/client/state/navigation.js`
 
