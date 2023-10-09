@@ -22,6 +22,7 @@ import { btModal, dice, resizeWindowChecker, scrollFixer, tinyAppZoomValidator }
 import { startUserAfk, stopUserAfk } from '../../../util/userStatusEffects';
 import Mods from './Mods';
 import appLoadMsg from '../../../../mods/appLoadMsg';
+// import LoadingPage from './Loading';
 
 let versionChecked = false;
 
