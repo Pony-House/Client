@@ -17,6 +17,7 @@ import Button from '../../atoms/button/Button';
 import Input from '../../atoms/input/Input';
 import SegmentedControl from '../../atoms/segmented-controls/SegmentedControls';
 import PeopleSelector from '../../molecules/people-selector/PeopleSelector';
+import PeopleSelectorBanner from '../../molecules/people-selector/PeopleSelectorBanner';
 import tinyAPI from '../../../util/mods';
 
 function simplyfiMembers(members) {
@@ -165,15 +166,18 @@ function PeopleDrawer({ roomId }) {
   }
 
   const mList = searchedMembers !== null ? searchedMembers.data : memberList.slice(0, itemCount);
+  const usersCount = room.getJoinedMemberCount();
+  const isUserList = (usersCount !== 2 || membership.value !== 'join');
+
   return (
-    <div className="people-drawer">
+    <div className={`people-drawer${!isUserList ? ' people-drawer-banner' : ''}`}>
       <Header>
 
         <ul className='navbar-nav mr-auto pb-1'>
 
           <li className="nav-item ps-2">
             People
-            <div className="very-small text-gray">{`${room.getJoinedMemberCount()} members`}</div>
+            <div className="very-small text-gray">{`${usersCount} members`}</div>
           </li>
 
         </ul>
@@ -193,7 +197,7 @@ function PeopleDrawer({ roomId }) {
           'overflowY': 'auto'
         }}>
 
-          <SegmentedControl
+          {isUserList ? <SegmentedControl
             className='pb-3'
             selected={
               (() => {
@@ -206,21 +210,35 @@ function PeopleDrawer({ roomId }) {
               const selectSegment = selectMembership;
               selectSegment[index]?.();
             }}
-          />
+          /> : null}
 
           {
             mList.map((member) => (
               !member.customSelector ?
 
-                <PeopleSelector
-                  key={member.userId}
-                  user={member.user}
-                  onClick={() => typeof member.customClick !== 'function' ? openProfileViewer(member.userId, roomId) : member.customClick()}
-                  avatarSrc={member.avatarSrc}
-                  name={member.name}
-                  color={colorMXID(member.userId)}
-                  peopleRole={member.peopleRole}
-                /> :
+                isUserList ?
+
+                  <PeopleSelector
+                    key={member.userId}
+                    user={member.user}
+                    onClick={() => typeof member.customClick !== 'function' ? openProfileViewer(member.userId, roomId) : member.customClick()}
+                    avatarSrc={member.avatarSrc}
+                    name={member.name}
+                    color={colorMXID(member.userId)}
+                    peopleRole={member.peopleRole}
+                  /> :
+
+                  member.userId !== mx.getUserId() ? <PeopleSelectorBanner
+                    key={member.userId}
+                    user={member.user}
+                    onClick={() => typeof member.customClick !== 'function' ? openProfileViewer(member.userId, roomId) : member.customClick()}
+                    avatarSrc={member.avatarSrc}
+                    name={member.name}
+                    color={colorMXID(member.userId)}
+                    peopleRole={member.peopleRole}
+                  /> : null
+
+                :
 
                 <member.customSelector
                   key={member.userId}
