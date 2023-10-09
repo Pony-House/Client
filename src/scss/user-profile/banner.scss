@@ -1,5 +1,5 @@
-/* Banner Profile */
-.modal-dialog-user-profile {
+.modal-dialog-user-profile,
+.people-drawer-banner {
   .profile-bg {
     &--mx-uc-1 {
       background-color: var(--mx-uc-1);
@@ -33,7 +33,39 @@
       background-color: var(--mx-uc-8);
     }
   }
+}
 
+/* DM Banner */
+.people-drawer-banner {
+  .profile-banner {
+    height: 140px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+  }
+
+  .profile-user-profile-avatar {
+    margin-top: -60px;
+    margin-bottom: 15px;
+  }
+
+  .profile-user-profile-avatar,
+  .avatar-container,
+  .avatar-react {
+    height: 87px !important;
+    width: 87px !important;
+  }
+
+  .user-status {
+    position: relative;
+    top: -15px;
+    left: 44px;
+    font-size: 16pt;
+  }
+}
+
+/* Banner Profile */
+.modal-dialog-user-profile {
   .modal-header {
     display: none !important;
   }

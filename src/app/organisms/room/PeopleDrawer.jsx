@@ -236,7 +236,6 @@ function PeopleDrawer({ roomId }) {
                   member.userId !== mx.getUserId() ? <PeopleSelectorBanner
                     key={member.userId}
                     user={member.user}
-                    onClick={() => typeof member.customClick !== 'function' ? openProfileViewer(member.userId, roomId) : member.customClick()}
                     avatarSrc={member.avatarSrc}
                     name={member.name}
                     color={colorMXID(member.userId)}

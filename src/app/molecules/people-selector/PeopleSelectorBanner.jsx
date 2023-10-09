@@ -1,70 +1,80 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import clone from 'clone';
 
 import { twemojifyReact, twemojify } from '../../../util/twemojify';
 
-import { blurOnBubbling } from '../../atoms/button/script';
-
-import Text from '../../atoms/text/Text';
 import Avatar from '../../atoms/avatar/Avatar';
 import { getUserStatus, updateUserStatusIcon, getPresence } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
-import { getUserWeb3Account } from '../../../util/web3';
+import { colorMXID, cssColorMXID } from '../../../util/colorMXID';
 
 function PeopleSelectorBanner({
-  avatarSrc, avatarAnimSrc, name, color, peopleRole, onClick, user, disableStatus
+  avatarSrc, avatarAnimSrc, name, color, peopleRole, user, disableStatus
 }) {
 
+  const mx = initMatrix.matrixClient;
   const statusRef = useRef(null);
   const customStatusRef = useRef(null);
+  const profileBanner = useRef(null);
+  const userNameRef = useRef(null);
+  const displayNameRef = useRef(null);
+  const profileAvatar = useRef(null);
 
   const getCustomStatus = (content) => {
 
-    // Custom Status
-    if (customStatusRef && customStatusRef.current) {
+    // Get Status
+    const customStatus = $(customStatusRef.current);
+    const htmlStatus = [];
+    let customStatusImg;
+    const isOffline = (content.presence !== 'offline' && content.presence !== 'unavailable');
 
-      // Get Status
-      const customStatus = $(customStatusRef.current);
-      const htmlStatus = [];
-      let customStatusImg;
+    if (
+      content && content.presenceStatusMsg &&
+      (
+        (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) ||
+        (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0)
+      )
+    ) {
 
-      if (
-        content && content.presenceStatusMsg &&
-        content.presence !== 'offline' && content.presence !== 'unavailable' && (
-          (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) ||
-          (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0)
-        )
-      ) {
+      const presence = content.presenceStatusMsg;
 
-        if (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0) {
+      if (typeof presence.msgIcon === 'string' && presence.msgIcon.length > 0) {
 
-          customStatusImg = $('<img>', { src: content.presenceStatusMsg.msgIconThumb, alt: 'icon', class: 'emoji me-1' });
-          htmlStatus.push(customStatusImg);
+        customStatusImg = $('<img>', { src: presence.msgIconThumb, alt: 'icon', class: 'emoji me-1' });
+        htmlStatus.push(customStatusImg);
 
-          customStatusImg.data('pony-house-cs-normal', content.presenceStatusMsg.msgIconThumb);
-          customStatusImg.data('pony-house-cs-hover', content.presenceStatusMsg.msgIcon);
-
-        }
-
-        if (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) {
-          htmlStatus.push($('<span>', { class: 'text-truncate cs-text' }).html(twemojify(content.presenceStatusMsg.msg.substring(0, 100))));
-        }
+        customStatusImg.data('pony-house-cs-normal', presence.msgIconThumb);
+        customStatusImg.data('pony-house-cs-hover', presence.msgIcon);
 
       }
 
-      customStatus.html(htmlStatus);
-
-      if (customStatusImg) {
-        customStatusImg.parent().parent().parent().hover(
-          () => {
-            customStatusImg.attr('src', customStatusImg.data('pony-house-cs-hover'));
-          }, () => {
-            customStatusImg.attr('src', customStatusImg.data('pony-house-cs-normal'));
-          }
-        );
+      if (typeof presence.msg === 'string' && presence.msg.length > 0) {
+        htmlStatus.push($('<span>', { class: 'text-truncate cs-text' }).html(twemojify(presence.msg.substring(0, 100))));
       }
 
+      // Get Banner Data
+      const bannerDOM = $(profileBanner.current);
+
+      if (bannerDOM.length > 0) {
+        if (typeof presence.banner === 'string' && presence.banner.length > 0) {
+          bannerDOM.css('background-image', `url("${presence.banner}")`).addClass('exist-banner');
+        } else {
+          bannerDOM.css('background-image', '').removeClass('exist-banner');
+        }
+      }
+
+    }
+
+    customStatus.html(htmlStatus);
+
+    if (customStatusImg) {
+      customStatusImg.parent().parent().parent().hover(
+        () => {
+          customStatusImg.attr('src', customStatusImg.data('pony-house-cs-hover'));
+        }, () => {
+          customStatusImg.attr('src', customStatusImg.data('pony-house-cs-normal'));
+        }
+      );
     }
 
   };
@@ -80,17 +90,8 @@ function PeopleSelectorBanner({
       const updateProfileStatus = (mEvent, tinyData) => {
 
         // Get Status
-        const mx = initMatrix.matrixClient;
         const status = $(statusRef.current);
         const tinyUser = tinyData;
-
-        // Is You
-        if (tinyUser.userId === mx.getUserId()) {
-          const yourData = clone(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
-          yourData.ethereum = getUserWeb3Account();
-          if (typeof yourData.ethereum.valid !== 'undefined') delete yourData.ethereum.valid;
-          tinyUser.presenceStatusMsg = JSON.stringify(yourData);
-        }
 
         // Update Status Icon
         getCustomStatus(updateUserStatusIcon(status, tinyUser));
@@ -110,26 +111,19 @@ function PeopleSelectorBanner({
     }
   }, [user]);
 
-  return (
-    <button
-      className="people-selector"
-      onMouseUp={(e) => blurOnBubbling(e, '.people-selector')}
-      onClick={onClick}
-      type="button"
-    >
+  return <>
 
-      <Avatar imageAnimSrc={avatarAnimSrc} imageSrc={avatarSrc} text={name} bgColor={color} size="small" isDefaultImage />
-      {!disableStatus ? <i ref={statusRef} className={getUserStatus(user)} /> : ''}
+    <div ref={profileBanner} className={`profile-banner profile-bg${cssColorMXID(user.userId)}`} />
 
-      <div className="small people-selector__name text-start">
-        <span className='emoji-size-fix'>{twemojifyReact(name)}</span>
-        <div ref={customStatusRef} className='very-small text-gray text-truncate emoji-size-fix-2 user-custom-status' />
-      </div>
+    <div className='text-center profile-user-profile-avatar'>
+      <Avatar ref={profileAvatar} imageSrc={mx.mxcUrlToHttp(user.avatarUrl, 100, 100, 'crop')} imageAnimSrc={mx.mxcUrlToHttp(user.avatarUrl)} text={name} bgColor={colorMXID(user.userId)} size="large" isDefaultImage />
+      <i ref={statusRef} className={`user-status pe-2 ${getUserStatus(user)}`} />
+    </div>
 
-      {peopleRole !== null && <Text className="people-selector__role" variant="b3">{peopleRole}</Text>}
+    <h6 ref={displayNameRef} className='emoji-size-fix m-0 mb-1 fw-bold display-name'><span className='button'>{twemojifyReact(name)}</span></h6>
+    <small ref={userNameRef} className='text-gray emoji-size-fix username'><span className='button'>{twemojifyReact(user.userId)}</span></small>
 
-    </button>
-  );
+  </>;
 
 }
 
@@ -149,7 +143,6 @@ PeopleSelectorBanner.propTypes = {
   name: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
   peopleRole: PropTypes.string,
-  onClick: PropTypes.func.isRequired,
 };
 
 export default PeopleSelectorBanner;
