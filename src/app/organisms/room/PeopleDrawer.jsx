@@ -177,10 +177,13 @@ function PeopleDrawer({ roomId }) {
 
         <ul className='navbar-nav mr-auto pb-1'>
 
-          <li className="nav-item ps-2">
+          {isUserList ? <li className="nav-item ps-2">
             People
             <div className="very-small text-gray">{`${usersCount} members`}</div>
-          </li>
+          </li> : <li className="nav-item ps-2">
+            User Room
+            <div className="very-small text-gray">The user private room</div>
+          </li>}
 
         </ul>
 
@@ -194,7 +197,7 @@ function PeopleDrawer({ roomId }) {
 
       <div className={`people-drawer__content-wrapper people-drawer-select-${membership.value}`}>
 
-        <center className='p-3 w-100' style={{
+        <center className={`${isUserList ? 'p-3 ' : ''} w-100`} style={{
           'height': '100%',
           'overflowY': 'auto'
         }}>
