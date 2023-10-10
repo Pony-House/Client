@@ -7,6 +7,7 @@ import Avatar from '../../atoms/avatar/Avatar';
 import { getUserStatus, updateUserStatusIcon, getPresence } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
 import { cssColorMXID } from '../../../util/colorMXID';
+import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 
 function PeopleSelectorBanner({
   name, color, user
@@ -109,10 +110,26 @@ function PeopleSelectorBanner({
       };
 
       // Read Events
+      const tinyNote = getDataList('user_cache', 'note', user.userId);
+
+      const tinyNoteSpacing = (event) => {
+        const element = event.target;
+        element.style.height = "5px";
+        element.style.height = `${Number(element.scrollHeight)}px`;
+      };
+
+      // Update Note
+      const tinyNoteUpdate = (event) => {
+        addToDataFolder('user_cache', 'note', user.userId, $(event.target).val(), 500);
+      };
+
+      // Read Events
       user.on('User.currentlyActive', updateProfileStatus);
       user.on('User.lastPresenceTs', updateProfileStatus);
       user.on('User.presence', updateProfileStatus);
+      $(noteRef.current).on('change', tinyNoteUpdate).on('keypress keyup keydown', tinyNoteSpacing).val(tinyNote);
       return () => {
+        $(noteRef.current).off('change', tinyNoteUpdate).off('keypress keyup keydown', tinyNoteSpacing);
         user.removeListener('User.currentlyActive', updateProfileStatus);
         user.removeListener('User.lastPresenceTs', updateProfileStatus);
         user.removeListener('User.presence', updateProfileStatus);
