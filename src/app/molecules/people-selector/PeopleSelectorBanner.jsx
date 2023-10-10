@@ -124,7 +124,7 @@ function PeopleSelectorBanner({
       if (timezoneRef.current) {
 
         const timezoneDOM = $(timezoneRef.current);
-        const tinyTimezone = $('#tiny-timezone');
+        const tinyTimezone = $('#dm-tiny-timezone');
 
         if (tinyTimezone.length > 0) {
 
@@ -282,7 +282,7 @@ function PeopleSelectorBanner({
             <hr />
 
             <div className='text-gray text-uppercase fw-bold very-small mb-2'>Timezone</div>
-            <div id='tiny-timezone' className='emoji-size-fix small text-freedom' />
+            <div id='dm-tiny-timezone' className='emoji-size-fix small text-freedom' />
 
           </div>
 
