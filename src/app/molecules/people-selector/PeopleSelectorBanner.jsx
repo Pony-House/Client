@@ -8,6 +8,9 @@ import { getUserStatus, updateUserStatusIcon, getPresence } from '../../../util/
 import initMatrix from '../../../client/initMatrix';
 import { cssColorMXID } from '../../../util/colorMXID';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
+import { toast } from '../../../util/tools';
+import { copyToClipboard } from '../../../util/common';
+import copyText from '../../organisms/profile-viewer/copyText';
 
 const timezoneAutoUpdate = { text: null, html: null, value: null };
 setInterval(() => {
@@ -43,6 +46,12 @@ function PeopleSelectorBanner({
   const bioRef = useRef(null);
   const noteRef = useRef(null);
 
+  // Copy Profile Username
+  const copyUsername = {
+    tag: (event) => copyText(event, 'Username successfully copied to the clipboard.'),
+    display: (event) => copyText(event, 'Display name successfully copied to the clipboard.'),
+  };
+
   const getCustomStatus = (content) => {
 
     // Get Status
@@ -60,6 +69,34 @@ function PeopleSelectorBanner({
     ) {
 
       const presence = content.presenceStatusMsg;
+      const ethereumValid = (presence.ethereum && presence.ethereum.valid);
+
+      // Ethereum
+      if (ethereumValid) {
+
+        const displayName = $(displayNameRef.current);
+        let ethereumIcon = displayName.find('#dm-ethereum-icon');
+        if (ethereumIcon.length < 1) {
+
+          ethereumIcon = $('<span>', { id: 'dm-ethereum-icon', class: 'ms-2', title: presence.ethereum.address }).append(
+            $('<i>', { class: 'fa-brands fa-ethereum' })
+          );
+
+          ethereumIcon.on('click', () => {
+            try {
+              copyToClipboard(presence.ethereum.address);
+              toast('Ethereum address successfully copied to the clipboard.');
+            } catch (err) {
+              console.error(err);
+              alert(err.message);
+            }
+          }).tooltip();
+
+          displayName.append(ethereumIcon);
+
+        }
+
+      }
 
       // Get Bio Data
       if (bioRef.current) {
@@ -92,11 +129,11 @@ function PeopleSelectorBanner({
         if (tinyTimezone.length > 0) {
 
           timezoneDOM.removeClass('d-none');
-          if (typeof content.presenceStatusMsg.timezone === 'string' && content.presenceStatusMsg.timezone.length > 0) {
+          if (typeof presence.timezone === 'string' && presence.timezone.length > 0) {
 
             let timezoneText = 'null';
             try {
-              timezoneText = moment().tz(content.presenceStatusMsg.timezone).format('MMMM Do YYYY, hh:mm a');
+              timezoneText = moment().tz(presence.timezone).format('MMMM Do YYYY, hh:mm a');
             } catch {
               timezoneText = 'ERROR!';
               timezoneDOM.addClass('d-none');
@@ -105,7 +142,7 @@ function PeopleSelectorBanner({
             if (timezoneAutoUpdate.html) delete timezoneAutoUpdate.html;
 
             timezoneAutoUpdate.html = tinyTimezone;
-            timezoneAutoUpdate.value = content.presenceStatusMsg.timezone;
+            timezoneAutoUpdate.value = presence.timezone;
             timezoneAutoUpdate.text = timezoneText;
 
             tinyTimezone.text(timezoneText);
@@ -206,8 +243,12 @@ function PeopleSelectorBanner({
       user.on('User.currentlyActive', updateProfileStatus);
       user.on('User.lastPresenceTs', updateProfileStatus);
       user.on('User.presence', updateProfileStatus);
+      $(displayNameRef.current).find('> .button').on('click', copyUsername.display);
+      $(userNameRef.current).find('> .button').on('click', copyUsername.tag);
       $(noteRef.current).on('change', tinyNoteUpdate).on('keypress keyup keydown', tinyNoteSpacing).val(tinyNote);
       return () => {
+        $(displayNameRef.current).find('> .button').off('click', copyUsername.display);
+        $(userNameRef.current).find('> .button').off('click', copyUsername.tag);
         $(noteRef.current).off('change', tinyNoteUpdate).off('keypress keyup keydown', tinyNoteSpacing);
         user.removeListener('User.currentlyActive', updateProfileStatus);
         user.removeListener('User.lastPresenceTs', updateProfileStatus);
@@ -266,21 +307,13 @@ function PeopleSelectorBanner({
 }
 
 PeopleSelectorBanner.defaultProps = {
-  avatarAnimSrc: null,
-  avatarSrc: null,
-  peopleRole: null,
   user: null,
-  disableStatus: false,
 };
 
 PeopleSelectorBanner.propTypes = {
-  disableStatus: PropTypes.bool,
   user: PropTypes.object,
-  avatarAnimSrc: PropTypes.string,
-  avatarSrc: PropTypes.string,
   name: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
-  peopleRole: PropTypes.string,
 };
 
 export default PeopleSelectorBanner;
