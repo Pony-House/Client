@@ -9,6 +9,23 @@ import initMatrix from '../../../client/initMatrix';
 import { cssColorMXID } from '../../../util/colorMXID';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 
+const timezoneAutoUpdate = { text: null, html: null, value: null };
+setInterval(() => {
+  if (timezoneAutoUpdate.html && timezoneAutoUpdate.value) {
+
+    let timezoneText = 'null';
+    try {
+      timezoneText = moment().tz(timezoneAutoUpdate.value).format('MMMM Do YYYY, hh:mm a');
+    } catch {
+      timezoneText = 'ERROR!';
+    }
+
+    timezoneAutoUpdate.text = timezoneText;
+    timezoneAutoUpdate.html.text(timezoneText);
+
+  }
+}, 60000);
+
 function PeopleSelectorBanner({
   name, color, user
 }) {
@@ -66,6 +83,45 @@ function PeopleSelectorBanner({
 
       }
 
+      // Get Timezone Data
+      if (timezoneRef.current) {
+
+        const timezoneDOM = $(timezoneRef.current);
+        const tinyTimezone = $('#tiny-timezone');
+
+        if (tinyTimezone.length > 0) {
+
+          timezoneDOM.removeClass('d-none');
+          if (typeof content.presenceStatusMsg.timezone === 'string' && content.presenceStatusMsg.timezone.length > 0) {
+
+            let timezoneText = 'null';
+            try {
+              timezoneText = moment().tz(content.presenceStatusMsg.timezone).format('MMMM Do YYYY, hh:mm a');
+            } catch {
+              timezoneText = 'ERROR!';
+              timezoneDOM.addClass('d-none');
+            }
+
+            if (timezoneAutoUpdate.html) delete timezoneAutoUpdate.html;
+
+            timezoneAutoUpdate.html = tinyTimezone;
+            timezoneAutoUpdate.value = content.presenceStatusMsg.timezone;
+            timezoneAutoUpdate.text = timezoneText;
+
+            tinyTimezone.text(timezoneText);
+
+          } else {
+            timezoneDOM.addClass('d-none');
+            tinyTimezone.html('');
+          }
+
+        } else {
+          timezoneDOM.addClass('d-none');
+        }
+
+      }
+
+      // Message Icon
       if (typeof presence.msgIcon === 'string' && presence.msgIcon.length > 0) {
 
         customStatusImg = $('<img>', { src: presence.msgIconThumb, alt: 'icon', class: 'emoji me-1' });
@@ -93,6 +149,7 @@ function PeopleSelectorBanner({
 
     }
 
+    // Custom Status
     customStatus.html(htmlStatus);
     if (!isOffline) {
       customStatus.removeClass('d-none');
