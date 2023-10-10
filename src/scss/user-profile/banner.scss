@@ -48,6 +48,10 @@
       color: var(--bs-primary) !important;
     }
   }
+
+  .profile-banner.exist-banner {
+    background-color: transparent !important;
+  }
 }
 
 /* DM Banner */
@@ -97,10 +101,6 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100% auto;
-  }
-
-  .profile-banner.exist-banner {
-    background-color: transparent !important;
   }
 
   @media (max-width: 991px) {

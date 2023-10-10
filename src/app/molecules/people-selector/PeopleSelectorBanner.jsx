@@ -8,7 +8,7 @@ import { getUserStatus, updateUserStatusIcon, getPresence } from '../../../util/
 import initMatrix from '../../../client/initMatrix';
 import { cssColorMXID } from '../../../util/colorMXID';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
-import { toast } from '../../../util/tools';
+import { objType, toast } from '../../../util/tools';
 import { copyToClipboard } from '../../../util/common';
 import copyText from '../../organisms/profile-viewer/copyText';
 
@@ -60,13 +60,7 @@ function PeopleSelectorBanner({
     let customStatusImg;
     const isOffline = (content.presence === 'offline' || content.presence === 'unavailable');
 
-    if (
-      content && content.presenceStatusMsg &&
-      (
-        (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) ||
-        (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0)
-      )
-    ) {
+    if (content && objType(content.presenceStatusMsg, 'object')) {
 
       const presence = content.presenceStatusMsg;
       const ethereumValid = (presence.ethereum && presence.ethereum.valid);
