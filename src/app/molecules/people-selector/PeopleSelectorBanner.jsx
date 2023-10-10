@@ -44,6 +44,28 @@ function PeopleSelectorBanner({
 
       const presence = content.presenceStatusMsg;
 
+      // Get Bio Data
+      if (bioRef.current) {
+
+        const bioDOM = $(bioRef.current);
+        const tinyBio = $('#dm-tiny-bio');
+
+        if (tinyBio.length > 0) {
+
+          bioDOM.removeClass('d-none')
+          if (typeof presence.bio === 'string' && presence.bio.length > 0) {
+            tinyBio.html(twemojify(presence.bio.substring(0, 190), undefined, true, false));
+          } else {
+            bioDOM.addClass('d-none')
+            tinyBio.html('');
+          }
+
+        } else {
+          bioDOM.addClass('d-none')
+        }
+
+      }
+
       if (typeof presence.msgIcon === 'string' && presence.msgIcon.length > 0) {
 
         customStatusImg = $('<img>', { src: presence.msgIconThumb, alt: 'icon', class: 'emoji me-1' });
@@ -169,7 +191,7 @@ function PeopleSelectorBanner({
           <hr />
 
           <div className='text-gray text-uppercase fw-bold very-small mb-2'>About me</div>
-          <div id='tiny-bio' className='emoji-size-fix small text-freedom' />
+          <div id='dm-tiny-bio' className='emoji-size-fix small text-freedom' />
 
         </div>
 
