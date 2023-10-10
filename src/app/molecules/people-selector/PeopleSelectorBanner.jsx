@@ -6,13 +6,14 @@ import { twemojifyReact, twemojify } from '../../../util/twemojify';
 import Avatar from '../../atoms/avatar/Avatar';
 import { getUserStatus, updateUserStatusIcon, getPresence } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
-import { colorMXID, cssColorMXID } from '../../../util/colorMXID';
+import { cssColorMXID } from '../../../util/colorMXID';
 
 function PeopleSelectorBanner({
-  avatarSrc, avatarAnimSrc, name, color, peopleRole, user, disableStatus
+  name, color, user
 }) {
 
   const mx = initMatrix.matrixClient;
+
   const statusRef = useRef(null);
   const customStatusRef = useRef(null);
   const profileBanner = useRef(null);
@@ -20,13 +21,17 @@ function PeopleSelectorBanner({
   const displayNameRef = useRef(null);
   const profileAvatar = useRef(null);
 
+  const timezoneRef = useRef(null);
+  const bioRef = useRef(null);
+  const noteRef = useRef(null);
+
   const getCustomStatus = (content) => {
 
     // Get Status
     const customStatus = $(customStatusRef.current);
     const htmlStatus = [];
     let customStatusImg;
-    const isOffline = (content.presence !== 'offline' && content.presence !== 'unavailable');
+    const isOffline = (content.presence === 'offline' || content.presence === 'unavailable');
 
     if (
       content && content.presenceStatusMsg &&
@@ -66,6 +71,11 @@ function PeopleSelectorBanner({
     }
 
     customStatus.html(htmlStatus);
+    if (!isOffline) {
+      customStatus.removeClass('d-none');
+    } else {
+      customStatus.addClass('d-none');
+    }
 
     if (customStatusImg) {
       customStatusImg.parent().parent().parent().hover(
@@ -116,7 +126,7 @@ function PeopleSelectorBanner({
     <div ref={profileBanner} className={`profile-banner profile-bg${cssColorMXID(user.userId)}`} />
 
     <div className='text-center profile-user-profile-avatar'>
-      <Avatar ref={profileAvatar} imageSrc={mx.mxcUrlToHttp(user.avatarUrl, 100, 100, 'crop')} imageAnimSrc={mx.mxcUrlToHttp(user.avatarUrl)} text={name} bgColor={colorMXID(user.userId)} size="large" isDefaultImage />
+      <Avatar ref={profileAvatar} imageSrc={mx.mxcUrlToHttp(user.avatarUrl, 100, 100, 'crop')} imageAnimSrc={mx.mxcUrlToHttp(user.avatarUrl)} text={name} bgColor={color} size="large" isDefaultImage />
       <i ref={statusRef} className={`user-status pe-2 ${getUserStatus(user)}`} />
     </div>
 
@@ -125,6 +135,32 @@ function PeopleSelectorBanner({
 
         <h6 ref={displayNameRef} className='emoji-size-fix m-0 mb-1 fw-bold display-name'><span className='button'>{twemojifyReact(name)}</span></h6>
         <small ref={userNameRef} className='text-gray emoji-size-fix username'><span className='button'>{twemojifyReact(user.userId)}</span></small>
+
+        <div ref={customStatusRef} className='d-none mt-2 emoji-size-fix small user-custom-status' />
+
+        <div ref={timezoneRef} className='d-none'>
+
+          <hr />
+
+          <div className='text-gray text-uppercase fw-bold very-small mb-2'>Timezone</div>
+          <div id='tiny-timezone' className='emoji-size-fix small text-freedom' />
+
+        </div>
+
+        <div ref={bioRef} className='d-none'>
+
+          <hr />
+
+          <div className='text-gray text-uppercase fw-bold very-small mb-2'>About me</div>
+          <div id='tiny-bio' className='emoji-size-fix small text-freedom' />
+
+        </div>
+
+        <hr />
+
+        <label for="tiny-note" className="form-label text-gray text-uppercase fw-bold very-small mb-2">Note</label>
+        <textarea ref={noteRef} spellCheck="false" className="form-control form-control-bg emoji-size-fix small" id="tiny-note" placeholder="Insert a note here" />
+
 
       </div>
     </div>

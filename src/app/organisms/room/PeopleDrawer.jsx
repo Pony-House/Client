@@ -236,7 +236,6 @@ function PeopleDrawer({ roomId }) {
                   member.userId !== mx.getUserId() ? <PeopleSelectorBanner
                     key={member.userId}
                     user={member.user}
-                    avatarSrc={member.avatarSrc}
                     name={member.name}
                     color={colorMXID(member.userId)}
                     peopleRole={member.peopleRole}
