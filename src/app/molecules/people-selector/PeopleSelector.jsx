@@ -80,17 +80,8 @@ function PeopleSelector({
       const updateProfileStatus = (mEvent, tinyData) => {
 
         // Get Status
-        const mx = initMatrix.matrixClient;
         const status = $(statusRef.current);
         const tinyUser = tinyData;
-
-        // Is You
-        if (tinyUser.userId === mx.getUserId()) {
-          const yourData = clone(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
-          yourData.ethereum = getUserWeb3Account();
-          if (typeof yourData.ethereum.valid !== 'undefined') delete yourData.ethereum.valid;
-          tinyUser.presenceStatusMsg = JSON.stringify(yourData);
-        }
 
         // Update Status Icon
         getCustomStatus(updateUserStatusIcon(status, tinyUser));

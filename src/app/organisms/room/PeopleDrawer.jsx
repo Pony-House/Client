@@ -8,7 +8,7 @@ import { getPowerLabel, getUsernameOfRoomMember } from '../../../util/matrixUtil
 import { colorMXID } from '../../../util/colorMXID';
 import { openInviteUser, openProfileViewer } from '../../../client/action/navigation';
 import AsyncSearch from '../../../util/AsyncSearch';
-import { memberByAtoZ, memberByPowerLevel } from '../../../util/sort';
+import { memberByStatus, memberByPowerLevel } from '../../../util/sort';
 
 import Text from '../../atoms/text/Text';
 import { Header } from '../../atoms/header/Header';
@@ -106,12 +106,25 @@ function PeopleDrawer({ roomId }) {
       // Default
       if (!Array.isArray(membership.custom)) {
 
-        setMemberList(
-          simplyfiMembers(
-            getMembersWithMembership(membership.value)
-              .sort(memberByAtoZ).sort(memberByPowerLevel),
-          ),
-        );
+        const membersWithMembership = getMembersWithMembership(membership.value);
+        let membersData = [];
+
+        if (membersWithMembership.length > 1000) {
+
+          for (const item in membersWithMembership) {
+            if (membersWithMembership[item]?.user?.presence === 'online') {
+              membersData.push(membersWithMembership[item]);
+            }
+          }
+
+          membersData.sort(memberByPowerLevel);
+
+        } else {
+          membersWithMembership.sort(memberByStatus).sort(memberByPowerLevel);
+          membersData = membersWithMembership;
+        }
+
+        setMemberList(simplyfiMembers(membersData));
 
       }
 

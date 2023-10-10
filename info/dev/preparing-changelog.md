@@ -1,0 +1,2 @@
+- New DM Profile design.
+- Online users will be the first visible on the member list now.

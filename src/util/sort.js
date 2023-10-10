@@ -5,7 +5,7 @@ export function roomIdByActivity(id1, id2) {
   const room2 = initMatrix.matrixClient.getRoom(id2);
 
   return room2.getLastActiveTimestamp() - room1.getLastActiveTimestamp();
-}
+};
 
 export function roomIdByAtoZ(aId, bId) {
   let aName = initMatrix.matrixClient.getRoom(aId).name;
@@ -23,7 +23,7 @@ export function roomIdByAtoZ(aId, bId) {
     return 1;
   }
   return 0;
-}
+};
 
 export function memberByAtoZ(m1, m2) {
   const aName = m1.name;
@@ -36,7 +36,8 @@ export function memberByAtoZ(m1, m2) {
     return 1;
   }
   return 0;
-}
+};
+
 export function memberByPowerLevel(m1, m2) {
   const pl1 = m1.powerLevel;
   const pl2 = m2.powerLevel;
@@ -44,4 +45,37 @@ export function memberByPowerLevel(m1, m2) {
   if (pl1 > pl2) return -1;
   if (pl1 < pl2) return 1;
   return 0;
-}
+};
+
+
+export function memberByStatus(m1, m2) {
+
+  const aName = m1?.user?.presence === 'online' ? 0 : 1;
+  const bName = m2?.user?.presence === 'online' ? 0 : 1;
+
+  if (aName < bName) {
+    return -1;
+  }
+  if (aName > bName) {
+    return 1;
+  }
+  return 0;
+
+};
+
+export function memberByStatusAndName(m1, m2) {
+
+  const aStatus = m1?.user?.presence === 'online' ? 0 : 1;
+  const bStatus = m2?.user?.presence === 'online' ? 0 : 1;
+  const aName = m1.name;
+  const bName = m2.name;
+
+  if (aStatus < bStatus && aName.toLowerCase() < bName.toLowerCase()) {
+    return -1;
+  }
+  if (aStatus > bStatus && aName.toLowerCase() > bName.toLowerCase()) {
+    return 1;
+  }
+  return 0;
+
+};
