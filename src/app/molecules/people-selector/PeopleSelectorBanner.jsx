@@ -32,232 +32,233 @@ setInterval(() => {
 function PeopleSelectorBanner({
   name, color, user
 }) {
-  if (user) {
 
-    const mx = initMatrix.matrixClient;
+  const statusRef = useRef(null);
+  const customStatusRef = useRef(null);
+  const profileBanner = useRef(null);
+  const userNameRef = useRef(null);
+  const displayNameRef = useRef(null);
+  const profileAvatar = useRef(null);
 
-    const statusRef = useRef(null);
-    const customStatusRef = useRef(null);
-    const profileBanner = useRef(null);
-    const userNameRef = useRef(null);
-    const displayNameRef = useRef(null);
-    const profileAvatar = useRef(null);
+  const timezoneRef = useRef(null);
+  const bioRef = useRef(null);
+  const noteRef = useRef(null);
 
-    const timezoneRef = useRef(null);
-    const bioRef = useRef(null);
-    const noteRef = useRef(null);
+  const mx = initMatrix.matrixClient;
 
-    // Copy Profile Username
-    const copyUsername = {
-      tag: (event) => copyText(event, 'Username successfully copied to the clipboard.'),
-      display: (event) => copyText(event, 'Display name successfully copied to the clipboard.'),
-    };
+  // Copy Profile Username
+  const copyUsername = {
+    tag: (event) => copyText(event, 'Username successfully copied to the clipboard.'),
+    display: (event) => copyText(event, 'Display name successfully copied to the clipboard.'),
+  };
 
-    const getCustomStatus = (content) => {
+  const getCustomStatus = (content) => {
 
-      // Get Status
-      const customStatus = $(customStatusRef.current);
-      const htmlStatus = [];
-      let customStatusImg;
-      const isOffline = (content.presence === 'offline' || content.presence === 'unavailable');
+    // Get Status
+    const customStatus = $(customStatusRef.current);
+    const htmlStatus = [];
+    let customStatusImg;
+    const isOffline = (content.presence === 'offline' || content.presence === 'unavailable');
 
-      if (
-        content && content.presenceStatusMsg &&
-        (
-          (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) ||
-          (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0)
-        )
-      ) {
+    if (
+      content && content.presenceStatusMsg &&
+      (
+        (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) ||
+        (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0)
+      )
+    ) {
 
-        const presence = content.presenceStatusMsg;
-        const ethereumValid = (presence.ethereum && presence.ethereum.valid);
+      const presence = content.presenceStatusMsg;
+      const ethereumValid = (presence.ethereum && presence.ethereum.valid);
 
-        // Ethereum
-        if (ethereumValid) {
+      // Ethereum
+      if (ethereumValid) {
 
-          const displayName = $(displayNameRef.current);
-          let ethereumIcon = displayName.find('#dm-ethereum-icon');
-          if (ethereumIcon.length < 1) {
+        const displayName = $(displayNameRef.current);
+        let ethereumIcon = displayName.find('#dm-ethereum-icon');
+        if (ethereumIcon.length < 1) {
 
-            ethereumIcon = $('<span>', { id: 'dm-ethereum-icon', class: 'ms-2', title: presence.ethereum.address }).append(
-              $('<i>', { class: 'fa-brands fa-ethereum' })
-            );
+          ethereumIcon = $('<span>', { id: 'dm-ethereum-icon', class: 'ms-2', title: presence.ethereum.address }).append(
+            $('<i>', { class: 'fa-brands fa-ethereum' })
+          );
 
-            ethereumIcon.on('click', () => {
-              try {
-                copyToClipboard(presence.ethereum.address);
-                toast('Ethereum address successfully copied to the clipboard.');
-              } catch (err) {
-                console.error(err);
-                alert(err.message);
-              }
-            }).tooltip();
+          ethereumIcon.on('click', () => {
+            try {
+              copyToClipboard(presence.ethereum.address);
+              toast('Ethereum address successfully copied to the clipboard.');
+            } catch (err) {
+              console.error(err);
+              alert(err.message);
+            }
+          }).tooltip();
 
-            displayName.append(ethereumIcon);
-
-          }
+          displayName.append(ethereumIcon);
 
         }
 
-        // Get Bio Data
-        if (bioRef.current) {
+      }
 
-          const bioDOM = $(bioRef.current);
-          const tinyBio = $('#dm-tiny-bio');
+      // Get Bio Data
+      if (bioRef.current) {
 
-          if (tinyBio.length > 0) {
+        const bioDOM = $(bioRef.current);
+        const tinyBio = $('#dm-tiny-bio');
 
-            bioDOM.removeClass('d-none')
-            if (typeof presence.bio === 'string' && presence.bio.length > 0) {
-              tinyBio.html(twemojify(presence.bio.substring(0, 190), undefined, true, false));
-            } else {
-              bioDOM.addClass('d-none')
-              tinyBio.html('');
-            }
+        if (tinyBio.length > 0) {
 
+          bioDOM.removeClass('d-none')
+          if (typeof presence.bio === 'string' && presence.bio.length > 0) {
+            tinyBio.html(twemojify(presence.bio.substring(0, 190), undefined, true, false));
           } else {
             bioDOM.addClass('d-none')
+            tinyBio.html('');
           }
 
+        } else {
+          bioDOM.addClass('d-none')
         }
 
-        // Get Timezone Data
-        if (timezoneRef.current) {
+      }
 
-          const timezoneDOM = $(timezoneRef.current);
-          const tinyTimezone = $('#tiny-timezone');
+      // Get Timezone Data
+      if (timezoneRef.current) {
 
-          if (tinyTimezone.length > 0) {
+        const timezoneDOM = $(timezoneRef.current);
+        const tinyTimezone = $('#tiny-timezone');
 
-            timezoneDOM.removeClass('d-none');
-            if (typeof presence.timezone === 'string' && presence.timezone.length > 0) {
+        if (tinyTimezone.length > 0) {
 
-              let timezoneText = 'null';
-              try {
-                timezoneText = moment().tz(presence.timezone).format('MMMM Do YYYY, hh:mm a');
-              } catch {
-                timezoneText = 'ERROR!';
-                timezoneDOM.addClass('d-none');
-              }
+          timezoneDOM.removeClass('d-none');
+          if (typeof presence.timezone === 'string' && presence.timezone.length > 0) {
 
-              if (timezoneAutoUpdate.html) delete timezoneAutoUpdate.html;
-
-              timezoneAutoUpdate.html = tinyTimezone;
-              timezoneAutoUpdate.value = presence.timezone;
-              timezoneAutoUpdate.text = timezoneText;
-
-              tinyTimezone.text(timezoneText);
-
-            } else {
+            let timezoneText = 'null';
+            try {
+              timezoneText = moment().tz(presence.timezone).format('MMMM Do YYYY, hh:mm a');
+            } catch {
+              timezoneText = 'ERROR!';
               timezoneDOM.addClass('d-none');
-              tinyTimezone.html('');
             }
+
+            if (timezoneAutoUpdate.html) delete timezoneAutoUpdate.html;
+
+            timezoneAutoUpdate.html = tinyTimezone;
+            timezoneAutoUpdate.value = presence.timezone;
+            timezoneAutoUpdate.text = timezoneText;
+
+            tinyTimezone.text(timezoneText);
 
           } else {
             timezoneDOM.addClass('d-none');
+            tinyTimezone.html('');
           }
 
-        }
-
-        // Message Icon
-        if (typeof presence.msgIcon === 'string' && presence.msgIcon.length > 0) {
-
-          customStatusImg = $('<img>', { src: presence.msgIconThumb, alt: 'icon', class: 'emoji me-1' });
-          htmlStatus.push(customStatusImg);
-
-          customStatusImg.data('pony-house-cs-normal', presence.msgIconThumb);
-          customStatusImg.data('pony-house-cs-hover', presence.msgIcon);
-
-        }
-
-        if (typeof presence.msg === 'string' && presence.msg.length > 0) {
-          htmlStatus.push($('<span>', { class: 'text-truncate cs-text' }).html(twemojify(presence.msg.substring(0, 100))));
-        }
-
-        // Get Banner Data
-        const bannerDOM = $(profileBanner.current);
-
-        if (bannerDOM.length > 0) {
-          if (typeof presence.banner === 'string' && presence.banner.length > 0) {
-            bannerDOM.css('background-image', `url("${presence.banner}")`).addClass('exist-banner');
-          } else {
-            bannerDOM.css('background-image', '').removeClass('exist-banner');
-          }
+        } else {
+          timezoneDOM.addClass('d-none');
         }
 
       }
 
-      // Custom Status
-      customStatus.html(htmlStatus);
-      if (!isOffline) {
-        customStatus.removeClass('d-none');
-      } else {
-        customStatus.addClass('d-none');
+      // Message Icon
+      if (typeof presence.msgIcon === 'string' && presence.msgIcon.length > 0) {
+
+        customStatusImg = $('<img>', { src: presence.msgIconThumb, alt: 'icon', class: 'emoji me-1' });
+        htmlStatus.push(customStatusImg);
+
+        customStatusImg.data('pony-house-cs-normal', presence.msgIconThumb);
+        customStatusImg.data('pony-house-cs-hover', presence.msgIcon);
+
       }
 
-      if (customStatusImg) {
-        customStatusImg.parent().parent().parent().hover(
-          () => {
-            customStatusImg.attr('src', customStatusImg.data('pony-house-cs-hover'));
-          }, () => {
-            customStatusImg.attr('src', customStatusImg.data('pony-house-cs-normal'));
-          }
-        );
+      if (typeof presence.msg === 'string' && presence.msg.length > 0) {
+        htmlStatus.push($('<span>', { class: 'text-truncate cs-text' }).html(twemojify(presence.msg.substring(0, 100))));
       }
 
-    };
+      // Get Banner Data
+      const bannerDOM = $(profileBanner.current);
 
-    if (user) {
-      getCustomStatus(getPresence(user));
+      if (bannerDOM.length > 0) {
+        if (typeof presence.banner === 'string' && presence.banner.length > 0) {
+          bannerDOM.css('background-image', `url("${presence.banner}")`).addClass('exist-banner');
+        } else {
+          bannerDOM.css('background-image', '').removeClass('exist-banner');
+        }
+      }
+
     }
 
-    useEffect(() => {
-      if (user) {
+    // Custom Status
+    customStatus.html(htmlStatus);
+    if (!isOffline) {
+      customStatus.removeClass('d-none');
+    } else {
+      customStatus.addClass('d-none');
+    }
 
-        // Update Status Profile
-        const updateProfileStatus = (mEvent, tinyData) => {
+    if (customStatusImg) {
+      customStatusImg.parent().parent().parent().hover(
+        () => {
+          customStatusImg.attr('src', customStatusImg.data('pony-house-cs-hover'));
+        }, () => {
+          customStatusImg.attr('src', customStatusImg.data('pony-house-cs-normal'));
+        }
+      );
+    }
 
-          // Get Status
-          const status = $(statusRef.current);
-          const tinyUser = tinyData;
+  };
 
-          // Update Status Icon
-          getCustomStatus(updateUserStatusIcon(status, tinyUser));
+  if (user) {
+    getCustomStatus(getPresence(user));
+  }
 
-        };
+  useEffect(() => {
+    if (user) {
 
-        // Read Events
-        const tinyNote = getDataList('user_cache', 'note', user.userId);
+      // Update Status Profile
+      const updateProfileStatus = (mEvent, tinyData) => {
 
-        const tinyNoteSpacing = (event) => {
-          const element = event.target;
-          element.style.height = "5px";
-          element.style.height = `${Number(element.scrollHeight)}px`;
-        };
+        // Get Status
+        const status = $(statusRef.current);
+        const tinyUser = tinyData;
 
-        // Update Note
-        const tinyNoteUpdate = (event) => {
-          addToDataFolder('user_cache', 'note', user.userId, $(event.target).val(), 500);
-        };
+        // Update Status Icon
+        getCustomStatus(updateUserStatusIcon(status, tinyUser));
 
-        // Read Events
-        user.on('User.currentlyActive', updateProfileStatus);
-        user.on('User.lastPresenceTs', updateProfileStatus);
-        user.on('User.presence', updateProfileStatus);
-        $(displayNameRef.current).find('> .button').on('click', copyUsername.display);
-        $(userNameRef.current).find('> .button').on('click', copyUsername.tag);
-        $(noteRef.current).on('change', tinyNoteUpdate).on('keypress keyup keydown', tinyNoteSpacing).val(tinyNote);
-        return () => {
-          $(displayNameRef.current).find('> .button').off('click', copyUsername.display);
-          $(userNameRef.current).find('> .button').off('click', copyUsername.tag);
-          $(noteRef.current).off('change', tinyNoteUpdate).off('keypress keyup keydown', tinyNoteSpacing);
-          user.removeListener('User.currentlyActive', updateProfileStatus);
-          user.removeListener('User.lastPresenceTs', updateProfileStatus);
-          user.removeListener('User.presence', updateProfileStatus);
-        };
+      };
 
-      }
-    }, [user]);
+      // Read Events
+      const tinyNote = getDataList('user_cache', 'note', user.userId);
+
+      const tinyNoteSpacing = (event) => {
+        const element = event.target;
+        element.style.height = "5px";
+        element.style.height = `${Number(element.scrollHeight)}px`;
+      };
+
+      // Update Note
+      const tinyNoteUpdate = (event) => {
+        addToDataFolder('user_cache', 'note', user.userId, $(event.target).val(), 500);
+      };
+
+      // Read Events
+      user.on('User.currentlyActive', updateProfileStatus);
+      user.on('User.lastPresenceTs', updateProfileStatus);
+      user.on('User.presence', updateProfileStatus);
+      $(displayNameRef.current).find('> .button').on('click', copyUsername.display);
+      $(userNameRef.current).find('> .button').on('click', copyUsername.tag);
+      $(noteRef.current).on('change', tinyNoteUpdate).on('keypress keyup keydown', tinyNoteSpacing).val(tinyNote);
+      return () => {
+        $(displayNameRef.current).find('> .button').off('click', copyUsername.display);
+        $(userNameRef.current).find('> .button').off('click', copyUsername.tag);
+        $(noteRef.current).off('change', tinyNoteUpdate).off('keypress keyup keydown', tinyNoteSpacing);
+        user.removeListener('User.currentlyActive', updateProfileStatus);
+        user.removeListener('User.lastPresenceTs', updateProfileStatus);
+        user.removeListener('User.presence', updateProfileStatus);
+      };
+
+    }
+  }, [user]);
+
+  if (user) {
 
     return <>
 
@@ -306,6 +307,9 @@ function PeopleSelectorBanner({
     </>;
 
   }
+
+  return null;
+
 }
 
 PeopleSelectorBanner.defaultProps = {
