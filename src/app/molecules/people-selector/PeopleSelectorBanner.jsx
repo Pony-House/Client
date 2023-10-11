@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { twemojifyReact, twemojify } from '../../../util/twemojify';
@@ -43,6 +43,8 @@ function PeopleSelectorBanner({
   const timezoneRef = useRef(null);
   const bioRef = useRef(null);
   const noteRef = useRef(null);
+
+  const [avatarUrl, setUserAvatar] = useState(user.avatarUrl);
 
   const mx = initMatrix.matrixClient;
 
@@ -213,6 +215,7 @@ function PeopleSelectorBanner({
         // Get Status
         const status = $(statusRef.current);
         const tinyUser = tinyData;
+        setUserAvatar(tinyData?.avatarUrl);
 
         // Update Status Icon
         getCustomStatus(updateUserStatusIcon(status, tinyUser));
@@ -234,6 +237,7 @@ function PeopleSelectorBanner({
       };
 
       // Read Events
+      user.on('User.avatarUrl', updateProfileStatus);
       user.on('User.currentlyActive', updateProfileStatus);
       user.on('User.lastPresenceTs', updateProfileStatus);
       user.on('User.presence', updateProfileStatus);
@@ -247,6 +251,7 @@ function PeopleSelectorBanner({
         user.removeListener('User.currentlyActive', updateProfileStatus);
         user.removeListener('User.lastPresenceTs', updateProfileStatus);
         user.removeListener('User.presence', updateProfileStatus);
+        user.removeListener('User.avatarUrl', updateProfileStatus);
       };
 
     }
@@ -259,7 +264,7 @@ function PeopleSelectorBanner({
       <div ref={profileBanner} className={`profile-banner profile-bg${cssColorMXID(user.userId)}`} />
 
       <div className='text-center profile-user-profile-avatar'>
-        <Avatar ref={profileAvatar} imageSrc={mx.mxcUrlToHttp(user.avatarUrl, 100, 100, 'crop')} imageAnimSrc={mx.mxcUrlToHttp(user.avatarUrl)} text={name} bgColor={color} size="large" isDefaultImage />
+        <Avatar ref={profileAvatar} imageSrc={mx.mxcUrlToHttp(avatarUrl, 100, 100, 'crop')} imageAnimSrc={mx.mxcUrlToHttp(avatarUrl)} text={name} bgColor={color} size="large" isDefaultImage />
         <i ref={statusRef} className={`user-status pe-2 ${getUserStatus(user)}`} />
       </div>
 

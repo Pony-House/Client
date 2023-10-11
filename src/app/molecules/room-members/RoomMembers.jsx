@@ -157,6 +157,7 @@ function RoomMembers({ roomId, profileMode }) {
           {mList.map((member) => (
             <PeopleSelector
               disableStatus
+              avatarSize={24}
               key={member.userId}
               onClick={() => openProfileViewer(member.userId, roomId)}
               avatarSrc={member.avatarSrc}

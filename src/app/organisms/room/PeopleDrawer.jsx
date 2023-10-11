@@ -237,6 +237,7 @@ function PeopleDrawer({ roomId }) {
                 isUserList ?
 
                   <PeopleSelector
+                    avatarSize={24}
                     key={member.userId}
                     user={member.user}
                     onClick={() => typeof member.customClick !== 'function' ? openProfileViewer(member.userId, roomId) : member.customClick()}

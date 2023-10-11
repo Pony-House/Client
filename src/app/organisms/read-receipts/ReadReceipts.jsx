@@ -43,6 +43,7 @@ function ReadReceipts() {
     return (
       <PeopleSelector
         disableStatus
+        avatarSize={24}
         key={userId}
         onClick={() => {
           setIsOpen(false);
