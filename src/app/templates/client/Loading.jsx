@@ -2,22 +2,22 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 
 let setStatus = null;
-function setLoadingPage(status) {
+function setLoadingPage(status, type = 'border') {
     if (typeof setStatus === 'function') {
-        setStatus({ status });
+        setStatus({ status, type });
     }
 };
 
 function LoadingPage() {
 
-    const [systemState, setSystemState] = useState({ status: null });
+    const [systemState, setSystemState] = useState({ status: false, type: null });
     setStatus = setSystemState;
 
-    return systemState !== null && systemState.status !== null ? <Modal dialogClassName='modal-dialog-centered modal-dialog-scrollable modal-dialog-loading-page' show >
+    return systemState !== null && typeof systemState.status === 'string' ? <Modal dialogClassName='modal-dialog-centered modal-dialog-scrollable modal-dialog-loading-page' animation={false} show >
         <Modal.Body className='noselect text-center'>
 
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
+            <div className={`spinner-${typeof systemState.type === 'string' ? systemState.type : 'border'}`} role="status">
+                <span className="visually-hidden">Loading...</span>
             </div>
 
             <br />
