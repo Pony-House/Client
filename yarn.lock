@@ -3713,13 +3713,6 @@ functions-have-names@^1.2.3:
   resolved "https://registry.yarnpkg.com/functions-have-names/-/functions-have-names-1.2.3.tgz#0404fe4ee2ba2f607f0e0ec3c80bae994133b834"
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
 
-gasparesganga-jquery-loading-overlay@2.1.7:
-  version "2.1.7"
-  resolved "https://registry.yarnpkg.com/gasparesganga-jquery-loading-overlay/-/gasparesganga-jquery-loading-overlay-2.1.7.tgz#d6935b6fe22f6c3074dfce194d794ff0d2e8c02b"
-  integrity sha512-QItSCC330EPsUwdvzDO50SwQksmaMSf+loDYHiEpyc1tptXkeGXtFp36igNsT1cPTXRXlYxCW8wtK63K88SIdA==
-  dependencies:
-    jquery ">=1.7.0"
-
 gather-stream@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/gather-stream/-/gather-stream-1.0.0.tgz#b33994af457a8115700d410f317733cbe7a0904b"
@@ -4541,7 +4534,7 @@ jquery-ui@1.13.2:
   dependencies:
     jquery ">=1.8.0 <4.0.0"
 
-jquery@3.7.1, jquery@>=1.7.0, "jquery@>=1.8.0 <4.0.0":
+jquery@3.7.1, "jquery@>=1.8.0 <4.0.0":
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.7.1.tgz#083ef98927c9a6a74d05a6af02806566d16274de"
   integrity sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==

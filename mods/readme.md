@@ -46,9 +46,6 @@ https://jquery.com/
 #### jQuery UI
 https://jqueryui.com/
 
-#### Jquery Loading Overlay
-https://gasparesganga.com/labs/jquery-loading-overlay/
-
 #### Bootstrap 5
 https://getbootstrap.com/docs/5.3/getting-started/introduction/
 
@@ -72,6 +69,20 @@ src/util/selectedRoom.js
     addToDataFolder(dataFolder, folderName, where, data, limit)
     removeFromDataFolder(dataFolder, folderName, where)
     getDataList(dataFolder, folderName, where)
+
+#### Loading Warn
+src/app/templates/client/Loading.jsx
+
+    import { setLoadingPage } from '../../app/templates/client/Loading';
+
+    // Start loading
+    setLoadingPage();
+
+    // or
+    setLoadingPage('Custom message!', 'grow');
+
+    // Disable
+    setLoadingPage(false);
 
 <hr/>
 

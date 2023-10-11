@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 
 let setStatus = null;
-function setLoadingPage(status, type = 'border') {
+function setLoadingPage(status = 'Loading...', type = 'border') {
     if (typeof setStatus === 'function') {
         setStatus({ status, type });
     }
@@ -29,6 +29,5 @@ function LoadingPage() {
 
 }
 
-global.setLoadingPage = setLoadingPage;
 export { setLoadingPage };
 export default LoadingPage;

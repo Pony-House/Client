@@ -11,6 +11,7 @@ import Web3Item from './Web3Item';
 import { objType, tinyConfirm, tinyPrompt } from '../../../../../util/tools';
 import { ethereumUpdate } from '../../../../../client/action/navigation';
 import initMatrix from '../../../../../client/initMatrix';
+import { setLoadingPage } from "../../../../templates/client/Loading";
 
 function Web3Section() {
 
@@ -93,7 +94,7 @@ function Web3Section() {
                         <p>Connect your wallet to start configuring your account integration.{__ENV_APP__.electron_mode ? ' It looks like you are using the desktop version! To use the application with your web3 wallet, you need to have the frame wallet installed on your computer.' : ''}</p>
 
                         <button type="button" className={`btn btn-sm btn-primary my-1 my-sm-0${tinyCrypto.protocol === null ? ' disabled' : ''}`} disabled={tinyCrypto.protocol === null} onClick={() => {
-                            $.LoadingOverlay('show');
+                            setLoadingPage();
                             setUserWeb3Account().then((userData) => {
 
                                 const newUser = clone(userData);
@@ -101,10 +102,10 @@ function Web3Section() {
 
                                 ethereumUpdate(newAccount);
                                 setUserWeb3(newAccount);
-                                $.LoadingOverlay('hide');
+                                setLoadingPage(false);
 
                             }).catch(err => {
-                                $.LoadingOverlay('hide');
+                                setLoadingPage(false);
                                 console.error(err);
                                 alert(err.message);
                             })

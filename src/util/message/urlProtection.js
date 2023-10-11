@@ -5,6 +5,7 @@ import { Browser } from '@capacitor/browser';
 import { btModal, objType } from '../tools';
 import tinyAPI from '../mods';
 import convertProtocols from '../libs/convertProtocols';
+import { setLoadingPage } from '../../app/templates/client/Loading';
 
 const openUrl = (url) => new Promise((resolve, reject) => {
 
@@ -36,7 +37,7 @@ export default async (url, vanillaUrl) => {
         }
 
         // Start loading
-        $.LoadingOverlay('show');
+        setLoadingPage();
         let scammerCache;
 
         try {
@@ -91,12 +92,12 @@ export default async (url, vanillaUrl) => {
 
                         openUrl(tinyUrl.href).then(() => {
                             tinyModal.hide();
-                            $.LoadingOverlay('hide');
+                            setLoadingPage(false);
                         }).catch(err => {
                             console.error(err);
                             alert(err.message);
                             tinyModal.hide();
-                            $.LoadingOverlay('hide');
+                            setLoadingPage(false);
                         });
 
 
@@ -105,15 +106,15 @@ export default async (url, vanillaUrl) => {
 
             });
 
-            $.LoadingOverlay('hide');
+            setLoadingPage(false);
 
         } else if (urlAllowed) {
             openUrl(tinyUrl.href).then(() => {
-                $.LoadingOverlay('hide');
+                setLoadingPage(false);
             }).catch(err => {
                 console.error(err);
                 alert(err.message);
-                $.LoadingOverlay('hide');
+                setLoadingPage(false);
             });
         }
 
