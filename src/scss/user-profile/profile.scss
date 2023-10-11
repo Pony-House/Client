@@ -24,18 +24,26 @@
         }
       }
 
-      .username-base,
-      .avatar {
-        display: flex;
-        align-items: center;
-      }
-
       &.content-dm {
         height: 45px;
       }
 
+      &.content-dm:not(.content-with-custom-status) {
+        .username-base {
+          margin-top: 10px;
+          margin-bottom: 10px;
+        }
+      }
+
       .user-custom-status {
         display: block !important;
+      }
+
+      .username-base,
+      .user-custom-status,
+      .avatar {
+        display: flex !important;
+        align-items: center;
       }
     }
   }

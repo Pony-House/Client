@@ -11,10 +11,11 @@ import { blurOnBubbling } from '../../atoms/button/script';
 import { getPresence, getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
 import insertCustomStatus from '../people-selector/insertCustomStatus';
+import { objType } from '../../../util/tools';
 
 function RoomSelectorWrapper({
   isSelected, isMuted, isUnread, onClick,
-  content, options, onContextMenu,
+  content, options, onContextMenu, className
 }) {
   const classes = ['room-selector'];
   if (isMuted) classes.push('room-selector--muted');
@@ -24,7 +25,7 @@ function RoomSelectorWrapper({
   return (
     <div className={classes.join(' ')}>
       <button
-        className="room-selector__content emoji-size-fix d-block"
+        className={`room-selector__content emoji-size-fix d-block${className ? ` ${className}` : ''}`}
         type="button"
         onClick={onClick}
         onMouseUp={(e) => blurOnBubbling(e, '.room-selector__content')}
@@ -72,6 +73,15 @@ function RoomSelector({
     setPresenceStatus(content);
     setTimeout(() => insertCustomStatus(customStatusRef, content, true), 10);
   }
+
+  const existStatus = (
+    objType(userData, 'object') && objType(userData.presenceStatusMsg, 'object') &&
+    // userData.presence !== 'offline' && userData.presence !== 'unavailable' &&
+    (
+      (userData.presenceStatusMsg.msg === 'string' && userData.presenceStatusMsg.msg.length > 0) ||
+      (typeof userData.presenceStatusMsg.msgIcon === 'string' && userData.presenceStatusMsg.msgIcon.length > 0)
+    )
+  );
 
   useEffect(() => {
     if (user) {
@@ -130,10 +140,11 @@ function RoomSelector({
   const isDefault = (!iconSrc || notSpace);
 
   return <RoomSelectorWrapper
+    className='text-truncate'
     isSelected={isSelected}
     isMuted={isMuted}
     isUnread={isUnread}
-    content={(<div className={`content${user ? ' content-dm' : ''}`}>
+    content={(<div className={`text-truncate content${user ? ' content-dm' : ''}${existStatus ? ' content-with-custom-status' : ''}`}>
 
       <div className={`float-start me-2 h-100 avatar avatar-type--${imgSrc || isDefault ? 'img' : 'icon'}`}>
 
