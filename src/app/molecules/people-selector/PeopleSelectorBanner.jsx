@@ -44,7 +44,7 @@ function PeopleSelectorBanner({
   const bioRef = useRef(null);
   const noteRef = useRef(null);
 
-  const [avatarUrl, setUserAvatar] = useState(user.avatarUrl);
+  const [avatarUrl, setUserAvatar] = useState(user ? user?.avatarUrl : null);
 
   const mx = initMatrix.matrixClient;
 
