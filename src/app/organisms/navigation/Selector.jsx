@@ -123,6 +123,7 @@ function Selector({
       roomId={roomId}
       animParentsCount={2}
       user={user}
+      room={room}
       imageAnimSrc={isDM || notSpace ? imageAnimSrc : null}
       imageSrc={isDM || notSpace ? imageSrc : null}
       iconSrc={isDM ? null : joinRuleToIconSrc(room.getJoinRule(), room.isSpaceRoom())}

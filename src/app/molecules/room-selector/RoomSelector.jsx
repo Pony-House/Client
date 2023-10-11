@@ -9,6 +9,7 @@ import Avatar from '../../atoms/avatar/Avatar';
 import NotificationBadge from '../../atoms/badge/NotificationBadge';
 import { blurOnBubbling } from '../../atoms/button/script';
 import { getPresence } from '../../../util/onlineStatus';
+import initMatrix from '../../../client/initMatrix';
 
 function RoomSelectorWrapper({
   isSelected, isMuted, isUnread, onClick,
@@ -50,7 +51,7 @@ RoomSelectorWrapper.propTypes = {
 };
 
 function RoomSelector({
-  name, parentName, roomId, imageSrc, imageAnimSrc, animParentsCount, iconSrc,
+  name, parentName, roomId, room, imageSrc, imageAnimSrc, animParentsCount, iconSrc,
   isSelected, isMuted, isUnread, notificationCount, isAlert,
   options, onClick, onContextMenu, isProfile, notSpace, user,
 }) {
@@ -60,6 +61,8 @@ function RoomSelector({
   const [imgSrc, setImgSrc] = useState(imageSrc);
   const [roomName, setName] = useState(name);
 
+  const mx = initMatrix.matrixClient;
+
   if (user && !userData) {
     setPresenceStatus(getPresence(user));
   }
@@ -67,21 +70,55 @@ function RoomSelector({
   useEffect(() => {
     if (user) {
 
-      // Update Status Profile
-      const updateProfileStatus = (mEvent, tinyUser) => {
-        setPresenceStatus(getPresence(tinyUser))
+      // Update User
+      const updateUser = (tinyUser) => {
+
+        // Image
+        let newImageSrc = tinyUser && tinyUser.avatarUrl ? mx.mxcUrlToHttp(tinyUser.avatarUrl, 24, 24, 'crop') : (room && room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop')) || null;
+        if (room && newImageSrc === null) newImageSrc = room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
+        setImgSrc(newImageSrc);
+
+        let newImageAnimSrc = tinyUser && tinyUser.avatarUrl ? mx.mxcUrlToHttp(tinyUser.avatarUrl) : (room && room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)) || null;
+        if (room && newImageAnimSrc === null) newImageAnimSrc = room.getAvatarUrl(mx.baseUrl) || null;
+        setImgAnimSrc(newImageAnimSrc);
+
+        // Room Name
+        let newRoomName = room.name;
+
+        if (typeof tinyUser.displayName === 'string' && tinyUser.displayName.length > 0) {
+          newRoomName = tinyUser.displayName;
+        }
+
+        else if (typeof tinyUser.userId === 'string' && tinyUser.userId.length > 0) {
+          newRoomName = tinyUser.userId;
+        }
+
+        setName(newRoomName);
+
       };
 
+      // Update Status Profile
+      const updateProfileStatus = (mEvent, tinyUser) => {
+        updateUser(tinyUser);
+        setPresenceStatus(getPresence(tinyUser));
+      };
+
+      user.on('User.avatarUrl', updateProfileStatus);
+      user.on('User.currentlyActive', updateProfileStatus);
+      user.on('User.lastPresenceTs', updateProfileStatus);
       user.on('User.presence', updateProfileStatus);
 
       return () => {
+        user.removeListener('User.currentlyActive', updateProfileStatus);
+        user.removeListener('User.lastPresenceTs', updateProfileStatus);
         user.removeListener('User.presence', updateProfileStatus);
+        user.removeListener('User.avatarUrl', updateProfileStatus);
       };
 
     }
   });
 
-  console.log(userData);
+  // console.log(userData);
 
   return <RoomSelectorWrapper
     isSelected={isSelected}
