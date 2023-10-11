@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { twemojifyReact } from '../../../util/twemojify';
@@ -8,7 +8,7 @@ import Text from '../../atoms/text/Text';
 import Avatar from '../../atoms/avatar/Avatar';
 import NotificationBadge from '../../atoms/badge/NotificationBadge';
 import { blurOnBubbling } from '../../atoms/button/script';
-import { getPresence } from '../../../util/onlineStatus';
+import { getPresence, getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
 
 function RoomSelectorWrapper({
@@ -60,6 +60,7 @@ function RoomSelector({
   const [imgAnimSrc, setImgAnimSrc] = useState(imageAnimSrc);
   const [imgSrc, setImgSrc] = useState(imageSrc);
   const [roomName, setName] = useState(name);
+  const statusRef = useRef(null);
 
   const mx = initMatrix.matrixClient;
 
@@ -69,6 +70,9 @@ function RoomSelector({
 
   useEffect(() => {
     if (user) {
+
+      // Status
+      const status = $(statusRef.current);
 
       // Update User
       const updateUser = (tinyUser) => {
@@ -100,7 +104,7 @@ function RoomSelector({
       // Update Status Profile
       const updateProfileStatus = (mEvent, tinyUser) => {
         updateUser(tinyUser);
-        setPresenceStatus(getPresence(tinyUser));
+        setPresenceStatus(updateUserStatusIcon(status, tinyUser));
       };
 
       user.on('User.avatarUrl', updateProfileStatus);
@@ -118,14 +122,13 @@ function RoomSelector({
     }
   });
 
-  // console.log(userData);
-
   return <RoomSelectorWrapper
     isSelected={isSelected}
     isMuted={isMuted}
     isUnread={isUnread}
     content={(
       <>
+
         <Avatar
           text={roomName}
           bgColor={colorMXID(roomId)}
@@ -138,6 +141,9 @@ function RoomSelector({
           size="extra-small"
           isDefaultImage={(!iconSrc || notSpace)}
         />
+
+        {user ? <i ref={statusRef} className={`user-status pe-2 ${getUserStatus(user)}`} /> : null}
+
         <Text variant="b1" weight={isUnread ? 'medium' : 'normal'}>
           {twemojifyReact(roomName)}
           {parentName && (
@@ -147,12 +153,14 @@ function RoomSelector({
             </span>
           )}
         </Text>
+
         {isUnread && (
           <NotificationBadge
             alert={isAlert}
             content={notificationCount !== 0 ? notificationCount : null}
           />
         )}
+
       </>
     )}
     options={options}
