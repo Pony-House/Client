@@ -24,7 +24,7 @@ function RoomSelectorWrapper({
   return (
     <div className={classes.join(' ')}>
       <button
-        className="room-selector__content emoji-size-fix"
+        className="room-selector__content emoji-size-fix d-block"
         type="button"
         onClick={onClick}
         onMouseUp={(e) => blurOnBubbling(e, '.room-selector__content')}
@@ -68,7 +68,9 @@ function RoomSelector({
   const mx = initMatrix.matrixClient;
 
   if (user && !userData) {
-    setPresenceStatus(getPresence(user));
+    const content = getPresence(user);
+    setPresenceStatus(content);
+    setTimeout(() => insertCustomStatus(customStatusRef, content, true), 10);
   }
 
   useEffect(() => {
@@ -104,7 +106,7 @@ function RoomSelector({
         }
 
         setName(newRoomName);
-        insertCustomStatus(customStatusRef, content);
+        insertCustomStatus(customStatusRef, content, true);
 
         setPresenceStatus(content);
 
@@ -132,39 +134,47 @@ function RoomSelector({
     content={(
       <>
 
-        <Avatar
-          text={roomName}
-          bgColor={colorMXID(roomId)}
-          imageSrc={imgSrc}
-          animParentsCount={animParentsCount}
-          imageAnimSrc={imgAnimSrc}
-          iconColor="var(--ic-surface-low)"
-          iconSrc={!isProfile ? iconSrc : null}
-          faSrc={isProfile ? 'bi bi-person-badge-fill profile-icon-fa' : null}
-          size="extra-small"
-          isDefaultImage={(!iconSrc || notSpace)}
-        />
+        <div className={`d-flex text-truncate content${user ? ' content-dm' : ''}`}>
 
-        {user ? <i ref={statusRef} className={`user-status pe-2 ${getUserStatus(user)}`} /> : null}
+          <div className={`float-start avatar avatar-type--${imgSrc ? 'img' : 'icon'}`}>
 
-        <Text variant="b1" weight={isUnread ? 'medium' : 'normal'}>
-          {twemojifyReact(roomName)}
-          {parentName && (
-            <span className="very-small text-gray">
-              {' — '}
-              {twemojifyReact(parentName)}
-            </span>
+            <Avatar
+              text={roomName}
+              bgColor={colorMXID(roomId)}
+              imageSrc={imgSrc}
+              animParentsCount={animParentsCount}
+              imageAnimSrc={imgAnimSrc}
+              iconColor="var(--ic-surface-low)"
+              iconSrc={!isProfile ? iconSrc : null}
+              faSrc={isProfile ? 'bi bi-person-badge-fill profile-icon-fa' : null}
+              size="extra-small"
+              isDefaultImage={(!iconSrc || notSpace)}
+            />
+
+            {user ? <i ref={statusRef} className={`user-status ${getUserStatus(user)}`} /> : null}
+
+          </div>
+
+          <Text className='text-truncate username-base' variant="b1" weight={isUnread ? 'medium' : 'normal'}>
+            {twemojifyReact(roomName)}
+            {parentName && (
+              <span className="very-small text-gray">
+                {' — '}
+                {twemojifyReact(parentName)}
+              </span>
+            )}
+          </Text>
+
+          {isUnread && (
+            <NotificationBadge
+              alert={isAlert}
+              content={notificationCount !== 0 ? notificationCount : null}
+            />
           )}
-        </Text>
 
-        {isUnread && (
-          <NotificationBadge
-            alert={isAlert}
-            content={notificationCount !== 0 ? notificationCount : null}
-          />
-        )}
+        </div>
 
-        {user ? <div ref={customStatusRef} className='d-none very-small text-gray text-truncate emoji-size-fix-2 user-custom-status' /> : null}
+        {user ? <div ref={customStatusRef} className='very-small text-gray text-truncate emoji-size-fix-2 user-custom-status' /> : null}
 
       </>
     )}

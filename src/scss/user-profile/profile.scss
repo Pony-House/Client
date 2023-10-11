@@ -9,14 +9,34 @@
 
 .space-drawer-body {
   .room-selector {
-    .user-status {
-      margin-left: -19px;
-      margin-right: 4px;
-      z-index: 1;
-      font-size: 8pt;
-      position: relative;
-      left: 12px;
-      top: 8px;
+    .content {
+      .avatar {
+        .user-status {
+          z-index: 2;
+          position: relative;
+          top: 9px;
+          margin-left: -8px;
+        }
+
+        .user-status,
+        .user-status::before {
+          font-size: 8pt;
+        }
+      }
+
+      .username-base,
+      .avatar {
+        display: flex;
+        align-items: center;
+      }
+
+      &.content-dm {
+        height: 45px;
+      }
+
+      .user-custom-status {
+        display: block !important;
+      }
     }
   }
 }

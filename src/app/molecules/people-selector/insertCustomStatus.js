@@ -1,6 +1,6 @@
 import { twemojify } from '../../../util/twemojify';
 
-export default function insertCustomStatus(customStatusRef, content) {
+export default function insertCustomStatus(customStatusRef, content, testMode = false) {
     // Custom Status
     if (customStatusRef && customStatusRef.current) {
 
@@ -11,7 +11,7 @@ export default function insertCustomStatus(customStatusRef, content) {
 
         if (
             content && content.presenceStatusMsg &&
-            content.presence !== 'offline' && content.presence !== 'unavailable' && (
+            ((content.presence !== 'offline' && content.presence !== 'unavailable') || testMode) && (
                 (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) ||
                 (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0)
             )
