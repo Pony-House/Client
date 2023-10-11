@@ -50,8 +50,6 @@
 @import './messages//record-audio.scss';
 @import './utils/message-body.scss';
 
-@import './utils/loadingoverlay.scss';
-
 @import './Math.scss';
 
 @import './ScrollView.scss';
@@ -149,5 +147,7 @@
 
 @import './SpaceAddExisting.scss';
 @import './RoomSelector.scss';
+
+@import './utils/loadingoverlay.scss';
 
 @import '../../config/custom-css.scss';

@@ -1,3 +1,21 @@
+.modal-dialog-loading-page {
+  .spinner-border {
+    height: 80px;
+    width: 80px;
+    margin-bottom: 18px;
+  }
+
+  .modal-body,
+  .modal-content {
+    background: transparent !important;
+    border-color: transparent !important;
+  }
+
+  .modal-body {
+    font-size: 17pt;
+  }
+}
+
 .loadingoverlay {
   background: var(--bg-loadingoverlay) !important;
   justify-content: center !important;
