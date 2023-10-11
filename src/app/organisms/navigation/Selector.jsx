@@ -24,6 +24,7 @@ function Selector({
   // Base Script
   const mx = initMatrix.matrixClient;
   const noti = initMatrix.notifications;
+  const appearanceSettings = mx.getAccountData('pony.house.appearance')?.getContent() ?? {};
 
   // Room Data
   let room;
@@ -39,11 +40,39 @@ function Selector({
     updateName(room);
   }
 
+  // Get User room
+  let user;
+  let roomName = room.name;
+  if (isDM && appearanceSettings.showUserDMstatus !== false) {
+
+    const usersCount = room.getJoinedMemberCount();
+    if (usersCount === 2) {
+
+      const members = room.getMembersWithMembership('join');
+      const member = members.find(m => m.userId !== mx.getUserId());
+      if (member.user) {
+
+        user = member.user;
+
+        if (typeof user.displayName === 'string' && user.displayName.length > 0) {
+          roomName = user.displayName;
+        }
+
+        else if (typeof user.userId === 'string' && user.userId.length > 0) {
+          roomName = user.userId;
+        }
+
+      }
+
+    }
+
+  }
+
   // Image
-  let imageSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
+  let imageSrc = user && user.avatarUrl ? mx.mxcUrlToHttp(user.avatarUrl, 24, 24, 'crop') : room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
   if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
 
-  let imageAnimSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) || null;
+  let imageAnimSrc = user && user.avatarUrl ? mx.mxcUrlToHttp(user.avatarUrl) : room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) || null;
   if (imageAnimSrc === null) imageAnimSrc = room.getAvatarUrl(mx.baseUrl) || null;
 
   // Is Muted
@@ -90,9 +119,10 @@ function Selector({
       notSpace={notSpace}
       key={roomId}
       isProfile={isProfile}
-      name={room.name}
+      name={roomName}
       roomId={roomId}
       animParentsCount={2}
+      user={user}
       imageAnimSrc={isDM || notSpace ? imageAnimSrc : null}
       imageSrc={isDM || notSpace ? imageSrc : null}
       iconSrc={isDM ? null : joinRuleToIconSrc(room.getJoinRule(), room.isSpaceRoom())}

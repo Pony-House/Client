@@ -8,6 +8,7 @@ import Text from '../../atoms/text/Text';
 import Avatar from '../../atoms/avatar/Avatar';
 import NotificationBadge from '../../atoms/badge/NotificationBadge';
 import { blurOnBubbling } from '../../atoms/button/script';
+import { getPresence } from '../../../util/onlineStatus';
 
 function RoomSelectorWrapper({
   isSelected, isMuted, isUnread, onClick,
@@ -51,50 +52,57 @@ RoomSelectorWrapper.propTypes = {
 function RoomSelector({
   name, parentName, roomId, imageSrc, imageAnimSrc, animParentsCount, iconSrc,
   isSelected, isMuted, isUnread, notificationCount, isAlert,
-  options, onClick, onContextMenu, isProfile, notSpace,
+  options, onClick, onContextMenu, isProfile, notSpace, user,
 }) {
-  return (
-    <RoomSelectorWrapper
-      isSelected={isSelected}
-      isMuted={isMuted}
-      isUnread={isUnread}
-      content={(
-        <>
-          <Avatar
-            text={name}
-            bgColor={colorMXID(roomId)}
-            imageSrc={imageSrc}
-            animParentsCount={animParentsCount}
-            imageAnimSrc={imageAnimSrc}
-            iconColor="var(--ic-surface-low)"
-            iconSrc={!isProfile ? iconSrc : null}
-            faSrc={isProfile ? 'bi bi-person-badge-fill profile-icon-fa' : null}
-            size="extra-small"
-            isDefaultImage={(!iconSrc || notSpace)}
-          />
-          <Text variant="b1" weight={isUnread ? 'medium' : 'normal'}>
-            {twemojifyReact(name)}
-            {parentName && (
-              <span className="very-small text-gray">
-                {' — '}
-                {twemojifyReact(parentName)}
-              </span>
-            )}
-          </Text>
-          {isUnread && (
-            <NotificationBadge
-              alert={isAlert}
-              content={notificationCount !== 0 ? notificationCount : null}
-            />
+
+  let userData;
+  if (user) {
+    userData = getPresence(user);
+  }
+
+  // console.log(userData);
+
+  return <RoomSelectorWrapper
+    isSelected={isSelected}
+    isMuted={isMuted}
+    isUnread={isUnread}
+    content={(
+      <>
+        <Avatar
+          text={name}
+          bgColor={colorMXID(roomId)}
+          imageSrc={imageSrc}
+          animParentsCount={animParentsCount}
+          imageAnimSrc={imageAnimSrc}
+          iconColor="var(--ic-surface-low)"
+          iconSrc={!isProfile ? iconSrc : null}
+          faSrc={isProfile ? 'bi bi-person-badge-fill profile-icon-fa' : null}
+          size="extra-small"
+          isDefaultImage={(!iconSrc || notSpace)}
+        />
+        <Text variant="b1" weight={isUnread ? 'medium' : 'normal'}>
+          {twemojifyReact(name)}
+          {parentName && (
+            <span className="very-small text-gray">
+              {' — '}
+              {twemojifyReact(parentName)}
+            </span>
           )}
-        </>
-      )}
-      options={options}
-      onClick={onClick}
-      onContextMenu={onContextMenu}
-    />
-  );
+        </Text>
+        {isUnread && (
+          <NotificationBadge
+            alert={isAlert}
+            content={notificationCount !== 0 ? notificationCount : null}
+          />
+        )}
+      </>
+    )}
+    options={options}
+    onClick={onClick}
+    onContextMenu={onContextMenu}
+  />;
 }
+
 RoomSelector.defaultProps = {
   animParentsCount: 4,
   notSpace: false,

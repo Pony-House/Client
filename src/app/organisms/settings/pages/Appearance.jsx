@@ -18,6 +18,7 @@ function AppearanceSection() {
 
     const [, updateState] = useState({});
 
+    const [showUserDMstatus, setShowUserStatus] = useState(true);
     const [isAnimateAvatarsHidden, setAnimateAvatarsHidden] = useState(false);
     const [isEmbedDisabled, setEmbedDisabled] = useState(false);
     const [isUNhoverDisabled, setUNhoverDisabled] = useState(false);
@@ -30,6 +31,7 @@ function AppearanceSection() {
         const content = initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
         const zoomApp = Number(global.localStorage.getItem('pony-house-zoom'));
 
+        setShowUserStatus((content.showUserDMstatus !== false));
         setAnimateAvatarsHidden((content.isAnimateAvatarsHidden === true));
         setEmbedDisabled((content.isEmbedDisabled === true));
         setUNhoverDisabled((content.isUNhoverDisabled === true));
@@ -124,6 +126,23 @@ function AppearanceSection() {
 
                     </li>
 
+                </ul>
+            </div>
+
+            <div className="card noselect mt-3">
+                <ul className="list-group list-group-flush">
+                    <li className="list-group-item very-small text-gray">Room users</li>
+                    <SettingTile
+                        title="Show user DM status"
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={showUserDMstatus}
+                                onToggle={() => { toggleAction('pony.house.appearance', 'showUserDMstatus', setShowUserStatus); }}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">All users in your DM will show whether they are online or not.</div>}
+                    />
                 </ul>
             </div>
 
