@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { twemojifyReact } from '../../../util/twemojify';
@@ -55,12 +55,33 @@ function RoomSelector({
   options, onClick, onContextMenu, isProfile, notSpace, user,
 }) {
 
-  let userData;
-  if (user) {
-    userData = getPresence(user);
+  const [userData, setPresenceStatus] = useState(null);
+  const [imgAnimSrc, setImgAnimSrc] = useState(imageAnimSrc);
+  const [imgSrc, setImgSrc] = useState(imageSrc);
+  const [roomName, setName] = useState(name);
+
+  if (user && !userData) {
+    setPresenceStatus(getPresence(user));
   }
 
-  // console.log(userData);
+  useEffect(() => {
+    if (user) {
+
+      // Update Status Profile
+      const updateProfileStatus = (mEvent, tinyUser) => {
+        setPresenceStatus(getPresence(tinyUser))
+      };
+
+      user.on('User.presence', updateProfileStatus);
+
+      return () => {
+        user.removeListener('User.presence', updateProfileStatus);
+      };
+
+    }
+  });
+
+  console.log(userData);
 
   return <RoomSelectorWrapper
     isSelected={isSelected}
@@ -69,11 +90,11 @@ function RoomSelector({
     content={(
       <>
         <Avatar
-          text={name}
+          text={roomName}
           bgColor={colorMXID(roomId)}
-          imageSrc={imageSrc}
+          imageSrc={imgSrc}
           animParentsCount={animParentsCount}
-          imageAnimSrc={imageAnimSrc}
+          imageAnimSrc={imgAnimSrc}
           iconColor="var(--ic-surface-low)"
           iconSrc={!isProfile ? iconSrc : null}
           faSrc={isProfile ? 'bi bi-person-badge-fill profile-icon-fa' : null}
@@ -81,7 +102,7 @@ function RoomSelector({
           isDefaultImage={(!iconSrc || notSpace)}
         />
         <Text variant="b1" weight={isUnread ? 'medium' : 'normal'}>
-          {twemojifyReact(name)}
+          {twemojifyReact(roomName)}
           {parentName && (
             <span className="very-small text-gray">
               {' — '}
@@ -101,6 +122,7 @@ function RoomSelector({
     onClick={onClick}
     onContextMenu={onContextMenu}
   />;
+
 }
 
 RoomSelector.defaultProps = {
