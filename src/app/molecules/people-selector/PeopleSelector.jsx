@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { twemojifyReact, twemojify } from '../../../util/twemojify';
+import { twemojifyReact } from '../../../util/twemojify';
 
 import { blurOnBubbling } from '../../atoms/button/script';
 
@@ -9,6 +9,7 @@ import Text from '../../atoms/text/Text';
 import Avatar from '../../atoms/avatar/Avatar';
 import { getUserStatus, updateUserStatusIcon, getPresence } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
+import insertCustomStatus from './insertCustomStatus';
 
 function PeopleSelector({
   avatarSrc, avatarAnimSrc, name, color, peopleRole, onClick, user, disableStatus, avatarSize
@@ -21,53 +22,7 @@ function PeopleSelector({
   const [imageSrc, setImageSrc] = useState(avatarSrc);
 
   const getCustomStatus = (content) => {
-
-    // Custom Status
-    if (customStatusRef && customStatusRef.current) {
-
-      // Get Status
-      const customStatus = $(customStatusRef.current);
-      const htmlStatus = [];
-      let customStatusImg;
-
-      if (
-        content && content.presenceStatusMsg &&
-        content.presence !== 'offline' && content.presence !== 'unavailable' && (
-          (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) ||
-          (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0)
-        )
-      ) {
-
-        if (typeof content.presenceStatusMsg.msgIcon === 'string' && content.presenceStatusMsg.msgIcon.length > 0) {
-
-          customStatusImg = $('<img>', { src: content.presenceStatusMsg.msgIconThumb, alt: 'icon', class: 'emoji me-1' });
-          htmlStatus.push(customStatusImg);
-
-          customStatusImg.data('pony-house-cs-normal', content.presenceStatusMsg.msgIconThumb);
-          customStatusImg.data('pony-house-cs-hover', content.presenceStatusMsg.msgIcon);
-
-        }
-
-        if (typeof content.presenceStatusMsg.msg === 'string' && content.presenceStatusMsg.msg.length > 0) {
-          htmlStatus.push($('<span>', { class: 'text-truncate cs-text' }).html(twemojify(content.presenceStatusMsg.msg.substring(0, 100))));
-        }
-
-      }
-
-      customStatus.html(htmlStatus);
-
-      if (customStatusImg) {
-        customStatusImg.parent().parent().parent().hover(
-          () => {
-            customStatusImg.attr('src', customStatusImg.data('pony-house-cs-hover'));
-          }, () => {
-            customStatusImg.attr('src', customStatusImg.data('pony-house-cs-normal'));
-          }
-        );
-      }
-
-    }
-
+    insertCustomStatus(customStatusRef, content);
   };
 
   if (user) {

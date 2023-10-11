@@ -10,6 +10,7 @@ import NotificationBadge from '../../atoms/badge/NotificationBadge';
 import { blurOnBubbling } from '../../atoms/button/script';
 import { getPresence, getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
+import insertCustomStatus from '../people-selector/insertCustomStatus';
 
 function RoomSelectorWrapper({
   isSelected, isMuted, isUnread, onClick,
@@ -60,7 +61,9 @@ function RoomSelector({
   const [imgAnimSrc, setImgAnimSrc] = useState(imageAnimSrc);
   const [imgSrc, setImgSrc] = useState(imageSrc);
   const [roomName, setName] = useState(name);
+
   const statusRef = useRef(null);
+  const customStatusRef = useRef(null);
 
   const mx = initMatrix.matrixClient;
 
@@ -74,8 +77,11 @@ function RoomSelector({
       // Status
       const status = $(statusRef.current);
 
-      // Update User
-      const updateUser = (tinyUser) => {
+      // Update Status Profile
+      const updateProfileStatus = (mEvent, tinyUser) => {
+
+        // Presence
+        const content = updateUserStatusIcon(status, tinyUser);
 
         // Image
         let newImageSrc = tinyUser && tinyUser.avatarUrl ? mx.mxcUrlToHttp(tinyUser.avatarUrl, 24, 24, 'crop') : (room && room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop')) || null;
@@ -98,13 +104,10 @@ function RoomSelector({
         }
 
         setName(newRoomName);
+        insertCustomStatus(customStatusRef, content);
 
-      };
+        setPresenceStatus(content);
 
-      // Update Status Profile
-      const updateProfileStatus = (mEvent, tinyUser) => {
-        updateUser(tinyUser);
-        setPresenceStatus(updateUserStatusIcon(status, tinyUser));
       };
 
       user.on('User.avatarUrl', updateProfileStatus);
@@ -160,6 +163,8 @@ function RoomSelector({
             content={notificationCount !== 0 ? notificationCount : null}
           />
         )}
+
+        {user ? <div ref={customStatusRef} className='d-none very-small text-gray text-truncate emoji-size-fix-2 user-custom-status' /> : null}
 
       </>
     )}
