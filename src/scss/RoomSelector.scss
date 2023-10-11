@@ -2,7 +2,8 @@
 @use './partials/text';
 @use './partials/dir';
 
-.room-selector {
+.room-selector,
+.space-manage-item {
   .avatar-container {
     top: -2px;
     position: relative;

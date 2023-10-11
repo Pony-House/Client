@@ -127,57 +127,53 @@ function RoomSelector({
     }
   });
 
+  const isDefault = (!iconSrc || notSpace);
+
   return <RoomSelectorWrapper
     isSelected={isSelected}
     isMuted={isMuted}
     isUnread={isUnread}
-    content={(
-      <>
+    content={(<div className={`content${user ? ' content-dm' : ''}`}>
 
-        <div className={`d-flex text-truncate content${user ? ' content-dm' : ''}`}>
+      <div className={`float-start me-2 h-100 avatar avatar-type--${imgSrc || isDefault ? 'img' : 'icon'}`}>
 
-          <div className={`float-start avatar avatar-type--${imgSrc ? 'img' : 'icon'}`}>
+        <Avatar
+          text={roomName}
+          bgColor={colorMXID(roomId)}
+          imageSrc={imgSrc}
+          animParentsCount={animParentsCount}
+          imageAnimSrc={imgAnimSrc}
+          iconColor="var(--ic-surface-low)"
+          iconSrc={!isProfile ? iconSrc : null}
+          faSrc={isProfile ? 'bi bi-person-badge-fill profile-icon-fa' : null}
+          size="extra-small"
+          isDefaultImage={isDefault}
+        />
 
-            <Avatar
-              text={roomName}
-              bgColor={colorMXID(roomId)}
-              imageSrc={imgSrc}
-              animParentsCount={animParentsCount}
-              imageAnimSrc={imgAnimSrc}
-              iconColor="var(--ic-surface-low)"
-              iconSrc={!isProfile ? iconSrc : null}
-              faSrc={isProfile ? 'bi bi-person-badge-fill profile-icon-fa' : null}
-              size="extra-small"
-              isDefaultImage={(!iconSrc || notSpace)}
-            />
+        {user ? <i ref={statusRef} className={`user-status ${getUserStatus(user)}`} /> : null}
 
-            {user ? <i ref={statusRef} className={`user-status ${getUserStatus(user)}`} /> : null}
+      </div>
 
-          </div>
+      <Text className='text-truncate username-base' variant="b1" weight={isUnread ? 'medium' : 'normal'}>
+        {twemojifyReact(roomName)}
+        {parentName && (
+          <span className="very-small text-gray">
+            {' — '}
+            {twemojifyReact(parentName)}
+          </span>
+        )}
+      </Text>
 
-          <Text className='text-truncate username-base' variant="b1" weight={isUnread ? 'medium' : 'normal'}>
-            {twemojifyReact(roomName)}
-            {parentName && (
-              <span className="very-small text-gray">
-                {' — '}
-                {twemojifyReact(parentName)}
-              </span>
-            )}
-          </Text>
+      {user ? <div ref={customStatusRef} className='very-small text-gray text-truncate emoji-size-fix-2 user-custom-status' /> : null}
 
-          {isUnread && (
-            <NotificationBadge
-              alert={isAlert}
-              content={notificationCount !== 0 ? notificationCount : null}
-            />
-          )}
+      {isUnread && (
+        <NotificationBadge
+          alert={isAlert}
+          content={notificationCount !== 0 ? notificationCount : null}
+        />
+      )}
 
-        </div>
-
-        {user ? <div ref={customStatusRef} className='very-small text-gray text-truncate emoji-size-fix-2 user-custom-status' /> : null}
-
-      </>
-    )}
+    </div>)}
     options={options}
     onClick={onClick}
     onContextMenu={onContextMenu}
