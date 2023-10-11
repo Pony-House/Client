@@ -138,7 +138,7 @@ function AppearanceSection() {
                             <Toggle
                                 className='d-inline-flex'
                                 isActive={showUserDMstatus}
-                                onToggle={() => { toggleAction('pony.house.appearance', 'showUserDMstatus', setShowUserStatus); }}
+                                onToggle={toggleAction('pony.house.appearance', 'showUserDMstatus', setShowUserStatus)}
                             />
                         )}
                         content={<div className="very-small text-gray">All users in your DM will show whether they are online or not.</div>}
