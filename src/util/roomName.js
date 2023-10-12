@@ -55,4 +55,8 @@ export function sortName(a, b) {
         // names must be equal
         return 0;
     }
+}
+
+export function sortTime(a, b) {
+    return a.timeline[a.timeline.length - 1] - b.timeline[b.timeline.length - 1];
 } 

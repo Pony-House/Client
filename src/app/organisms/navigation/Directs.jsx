@@ -70,7 +70,7 @@ function Directs({ size }) {
       <span className="text-gray very-small text-uppercase text-truncate ms-2">Rooms</span>
     </div>
 
-    <RoomsCategory name="People" hideHeader roomIds={directIds} drawerPostie={drawerPostie} type='directs' />
+    <RoomsCategory name="People" hideHeader roomIds={directIds} drawerPostie={drawerPostie} type='directs' isDM />
 
   </>;
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { updateName, sortName } from '../../../util/roomName';
+import { updateName, sortTime, sortName } from '../../../util/roomName';
 import initMatrix from '../../../client/initMatrix';
 import { selectSpace, selectRoom, openReusableContextMenu, selectRoomMode } from '../../../client/action/navigation';
 import { getEventCords } from '../../../util/common';
@@ -47,7 +47,7 @@ setCategoryOpen.propTypes = {
 };
 
 function RoomsCategory({
-  spaceId, name, hideHeader, roomIds, drawerPostie, notSpace, type,
+  spaceId, name, hideHeader, roomIds, drawerPostie, notSpace, type, isDM,
 }) {
 
   // Prepare Code Base
@@ -113,7 +113,13 @@ function RoomsCategory({
 
   // Prepare Rooms
   const roomData = roomIds.map(renderData);
-  roomData.sort(sortName);
+
+  if (!isDM) {
+    roomData.sort(sortName);
+  } else {
+    roomData.sort(sortTime);
+  }
+
   const roomHTML = roomData.map(renderSelector);
 
   // Insert Rooms
@@ -227,8 +233,10 @@ RoomsCategory.defaultProps = {
   notSpace: false,
   spaceId: null,
   hideHeader: false,
+  isDM: false,
 };
 RoomsCategory.propTypes = {
+  isDM: PropTypes.bool,
   type: PropTypes.string,
   notSpace: PropTypes.bool,
   spaceId: PropTypes.string,

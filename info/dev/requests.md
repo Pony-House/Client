@@ -42,6 +42,12 @@ Made by Me
 
     =======================================================
 
+    --> Lista de usuários online na room ainda não atualiza em tempo real.
+
+    --> Quando a janela tem pouco conteúdo, simplesmente tentar corrigir a falha do load incompleto da sala.
+
+    --> Apelido de amigo.
+
     --> Philomena.
 
     --> Sistema de bordas personalizadas que pode ser facilmente pega em qualquer servidor.
