@@ -165,7 +165,7 @@ function RoomSelector({
 
       </div>
 
-      <Text className='text-truncate username-base' variant="b1" weight={isUnread ? 'medium' : 'normal'}>
+      <Text className={`text-truncate username-base${isUnread ? ' username-unread' : ''}`} variant="b1" weight={isUnread ? 'medium' : 'normal'}>
         {twemojifyReact(roomName)}
         {parentName && (
           <span className="very-small text-gray">
@@ -179,6 +179,7 @@ function RoomSelector({
 
       {isUnread && (
         <NotificationBadge
+          className='float-end'
           alert={isAlert}
           content={notificationCount !== 0 ? notificationCount : null}
         />

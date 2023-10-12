@@ -9,7 +9,29 @@
 
 .space-drawer-body {
   .room-selector {
+    .room-selector__options > button > i {
+      position: relative;
+      top: -1px;
+    }
+
     .content {
+      .username-unread {
+        margin-right: 23px;
+      }
+
+      .notification-badge {
+        width: 23px;
+        display: flex !important;
+        align-items: center;
+        margin-top: -20px;
+      }
+
+      &.content-dm.content-with-custom-status {
+        .notification-badge {
+          margin-top: -26px !important;
+        }
+      }
+
       .avatar {
         .user-status {
           z-index: 2;
