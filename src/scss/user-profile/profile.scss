@@ -16,7 +16,7 @@
 
     .content {
       .username-unread {
-        margin-right: 23px;
+        margin-right: 27px;
       }
 
       .notification-badge {
@@ -26,8 +26,12 @@
         margin-top: -20px;
       }
 
-      &.content-dm.content-with-custom-status {
+      &.content-dm {
         .notification-badge {
+          margin-top: -29px !important;
+        }
+
+        &.content-with-custom-status .notification-badge {
           margin-top: -26px !important;
         }
       }
