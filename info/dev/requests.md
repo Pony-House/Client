@@ -46,8 +46,6 @@ Made by Me
 
     --> Sistema de bordas personalizadas que pode ser facilmente pega em qualquer servidor.
 
-    --> Ajeitar o atualizador de Status quando o usuário abre o app.
-
     --> Adicionar opção para suporte de thumbs com parametros de animação.
     --> Fazer a opção para o app iniciar sozinho com o sistema operacional.
 
@@ -75,8 +73,6 @@ Made by Me
 
     --> Sistema de perfil do space. Este perfil vai ter mais uma configuração de banner adicional.
 
-    --> Ver perfil do usuário ao passar o mouse em cima dele.
-
     --> O atualizar de emojis de rooms só funciona quando muda de room
 
     --> Sistema de ligações tem dois métodos de servidor. Ou usando o servidor matrix. Ou usando um Jitsi.
@@ -86,13 +82,7 @@ Made by Me
 
     Sandbox: https://github.com/sablejs/sablejs
 
-    Usar o UD para fazer algumas determinadas validações de verificação de username.
-
     Web3 XMTP Chat
     https://xmtp.org/docs/build/get-started
-
-    Crypto Wormhole
-    https://docs.wormhole.com/wormhole/quick-start/wh-connect
-    https://www.portalbridge.com/#/transfer
 
     Validador de DNS
