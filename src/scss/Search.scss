@@ -38,9 +38,9 @@
     }
 
     & input {
-      padding-left: 40px;
-      padding-right: 40px;
-      font-size: var(--fs-s1);
+      padding-left: 40px !important;
+      padding-right: 40px !important;
+      font-size: var(--fs-s1 !important);
       letter-spacing: var(--ls-s1);
       line-height: var(--lh-s1);
       color: var(--tc-surface-high);

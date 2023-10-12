@@ -39,11 +39,14 @@
         display: block !important;
       }
 
-      .username-base,
-      .user-custom-status,
       .avatar {
         display: flex !important;
         align-items: center;
+      }
+
+      .username-base,
+      .user-custom-status {
+        display: block !important;
       }
     }
   }
