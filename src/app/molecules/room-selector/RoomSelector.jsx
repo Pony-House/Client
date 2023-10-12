@@ -71,12 +71,12 @@ function RoomSelector({
   if (user && !userData) {
     const content = getPresence(user);
     setPresenceStatus(content);
-    setTimeout(() => insertCustomStatus(customStatusRef, content, true), 10);
+    setTimeout(() => insertCustomStatus(customStatusRef, content), 10);
   }
 
   const existStatus = (
     objType(userData, 'object') && objType(userData.presenceStatusMsg, 'object') &&
-    // userData.presence !== 'offline' && userData.presence !== 'unavailable' &&
+    userData.presence !== 'offline' && userData.presence !== 'unavailable' &&
     (
       (userData.presenceStatusMsg.msg === 'string' && userData.presenceStatusMsg.msg.length > 0) ||
       (typeof userData.presenceStatusMsg.msgIcon === 'string' && userData.presenceStatusMsg.msgIcon.length > 0)
@@ -116,7 +116,7 @@ function RoomSelector({
         }
 
         setName(newRoomName);
-        insertCustomStatus(customStatusRef, content, true);
+        insertCustomStatus(customStatusRef, content);
 
         setPresenceStatus(content);
 
