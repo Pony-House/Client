@@ -45,11 +45,6 @@ const copyFiles = {
     },
 
     {
-      src: 'node_modules/sass/sass.default.js',
-      dest: 'js/',
-    },
-
-    {
       src: 'node_modules/qrcode/lib/browser.js',
       dest: 'js/qrcode/',
     },
