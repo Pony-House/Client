@@ -35,16 +35,6 @@ const copyFiles = {
     },
 
     {
-      src: 'node_modules/es-module-shims/dist/es-module-shims.js',
-      dest: 'js/',
-    },
-
-    {
-      src: 'node_modules/immutable/dist/immutable.es.js',
-      dest: 'js/',
-    },
-
-    {
       src: 'node_modules/qrcode/lib/browser.js',
       dest: 'js/qrcode/',
     },
