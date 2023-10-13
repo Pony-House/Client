@@ -20,7 +20,7 @@ function startApp(appProtocol) {
 
     console.log(`[app] Starting app using the protocol "${appProtocol}" mode.`);
     global.getEnvApp = () => clone(__ENV_APP__);
-    if (__ENV_APP__.electron_mode) { global.Buffer = Buffer; }
+    global.Buffer = Buffer;
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
     return root.render(<App />);
