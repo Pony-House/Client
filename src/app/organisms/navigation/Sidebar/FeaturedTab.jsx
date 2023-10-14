@@ -4,7 +4,7 @@ import initMatrix from '../../../../client/initMatrix';
 import cons from '../../../../client/state/cons';
 
 import {
-    selectTab, openSettings
+    selectTab, openSettings, selectSpace, selectRoom, selectRoomMode
 } from '../../../../client/action/navigation';
 import { tabText as settingTabText } from "../../settings/Settings";
 
@@ -18,6 +18,8 @@ import NotificationBadge from '../../../atoms/badge/NotificationBadge';
 import { getUserWeb3Account, tinyCrypto } from '../../../../util/web3';
 import navigation from '../../../../client/state/navigation';
 import { setEthereumStatusButton } from '../../../../util/web3/status';
+import { objType } from '../../../../util/tools';
+import { colorMXID } from '../../../../util/colorMXID';
 
 // Featured Tab
 export default function FeaturedTab() {
@@ -28,6 +30,8 @@ export default function FeaturedTab() {
     const { roomList, accountData, notifications } = initMatrix;
     const [selectedTab] = useSelectedTab();
     useNotificationUpdate();
+
+    const mx = initMatrix.matrixClient;
 
     // Home
     function getHomeNoti() {
@@ -47,20 +51,27 @@ export default function FeaturedTab() {
     }
 
     // DMs
+    const dmsNotification = [];
     function getDMsNoti() {
         if (roomList.directs.size === 0) return null;
         let noti = null;
 
         [...roomList.directs].forEach((roomId) => {
+
             if (!notifications.hasNoti(roomId)) return;
+
             if (noti === null) noti = { total: 0, highlight: 0 };
             const childNoti = notifications.getNoti(roomId);
+
             noti.total += childNoti.total;
             noti.highlight += childNoti.highlight;
+
+            dmsNotification.push([mx.getRoom(roomId), childNoti]);
+
         });
 
         return noti;
-    }
+    };
 
     // Get Data
     const dmsNoti = getDMsNoti();
@@ -125,6 +136,48 @@ export default function FeaturedTab() {
                 avatar={<Avatar faSrc="fa-brands fa-ethereum" size="normal" />}
                 notificationBadge={null}
             /> : null}
+
+            {dmsNotification.length > 0 ? <div className="sidebar-divider" /> : null}
+            {dmsNotification.map(data => {
+
+                const room = data[0];
+                const childNoti = data[1];
+
+                if (objType(room, 'object')) {
+
+                    return <SidebarAvatar
+                        active={false}
+                        tooltip={room.name}
+                        onClick={() => {
+                            selectTab(cons.tabs.DIRECTS);
+                            selectRoomMode('room');
+                            return (isSpace ? selectSpace(roomId) : selectRoom(roomId));
+                        }}
+
+                        avatar={(
+                            <Avatar
+                                text={room.name}
+                                bgColor={colorMXID(room.roomId)}
+                                size="normal"
+                                animParentsCount={2}
+                                imageAnimSrc={room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) || room.getAvatarUrl(mx.baseUrl) || null}
+                                imageSrc={room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 42, 42, 'crop') || room.getAvatarUrl(mx.baseUrl, 42, 42, 'crop') || null}
+                                isDefaultImage
+                            />
+                        )}
+
+                        notificationBadge={
+                            <NotificationBadge
+                                className={notificationClasses}
+                                alert={childNoti.highlight > 0}
+                                content={abbreviateNumber(childNoti.total) || null}
+                            />}
+
+                    />;
+
+                }
+
+            })}
 
         </>
     );

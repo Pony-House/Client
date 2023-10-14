@@ -81,7 +81,7 @@ function RoomsCategory({
 
     const roomId = room.roomId;
     const isSpace = spaces.has(roomId);
-    const isDM = directs.has(roomId);
+    const isTinyDM = directs.has(roomId);
     const isProfile = (profileSetting.roomId === roomId);
 
     const roomReady = true;
@@ -94,7 +94,7 @@ function RoomsCategory({
         key={roomId}
         roomId={roomId}
         roomObject={room}
-        isDM={isDM}
+        isDM={isTinyDM}
         drawerPostie={drawerPostie}
         onClick={() => {
           selectRoomMode('room');
