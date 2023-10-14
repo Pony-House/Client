@@ -33,6 +33,7 @@ export default function FeaturedTab() {
     useNotificationUpdate();
 
     const mx = initMatrix.matrixClient;
+    const appearance = initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
 
     // Home
     function getHomeNoti() {
@@ -67,7 +68,7 @@ export default function FeaturedTab() {
             noti.total += childNoti.total;
             noti.highlight += childNoti.highlight;
 
-            dmsNotification.push([mx.getRoom(roomId), childNoti]);
+            if (appearance.pinDMmessages !== false) dmsNotification.push([mx.getRoom(roomId), childNoti]);
 
         });
 

@@ -19,6 +19,7 @@ function AppearanceSection() {
     const [, updateState] = useState({});
 
     const [showUserDMstatus, setShowUserStatus] = useState(true);
+    const [pinDMmessages, setPinDMmessages] = useState(true);
     const [isAnimateAvatarsHidden, setAnimateAvatarsHidden] = useState(false);
     const [isEmbedDisabled, setEmbedDisabled] = useState(false);
     const [isUNhoverDisabled, setUNhoverDisabled] = useState(false);
@@ -31,6 +32,7 @@ function AppearanceSection() {
         const content = initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
         const zoomApp = Number(global.localStorage.getItem('pony-house-zoom'));
 
+        setPinDMmessages((content.pinDMmessages !== false));
         setShowUserStatus((content.showUserDMstatus !== false));
         setAnimateAvatarsHidden((content.isAnimateAvatarsHidden === true));
         setEmbedDisabled((content.isEmbedDisabled === true));
@@ -131,7 +133,9 @@ function AppearanceSection() {
 
             <div className="card noselect mt-3">
                 <ul className="list-group list-group-flush">
+
                     <li className="list-group-item very-small text-gray">Room users</li>
+
                     <SettingTile
                         title="Show user DM status"
                         options={(
@@ -143,6 +147,19 @@ function AppearanceSection() {
                         )}
                         content={<div className="very-small text-gray">All users in your DM will show whether they are online or not.</div>}
                     />
+
+                    <SettingTile
+                        title="Pin DMs on the sidebar"
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={pinDMmessages}
+                                onToggle={toggleAction('pony.house.appearance', 'pinDMmessages', setPinDMmessages)}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">Whenever you receive a new notification in your DM list, you will see a notification icon in the sidebar.</div>}
+                    />
+
                 </ul>
             </div>
 

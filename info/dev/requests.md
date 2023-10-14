@@ -63,8 +63,6 @@ Made by Me
     --> Fazer o marcador que separa a lista de amigos da lista de DMs estranhos.
     --> Fazer uma configuração se o usuário vai ou não receber notificação de DMs estranhos.
 
-    --> Os usuários que madam DM devem ser mostrados na lista de fixados. (Apenas os DMs marcados como da lsita de amigos)
-
     --> Criar filtro para desativar animação de gifs especificas. A gente vai usar a ID e dominio do arquivo para facilitar isso.
     (Limite de 600 itens por array) (Opçao alternativa de fazer a animação ser hover)
 
