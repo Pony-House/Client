@@ -27,6 +27,7 @@ export default function FeaturedTab() {
     // Data
     const ethereumButton = useRef(null);
     const [userWeb3, setUserWeb3] = useState(getUserWeb3Account());
+    const [selectedUser, setSelectedUser] = useState(null);
     const { roomList, accountData, notifications } = initMatrix;
     const [selectedTab] = useSelectedTab();
     useNotificationUpdate();
@@ -86,11 +87,14 @@ export default function FeaturedTab() {
             setEthereumStatusButton(null);
         }
 
+        const updateUserRoomSelected = (roomId) => setSelectedUser(roomId);
         const ethereumGetUpdate = (ethereumData) => setUserWeb3(ethereumData);
         navigation.on(cons.events.navigation.ETHEREUM_UPDATED, ethereumGetUpdate);
+        navigation.on(cons.events.navigation.SELECTED_ROOM, updateUserRoomSelected);
 
         return () => {
             navigation.removeListener(cons.events.navigation.ETHEREUM_UPDATED, ethereumGetUpdate);
+            navigation.removeListener(cons.events.navigation.SELECTED_ROOM, updateUserRoomSelected);
         };
 
     });
@@ -102,7 +106,10 @@ export default function FeaturedTab() {
             <SidebarAvatar
                 tooltip="Direct Messages"
                 active={selectedTab === cons.tabs.DIRECTS}
-                onClick={() => selectTab(cons.tabs.DIRECTS)}
+                onClick={() => {
+                    setSelectedUser(null);
+                    selectTab(cons.tabs.DIRECTS);
+                }}
                 avatar={<Avatar faSrc="fa-solid fa-user" size="normal" />}
                 notificationBadge={dmsNoti ? (
                     <NotificationBadge
@@ -116,7 +123,10 @@ export default function FeaturedTab() {
             <SidebarAvatar
                 tooltip="Home"
                 active={selectedTab === cons.tabs.HOME}
-                onClick={() => selectTab(cons.tabs.HOME)}
+                onClick={() => {
+                    setSelectedUser(null);
+                    selectTab(cons.tabs.HOME)
+                }}
                 avatar={<Avatar faSrc="fa-solid fa-house" size="normal" />}
                 notificationBadge={homeNoti ? (
                     <NotificationBadge
@@ -143,7 +153,7 @@ export default function FeaturedTab() {
                 const room = data[0];
                 const childNoti = data[1];
 
-                if (objType(room, 'object')) {
+                if (selectedUser !== room.roomId && objType(room, 'object')) {
 
                     return <SidebarAvatar
                         active={false}
@@ -151,7 +161,8 @@ export default function FeaturedTab() {
                         onClick={() => {
                             selectTab(cons.tabs.DIRECTS);
                             selectRoomMode('room');
-                            return (isSpace ? selectSpace(roomId) : selectRoom(roomId));
+                            setSelectedUser(room.roomId);
+                            return selectRoom(room.roomId);
                         }}
 
                         avatar={(

@@ -411,6 +411,7 @@ class Navigation extends EventEmitter {
         if (action.roomId) this._selectTabWithRoom(action.roomId, action.forceScroll);
         this._selectRoom(action.roomId, action.eventId, action.forceScroll);
         setTimeout(() => tinyAPI.emit('selectedRoomAfter', action.roomId, action.forceScroll), 100);
+        this.emit(cons.events.navigation.SELECTED_ROOM, action.roomId, action.eventId, action.forceScroll);
       },
 
       [cons.actions.navigation.OPEN_SPACE_SETTINGS]: () => {
