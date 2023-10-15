@@ -33,7 +33,11 @@
     "brony-fandom",
     "pony-house"
   ],
-  "author": "JasminDreasond (Yasmin Seidel)",
+  "author": {
+    "name": "JasminDreasond (Yasmin Seidel)",
+    "email": "tiny@puddy.club",
+    "url": "https://github.com/JasminDreasond"
+  },
   "license": "AGPL-3.0-only",
   "dependencies": {
     "@capacitor/android": "5.4.1",

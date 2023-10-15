@@ -11,6 +11,7 @@
   },
   files: ['dist-electron', 'dist'],
   linux: {
+    icon: 'build/icon.icns',
     target: ['AppImage', 'deb', 'snap'],
     category: 'Network;Chat;InstantMessaging;',
     desktop: {
@@ -19,11 +20,13 @@
     },
   },
   mac: {
+    icon: 'build/icon.icns',
     category: 'public.app-category.social-networking',
     artifactName: '${productName}_${version}.${ext}',
     target: ['dmg', 'zip'],
   },
   win: {
+    icon: 'build/icon.ico',
     target: [
       {
         target: 'nsis',
