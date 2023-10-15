@@ -12,6 +12,15 @@
   }
 }
 
+.space-manage__content-items.joining-room {
+  .join-button {
+    opacity: 0.5;
+    pointer-events: none !important;
+    background-color: var(--bg-caution);
+    border-color: var(--bg-caution-border);
+  }
+}
+
 .space-manage__content {
   margin-bottom: var(--sp-extra-loose);
 
