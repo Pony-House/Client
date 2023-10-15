@@ -1,0 +1,1 @@
+- Join buttons delay added to protect ratelimit.
