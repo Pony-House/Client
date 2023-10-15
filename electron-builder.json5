@@ -15,7 +15,7 @@
     category: 'Network;Chat;InstantMessaging;',
     desktop: {
       Comment: 'Pony House matrix client',
-      Keywords: 'dc;chat;pony;house;messaging;messenger;email',
+      Keywords: 'chat;pony;house;messaging;messenger;matrix;matrix-client;brony',
     },
   },
   mac: {
