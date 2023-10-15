@@ -11,7 +11,7 @@
   },
   files: ['dist-electron', 'dist'],
   linux: {
-    icon: 'build/icon.icns',
+    icon: 'build/icon.png',
     target: ['AppImage', 'deb', 'snap'],
     category: 'Network;Chat;InstantMessaging;',
     desktop: {
