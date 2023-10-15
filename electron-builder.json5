@@ -9,7 +9,6 @@
   directories: {
     output: 'release/${version}',
   },
-  description: 'The open source house, your house, the house for all matrix ponies.',
   files: ['dist-electron', 'dist'],
   linux: {
     target: ['AppImage', 'deb', 'snap'],
