@@ -53,7 +53,7 @@ function Auth() {
                     {!loginToken && (<>
 
                       <div className="d-flex align-items-center mb-3 pb-1">
-                        <Avatar imageSrc="./favicon.ico" />
+                        <Avatar imageSrc="./img/png/cinny-main.png" />
                         <span className="ms-3 h2 fw-bold mb-0">{__ENV_APP__.info.name}</span>
                       </div>
 

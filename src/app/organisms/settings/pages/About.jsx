@@ -42,7 +42,7 @@ function AboutSection() {
                         <div className='row m-0 w-100'>
 
                             <div className='col-md-1 ps-0'>
-                                <img width="60" height="60" src="./favicon.ico" alt="App logo" />
+                                <img width="60" height="60" src="./img/png/cinny-main.png" alt="App logo" />
                             </div>
 
                             <div className='col-md-11 pe-0'>

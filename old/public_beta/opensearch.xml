@@ -2,7 +2,7 @@
 <ShortName>Pony House</ShortName>
 <Description>Pony House Search</Description>
 <Url type="text/html" method="get" template="https://client.pony.house/search?q={searchTerms}"/>
-<Image width="16" height="16">https://client.pony.house/favicon.ico</Image>
+<Image width="16" height="16">https://client.pony.house/img/png/cinny-main.png</Image>
 <InputEncoding>UTF-8</InputEncoding>
 <moz:SearchForm>https://client.pony.house/search-home</moz:SearchForm>
 </OpenSearchDescription>

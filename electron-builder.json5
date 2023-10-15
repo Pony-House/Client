@@ -9,8 +9,18 @@
   directories: {
     output: 'release/${version}',
   },
+  description: 'The open source house, your house, the house for all matrix ponies.',
   files: ['dist-electron', 'dist'],
+  linux: {
+    target: ['AppImage', 'deb', 'snap'],
+    category: 'Network;Chat;InstantMessaging;',
+    desktop: {
+      Comment: 'Pony House matrix client',
+      Keywords: 'dc;chat;pony;house;messaging;messenger;email',
+    },
+  },
   mac: {
+    category: 'public.app-category.social-networking',
     artifactName: '${productName}_${version}.${ext}',
     target: ['dmg', 'zip'],
   },
