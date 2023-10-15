@@ -121,7 +121,7 @@ function Selector({
       isProfile={isProfile}
       name={roomName}
       roomId={roomId}
-      animParentsCount={2}
+      animParentsCount={3}
       user={user}
       room={room}
       imageAnimSrc={isDM || notSpace ? imageAnimSrc : null}
