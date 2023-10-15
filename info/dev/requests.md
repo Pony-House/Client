@@ -42,6 +42,8 @@ Made by Me
 
     =======================================================
 
+    --> Ajeitar a animação de avatar em hover da DM.
+
     --> Lista de usuários online na room ainda não atualiza em tempo real.
 
     --> Quando a janela tem pouco conteúdo, simplesmente tentar corrigir a falha do load incompleto da sala.
@@ -50,7 +52,7 @@ Made by Me
 
     --> Philomena.
 
-    --> Sistema de bordas personalizadas que pode ser facilmente pega em qualquer servidor.
+    --> Sistema de bordas personalizadas
 
     --> Adicionar opção para suporte de thumbs com parametros de animação.
     --> Fazer a opção para o app iniciar sozinho com o sistema operacional.
@@ -70,8 +72,6 @@ Made by Me
     (Também ser possível banir animação de usuários individualmente - limite de 600 itens por array) (Opçao alternativa de fazer a animação ser hover)
 
     --> Tema https://github.com/catppuccin/cinny
-
-    --> Ajeitar sincronização quando uma DM é aberta pela primeira vez
 
     --> Ajeitar o carregador de usuários de rooms para ficar mais otimizado
 
