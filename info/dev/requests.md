@@ -42,8 +42,6 @@ Made by Me
 
     =======================================================
 
-    --> Ajeitar a animação de avatar em hover da DM.
-
     --> Lista de usuários online na room ainda não atualiza em tempo real.
 
     --> Quando a janela tem pouco conteúdo, simplesmente tentar corrigir a falha do load incompleto da sala.
