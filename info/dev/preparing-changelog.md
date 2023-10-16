@@ -1,3 +1,0 @@
-- Join buttons delay added to protect ratelimit.
-- Room selector anim fix.
-- favicon notification added.
