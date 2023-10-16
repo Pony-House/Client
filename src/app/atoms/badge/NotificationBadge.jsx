@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { checkerFavIcon } from '../../../util/libs/favicon';
 
 function NotificationBadge({ alert, content, className, bgColor }) {
 
@@ -16,6 +17,8 @@ function NotificationBadge({ alert, content, className, bgColor }) {
     finalContent = (<i className={cicleClass} />);
     classes.push('empty-badge');
   }
+
+  checkerFavIcon();
 
   return (
     <div className={classes.join(' ')}>

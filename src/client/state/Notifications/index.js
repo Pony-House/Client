@@ -13,8 +13,7 @@ import { updateName } from '../../../util/roomName';
 import { html, plain } from '../../../util/markdown';
 import { getAccountStatus } from '../../../app/organisms/navigation/ProfileAvatarMenu';
 import { messageIsCrdt } from '../../../util/libs/crdt';
-
-const LogoSVG = './img/png/cinny.png';
+import { checkerFavIcon } from '../../../util/libs/favicon';
 
 const soundFiles = {
   notification: new Audio('./sound/notification.ogg'),
@@ -49,7 +48,6 @@ class Notifications extends EventEmitter {
     super();
 
     this.initialized = false;
-    this.favicon = LogoSVG;
     this.matrixClient = roomList.matrixClient;
     this.roomList = roomList;
 
@@ -254,6 +252,9 @@ class Notifications extends EventEmitter {
 
   async _displayPopupNoti(mEvent, room) {
 
+    // Favicon
+    checkerFavIcon();
+
     // Data Prepare
     const userStatus = getAccountStatus('status');
     if (!settings.showNotifications && !settings.isNotificationSounds) return;
@@ -346,7 +347,6 @@ class Notifications extends EventEmitter {
         // Silent Mode
         let noti;
         if (__ENV_APP__.electron_mode) {
-          // notiData.engine = 'notifier';
           notiData.silent = true;
           noti = await window.desktopNotification(notiData);
         } else {

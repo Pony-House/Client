@@ -39,22 +39,23 @@ export function updateName(room) {
 }
 
 export function sortName(a, b) {
+
     if (a.nameCinny && b.nameCinny) {
         return a.nameCinny.index - b.nameCinny.index;
-    } else {
-
-        const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-        if (nameA < nameB) {
-            return -1;
-        }
-        if (nameA > nameB) {
-            return 1;
-        }
-
-        // names must be equal
-        return 0;
     }
+
+    const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+    const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+        return -1;
+    }
+    if (nameA > nameB) {
+        return 1;
+    }
+
+    // names must be equal
+    return 0;
+
 }
 
 const sortTimeTemplate = (item) => Array.isArray(item.timeline) && item.timeline.length > 0 ? item.timeline[item.timeline.length - 1] : 0;

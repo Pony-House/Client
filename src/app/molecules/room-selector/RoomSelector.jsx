@@ -12,6 +12,7 @@ import { getPresence, getUserStatus, updateUserStatusIcon } from '../../../util/
 import initMatrix from '../../../client/initMatrix';
 import insertCustomStatus from '../people-selector/insertCustomStatus';
 import { objType } from '../../../util/tools';
+import { checkerFavIcon } from '../../../util/libs/favicon';
 
 function RoomSelectorWrapper({
   isSelected, isMuted, isUnread, onClick,
@@ -137,6 +138,7 @@ function RoomSelector({
     }
   });
 
+  checkerFavIcon();
   const isDefault = (!iconSrc || notSpace);
 
   return <RoomSelectorWrapper
