@@ -4027,21 +4027,21 @@ html-comment-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/html-comment-regex/-/html-comment-regex-1.1.2.tgz#97d4688aeb5c81886a364faa0cad1dda14d433a7"
   integrity sha512-P+M65QY2JQ5Y0G9KKdlDpo0zK+/OHptU5AaBwUfAIDJZk1MYf32Frm84EcOytfJE0t5JvkAnKlmjsXDnWzCJmQ==
 
-html-dom-parser@4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/html-dom-parser/-/html-dom-parser-4.0.0.tgz#dc382fbbc9306f8c9b5aae4e3f2822e113a48709"
-  integrity sha512-TUa3wIwi80f5NF8CVWzkopBVqVAtlawUzJoLwVLHns0XSJGynss4jiY0mTWpiDOsuyw+afP+ujjMgRh9CoZcXw==
+html-dom-parser@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/html-dom-parser/-/html-dom-parser-4.0.1.tgz#ab4ba6b50181545a036df79951b0ca320d7e5ace"
+  integrity sha512-YADpM4AxP/W4Kyea3Aonmwz64pwlijbXpKHaNwd0ipK/OzCOamI0a24L6nh60uwHmcpD7wC3xvL9unWCPk7tiQ==
   dependencies:
     domhandler "5.0.3"
     htmlparser2 "9.0.0"
 
-html-react-parser@4.2.2:
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/html-react-parser/-/html-react-parser-4.2.2.tgz#91f1cc2138bc069d65cbd8b9d97b1e71ed423300"
-  integrity sha512-lh0wEGISnFZEAmvQqK4xc0duFMUh/m9YYyAhFursWxdtNv+hCZge0kj1y4wep6qPB5Zm33L+2/P6TcGWAJJbjA==
+html-react-parser@4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/html-react-parser/-/html-react-parser-4.2.3.tgz#b7c7faf850fadf96e696ec9b76029797ccf48788"
+  integrity sha512-6ERAAEejIJwy5Tlxiq9to9MrKVBg2hAV/JALrr20pESBJ1uKqSGNhRjUAE/sdwmNs8DuGova5Rlz3Y6Yd9Ac9w==
   dependencies:
     domhandler "5.0.3"
-    html-dom-parser "4.0.0"
+    html-dom-parser "4.0.1"
     react-property "2.0.0"
     style-to-js "1.1.4"
 
