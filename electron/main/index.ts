@@ -48,7 +48,8 @@ let win: BrowserWindow | null = null;
 const preload = path.join(__dirname, '../preload/index.js');
 const tinyUrl = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = path.join(process.env.DIST, 'index.html');
-const icon = path.join(process.env.VITE_PUBLIC, './img/png/cinny.png');
+const iconPath = path.join(process.env.VITE_PUBLIC, './img/png');
+const icon = path.join(iconPath, './cinny.png');
 
 const appShow = {
   change: (value: boolean) => {
@@ -102,6 +103,24 @@ async function createWindow() {
         nodeIntegration: true,
         contextIsolation: true,
       },
+    });
+
+    if (process.platform === 'win32') {
+      win.setAppDetails({
+        appId: 'pony-house-matrix',
+        appIconPath: icon,
+        relaunchDisplayName: title,
+      });
+    }
+
+    ipcMain.on('change-app-icon', (event, img) => {
+      try {
+        if (typeof img === 'string' && img.length > 0) {
+          if (win) win.setIcon(path.join(iconPath, `./${img}`));
+        }
+      } catch (err) {
+        console.error(err);
+      }
     });
 
     // Start modules
@@ -236,6 +255,16 @@ if (!gotTheLock) {
             if (win) win.hide();
             appShow.change(false);
           }
+        }
+      });
+
+      ipcMain.on('change-tray-icon', (event, img) => {
+        try {
+          if (typeof img === 'string' && img.length > 0) {
+            tray.setImage(path.join(iconPath, `./${img}`));
+          }
+        } catch (err) {
+          console.error(err);
         }
       });
     }

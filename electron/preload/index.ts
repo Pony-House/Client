@@ -125,6 +125,28 @@ contextBridge.exposeInMainWorld('setElectronResize', (callback: Function) => {
   electronResize = callback;
 });
 
+contextBridge.exposeInMainWorld('changeTrayIcon', (img: string) => {
+  if (
+    img === 'cinny.png' ||
+    img === 'cinny-highlight.png' ||
+    img === 'cinny-unread-red.png' ||
+    img === 'cinny-unread.png'
+  ) {
+    ipcRenderer.send('change-tray-icon', img);
+  }
+});
+
+contextBridge.exposeInMainWorld('changeAppIcon', (img: string) => {
+  if (
+    img === 'cinny.png' ||
+    img === 'cinny-highlight.png' ||
+    img === 'cinny-unread-red.png' ||
+    img === 'cinny-unread.png'
+  ) {
+    ipcRenderer.send('change-app-icon', img);
+  }
+});
+
 setTimeout(removeLoading, 4999);
 
 // App Status
