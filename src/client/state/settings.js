@@ -13,11 +13,11 @@ import silverTheme from '../../scss/theme/silver';
 import whiteTheme from '../../scss/theme/white';
 
 const themes = {
-  black: { data: blackTheme, id: 'black-theme' },
-  butter: { data: butterTheme, id: 'butter-theme' },
-  dark: { data: darkTheme, id: 'dark-theme' },
-  silver: { data: silverTheme, id: 'silver-theme' },
-  white: { data: whiteTheme, id: '' },
+  black: { data: blackTheme, id: 'black-theme', type: 'dark' },
+  butter: { data: butterTheme, id: 'butter-theme', type: 'dark' },
+  dark: { data: darkTheme, id: 'dark-theme', type: 'dark' },
+  silver: { data: silverTheme, id: 'silver-theme', type: 'light' },
+  white: { data: whiteTheme, id: '', type: 'light' },
 };
 
 
@@ -70,6 +70,10 @@ class Settings extends EventEmitter {
     return this.themes[this.themeIndex].data;
   }
 
+  getThemeType() {
+    return this.themes[this.themeIndex].type;
+  }
+
   changeMobileBackground(value = 'default') {
     const data = this.themes[this.themeIndex].data;
     return new Promise((resolve, reject) => {
@@ -94,7 +98,7 @@ class Settings extends EventEmitter {
   }
 
   _clearTheme() {
-    $('body').removeClass('system-theme');
+    $('body').removeClass('system-theme').removeClass('theme-type-dark').removeClass('theme-type-light');
     this.themes.forEach((theme) => {
       if (theme.id === '') return;
       $('body').removeClass(theme.id);
@@ -104,11 +108,20 @@ class Settings extends EventEmitter {
   applyTheme() {
 
     this._clearTheme();
+    const body = $('body');
 
     if (this.useSystemTheme) {
-      $('body').addClass('system-theme');
+
+      body.addClass('system-theme');
+
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        body.addClass(`theme-type-dark`);
+      } else {
+        body.addClass(`theme-type-light`);
+      }
+
     } else if (this.themes[this.themeIndex]) {
-      $('body').addClass(this.themes[this.themeIndex].id);
+      body.addClass(this.themes[this.themeIndex].id).addClass(this.themes[this.themeIndex].type === 'dark' || this.themes[this.themeIndex].type === 'light' ? `theme-type-${this.themes[this.themeIndex].type}` : '');
     }
 
     this.changeMobileBackground('default');
