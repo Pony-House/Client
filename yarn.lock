@@ -853,11 +853,17 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@khanacademy/simple-markdown@0.10.0":
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/@khanacademy/simple-markdown/-/simple-markdown-0.10.0.tgz#e1e89b9594d1114ed71a966e88548626f8f321f9"
-  integrity sha512-ux/bi1ihZFQsetQLksmkEQ2pR2Un6fC1crM5OinzPHNPgGU301UhqEPVkW1JoftBe4fXVOiUjxwKmpxps4/+DA==
+"@khanacademy/perseus-core@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@khanacademy/perseus-core/-/perseus-core-1.1.2.tgz#1afd448a63a47efb86751d1686714901878caf5e"
+  integrity sha512-fXTc0ZYE/vaNetK3hqnruYp9KgmZTMwfsR9nJulzJ8GXSxXINVr5JEoLFrejNWcV0HU6+3FQSPKCFliWPuTfXQ==
+
+"@khanacademy/simple-markdown@0.10.2":
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/@khanacademy/simple-markdown/-/simple-markdown-0.10.2.tgz#bc9da887c12cc9252a0ab3363574bf8d84847399"
+  integrity sha512-LU9cJgnmLn6/SnnpHJfhDlgvA4MbqBVRT4v8HhNwZVbGazfvd+kjXtgsp8hPMuEWkfw3h2jGEx5gqnPFMft/DA==
   dependencies:
+    "@khanacademy/perseus-core" "1.1.2"
     "@types/react" ">=16.0.0"
 
 "@malept/cross-spawn-promise@^1.1.0":
