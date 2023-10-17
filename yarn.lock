@@ -280,10 +280,10 @@
   resolved "https://registry.yarnpkg.com/@capacitor/haptics/-/haptics-5.0.6.tgz#c22fd6acbc62cbdff39279ded687c418f2c89a5a"
   integrity sha512-UrMcR7p2X10ql4VLlowUuH/VckTeu0lj+RQpekxox14uxDmu5AGIFDK/iDTi8W6QZkxTJRZK6sbCjgwYgNJ7Pw==
 
-"@capacitor/ios@5.4.1":
-  version "5.4.1"
-  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-5.4.1.tgz#79c1620ac7b57dc1ea85653ad1e5a32e8ec7dbea"
-  integrity sha512-s5djQEX1HFM6u4gQlWz7DUWG7ma0d3AwwnjbSbCh25aYEt40Dbei0TjzlKrfU6b3nUbyVVAZJBJgMuk7Bq59qA==
+"@capacitor/ios@5.4.2":
+  version "5.4.2"
+  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-5.4.2.tgz#83947c7807b0441166d130a38511cf9a6d4621b1"
+  integrity sha512-KsICm57H7rUOcQ+V7IOIPe87VOiXGWFrsCqAYxDWAS++hxTR7sn8Z0pcq7Ir2xS6as0ct1eZva9BokykpYaUXQ==
 
 "@capacitor/local-notifications@5.0.6":
   version "5.0.6"
