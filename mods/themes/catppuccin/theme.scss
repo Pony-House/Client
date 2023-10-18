@@ -1,0 +1,33 @@
+.catppuccin-theme {
+  --bg-auth-normal: rgb(36 58 80) 0%;
+
+  --bg-surface: rgb(5, 5, 5);
+  --bg-surface-semi-transparent: rgb(0 0 0 / 90%);
+  --bg-surface-transparent: hsla(0, 0%, 21%, 0);
+
+  --bg-input: #111;
+
+  --bg-surface-low: rgb(0, 0, 0);
+  --bg-surface-low-semi-transparent: rgba(11, 11, 11, 0.9);
+  --bg-surface-low-transparent: hsla(0, 0%, 18%, 0);
+
+  --bg-surface-extra-low: hsl(0, 0%, 21%);
+  --bg-surface-extra-low-transparent: hsla(208, 8%, 14%, 0);
+
+  --bg-surface-hover: rgba(255, 255, 255, 3%);
+  --bg-surface-active: rgba(255, 255, 255, 5%);
+
+  --bg-surface-border: rgba(173, 173, 173, 0.2);
+
+  --bg-surface-gradient: none;
+  --bg-surface-gradient-2: none;
+  --bg-surface-gradient-3: none;
+  --bg-auth-gradient: none;
+
+  .sidebar-1 {
+    border-right-color: var(--bg-surface-border);
+    border-right-style: solid;
+    border-right-width: 1px;
+    width: 80px;
+  }
+}

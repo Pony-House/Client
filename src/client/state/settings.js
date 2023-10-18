@@ -15,9 +15,9 @@ import whiteTheme from '../../scss/theme/white';
 
 const themes = {
   black: { data: blackTheme, id: 'black-theme', type: 'dark' },
-  butter: { data: butterTheme, id: 'butter-theme', type: 'dark' },
+  butter: { data: butterTheme, id: 'butter-theme', type: 'dark2' },
   dark: { data: darkTheme, id: 'dark-theme', type: 'dark' },
-  silver: { data: silverTheme, id: 'silver-theme', type: 'light' },
+  silver: { data: silverTheme, id: 'silver-theme', type: 'silver' },
   white: { data: whiteTheme, id: '', type: 'light' },
 };
 
@@ -138,7 +138,7 @@ class Settings extends EventEmitter {
       }
 
     } else if (this.themes[this.themeIndex]) {
-      body.addClass(this.themes[this.themeIndex].id).addClass(this.themes[this.themeIndex]?.type === 'dark' || this.themes[this.themeIndex]?.type === 'light' ? `theme-type-${this.themes[this.themeIndex]?.type}` : '');
+      body.addClass(this.themes[this.themeIndex].id).addClass(this.themes[this.themeIndex]?.type === 'dark' || this.themes[this.themeIndex]?.type === 'light' || this.themes[this.themeIndex]?.type === 'silver' ? `theme-type-${this.themes[this.themeIndex]?.type}` : '');
     }
 
     this.changeMobileBackground('default');

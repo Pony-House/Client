@@ -7,11 +7,11 @@ export function selectButton() {
     const body = $('body');
     if (body.length > 0) {
 
-        if (body.hasClass('dark-theme') || body.hasClass('black-theme')) {
+        if (body.hasClass('theme-type-dark')) {
             return 'dark';
         }
 
-        if (body.hasClass('butter-theme')) {
+        if (body.hasClass('theme-type-dark2')) {
             return 'secondary';
         }
 
@@ -26,11 +26,7 @@ export function selectButtonInverse() {
     const body = $('body');
     if (body.length > 0) {
 
-        if (body.hasClass('dark-theme') || body.hasClass('black-theme')) {
-            return 'secondary';
-        }
-
-        if (body.hasClass('butter-theme')) {
+        if (body.hasClass('theme-type-dark') || body.hasClass('theme-type-dark2') || body.hasClass('theme-type-silver')) {
             return 'secondary';
         }
 
