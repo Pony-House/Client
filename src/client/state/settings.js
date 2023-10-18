@@ -5,6 +5,7 @@ import EventEmitter from 'events';
 import appDispatcher from '../dispatcher';
 
 import cons from './cons';
+import tinyAPI from '../../util/mods';
 
 import blackTheme from '../../scss/theme/black';
 import butterTheme from '../../scss/theme/butter';
@@ -40,6 +41,7 @@ class Settings extends EventEmitter {
 
     this.themes = [themes.white, themes.silver, themes.dark, themes.butter, themes.black];
     this.themeIndex = this.getThemeIndex();
+    tinyAPI.emit('loadThemes', this.themes);
 
     this.useSystemTheme = this.getUseSystemTheme();
     this.isMarkdown = this.getIsMarkdown();
@@ -75,7 +77,7 @@ class Settings extends EventEmitter {
   }
 
   changeMobileBackground(value = 'default') {
-    const data = this.themes[this.themeIndex].data;
+    const data = this.themes[this.themeIndex]?.data;
     return new Promise((resolve, reject) => {
       if (Capacitor.isNativePlatform()) {
 
@@ -98,11 +100,16 @@ class Settings extends EventEmitter {
   }
 
   _clearTheme() {
+
     $('body').removeClass('system-theme').removeClass('theme-type-dark').removeClass('theme-type-light');
-    this.themes.forEach((theme) => {
-      if (theme.id === '') return;
-      $('body').removeClass(theme.id);
-    });
+
+    if (Array.isArray(this.themes)) {
+      this.themes.forEach((theme) => {
+        if (theme.id === '') return;
+        $('body').removeClass(theme.id);
+      });
+    }
+
   }
 
   applyTheme() {
@@ -121,7 +128,7 @@ class Settings extends EventEmitter {
       }
 
     } else if (this.themes[this.themeIndex]) {
-      body.addClass(this.themes[this.themeIndex].id).addClass(this.themes[this.themeIndex].type === 'dark' || this.themes[this.themeIndex].type === 'light' ? `theme-type-${this.themes[this.themeIndex].type}` : '');
+      body.addClass(this.themes[this.themeIndex].id).addClass(this.themes[this.themeIndex]?.type === 'dark' || this.themes[this.themeIndex]?.type === 'light' ? `theme-type-${this.themes[this.themeIndex]?.type}` : '');
     }
 
     this.changeMobileBackground('default');
