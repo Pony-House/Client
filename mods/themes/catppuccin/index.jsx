@@ -2,8 +2,8 @@ import tinyAPI from '../../../src/util/mods';
 import './theme.scss';
 
 export default function startTheme() {
-    tinyAPI.on('loadThemes', (data, themes) => {
-        themes.catppuccin = {
+    tinyAPI.on('loadThemes', (data, insertTheme) => {
+        insertTheme(['Catppuccin Theme (TEST)', {
 
             data: {
 
@@ -27,6 +27,6 @@ export default function startTheme() {
             id: 'catppuccin-theme',
             type: 'dark'
 
-        };
+        }]);
     });
 };

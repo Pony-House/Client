@@ -6,6 +6,7 @@ import appDispatcher from '../dispatcher';
 
 import cons from './cons';
 import tinyAPI from '../../util/mods';
+import { objType } from '../../util/tools';
 
 import blackTheme from '../../scss/theme/black';
 import butterTheme from '../../scss/theme/butter';
@@ -37,16 +38,32 @@ function setSettings(key, value) {
 
 class Settings extends EventEmitter {
 
-  // eslint-disable-next-line no-useless-constructor
   constructor() {
+
     super();
+    this.themes = [themes.white, themes.silver, themes.dark, themes.butter, themes.black];
+
+    this.themesName = [
+      { text: 'Light' },
+      { text: 'Silver' },
+      { text: 'Dark' },
+      { text: 'Butter' },
+      { text: 'Black (Beta)' },
+    ];
+
+  }
+
+  insertTheme(data, type = 'push') {
+    if ((type === 'push' || type === 'unshift') && (typeof data[0] === 'string' || objType(data[0], 'object'))) {
+      this.themesName[type](typeof data[0] === 'string' ? { text: data[0] } : data[0]);
+      this.themes[type](data[1]);
+    }
   }
 
   startData() {
 
-    this.themes = [themes.white, themes.silver, themes.dark, themes.butter, themes.black];
     this.themeIndex = this.getThemeIndex();
-    tinyAPI.emit('loadThemes', this.themes);
+    tinyAPI.emit('loadThemes', (data, type = 'push') => this.insertTheme(data, type));
 
     this.useSystemTheme = this.getUseSystemTheme();
     this.isMarkdown = this.getIsMarkdown();

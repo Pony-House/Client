@@ -88,13 +88,7 @@ function AppearanceSection() {
                             <div className='mt-2'>
                                 <SegmentedControls
                                     selected={settings.useSystemTheme ? -1 : settings.getThemeIndex()}
-                                    segments={[
-                                        { text: 'Light' },
-                                        { text: 'Silver' },
-                                        { text: 'Dark' },
-                                        { text: 'Butter' },
-                                        { text: 'Black (Beta)' },
-                                    ]}
+                                    segments={settings.themesName}
                                     onSelect={(index) => {
                                         if (settings.useSystemTheme) toggleSystemTheme();
                                         settings.setTheme(index);
