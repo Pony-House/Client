@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import jReact from '../lib/jReact';
+import jReact from '../jReact';
 
 export default function helloWorld() {
 

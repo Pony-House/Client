@@ -1,11 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
-import getUrlPreview from '../../src/util/libs/getUrlPreview';
-import { twemojifyReact } from '../../src/util/twemojify';
-import initMatrix from '../../src/client/initMatrix';
+import getUrlPreview from '../../../src/util/libs/getUrlPreview';
+import { twemojifyReact } from '../../../src/util/twemojify';
+import initMatrix from '../../../src/client/initMatrix';
 
-import openTinyURL from '../../src/util/message/urlProtection';
+import openTinyURL from '../../../src/util/message/urlProtection';
 
-import * as Media from '../../src/app/molecules/media/Media';
+import * as Media from '../../../src/app/molecules/media/Media';
 
 function HookshotFeeds({ feedData }) {
 

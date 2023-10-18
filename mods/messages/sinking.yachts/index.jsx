@@ -1,5 +1,5 @@
-import { objType } from '../../src/util/tools';
-import tinyAPI from '../../src/util/mods';
+import { objType } from '../../../src/util/tools';
+import tinyAPI from '../../../src/util/mods';
 
 export default function sinkingYachts() {
 

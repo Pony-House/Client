@@ -2,7 +2,7 @@ import React from 'react';
 import './style.scss';
 
 import HookshotFeeds from './HookshotFeeds';
-import tinyAPI from '../../src/util/mods';
+import tinyAPI from '../../../src/util/mods';
 
 export default function startMod() {
     tinyAPI.on('messageBody', (data, content) => {

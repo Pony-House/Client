@@ -1,9 +1,9 @@
 // import startTest from './test';
 
-// import helloWorld from './hello-world';
-// import sinkingYachts from './sinking.yachts';
-import customMessages from './customMessages';
-import unstoppableDomains from './unstoppableDomains';
+// import helloWorld from './lib/hello-world';
+// import sinkingYachts from './messages/sinking.yachts';
+import customMessages from './messages/customMessages';
+import unstoppableDomains from './web3/unstoppableDomains';
 
 export default function startMods(firstTime) {
 

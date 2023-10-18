@@ -1,5 +1,5 @@
-import { objType } from "../../../../src/util/tools";
-import { tinyCrypto } from "../../../../src/util/web3";
+import { objType } from "../../../../../src/util/tools";
+import { tinyCrypto } from "../../../../../src/util/web3";
 
 const udPolygonAbi = [
 
