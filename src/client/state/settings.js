@@ -105,8 +105,12 @@ class Settings extends EventEmitter {
 
     if (Array.isArray(this.themes)) {
       this.themes.forEach((theme) => {
-        if (theme.id === '') return;
-        $('body').removeClass(theme.id);
+        if (typeof theme.id === 'string') {
+
+          if (theme.id === '') return;
+          $('body').removeClass(theme.id);
+
+        }
       });
     }
 
