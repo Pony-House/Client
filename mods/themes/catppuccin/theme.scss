@@ -8,12 +8,6 @@
 @updateURL      https://github.com/catppuccin/cinny/raw/main/catppuccin.user.css
 */
 
-/*
-  @var select lightFlavor "Light Flavor" [ "latte:Latte*", "frappe:Frappé", "macchiato:Macchiato", "mocha:Mocha" ]
-  @var select darkFlavor "Dark Flavor" [ "latte:Latte", "frappe:Frappé", "macchiato:Macchiato", "mocha:Mocha*" ]
-  @var select accentColor "Accent Color" [  ]
- */
-
 @mixin catppuccinAccentColor() {
   --rosewater: rosewater;
   --flamingo: flamingo;
@@ -156,13 +150,11 @@
 
 .catppuccin-theme-dark,
 .catppuccin-theme-dark2 {
-  @include darkFlavor();
-  @include accentColor();
+
 }
 
 .theme-type-light {
-  @include lightFlavor();
-  @include accentColor();
+
 }
 
 */
