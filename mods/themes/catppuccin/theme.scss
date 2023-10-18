@@ -1,4 +1,177 @@
-.catppuccin-theme {
+/*
+@name           Cinny Catppuccin
+@namespace      github.com/catppuccin/cinny
+@homepageURL    https://github.com/catppuccin/cinny
+@version        2.1.2
+@description    Soothing pastel theme for Cinny
+@author         Catppuccin
+@updateURL      https://github.com/catppuccin/cinny/raw/main/catppuccin.user.css
+*/
+
+/*
+  @var select lightFlavor "Light Flavor" [ "latte:Latte*", "frappe:Frappé", "macchiato:Macchiato", "mocha:Mocha" ]
+  @var select darkFlavor "Dark Flavor" [ "latte:Latte", "frappe:Frappé", "macchiato:Macchiato", "mocha:Mocha*" ]
+  @var select accentColor "Accent Color" [  ]
+ */
+
+@mixin catppuccinAccentColor() {
+  --rosewater: rosewater;
+  --flamingo: flamingo;
+  --pink: pink;
+  --mauve: mauve;
+  --red: red;
+  --maroon: maroon;
+  --peach: peach;
+  --yellow: yellow;
+  --green: green;
+  --teal: teal;
+  --blue: blue;
+  --sapphire: sapphire;
+  --sky: sky;
+  --lavender: lavender;
+  --subtext0: gray;
+}
+
+/* Light Theme */
+@mixin catppuccinLatte() {
+  --rosewater: #dc8a78;
+  --flamingo: #dd7878;
+  --pink: #ea76cb;
+  --mauve: #8839ef;
+  --red: #d20f39;
+  --maroon: #e64553;
+  --peach: #fe640b;
+  --yellow: #df8e1d;
+  --green: #40a02b;
+  --teal: #179299;
+  --sky: #04a5e5;
+  --sapphire: #209fb5;
+  --blue: #1e66f5;
+  --lavender: #7287fd;
+  --text: #4c4f69;
+  --subtext1: #5c5f77;
+  --subtext0: #6c6f85;
+  --overlay2: #7c7f93;
+  --overlay1: #8c8fa1;
+  --overlay0: #9ca0b0;
+  --surface2: #acb0be;
+  --surface1: #bcc0cc;
+  --surface0: #ccd0da;
+  --base: #eff1f5;
+  --mantle: #e6e9ef;
+  --crust: #dce0e8;
+}
+
+/* Dark Theme */
+@mixin catppuccinFrappe() {
+  --rosewater: #f2d5cf;
+  --flamingo: #eebebe;
+  --pink: #f4b8e4;
+  --mauve: #ca9ee6;
+  --red: #e78284;
+  --maroon: #ea999c;
+  --peach: #ef9f76;
+  --yellow: #e5c890;
+  --green: #a6d189;
+  --teal: #81c8be;
+  --sky: #99d1db;
+  --sapphire: #85c1dc;
+  --blue: #8caaee;
+  --lavender: #babbf1;
+  --text: #c6d0f5;
+  --subtext1: #b5bfe2;
+  --subtext0: #a5adce;
+  --overlay2: #949cbb;
+  --overlay1: #838ba7;
+  --overlay0: #737994;
+  --surface2: #626880;
+  --surface1: #51576d;
+  --surface0: #414559;
+  --base: #303446;
+  --mantle: #292c3c;
+  --crust: #232634;
+}
+
+/* Dark Theme */
+@mixin catppuccinMacchiato() {
+  --rosewater: #f4dbd6;
+  --flamingo: #f0c6c6;
+  --pink: #f5bde6;
+  --mauve: #c6a0f6;
+  --red: #ed8796;
+  --maroon: #ee99a0;
+  --peach: #f5a97f;
+  --yellow: #eed49f;
+  --green: #a6da95;
+  --teal: #8bd5ca;
+  --sky: #91d7e3;
+  --sapphire: #7dc4e4;
+  --blue: #8aadf4;
+  --lavender: #b7bdf8;
+  --text: #cad3f5;
+  --subtext1: #b8c0e0;
+  --subtext0: #a5adcb;
+  --overlay2: #939ab7;
+  --overlay1: #8087a2;
+  --overlay0: #6e738d;
+  --surface2: #5b6078;
+  --surface1: #494d64;
+  --surface0: #363a4f;
+  --base: #24273a;
+  --mantle: #1e2030;
+  --crust: #181926;
+}
+
+/* Dark Theme */
+@mixin catppuccinMocha() {
+  --rosewater: #f5e0dc;
+  --flamingo: #f2cdcd;
+  --pink: #f5c2e7;
+  --mauve: #cba6f7;
+  --red: #f38ba8;
+  --maroon: #eba0ac;
+  --peach: #fab387;
+  --yellow: #f9e2af;
+  --green: #a6e3a1;
+  --teal: #94e2d5;
+  --sky: #89dceb;
+  --sapphire: #74c7ec;
+  --blue: #89b4fa;
+  --lavender: #b4befe;
+  --text: #cdd6f4;
+  --subtext1: #bac2de;
+  --subtext0: #a6adc8;
+  --overlay2: #9399b2;
+  --overlay1: #7f849c;
+  --overlay0: #6c7086;
+  --surface2: #585b70;
+  --surface1: #45475a;
+  --surface0: #313244;
+  --base: #1e1e2e;
+  --mantle: #181825;
+  --crust: #11111b;
+}
+
+/*
+
+.catppuccin-theme-dark,
+.catppuccin-theme-dark2 {
+  @include darkFlavor();
+  @include accentColor();
+}
+
+.theme-type-light {
+  @include lightFlavor();
+  @include accentColor();
+}
+
+*/
+
+.catppuccin-theme-dark,
+.catppuccin-theme-light,
+.catppuccin-theme-silver {
+  @include catppuccinAccentColor();
+  @include catppuccinMocha();
   --bg-auth-normal: rgb(36 58 80) 0%;
 
   --bg-surface: rgb(5, 5, 5);
@@ -23,6 +196,86 @@
   --bg-surface-gradient-2: none;
   --bg-surface-gradient-3: none;
   --bg-auth-gradient: none;
+
+  /* Theme */
+  --bg-surface: var(--base);
+  --bg-surface-transparent: fadeout(@base, 100%);
+  --bg-surface-low: var(--mantle);
+  --bg-surface-low-transparent: fadeout(@mantle, 100%);
+  --bg-surface-extra-low: var(--crust);
+  --bg-surface-extra-low-transparent: fadeout(@crust, 100);
+
+  --bg-surface-hover: var(--surface0);
+  --bg-surface-active: var(--surface1);
+
+  --bg-primary: var(--accentColor);
+  --bg-primary-hover: fadeout(--accentColor, 20%);
+  --bg-primary-active: fadeout(--accentColor, 30%);
+  --bg-primary-border: fadeout(--accentColor, 62%);
+
+  --bg-tooltip: var(--surface0);
+  --bg-badge: var(--lavender);
+
+  --bg-positive: var(--green);
+  --bg-positive-hover: fadeout(--green, 92%);
+  --bg-positive-active: fadeout(--green, 85%);
+  --bg-positive-border: fadeout(--green, 60%);
+  --bg-caution: var(--peach);
+  --bg-caution-hover: fadeout(--peach, 92%);
+  --bg-caution-active: fadeout(--peach, 85%);
+  --bg-caution-border: fadeout(--peach, 60%);
+  --bg-danger: var(--maroon);
+  --bg-danger-hover: fadeout(--maroon, 95%);
+  --bg-danger-active: fadeout(--maroon, 90%);
+  --bg-danger-border: fadeout(--maroon, 80%);
+
+  --bg-ping: fadeout(--green, 60%);
+  --bg-ping-hover: fadeout(--green, 50%);
+
+  --tc-surface-high: var(--text);
+  --tc-surface-normal: var(--text);
+  --tc-surface-normal-low: var(--subtext1);
+  --tc-surface-low: var(--subtext0);
+  --tc-primary-high: var(--crust);
+  --tc-primary-normal: var(--text);
+  --tc-primary-low: var(--subtext1);
+
+  --tc-tooltip: var(--subtext0);
+  --tc-code: var(--mauve);
+  --tc-link: var(--rosewater);
+  --tc-badge: var(--crust);
+
+  --tc-positive-high: var(--green);
+  --tc-positive-normal: var(--green);
+  --tc-positive-low: var(--green);
+  --tc-caution-high: var(--peach);
+  --tc-caution-normal: var(--peach);
+  --tc-caution-low: var(--peach);
+  --tc-danger-high: var(--maroon);
+  --tc-danger-normal: var(--maroon);
+  --tc-danger-low: var(--maroon);
+
+  --ic-surface-high: var(--text);
+  --ic-surface-normal: var(--text);
+  --ic-surface-low: var(--subtext1);
+  --ic-primary-high: var(--text);
+  --ic-primary-normal: var(--crust);
+
+  --ic-positive-high: var(--green);
+  --ic-positive-normal: var(--maroon);
+  --ic-caution-high: var(--peach);
+  --ic-caution-normal: var(--peach);
+  --ic-danger-high: var(--maroon);
+  --ic-danger-normal: var(--maroon);
+
+  --mx-uc-1: var(--blue);
+  --mx-uc-2: var(--pink);
+  --mx-uc-3: var(--teal);
+  --mx-uc-4: var(--red);
+  --mx-uc-5: var(--peach);
+  --mx-uc-6: var(--sky);
+  --mx-uc-7: var(--mauve);
+  --mx-uc-8: var(--green);
 
   .sidebar-1 {
     border-right-color: var(--bg-surface-border);
