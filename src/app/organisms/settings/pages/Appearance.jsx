@@ -110,7 +110,7 @@ function AppearanceSection() {
                         <label for='pony_house_zoom' className="form-label small">Zoom</label>
 
                         <input ref={ponyHouseZoomRef} type="number" max={200} min={50} className="form-control form-control-bg" id='pony_house_zoom' />
-                        <input ref={ponyHouseZoomRangeRef} max={200} min={50} type="range" class="form-range" />
+                        <input ref={ponyHouseZoomRangeRef} max={200} min={50} type="range" className="form-range" />
 
                         <div className="very-small text-gray">
                             {`Set the application zoom. If the configuration doesn't work, it's because your ${__ENV_APP__.electron_mode ? 'client' : 'browser'} is not compatible. (Beta)`}

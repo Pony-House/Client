@@ -36,8 +36,13 @@ function setSettings(key, value) {
 }
 
 class Settings extends EventEmitter {
+
+  // eslint-disable-next-line no-useless-constructor
   constructor() {
     super();
+  }
+
+  startData() {
 
     this.themes = [themes.white, themes.silver, themes.dark, themes.butter, themes.black];
     this.themeIndex = this.getThemeIndex();
@@ -52,6 +57,7 @@ class Settings extends EventEmitter {
     this.isNotificationSounds = this.getIsNotificationSounds();
 
     this.isTouchScreenDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
+
   }
 
   getThemeIndex() {
@@ -267,6 +273,10 @@ class Settings extends EventEmitter {
 }
 
 const settings = new Settings();
-appDispatcher.register(settings.setter.bind(settings));
+export function startSettings() {
+  settings.startData();
+  settings.applyTheme();
+};
 
+appDispatcher.register(settings.setter.bind(settings));
 export default settings;

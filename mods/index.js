@@ -5,6 +5,12 @@
 import customMessages from './messages/customMessages';
 import unstoppableDomains from './web3/unstoppableDomains';
 
+import catppuccinTheme from './themes/catppuccin';
+
+export function startCustomThemes() {
+    catppuccinTheme();
+};
+
 export default function startMods(firstTime) {
 
     // sinkingYachts(firstTime);
