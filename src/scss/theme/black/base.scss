@@ -23,11 +23,19 @@
   --bg-surface-gradient-2: none;
   --bg-surface-gradient-3: none;
   --bg-auth-gradient: none;
+}
 
+.theme-type-dark-solid,
+.theme-type-dark2-solid,
+.theme-type-light-solid,
+.theme-type-silver-solid {
   .sidebar-1 {
     border-right-color: var(--bg-surface-border);
     border-right-style: solid;
     border-right-width: 1px;
     width: 80px;
+    .sidebar-avatar::before {
+      margin-left: -4px;
+    }
   }
 }

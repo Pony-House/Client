@@ -15,7 +15,7 @@ import silverTheme from '../../scss/theme/silver';
 import whiteTheme from '../../scss/theme/white';
 
 const themes = {
-  black: { data: blackTheme, id: 'black-theme', type: 'dark' },
+  black: { data: blackTheme, id: 'black-theme', type: 'dark-solid' },
   butter: { data: butterTheme, id: 'butter-theme', type: 'dark2' },
   dark: { data: darkTheme, id: 'dark-theme', type: 'dark' },
   silver: { data: silverTheme, id: 'silver-theme', type: 'silver' },
@@ -124,7 +124,11 @@ class Settings extends EventEmitter {
 
   _clearTheme() {
 
-    $('body').removeClass('system-theme').removeClass('theme-type-dark').removeClass('theme-type-light');
+    $('body').removeClass('system-theme')
+      .removeClass('theme-type-dark').removeClass('theme-type-dark-solid')
+      .removeClass('theme-type-dark2').removeClass('theme-type-dark2-solid')
+      .removeClass('theme-type-silver').removeClass('theme-type-silver-solid')
+      .removeClass('theme-type-light').removeClass('theme-type-light-solid');
 
     if (Array.isArray(this.themes)) {
       this.themes.forEach((theme) => {
@@ -156,8 +160,10 @@ class Settings extends EventEmitter {
 
     } else if (this.themes[this.themeIndex]) {
       body.addClass(this.themes[this.themeIndex].id).addClass(
-        this.themes[this.themeIndex]?.type === 'dark' || this.themes[this.themeIndex]?.type === 'dark2' ||
-          this.themes[this.themeIndex]?.type === 'light' || this.themes[this.themeIndex]?.type === 'silver' ?
+        this.themes[this.themeIndex]?.type === 'dark' || this.themes[this.themeIndex]?.type === 'dark-solid' ||
+          this.themes[this.themeIndex]?.type === 'dark2' || this.themes[this.themeIndex]?.type === 'dark2-solid' ||
+          this.themes[this.themeIndex]?.type === 'light' || this.themes[this.themeIndex]?.type === 'light-solid' ||
+          this.themes[this.themeIndex]?.type === 'silver' || this.themes[this.themeIndex]?.type === 'silver-solid' ?
           `theme-type-${this.themes[this.themeIndex]?.type}` : ''
       );
     }

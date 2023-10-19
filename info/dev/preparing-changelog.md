@@ -1,1 +1,2 @@
-- New theme script
+- New theme script.
+- css themes - solid color css fix.

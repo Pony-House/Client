@@ -26,7 +26,7 @@ export default function startTheme() {
 
             },
             id: 'catppuccin-theme-latte',
-            type: 'silver'
+            type: 'silver-solid'
 
         }]);
 
@@ -52,7 +52,7 @@ export default function startTheme() {
 
             },
             id: 'catppuccin-theme-frappe',
-            type: 'dark'
+            type: 'dark-solid'
 
         }]);
 
@@ -78,7 +78,7 @@ export default function startTheme() {
 
             },
             id: 'catppuccin-theme-macchiato',
-            type: 'dark'
+            type: 'dark-solid'
 
         }]);
 
@@ -104,7 +104,7 @@ export default function startTheme() {
 
             },
             id: 'catppuccin-theme-mocha',
-            type: 'dark'
+            type: 'dark-solid'
 
         }]);
 
