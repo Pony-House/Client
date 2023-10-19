@@ -155,7 +155,11 @@ class Settings extends EventEmitter {
       }
 
     } else if (this.themes[this.themeIndex]) {
-      body.addClass(this.themes[this.themeIndex].id).addClass(this.themes[this.themeIndex]?.type === 'dark' || this.themes[this.themeIndex]?.type === 'light' || this.themes[this.themeIndex]?.type === 'silver' ? `theme-type-${this.themes[this.themeIndex]?.type}` : '');
+      body.addClass(this.themes[this.themeIndex].id).addClass(
+        this.themes[this.themeIndex]?.type === 'dark' || this.themes[this.themeIndex]?.type === 'dark2' ||
+          this.themes[this.themeIndex]?.type === 'light' || this.themes[this.themeIndex]?.type === 'silver' ?
+          `theme-type-${this.themes[this.themeIndex]?.type}` : ''
+      );
     }
 
     this.changeMobileBackground('default');

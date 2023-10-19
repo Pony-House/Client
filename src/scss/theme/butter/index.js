@@ -12,7 +12,7 @@ export default {
 
         },
 
-        style: 'LIGHT'
+        style: 'DARK'
 
     }
 
