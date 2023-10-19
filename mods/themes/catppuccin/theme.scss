@@ -267,6 +267,25 @@
   --mx-uc-7: var(--mauve);
   --mx-uc-8: var(--green);
 
+  .modal .modal-body {
+    background: var(--bg-surface-extra-low) !important;
+  }
+
+  .modal-dialog-user-profile,
+  .people-drawer-banner {
+    .avatar-container {
+      background-color: var(--bg-surface-extra-low) !important;
+    }
+  }
+
+  .card {
+    --bs-card-bg: var(--base) !important;
+  }
+
+  .list-group {
+    --bs-list-group-bg: var(--base);
+  }
+
   .sidebar-1 {
     border-right-color: var(--bg-surface-border);
     border-right-style: solid;
