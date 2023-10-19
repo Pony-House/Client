@@ -1,14 +1,19 @@
 /*
-@name           Cinny Catppuccin
-@namespace      github.com/catppuccin/cinny
-@homepageURL    https://github.com/catppuccin/cinny
-@version        2.1.2
-@description    Soothing pastel theme for Cinny
-@author         Catppuccin
-@updateURL      https://github.com/catppuccin/cinny/raw/main/catppuccin.user.css
+
+  @name           Cinny Catppuccin
+  @namespace      github.com/catppuccin/cinny
+  @homepageURL    https://github.com/catppuccin/cinny
+  @version        2.1.2
+  @description    Soothing pastel theme for Cinny
+  @author         Catppuccin
+  @updateURL      https://github.com/catppuccin/cinny/raw/main/catppuccin.user.css
+
 */
 
-@mixin catppuccinAccentColor() {
+.catppuccin-theme-latte,
+.catppuccin-theme-frappe,
+.catppuccin-theme-macchiato,
+.catppuccin-theme-mocha {
   --rosewater: rosewater;
   --flamingo: flamingo;
   --pink: pink;
@@ -27,7 +32,7 @@
 }
 
 /* Light Theme */
-@mixin catppuccinLatte() {
+.catppuccin-theme-latte {
   --rosewater: #dc8a78;
   --flamingo: #dd7878;
   --pink: #ea76cb;
@@ -57,7 +62,7 @@
 }
 
 /* Dark Theme */
-@mixin catppuccinFrappe() {
+.catppuccin-theme-frappe {
   --rosewater: #f2d5cf;
   --flamingo: #eebebe;
   --pink: #f4b8e4;
@@ -84,10 +89,16 @@
   --base: #303446;
   --mantle: #292c3c;
   --crust: #232634;
+
+  --bg-auth-normal: rgb(36 58 80) 0%;
+  --bg-surface-semi-transparent: rgb(0 0 0 / 90%);
+  --bg-input: #111;
+  --bg-surface-low-semi-transparent: rgba(11, 11, 11, 0.9);
+  --bg-surface-border: rgba(173, 173, 173, 0.2);
 }
 
 /* Dark Theme */
-@mixin catppuccinMacchiato() {
+.catppuccin-theme-macchiato {
   --rosewater: #f4dbd6;
   --flamingo: #f0c6c6;
   --pink: #f5bde6;
@@ -114,10 +125,16 @@
   --base: #24273a;
   --mantle: #1e2030;
   --crust: #181926;
+
+  --bg-auth-normal: rgb(36 58 80) 0%;
+  --bg-surface-semi-transparent: rgb(0 0 0 / 90%);
+  --bg-input: #111;
+  --bg-surface-low-semi-transparent: rgba(11, 11, 11, 0.9);
+  --bg-surface-border: rgba(173, 173, 173, 0.2);
 }
 
 /* Dark Theme */
-@mixin catppuccinMocha() {
+.catppuccin-theme-mocha {
   --rosewater: #f5e0dc;
   --flamingo: #f2cdcd;
   --pink: #f5c2e7;
@@ -144,46 +161,18 @@
   --base: #1e1e2e;
   --mantle: #181825;
   --crust: #11111b;
-}
 
-/*
-
-.catppuccin-theme-dark,
-.catppuccin-theme-dark2 {
-
-}
-
-.theme-type-light {
-
-}
-
-*/
-
-.catppuccin-theme-dark,
-.catppuccin-theme-light,
-.catppuccin-theme-silver {
-  @include catppuccinAccentColor();
-  @include catppuccinMocha();
   --bg-auth-normal: rgb(36 58 80) 0%;
-
-  --bg-surface: rgb(5, 5, 5);
   --bg-surface-semi-transparent: rgb(0 0 0 / 90%);
-  --bg-surface-transparent: hsla(0, 0%, 21%, 0);
-
   --bg-input: #111;
-
-  --bg-surface-low: rgb(0, 0, 0);
   --bg-surface-low-semi-transparent: rgba(11, 11, 11, 0.9);
-  --bg-surface-low-transparent: hsla(0, 0%, 18%, 0);
-
-  --bg-surface-extra-low: hsl(0, 0%, 21%);
-  --bg-surface-extra-low-transparent: hsla(208, 8%, 14%, 0);
-
-  --bg-surface-hover: rgba(255, 255, 255, 3%);
-  --bg-surface-active: rgba(255, 255, 255, 5%);
-
   --bg-surface-border: rgba(173, 173, 173, 0.2);
+}
 
+.catppuccin-theme-latte,
+.catppuccin-theme-frappe,
+.catppuccin-theme-macchiato,
+.catppuccin-theme-mocha {
   --bg-surface-gradient: none;
   --bg-surface-gradient-2: none;
   --bg-surface-gradient-3: none;

@@ -4,7 +4,7 @@ import './theme.scss';
 export default function startTheme() {
     tinyAPI.on('loadThemes', (data, insertTheme) => {
 
-        insertTheme(['Catppuccin Theme (Dark) (TEST)', {
+        insertTheme(['Catppuccin Theme (Latte)', {
 
             data: {
 
@@ -25,38 +25,12 @@ export default function startTheme() {
                 }
 
             },
-            id: 'catppuccin-theme-dark',
-            type: 'dark'
-
-        }]);
-
-        insertTheme(['Catppuccin Theme (Light) (TEST)', {
-
-            data: {
-
-                statusBar: {
-
-                    backgroundColor: {
-
-                        // --bg-surface
-                        default: '#050505',
-
-                        // --bg-surface-low
-                        low: '#000000',
-
-                    },
-
-                    style: 'DARK'
-
-                }
-
-            },
-            id: 'catppuccin-theme-light',
+            id: 'catppuccin-theme-latte',
             type: 'light'
 
         }]);
 
-        insertTheme(['Catppuccin Theme (Silver) (TEST)', {
+        insertTheme(['Catppuccin Theme (Frappe)', {
 
             data: {
 
@@ -77,8 +51,60 @@ export default function startTheme() {
                 }
 
             },
-            id: 'catppuccin-theme-silver',
-            type: 'silver'
+            id: 'catppuccin-theme-frappe',
+            type: 'dark'
+
+        }]);
+
+        insertTheme(['Catppuccin Theme (Macchiato)', {
+
+            data: {
+
+                statusBar: {
+
+                    backgroundColor: {
+
+                        // --bg-surface
+                        default: '#050505',
+
+                        // --bg-surface-low
+                        low: '#000000',
+
+                    },
+
+                    style: 'DARK'
+
+                }
+
+            },
+            id: 'catppuccin-theme-macchiato',
+            type: 'dark'
+
+        }]);
+
+        insertTheme(['Catppuccin Theme (Mocha)', {
+
+            data: {
+
+                statusBar: {
+
+                    backgroundColor: {
+
+                        // --bg-surface
+                        default: '#050505',
+
+                        // --bg-surface-low
+                        low: '#000000',
+
+                    },
+
+                    style: 'DARK'
+
+                }
+
+            },
+            id: 'catppuccin-theme-mocha',
+            type: 'dark'
 
         }]);
 
