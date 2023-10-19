@@ -63,6 +63,7 @@ function AppearanceSection() {
 
     }, []);
 
+    const selectEmpty = () => { toggleSystemTheme(); setTimeout(() => { updateState({}); }, 100); };
     return (
         <div>
 
@@ -76,7 +77,7 @@ function AppearanceSection() {
                             <Toggle
                                 className='d-inline-flex'
                                 isActive={settings.useSystemTheme}
-                                onToggle={() => { toggleSystemTheme(); updateState({}); }}
+                                onToggle={selectEmpty}
                             />
                         )}
                         content={<div className="very-small text-gray">Use light or dark mode based on the system settings.</div>}
@@ -87,14 +88,18 @@ function AppearanceSection() {
                         content={(
                             <div className='mt-2'>
                                 <SegmentedControls
+
                                     type='select'
                                     selected={settings.useSystemTheme ? -1 : settings.getThemeIndex()}
                                     segments={settings.themesName}
+
+                                    onEmpty={selectEmpty}
                                     onSelect={(index) => {
                                         if (settings.useSystemTheme) toggleSystemTheme();
                                         settings.setTheme(index);
-                                        updateState({});
+                                        setTimeout(() => { updateState({}); }, 100);
                                     }}
+
                                 />
                             </div>
                         )}
