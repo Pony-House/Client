@@ -83,10 +83,11 @@ function AppearanceSection() {
                     />
 
                     <SettingTile
-                        title="Theme"
+                        title='Theme'
                         content={(
                             <div className='mt-2'>
                                 <SegmentedControls
+                                    type='select'
                                     selected={settings.useSystemTheme ? -1 : settings.getThemeIndex()}
                                     segments={settings.themesName}
                                     onSelect={(index) => {

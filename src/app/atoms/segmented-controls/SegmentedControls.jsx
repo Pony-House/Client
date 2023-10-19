@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import RawIcon from '../system-icons/RawIcon';
 
 function SegmentedControls({
-  selected, segments, onSelect, className
+  selected, segments, onSelect, className, type
 }) {
   const [select, setSelect] = useState(selected);
 
@@ -17,7 +17,8 @@ function SegmentedControls({
     setSelect(selected);
   }, [selected]);
 
-  return (
+  return type === 'buttons' ?
+
     <div className={`btn-group noselect ${className}`} role="group">
       {
         segments.map((segment, index) => (
@@ -32,11 +33,35 @@ function SegmentedControls({
           </button>
         ))
       }
-    </div>
-  );
+    </div> :
+
+    type === 'select' ?
+
+      <select className='form-select form-control-bg'>
+        {
+          segments.map((segment, index) => (
+            <option
+              selected={select === index}
+              key={Math.random().toString(20).substring(2, 6)}
+              onClick={() => selectSegment(index)}
+            >
+              {segment.iconSrc && <RawIcon size="small" src={segment.iconSrc} />}
+              {segment.text && <small>{segment.text}</small>}
+            </option>
+          ))
+        }
+      </select> :
+
+      null;
+
 }
 
+SegmentedControls.defaultProps = {
+  type: 'buttons',
+};
+
 SegmentedControls.propTypes = {
+  type: PropTypes.string,
   className: PropTypes.string,
   selected: PropTypes.number.isRequired,
   segments: PropTypes.arrayOf(PropTypes.shape({
