@@ -69,8 +69,6 @@ Made by Me
     --> Opção de desativar ou ativar animação de emojis ou stickers
     (Também ser possível banir animação de usuários individualmente - limite de 600 itens por array) (Opçao alternativa de fazer a animação ser hover)
 
-    --> Tema https://github.com/catppuccin/cinny
-
     --> Ajeitar o carregador de usuários de rooms para ficar mais otimizado
 
     --> Sistema de perfil do space. Este perfil vai ter mais uma configuração de banner adicional.
