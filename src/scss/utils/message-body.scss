@@ -56,6 +56,10 @@
   .divider-box-click:hover {
     background-color: var(--bg-positive-border) !important;
   }
+
+  .divider-box-click {
+    color: var(--divider-box-click) !important;
+  }
 }
 
 .linkify-base {
