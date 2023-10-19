@@ -31,7 +31,7 @@
   --subtext0: gray;
 }
 
-/* Light Theme */
+/* Silver Theme */
 .catppuccin-theme-latte {
   --rosewater: #dc8a78;
   --flamingo: #dd7878;
@@ -59,6 +59,15 @@
   --base: #eff1f5;
   --mantle: #e6e9ef;
   --crust: #dce0e8;
+
+  --bg-input: #e2e2e2;
+  --bg-surface-semi-transparent: rgba(242, 242, 242, 0.9);
+  --bg-surface-low-semi-transparent: rgb(232, 232, 232, 0.9);
+  --invert-filter: invert(0);
+
+  .modal-dialog-modal-dialog-user-profile .avatar-container {
+    background-color: #f6f6f6;
+  }
 }
 
 /* Dark Theme */

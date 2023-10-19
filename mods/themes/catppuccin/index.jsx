@@ -26,7 +26,7 @@ export default function startTheme() {
 
             },
             id: 'catppuccin-theme-latte',
-            type: 'light'
+            type: 'silver'
 
         }]);
 
