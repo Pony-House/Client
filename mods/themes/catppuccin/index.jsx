@@ -13,14 +13,14 @@ export default function startTheme() {
                     backgroundColor: {
 
                         // --bg-surface
-                        default: '#050505',
+                        default: '#eff1f5',
 
                         // --bg-surface-low
-                        low: '#000000',
+                        low: '#e6e9ef',
 
                     },
 
-                    style: 'DARK'
+                    style: 'LIGHT'
 
                 }
 
@@ -39,10 +39,10 @@ export default function startTheme() {
                     backgroundColor: {
 
                         // --bg-surface
-                        default: '#050505',
+                        default: '#303446',
 
                         // --bg-surface-low
-                        low: '#000000',
+                        low: '#292c3c',
 
                     },
 
@@ -65,10 +65,10 @@ export default function startTheme() {
                     backgroundColor: {
 
                         // --bg-surface
-                        default: '#050505',
+                        default: '#24273a',
 
                         // --bg-surface-low
-                        low: '#000000',
+                        low: '#1e2030',
 
                     },
 
@@ -91,10 +91,10 @@ export default function startTheme() {
                     backgroundColor: {
 
                         // --bg-surface
-                        default: '#050505',
+                        default: '#1e1e2e',
 
                         // --bg-surface-low
-                        low: '#000000',
+                        low: '#181825',
 
                     },
 
