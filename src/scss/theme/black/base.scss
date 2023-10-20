@@ -23,6 +23,10 @@
   --bg-surface-gradient-2: none;
   --bg-surface-gradient-3: none;
   --bg-auth-gradient: none;
+
+  #settings-base #setting-tab .nav-link:hover {
+    background-color: #121212 !important;
+  }
 }
 
 .theme-type-dark-solid,

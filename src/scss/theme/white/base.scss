@@ -399,3 +399,9 @@
   --bs-btn-disabled-border-color: transparent;
   --bs-gradient: none;
 }
+
+.default-theme {
+  #settings-base #setting-tab .nav-link:hover {
+    background-color: #eee !important;
+  }
+}

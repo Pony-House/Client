@@ -134,7 +134,11 @@ class Settings extends EventEmitter {
       this.themes.forEach((theme) => {
         if (typeof theme.id === 'string') {
 
-          if (theme.id === '') return;
+          if (theme.id === '') {
+            $('body').removeClass('default-theme');
+            return;
+          }
+
           $('body').removeClass(theme.id);
 
         }
@@ -159,7 +163,7 @@ class Settings extends EventEmitter {
       }
 
     } else if (this.themes[this.themeIndex]) {
-      body.addClass(this.themes[this.themeIndex].id).addClass(
+      body.addClass(this.themes[this.themeIndex].id !== '' ? this.themes[this.themeIndex].id : 'default-theme').addClass(
         this.themes[this.themeIndex]?.type === 'dark' || this.themes[this.themeIndex]?.type === 'dark-solid' ||
           this.themes[this.themeIndex]?.type === 'dark2' || this.themes[this.themeIndex]?.type === 'dark2-solid' ||
           this.themes[this.themeIndex]?.type === 'light' || this.themes[this.themeIndex]?.type === 'light-solid' ||
