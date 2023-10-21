@@ -102,8 +102,8 @@ class Settings extends EventEmitter {
     return parseInt(settings.themeIndex);
   }
 
-  getThemeName() {
-    return this.themes[this.themeIndex].id;
+  getTheme() {
+    return this.themes[this.themeIndex];
   }
 
   getThemeData() {
