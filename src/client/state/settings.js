@@ -78,7 +78,8 @@ class Settings extends EventEmitter {
     tinyAPI.emit('loadThemes',
       (data, type = 'push') => this.insertTheme(data, type),
       (id) => this.removeTheme(id),
-      (id) => this.getThemeById(id)
+      (id) => this.getThemeById(id),
+      (id) => this.getThemeNameById(id)
     );
 
     this.useSystemTheme = this.getUseSystemTheme();
@@ -111,6 +112,24 @@ class Settings extends EventEmitter {
 
       if (result) {
         return result;
+      }
+
+      return null;
+
+    }
+
+    return null;
+
+  }
+
+  getThemeNameById(id) {
+
+    if (typeof id === 'string') {
+
+      const index = this.themes.findIndex(theme => theme.id === id);
+
+      if (index > -1 && this.themesName[index]) {
+        return this.themesName[index];
       }
 
       return null;

@@ -55,10 +55,14 @@ https://web3js.readthedocs.io/en/v1.10.0/
 ### Load Custom Theme
 src/client/state/settings.js
 
-    loadTheme Function (
-        Theme Name
-        Theme Object
+    insertTheme Function (
+        Theme Data,
+        Push or Unshift (String value)
     )
+
+    removeTheme Function (id),
+    getThemeById Function (id),
+    getThemeNameById Function (id)
 
 #### Cache Matrix storage per room
 src/util/selectedRoom.js
