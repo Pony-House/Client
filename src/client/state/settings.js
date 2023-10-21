@@ -75,7 +75,10 @@ class Settings extends EventEmitter {
   startData() {
 
     this.themeIndex = this.getThemeIndex();
-    tinyAPI.emit('loadThemes', (data, type = 'push') => this.insertTheme(data, type));
+    tinyAPI.emit('loadThemes',
+      (data, type = 'push') => this.insertTheme(data, type),
+      (id) => this.removeTheme(id)
+    );
 
     this.useSystemTheme = this.getUseSystemTheme();
     this.isMarkdown = this.getIsMarkdown();
