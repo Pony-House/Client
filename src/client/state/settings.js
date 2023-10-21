@@ -60,6 +60,18 @@ class Settings extends EventEmitter {
     }
   }
 
+  removeTheme(id) {
+    if (typeof id === 'string') {
+
+      const index = this.themes.findIndex(theme => theme.id === id);
+      if (index > -1) {
+        this.themes.splice(index, 1);
+        this.themesName.splice(index, 1);
+      }
+
+    }
+  }
+
   startData() {
 
     this.themeIndex = this.getThemeIndex();
