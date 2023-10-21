@@ -77,7 +77,8 @@ class Settings extends EventEmitter {
     this.themeIndex = this.getThemeIndex();
     tinyAPI.emit('loadThemes',
       (data, type = 'push') => this.insertTheme(data, type),
-      (id) => this.removeTheme(id)
+      (id) => this.removeTheme(id),
+      (id) => this.getThemeById(id)
     );
 
     this.useSystemTheme = this.getUseSystemTheme();
@@ -100,6 +101,16 @@ class Settings extends EventEmitter {
     if (typeof settings.themeIndex === 'undefined') return 0;
     // eslint-disable-next-line radix
     return parseInt(settings.themeIndex);
+  }
+
+  getThemeById(id) {
+
+    if (typeof id === 'string') {
+      return this.themes[this.themes.find(theme => theme.id === id)];
+    }
+
+    return null;
+
   }
 
   getTheme() {
