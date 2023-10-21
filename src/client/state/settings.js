@@ -106,7 +106,15 @@ class Settings extends EventEmitter {
   getThemeById(id) {
 
     if (typeof id === 'string') {
-      return this.themes[this.themes.find(theme => theme.id === id)];
+
+      const result = this.themes.find(theme => theme.id === id);
+
+      if (result) {
+        return result;
+      }
+
+      return null;
+
     }
 
     return null;
