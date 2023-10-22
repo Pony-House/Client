@@ -1,3 +1,0 @@
-- New theme script.
-- CSS themes - solid color css fix.
-- Scrollbar electron css fix
