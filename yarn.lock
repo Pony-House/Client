@@ -816,11 +816,6 @@
     untildify "^4.0.0"
     wrap-ansi "^7.0.0"
 
-"@jitsi/react-sdk@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@jitsi/react-sdk/-/react-sdk-1.4.0.tgz#4c300bf3d97632d7421eee71e2d335600878b5e7"
-  integrity sha512-1dn3WIZNyRuESh5qvBR52PQz/avM0Wl575WtuW2sRaNemx38+I1eHJvA58SNhC3zas1PkxBfjeBqmTUHeJlaCw==
-
 "@jridgewell/gen-mapping@^0.3.0", "@jridgewell/gen-mapping@^0.3.2":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.3.3.tgz#7e02e6eb5df901aaedb08514203b096614024098"

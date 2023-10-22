@@ -75,10 +75,9 @@ Made by Me
 
     --> O atualizar de emojis de rooms só funciona quando muda de room
 
-    --> Sistema de ligações tem dois métodos de servidor. Ou usando o servidor matrix. Ou usando um Jitsi.
-    (Se a pessoa não configurar um custom Jitsi server, vai usar o servidor padrão)
-    (Todo mudno precisa está usando o mesmo jitsi server para funcionar. Todos vão ver qual o dominio do servidor que está sendo usado)
-    (A pessoa precisa confirmar se ela vai aceitar ou não usar um servidor personalizado desconhecido pro questões de seguranças)
+    --> Voice Chat
+    https://matrix-org.github.io/matrix-js-sdk/stable/classes/MatrixCall.html#transferToCall
+    https://github.com/matrix-org/matrix-js-sdk/blob/develop/examples/voip/browserTest.js
 
     Sandbox: https://github.com/sablejs/sablejs
 
