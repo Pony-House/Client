@@ -50,7 +50,7 @@ function Selector({
 
       const members = room.getMembersWithMembership('join');
       const member = members.find(m => m.userId !== mx.getUserId());
-      if (member.user) {
+      if (member && member.user) {
 
         user = member.user;
 
