@@ -104,9 +104,10 @@ function DrawerBreadcrumb({ spaceId }) {
                   <li className={`emoji-size-fix breadcrumb-item ${index === spacePath.length - 1 ? 'active' : ''}`}>
                     <a
                       href='#'
-                      onClick={() => {
+                      onClick={(event) => {
                         if (id === cons.tabs.HOME) selectTab(id);
                         else selectSpace(id);
+                        event.preventDefault();
                       }}
                     >
                       {id === cons.tabs.HOME ? 'Home' : twemojifyReact(mx.getRoom(id).name)}
