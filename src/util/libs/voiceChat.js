@@ -79,6 +79,8 @@ class MatrixVoiceChat {
 
     opponentSupportsSDPStreamMetadata() { return this.call && this.call.opponentSupportsSDPStreamMetadata(); }
 
+    callHasEnded() { return this.call && this.call.callHasEnded(); }
+
     // Set
     setLocalVideoMuted(muted) { return this.call && this.call.setLocalVideoMuted(muted); }
 
@@ -110,6 +112,14 @@ class MatrixVoiceChat {
     // Reject a call This used to be done by calling hangup, but is a separate method and protocol event as of MSC2746.
     reject() {
         if (this.call) this.call.reject();
+    }
+
+    answer(audio, video) {
+        if (this.call) this.call.answer(audio, video);
+    }
+
+    answerWithCallFeeds(callFeeds) {
+        if (this.call) this.call.answerWithCallFeeds(callFeeds);
     }
 
     // Call Time
