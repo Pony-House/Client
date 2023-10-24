@@ -114,7 +114,7 @@ class MatrixVoiceChat {
 
             this.call.on('hangup', (data) => {
 
-                console.error('hangup', data);
+                console.error('Call hangup', data);
 
                 /*
                 disableButtons(false, true, true);
@@ -144,7 +144,7 @@ class MatrixVoiceChat {
                 const localFeed = feeds.find((feed) => feed.isLocal());
                 const remoteFeed = feeds.find((feed) => !feed.isLocal());
 
-                console.log('feeds_changed', localFeed, remoteFeed, feeds);
+                console.log('Call feeds_changed', localFeed, remoteFeed, feeds);
 
                 /*
                 const remoteElement = document.getElementById('remote');
@@ -166,38 +166,53 @@ class MatrixVoiceChat {
             });
 
             this.call.on('hold_unhold', (data) => {
-                console.log('hold_unhold', data);
+                console.log('Call hold_unhold', data);
                 myEmitter.emit('hold_unhold', data);
             });
 
             this.call.on('length_changed', (data) => {
-                console.log('length_changed', data);
+                console.log('Call length_changed', data);
                 myEmitter.emit('length_changed', data);
             });
 
             this.call.on('peer_connection_created', (data) => {
-                console.log('peer_connection_created', data);
+                console.log('Call peer_connection_created', data);
                 myEmitter.emit('peer_connection_created', data);
             });
 
             this.call.on('remote_hold_unhold', (data) => {
-                console.log('remote_hold_unhold', data);
+                console.log('Call remote_hold_unhold', data);
                 myEmitter.emit('remote_hold_unhold', data);
             });
 
             this.call.on('replaced', (data) => {
-                console.log('replaced', data);
+                console.log('Call replaced', data);
                 myEmitter.emit('replaced', data);
             });
 
             this.call.on('send_voip_event', (data) => {
-                console.log('send_voip_event', data);
+                console.log('Call send_voip_event', data);
                 myEmitter.emit('send_voip_event', data);
             });
 
-            this.call.on('state', (data) => {
-                console.log('state', data);
-                myEmitter.emit('state', data);
+            // https://matrix-org.github.io/matrix-js-sdk/stable/enums/_internal_.CallState.html
+            this.call.on('state', (state) => {
+
+                console.log('Call state', state);
+                myEmitter.emit('state', state);
+
+                /*
+                    connected
+                    connecting
+                    create_answer
+                    create_offer
+                    ended
+                    fledgling
+                    invite_sent
+                    ringing
+                    wait_local_media
+                */
+
             });
 
         }
