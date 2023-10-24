@@ -273,7 +273,39 @@ class MatrixVoiceChat {
 
     opponentSupportsSDPStreamMetadata() { return this.call && this.call.opponentSupportsSDPStreamMetadata(); }
 
+    // Has
+    hasLocalUserMediaAudioTrack() { return this.call && this.call.hasLocalUserMediaAudioTrack(); }
+
+    hasLocalUserMediaVideoTrack() { return this.call && this.call.hasLocalUserMediaVideoTrack(); }
+
+    hasPeerConnection() { return this.call && this.call.hasPeerConnection(); }
+
+    hasRemoteUserMediaAudioTrack() { return this.call && this.call.hasRemoteUserMediaAudioTrack(); }
+
+    hasRemoteUserMediaVideoTrack() { return this.call && this.call.hasRemoteUserMediaVideoTrack(); }
+
+    // More Get
     callHasEnded() { return this.call && this.call.callHasEnded(); }
+
+    localScreensharingFeed() { return this.call && this.call.localScreensharingFeed(); }
+
+    localScreensharingStream() { return this.call && this.call.localScreensharingStream(); }
+
+    localUsermediaFeed() { return this.call && this.call.localUsermediaFeed(); }
+
+    localUsermediaStream() { return this.call && this.call.localUsermediaStream(); }
+
+    remoteScreensharingFeed() { return this.call && this.call.remoteScreensharingFeed(); }
+
+    remoteScreensharingStream() { return this.call && this.call.remoteScreensharingStream(); }
+
+    remoteUsermediaFeed() { return this.call && this.call.remoteUsermediaFeed(); }
+
+    remoteUsermediaStream() { return this.call && this.call.remoteUsermediaStream(); }
+
+    state() { return this.call && this.call.state(); }
+
+    type() { return this.call && this.call.type(); }
 
     // Set
     setLocalVideoMuted(muted) { return this.call && this.call.setLocalVideoMuted(muted); }
@@ -283,6 +315,10 @@ class MatrixVoiceChat {
     setRemoteOnHold(onHold) { return this.call && this.call.setRemoteOnHold(onHold); }
 
     setScreensharingEnabled(enabled, opts) { return this.call && this.call.setScreensharingEnabled(enabled, opts); }
+
+    sendDtmfDigit(digit) { return this.call && this.call.sendDtmfDigit(digit); }
+
+    sendMetadataUpdate() { return this.call && this.call.sendMetadataUpdate(); }
 
     // Replace
     replacedBy(newCall) {
