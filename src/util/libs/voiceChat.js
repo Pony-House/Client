@@ -122,6 +122,11 @@ class MatrixVoiceChat {
         if (this.call) this.call.answerWithCallFeeds(callFeeds);
     }
 
+    // Data Channel
+    createDataChannel(label, options) {
+        if (this.call) this.call.createDataChannel(label, options);
+    }
+
     // Call Time
     hangup(reason, suppressEvent) {
         if (this.call) this.call.hangup(reason, suppressEvent);
@@ -137,6 +142,15 @@ class MatrixVoiceChat {
 
     initWithInvite(event) {
         if (this.call) this.call.initWithInvite(event);
+    }
+
+    // Emit
+    emit(event, args) {
+        if (this.call) return this.call.emit(event, args);
+    }
+
+    emitPromised(event, args) {
+        if (this.call) return this.call.emitPromised(event, args);
     }
 
     // Events
