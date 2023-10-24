@@ -69,7 +69,10 @@ class MatrixVoiceChat {
 
         this.roomId = roomId;
         this.call = createNewMatrixCall(this.mx, roomId);
+        myEmitter.emit('state', 'call_created');
+
         this.start();
+
 
         return this.call;
 
@@ -94,6 +97,8 @@ class MatrixVoiceChat {
         this.peerConn = null;
         this.toDeviceSeq = null;
         this.started = false;
+
+        myEmitter.emit('state', 'call_stopped');
 
     }
 
@@ -214,6 +219,8 @@ class MatrixVoiceChat {
                 */
 
             });
+
+            myEmitter.emit('state', 'call_started');
 
         }
     }
