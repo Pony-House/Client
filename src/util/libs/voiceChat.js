@@ -1,8 +1,10 @@
 /* eslint-disable class-methods-use-this */
+// Example --> https://github.com/matrix-org/matrix-js-sdk/blob/develop/examples/voip/browserTest.js
 import { createNewMatrixCall } from 'matrix-js-sdk';
 import { EventEmitter } from 'events';
 
 import initMatrix from '../../client/initMatrix';
+
 
 // Emitter
 class MyEmitter extends EventEmitter { }
@@ -31,6 +33,7 @@ class MatrixVoiceChat {
         this.ourPartyId = null;
         this.peerConn = null;
         this.toDeviceSeq = null;
+        this.err = null;
 
         const tinyThis = this;
 
@@ -75,6 +78,8 @@ class MatrixVoiceChat {
 
         this.roomId = null;
 
+        this.err = null;
+
         this.callId = null;
         this.direction = null;
         this.groupCallId = null;
@@ -93,6 +98,7 @@ class MatrixVoiceChat {
     start() {
         if (this.call && !this.started) {
 
+            const tinyThis = this;
             this.started = true;
 
             /*
@@ -109,7 +115,7 @@ class MatrixVoiceChat {
 
                 /*
                 disableButtons(false, true, true);
-                document.getElementById('result').innerHTML = '<p>Call ended. Last error: ' + lastError + '</p>';
+                document.getElementById('result').innerHTML = '<p>Call ended. Last error: ' + tinyThis.err + '</p>';
                 */
 
             });
@@ -117,6 +123,7 @@ class MatrixVoiceChat {
 
                 console.error('Call Error', err);
 
+                tinyThis.err = err;
                 /*
                 call.hangup();
                 disableButtons(false, true, true);
