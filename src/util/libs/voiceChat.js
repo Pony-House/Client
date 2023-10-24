@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 // Example --> https://github.com/matrix-org/matrix-js-sdk/blob/develop/examples/voip/browserTest.js
+// https://matrix-org.github.io/matrix-js-sdk/stable/classes/MatrixCall.html
 import { createNewMatrixCall } from 'matrix-js-sdk';
 import { EventEmitter } from 'events';
 
@@ -55,6 +56,8 @@ class MatrixVoiceChat {
                 // c.reject();
             }
 
+            myEmitter.emit('incoming', c);
+
         });
 
     }
@@ -109,16 +112,19 @@ class MatrixVoiceChat {
             }
             */
 
-            this.call.on('hangup', () => {
+            this.call.on('hangup', (data) => {
 
-                console.error('hangup');
+                console.error('hangup', data);
 
                 /*
                 disableButtons(false, true, true);
                 document.getElementById('result').innerHTML = '<p>Call ended. Last error: ' + tinyThis.err + '</p>';
                 */
 
+                myEmitter.emit('hangup', tinyThis.err, data);
+
             });
+
             this.call.on('error', (err) => {
 
                 console.error('Call Error', err);
@@ -129,7 +135,10 @@ class MatrixVoiceChat {
                 disableButtons(false, true, true);
                 */
 
+                myEmitter.emit('error', err);
+
             });
+
             this.call.on('feeds_changed', (feeds) => {
 
                 const localFeed = feeds.find((feed) => feed.isLocal());
@@ -152,6 +161,43 @@ class MatrixVoiceChat {
                 }
                 */
 
+                myEmitter.emit('feeds_changed', feeds);
+
+            });
+
+            this.call.on('hold_unhold', (data) => {
+                console.log('hold_unhold', data);
+                myEmitter.emit('hold_unhold', data);
+            });
+
+            this.call.on('length_changed', (data) => {
+                console.log('length_changed', data);
+                myEmitter.emit('length_changed', data);
+            });
+
+            this.call.on('peer_connection_created', (data) => {
+                console.log('peer_connection_created', data);
+                myEmitter.emit('peer_connection_created', data);
+            });
+
+            this.call.on('remote_hold_unhold', (data) => {
+                console.log('remote_hold_unhold', data);
+                myEmitter.emit('remote_hold_unhold', data);
+            });
+
+            this.call.on('replaced', (data) => {
+                console.log('replaced', data);
+                myEmitter.emit('replaced', data);
+            });
+
+            this.call.on('send_voip_event', (data) => {
+                console.log('send_voip_event', data);
+                myEmitter.emit('send_voip_event', data);
+            });
+
+            this.call.on('state', (data) => {
+                console.log('state', data);
+                myEmitter.emit('state', data);
             });
 
         }
@@ -168,8 +214,6 @@ class MatrixVoiceChat {
 
             // Insert Call
             this.call.placeCall(audio, video);
-
-            // this.call.on();
 
         }
     }
