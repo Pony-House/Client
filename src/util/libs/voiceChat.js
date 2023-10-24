@@ -1,8 +1,8 @@
 /* eslint-disable class-methods-use-this */
-import { createNewMatrixCall } from "matrix-js-sdk";
+import { createNewMatrixCall } from 'matrix-js-sdk';
 import { EventEmitter } from 'events';
 
-import initMatrix from "../../client/initMatrix";
+import initMatrix from '../../client/initMatrix';
 
 // Emitter
 class MyEmitter extends EventEmitter { }
@@ -13,20 +13,141 @@ class MatrixVoiceChat {
 
     // Constructor
     constructor(mx) {
+
+        // Prepare Class
         this.mx = mx || initMatrix.matrixClient;
+
         this.call = null;
+        this.roomId = null;
+        this.started = false;
+
+        this.callId = null;
+        this.direction = null;
+        this.groupCallId = null;
+        this.hangupParty = null;
+        this.hangupReason = null;
+        this.invitee = null;
+        this.isPtt = null;
+        this.ourPartyId = null;
+        this.peerConn = null;
+        this.toDeviceSeq = null;
+
+        const tinyThis = this;
+
+        // Incoming...
+        this.mx.on('Call.incoming', (c) => {
+
+            console.log('Call ringing', c);
+
+            /*
+            disableButtons(true, false, false);
+            document.getElementById("result").innerHTML = "<p>Incoming call...</p>";
+            call = c;
+            addListeners(call);
+            */
+
+            if (!tinyThis.call) {
+                // tinyThis.call = c;
+            } else {
+                // c.reject();
+            }
+
+        });
+
     }
 
     // Create Call
     create(roomId) {
+
         this.stop();
+
         this.roomId = roomId;
         this.call = createNewMatrixCall(this.mx, roomId);
+        this.start();
+
         return this.call;
+
     }
 
     stop() {
+
         if (this.call) this.call.reject();
+
+        this.roomId = null;
+
+        this.callId = null;
+        this.direction = null;
+        this.groupCallId = null;
+        this.hangupParty = null;
+        this.hangupReason = null;
+        this.invitee = null;
+        this.isPtt = null;
+        this.ourPartyId = null;
+        this.peerConn = null;
+        this.toDeviceSeq = null;
+        this.started = false;
+
+    }
+
+    // Start Call
+    start() {
+        if (this.call && !this.started) {
+
+            this.started = true;
+
+            /*
+            function disableButtons(place, answer, hangup) {
+                document.getElementById("hangup").disabled = hangup;
+                document.getElementById("answer").disabled = answer;
+                document.getElementById("call").disabled = place;
+            }
+            */
+
+            this.call.on('hangup', () => {
+
+                console.error('hangup');
+
+                /*
+                disableButtons(false, true, true);
+                document.getElementById('result').innerHTML = '<p>Call ended. Last error: ' + lastError + '</p>';
+                */
+
+            });
+            this.call.on('error', (err) => {
+
+                console.error('Call Error', err);
+
+                /*
+                call.hangup();
+                disableButtons(false, true, true);
+                */
+
+            });
+            this.call.on('feeds_changed', (feeds) => {
+
+                const localFeed = feeds.find((feed) => feed.isLocal());
+                const remoteFeed = feeds.find((feed) => !feed.isLocal());
+
+                console.log('feeds_changed', localFeed, remoteFeed, feeds);
+
+                /*
+                const remoteElement = document.getElementById('remote');
+                const localElement = document.getElementById('local');
+        
+                if (remoteFeed) {
+                    remoteElement.srcObject = remoteFeed.stream;
+                    remoteElement.play();
+                }
+                if (localFeed) {
+                    localElement.muted = true;
+                    localElement.srcObject = localFeed.stream;
+                    localElement.play();
+                }
+                */
+
+            });
+
+        }
     }
 
     // Call
@@ -167,6 +288,33 @@ class MatrixVoiceChat {
     }
 
 };
+
+/*
+    document.getElementById("call").onclick = function () {
+        console.log("Placing call...");
+        call = matrixcs.createNewMatrixCall(client, ROOM_ID);
+        console.log("Call => %s", call);
+        addListeners(call);
+        call.placeVideoCall();
+        document.getElementById("result").innerHTML = "<p>Placed call.</p>";
+        disableButtons(true, true, false);
+    };
+
+    document.getElementById("hangup").onclick = function () {
+        console.log("Hanging up call...");
+        console.log("Call => %s", call);
+        call.hangup();
+        document.getElementById("result").innerHTML = "<p>Hungup call.</p>";
+    };
+
+    document.getElementById("answer").onclick = function () {
+        console.log("Answering call...");
+        console.log("Call => %s", call);
+        call.answer();
+        disableButtons(true, true, false);
+        document.getElementById("result").innerHTML = "<p>Answered call.</p>";
+    };
+*/
 
 // Base
 let vc;
