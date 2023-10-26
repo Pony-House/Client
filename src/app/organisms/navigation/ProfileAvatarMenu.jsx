@@ -21,6 +21,7 @@ import {
 import tinyAPI from '../../../util/mods';
 import { enableAfkSystem } from '../../../util/userStatusEffects';
 import { getUserWeb3Account } from '../../../util/web3';
+import getVoiceChat from '../../../util/libs/voiceChat';
 
 // Account Status
 const accountStatus = { status: null, data: null };
@@ -41,10 +42,17 @@ export function getAccountStatus(where) {
 
 // Profile Avatar Menu
 function ProfileAvatarMenu() {
+
+    // Data
     const mx = initMatrix.matrixClient;
+    const voiceChat = getVoiceChat(mx);
+
     const user = mx.getUser(mx.getUserId());
     const customStatusRef = useRef(null);
     const statusRef = useRef(null);
+
+    const [microphoneMuted, setMicrophoneMuted] = useState(voiceChat.getMicrophoneMute());
+    const [audioMuted, setAudioMuted] = useState(voiceChat.getAudioMute());
 
     // Get Display
     const [profile, setProfile] = useState({
@@ -165,11 +173,18 @@ function ProfileAvatarMenu() {
             setNewProfile(info.avatar_url, info.displayname, info.userId);
         });
 
+        const updateAudioMute = (muted) => setAudioMuted(muted);
+        const updateMicrophoneMute = (muted) => setMicrophoneMuted(muted);
+
         // Socket
         user2.on('User.avatarUrl', onAvatarChange);
         navigation.on(cons.events.navigation.PROFILE_UPDATED, onProfileUpdate);
+        voiceChat.on('pony_house_muted_audio', updateAudioMute);
+        voiceChat.on('pony_house_muted_microphone', updateMicrophoneMute);
         return () => {
             user2.removeListener('User.avatarUrl', onAvatarChange);
+            voiceChat.off('pony_house_muted_audio', updateAudioMute);
+            voiceChat.off('pony_house_muted_microphone', updateMicrophoneMute);
             navigation.removeListener(
                 cons.events.navigation.PROFILE_UPDATED,
                 onProfileUpdate,
@@ -212,11 +227,11 @@ function ProfileAvatarMenu() {
                     </td>
 
                     <td className="p-0 pe-1 py-1 text-end">
-                        <IconButton fa="fa-solid fa-microphone" className='action-button' onClick={openSettings} />
+                        <IconButton fa="fa-solid fa-microphone" className={`action-button${microphoneMuted ? ' muted' : ''}`} onClick={() => voiceChat.setMicrophoneMute(!microphoneMuted)} />
                     </td>
 
                     <td className="p-0 pe-1 py-1 text-end">
-                        <IconButton fa="bi bi-headphones" className='action-button-2' onClick={openSettings} />
+                        <IconButton fa="bi bi-headphones" className={`action-button-2${audioMuted ? ' muted' : ''}`} onClick={() => voiceChat.setAudioMute(!audioMuted)} />
                     </td>
 
                     <td className="p-0 pe-1 py-1 text-end">

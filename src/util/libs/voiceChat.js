@@ -4,9 +4,6 @@
 import { createNewMatrixCall } from 'matrix-js-sdk';
 import { EventEmitter } from 'events';
 
-import initMatrix from '../../client/initMatrix';
-
-
 // Emitter
 class MyEmitter extends EventEmitter { }
 const myEmitter = new MyEmitter();
@@ -18,7 +15,7 @@ class MatrixVoiceChat {
     constructor(mx) {
 
         // Prepare Class
-        this.mx = mx || initMatrix.matrixClient;
+        this.mx = mx;
 
         this.call = null;
         this.roomId = null;
@@ -60,6 +57,29 @@ class MatrixVoiceChat {
 
         });
 
+    }
+
+    /* Audio */
+    getAudioMute() {
+        return global.localStorage.getItem('pony-house-muted-audio') === 'true';
+    }
+
+    getMicrophoneMute() {
+        return global.localStorage.getItem('pony-house-muted-microphone') === 'true';
+    }
+
+    setAudioMute(value) {
+        if (typeof value === 'boolean') {
+            myEmitter.emit('pony_house_muted_audio', value);
+            global.localStorage.getItem('pony-house-muted-audio', value === true ? 'true' : 'false');
+        }
+    }
+
+    setMicrophoneMute(value) {
+        if (typeof value === 'boolean') {
+            myEmitter.emit('pony_house_muted_microphone', value);
+            global.localStorage.getItem('pony-house-muted-microphone', value === true ? 'true' : 'false');
+        }
     }
 
     // Create Call
