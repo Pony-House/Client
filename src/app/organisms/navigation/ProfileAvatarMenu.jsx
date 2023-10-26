@@ -250,17 +250,17 @@ function ProfileAvatarMenu() {
                     </td>
 
                     <td className="p-0 pe-1 py-1 text-end">
-                        <IconButton fa="fa-solid fa-microphone" className={`action-button${microphoneMuted ? ' muted' : ''}`} onClick={() => voiceChat.setMicrophoneMute(!microphoneMuted)} />
+                        <IconButton tooltip={<span>{microphoneMuted ? 'Unmute' : 'Mute'}</span>} tooltipPlacement='top' fa="fa-solid fa-microphone" className={`action-button${microphoneMuted ? ' muted' : ''}`} onClick={() => voiceChat.setMicrophoneMute(!microphoneMuted)} />
                         {microphoneMuted ? <i class="fa-solid fa-slash tiny-block" /> : null}
                     </td>
 
                     <td className="p-0 pe-1 py-1 text-end">
-                        <IconButton fa="bi bi-headphones" className={`action-button-2${audioMuted ? ' muted' : ''}`} onClick={() => voiceChat.setAudioMute(!audioMuted)} />
+                        <IconButton tooltip={<span>{audioMuted ? 'Undeafen' : 'Deafen'}</span>} tooltipPlacement='top' fa="bi bi-headphones" className={`action-button-2${audioMuted ? ' muted' : ''}`} onClick={() => voiceChat.setAudioMute(!audioMuted)} />
                         {audioMuted ? <i class="fa-solid fa-slash tiny-block-2" /> : null}
                     </td>
 
                     <td className="p-0 pe-1 py-1 text-end">
-                        <IconButton fa="fa-solid fa-gear" className='action-button' onClick={openSettings} />
+                        <IconButton tooltip={<span>User Settings</span>} tooltipPlacement='top' fa="fa-solid fa-gear" className='action-button' onClick={openSettings} />
                     </td>
                 </tr>
 
