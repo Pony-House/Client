@@ -33,6 +33,13 @@
 .theme-type-dark2-solid,
 .theme-type-light-solid,
 .theme-type-silver-solid {
+  #profile-sidebar {
+    margin-left: 80px;
+  }
+  .sidebar-photo,
+  .sidebar-photo button {
+    width: 125px !important;
+  }
   .sidebar-1 {
     border-right-color: var(--bg-surface-border);
     border-right-style: solid;

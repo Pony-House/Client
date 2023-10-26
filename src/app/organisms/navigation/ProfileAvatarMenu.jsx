@@ -192,7 +192,7 @@ function ProfileAvatarMenu() {
 
                     <td className="sidebar-photo p-0">
 
-                        <button className="btn btn-bg btn-link btn-sm ms-2 text-truncate text-start " onClick={() => openSettings(settingTabText.PROFILE)} type="button">
+                        <button className="btn btn-bg btn-link btn-sm ms-1 text-truncate text-start " onClick={() => openSettings(settingTabText.PROFILE)} type="button">
                             <Avatar
                                 className='d-inline-block float-start'
                                 text={profile.displayName}
@@ -211,8 +211,16 @@ function ProfileAvatarMenu() {
 
                     </td>
 
-                    <td className="p-0 pe-3 py-1 text-end">
-                        <IconButton fa="fa-solid fa-gear" onClick={openSettings} />
+                    <td className="p-0 pe-1 py-1 text-end">
+                        <IconButton fa="fa-solid fa-microphone" className='action-button' onClick={openSettings} />
+                    </td>
+
+                    <td className="p-0 pe-1 py-1 text-end">
+                        <IconButton fa="bi bi-headphones" className='action-button-2' onClick={openSettings} />
+                    </td>
+
+                    <td className="p-0 pe-1 py-1 text-end">
+                        <IconButton fa="fa-solid fa-gear" className='action-button' onClick={openSettings} />
                     </td>
                 </tr>
 
@@ -224,4 +232,11 @@ function ProfileAvatarMenu() {
 
 }
 
+/*
+<i class="fa-solid fa-microphone"></i>
+<i class="bi bi-headphones"></i>
+<i class="bi bi-webcam-fill"></i>
+<i class="fa-solid fa-desktop"></i>
+<i class="bi bi-telephone-x-fill"></i>
+*/
 export default ProfileAvatarMenu;
