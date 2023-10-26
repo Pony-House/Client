@@ -15,6 +15,11 @@ import tinyAPI from '../../../util/mods';
 
 let resetRoomInfo;
 global.resetRoomInfo = () => typeof resetRoomInfo === 'function' ? resetRoomInfo() : null;
+let tinyRoomInfo;
+
+export function getRoomInfo() {
+  return tinyRoomInfo;
+};
 
 function Room() {
 
@@ -32,6 +37,7 @@ function Room() {
   const sendRoomInfo = (newData) => {
     if (roomInfo.roomTimeline) roomInfo.roomTimeline?.destroyProvider();
     setRoomInfo(newData);
+    tinyRoomInfo = newData;
     tinyAPI.emit('setRoomInfo', newData);
   };
 
