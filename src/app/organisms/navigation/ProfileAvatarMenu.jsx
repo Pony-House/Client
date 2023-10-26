@@ -186,7 +186,8 @@ function ProfileAvatarMenu() {
 
             try {
                 if (sound) {
-                    sound.stop();
+                    sound.pause();
+                    sound.currentTime = 0
                     sound.play();
                 }
             } catch (err) {
