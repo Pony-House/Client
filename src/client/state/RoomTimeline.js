@@ -116,6 +116,8 @@ class RoomTimeline extends EventEmitter {
       setTimeout(() => this.destroyProvider, 1000);
     }
 
+    this.providerInit = false;
+
     this.isOngoingPagination = false;
     this.ongoingDecryptionCount = 0;
     this.initialized = false;
@@ -127,7 +129,12 @@ class RoomTimeline extends EventEmitter {
 
   }
 
-  initProvider() { return this.provider.initialize(); }
+  initProvider() {
+    if (!this.providerInit) {
+      this.providerInit = true;
+      return this.provider.initialize();
+    }
+  }
 
   isProviderDestroyed() { return this.isPvDestroyed; }
 
