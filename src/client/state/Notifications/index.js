@@ -18,6 +18,8 @@ import { checkerFavIcon } from '../../../util/libs/favicon';
 const soundFiles = {
   notification: new Audio('./sound/notification.ogg'),
   invite: new Audio('./sound/invite.ogg'),
+  micro_on: new Audio('./sound/micro_on.ogg'),
+  micro_off: new Audio('./sound/micro_off.ogg'),
 };
 
 function isNotifEvent(mEvent) {
@@ -539,5 +541,11 @@ class Notifications extends EventEmitter {
     });
   }
 }
+
+export function getSound(file) {
+  if (soundFiles && soundFiles[file]) {
+    return soundFiles[file];
+  }
+};
 
 export default Notifications;

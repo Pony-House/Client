@@ -26,6 +26,9 @@ if (!fs.existsSync(soundsFolder)) {
 fs.copyFileSync(path.join(__dirname, './public/sound/notification.ogg'), path.join(soundsFolder, './notification.ogg'));
 fs.copyFileSync(path.join(__dirname, './public/sound/invite.ogg'), path.join(soundsFolder, './invite.ogg'));
 
+fs.copyFileSync(path.join(__dirname, './public/sound/micro_on.ogg'), path.join(soundsFolder, './micro_on.ogg'));
+fs.copyFileSync(path.join(__dirname, './public/sound/micro_off.ogg'), path.join(soundsFolder, './micro_off.ogg'));
+
 const copyFiles = {
   targets: [
 

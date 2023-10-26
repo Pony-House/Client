@@ -22,6 +22,7 @@ import tinyAPI from '../../../util/mods';
 import { enableAfkSystem } from '../../../util/userStatusEffects';
 import { getUserWeb3Account } from '../../../util/web3';
 import getVoiceChat from '../../../util/libs/voiceChat';
+import { getSound } from '../../../client/state/Notifications';
 
 // Account Status
 const accountStatus = { status: null, data: null };
@@ -173,8 +174,29 @@ function ProfileAvatarMenu() {
             setNewProfile(info.avatar_url, info.displayname, info.userId);
         });
 
-        const updateAudioMute = (muted) => setAudioMuted(muted);
-        const updateMicrophoneMute = (muted) => setMicrophoneMuted(muted);
+        const playMuteSound = (muted) => {
+
+            let sound;
+
+            try {
+                sound = getSound(muted ? 'micro_off' : 'micro_on');
+            } catch {
+                sound = null;
+            }
+
+            try {
+                if (sound) {
+                    sound.stop();
+                    sound.play();
+                }
+            } catch (err) {
+                console.error(err);
+            }
+
+        };
+
+        const updateAudioMute = (muted) => { playMuteSound(muted); setAudioMuted(muted); };
+        const updateMicrophoneMute = (muted) => { playMuteSound(muted); setMicrophoneMuted(muted); };
 
         // Socket
         user2.on('User.avatarUrl', onAvatarChange);
