@@ -119,6 +119,30 @@
     }
   }
 
+  .tiny-block,
+  .tiny-block::before,
+  .tiny-block-2,
+  .tiny-block-2::before {
+    color: var(--bs-danger) !important;
+    display: block;
+    position: relative;
+    pointer-events: none;
+  }
+
+  .tiny-block,
+  .tiny-block::before {
+    margin-top: -15px;
+    top: -5px;
+    left: -4px;
+  }
+
+  .tiny-block-2,
+  .tiny-block-2::before {
+    margin-top: -16px;
+    top: -5px;
+    left: -4px;
+  }
+
   .sidebar-photo button {
     margin-top: 7px;
     margin-bottom: 7px;
