@@ -71,14 +71,14 @@ class MatrixVoiceChat {
     setAudioMute(value) {
         if (typeof value === 'boolean') {
             myEmitter.emit('pony_house_muted_audio', value);
-            global.localStorage.getItem('pony-house-muted-audio', value === true ? 'true' : 'false');
+            global.localStorage.setItem('pony-house-muted-audio', value === true ? 'true' : 'false');
         }
     }
 
     setMicrophoneMute(value) {
         if (typeof value === 'boolean') {
             myEmitter.emit('pony_house_muted_microphone', value);
-            global.localStorage.getItem('pony-house-muted-microphone', value === true ? 'true' : 'false');
+            global.localStorage.setItem('pony-house-muted-microphone', value === true ? 'true' : 'false');
         }
     }
 

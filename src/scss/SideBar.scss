@@ -113,8 +113,8 @@
     padding-left: 12px;
     padding-right: 12px;
 
-    .muted i,
-    .muted i::before {
+    &.muted i,
+    &.muted i::before {
       color: var(--bs-danger) !important;
     }
   }
