@@ -79,8 +79,6 @@ Made by Me
     https://matrix-org.github.io/matrix-js-sdk/stable/classes/MatrixCall.html#transferToCall
     https://github.com/matrix-org/matrix-js-sdk/blob/develop/examples/voip/browserTest.js
 
-    Sandbox: https://github.com/sablejs/sablejs
-
     Web3 XMTP Chat
     https://xmtp.org/docs/build/get-started
 
