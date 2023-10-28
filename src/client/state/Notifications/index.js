@@ -12,7 +12,7 @@ import { updateName } from '../../../util/roomName';
 
 import { html, plain } from '../../../util/markdown';
 import { getAccountStatus } from '../../../app/organisms/navigation/ProfileAvatarMenu';
-import { messageIsCrdt } from '../../../util/libs/crdt';
+import { messageIsClassicCrdt } from '../../../util/libs/crdt';
 import { checkerFavIcon } from '../../../util/libs/favicon';
 
 const soundFiles = {
@@ -444,7 +444,7 @@ class Notifications extends EventEmitter {
 
       if (mEvent.isRedaction()) this._deletePopupNoti(mEvent.event.redacts);
 
-      if (messageIsCrdt(mEvent)) return;
+      if (messageIsClassicCrdt(mEvent)) return;
       if (room.isSpaceRoom()) return;
       if (!isNotifEvent(mEvent)) return;
 

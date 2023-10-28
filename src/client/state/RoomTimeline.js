@@ -4,7 +4,7 @@ import initMatrix from '../initMatrix';
 import cons from './cons';
 
 import settings from './settings';
-import { messageIsCrdt } from '../../util/libs/crdt';
+import { messageIsClassicCrdt } from '../../util/libs/crdt';
 
 let timeoutForceChatbox = null;
 
@@ -142,7 +142,7 @@ class RoomTimeline extends EventEmitter {
   addToTimeline(mEvent) {
 
     // Filter Room Member Event and Matrix CRDT Events
-    if ((mEvent.getType() === 'm.room.member' && hideMemberEvents(mEvent)) || messageIsCrdt(mEvent)) {
+    if ((mEvent.getType() === 'm.room.member' && hideMemberEvents(mEvent)) || messageIsClassicCrdt(mEvent)) {
       return;
     }
 
