@@ -1,3 +1,4 @@
+import * as Y from 'yjs';
 import EventEmitter from 'events';
 
 import initMatrix from '../initMatrix';
@@ -88,6 +89,7 @@ class RoomTimeline extends EventEmitter {
     super();
     // These are local timelines
     this.timeline = [];
+    this.crdt = [];
     this.editedTimeline = new Map();
     this.reactionTimeline = new Map();
     this.typingMembers = new Set();
@@ -136,34 +138,47 @@ class RoomTimeline extends EventEmitter {
 
   clearLocalTimelines() {
     this.timeline = [];
+    this.crdt = [];
   }
 
   // Add to timeline
   addToTimeline(mEvent) {
 
-    // Filter Room Member Event and Matrix CRDT Events
-    if ((mEvent.getType() === 'm.room.member' && hideMemberEvents(mEvent)) || messageIsClassicCrdt(mEvent)) {
-      return;
+    const evType = mEvent.getType();
+    if (evType !== 'pony.house.crdt') {
+
+      // Filter Room Member Event and Matrix CRDT Events
+      if ((evType === 'm.room.member' && hideMemberEvents(mEvent)) || messageIsClassicCrdt(mEvent)) {
+        return;
+      }
+
+      // Redacted
+      if (mEvent.isRedacted()) return;
+
+      // Is Reaction
+      if (isReaction(mEvent)) {
+        addToMap(this.reactionTimeline, mEvent);
+        return;
+      }
+
+      // Support event types filter
+      if (!cons.supportEventTypes.includes(evType)) return;
+      if (isEdited(mEvent)) {
+        addToMap(this.editedTimeline, mEvent);
+        return;
+      }
+
+      // Timeline insert
+      this.timeline.push(mEvent);
+
     }
 
-    // Redacted
-    if (mEvent.isRedacted()) return;
-
-    // Is Reaction
-    if (isReaction(mEvent)) {
-      addToMap(this.reactionTimeline, mEvent);
-      return;
+    // CRDT
+    else {
+      // this.mx.sendEvent(this.roomId, this.eventName, { data });
+      console.log(mEvent, evType, this.crdt);
+      this.crdt.push(mEvent);
     }
-
-    // Support event types filter
-    if (!cons.supportEventTypes.includes(mEvent.getType())) return;
-    if (isEdited(mEvent)) {
-      addToMap(this.editedTimeline, mEvent);
-      return;
-    }
-
-    // Timeline insert
-    this.timeline.push(mEvent);
 
   }
 
@@ -379,6 +394,10 @@ class RoomTimeline extends EventEmitter {
     return this.timeline.findIndex((mEvent) => mEvent.getId() === eventId);
   }
 
+  getCrdtIndex(eventId) {
+    return this.crdt.findIndex((mEvent) => mEvent.getId() === eventId);
+  }
+
   findEventByIdInTimelineSet(eventId, eventTimelineSet = this.getUnfilteredTimelineSet()) {
     return eventTimelineSet.findEventById(eventId);
   }
@@ -387,10 +406,20 @@ class RoomTimeline extends EventEmitter {
     return this.timeline[this.getEventIndex(eventId)] ?? null;
   }
 
+  findCrdtById(eventId) {
+    return this.crdt[this.getEventIndex(eventId)] ?? null;
+  }
+
   deleteFromTimeline(eventId) {
     const i = this.getEventIndex(eventId);
     if (i === -1) return undefined;
     return this.timeline.splice(i, 1)[0];
+  }
+
+  deleteCrdtFromTimeline(eventId) {
+    const i = this.getCrdtIndex(eventId);
+    if (i === -1) return undefined;
+    return this.crdt.splice(i, 1)[0];
   }
 
   // Active Listens
