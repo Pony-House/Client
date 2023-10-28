@@ -8,7 +8,6 @@ function AboutSection() {
 
     const deps = [
         ['Matrix JS SDK', __ENV_APP__.deps['matrix-js-sdk']],
-        ['Matrix CRDT', __ENV_APP__.deps['matrix-crdt']],
         ['Matrix Widget API', __ENV_APP__.deps['matrix-widget-api']],
         ['Moment Timezone', __ENV_APP__.deps['moment-timezone']],
         ['Photo Swipe', __ENV_APP__.deps.photoswipe],

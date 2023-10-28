@@ -35,7 +35,6 @@ function Room() {
   const [isDrawer, setIsDrawer] = useState(settings.isPeopleDrawer);
 
   const sendRoomInfo = (newData) => {
-    if (roomInfo.roomTimeline) roomInfo.roomTimeline?.destroyProvider();
     setRoomInfo(newData);
     tinyRoomInfo = newData;
     tinyAPI.emit('setRoomInfo', newData);
