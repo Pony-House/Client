@@ -106,6 +106,7 @@ class RoomTimeline extends EventEmitter {
     this.isOngoingPagination = false;
     this.ongoingDecryptionCount = 0;
     this.initialized = false;
+    this.ydoc = null;
 
     setTimeout(() => this.room.loadMembersIfNeeded());
 
@@ -113,8 +114,6 @@ class RoomTimeline extends EventEmitter {
     window.selectedRoom = this;
 
   }
-
-  isProviderDestroyed() { return this.isPvDestroyed; }
 
   getYdoc() { return this.ydoc; }
 
@@ -394,10 +393,6 @@ class RoomTimeline extends EventEmitter {
     return this.timeline.findIndex((mEvent) => mEvent.getId() === eventId);
   }
 
-  getCrdtIndex(eventId) {
-    return this.crdt.findIndex((mEvent) => mEvent.getId() === eventId);
-  }
-
   findEventByIdInTimelineSet(eventId, eventTimelineSet = this.getUnfilteredTimelineSet()) {
     return eventTimelineSet.findEventById(eventId);
   }
@@ -406,24 +401,39 @@ class RoomTimeline extends EventEmitter {
     return this.timeline[this.getEventIndex(eventId)] ?? null;
   }
 
-  findCrdtById(eventId) {
-    return this.crdt[this.getEventIndex(eventId)] ?? null;
-  }
-
   deleteFromTimeline(eventId) {
     const i = this.getEventIndex(eventId);
     if (i === -1) return undefined;
     return this.timeline.splice(i, 1)[0];
   }
 
+  // CRDT
   deleteCrdtFromTimeline(eventId) {
     const i = this.getCrdtIndex(eventId);
     if (i === -1) return undefined;
     return this.crdt.splice(i, 1)[0];
   }
 
+  findCrdtById(eventId) {
+    return this.crdt[this.getEventIndex(eventId)] ?? null;
+  }
+
+  getCrdtIndex(eventId) {
+    return this.crdt.findIndex((mEvent) => mEvent.getId() === eventId);
+  }
+
+  crdtTest(data) {
+    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { data });
+  }
+
+  crdtSnapshotTest(data) {
+    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt.snapshot', { data });
+  }
+
   // Active Listens
   _listenEvents() {
+
+    this.ydoc = new Y.Doc();
 
     this._listenRoomTimeline = (event, room, toStartOfTimeline, removed, data) => {
 
@@ -520,9 +530,10 @@ class RoomTimeline extends EventEmitter {
 
   }
 
-  // Remove events
+  // Remove listeners
   removeInternalListeners() {
     if (!this.initialized) return;
+    this.ydoc.destroy();
     this.matrixClient.removeListener('Room.timeline', this._listenRoomTimeline);
     this.matrixClient.removeListener('Room.redaction', this._listenRedaction);
     this.matrixClient.removeListener('Event.decrypted', this._listenDecryptEvent);
