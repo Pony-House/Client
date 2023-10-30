@@ -230,10 +230,10 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
-"@capacitor/android@5.5.0":
-  version "5.5.0"
-  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-5.5.0.tgz#42a5d205fdb5b88109ff9326136fc44ae9a9e621"
-  integrity sha512-ipJijb3M0FA6DvotS9zrbJ8p/mTEVg9EVtBmvUexogm8g5se1mc7i1gvOr3MQ/iTZ3PnNrRC/P7kHxa2R55iqg==
+"@capacitor/android@5.5.1":
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-5.5.1.tgz#128dc5ab00f68c80d64ea18e961876b34b4ed859"
+  integrity sha512-WTnPnpaEvTtaEtTNRbh06Y1afF7A4plY/4uajAL0WW8tdR1FxieadF357yKGiAT6CudI/B+eOu6rxn6qWuphKg==
 
 "@capacitor/app@5.0.6":
   version "5.0.6"
