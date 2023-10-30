@@ -77,7 +77,7 @@
     "linkify-plugin-keyword": "4.1.1",
     "linkify-react": "4.1.1",
     "linkifyjs": "4.1.1",
-    "matrix-js-sdk": "29.0.0",
+    "matrix-js-sdk": "29.1.0",
     "matrix-widget-api": "1.6.0",
     "moment-timezone": "0.5.43",
     "object-hash": "3.0.0",
