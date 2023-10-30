@@ -40,7 +40,7 @@
   },
   "license": "AGPL-3.0-only",
   "dependencies": {
-    "@capacitor/android": "5.4.2",
+    "@capacitor/android": "5.5.0",
     "@capacitor/app": "5.0.6",
     "@capacitor/browser": "5.1.0",
     "@capacitor/cli": "5.5.0",
