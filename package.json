@@ -128,7 +128,7 @@
     "esm": "^3.2.25",
     "fs-extra": "^11.1.1",
     "prettier": "3.0.3",
-    "sass": "1.69.4",
+    "sass": "1.69.5",
     "typescript": "5.2.2",
     "vite": "4.5.0",
     "vite-plugin-electron": "^0.14.1",
