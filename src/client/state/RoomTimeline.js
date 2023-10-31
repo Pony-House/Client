@@ -6,6 +6,7 @@ import cons from './cons';
 
 import settings from './settings';
 import { messageIsClassicCrdt } from '../../util/libs/crdt';
+import { objType } from '../../util/tools';
 
 let timeoutForceChatbox = null;
 
@@ -89,7 +90,7 @@ class RoomTimeline extends EventEmitter {
     super();
     // These are local timelines
     this.timeline = [];
-    this.crdt = [];
+    this.crdt = {};
     this.editedTimeline = new Map();
     this.reactionTimeline = new Map();
     this.typingMembers = new Set();
@@ -100,8 +101,6 @@ class RoomTimeline extends EventEmitter {
 
     this.liveTimeline = this.room.getLiveTimeline();
     this.activeTimeline = this.liveTimeline;
-
-    this.providerInit = false;
 
     this.isOngoingPagination = false;
     this.ongoingDecryptionCount = 0;
@@ -138,7 +137,7 @@ class RoomTimeline extends EventEmitter {
 
   clearLocalTimelines() {
     this.timeline = [];
-    this.crdt = [];
+    this.crdt = {};
   }
 
   // Add to timeline
@@ -175,9 +174,23 @@ class RoomTimeline extends EventEmitter {
 
     // CRDT
     else {
+
+      const content = mEvent.getContent();
+      if (objType(content, 'object') && typeof content.type === 'string' && content.type.length > 0) {
+
+        if (!Array.isArray(this.crdt[content.type])) this.crdt[content.type] = [];
+        this.crdt[content.type].push(mEvent);
+
+      } else {
+
+        if (!Array.isArray(this.crdt.DEFAULT)) this.crdt.DEFAULT = [];
+        this.crdt.DEFAULT.push(mEvent);
+
+      }
+
       // this.mx.sendEvent(this.roomId, this.eventName, { data });
       console.log(mEvent, evType, this.crdt);
-      this.crdt.push(mEvent);
+
     }
 
   }
@@ -409,18 +422,24 @@ class RoomTimeline extends EventEmitter {
   }
 
   // CRDT
-  deleteCrdtFromTimeline(eventId) {
-    const i = this.getCrdtIndex(eventId);
-    if (i === -1) return undefined;
-    return this.crdt.splice(i, 1)[0];
+  deleteCrdtFromTimeline(eventId, where) {
+    if (Array.isArray(this.crdt[where])) {
+      const i = this.getCrdtIndex(eventId, where);
+      if (i === -1) return undefined;
+      return this.crdt[where].splice(i, 1)[0];
+    }
   }
 
-  findCrdtById(eventId) {
-    return this.crdt[this.getEventIndex(eventId)] ?? null;
+  findCrdtById(eventId, where) {
+    if (Array.isArray(this.crdt[where])) {
+      return this.crdt[where][this.getEventIndex(eventId)] ?? null;
+    }
   }
 
-  getCrdtIndex(eventId) {
-    return this.crdt.findIndex((mEvent) => mEvent.getId() === eventId);
+  getCrdtIndex(eventId, where) {
+    if (Array.isArray(this.crdt[where])) {
+      this.crdt[where].findIndex((mEvent) => mEvent.getId() === eventId)
+    }
   }
 
   crdtTest(data) {
