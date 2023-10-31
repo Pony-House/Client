@@ -435,7 +435,7 @@ class RoomTimeline extends EventEmitter {
 
   findCrdtById(eventId, where = 'DEFAULT') {
     if (Array.isArray(this.crdt[where])) {
-      return this.crdt[where][this.getEventIndex(eventId)] ?? null;
+      return this.crdt[where][this.getCrdtIndex(eventId)] ?? null;
     }
   }
 
