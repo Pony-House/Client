@@ -422,7 +422,7 @@ class RoomTimeline extends EventEmitter {
   }
 
   // CRDT
-  deleteCrdtFromTimeline(eventId, where) {
+  deleteCrdtFromTimeline(eventId, where = 'DEFAULT') {
     if (Array.isArray(this.crdt[where])) {
       const i = this.getCrdtIndex(eventId, where);
       if (i === -1) return undefined;
@@ -430,24 +430,24 @@ class RoomTimeline extends EventEmitter {
     }
   }
 
-  findCrdtById(eventId, where) {
+  findCrdtById(eventId, where = 'DEFAULT') {
     if (Array.isArray(this.crdt[where])) {
       return this.crdt[where][this.getEventIndex(eventId)] ?? null;
     }
   }
 
-  getCrdtIndex(eventId, where) {
+  getCrdtIndex(eventId, where = 'DEFAULT') {
     if (Array.isArray(this.crdt[where])) {
-      this.crdt[where].findIndex((mEvent) => mEvent.getId() === eventId)
+      this.crdt[where].findIndex((mEvent) => mEvent.getId() === eventId);
     }
   }
 
-  crdtTest(data) {
-    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { data });
+  crdtTest(data, type = 'DEFAULT') {
+    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { data, type });
   }
 
-  crdtSnapshotTest(data) {
-    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt.snapshot', { data });
+  crdtSnapshotTest(snapshot, type = 'DEFAULT') {
+    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { snapshot, type });
   }
 
   // Active Listens
