@@ -446,11 +446,41 @@ class RoomTimeline extends EventEmitter {
   }
 
   crdtTest(data, type = 'DEFAULT') {
-    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { data, type });
+    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { data: btoa(JSON.stringify(data)), type });
   }
 
   crdtSnapshotTest(snapshot, type = 'DEFAULT') {
-    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { snapshot, type });
+    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { snapshot: btoa(JSON.stringify(snapshot)), type });
+  }
+
+  crdtTest2(data, type = 'DEFAULT') {
+
+    let value = null;
+
+    try {
+      value = JSON.parse(atob(data));
+    } catch (err) {
+      value = null;
+      console.error(err);
+    }
+
+    return value;
+
+  }
+
+  crdtSnapshotTest2(snapshot, type = 'DEFAULT') {
+
+    let value = null;
+
+    try {
+      value = JSON.parse(atob(snapshot));
+    } catch (err) {
+      value = null;
+      console.error(err);
+    }
+
+    return value;
+
   }
 
   // Active Listens
