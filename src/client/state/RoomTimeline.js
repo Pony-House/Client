@@ -144,10 +144,10 @@ class RoomTimeline extends EventEmitter {
   addToTimeline(mEvent) {
 
     const evType = mEvent.getType();
-    if (evType !== 'pony.house.crdt') {
+    if (evType !== 'pony.house.crdt' && !messageIsClassicCrdt(mEvent)) {
 
       // Filter Room Member Event and Matrix CRDT Events
-      if ((evType === 'm.room.member' && hideMemberEvents(mEvent)) || messageIsClassicCrdt(mEvent)) {
+      if ((evType === 'm.room.member' && hideMemberEvents(mEvent))) {
         return;
       }
 
@@ -173,7 +173,7 @@ class RoomTimeline extends EventEmitter {
     }
 
     // CRDT
-    else {
+    else if (evType === 'pony.house.crdt') {
 
       const content = mEvent.getContent();
       if (objType(content, 'object') && typeof content.type === 'string' && content.type.length > 0) {
@@ -188,10 +188,13 @@ class RoomTimeline extends EventEmitter {
 
       }
 
-      // this.mx.sendEvent(this.roomId, this.eventName, { data });
-      console.log(mEvent, evType, this.crdt);
-
+    } else {
+      if (!Array.isArray(this.crdt.CLASSIC)) this.crdt.CLASSIC = [];
+      this.crdt.CLASSIC.push(mEvent);
     }
+
+    // this.mx.sendEvent(this.roomId, this.eventName, { data });
+    console.log(mEvent, evType, this.crdt);
 
   }
 
