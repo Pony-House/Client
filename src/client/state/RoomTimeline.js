@@ -175,25 +175,40 @@ class RoomTimeline extends EventEmitter {
     else if (evType === 'pony.house.crdt') {
 
       const content = mEvent.getContent();
-      if (objType(content, 'object') && typeof content.type === 'string' && content.type.length > 0) {
+      if (objType(content, 'object')) {
 
-        if (!Array.isArray(this.crdt[content.type])) this.crdt[content.type] = [];
-        this.crdt[content.type].push(mEvent);
+        // Content Type
+        if (typeof content.type === 'string' && content.type.length > 0) {
 
-      } else {
+          if (!Array.isArray(this.crdt[content.type])) this.crdt[content.type] = [];
+          this.crdt[content.type].push(mEvent);
 
-        if (!Array.isArray(this.crdt.DEFAULT)) this.crdt.DEFAULT = [];
-        this.crdt.DEFAULT.push(mEvent);
+        } else {
+
+          if (!Array.isArray(this.crdt.DEFAULT)) this.crdt.DEFAULT = [];
+          this.crdt.DEFAULT.push(mEvent);
+
+        }
+
+        // Data
+        if (typeof content.data === 'string' && content.data.length > 0) {
+          try {
+
+            const data = atob(content.data).split(',');
+            for (const item in data) {
+              data[item] = Number(data[item]);
+            }
+
+            const memoryData = new Uint8Array(data);
+
+          } catch (err) { console.error(err); }
+        }
 
       }
-
     } else {
       if (!Array.isArray(this.crdt.CLASSIC)) this.crdt.CLASSIC = [];
       this.crdt.CLASSIC.push(mEvent);
     }
-
-    // this.mx.sendEvent(this.roomId, this.eventName, { data });
-    console.log(mEvent, evType, this.crdt);
 
   }
 
@@ -444,51 +459,8 @@ class RoomTimeline extends EventEmitter {
     }
   }
 
-  insertCrdt(data, type = 'DEFAULT') {
-    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { data: btoa(JSON.stringify(data)), type });
-  }
-
-  crdtSnapshotTest(snapshot, type = 'DEFAULT') {
-    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { snapshot: btoa(JSON.stringify(snapshot)), type });
-  }
-
-  crdtTest2(data, type = 'DEFAULT') {
-
-    /*
-            const newValue2 = atob(baseValue).split(',');
-        for (const item in newValue2) {
-          newValue2[item] = Number(newValue2[item]);
-        }
-
-        baseToUpdate = new Uint8Array(newValue2);
-    */
-
-    let value = null;
-
-    try {
-      value = JSON.parse(atob(data));
-    } catch (err) {
-      value = null;
-      console.error(err);
-    }
-
-    return value;
-
-  }
-
-  crdtSnapshotTest2(snapshot, type = 'DEFAULT') {
-
-    let value = null;
-
-    try {
-      value = JSON.parse(atob(snapshot));
-    } catch (err) {
-      value = null;
-      console.error(err);
-    }
-
-    return value;
-
+  _insertCrdt(data, type = 'DEFAULT') {
+    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { data, type });
   }
 
   // Active Listens
@@ -499,7 +471,7 @@ class RoomTimeline extends EventEmitter {
 
     this.ydoc.on('update', (update) => {
       try {
-        tinyThis.insertCrdt(btoa(update.toString()));
+        tinyThis._insertCrdt(btoa(update.toString()));
       } catch (err) {
         console.error(err);
       }
