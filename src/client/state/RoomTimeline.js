@@ -444,7 +444,7 @@ class RoomTimeline extends EventEmitter {
     }
   }
 
-  crdtTest(data, type = 'DEFAULT') {
+  insertCrdt(data, type = 'DEFAULT') {
     return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { data: btoa(JSON.stringify(data)), type });
   }
 
@@ -453,6 +453,15 @@ class RoomTimeline extends EventEmitter {
   }
 
   crdtTest2(data, type = 'DEFAULT') {
+
+    /*
+            const newValue2 = atob(baseValue).split(',');
+        for (const item in newValue2) {
+          newValue2[item] = Number(newValue2[item]);
+        }
+
+        baseToUpdate = new Uint8Array(newValue2);
+    */
 
     let value = null;
 
@@ -489,29 +498,11 @@ class RoomTimeline extends EventEmitter {
     this.ydoc = new Y.Doc();
 
     this.ydoc.on('update', (update) => {
-
-      let baseValue = null;
-      let baseToUpdate = null;
-
       try {
-
-        const vanilla = update.toString();
-        console.log('ydoc test', vanilla);
-        baseValue = btoa(vanilla);
-
-        const newValue2 = atob(baseValue).split(',');
-        for (const item in newValue2) {
-          newValue2[item] = Number(newValue2[item]);
-        }
-
-        baseToUpdate = new Uint8Array(newValue2);
-
+        tinyThis.insertCrdt(btoa(update.toString()));
       } catch (err) {
         console.error(err);
       }
-
-      console.log('ydoc test', update, baseValue, baseToUpdate);
-
     });
 
     this._listenRoomTimeline = (event, room, toStartOfTimeline, removed, data) => {
