@@ -106,7 +106,6 @@ class RoomTimeline extends EventEmitter {
     this.ongoingDecryptionCount = 0;
     this.initialized = false;
     this.ydoc = null;
-    this.snapshot_countdown = null;
 
     setTimeout(() => this.room.loadMembersIfNeeded());
 
@@ -489,15 +488,30 @@ class RoomTimeline extends EventEmitter {
     const tinyThis = this;
     this.ydoc = new Y.Doc();
 
-    this.ydoc.on('update', update => {
-      if (!tinyThis.snapshot_countdown) {
-        console.log('ydoc test', update);
-        tinyThis.snapshot_countdown = setTimeout(() => {
+    this.ydoc.on('update', (update) => {
 
-          tinyThis.snapshot_countdown = null;
+      let baseValue = null;
+      let baseToUpdate = null;
 
-        }, 30000);
+      try {
+
+        const vanilla = update.toString();
+        console.log('ydoc test', vanilla);
+        baseValue = btoa(vanilla);
+
+        const newValue2 = atob(baseValue).split(',');
+        for (const item in newValue2) {
+          newValue2[item] = Number(newValue2[item]);
+        }
+
+        baseToUpdate = new Uint8Array(newValue2);
+
+      } catch (err) {
+        console.error(err);
       }
+
+      console.log('ydoc test', update, baseValue, baseToUpdate);
+
     });
 
     this._listenRoomTimeline = (event, room, toStartOfTimeline, removed, data) => {
