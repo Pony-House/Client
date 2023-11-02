@@ -199,9 +199,35 @@ class RoomTimeline extends EventEmitter {
               data[item] = Number(data[item]);
             }
 
-            const memoryData = new Uint8Array(data);
+            if (data.length > 1) {
 
-          } catch (err) { console.error(err); }
+              const memoryData = new Uint8Array(data);
+              const updateInfo = Y.decodeUpdate(memoryData);
+              console.log(updateInfo);
+
+              /*
+
+                Add
+                updateInfo.structs (Array)
+
+                Validate Exist Array
+                updateInfo.structs[0].parent (String)
+
+                updateInfo.structs[0].content
+
+              */
+
+              // Y.applyUpdate(this.ydoc, memoryData);
+
+              // this.ydoc.toJSON();
+
+              // console.log(clone());
+
+            }
+
+          } catch (err) {
+            console.error(err);
+          }
         }
 
       }
