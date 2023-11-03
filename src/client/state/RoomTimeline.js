@@ -604,28 +604,35 @@ class RoomTimeline extends EventEmitter {
 
       // Checker
       let needUpdate = true;
+      let itemType;
       getClientYjs(updateInfo, (info, type) => {
 
+        // Get Index
         const index = tinyThis._ydoc_matrix_update.indexOf(info.key);
-
         if (index > -1) {
           tinyThis._ydoc_matrix_update.splice(index, 1);
           needUpdate = false
-        } else if (type === 'structs') {
+        }
 
+        // Get new value type
+        else if (type === 'structs') {
           const struct = tinyThis.ydoc.store.clients.get(info.key);
           if (Array.isArray(struct) && struct.length > 0 && struct[struct.length - 1]) {
 
             const item = struct[struct.length - 1];
-            console.log(item);
+
+            try {
+              itemType = String(item.parent.constructor.name.startsWith('_') ? item.parent.constructor.name.substring(1) : item.parent.constructor.name).toLocaleLowerCase();
+            } catch { itemType = null; }
 
           }
-
         }
 
       });
 
+      // Insert update into the room
       if (needUpdate) {
+        console.log(itemType);
         try {
           // tinyThis._insertCrdt(btoa(update.toString()));
         } catch (err) {
