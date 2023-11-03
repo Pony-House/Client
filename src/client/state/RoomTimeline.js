@@ -8,6 +8,7 @@ import settings from './settings';
 import { messageIsClassicCrdt } from '../../util/libs/crdt';
 import { objType } from '../../util/tools';
 
+global.Y = Y;
 let timeoutForceChatbox = null;
 
 function isEdited(mEvent) {
@@ -166,7 +167,6 @@ class RoomTimeline extends EventEmitter {
 
     // Tiny This
     const tinyThis = this;
-    console.log(this.ydoc);
 
     // Checker
     if (this.ydoc) {
@@ -604,17 +604,30 @@ class RoomTimeline extends EventEmitter {
 
       // Checker
       let needUpdate = true;
-      getClientYjs(updateInfo, (info) => {
+      getClientYjs(updateInfo, (info, type) => {
+
         const index = tinyThis._ydoc_matrix_update.indexOf(info.key);
+
         if (index > -1) {
           tinyThis._ydoc_matrix_update.splice(index, 1);
           needUpdate = false
+        } else if (type === 'structs') {
+
+          const struct = tinyThis.ydoc.store.clients.get(info.key);
+          if (Array.isArray(struct) && struct.length > 0 && struct[struct.length - 1]) {
+
+            const item = struct[struct.length - 1];
+            console.log(item);
+
+          }
+
         }
+
       });
 
       if (needUpdate) {
         try {
-          tinyThis._insertCrdt(btoa(update.toString()));
+          // tinyThis._insertCrdt(btoa(update.toString()));
         } catch (err) {
           console.error(err);
         }
