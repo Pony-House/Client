@@ -100,6 +100,22 @@ const getClientYjs = (updateInfo, callback) => {
 
 };
 
+const enableyJsItem = {
+
+  action: (ydoc, type, parent) => {
+    if (typeof enableyJsItem.types[type] === 'function') {
+      return enableyJsItem.types[type](ydoc, parent);
+    }
+  },
+
+  types: {
+    ymap: (ydoc, parent) => ydoc.getMap(parent),
+    ytext: (ydoc, parent) => ydoc.getText(parent),
+    yarray: (ydoc, parent) => ydoc.getArray(parent),
+  },
+
+};
+
 // Class
 class RoomTimeline extends EventEmitter {
 
@@ -188,44 +204,20 @@ class RoomTimeline extends EventEmitter {
             const updateInfo = Y.decodeUpdate(memoryData);
             let updateItem;
 
-            getClientYjs(updateInfo, (info, type) => {
-
+            getClientYjs(updateInfo, (info) => {
               tinyThis._ydoc_matrix_update.push(info.key);
-
-              if (type === 'structs') {
-
-                const struct = info.value;
-                if (typeof struct.parent === 'string' && struct.parent.length > 0) {
-
-                  try {
-                    updateItem = tinyThis.ydoc.get(struct.parent);
-                    console.log(struct.parent, updateItem);
-                  } catch (err) {
-                    console.error('item', err);
-                  }
-
-                  if (objType(struct.content, 'object')) {
-                    for (const item2 in struct.content) {
-
-                    }
-                  }
-
-                }
-
-              }
-
-              if (type === 'deleted') {
-
-              }
-
             });
 
-            // console.log(this._ydoc_matrix_update);
+            // Fix Doc
+            if (
+              typeof content.parent === 'string' && typeof content.type === 'string' &&
+              content.parent.length > 0 && content.type.length > 0
+            ) {
+              enableyJsItem.action(this.ydoc, content.type, content.parent);
+            }
+
+            // Apply update
             Y.applyUpdate(this.ydoc, memoryData);
-
-            // this.ydoc.toJSON();
-
-            // console.log(clone());
 
           }
 
@@ -314,19 +306,15 @@ class RoomTimeline extends EventEmitter {
       if (objType(content, 'object')) {
 
         // Content Type
-        if (typeof content.type === 'string' && content.type.length > 0) {
-
-          if (!Array.isArray(this.crdt[content.type])) this.crdt[content.type] = [];
-          this.crdt[content.type].push(mEvent);
-
+        if (typeof content.store === 'string' && content.store.length > 0) {
+          if (!Array.isArray(this.crdt[content.store])) this.crdt[content.store] = [];
+          this.crdt[content.store].push(mEvent);
         }
 
         // Classic values
         else {
-
           if (!Array.isArray(this.crdt.DEFAULT)) this.crdt.DEFAULT = [];
           this.crdt.DEFAULT.push(mEvent);
-
         }
 
         // Send to Crdt
@@ -587,8 +575,8 @@ class RoomTimeline extends EventEmitter {
     }
   }
 
-  _insertCrdt(data, type = 'DEFAULT') {
-    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { data, type });
+  _insertCrdt(data, type, parent, store = 'DEFAULT') {
+    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { data, store, type, parent });
   }
 
   // Active Listens
@@ -605,6 +593,7 @@ class RoomTimeline extends EventEmitter {
       // Checker
       let needUpdate = true;
       let itemType;
+      let parent;
       getClientYjs(updateInfo, (info, type) => {
 
         // Get Index
@@ -616,6 +605,7 @@ class RoomTimeline extends EventEmitter {
 
         // Get new value type
         else if (type === 'structs') {
+
           const struct = tinyThis.ydoc.store.clients.get(info.key);
           if (Array.isArray(struct) && struct.length > 0 && struct[struct.length - 1]) {
 
@@ -625,16 +615,20 @@ class RoomTimeline extends EventEmitter {
               itemType = String(item.parent.constructor.name.startsWith('_') ? item.parent.constructor.name.substring(1) : item.parent.constructor.name).toLocaleLowerCase();
             } catch { itemType = null; }
 
+            if (typeof info.value.parent === 'string' && info.value.parent.length > 0) {
+              parent = info.value.parent
+            }
+
           }
+
         }
 
       });
 
       // Insert update into the room
       if (needUpdate) {
-        console.log(itemType);
         try {
-          // tinyThis._insertCrdt(btoa(update.toString()));
+          tinyThis._insertCrdt(btoa(update.toString()), itemType, parent);
         } catch (err) {
           console.error(err);
         }
