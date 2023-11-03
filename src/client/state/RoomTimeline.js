@@ -123,8 +123,11 @@ class RoomTimeline extends EventEmitter {
     this.ongoingDecryptionCount = 0;
     this.initialized = false;
     this.ydoc = null;
+
     this._ydoc_matrix_update = [];
     this._ydoc_cache = [];
+
+    this._ydoc_cache_timeout = null;
 
     setTimeout(() => this.room.loadMembersIfNeeded());
 
@@ -163,9 +166,10 @@ class RoomTimeline extends EventEmitter {
 
     // Tiny This
     const tinyThis = this;
+    console.log(this.ydoc);
 
     // Checker
-    if (tinyThis.ydoc) {
+    if (this.ydoc) {
 
       // Data
       if (typeof content.data === 'string' && content.data.length > 0) {
@@ -229,6 +233,43 @@ class RoomTimeline extends EventEmitter {
           console.error(err);
         }
       }
+
+    }
+
+    // Nope. Wait more
+    else {
+
+      this._ydoc_cache.push(content);
+
+      if (this._ydoc_cache_timeout) {
+        clearTimeout(this._ydoc_cache_timeout);
+        this._ydoc_cache_timeout = null;
+      }
+
+      const tinyTimeout = () => {
+
+        if (tinyThis.ydoc) {
+
+          for (const item in tinyThis._ydoc_cache) {
+            tinyThis._addCrdt(tinyThis._ydoc_cache[item]);
+          }
+
+          tinyThis._ydoc_cache = [];
+
+        } else {
+
+          if (tinyThis._ydoc_cache_timeout) {
+            clearTimeout(tinyThis._ydoc_cache_timeout);
+            tinyThis._ydoc_cache_timeout = null;
+          }
+
+          tinyThis._ydoc_cache_timeout = setTimeout(tinyTimeout, 500);
+
+        }
+
+      };
+
+      this._ydoc_cache_timeout = setTimeout(tinyTimeout, 500);
 
     }
 
@@ -556,7 +597,6 @@ class RoomTimeline extends EventEmitter {
     const tinyThis = this;
     this.ydoc = new Y.Doc();
     this._ydoc_matrix_update = [];
-    this._ydoc_cache = [];
 
     this.ydoc.on('update', (update) => {
 
@@ -682,7 +722,6 @@ class RoomTimeline extends EventEmitter {
     if (!this.initialized) return;
     this.ydoc.destroy();
     this._ydoc_matrix_update = [];
-    this._ydoc_cache = [];
     this.matrixClient.removeListener('Room.timeline', this._listenRoomTimeline);
     this.matrixClient.removeListener('Room.redaction', this._listenRedaction);
     this.matrixClient.removeListener('Event.decrypted', this._listenDecryptEvent);
