@@ -164,25 +164,25 @@ class RoomTimeline extends EventEmitter {
     // Tiny This
     const tinyThis = this;
 
-    // Data
-    if (typeof content.data === 'string' && content.data.length > 0) {
-      try {
+    // Checker
+    if (tinyThis.ydoc) {
 
-        // Get Data
-        const data = atob(content.data).split(',');
-        for (const item in data) {
-          data[item] = Number(data[item]);
-        }
+      // Data
+      if (typeof content.data === 'string' && content.data.length > 0) {
+        try {
 
-        if (data.length > 1) {
+          // Get Data
+          const data = atob(content.data).split(',');
+          for (const item in data) {
+            data[item] = Number(data[item]);
+          }
 
-          // Prepare to insert into update
-          const memoryData = new Uint8Array(data);
-          const updateInfo = Y.decodeUpdate(memoryData);
-          let updateItem;
+          if (data.length > 1) {
 
-          // Checker
-          if (tinyThis.ydoc) {
+            // Prepare to insert into update
+            const memoryData = new Uint8Array(data);
+            const updateInfo = Y.decodeUpdate(memoryData);
+            let updateItem;
 
             getClientYjs(updateInfo, (info, type) => {
 
@@ -225,11 +225,11 @@ class RoomTimeline extends EventEmitter {
 
           }
 
+        } catch (err) {
+          console.error(err);
         }
-
-      } catch (err) {
-        console.error(err);
       }
+
     }
 
   }
