@@ -82,6 +82,23 @@ function isTimelineLinked(tm1, tm2) {
   return false;
 }
 
+const getClientYjs = (updateInfo, callback) => {
+
+  if (Array.isArray(updateInfo.structs) && updateInfo.structs.length > 0) {
+    for (const item in updateInfo.structs) {
+      const struct = updateInfo.structs[item];
+      callback({ value: struct, key: struct.id.client }, 'structs');
+    }
+  }
+
+  if (updateInfo.ds && objType(updateInfo.ds.clients, 'map')) {
+    updateInfo.ds.clients.forEach((value, key) => {
+      callback({ value, key }, 'deleted');
+    });
+  }
+
+};
+
 // Class
 class RoomTimeline extends EventEmitter {
 
@@ -106,6 +123,7 @@ class RoomTimeline extends EventEmitter {
     this.ongoingDecryptionCount = 0;
     this.initialized = false;
     this.ydoc = null;
+    this._ydoc_matrix_update = [];
 
     setTimeout(() => this.room.loadMembersIfNeeded());
 
@@ -142,6 +160,7 @@ class RoomTimeline extends EventEmitter {
   // Add to timeline
   addToTimeline(mEvent) {
 
+    const tinyThis = this;
     const evType = mEvent.getType();
     if (evType !== 'pony.house.crdt' && !messageIsClassicCrdt(mEvent)) {
 
@@ -194,6 +213,7 @@ class RoomTimeline extends EventEmitter {
         if (typeof content.data === 'string' && content.data.length > 0) {
           try {
 
+            // Get Data
             const data = atob(content.data).split(',');
             for (const item in data) {
               data[item] = Number(data[item]);
@@ -201,27 +221,54 @@ class RoomTimeline extends EventEmitter {
 
             if (data.length > 1) {
 
+              // Prepare to insert into update
               const memoryData = new Uint8Array(data);
               const updateInfo = Y.decodeUpdate(memoryData);
-              console.log(updateInfo);
+              let updateItem;
 
-              /*
+              // Checker
+              if (tinyThis.ydoc) {
 
-                Add
-                updateInfo.structs (Array)
+                getClientYjs(updateInfo, (info, type) => {
 
-                Validate Exist Array
-                updateInfo.structs[0].parent (String)
+                  tinyThis._ydoc_matrix_update.push(info.key);
 
-                updateInfo.structs[0].content
+                  if (type === 'structs') {
 
-              */
+                    const struct = info.value;
+                    if (typeof struct.parent === 'string' && struct.parent.length > 0) {
 
-              // Y.applyUpdate(this.ydoc, memoryData);
+                      try {
+                        updateItem = tinyThis.ydoc.get(struct.parent);
+                        console.log(struct.parent, updateItem);
+                      } catch (err) {
+                        console.error('item', err);
+                      }
 
-              // this.ydoc.toJSON();
+                      if (objType(struct.content, 'object')) {
+                        for (const item2 in struct.content) {
 
-              // console.log(clone());
+                        }
+                      }
+
+                    }
+
+                  }
+
+                  if (type === 'deleted') {
+
+                  }
+
+                });
+
+                // console.log(this._ydoc_matrix_update);
+                Y.applyUpdate(this.ydoc, memoryData);
+
+                // this.ydoc.toJSON();
+
+                // console.log(clone());
+
+              }
 
             }
 
@@ -494,13 +541,30 @@ class RoomTimeline extends EventEmitter {
 
     const tinyThis = this;
     this.ydoc = new Y.Doc();
+    this._ydoc_matrix_update = [];
 
     this.ydoc.on('update', (update) => {
-      try {
-        tinyThis._insertCrdt(btoa(update.toString()));
-      } catch (err) {
-        console.error(err);
+
+      const updateInfo = Y.decodeUpdate(update);
+
+      // Checker
+      let needUpdate = true;
+      getClientYjs(updateInfo, (info) => {
+        const index = tinyThis._ydoc_matrix_update.indexOf(info.key);
+        if (index > -1) {
+          tinyThis._ydoc_matrix_update.splice(index, 1);
+          needUpdate = false
+        }
+      });
+
+      if (needUpdate) {
+        try {
+          tinyThis._insertCrdt(btoa(update.toString()));
+        } catch (err) {
+          console.error(err);
+        }
       }
+
     });
 
     this._listenRoomTimeline = (event, room, toStartOfTimeline, removed, data) => {
@@ -602,6 +666,7 @@ class RoomTimeline extends EventEmitter {
   removeInternalListeners() {
     if (!this.initialized) return;
     this.ydoc.destroy();
+    this._ydoc_matrix_update = [];
     this.matrixClient.removeListener('Room.timeline', this._listenRoomTimeline);
     this.matrixClient.removeListener('Room.redaction', this._listenRedaction);
     this.matrixClient.removeListener('Event.decrypted', this._listenDecryptEvent);
