@@ -102,6 +102,8 @@ const getClientYjs = (updateInfo, callback) => {
 
 const enableyJsItem = {
 
+  convertToString: (update) => btoa(update.toString()),
+
   action: (ydoc, type, parent) => {
     if (typeof enableyJsItem.types[type] === 'function') {
       return enableyJsItem.types[type](ydoc, parent);
@@ -202,7 +204,6 @@ class RoomTimeline extends EventEmitter {
             // Prepare to insert into update
             const memoryData = new Uint8Array(data);
             const updateInfo = Y.decodeUpdate(memoryData);
-            let updateItem;
 
             getClientYjs(updateInfo, (info) => {
               tinyThis._ydoc_matrix_update.push(info.key);
@@ -575,6 +576,15 @@ class RoomTimeline extends EventEmitter {
     }
   }
 
+  snapshotCrdt() {
+
+    const update = Y.encodeStateAsUpdate(this.ydoc);
+    const snapshot = Y.encodeSnapshot(Y.snapshot(this.ydoc));
+
+    return { update, snapshot };
+
+  }
+
   _insertCrdt(data, type, parent, store = 'DEFAULT') {
     return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { data, store, type, parent });
   }
@@ -628,7 +638,9 @@ class RoomTimeline extends EventEmitter {
       // Insert update into the room
       if (needUpdate) {
         try {
-          tinyThis._insertCrdt(btoa(update.toString()), itemType, parent);
+
+          tinyThis._insertCrdt(enableyJsItem.convertToString(update), itemType, parent);
+
         } catch (err) {
           console.error(err);
         }
