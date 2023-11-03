@@ -124,6 +124,7 @@ class RoomTimeline extends EventEmitter {
     this.initialized = false;
     this.ydoc = null;
     this._ydoc_matrix_update = [];
+    this._ydoc_cache = [];
 
     setTimeout(() => this.room.loadMembersIfNeeded());
 
@@ -157,10 +158,85 @@ class RoomTimeline extends EventEmitter {
     this.crdt = {};
   }
 
+  // Add crdt
+  _addCrdt(content) {
+
+    // Tiny This
+    const tinyThis = this;
+
+    // Data
+    if (typeof content.data === 'string' && content.data.length > 0) {
+      try {
+
+        // Get Data
+        const data = atob(content.data).split(',');
+        for (const item in data) {
+          data[item] = Number(data[item]);
+        }
+
+        if (data.length > 1) {
+
+          // Prepare to insert into update
+          const memoryData = new Uint8Array(data);
+          const updateInfo = Y.decodeUpdate(memoryData);
+          let updateItem;
+
+          // Checker
+          if (tinyThis.ydoc) {
+
+            getClientYjs(updateInfo, (info, type) => {
+
+              tinyThis._ydoc_matrix_update.push(info.key);
+
+              if (type === 'structs') {
+
+                const struct = info.value;
+                if (typeof struct.parent === 'string' && struct.parent.length > 0) {
+
+                  try {
+                    updateItem = tinyThis.ydoc.get(struct.parent);
+                    console.log(struct.parent, updateItem);
+                  } catch (err) {
+                    console.error('item', err);
+                  }
+
+                  if (objType(struct.content, 'object')) {
+                    for (const item2 in struct.content) {
+
+                    }
+                  }
+
+                }
+
+              }
+
+              if (type === 'deleted') {
+
+              }
+
+            });
+
+            // console.log(this._ydoc_matrix_update);
+            Y.applyUpdate(this.ydoc, memoryData);
+
+            // this.ydoc.toJSON();
+
+            // console.log(clone());
+
+          }
+
+        }
+
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+  }
+
   // Add to timeline
   addToTimeline(mEvent) {
 
-    const tinyThis = this;
     const evType = mEvent.getType();
     if (evType !== 'pony.house.crdt' && !messageIsClassicCrdt(mEvent)) {
 
@@ -202,80 +278,18 @@ class RoomTimeline extends EventEmitter {
           if (!Array.isArray(this.crdt[content.type])) this.crdt[content.type] = [];
           this.crdt[content.type].push(mEvent);
 
-        } else {
+        }
+
+        // Classic values
+        else {
 
           if (!Array.isArray(this.crdt.DEFAULT)) this.crdt.DEFAULT = [];
           this.crdt.DEFAULT.push(mEvent);
 
         }
 
-        // Data
-        if (typeof content.data === 'string' && content.data.length > 0) {
-          try {
-
-            // Get Data
-            const data = atob(content.data).split(',');
-            for (const item in data) {
-              data[item] = Number(data[item]);
-            }
-
-            if (data.length > 1) {
-
-              // Prepare to insert into update
-              const memoryData = new Uint8Array(data);
-              const updateInfo = Y.decodeUpdate(memoryData);
-              let updateItem;
-
-              // Checker
-              if (tinyThis.ydoc) {
-
-                getClientYjs(updateInfo, (info, type) => {
-
-                  tinyThis._ydoc_matrix_update.push(info.key);
-
-                  if (type === 'structs') {
-
-                    const struct = info.value;
-                    if (typeof struct.parent === 'string' && struct.parent.length > 0) {
-
-                      try {
-                        updateItem = tinyThis.ydoc.get(struct.parent);
-                        console.log(struct.parent, updateItem);
-                      } catch (err) {
-                        console.error('item', err);
-                      }
-
-                      if (objType(struct.content, 'object')) {
-                        for (const item2 in struct.content) {
-
-                        }
-                      }
-
-                    }
-
-                  }
-
-                  if (type === 'deleted') {
-
-                  }
-
-                });
-
-                // console.log(this._ydoc_matrix_update);
-                Y.applyUpdate(this.ydoc, memoryData);
-
-                // this.ydoc.toJSON();
-
-                // console.log(clone());
-
-              }
-
-            }
-
-          } catch (err) {
-            console.error(err);
-          }
-        }
+        // Send to Crdt
+        this._addCrdt(content);
 
       }
     } else {
@@ -542,6 +556,7 @@ class RoomTimeline extends EventEmitter {
     const tinyThis = this;
     this.ydoc = new Y.Doc();
     this._ydoc_matrix_update = [];
+    this._ydoc_cache = [];
 
     this.ydoc.on('update', (update) => {
 
@@ -667,6 +682,7 @@ class RoomTimeline extends EventEmitter {
     if (!this.initialized) return;
     this.ydoc.destroy();
     this._ydoc_matrix_update = [];
+    this._ydoc_cache = [];
     this.matrixClient.removeListener('Room.timeline', this._listenRoomTimeline);
     this.matrixClient.removeListener('Room.redaction', this._listenRedaction);
     this.matrixClient.removeListener('Event.decrypted', this._listenDecryptEvent);
