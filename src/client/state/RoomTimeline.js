@@ -577,9 +577,23 @@ class RoomTimeline extends EventEmitter {
   }
 
   snapshotCrdt() {
+
     const update = enableyJsItem.convertToString(Y.encodeStateAsUpdate(this.ydoc));
     const encode = enableyJsItem.convertToString(Y.encodeSnapshot(Y.snapshot(this.ydoc)));
-    return { update, encode };
+
+    const types = {};
+    this.ydoc.share.forEach((value, key) => {
+
+      try {
+        types[key] = String(value.constructor.name.startsWith('_') ? value.constructor.name.substring(1) : item.constructor.name).toLocaleLowerCase();
+      }
+
+      catch { types[key] = null; }
+
+    });
+
+    return { update, encode, types };
+
   }
 
   _insertCrdt(data, type, parent, store = 'DEFAULT') {
