@@ -639,7 +639,58 @@ class RoomTimeline extends EventEmitter {
       if (needUpdate) {
         try {
 
-          tinyThis._insertCrdt(enableyJsItem.convertToString(update), itemType, parent);
+          // Event Name
+          const eventName = 'DEFAULT';
+
+          // Insert CRDT and prepare to check snapshot sender
+          tinyThis._insertCrdt(enableyJsItem.convertToString(update), itemType, parent, eventName).then(() => {
+
+            // Get CRDT List and user Id
+            const items = tinyThis.crdt[eventName];
+            const userId = tinyThis.matrixClient.getUserId();
+
+            // Counter Checker
+            let crdtCount = 0;
+            if (Array.isArray(items) && items.length > 0) {
+
+              // Check Events
+              for (const item in items) {
+
+                // Get Content
+                const content = items[item].getContent();
+
+                // First Check
+                if (
+                  userId === items[item].getSender() &&
+                  objType(content, 'object') &&
+                  content.store === eventName
+                ) {
+
+                  // Is Data
+                  if (typeof content.data === 'string' && content.data.length > 0) {
+                    crdtCount++;
+                  }
+
+                  // Is Snapshot
+                  else if (typeof content.snapshot === 'string' && content.snapshot.length > 0) {
+                    crdtCount = 0;
+                  }
+
+                }
+
+              }
+
+            }
+
+            // Send snapshot
+            if (crdtCount > 4) {
+
+              const data = tinyThis.snapshotCrdt();
+              console.log('snapshot test', data);
+
+            }
+
+          });
 
         } catch (err) {
           console.error(err);
