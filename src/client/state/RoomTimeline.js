@@ -577,16 +577,17 @@ class RoomTimeline extends EventEmitter {
   }
 
   snapshotCrdt() {
-
-    const update = Y.encodeStateAsUpdate(this.ydoc);
-    const snapshot = Y.encodeSnapshot(Y.snapshot(this.ydoc));
-
-    return { update, snapshot };
-
+    const update = enableyJsItem.convertToString(Y.encodeStateAsUpdate(this.ydoc));
+    const encode = enableyJsItem.convertToString(Y.encodeSnapshot(Y.snapshot(this.ydoc)));
+    return { update, encode };
   }
 
   _insertCrdt(data, type, parent, store = 'DEFAULT') {
     return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { data, store, type, parent });
+  }
+
+  _insertSnapshotCrdt(snapshot, type, parent, store = 'DEFAULT') {
+    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { snapshot, store, type, parent });
   }
 
   // Active Listens
@@ -647,7 +648,7 @@ class RoomTimeline extends EventEmitter {
 
             // Get CRDT List and user Id
             const items = tinyThis.crdt[eventName];
-            const userId = tinyThis.matrixClient.getUserId();
+            // const userId = tinyThis.matrixClient.getUserId();
 
             // Counter Checker
             let crdtCount = 0;
@@ -661,7 +662,7 @@ class RoomTimeline extends EventEmitter {
 
                 // First Check
                 if (
-                  userId === items[item].getSender() &&
+                  // userId === items[item].getSender() &&
                   objType(content, 'object') &&
                   content.store === eventName
                 ) {
@@ -672,7 +673,11 @@ class RoomTimeline extends EventEmitter {
                   }
 
                   // Is Snapshot
-                  else if (typeof content.snapshot === 'string' && content.snapshot.length > 0) {
+                  else if (
+                    objType(content.snapshot, 'object') &&
+                    typeof content.snapshot.update === 'string' && content.snapshot.update.length > 0 &&
+                    typeof content.snapshot.encode === 'string' && content.snapshot.encode.length > 0
+                  ) {
                     crdtCount = 0;
                   }
 
@@ -684,10 +689,7 @@ class RoomTimeline extends EventEmitter {
 
             // Send snapshot
             if (crdtCount > 4) {
-
-              const data = tinyThis.snapshotCrdt();
-              console.log('snapshot test', data);
-
+              tinyThis._insertSnapshotCrdt(tinyThis.snapshotCrdt(), itemType, parent, eventName);
             }
 
           });
