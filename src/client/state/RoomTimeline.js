@@ -188,10 +188,10 @@ class RoomTimeline extends EventEmitter {
 
     // Checker
     if (this.ydoc) {
+      try {
 
-      // Data
-      if (typeof content.data === 'string' && content.data.length > 0) {
-        try {
+        // Data
+        if (typeof content.data === 'string' && content.data.length > 0) {
 
           // Get Data
           const data = atob(content.data).split(',');
@@ -222,11 +222,45 @@ class RoomTimeline extends EventEmitter {
 
           }
 
-        } catch (err) {
-          console.error(err);
         }
-      }
 
+        // Snapshot
+        else if (
+          objType(content.snapshot, 'object') &&
+          typeof content.snapshot.update === 'string' && content.snapshot.update.length > 0 &&
+          typeof content.snapshot.encode === 'string' && content.snapshot.encode.length > 0
+        ) {
+
+          // Fix doc
+          if (objType(content.snapshot.types, 'object')) {
+            for (const key in content.snapshot.types) {
+              if (typeof content.snapshot.types[key] === 'string' && content.snapshot.types[key].length > 0) {
+                enableyJsItem.action(this.ydoc, content.snapshot.types[key], key);
+              }
+            }
+          }
+
+          // Get Data
+          const data = atob(content.snapshot.update).split(',');
+          for (const item in data) {
+            data[item] = Number(data[item]);
+          }
+
+          if (data.length > 1) {
+
+            // Prepare to insert into update
+            const memoryData = new Uint8Array(data);
+
+            // Apply update
+            Y.applyUpdate(this.ydoc, memoryData);
+
+          }
+
+        }
+
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     // Nope. Wait more
