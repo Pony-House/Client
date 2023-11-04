@@ -52,6 +52,11 @@ https://getbootstrap.com/docs/5.3/getting-started/introduction/
 #### Web3JS
 https://web3js.readthedocs.io/en/v1.10.0/
 
+#### Yjs
+https://docs.yjs.dev/
+
+Y.Map, Y.Array, Y.Text only
+
 ### Load Custom Theme
 src/client/state/settings.js
 

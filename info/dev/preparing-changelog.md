@@ -1,3 +1,4 @@
 - Tiny electron issue fixed on breadcrumb space.
 - Sidebar css issues fixed.
 - Mute audio/microphone buttons added.
+- Yjs lib updated.
