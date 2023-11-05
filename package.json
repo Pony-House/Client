@@ -97,6 +97,7 @@
     "twemoji": "14.0.2",
     "web3": "4.2.1",
     "web3-providers-ws": "4.0.7",
+    "buffer": "6.0.3",
     "yjs": "13.6.8"
   },
   "devDependencies": {
@@ -110,7 +111,6 @@
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
     "@vitejs/plugin-react": "4.1.0",
-    "buffer": "6.0.3",
     "cross-env": "7.0.3",
     "download-git-repo": "3.0.2",
     "electron": "^27.0.2",
