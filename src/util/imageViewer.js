@@ -58,16 +58,20 @@ export default async function imageViewer(lightbox, imgQuery, name, url, readMim
 
             // Register Buttons
             pswp.on('uiRegister', () => {
-                pswp.ui.registerElement({
-                    name: 'new-window-button',
-                    ariaLabel: 'Open Url',
-                    order: 9,
-                    isButton: true,
-                    html: '<i class="fa-solid fa-arrow-up-right-from-square pswp__icn" height="32" width="32"></i>',
-                    onClick: () => {
-                        window.open(url, '_blank').focus();
-                    }
-                });
+
+                if (!__ENV_APP__.electron_mode) {
+                    pswp.ui.registerElement({
+                        name: 'new-window-button',
+                        ariaLabel: 'Open Url',
+                        order: 9,
+                        isButton: true,
+                        html: '<i class="fa-solid fa-arrow-up-right-from-square pswp__icn" height="32" width="32"></i>',
+                        onClick: () => {
+                            window.open(url, '_blank').focus();
+                        }
+                    });
+                }
+
                 pswp.ui.registerElement({
                     name: 'download-button',
                     ariaLabel: 'Download Image',
@@ -78,6 +82,7 @@ export default async function imageViewer(lightbox, imgQuery, name, url, readMim
                         FileSaver.saveAs(url, filename);
                     }
                 });
+
             });
 
             // Init lightbox now
