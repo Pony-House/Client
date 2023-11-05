@@ -234,6 +234,14 @@ if (!gotTheLock) {
           },
         },
         {
+          label: 'DevTools (Advanced User)',
+          click: () => {
+            if (appStarted) {
+              if (win) win.webContents.openDevTools();
+            }
+          },
+        },
+        {
           label: 'Quit',
           click: () => {
             isQuiting = true;

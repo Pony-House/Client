@@ -42,7 +42,7 @@ const IconButton = React.forwardRef(({
     </button>
   );
 
-  if (tooltip === null) return btn;
+  if (typeof tooltip === 'undefined') return btn;
 
   return (
     <Tooltip
@@ -61,7 +61,6 @@ IconButton.defaultProps = {
   variant: 'link btn-bg',
   size: 'normal',
   type: 'button',
-  tooltip: null,
   tooltipPlacement: 'top',
   onClick: null,
   fa: null,
@@ -80,7 +79,6 @@ IconButton.propTypes = {
   variant: PropTypes.oneOf(bsColorsArray),
   size: PropTypes.oneOf(['normal', 'small', 'extra-small']),
   type: PropTypes.oneOf(['button', 'submit', 'reset']),
-  tooltip: PropTypes.string,
   tooltipPlacement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
   src: PropTypes.string,
   onClick: PropTypes.func,
