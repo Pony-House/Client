@@ -95,9 +95,6 @@
     "sanitize-html": "2.11.0",
     "tippy.js": "6.3.7",
     "twemoji": "14.0.2",
-    "vega": "5.25.0",
-    "vega-embed": "6.23.0",
-    "vega-lite": "5.16.1",
     "web3": "4.2.1",
     "web3-providers-ws": "4.0.7",
     "yjs": "13.6.8"

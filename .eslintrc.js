@@ -12,7 +12,6 @@ module.exports = {
     'playLogData': 'readonly',
     '__ENV_APP__': 'readonly',
     'Olm': 'readonly',
-    'vega': 'readonly',
     'vegaLite': 'readonly',
     'vegaEmbed': 'readonly',
     'qrcode': 'readonly',
