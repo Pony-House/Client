@@ -736,7 +736,7 @@ class RoomTimeline extends EventEmitter {
             }
 
             // Send snapshot
-            if (crdtCount > 4) {
+            if (crdtCount > 7) {
               tinyThis._insertSnapshotCrdt(tinyThis.snapshotCrdt(), itemType, parent, eventName);
             }
 
