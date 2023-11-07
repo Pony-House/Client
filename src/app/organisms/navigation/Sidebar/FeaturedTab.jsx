@@ -4,7 +4,7 @@ import initMatrix from '../../../../client/initMatrix';
 import cons from '../../../../client/state/cons';
 
 import {
-    selectTab, openSettings, selectSpace, selectRoom, selectRoomMode
+    selectTab, openSettings, selectRoom, selectRoomMode
 } from '../../../../client/action/navigation';
 import { tabText as settingTabText } from "../../settings/Settings";
 
@@ -20,6 +20,7 @@ import navigation from '../../../../client/state/navigation';
 import { setEthereumStatusButton } from '../../../../util/web3/status';
 import { objType } from '../../../../util/tools';
 import { colorMXID } from '../../../../util/colorMXID';
+import { getAppearance } from '../../../../util/libs/appearance';
 
 // Featured Tab
 export default function FeaturedTab() {
@@ -33,7 +34,7 @@ export default function FeaturedTab() {
     useNotificationUpdate();
 
     const mx = initMatrix.matrixClient;
-    const appearance = initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
+    const appearance = getAppearance();
 
     // Home
     function getHomeNoti() {

@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import initMatrix from '../../../../client/initMatrix';
 
 import settings from '../../../../client/state/settings';
 import Toggle from '../../../atoms/button/Toggle';
 import SegmentedControls from '../../../atoms/segmented-controls/SegmentedControls';
 import SettingTile from '../../../molecules/setting-tile/SettingTile';
-
-import { toggleAction } from '../Api';
 
 import {
     toggleSystemTheme, toggleMarkdown, toggleMembershipEvents, toggleNickAvatarEvents,
@@ -20,8 +17,8 @@ function AppearanceSection() {
     const [, updateState] = useState({});
     const appearanceSettings = getAppearance();
 
-    const [showUserDMstatus, setShowUserStatus] = useState(true);
-    const [pinDMmessages, setPinDMmessages] = useState(true);
+    const [showUserDMstatus, setShowUserStatus] = useState(appearanceSettings.showUserDMstatus);
+    const [pinDMmessages, setPinDMmessages] = useState(appearanceSettings.pinDMmessages);
     const [isAnimateAvatarsEnabled, setAnimateAvatarsEnabled] = useState(appearanceSettings.isAnimateAvatarsEnabled);
     const [isEmbedEnabled, setEmbedEnabled] = useState(appearanceSettings.isEmbedEnabled);
     const [isUNhoverEnabled, setUNhoverEnabled] = useState(appearanceSettings.isUNhoverEnabled);
@@ -31,11 +28,7 @@ function AppearanceSection() {
 
     useEffect(() => {
 
-        const content = initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
         const zoomApp = Number(global.localStorage.getItem('pony-house-zoom'));
-
-        setPinDMmessages((content.pinDMmessages !== false));
-        setShowUserStatus((content.showUserDMstatus !== false));
 
         const ponyHouseZoom = $(ponyHouseZoomRef.current);
         const ponyHouseZoomRange = $(ponyHouseZoomRangeRef.current);
@@ -141,7 +134,7 @@ function AppearanceSection() {
                             <Toggle
                                 className='d-inline-flex'
                                 isActive={showUserDMstatus}
-                                onToggle={toggleAction('pony.house.appearance', 'showUserDMstatus', setShowUserStatus)}
+                                onToggle={toggleAppearanceAction('showUserDMstatus', setShowUserStatus)}
                             />
                         )}
                         content={<div className="very-small text-gray">All users in your DM will show whether they are online or not.</div>}
@@ -153,7 +146,7 @@ function AppearanceSection() {
                             <Toggle
                                 className='d-inline-flex'
                                 isActive={pinDMmessages}
-                                onToggle={toggleAction('pony.house.appearance', 'pinDMmessages', setPinDMmessages)}
+                                onToggle={toggleAppearanceAction('pinDMmessages', setPinDMmessages)}
                             />
                         )}
                         content={<div className="very-small text-gray">Whenever you receive a new notification in your DM list, you will see a notification icon in the sidebar.</div>}

@@ -15,6 +15,7 @@ import RoomOptions from '../../molecules/room-options/RoomOptions';
 import SpaceOptions from '../../molecules/space-options/SpaceOptions';
 
 import { useForceUpdate } from '../../hooks/useForceUpdate';
+import { getAppearance } from '../../../util/libs/appearance';
 
 // Selector Function
 function Selector({
@@ -24,7 +25,7 @@ function Selector({
   // Base Script
   const mx = initMatrix.matrixClient;
   const noti = initMatrix.notifications;
-  const appearanceSettings = mx.getAccountData('pony.house.appearance')?.getContent() ?? {};
+  const appearanceSettings = getAppearance();
 
   // Room Data
   let room;

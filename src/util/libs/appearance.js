@@ -18,6 +18,9 @@ export function getAppearance(folder, getDefault = true) {
         content.isUNhoverEnabled = typeof content.isUNhoverEnabled === 'boolean' ? content.isUNhoverEnabled : true;
         content.isAnimateAvatarsEnabled = typeof content.isAnimateAvatarsEnabled === 'boolean' ? content.isAnimateAvatarsEnabled : true;
 
+        content.showUserDMstatus = typeof content.showUserDMstatus === 'boolean' ? content.showUserDMstatus : true;
+        content.pinDMmessages = typeof content.pinDMmessages === 'boolean' ? content.pinDMmessages : true;
+
     }
 
     if (typeof folder === 'string' && folder.length > 0) {
