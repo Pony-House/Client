@@ -10,10 +10,6 @@ export function getAppearance(folder, getDefault = true) {
 
     if (getDefault) {
 
-        content.showUserProfile = typeof content.showUserProfile === 'boolean' ? content.showUserProfile : true;
-        content.showUserStatus = typeof content.showUserStatus === 'boolean' ? content.showUserStatus : true;
-        content.showUserPresenceStatus = typeof content.showUserPresenceStatus === 'boolean' ? content.showUserPresenceStatus : true;
-
         content.isEmbedEnabled = typeof content.isEmbedEnabled === 'boolean' ? content.isEmbedEnabled : true;
         content.isUNhoverEnabled = typeof content.isUNhoverEnabled === 'boolean' ? content.isUNhoverEnabled : true;
         content.isAnimateAvatarsEnabled = typeof content.isAnimateAvatarsEnabled === 'boolean' ? content.isAnimateAvatarsEnabled : true;
