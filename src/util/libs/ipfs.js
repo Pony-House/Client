@@ -55,7 +55,6 @@ export function getIpfsCfg(folder, getDefault = true, domainsParse = false) {
             }
         }
 
-
     }
 
     if (typeof folder === 'string' && folder.length > 0) {
