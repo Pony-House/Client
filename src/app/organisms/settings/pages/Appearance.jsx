@@ -22,7 +22,7 @@ function AppearanceSection() {
 
     const [showUserDMstatus, setShowUserStatus] = useState(true);
     const [pinDMmessages, setPinDMmessages] = useState(true);
-    const [isAnimateAvatarsHidden, setAnimateAvatarsHidden] = useState(false);
+    const [isAnimateAvatarsEnabled, setAnimateAvatarsEnabled] = useState(appearanceSettings.isAnimateAvatarsEnabled);
     const [isEmbedEnabled, setEmbedEnabled] = useState(appearanceSettings.isEmbedEnabled);
     const [isUNhoverEnabled, setUNhoverEnabled] = useState(appearanceSettings.isUNhoverEnabled);
 
@@ -36,7 +36,6 @@ function AppearanceSection() {
 
         setPinDMmessages((content.pinDMmessages !== false));
         setShowUserStatus((content.showUserDMstatus !== false));
-        setAnimateAvatarsHidden((content.isAnimateAvatarsHidden === true));
 
         const ponyHouseZoom = $(ponyHouseZoomRef.current);
         const ponyHouseZoomRange = $(ponyHouseZoomRangeRef.current);
@@ -207,12 +206,12 @@ function AppearanceSection() {
                     <li className="list-group-item very-small text-gray">User message</li>
 
                     <SettingTile
-                        title="Disable animated hover avatars"
+                        title="Enable animated hover avatars"
                         options={(
                             <Toggle
                                 className='d-inline-flex'
-                                isActive={isAnimateAvatarsHidden}
-                                onToggle={toggleAction('pony.house.appearance', 'isAnimateAvatarsHidden', setAnimateAvatarsHidden)}
+                                isActive={isAnimateAvatarsEnabled}
+                                onToggle={toggleAppearanceAction('isAnimateAvatarsEnabled', setAnimateAvatarsEnabled)}
                             />
                         )}
                         content={<div className="very-small text-gray">Turn off animated avatars that are displayed when you mouse over it.</div>}

@@ -10,6 +10,7 @@ import RawIcon from '../system-icons/RawIcon';
 
 import { avatarInitials } from '../../../util/common';
 import defaultAvatar from './defaultAvatar';
+import { getAppearance } from '../../../util/libs/appearance';
 
 const ImageBrokenSVG = './img/svg/image-broken.svg';
 
@@ -18,11 +19,7 @@ const Avatar = React.forwardRef(({
 }, ref) => {
 
   // Avatar Config
-  let appearanceSettings = {};
-
-  if (initMatrix.matrixClient && initMatrix.matrixClient.getAccountData) {
-    appearanceSettings = initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
-  }
+  const appearanceSettings = getAppearance();
 
   // Prepare Data
   let textSize = 's1';
@@ -72,18 +69,18 @@ const Avatar = React.forwardRef(({
               className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
 
               draggable='false'
-              loadedimg={appearanceSettings.isAnimateAvatarsHidden !== true ? 'false' : null}
-              loadingimg={appearanceSettings.isAnimateAvatarsHidden !== true ? 'false' : null}
+              loadedimg={appearanceSettings.isAnimateAvatarsEnabled ? 'false' : null}
+              loadingimg={appearanceSettings.isAnimateAvatarsEnabled ? 'false' : null}
 
-              animparentscount={appearanceSettings.isAnimateAvatarsHidden !== true ? animParentsCount : null}
+              animparentscount={appearanceSettings.isAnimateAvatarsEnabled ? animParentsCount : null}
 
-              animsrc={appearanceSettings.isAnimateAvatarsHidden !== true ? imageAnimSrc : null}
-              normalsrc={appearanceSettings.isAnimateAvatarsHidden !== true ? imageSrc : null}
-              defaultavatar={appearanceSettings.isAnimateAvatarsHidden !== true ? tinyDa : null}
+              animsrc={appearanceSettings.isAnimateAvatarsEnabled ? imageAnimSrc : null}
+              normalsrc={appearanceSettings.isAnimateAvatarsEnabled ? imageSrc : null}
+              defaultavatar={appearanceSettings.isAnimateAvatarsEnabled ? tinyDa : null}
 
-              src={appearanceSettings.isAnimateAvatarsHidden !== true ? tinyDa : imageSrc}
+              src={appearanceSettings.isAnimateAvatarsEnabled ? tinyDa : imageSrc}
 
-              onLoad={appearanceSettings.isAnimateAvatarsHidden !== true ? loadAvatar : null}
+              onLoad={appearanceSettings.isAnimateAvatarsEnabled ? loadAvatar : null}
 
               onError={(e) => { e.target.src = ImageBrokenSVG; }}
               alt={text || 'avatar'}
