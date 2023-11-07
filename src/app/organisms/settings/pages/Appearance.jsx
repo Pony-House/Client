@@ -207,7 +207,7 @@ function AppearanceSection() {
                                 onToggle={toggleAppearanceAction('isAnimateAvatarsEnabled', setAnimateAvatarsEnabled)}
                             />
                         )}
-                        content={<div className="very-small text-gray">Turn off animated avatars that are displayed when you mouse over it.</div>}
+                        content={<div className="very-small text-gray">Turn on animated avatars that are displayed when you mouse over it.</div>}
                     />
 
                     <SettingTile
@@ -219,7 +219,7 @@ function AppearanceSection() {
                                 onToggle={toggleAppearanceAction('isUNhoverEnabled', setUNhoverEnabled)}
                             />
                         )}
-                        content={<div className="very-small text-gray">When you hover over a user nickname, the username will no longer be displayed. You will need to open the user&apos;s profile to see their identity.</div>}
+                        content={<div className="very-small text-gray">When you hover over a user nickname, the username will be displayed.</div>}
                     />
 
                 </ul>
@@ -238,7 +238,7 @@ function AppearanceSection() {
                                 onToggle={toggleAppearanceAction('isEmbedEnabled', setEmbedEnabled)}
                             />
                         )}
-                        content={<div className="very-small text-gray">All messages will no longer load embed.</div>}
+                        content={<div className="very-small text-gray">All messages with url will load a embed.</div>}
                     />
 
                 </ul>
