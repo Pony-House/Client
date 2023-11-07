@@ -619,7 +619,7 @@ class RoomTimeline extends EventEmitter {
     this.ydoc.share.forEach((value, key) => {
 
       try {
-        types[key] = String(value.constructor.name.startsWith('_') ? value.constructor.name.substring(1) : item.constructor.name).toLocaleLowerCase();
+        types[key] = String(value.constructor.name.startsWith('_') ? value.constructor.name.substring(1) : value.constructor.name).toLocaleLowerCase();
       }
 
       catch { types[key] = null; }

@@ -26,9 +26,6 @@ if (!fs.existsSync(soundsFolder)) {
 fs.copyFileSync(path.join(__dirname, './public/sound/notification.ogg'), path.join(soundsFolder, './notification.ogg'));
 fs.copyFileSync(path.join(__dirname, './public/sound/invite.ogg'), path.join(soundsFolder, './invite.ogg'));
 
-fs.copyFileSync(path.join(__dirname, './public/sound/micro_on.ogg'), path.join(soundsFolder, './micro_on.ogg'));
-fs.copyFileSync(path.join(__dirname, './public/sound/micro_off.ogg'), path.join(soundsFolder, './micro_off.ogg'));
-
 const copyFiles = {
   targets: [
 
@@ -228,7 +225,7 @@ export default defineConfig(({ command, mode }) => {
 
         onstart(options) {
           if (process.env.VSCODE_DEBUG) {
-            console.log(/* For `.vscode/.debug.script.mjs` */'[startup] Electron App')
+            console.log(/* For `.vscode/.debug.script.mjs` */'[startup] [vscode] Debug electron app')
           } else {
             options.startup()
           }
