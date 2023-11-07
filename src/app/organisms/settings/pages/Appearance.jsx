@@ -13,16 +13,18 @@ import {
     toggleSystemTheme, toggleMarkdown, toggleMembershipEvents, toggleNickAvatarEvents,
 } from '../../../../client/action/settings';
 import { tinyAppZoomValidator } from '../../../../util/tools';
+import { getAppearance, toggleAppearanceAction } from '../../../../util/libs/appearance';
 
 function AppearanceSection() {
 
     const [, updateState] = useState({});
+    const appearanceSettings = getAppearance();
 
     const [showUserDMstatus, setShowUserStatus] = useState(true);
     const [pinDMmessages, setPinDMmessages] = useState(true);
     const [isAnimateAvatarsHidden, setAnimateAvatarsHidden] = useState(false);
-    const [isEmbedDisabled, setEmbedDisabled] = useState(false);
-    const [isUNhoverDisabled, setUNhoverDisabled] = useState(false);
+    const [isEmbedEnabled, setEmbedEnabled] = useState(appearanceSettings.isEmbedEnabled);
+    const [isUNhoverEnabled, setUNhoverEnabled] = useState(appearanceSettings.isUNhoverEnabled);
 
     const ponyHouseZoomRef = useRef(null);
     const ponyHouseZoomRangeRef = useRef(null);
@@ -35,8 +37,6 @@ function AppearanceSection() {
         setPinDMmessages((content.pinDMmessages !== false));
         setShowUserStatus((content.showUserDMstatus !== false));
         setAnimateAvatarsHidden((content.isAnimateAvatarsHidden === true));
-        setEmbedDisabled((content.isEmbedDisabled === true));
-        setUNhoverDisabled((content.isUNhoverDisabled === true));
 
         const ponyHouseZoom = $(ponyHouseZoomRef.current);
         const ponyHouseZoomRange = $(ponyHouseZoomRangeRef.current);
@@ -219,12 +219,12 @@ function AppearanceSection() {
                     />
 
                     <SettingTile
-                        title="Disable username hover"
+                        title="Enable username hover"
                         options={(
                             <Toggle
                                 className='d-inline-flex'
-                                isActive={isUNhoverDisabled}
-                                onToggle={toggleAction('pony.house.appearance', 'isUNhoverDisabled', setUNhoverDisabled)}
+                                isActive={isUNhoverEnabled}
+                                onToggle={toggleAppearanceAction('isUNhoverEnabled', setUNhoverEnabled)}
                             />
                         )}
                         content={<div className="very-small text-gray">When you hover over a user nickname, the username will no longer be displayed. You will need to open the user&apos;s profile to see their identity.</div>}
@@ -238,12 +238,12 @@ function AppearanceSection() {
                     <li className="list-group-item very-small text-gray">Embed</li>
 
                     <SettingTile
-                        title="Disable embed to message url"
+                        title="Enable embed to message url"
                         options={(
                             <Toggle
                                 className='d-inline-flex'
-                                isActive={isEmbedDisabled}
-                                onToggle={toggleAction('pony.house.appearance', 'isEmbedDisabled', setEmbedDisabled)}
+                                isActive={isEmbedEnabled}
+                                onToggle={toggleAppearanceAction('isEmbedEnabled', setEmbedEnabled)}
                             />
                         )}
                         content={<div className="very-small text-gray">All messages will no longer load embed.</div>}

@@ -1,6 +1,6 @@
 export function getAppearance(folder, getDefault = true) {
 
-    let content = global.localStorage.getItem('ponyHouse-ipfs');
+    let content = global.localStorage.getItem('ponyHouse-appearance');
 
     try {
         content = JSON.parse(content) ?? {};
@@ -13,6 +13,9 @@ export function getAppearance(folder, getDefault = true) {
         content.showUserProfile = typeof content.showUserProfile === 'boolean' ? content.showUserProfile : true;
         content.showUserStatus = typeof content.showUserStatus === 'boolean' ? content.showUserStatus : true;
         content.showUserPresenceStatus = typeof content.showUserPresenceStatus === 'boolean' ? content.showUserPresenceStatus : true;
+
+        content.isEmbedEnabled = typeof content.isEmbedEnabled === 'boolean' ? content.isEmbedEnabled : true;
+        content.isUNhoverEnabled = typeof content.isUNhoverEnabled === 'boolean' ? content.isUNhoverEnabled : true;
 
     }
 

@@ -40,6 +40,7 @@ import getUrlPreview from '../../../util/libs/getUrlPreview';
 
 import Embed from './Embed';
 import tinyAPI from '../../../util/mods';
+import { getAppearance } from '../../../util/libs/appearance';
 
 function PlaceholderMessage() {
   return (
@@ -70,14 +71,13 @@ const MessageHeader = React.memo(({
   userId, username,
 }) => {
 
-  const mx = initMatrix.matrixClient;
-  const appAppearance = mx.getAccountData('pony.house.appearance')?.getContent() ?? {};
+  const appAppearance = getAppearance();
   const tinyUsername = twemojifyReact(username);
 
   return (
     <span className='username-base emoji-size-fix' style={{ color: colorMXID(userId) }}>
-      <span className={`username${!appAppearance.isUNhoverDisabled ? '' : ' disable-username'}`}>{tinyUsername}</span>
-      <span className={`user-id${!appAppearance.isUNhoverDisabled ? '' : ' disable-username'}`}>{!appAppearance.isUNhoverDisabled ? twemojifyReact(userId) : tinyUsername}</span>
+      <span className={`username${appAppearance.isUNhoverEnabled ? '' : ' disable-username'}`}>{tinyUsername}</span>
+      <span className={`user-id${appAppearance.isUNhoverEnabled ? '' : ' disable-username'}`}>{appAppearance.isUNhoverEnabled ? twemojifyReact(userId) : tinyUsername}</span>
     </span>
   );
 
@@ -1003,8 +1003,8 @@ function Message({
     if (msgType === 'm.text') {
 
       // Check Urls on the message
-      const appAppearance = mx.getAccountData('pony.house.appearance')?.getContent() ?? {};
-      if (appAppearance.isEmbedDisabled !== true && Array.isArray(bodyUrls) && bodyUrls.length > 0) {
+      const appAppearance = getAppearance();
+      if (appAppearance.isEmbedEnabled === true && Array.isArray(bodyUrls) && bodyUrls.length > 0) {
 
         // Create embed base
         const newEmbeds = clone(embeds);
