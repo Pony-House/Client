@@ -31,6 +31,14 @@ export function setAppearance(folder, value) {
     global.localStorage.setItem('ponyHouse-appearance', JSON.stringify(content));
 };
 
+const toggleAppearanceAction = (dataFolder, setToggle) => data => {
+
+    setAppearance(dataFolder, data);
+    setToggle((data === true));
+
+};
+export { toggleAppearanceAction };
+
 global.appearanceApi = {
     getCfg: getAppearance,
     setCfg: setAppearance,
