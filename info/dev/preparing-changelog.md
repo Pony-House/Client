@@ -2,3 +2,4 @@
 - Sidebar css issues fixed.
 - Mute audio/microphone buttons added.
 - Yjs lib updated.
+- Appearance settings page update
