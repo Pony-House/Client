@@ -233,6 +233,7 @@ if (!gotTheLock) {
             }
           },
         },
+        { type: 'separator' },
         {
           label: 'DevTools (Advanced User)',
           click: () => {
