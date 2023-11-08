@@ -42,6 +42,8 @@ Made by Me
 
     =======================================================
 
+    --> Ajeitar o css do ocultador de lista de canais.
+
     --> Lista de usuários online na room ainda não atualiza em tempo real.
 
     --> Quando a janela tem pouco conteúdo, simplesmente tentar corrigir a falha do load incompleto da sala.

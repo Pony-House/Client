@@ -155,6 +155,21 @@ class RoomTimeline extends EventEmitter {
 
   }
 
+  ydocWait() {
+    const tinyThis = this;
+    return new Promise((resolve) => {
+
+      const tryYdoc = () => {
+        if (tinyThis.ydoc) { resolve(tinyThis.ydoc); } else {
+          setTimeout(tryYdoc, 100);
+        }
+      };
+
+      tryYdoc();
+
+    });
+  }
+
   getYdoc() { return this.ydoc; }
 
   isServingLiveTimeline() {
