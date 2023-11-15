@@ -110,10 +110,18 @@ const enableyJsItem = {
     }
   },
 
+  constructorToString: (parent) => String(parent.constructor.name.startsWith('_') ? parent.constructor.name.substring(1) : parent.constructor.name).toLocaleLowerCase(),
+
   types: {
     ymap: (ydoc, parent) => ydoc.getMap(parent),
     ytext: (ydoc, parent) => ydoc.getText(parent),
     yarray: (ydoc, parent) => ydoc.getArray(parent),
+  },
+
+  convertToJson: {
+    ymap: (data) => data.toJSON(),
+    ytext: (data) => data.toString(),
+    yarray: (data) => data.toArray(),
   },
 
 };
@@ -195,6 +203,29 @@ class RoomTimeline extends EventEmitter {
   clearLocalTimelines() {
     this.timeline = [];
     this.crdt = {};
+  }
+
+  // To JSON
+  ydocToJson() {
+
+    if (this.ydoc) {
+
+      const tinyResult = {};
+      this.ydoc.share.forEach((value, key) => {
+
+        const type = enableyJsItem.constructorToString(value);
+        if (enableyJsItem.convertToJson[type]) {
+          tinyResult[key] = enableyJsItem.convertToJson[type](value);
+        }
+
+      });
+
+      return tinyResult;
+
+    }
+
+    return null;
+
   }
 
   // Add crdt
@@ -691,7 +722,7 @@ class RoomTimeline extends EventEmitter {
             const item = struct[struct.length - 1];
 
             try {
-              itemType = String(item.parent.constructor.name.startsWith('_') ? item.parent.constructor.name.substring(1) : item.parent.constructor.name).toLocaleLowerCase();
+              itemType = enableyJsItem.constructorToString(item.parent);
             } catch { itemType = null; }
 
             if (typeof info.value.parent === 'string' && info.value.parent.length > 0) {
