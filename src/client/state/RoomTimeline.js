@@ -1,5 +1,7 @@
 import * as Y from 'yjs';
 import EventEmitter from 'events';
+import clone from 'clone';
+import objectHash from 'object-hash';
 
 import initMatrix from '../initMatrix';
 import cons from './cons';
@@ -253,8 +255,10 @@ class RoomTimeline extends EventEmitter {
               // Prepare to insert into update
               const memoryData = new Uint8Array(data);
               const updateInfo = Y.decodeUpdate(memoryData);
+              const newKeys = [];
 
               getClientYjs(updateInfo, (info) => {
+                newKeys.push(info.key);
                 tinyThis._ydoc_matrix_update.push(info.key);
               });
 
@@ -267,7 +271,16 @@ class RoomTimeline extends EventEmitter {
               }
 
               // Apply update
+              const before = clone(this.ydocToJson());
               Y.applyUpdate(this.ydoc, memoryData);
+              const after = clone(this.ydocToJson());
+
+              if (objectHash(before) === objectHash(after)) {
+                for (const ki in newKeys) {
+                  const index = tinyThis._ydoc_matrix_update.indexOf(newKeys[ki]);
+                  tinyThis._ydoc_matrix_update.splice(index, 1);
+                }
+              }
 
             }
 
