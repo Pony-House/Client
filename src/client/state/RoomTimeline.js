@@ -208,24 +208,49 @@ class RoomTimeline extends EventEmitter {
   }
 
   // To JSON
-  ydocToJson() {
+  ydocToJson(tinyIds) {
 
+    // Prepare Ids
+    const ids = typeof tinyIds === 'string' ? [tinyIds] :
+      Array.isArray(tinyIds) ? tinyIds : null
+
+    // Exist Doc
     if (this.ydoc) {
 
+      // Prepare Functions
       const tinyResult = {};
-      this.ydoc.share.forEach((value, key) => {
+      const getData = (value, key) => {
 
         const type = enableyJsItem.constructorToString(value);
         if (enableyJsItem.convertToJson[type]) {
           tinyResult[key] = enableyJsItem.convertToJson[type](value);
         }
 
-      });
+      };
+
+      // Null. Get all
+      if (!ids || ids.length < 1) { this.ydoc.share.forEach(getData); }
+
+      // Get Values
+      else {
+
+        for (const id in ids) {
+
+          const item = this.ydoc.share.get(ids[id]);
+
+          if (item) {
+            getData(item, ids[0]);
+          }
+
+        }
+
+      }
 
       return tinyResult;
 
     }
 
+    // Invalid
     return null;
 
   }
