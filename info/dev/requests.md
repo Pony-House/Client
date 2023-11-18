@@ -40,6 +40,8 @@ Made by Me
 
     Sistema de trocar o tamanho da imagem antes de enviar.
 
+    getJoinedRoomMembers
+
     =======================================================
 
     --> Ajeitar o css do ocultador de lista de canais.
