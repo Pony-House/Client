@@ -24,6 +24,7 @@ import { parseTimelineChange } from './common';
 import TimelineScroll from './TimelineScroll';
 import EventLimit from './EventLimit';
 import { getCurrentState } from '../../../util/matrixUtil';
+import tinyAPI from '../../../util/mods';
 
 moment.locale('en');
 
@@ -719,8 +720,7 @@ function RoomViewContent({ eventId, roomTimeline }) {
     if (roomTimeline.timeline.length < 1) {
       autoPaginate().then(() => {
         if (roomTimeline.timeline.length < 1) {
-          // DANGER! NOPE!
-          // forceUpdateLimit();
+          tinyAPI.emit('emptyTimeline', forceUpdateLimit);
         }
       });
     }
