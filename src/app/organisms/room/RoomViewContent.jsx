@@ -718,7 +718,6 @@ function RoomViewContent({ eventId, roomTimeline }) {
   setTimeout(() => {
     if (roomTimeline.timeline.length < 1) {
       autoPaginate().then(() => {
-        console.log('Pagination Complete');
         if (roomTimeline.timeline.length < 1) {
           // DANGER! NOPE!
           // forceUpdateLimit();
