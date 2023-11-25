@@ -20,6 +20,7 @@ import { useSelectedTab } from '../../hooks/useSelectedTab';
 import { useSelectedSpace } from '../../hooks/useSelectedSpace';
 import { getSelectRoom, getSelectSpace } from '../../../util/selectedRoom';
 import { getCurrentState } from '../../../util/matrixUtil';
+import { selectRoomMode } from '../../../client/action/navigation';
 
 function useSystemState() {
   const [systemState, setSystemState] = useState({ status: null, value: null });
@@ -114,6 +115,7 @@ function Drawer() {
 
             <IconButton ref={homeClickRef} fa="fa-solid fa-house" id='space-drawer-home-button' className={`text-start mt-3 mx-3 space-drawer-menu-item${!getSelectRoom() && !getSelectSpace() ? ' active' : ''}`} onClick={() => {
               global.resetRoomInfo();
+              selectRoomMode('room');
               $(homeClickRef.current).addClass('active');
             }}>
               <span className='ms-3'>Home</span>
