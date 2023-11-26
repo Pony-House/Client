@@ -14,11 +14,23 @@ function UserOptions({ userId, afterOptionSelect }) {
 
     return (
         <div className="noselect emoji-size-fix w-100" style={{ maxWidth: '256px' }}>
-            <MenuHeader>{twemojifyReact(`Options for ${user?.userId}`)}</MenuHeader>
+            <MenuHeader>{twemojifyReact(`User Options for ${user?.userId}`)}</MenuHeader>
             <MenuItem className="text-start" faSrc="fa-solid fa-user-pen" onClick={async () => {
 
                 afterOptionSelect();
-                const nickname = await tinyPrompt(`This information will only be visible to you. Please type the user ${user?.userId} nickname here:`, 'Friend Nickname', { placeholder: user?.userId });
+                const nickname = await tinyPrompt(`This information will only be visible to you. Please type the user ${user?.userId} nickname here:`, 'Friend Nickname', {
+                    placeholder: user?.userId,
+                    maxlength: 25
+                }, {
+                    key: (e) => {
+
+                        const input = $(e.target);
+                        const value = input.val();
+
+                        if (value.length > 25) input.val(value.substring(0, 25));
+
+                    }
+                });
                 console.log(nickname);
 
             }} >Change Friend Nickname</MenuItem>
