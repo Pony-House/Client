@@ -15,14 +15,13 @@ function UserOptions({ userId, afterOptionSelect }) {
     return (
         <div className="noselect emoji-size-fix w-100" style={{ maxWidth: '256px' }}>
             <MenuHeader>{twemojifyReact(`Options for ${user?.userId}`)}</MenuHeader>
-            <MenuItem className="text-start" faSrc="fa-solid fa-check-double" onClick={async () => {
-
-                const nickname = await tinyPrompt(`Please type the private user ${user?.userId} nickname here:`, 'Nickname', {});
-                console.log(nickname);
+            <MenuItem className="text-start" faSrc="fa-solid fa-user-pen" onClick={async () => {
 
                 afterOptionSelect();
+                const nickname = await tinyPrompt(`This information will only be visible to you. Please type the user ${user?.userId} nickname here:`, 'Friend Nickname', { placeholder: user?.userId });
+                console.log(nickname);
 
-            }} >Mark as read</MenuItem>
+            }} >Change Friend Nickname</MenuItem>
         </div>
     );
 }
