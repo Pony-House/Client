@@ -18,7 +18,7 @@ function UserOptions({ userId, afterOptionSelect }) {
             <MenuItem className="text-start" faSrc="fa-solid fa-user-pen" onClick={async () => {
 
                 afterOptionSelect();
-                const nickname = await tinyPrompt(`This information will only be visible to you. Please type the user ${user?.userId} nickname here:`, 'Friend Nickname', {
+                const nickname = await tinyPrompt(`This information will only be visible to you. The new username will be visible after updating the page you are currently viewing.\n\nPlease type the user ${user?.userId} nickname here:`, 'Friend Nickname', {
                     placeholder: user?.userId,
                     maxlength: 25
                 }, {
@@ -31,7 +31,8 @@ function UserOptions({ userId, afterOptionSelect }) {
 
                     }
                 });
-                console.log(nickname);
+
+
 
             }} >Change Friend Nickname</MenuItem>
         </div>
