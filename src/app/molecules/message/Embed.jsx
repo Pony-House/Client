@@ -10,6 +10,7 @@ import jReact from '../../../../mods/lib/jReact';
 
 import openTinyURL from '../../../util/message/urlProtection';
 import defaultAvatar from '../../atoms/avatar/defaultAvatar';
+import { countObj, objType } from '../../../util/tools';
 
 const tinyUrlAction = (event) => {
     const e = event.originalEvent;
@@ -22,6 +23,7 @@ function Embed({ embed }) {
     // URL Ref
     const tinyUrl = useRef(null);
 
+    const imgType = typeof embed['og:image:type'] === 'string' && embed['og:image:type'].length > 0 ? embed['og:image:type'].split('/') : null;
     useEffect(() => {
         $(tinyUrl.current).on('click', tinyUrlAction);
         return () => { $(tinyUrl.current).off('click', tinyUrlAction); };
@@ -29,6 +31,33 @@ function Embed({ embed }) {
 
     // Matrix
     const mx = initMatrix.matrixClient;
+
+    // Image
+    let imgUrl = null;
+    if (typeof embed['og:image'] === 'string' && typeof embed['og:image:secure_url'] === 'string') {
+        imgUrl = embed['og:image:secure_url'].length > 0 ? embed['og:image:secure_url'] : embed['og:image'];
+    } else if (typeof embed['og:image'] === 'string' && embed['og:image'].length > 0) {
+        imgUrl = embed['og:image'];
+    }
+
+    if (
+        objType(embed, 'object') && countObj(embed) <= 6 &&
+        typeof embed['matrix:image:size'] === 'number' &&
+        typeof embed['og:image:height'] === 'number' &&
+        typeof embed['og:image:width'] === 'number' &&
+        typeof imgUrl &&
+        imgType && imgType[0] === 'image'
+    ) {
+
+        return <Media.Image
+            name={typeof embed['og:description'] === 'string' && embed['og:description'].length > 0 ? embed['og:description'] : embed['og:image']}
+            width={embed['og:image:width']}
+            height={embed['og:image:height']}
+            link={mx.mxcUrlToHttp(imgUrl)}
+            type={embed['og:image:type']}
+        />;
+
+    }
 
     // Is Thumb
     const isThumb = (
@@ -61,7 +90,6 @@ function Embed({ embed }) {
         videoUrl = embed['og:video:url'];
     }
 
-
     // Is Video
     const isVideo = (
         videoUrl &&
@@ -69,14 +97,6 @@ function Embed({ embed }) {
         typeof embed['og:video:width'] &&
         embed['og:video:type']
     );
-
-    // Image
-    let imgUrl = null;
-    if (typeof embed['og:image'] === 'string' && typeof embed['og:image:secure_url'] === 'string') {
-        imgUrl = embed['og:image:secure_url'].length > 0 ? embed['og:image:secure_url'] : embed['og:image'];
-    } else if (typeof embed['og:image'] === 'string' && embed['og:image'].length > 0) {
-        imgUrl = embed['og:image'];
-    }
 
     const defaultVideoAvatar = defaultAvatar(1);
     if (!imgUrl && isVideo) {
@@ -155,7 +175,6 @@ function Embed({ embed }) {
 
         </div>
     </div>;
-
 
 };
 

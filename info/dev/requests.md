@@ -44,6 +44,8 @@ Made by Me
 
     =======================================================
 
+    --> O username do perfil não atualiza quando é atualizado.
+
     --> Ajeitar o css do ocultador de lista de canais.
 
     --> Lista de usuários online na room ainda não atualiza em tempo real.
