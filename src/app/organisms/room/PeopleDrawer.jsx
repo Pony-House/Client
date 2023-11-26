@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import initMatrix from '../../../client/initMatrix';
 import { getPowerLabel, getUsernameOfRoomMember } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
-import { openInviteUser, openProfileViewer } from '../../../client/action/navigation';
+import { openInviteUser, openProfileViewer, openReusableContextMenu } from '../../../client/action/navigation';
 import AsyncSearch from '../../../util/AsyncSearch';
 import { memberByStatus, memberByPowerLevel } from '../../../util/sort';
 
@@ -19,6 +19,9 @@ import SegmentedControl from '../../atoms/segmented-controls/SegmentedControls';
 import PeopleSelector from '../../molecules/people-selector/PeopleSelector';
 import PeopleSelectorBanner from '../../molecules/people-selector/PeopleSelectorBanner';
 import tinyAPI from '../../../util/mods';
+
+import { getEventCords } from '../../../util/common';
+import UserOptions from '../../molecules/user-options/UserOptions';
 
 function simplyfiMembers(members) {
   const mx = initMatrix.matrixClient;
@@ -241,6 +244,17 @@ function PeopleDrawer({ roomId }) {
                     key={member.userId}
                     user={member.user}
                     onClick={() => typeof member.customClick !== 'function' ? openProfileViewer(member.userId, roomId) : member.customClick()}
+                    contextMenu={(e) => {
+
+                      openReusableContextMenu(
+                        'bottom',
+                        getEventCords(e, '.ic-btn'),
+                        (closeMenu) => <UserOptions userId={member.userId} afterOptionSelect={closeMenu} />,
+                      );
+
+                      e.preventDefault();
+
+                    }}
                     avatarSrc={member.avatarSrc}
                     name={member.name}
                     color={colorMXID(member.userId)}

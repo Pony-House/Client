@@ -18,7 +18,7 @@ import { colorMXID } from '../../../util/colorMXID';
 import { getEventCords, copyToClipboard } from '../../../util/common';
 import { redactEvent, sendReaction } from '../../../client/action/roomTimeline';
 import {
-  openEmojiBoard, openProfileViewer, openReadReceipts, openViewSource, replyTo,
+  openEmojiBoard, openProfileViewer, openReadReceipts, openViewSource, replyTo, openReusableContextMenu,
 } from '../../../client/action/navigation';
 import { sanitizeCustomHtml } from '../../../util/sanitize';
 
@@ -41,6 +41,7 @@ import getUrlPreview from '../../../util/libs/getUrlPreview';
 import Embed from './Embed';
 import tinyAPI from '../../../util/mods';
 import { getAppearance } from '../../../util/libs/appearance';
+import UserOptions from '../user-options/UserOptions';
 
 function PlaceholderMessage() {
   return (
@@ -59,9 +60,9 @@ function PlaceholderMessage() {
 
 // Avatar Generator
 const MessageAvatar = React.memo(({
-  roomId, avatarSrc, avatarAnimSrc, userId, username,
+  roomId, avatarSrc, avatarAnimSrc, userId, username, contextMenu,
 }) => (
-  <button type="button" onClick={() => openProfileViewer(userId, roomId)}>
+  <button type="button" onContextMenu={contextMenu} onClick={() => openProfileViewer(userId, roomId)}>
     <Avatar imgClass='' imageAnimSrc={avatarAnimSrc} imageSrc={avatarSrc} text={username} bgColor={colorMXID(userId)} isDefaultImage />
   </button>
 ));
@@ -1091,6 +1092,17 @@ function Message({
                   avatarAnimSrc={avatarAnimSrc}
                   userId={senderId}
                   username={username}
+                  contextMenu={(e) => {
+
+                    openReusableContextMenu(
+                      'bottom',
+                      getEventCords(e, '.ic-btn'),
+                      (closeMenu) => <UserOptions userId={senderId} afterOptionSelect={closeMenu} />,
+                    );
+
+                    e.preventDefault();
+
+                  }}
                 />
               )
               : <MessageTime

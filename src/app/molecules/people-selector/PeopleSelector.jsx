@@ -12,7 +12,7 @@ import initMatrix from '../../../client/initMatrix';
 import insertCustomStatus from './insertCustomStatus';
 
 function PeopleSelector({
-  avatarSrc, avatarAnimSrc, name, color, peopleRole, onClick, user, disableStatus, avatarSize
+  avatarSrc, avatarAnimSrc, name, color, peopleRole, onClick, user, disableStatus, avatarSize, contextMenu
 }) {
 
   const statusRef = useRef(null);
@@ -73,6 +73,7 @@ function PeopleSelector({
       className="people-selector"
       onMouseUp={(e) => blurOnBubbling(e, '.people-selector')}
       onClick={onClick}
+      onContextMenu={contextMenu}
       type="button"
     >
 

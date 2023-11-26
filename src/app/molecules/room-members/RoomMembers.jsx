@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import initMatrix from '../../../client/initMatrix';
 import { colorMXID } from '../../../util/colorMXID';
-import { openProfileViewer } from '../../../client/action/navigation';
+import { openProfileViewer, openReusableContextMenu } from '../../../client/action/navigation';
 import { getUsernameOfRoomMember, getPowerLabel } from '../../../util/matrixUtil';
 import AsyncSearch from '../../../util/AsyncSearch';
 import { memberByAtoZ, memberByPowerLevel } from '../../../util/sort';
@@ -14,6 +14,9 @@ import Button from '../../atoms/button/Button';
 import Input from '../../atoms/input/Input';
 import SegmentedControls from '../../atoms/segmented-controls/SegmentedControls';
 import PeopleSelector from '../people-selector/PeopleSelector';
+
+import { getEventCords } from '../../../util/common';
+import UserOptions from '../user-options/UserOptions';
 
 const PER_PAGE_MEMBER = 50;
 
@@ -159,6 +162,17 @@ function RoomMembers({ roomId, profileMode }) {
               disableStatus
               avatarSize={24}
               key={member.userId}
+              contextMenu={(e) => {
+
+                openReusableContextMenu(
+                  'bottom',
+                  getEventCords(e, '.ic-btn'),
+                  (closeMenu) => <UserOptions userId={member.userId} afterOptionSelect={closeMenu} />,
+                );
+
+                e.preventDefault();
+
+              }}
               onClick={() => openProfileViewer(member.userId, roomId)}
               avatarSrc={member.avatarSrc}
               name={member.name}
