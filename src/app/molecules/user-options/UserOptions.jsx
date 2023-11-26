@@ -6,7 +6,7 @@ import { twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 import { MenuHeader, MenuItem } from '../../atoms/context-menu/ContextMenu';
 import { tinyPrompt } from '../../../util/tools';
-import { addToDataFolder } from '../../../util/selectedRoom';
+import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 
 function UserOptions({ userId, afterOptionSelect }) {
 
@@ -19,8 +19,11 @@ function UserOptions({ userId, afterOptionSelect }) {
             <MenuItem className="text-start" faSrc="fa-solid fa-user-pen" onClick={async () => {
 
                 afterOptionSelect();
+
+                const oldNickname = getDataList('user_cache', 'friend_nickname', userId);
                 const nickname = await tinyPrompt(`This information will only be visible to you. The new username will be visible after updating the page you are currently viewing.\n\nPlease type the user ${user?.userId} nickname here:`, 'Friend Nickname', {
                     placeholder: userId,
+                    value: oldNickname,
                     maxlength: 25
                 }, {
                     key: (e) => {
