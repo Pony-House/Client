@@ -50,8 +50,6 @@ Made by Me
 
     --> Lista de usuários online na room ainda não atualiza em tempo real.
 
-    --> Apelido de amigo.
-
     --> Philomena.
 
     --> Sistema de bordas personalizadas
