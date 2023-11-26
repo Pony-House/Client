@@ -446,13 +446,20 @@ export function scrollFollower(where, where2, time1 = 60, time2 = 8.33) {
 };
 
 // Tiny Confirm
-export function tinyPrompt(text = '', title = 'App Alert', placeholder = '') {
+export function tinyPrompt(text = '', title = 'App Alert', inputObj = {}, onInput = {}) {
     return new Promise((resolve) => {
+
+        const inputSettings = { class: 'form-control form-control-bg mt-2' };
+        if (objType(inputObj, 'object')) {
+            for (const item in inputObj) {
+                inputSettings[item] = inputObj[item];
+            }
+        }
 
         let value = null;
         let tinyModal;
 
-        const input = $('<input>', { placeholder, class: 'form-control form-control-bg mt-2' });
+        const input = $('<input>', inputSettings);
         const tinyComplete = () => {
             value = input.val();
             tinyModal.hide();
@@ -478,6 +485,12 @@ export function tinyPrompt(text = '', title = 'App Alert', placeholder = '') {
         input.on('keyup', (e) => {
             if (e.key === 'Enter' || e.keyCode === 13) tinyComplete();
         });
+
+        if (objType(onInput, 'object')) {
+            for (const item in onInput) {
+                if (typeof onInput[item] === 'function') input.on(item, onInput[item]);
+            }
+        }
 
         setTimeout(() => input.focus(), 500);
 

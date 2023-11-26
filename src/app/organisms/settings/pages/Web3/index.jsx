@@ -134,7 +134,7 @@ function Web3Section() {
                     }}>Reset config</button>
 
                     <button type="button" className="btn btn-sm btn-success me-3 my-1 my-sm-0" onClick={async () => {
-                        const newNetwork = await tinyPrompt('Choose an Object Id for your new network', 'New web3 network', 'ethereum');
+                        const newNetwork = await tinyPrompt('Choose an Object Id for your new network', 'New web3 network', { placeholder: 'ethereum' });
                         if (typeof newNetwork === 'string' && newNetwork.length > 0) {
 
                             const newWeb3Settings = getWeb3Cfg();
