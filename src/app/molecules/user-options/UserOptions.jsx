@@ -6,6 +6,7 @@ import { twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 import { MenuHeader, MenuItem } from '../../atoms/context-menu/ContextMenu';
 import { tinyPrompt } from '../../../util/tools';
+import { addToDataFolder } from '../../../util/selectedRoom';
 
 function UserOptions({ userId, afterOptionSelect }) {
 
@@ -19,7 +20,7 @@ function UserOptions({ userId, afterOptionSelect }) {
 
                 afterOptionSelect();
                 const nickname = await tinyPrompt(`This information will only be visible to you. The new username will be visible after updating the page you are currently viewing.\n\nPlease type the user ${user?.userId} nickname here:`, 'Friend Nickname', {
-                    placeholder: user?.userId,
+                    placeholder: userId,
                     maxlength: 25
                 }, {
                     key: (e) => {
@@ -32,7 +33,7 @@ function UserOptions({ userId, afterOptionSelect }) {
                     }
                 });
 
-
+                if (typeof nickname === 'string') addToDataFolder('user_cache', 'friend_nickname', userId, nickname, 500);
 
             }} >Change Friend Nickname</MenuItem>
         </div>

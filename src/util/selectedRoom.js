@@ -3,9 +3,9 @@ import initMatrix from '../client/initMatrix';
 const eventType = 'io.pony.house.';
 
 function getDataFolderRaw(dataFolder, where) {
-    const tinyTemplate = {};
-    tinyTemplate[where] = [];
-    return initMatrix.matrixClient.getAccountData(eventType + dataFolder)?.getContent() ?? tinyTemplate;
+    const result = initMatrix.matrixClient.getAccountData(eventType + dataFolder)?.getContent() ?? {};
+    if (!Array.isArray(result[where])) result[where] = [];
+    return result;
 }
 
 let room;
