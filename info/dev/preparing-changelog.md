@@ -5,3 +5,4 @@
 - Appearance settings page update.
 - Embed images tiny fix.
 - Banner CSS fix.
+- Friend Nickname added
