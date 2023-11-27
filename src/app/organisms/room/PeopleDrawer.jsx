@@ -116,7 +116,8 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
         if (membersWithMembership.length > 1000) {
 
           for (const item in membersWithMembership) {
-            if (membersWithMembership[item]?.user?.presence === 'online') {
+            const user = mx.getUser(membersWithMembership[item].userId);
+            if (user && user?.presence === 'online') {
               membersData.push(membersWithMembership[item]);
             }
           }
