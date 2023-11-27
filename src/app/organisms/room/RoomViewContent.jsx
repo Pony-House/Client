@@ -8,6 +8,7 @@ import { twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
+import settings from '../../../client/state/settings';
 import { openProfileViewer } from '../../../client/action/navigation';
 import { diffMinutes, isInSameDay, Throttle } from '../../../util/common';
 import { markAsRead } from '../../../client/action/notifications';
@@ -127,6 +128,8 @@ function renderEvent(
   isEdit,
   setEdit,
   cancelEdit,
+  isUserList,
+  isDM
 ) {
   const isBodyOnly = (prevMEvent !== null
     && prevMEvent.getSender() === mEvent.getSender()
@@ -150,6 +153,8 @@ function renderEvent(
   }
   return (
     <Message
+      isDM={isDM}
+      isUserList={isUserList}
       timelineSVRef={timelineSVRef}
       key={mEvent.getId()}
       mEvent={mEvent}
@@ -427,7 +432,7 @@ function useEventArrive(roomTimeline, readUptoEvtStore, timelineScrollRef, event
 
 let jumpToItemIndex = -1;
 
-function RoomViewContent({ eventId, roomTimeline }) {
+function RoomViewContent({ eventId, roomTimeline, isUserList }) {
 
   const [throttle] = useState(new Throttle());
 
@@ -436,6 +441,8 @@ function RoomViewContent({ eventId, roomTimeline }) {
   const eventLimitRef = useRef(null);
   const [editEventId, setEditEventId] = useState(null);
   const cancelEdit = () => setEditEventId(null);
+
+  const [setHideMembership] = useState(settings.hideMembershipEvents);
 
   const readUptoEvtStore = useStore(roomTimeline);
   const [onLimitUpdate, forceUpdateLimit] = useForceUpdate();
@@ -540,6 +547,21 @@ function RoomViewContent({ eventId, roomTimeline }) {
 
   }, [newEvent]);
 
+  // Get chat config updates
+  useEffect(() => {
+
+    if (!roomTimeline.initialized) return;
+    const toggleMembership = (hideMembershipEvents) => {
+      setHideMembership(hideMembershipEvents);
+    };
+
+    settings.on(cons.events.settings.MEMBERSHIP_EVENTS_TOGGLED, toggleMembership);
+    return () => {
+      settings.removeListener(cons.events.settings.MEMBERSHIP_EVENTS_TOGGLED, toggleMembership);
+    };
+
+  });
+
   const listenKeyboard = useCallback((event) => {
 
     if (event.ctrlKey || event.altKey || event.metaKey) return;
@@ -638,6 +660,7 @@ function RoomViewContent({ eventId, roomTimeline }) {
     jumpToItemIndex = -1;
     const readUptoEvent = readUptoEvtStore.getItem();
     let unreadDivider = false;
+    const isDM = initMatrix.roomList.directs.has(roomTimeline.roomId);
 
     let renderingHolders = false;
     if (roomTimeline.canPaginateBackward() || limit.from > 0) {
@@ -695,6 +718,8 @@ function RoomViewContent({ eventId, roomTimeline }) {
         editEventId === mEvent.getId(),
         setEditEventId,
         cancelEdit,
+        isUserList,
+        isDM,
       ));
       itemCountIndex += 1;
     }
@@ -726,19 +751,17 @@ function RoomViewContent({ eventId, roomTimeline }) {
     }
   }, 100);
 
-  return (
-    <ScrollView id='chatbox-scroll' ref={timelineSVRef} autoHide>
-      <div className="room-view__content" onClick={handleOnClickCapture}>
-        <div className="timeline__wrapper mb-2">
-          <table className="table table-borderless table-hover align-middle m-0" id="chatbox">
-            <tbody>
-              {roomTimeline.initialized ? renderTimeline() : loadingMsgPlaceholders('loading', 3)}
-            </tbody>
-          </table>
-        </div>
+  return <ScrollView id='chatbox-scroll' ref={timelineSVRef} autoHide>
+    <div className="room-view__content" onClick={handleOnClickCapture}>
+      <div className="timeline__wrapper mb-2">
+        <table className="table table-borderless table-hover align-middle m-0" id="chatbox">
+          <tbody>
+            {roomTimeline.initialized ? renderTimeline(isUserList) : loadingMsgPlaceholders('loading', 3)}
+          </tbody>
+        </table>
       </div>
-    </ScrollView>
-  );
+    </div>
+  </ScrollView>;
 }
 
 RoomViewContent.defaultProps = {

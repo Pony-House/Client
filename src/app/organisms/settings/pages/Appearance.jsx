@@ -23,6 +23,10 @@ function AppearanceSection() {
     const [isEmbedEnabled, setEmbedEnabled] = useState(appearanceSettings.isEmbedEnabled);
     const [isUNhoverEnabled, setUNhoverEnabled] = useState(appearanceSettings.isUNhoverEnabled);
 
+    const [isMarkdown, setIsMarkdown] = useState(settings.isMarkdown);
+    const [hideMembershipEvents, setHideMembershipEvents] = useState(settings.hideMembershipEvents);
+    const [hideNickAvatarEvents, setHideNickAvatarEvents] = useState(settings.hideNickAvatarEvents);
+
     const ponyHouseZoomRef = useRef(null);
     const ponyHouseZoomRangeRef = useRef(null);
 
@@ -163,8 +167,8 @@ function AppearanceSection() {
                         options={(
                             <Toggle
                                 className='d-inline-flex'
-                                isActive={settings.isMarkdown}
-                                onToggle={() => { toggleMarkdown(); updateState({}); }}
+                                isActive={isMarkdown}
+                                onToggle={() => { toggleMarkdown(); setIsMarkdown(!isMarkdown); updateState({}); }}
                             />
                         )}
                         content={<div className="very-small text-gray">Format messages with markdown syntax before sending.</div>}
@@ -174,8 +178,8 @@ function AppearanceSection() {
                         options={(
                             <Toggle
                                 className='d-inline-flex'
-                                isActive={settings.hideMembershipEvents}
-                                onToggle={() => { toggleMembershipEvents(); updateState({}); }}
+                                isActive={hideMembershipEvents}
+                                onToggle={() => { toggleMembershipEvents(); setHideMembershipEvents(!hideMembershipEvents); updateState({}); }}
                             />
                         )}
                         content={<div className="very-small text-gray">Hide membership change messages from room timeline. (Join, Leave, Invite, Kick and Ban)</div>}
@@ -185,8 +189,8 @@ function AppearanceSection() {
                         options={(
                             <Toggle
                                 className='d-inline-flex'
-                                isActive={settings.hideNickAvatarEvents}
-                                onToggle={() => { toggleNickAvatarEvents(); updateState({}); }}
+                                isActive={hideNickAvatarEvents}
+                                onToggle={() => { toggleNickAvatarEvents(); setHideNickAvatarEvents(!hideNickAvatarEvents); updateState({}); }}
                             />
                         )}
                         content={<div className="very-small text-gray">Hide nick and avatar change messages from room timeline.</div>}

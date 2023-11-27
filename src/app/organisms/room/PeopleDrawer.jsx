@@ -26,7 +26,7 @@ import UserOptions from '../../molecules/user-options/UserOptions';
 function simplyfiMembers(members) {
   const mx = initMatrix.matrixClient;
   return members.map((member) => ({
-    user: member.user,
+    user: mx.getUser(member.userId),
     userId: member.userId,
     name: getUsernameOfRoomMember(member),
     username: member.userId.slice(1, member.userId.indexOf(':')),
@@ -37,7 +37,7 @@ function simplyfiMembers(members) {
 }
 
 const asyncSearch = new AsyncSearch();
-function PeopleDrawer({ roomId }) {
+function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
 
   const PER_PAGE_MEMBER = 50;
   const mx = initMatrix.matrixClient;
@@ -51,7 +51,6 @@ function PeopleDrawer({ roomId }) {
   ];
 
   const usersCount = room.getJoinedMemberCount();
-  let isUserList = true;
 
   tinyAPI.emit('roomMembersOptions', newValues, isUserList);
   const defaultMembership = newValues.find(item => item.value === 'join');
@@ -62,7 +61,9 @@ function PeopleDrawer({ roomId }) {
   const [searchedMembers, setSearchedMembers] = useState(null);
   const searchRef = useRef(null);
 
-  isUserList = (usersCount !== 2 || membership.value !== 'join');
+  const newIsUserList = (usersCount !== 2 || membership.value !== 'join');
+  if (isUserList !== newIsUserList) setIsUserList(newIsUserList);
+
   const getMembersWithMembership = useCallback(
     (mship) => room.getMembersWithMembership(mship),
     [roomId, membership.value],
@@ -234,7 +235,7 @@ function PeopleDrawer({ roomId }) {
           /> : null}
 
           {
-            mList.map((member) => (
+            mList.map((member) =>
               !member.customSelector ?
 
                 isUserList ?
@@ -242,7 +243,7 @@ function PeopleDrawer({ roomId }) {
                   <PeopleSelector
                     avatarSize={24}
                     key={member.userId}
-                    user={member.user}
+                    user={mx.getUser(member.userId)}
                     onClick={() => typeof member.customClick !== 'function' ? openProfileViewer(member.userId, roomId) : member.customClick()}
                     contextMenu={(e) => {
 
@@ -263,17 +264,17 @@ function PeopleDrawer({ roomId }) {
 
                   member.userId !== mx.getUserId() ? <PeopleSelectorBanner
                     key={member.userId}
-                    user={member.user}
+                    user={mx.getUser(member.userId)}
                     name={member.name}
                     color={colorMXID(member.userId)}
                     peopleRole={member.peopleRole}
-                  /> : null
+                  /> : ''
 
                 :
 
                 <member.customSelector
                   key={member.userId}
-                  user={member.user}
+                  user={mx.getUser(member.userId)}
                   onClick={() => typeof member.customClick !== 'function' ? openProfileViewer(member.userId, roomId) : member.customClick()}
                   avatarSrc={member.avatarSrc}
                   name={member.name}
@@ -281,7 +282,7 @@ function PeopleDrawer({ roomId }) {
                   peopleRole={member.peopleRole}
                 />
 
-            ))
+            )
           }
 
           {isUserList ? <>

@@ -14,7 +14,7 @@ import RoomViewCmdBar from './RoomViewCmdBar';
 
 const viewEvent = new EventEmitter();
 
-function RoomView({ roomTimeline, eventId }) {
+function RoomView({ roomTimeline, eventId, isUserList }) {
   const refcmdInput = useRef(null);
   const refRoomInput = useRef(null);
   const roomViewRef = useRef(null);
@@ -42,39 +42,38 @@ function RoomView({ roomTimeline, eventId }) {
     };
   }, []);
 
-  return (
-    <div className="room-view" ref={roomViewRef}>
-      <RoomViewHeader roomId={roomId} />
-      <div className="room-view__content-wrapper">
-        <div className="room-view__scrollable">
-          <RoomViewContent
-            eventId={eventId}
-            roomTimeline={roomTimeline}
-          />
-          <RoomViewFloating
-            refRoomInput={refRoomInput}
-            refcmdInput={refcmdInput}
-            roomId={roomId}
-            roomTimeline={roomTimeline}
-          />
-        </div>
-        <div className="room-view__sticky">
-          <RoomViewInput
-            refRoomInput={refRoomInput}
-            roomId={roomId}
-            roomTimeline={roomTimeline}
-            viewEvent={viewEvent}
-          />
-          <RoomViewCmdBar
-            roomId={roomId}
-            refcmdInput={refcmdInput}
-            roomTimeline={roomTimeline}
-            viewEvent={viewEvent}
-          />
-        </div>
+  return <div className="room-view" ref={roomViewRef}>
+    <RoomViewHeader roomId={roomId} />
+    <div className="room-view__content-wrapper">
+      <div className="room-view__scrollable">
+        <RoomViewContent
+          isUserList={isUserList}
+          eventId={eventId}
+          roomTimeline={roomTimeline}
+        />
+        <RoomViewFloating
+          refRoomInput={refRoomInput}
+          refcmdInput={refcmdInput}
+          roomId={roomId}
+          roomTimeline={roomTimeline}
+        />
+      </div>
+      <div className="room-view__sticky">
+        <RoomViewInput
+          refRoomInput={refRoomInput}
+          roomId={roomId}
+          roomTimeline={roomTimeline}
+          viewEvent={viewEvent}
+        />
+        <RoomViewCmdBar
+          roomId={roomId}
+          refcmdInput={refcmdInput}
+          roomTimeline={roomTimeline}
+          viewEvent={viewEvent}
+        />
       </div>
     </div>
-  );
+  </div>;
 }
 
 RoomView.defaultProps = {

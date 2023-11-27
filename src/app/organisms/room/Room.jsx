@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import clone from 'clone';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -33,6 +34,7 @@ function Room() {
   tinyAPI.emit('setRoomInfo', defaultRoomInfo);
 
   const [isDrawer, setIsDrawer] = useState(settings.isPeopleDrawer);
+  const [isUserList, setIsUserList] = useState(true);
 
   const sendRoomInfo = (newData) => {
     setRoomInfo(newData);
@@ -95,21 +97,32 @@ function Room() {
     };
   }, []);
 
+  // Welcome Page
   const { roomTimeline, eventId } = roomInfo;
   if (roomTimeline === null) {
     setTimeout(() => openNavigation());
     return <Welcome />;
   }
 
-  return (
-    <div className="room">
+  // Checker is User List
+  const cloneIsUserList = clone(isUserList);
+  const peopleDrawer = isDrawer && <PeopleDrawer isUserList={isUserList} setIsUserList={setIsUserList} roomId={roomTimeline.roomId} />;
+  if (cloneIsUserList === isUserList) {
+
+    // Complete
+    return <div className="room">
       <div className="room__content">
         <RoomSettings roomId={roomTimeline.roomId} />
-        <RoomView roomTimeline={roomTimeline} eventId={eventId} />
+        <RoomView isUserList={isUserList} roomTimeline={roomTimeline} eventId={eventId} />
       </div>
-      {isDrawer && <PeopleDrawer roomId={roomTimeline.roomId} />}
-    </div>
-  );
+      {peopleDrawer}
+    </div>;
+
+  }
+
+  // Nope
+  return null;
+
 }
 
 export default Room;

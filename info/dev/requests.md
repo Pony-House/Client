@@ -42,13 +42,15 @@ Made by Me
 
     getJoinedRoomMembers
 
+    Coisas que não atualiza sozinho:
+        Alteração de friend nickname
+        O username do display da conta logada
+        O atualizar de emojis de rooms só funciona quando muda de room
+        Lista de usuários online na room ainda não atualiza em tempo real.
+
     =======================================================
 
-    --> O username do perfil não atualiza quando é atualizado.
-
     --> Ajeitar o css do ocultador de lista de canais.
-
-    --> Lista de usuários online na room ainda não atualiza em tempo real.
 
     --> Philomena.
 
@@ -74,8 +76,6 @@ Made by Me
     --> Ajeitar o carregador de usuários de rooms para ficar mais otimizado
 
     --> Sistema de perfil do space. Este perfil vai ter mais uma configuração de banner adicional.
-
-    --> O atualizar de emojis de rooms só funciona quando muda de room
 
     --> Voice Chat
     https://matrix-org.github.io/matrix-js-sdk/stable/classes/MatrixCall.html#transferToCall

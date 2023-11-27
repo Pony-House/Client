@@ -42,6 +42,7 @@ import Embed from './Embed';
 import tinyAPI from '../../../util/mods';
 import { getAppearance } from '../../../util/libs/appearance';
 import UserOptions from '../user-options/UserOptions';
+import { getDataList } from '../../../util/selectedRoom';
 
 function PlaceholderMessage() {
   return (
@@ -899,7 +900,7 @@ function getEditedBody(editedMEvent) {
 // Message Base Receive
 function Message({
   mEvent, isBodyOnly, roomTimeline,
-  focus, fullTime, isEdit, setEdit, cancelEdit, children, className, classNameMessage, timelineSVRef,
+  focus, fullTime, isEdit, setEdit, cancelEdit, children, className, classNameMessage, timelineSVRef, isDM,
 }) {
 
   // Get Room Data
@@ -924,7 +925,8 @@ function Message({
   let { body } = content;
 
   // User Data
-  const username = mEvent.sender ? getUsernameOfRoomMember(mEvent.sender) : getUsername(senderId);
+  const fNickname = getDataList('user_cache', 'friend_nickname', senderId);
+  const username = !isDM || typeof fNickname !== 'string' || fNickname.length === 0 ? mEvent.sender ? getUsernameOfRoomMember(mEvent.sender) : getUsername(senderId) : fNickname;
   const avatarSrc = mEvent.sender?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop') ?? null;
   const avatarAnimSrc = mEvent.sender?.getAvatarUrl(mx.baseUrl) ?? null;
 

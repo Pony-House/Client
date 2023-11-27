@@ -16,6 +16,7 @@ import SpaceOptions from '../../molecules/space-options/SpaceOptions';
 
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { getAppearance } from '../../../util/libs/appearance';
+import { getDataList } from '../../../util/selectedRoom';
 
 // Selector Function
 function Selector({
@@ -44,23 +45,30 @@ function Selector({
   // Get User room
   let user;
   let roomName = room.name;
-  if (isDM && appearanceSettings.showUserDMstatus !== false) {
+  if (isDM) {
 
     const usersCount = room.getJoinedMemberCount();
     if (usersCount === 2) {
 
       const members = room.getMembersWithMembership('join');
       const member = members.find(m => m.userId !== mx.getUserId());
-      if (member && member.user) {
+      if (member) {
 
-        user = member.user;
+        user = mx.getUser(member.userId);
+        const fNickname = getDataList('user_cache', 'friend_nickname', user.userId);
 
-        if (typeof user.displayName === 'string' && user.displayName.length > 0) {
-          roomName = user.displayName;
-        }
+        if (typeof fNickname !== 'string' || fNickname.length === 0) {
 
-        else if (typeof user.userId === 'string' && user.userId.length > 0) {
-          roomName = user.userId;
+          if (typeof user.displayName === 'string' && user.displayName.length > 0) {
+            roomName = user.displayName;
+          }
+
+          else if (typeof user.userId === 'string' && user.userId.length > 0) {
+            roomName = user.userId;
+          }
+
+        } else {
+          roomName = fNickname;
         }
 
       }
