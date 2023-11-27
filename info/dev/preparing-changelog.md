@@ -6,3 +6,6 @@
 - Embed images tiny fix.
 - Banner CSS fix.
 - Friend Nickname added
+- UserId issues fixed
+- Friend nickname added
+- Appearance settings issues fixed
