@@ -34,8 +34,6 @@ class InitMatrix extends EventEmitter {
       dbName: 'web-sync-store',
     });
 
-    await indexedDBStore.startup();
-
     this.matrixClient = sdk.createClient({
 
       baseUrl: secret.baseUrl,
@@ -54,6 +52,8 @@ class InitMatrix extends EventEmitter {
       ],
 
     });
+
+    await indexedDBStore.startup();
 
     await this.matrixClient.initCrypto();
 
