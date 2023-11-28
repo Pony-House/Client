@@ -50,8 +50,6 @@ Made by Me
 
     =======================================================
 
-    --> Atualizador de AFK do Desktop está com problemas.
-
     --> Ajeitar o css do ocultador de lista de canais.
 
     --> Philomena.

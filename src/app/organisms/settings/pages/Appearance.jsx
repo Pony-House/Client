@@ -20,6 +20,7 @@ function AppearanceSection() {
     const [showUserDMstatus, setShowUserStatus] = useState(appearanceSettings.showUserDMstatus);
     const [pinDMmessages, setPinDMmessages] = useState(appearanceSettings.pinDMmessages);
     const [isAnimateAvatarsEnabled, setAnimateAvatarsEnabled] = useState(appearanceSettings.isAnimateAvatarsEnabled);
+    const [enableAnimParams, setEnableAnimParams] = useState(appearanceSettings.enableAnimParams);
     const [isEmbedEnabled, setEmbedEnabled] = useState(appearanceSettings.isEmbedEnabled);
     const [isUNhoverEnabled, setUNhoverEnabled] = useState(appearanceSettings.isUNhoverEnabled);
 
@@ -201,6 +202,18 @@ function AppearanceSection() {
             <div className="card noselect mt-3">
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item very-small text-gray">User message</li>
+
+                    <SettingTile
+                        title="Use native gif thumbs"
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={enableAnimParams}
+                                onToggle={toggleAppearanceAction('enableAnimParams', setEnableAnimParams)}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">This configuration is disabled by default as not all matrix homeservers are compatible with this configuration. If your gifs suddenly become static, turn this setting off.</div>}
+                    />
 
                     <SettingTile
                         title="Enable animated hover avatars"
