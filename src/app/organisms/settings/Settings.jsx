@@ -47,7 +47,7 @@ export const tabText = {
   PROFILE: 'Profile',
   LOGOUT: 'Logout',
   EXPERIMENTAL: 'Experimental',
-  OS: 'OS',
+  OS: '{OS} Settings',
 };
 
 const tabItems = [];
@@ -121,13 +121,20 @@ tabItems.push({
 
 if (__ENV_APP__.electron_mode) {
   tabItems.push({
-    text: tabText.OS,
+
+    text: tabText.OS.replace('{OS}', __ENV_APP__.platform === 'win32' ? 'Windows' :
+      __ENV_APP__.platform === 'linux' ? 'Linux' :
+        __ENV_APP__.platform === 'darwin' ? 'Mac'
+          : 'OS'),
+
     faSrc: __ENV_APP__.platform === 'win32' ? 'fa-brands fa-windows' :
       __ENV_APP__.platform === 'linux' ? 'fa-brands fa-linux' :
         __ENV_APP__.platform === 'darwin' ? 'fa-brands fa-apple'
           : 'fa-solid fa-computer',
+
     disabled: false,
     render: () => <OsSection />,
+
   });
 }
 
