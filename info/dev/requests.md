@@ -26,8 +26,6 @@ Made by Me
 
     ]
 
-    Criar Video Chamada e Chamada de Voz
-
     Criar sistema de titulos (Algo parecido com cargos)
 
     Criar leitor de mensagens fixadas
