@@ -149,6 +149,7 @@ async function createWindow() {
       // Ping
       if (win && win.webContents) {
         win.webContents.send('ping', {
+          exe: app.getPath('exe'),
           DIST_ELECTRON: process.env.DIST_ELECTRON,
           DIST: process.env.DIST,
           VITE_DEV_SERVER_URL: process.env.VITE_DEV_SERVER_URL,

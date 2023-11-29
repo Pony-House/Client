@@ -56,8 +56,6 @@ Made by Me
 
     --> Sistema de bordas personalizadas
 
-    --> Fazer a opção para o app iniciar sozinho com o sistema operacional.
-
     --> Ajeitar... Ao criar uma sala, o app está jogando para o menu de homes. Isso não pode acotecer se a room for dentro de um space.
     (Isso também acontece quando tenta criar uma DM)
 

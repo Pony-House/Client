@@ -5,6 +5,7 @@ import { contextBridge, ipcRenderer } from 'electron';
 import startNotifications from './notification';
 import './idle/seconds';
 import './idle/status';
+import startAutoLaunch from './auto-launch';
 
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
   return new Promise((resolve) => {
@@ -90,6 +91,7 @@ function useLoading() {
 
 // ----------------------------------------------------------------------
 
+startAutoLaunch();
 const { appendLoading, removeLoading } = useLoading();
 contextBridge.exposeInMainWorld('useLoadingElectron', { appendLoading, removeLoading });
 domReady().then(appendLoading);
@@ -107,6 +109,7 @@ contextBridge.exposeInMainWorld('focusAppWindow', () =>
 );
 
 contextBridge.exposeInMainWorld('openDevTools', () => ipcRenderer.send('openDevTools', true));
+contextBridge.exposeInMainWorld('getElectronExe', () => process.execPath);
 
 ipcRenderer.on('ping', (_event, arg) => {
   console.log('[electron] [ping] ', arg);
