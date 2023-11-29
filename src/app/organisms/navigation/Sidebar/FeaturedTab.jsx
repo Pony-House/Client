@@ -20,7 +20,7 @@ import navigation from '../../../../client/state/navigation';
 import { setEthereumStatusButton } from '../../../../util/web3/status';
 import { objType } from '../../../../util/tools';
 import { colorMXID } from '../../../../util/colorMXID';
-import { getAppearance } from '../../../../util/libs/appearance';
+import { getAppearance, getAnimatedImageUrl } from '../../../../util/libs/appearance';
 
 // Featured Tab
 export default function FeaturedTab() {
@@ -34,7 +34,7 @@ export default function FeaturedTab() {
     useNotificationUpdate();
 
     const mx = initMatrix.matrixClient;
-    const appearance = getAppearance();
+    const appearanceSettings = getAppearance();
 
     // Home
     function getHomeNoti() {
@@ -69,7 +69,7 @@ export default function FeaturedTab() {
             noti.total += childNoti.total;
             noti.highlight += childNoti.highlight;
 
-            if (appearance.pinDMmessages !== false) dmsNotification.push([mx.getRoom(roomId), childNoti]);
+            if (appearanceSettings.pinDMmessages !== false) dmsNotification.push([mx.getRoom(roomId), childNoti]);
 
         });
 
@@ -173,7 +173,10 @@ export default function FeaturedTab() {
                                 bgColor={colorMXID(room.roomId)}
                                 size="normal"
                                 animParentsCount={2}
-                                imageAnimSrc={room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) || room.getAvatarUrl(mx.baseUrl) || null}
+                                imageAnimSrc={
+                                    !appearanceSettings.enableAnimParams ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 42, 42, 'crop')) ||
+                                        !appearanceSettings.enableAnimParams ? room.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 42, 42, 'crop')) ||
+                                    null}
                                 imageSrc={room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 42, 42, 'crop') || room.getAvatarUrl(mx.baseUrl, 42, 42, 'crop') || null}
                                 isDefaultImage
                             />

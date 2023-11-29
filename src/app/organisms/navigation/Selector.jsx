@@ -15,7 +15,7 @@ import RoomOptions from '../../molecules/room-options/RoomOptions';
 import SpaceOptions from '../../molecules/space-options/SpaceOptions';
 
 import { useForceUpdate } from '../../hooks/useForceUpdate';
-import { getAppearance } from '../../../util/libs/appearance';
+import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 import { getDataList } from '../../../util/selectedRoom';
 
 // Selector Function
@@ -81,8 +81,12 @@ function Selector({
   let imageSrc = user && user.avatarUrl ? mx.mxcUrlToHttp(user.avatarUrl, 24, 24, 'crop') : room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
   if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
 
-  let imageAnimSrc = user && user.avatarUrl ? mx.mxcUrlToHttp(user.avatarUrl) : room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) || null;
-  if (imageAnimSrc === null) imageAnimSrc = room.getAvatarUrl(mx.baseUrl) || null;
+  let imageAnimSrc = user && user.avatarUrl ?
+    !appearanceSettings.enableAnimParams ? mx.mxcUrlToHttp(user.avatarUrl) : getAnimatedImageUrl(mx.mxcUrlToHttp(user.avatarUrl, 24, 24, 'crop'))
+    :
+    !appearanceSettings.enableAnimParams ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop'))
+      || null;
+  if (imageAnimSrc === null) imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop')) || null;
 
   // Is Muted
   const isMuted = noti.getNotiType(roomId) === cons.notifs.MUTE;

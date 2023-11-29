@@ -22,6 +22,7 @@ import { abbreviateNumber, getEventCords } from '../../../../util/common';
 import cons from '../../../../client/state/cons';
 
 import { notificationClasses, useNotificationUpdate } from './Notification';
+import { getAppearance, getAnimatedImageUrl } from '../../../../util/libs/appearance';
 
 // Draggable Space Shortcut
 function DraggableSpaceShortcut({
@@ -34,6 +35,7 @@ function DraggableSpaceShortcut({
     const room = mx.getRoom(spaceId);
     const shortcutRef = useRef(null);
     const avatarRef = useRef(null);
+    const appearanceSettings = getAppearance();
 
     // Options
     const openSpaceOptions = (e, sId) => {
@@ -112,7 +114,7 @@ function DraggableSpaceShortcut({
                 bgColor={colorMXID(room.roomId)}
                 size="normal"
                 animParentsCount={2}
-                imageAnimSrc={room.getAvatarUrl(initMatrix.matrixClient.baseUrl) || null}
+                imageAnimSrc={!appearanceSettings.enableAnimParams ? room.getAvatarUrl(initMatrix.matrixClient.baseUrl) : getAnimatedImageUrl(room.getAvatarUrl(initMatrix.matrixClient.baseUrl, 42, 42, 'crop')) || null}
                 imageSrc={room.getAvatarUrl(initMatrix.matrixClient.baseUrl, 42, 42, 'crop') || null}
                 isDefaultImage
             />

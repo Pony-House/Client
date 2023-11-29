@@ -13,6 +13,7 @@ import initMatrix from '../../../client/initMatrix';
 import insertCustomStatus from '../people-selector/insertCustomStatus';
 import { objType } from '../../../util/tools';
 import { checkerFavIcon } from '../../../util/libs/favicon';
+import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 
 function RoomSelectorWrapper({
   isSelected, isMuted, isUnread, onClick,
@@ -94,6 +95,7 @@ function RoomSelector({
       const updateProfileStatus = (mEvent, tinyUser) => {
 
         // Presence
+        const appearanceSettings = getAppearance();
         const content = updateUserStatusIcon(status, tinyUser);
 
         // Image
@@ -101,8 +103,13 @@ function RoomSelector({
         if (room && newImageSrc === null) newImageSrc = room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
         setImgSrc(newImageSrc);
 
-        let newImageAnimSrc = tinyUser && tinyUser.avatarUrl ? mx.mxcUrlToHttp(tinyUser.avatarUrl) : (room && room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)) || null;
-        if (room && newImageAnimSrc === null) newImageAnimSrc = room.getAvatarUrl(mx.baseUrl) || null;
+        let newImageAnimSrc = tinyUser && tinyUser.avatarUrl ?
+          mx.mxcUrlToHttp(tinyUser.avatarUrl)
+          : (room &&
+            !appearanceSettings.enableAnimParams ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop'))
+          ) || null;
+
+        if (room && newImageAnimSrc === null) newImageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop')) || null;
         setImgAnimSrc(newImageAnimSrc);
 
         // Room Name

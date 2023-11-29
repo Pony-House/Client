@@ -11,6 +11,8 @@ import { getUserStatus, updateUserStatusIcon, getPresence } from '../../../util/
 import initMatrix from '../../../client/initMatrix';
 import insertCustomStatus from './insertCustomStatus';
 
+import { getAnimatedImageUrl, getAppearance } from '../../../util/libs/appearance';
+
 function PeopleSelector({
   avatarSrc, avatarAnimSrc, name, color, peopleRole, onClick, user, disableStatus, avatarSize, contextMenu
 }) {
@@ -38,6 +40,7 @@ function PeopleSelector({
       const updateProfileStatus = (mEvent, tinyData) => {
 
         // Get Status
+        const appearanceSettings = getAppearance();
         const status = $(statusRef.current);
         const tinyUser = tinyData;
 
@@ -45,7 +48,7 @@ function PeopleSelector({
         const newImageSrc = tinyUser && tinyUser.avatarUrl ? mx.mxcUrlToHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop') : null;
         setImageSrc(newImageSrc);
 
-        const newImageAnimSrc = tinyUser && tinyUser.avatarUrl ? mx.mxcUrlToHttp(tinyUser.avatarUrl) : null;
+        const newImageAnimSrc = tinyUser && tinyUser.avatarUrl ? !appearanceSettings.enableAnimParams ? mx.mxcUrlToHttp(tinyUser.avatarUrl) : getAnimatedImageUrl(mx.mxcUrlToHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop')) : null;
         setImageAnimSrc(newImageAnimSrc);
 
         // Update Status Icon

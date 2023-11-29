@@ -212,7 +212,7 @@ function AppearanceSection() {
                                 onToggle={toggleAppearanceAction('enableAnimParams', setEnableAnimParams)}
                             />
                         )}
-                        content={<div className="very-small text-gray">This configuration is disabled by default as not all matrix homeservers are compatible with this configuration. If your gifs suddenly become static, turn this setting off.</div>}
+                        content={<div className="very-small text-gray">This configuration is disabled by default as not all matrix homeservers are compatible with this configuration. If your homeserver is compatible, this will help you load images faster and save bandwidth. If your gifs suddenly become static, turn this setting off.</div>}
                     />
 
                     <SettingTile

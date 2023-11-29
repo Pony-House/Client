@@ -11,6 +11,7 @@ import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 import { objType, toast } from '../../../util/tools';
 import { copyToClipboard } from '../../../util/common';
 import copyText from '../../organisms/profile-viewer/copyText';
+import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 
 const timezoneAutoUpdate = { text: null, html: null, value: null };
 setInterval(() => {
@@ -259,12 +260,20 @@ function PeopleSelectorBanner({
 
   if (user) {
 
+    const appearanceSettings = getAppearance();
+
     return <>
 
       <div ref={profileBanner} className={`profile-banner profile-bg${cssColorMXID(user.userId)}`} />
 
       <div className='text-center profile-user-profile-avatar'>
-        <Avatar ref={profileAvatar} imageSrc={mx.mxcUrlToHttp(avatarUrl, 100, 100, 'crop')} imageAnimSrc={mx.mxcUrlToHttp(avatarUrl)} text={name} bgColor={color} size="large" isDefaultImage />
+        <Avatar
+          ref={profileAvatar}
+          imageSrc={mx.mxcUrlToHttp(avatarUrl, 100, 100, 'crop')}
+          imageAnimSrc={!appearanceSettings.enableAnimParams ? mx.mxcUrlToHttp(avatarUrl) : getAnimatedImageUrl(mx.mxcUrlToHttp(avatarUrl, 100, 100, 'crop'))}
+          text={name} bgColor={color} size="large"
+          isDefaultImage
+        />
         <i ref={statusRef} className={`user-status pe-2 ${getUserStatus(user)}`} />
       </div>
 

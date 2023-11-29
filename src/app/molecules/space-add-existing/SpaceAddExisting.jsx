@@ -10,9 +10,7 @@ import { joinRuleToIconSrc, getIdServer, genRoomVia } from '../../../util/matrix
 import { Debounce } from '../../../util/common';
 
 import Text from '../../atoms/text/Text';
-import RawIcon from '../../atoms/system-icons/RawIcon';
 import Button from '../../atoms/button/Button';
-import IconButton from '../../atoms/button/IconButton';
 import Checkbox from '../../atoms/button/Checkbox';
 import Input from '../../atoms/input/Input';
 import Spinner from '../../atoms/spinner/Spinner';
@@ -20,6 +18,7 @@ import RoomSelector from '../room-selector/RoomSelector';
 import Dialog from '../dialog/Dialog';
 
 import { useStore } from '../../hooks/useStore';
+import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 
 function SpaceAddExistingContent({ roomId }) {
   const mountStore = useStore(roomId);
@@ -108,6 +107,8 @@ function SpaceAddExistingContent({ roomId }) {
     setSearchIds(null);
   };
 
+  const appearanceSettings = getAppearance();
+
   return (
     <>
       <form onSubmit={(ev) => { ev.preventDefault(); }}>
@@ -133,8 +134,8 @@ function SpaceAddExistingContent({ roomId }) {
             let imageSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
             if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
 
-            let imageAnimSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) || null;
-            if (imageAnimSrc === null) imageAnimSrc = room.getAvatarUrl(mx.baseUrl) || null;
+            let imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop')) || null;
+            if (imageAnimSrc === null) imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop')) || null;
 
             const parentSet = roomIdToParents.get(rId);
             const parentNames = parentSet

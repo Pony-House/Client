@@ -24,6 +24,8 @@ import { getUserWeb3Account } from '../../../util/web3';
 import getVoiceChat from '../../../util/libs/voiceChat';
 import { getSound } from '../../../client/state/Notifications';
 
+import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
+
 // Account Status
 const accountStatus = { status: null, data: null };
 export function getAccountStatus(where) {
@@ -222,6 +224,8 @@ function ProfileAvatarMenu() {
     user.presenceStatusMsg = JSON.stringify(content);
     const newStatus = getUserStatus(user);
 
+    const appearanceSettings = getAppearance();
+
     // Complete
     return (
         <table className="table table-borderless align-middle m-0" id='user-menu'>
@@ -236,7 +240,9 @@ function ProfileAvatarMenu() {
                                 text={profile.displayName}
                                 bgColor={colorMXID(mx.getUserId())}
                                 size="normal"
-                                imageAnimSrc={profile.avatarUrl !== null ? mx.mxcUrlToHttp(profile.avatarUrl) : null}
+                                imageAnimSrc={profile.avatarUrl !== null ?
+                                    !appearanceSettings.enableAnimParams ? mx.mxcUrlToHttp(profile.avatarUrl) : getAnimatedImageUrl(mx.mxcUrlToHttp(profile.avatarUrl, 42, 42, 'crop'))
+                                    : null}
                                 imageSrc={profile.avatarUrl !== null ? mx.mxcUrlToHttp(profile.avatarUrl, 42, 42, 'crop') : null}
                                 isDefaultImage
                             />

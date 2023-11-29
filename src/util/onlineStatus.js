@@ -1,7 +1,7 @@
 import initMatrix from '../client/initMatrix';
 import { twemojifyIcon } from './twemojify';
 import { getUserWeb3Account } from './web3';
-
+import { getAppearance, getAnimatedImageUrl } from './libs/appearance';
 
 // Status Builder
 const statusList = {
@@ -84,7 +84,8 @@ export function parsePresenceStatus(presence, userId) {
                     if (tinyParse.msgIcon.length <= 2) {
                         tinyResult.msgIcon = twemojifyIcon(tinyParse.msgIcon);
                     } else {
-                        tinyResult.msgIcon = initMatrix.matrixClient.mxcUrlToHttp(tinyParse.msgIcon);
+                        const appearanceSettings = getAppearance();
+                        tinyResult.msgIcon = !appearanceSettings.enableAnimParams ? initMatrix.matrixClient.mxcUrlToHttp(tinyParse.msgIcon) : getAnimatedImageUrl(initMatrix.matrixClient.mxcUrlToHttp(tinyParse.msgIcon, 50, 50, 'crop'));
                         tinyResult.msgIconThumb = initMatrix.matrixClient.mxcUrlToHttp(tinyParse.msgIcon, 50, 50, 'crop');
                     }
                 }

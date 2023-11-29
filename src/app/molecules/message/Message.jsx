@@ -40,7 +40,7 @@ import getUrlPreview from '../../../util/libs/getUrlPreview';
 
 import Embed from './Embed';
 import tinyAPI from '../../../util/mods';
-import { getAppearance } from '../../../util/libs/appearance';
+import { getAnimatedImageUrl, getAppearance } from '../../../util/libs/appearance';
 import UserOptions from '../user-options/UserOptions';
 import { getDataList } from '../../../util/selectedRoom';
 
@@ -904,6 +904,7 @@ function Message({
 }) {
 
   // Get Room Data
+  const appearanceSettings = getAppearance();
   $(timelineSVRef?.current).trigger('scroll');
   const mx = initMatrix.matrixClient;
   const roomId = mEvent.getRoomId();
@@ -928,7 +929,7 @@ function Message({
   const fNickname = getDataList('user_cache', 'friend_nickname', senderId);
   const username = !isDM || typeof fNickname !== 'string' || fNickname.length === 0 ? mEvent.sender ? getUsernameOfRoomMember(mEvent.sender) : getUsername(senderId) : fNickname;
   const avatarSrc = mEvent.sender?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop') ?? null;
-  const avatarAnimSrc = mEvent.sender?.getAvatarUrl(mx.baseUrl) ?? null;
+  const avatarAnimSrc = !appearanceSettings.enableAnimParams ? mEvent.sender?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(mEvent.sender?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop')) ?? null;
 
   // Content Data
   let isCustomHTML = content.format === 'org.matrix.custom.html';

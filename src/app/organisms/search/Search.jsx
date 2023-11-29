@@ -14,6 +14,7 @@ import IconButton from '../../atoms/button/IconButton';
 import Input from '../../atoms/input/Input';
 import ScrollView from '../../atoms/scroll/ScrollView';
 import RoomSelector from '../../molecules/room-selector/RoomSelector';
+import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 
 function useVisiblityToggle(setResult) {
   const [isOpen, setIsOpen] = useState(false);
@@ -70,6 +71,8 @@ function mapRoomIds(roomIds) {
 }
 
 function Search() {
+
+  const appearanceSettings = getAppearance();
   const [result, setResult] = useState(null);
   const [asyncSearch] = useState(new AsyncSearch());
   const [isOpen, requestClose] = useVisiblityToggle(setResult);
@@ -175,7 +178,7 @@ function Search() {
 
     if (item.type === 'direct') {
       imageSrc = item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
-      imageAnimSrc = item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) || null;
+      imageAnimSrc = !appearanceSettings.enableAnimParams ? item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop')) || null;
     } else {
       iconSrc = joinRuleToIconSrc(item.room.getJoinRule(), item.type === 'space');
     }

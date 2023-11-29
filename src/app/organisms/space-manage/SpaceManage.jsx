@@ -26,6 +26,7 @@ import PopupWindow from '../../molecules/popup-window/PopupWindow';
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { useStore } from '../../hooks/useStore';
 import { toast } from '../../../util/tools';
+import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 
 function SpaceManageBreadcrumb({ path, onSelect }) {
   return (
@@ -60,6 +61,7 @@ function SpaceManageItem({
   isSelected, onSelect, roomHierarchy, spaceManagerRef,
 }) {
 
+  const appearanceSettings = getAppearance();
   const [isExpand, setIsExpand] = useState(false);
   const [isJoining, setIsJoining] = useState(false);
 
@@ -82,10 +84,10 @@ function SpaceManageItem({
     if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
   }
 
-  let imageAnimSrc = mx.mxcUrlToHttp(roomInfo.avatar_url) || null;
+  let imageAnimSrc = !appearanceSettings.enableAnimParams ? mx.mxcUrlToHttp(roomInfo.avatar_url) : mx.mxcUrlToHttp(roomInfo.avatar_url, 24, 24, 'crop') || null;
   if (!imageAnimSrc && room) {
-    imageAnimSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) || null;
-    if (imageAnimSrc === null) imageAnimSrc = room.getAvatarUrl(mx.baseUrl) || null;
+    imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop')) || null;
+    if (imageAnimSrc === null) imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop')) || null;
   }
 
   const isDM = directs.has(roomId);

@@ -28,6 +28,11 @@ export function getAppearance(folder, getDefault = true) {
 
 };
 
+export function getAnimatedImageUrl(url) {
+    if (typeof url === 'string') return `${url}&animated=true`;
+    return null;
+};
+
 export function setAppearance(folder, value) {
     const content = getAppearance(null, false);
     content[folder] = value;
