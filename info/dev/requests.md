@@ -50,6 +50,8 @@ Made by Me
 
     =======================================================
 
+    --> Opção para iniciar minimizado.
+
     --> Ajeitar o css do ocultador de lista de canais.
 
     --> Philomena.

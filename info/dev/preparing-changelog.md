@@ -9,3 +9,4 @@
 - UserId issues fixed
 - Friend nickname added
 - Appearance settings issues fixed
+- Auto start tab added.
