@@ -20,6 +20,20 @@
     "social",
     "chat"
   ],
+  "screenshots": [
+    {
+      "src": "/img/manifest/screenshot1.jpg",
+      "type": "image/jpg",
+      "sizes": "540x720",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/img/manifest/screenshot2.jpg",
+      "type": "image/jpg",
+      "sizes": "720x540",
+      "form_factor": "wide"
+    }
+  ],
   "icons": [
     {
       "src": "/img/android/android-chrome-36x36.png",

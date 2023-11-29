@@ -8,24 +8,6 @@ Made by aisa
 
 Made by Me
 
-    Insert into manifest
-
-    "screenshots": [
-        {
-        "src": "/images/screenshot1.png",
-        "type": "image/png",
-        "sizes": "540x720",
-        "form_factor": "narrow"
-        },
-        {
-        "src": "/images/screenshot2.jpg",
-        "type": "image/jpg",
-        "sizes": "720x540",
-        "form_factor": "wide"
-        }
-
-    ]
-
     Criar sistema de titulos (Algo parecido com cargos)
 
     Criar leitor de mensagens fixadas
