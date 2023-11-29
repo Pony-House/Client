@@ -125,7 +125,7 @@ async function createWindow() {
 
     // Start modules
     startResizeEvents(ipcMain, win);
-    startEvents(ipcMain, win);
+    startEvents(ipcMain, win, appShow);
     startNotifications(ipcMain, win);
 
     // Remove Menu

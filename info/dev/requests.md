@@ -50,16 +50,18 @@ Made by Me
 
     =======================================================
 
-    --> Opção para iniciar minimizado.
-
     --> Ajeitar o css do ocultador de lista de canais.
-
-    --> Philomena.
-
-    --> Sistema de bordas personalizadas
 
     --> Ajeitar... Ao criar uma sala, o app está jogando para o menu de homes. Isso não pode acotecer se a room for dentro de um space.
     (Isso também acontece quando tenta criar uma DM)
+
+    --> Ajeitar o carregador de usuários de rooms para ficar mais otimizado
+
+    =======================================================
+
+    --> Leitor do dominio matrix.to
+
+    --> Sistema de bordas personalizadas
 
     --> Fazer o marcador que separa a lista de amigos da lista de DMs estranhos.
     --> Fazer uma configuração se o usuário vai ou não receber notificação de DMs estranhos.
@@ -70,8 +72,6 @@ Made by Me
     --> Opção de desativar ou ativar animação de emojis ou stickers
     (Também ser possível banir animação de usuários individualmente - limite de 600 itens por array) (Opçao alternativa de fazer a animação ser hover)
 
-    --> Ajeitar o carregador de usuários de rooms para ficar mais otimizado
-
     --> Sistema de perfil do space. Este perfil vai ter mais uma configuração de banner adicional.
 
     --> Voice Chat
@@ -80,5 +80,3 @@ Made by Me
 
     Web3 XMTP Chat
     https://xmtp.org/docs/build/get-started
-
-    Validador de DNS

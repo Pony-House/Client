@@ -111,6 +111,10 @@ contextBridge.exposeInMainWorld('focusAppWindow', () =>
 contextBridge.exposeInMainWorld('openDevTools', () => ipcRenderer.send('openDevTools', true));
 contextBridge.exposeInMainWorld('getElectronExe', () => process.execPath);
 
+contextBridge.exposeInMainWorld('electronWindowIsVisible', (isVisible: boolean) =>
+  ipcRenderer.send('windowIsVisible', isVisible),
+);
+
 ipcRenderer.on('ping', (_event, arg) => {
   console.log('[electron] [ping] ', arg);
 });

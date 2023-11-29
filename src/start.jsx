@@ -11,9 +11,11 @@ import { getPWADisplayMode } from "./util/PWA.js";
 
 import App from './app/pages/App';
 import { startCustomThemes } from '../mods';
+import { getOsSettings } from './util/libs/osSettings';
 
 function startApp(appProtocol) {
 
+    const osSettings = getOsSettings();
     startCustomThemes();
     startSettings();
 
@@ -25,6 +27,10 @@ function startApp(appProtocol) {
     console.log(`[app] Starting app using the protocol "${appProtocol}" mode.`);
     global.getEnvApp = () => clone(__ENV_APP__);
     global.Buffer = Buffer;
+
+    if (osSettings.startMinimized && typeof global.electronWindowIsVisible === 'function') {
+        global.electronWindowIsVisible(false);
+    }
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
     return root.render(<App />);

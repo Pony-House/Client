@@ -1,6 +1,6 @@
 import { BrowserWindow, powerMonitor } from 'electron';
 
-export default function startEvents(ipcMain, newWin) {
+export default function startEvents(ipcMain, newWin, appShow) {
 
     ipcMain.on('set-title', (event, title) => {
         const webContents = event.sender;
@@ -26,6 +26,11 @@ export default function startEvents(ipcMain, newWin) {
 
     ipcMain.on('openDevTools', () => {
         newWin.webContents.openDevTools();
+    });
+
+    ipcMain.on('windowIsVisible', (event, isVisible) => {
+        newWin[!isVisible ? 'hide' : 'show']();
+        appShow.change((isVisible === true));
     });
 
 };
