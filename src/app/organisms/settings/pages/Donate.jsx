@@ -29,7 +29,7 @@ function DonateSection() {
 
                 <li className="list-group-item border-0">
                     {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
-                    <div className='small'><i className="fa-brands fa-ethereum" /> <a href="https://ud.me/jasmindreasond.wallet" target="_blank" rel="noreferrer noopener">Crypto</a></div>
+                    <div className='small'><i className="fa-brands fa-ethereum" /> <a href="https://ud.me/jasmindreasond.x" target="_blank" rel="noreferrer noopener">Crypto</a></div>
                 </li>
 
             </ul>
