@@ -19,11 +19,9 @@ import Avatar from '../../atoms/avatar/Avatar';
 import RoomOptions from '../../molecules/room-options/RoomOptions';
 
 import { useForceUpdate } from '../../hooks/useForceUpdate';
-import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 
 function RoomViewHeader({ roomId }) {
 
-  const appearanceSettings = getAppearance();
   const [, forceUpdate] = useForceUpdate();
   const mx = initMatrix.matrixClient;
   const isDM = initMatrix.roomList.directs.has(roomId);
@@ -31,9 +29,6 @@ function RoomViewHeader({ roomId }) {
 
   let avatarSrc = room.getAvatarUrl(mx.baseUrl, 36, 36, 'crop');
   avatarSrc = isDM ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop') : avatarSrc;
-
-  let imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 36, 36, 'crop'));
-  imageAnimSrc = isDM ? !appearanceSettings.enableAnimParams ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop')) : avatarSrc;
 
   const roomName = room.name;
 
@@ -106,7 +101,7 @@ function RoomViewHeader({ roomId }) {
             onClick={() => toggleRoomSettings()}
             type="button"
           >
-            <Avatar className='d-inline-block me-2' imageSrc={avatarSrc} imageAnimSrc={imageAnimSrc} animParentsCount={2} text={roomName} bgColor={colorMXID(roomId)} size="small" isDefaultImage />
+            <Avatar className='d-inline-block me-2' imageSrc={avatarSrc} text={roomName} bgColor={colorMXID(roomId)} size="small" isDefaultImage />
             <span className='me-2 text-truncate d-inline-block room-name'>{twemojifyReact(roomName)}</span>
             <RawIcon fa="fa-solid fa-chevron-down room-icon" />
           </button>
