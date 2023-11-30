@@ -57,7 +57,7 @@ Things more related to the mobile version of the application I recommend you use
 
 ## Auto select custom domain
 
-Example: https://pony.house/#matrix.org
+Example: https://client.pony.house/#matrix.org
 
 When the page loads, the application will automatically try to load the selected custom homeserver. This is useful if you want to refer a friend directly using your homeserver url.
 
