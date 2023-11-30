@@ -40,7 +40,7 @@ function ImageUpload({
     <div className={`img-upload__wrapper ${className}`}>
       <button
         type="button"
-        className="img-upload"
+        className={`img-upload${imageSrc === null ? ' default-image' : ''}`}
         onClick={() => {
           if (uploadPromise !== null) return;
           uploadImageRef.current.click();
@@ -51,6 +51,7 @@ function ImageUpload({
           text={text}
           bgColor={bgColor}
           size={size}
+          isDefaultImage
         />
         <div className={`img-upload__process ${uploadPromise === null ? ' img-upload__process--stopped' : ''}`}>
           {uploadPromise === null && (

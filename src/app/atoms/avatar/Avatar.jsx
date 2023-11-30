@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import initMatrix from '../../../client/initMatrix';
 import { loadAvatar, forceLoadAvatars } from './load';
 import { twemojifyReact } from '../../../util/twemojify';
 
