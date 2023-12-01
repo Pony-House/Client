@@ -8,6 +8,8 @@ import { MenuHeader, MenuItem } from '../../atoms/context-menu/ContextMenu';
 import { tinyPrompt } from '../../../util/tools';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 
+const nicknameSizeLimit = 30;
+
 function UserOptions({ userId, afterOptionSelect }) {
 
     const mx = initMatrix.matrixClient;
@@ -24,14 +26,14 @@ function UserOptions({ userId, afterOptionSelect }) {
                 const nickname = await tinyPrompt(`This information will only be visible to you. The new username will be visible after updating the page you are currently viewing.\n\nPlease type the user ${user?.userId} nickname here:`, 'Friend Nickname', {
                     placeholder: userId,
                     value: oldNickname,
-                    maxlength: 25
+                    maxlength: nicknameSizeLimit
                 }, {
                     key: (e) => {
 
                         const input = $(e.target);
                         const value = input.val();
 
-                        if (value.length > 25) input.val(value.substring(0, 25));
+                        if (value.length > nicknameSizeLimit) input.val(value.substring(0, nicknameSizeLimit));
 
                     }
                 });
