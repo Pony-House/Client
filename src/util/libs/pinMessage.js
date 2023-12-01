@@ -5,7 +5,7 @@ import clone from 'clone';
 import initMatrix from '../../client/initMatrix';
 import { getCurrentState } from "../matrixUtil";
 import { objType } from '../tools';
-import { getRoomInfo } from '../../app/organisms/room/Room';
+// import { getRoomInfo } from '../../app/organisms/room/Room';
 
 const eventName = 'm.room.pinned_events';
 
@@ -39,6 +39,10 @@ export function getPinnedMessagesRaw(room) {
 
 };
 
+export function canPinMessage(room, userId) {
+    return getCurrentState(room).maySendStateEvent(eventName, userId);
+}
+
 export async function getPinnedMessages(room) {
 
     const pinnedEventsId = clone(getPinnedMessagesRaw(room));
@@ -62,31 +66,42 @@ export async function getPinnedMessages(room) {
 
 export function setPinMessage(room, newEventsId, isPinned = true) {
     return new Promise(async (resolve, reject) => {
-        try {
+        const mx = initMatrix.matrixClient;
+        if (canPinMessage(room, mx.getUserId())) {
+            try {
 
-            const mx = initMatrix.matrixClient;
-            const eventsId = clone(getPinnedMessagesRaw(room));
-            const eventsIdOld = clone(getPinnedMessagesRaw(room));
-            if (typeof newEventsId === 'string') {
-                if (newEventsId.length > 0) {
+                const eventsId = clone(getPinnedMessagesRaw(room));
+                const eventsIdOld = clone(getPinnedMessagesRaw(room));
+                if (typeof newEventsId === 'string') {
+                    if (newEventsId.length > 0) {
 
-                    const event = await room.findEventById(newEventsId);
-                    if (event) {
-                        eventsId.push(newEventsId);
+                        const event = await room.findEventById(newEventsId);
+                        if (event) {
+                            eventsId.push(newEventsId);
+                        }
+
                     }
-
                 }
+
+                if (eventsId.length > eventsIdOld.length) {
+
+                    const data = { pinned: eventsId };
+
+                    mx.sendStateEvent(room.roomId, eventName, data).then((event) => {
+                        mx.sendEvent(room.roomId, eventName, data).then((msg) => {
+                            resolve({ event, msg });
+                        }).catch(reject);
+                    }).catch(reject);
+
+                } else {
+                    resolve(null);
+                }
+
+            } catch (err) {
+                reject(err);
             }
-
-            if (eventsId.length > eventsIdOld.length) {
-                mx.sendEvent(room.roomId, eventName, { pinned: eventsId });
-
-            }
-
-            resolve(eventsId);
-
-        } catch (err) {
-            reject(err);
+        } else {
+            reject(new Error('No pin message permission!'));
         }
     });
 };
