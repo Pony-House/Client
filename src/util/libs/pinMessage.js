@@ -72,18 +72,23 @@ export function setPinMessage(room, newEventsId, isPinned = true) {
 
                 const eventsId = clone(getPinnedMessagesRaw(room));
                 const eventsIdOld = clone(getPinnedMessagesRaw(room));
-                if (typeof newEventsId === 'string') {
-                    if (newEventsId.length > 0) {
+                if (typeof newEventsId === 'string' && newEventsId.length > 0) {
 
+                    if (isPinned) {
                         const event = await room.findEventById(newEventsId);
                         if (event) {
                             eventsId.push(newEventsId);
                         }
-
+                    } else {
+                        const index = eventsId.indexOf(newEventsId);
+                        if (index > -1) {
+                            eventsId.splice(index, 1);
+                        }
                     }
+
                 }
 
-                if (eventsId.length > eventsIdOld.length) {
+                if ((isPinned && eventsId.length > eventsIdOld.length) || (!isPinned && eventsId.length < eventsIdOld.length)) {
 
                     const data = { pinned: eventsId };
 
