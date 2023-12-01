@@ -1,3 +1,12 @@
+    --> Fazer o marcador que separa a lista de amigos da lista de DMs estranhos.
+    --> Fazer uma configuração se o usuário vai ou não receber notificação de DMs estranhos.
+
+    --> Criar leitor de mensagens fixadas
+
+    Permissão para convidar usuários.
+
+    =======================================================
+
 https://help.soundcloud.com/hc/en-us/articles/115003568008-Embedding-a-track-or-playlist-
 https://developer.spotify.com/documentation/embeds/reference/oembed
 
@@ -10,8 +19,6 @@ Made by Me
 
     Criar sistema de titulos (Algo parecido com cargos)
 
-    Criar leitor de mensagens fixadas
-
     Criar canais de galeria
     Criar sistema de calendário
     Criar Forums
@@ -23,6 +30,7 @@ Made by Me
     getJoinedRoomMembers
 
     Coisas que não atualiza sozinho:
+        Room name (Na home / no titulo da room)
         Alteração de friend nickname
         O username do display da conta logada
         O atualizar de emojis de rooms só funciona quando muda de room
@@ -39,12 +47,13 @@ Made by Me
 
     =======================================================
 
+    --> Sistema de perfil do space. Este perfil vai ter mais uma configuração de banner adicional.
+
     --> Leitor do dominio matrix.to
 
     --> Sistema de bordas personalizadas
 
-    --> Fazer o marcador que separa a lista de amigos da lista de DMs estranhos.
-    --> Fazer uma configuração se o usuário vai ou não receber notificação de DMs estranhos.
+    =======================================================
 
     --> Criar filtro para desativar animação de gifs especificas. A gente vai usar a ID e dominio do arquivo para facilitar isso.
     (Limite de 600 itens por array) (Opçao alternativa de fazer a animação ser hover)
@@ -52,7 +61,7 @@ Made by Me
     --> Opção de desativar ou ativar animação de emojis ou stickers
     (Também ser possível banir animação de usuários individualmente - limite de 600 itens por array) (Opçao alternativa de fazer a animação ser hover)
 
-    --> Sistema de perfil do space. Este perfil vai ter mais uma configuração de banner adicional.
+    =======================================================
 
     --> Voice Chat
     https://matrix-org.github.io/matrix-js-sdk/stable/classes/MatrixCall.html#transferToCall

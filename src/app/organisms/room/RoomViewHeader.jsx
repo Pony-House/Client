@@ -19,6 +19,7 @@ import Avatar from '../../atoms/avatar/Avatar';
 import RoomOptions from '../../molecules/room-options/RoomOptions';
 
 import { useForceUpdate } from '../../hooks/useForceUpdate';
+import RoomViewPin from './RoomViewPin';
 
 function RoomViewHeader({ roomId }) {
 
