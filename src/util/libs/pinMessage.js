@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 /* eslint-disable no-await-in-loop */
 import clone from 'clone';
 
@@ -59,10 +60,41 @@ export async function getPinnedMessages(room) {
 
 };
 
-export function setPinMessage(room, eventId) {
+export function setPinMessage(room, newEventsId, isPinned = true) {
+    return new Promise(async (resolve, reject) => {
+        try {
 
-    // const content = getPinnedMessages(room);
+            const mx = initMatrix.matrixClient;
+            const eventsId = clone(getPinnedMessagesRaw(room));
+            const eventsIdOld = clone(getPinnedMessagesRaw(room));
+            if (typeof newEventsId === 'string') {
+                if (newEventsId.length > 0) {
 
+                    const event = await room.findEventById(newEventsId);
+                    if (event) {
+                        eventsId.push(newEventsId);
+                    }
+
+                }
+            }
+
+            if (eventsId.length > eventsIdOld.length) {
+                mx.sendEvent(room.roomId, eventName, { pinned: eventsId });
+
+            }
+
+            resolve(eventsId);
+
+        } catch (err) {
+            reject(err);
+        }
+    });
 };
 
-global.getPinnedMessages = getPinnedMessages;
+if (__ENV_APP__.mode === 'development') {
+    global.pinManager = {
+        getRaw: getPinnedMessagesRaw,
+        get: getPinnedMessages,
+        set: setPinMessage,
+    };
+}
