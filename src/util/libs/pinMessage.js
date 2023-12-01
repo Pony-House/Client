@@ -4,7 +4,7 @@ import { objType } from '../tools';
 
 const eventName = 'm.room.pinned_events';
 
-export function getPinnedMessages(room) {
+export function getPinnedMessagesRaw(room) {
 
     const mx = initMatrix.matrixClient;
 
@@ -24,6 +24,13 @@ export function getPinnedMessages(room) {
     }
 
     return [];
+
+};
+
+export function getPinnedMessages(room) {
+
+    const pinnedEventsId = getPinnedMessagesRaw(room);
+    return pinnedEventsId;
 
 };
 
