@@ -76,8 +76,7 @@ class InitMatrix extends EventEmitter {
       PREPARED: (prevState) => {
         logger.log(`PREPARED state`);
         logger.log(`Previous state: `, prevState);
-        // TODO: remove global.initMatrix at end
-        global.initMatrix = this;
+        if (__ENV_APP__.mode === 'development') { global.initMatrix = this; }
         if (prevState === null) {
           this.roomList = new RoomList(this.matrixClient);
           this.accountData = new AccountData(this.roomList);

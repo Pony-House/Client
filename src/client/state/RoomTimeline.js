@@ -162,8 +162,7 @@ class RoomTimeline extends EventEmitter {
 
     setTimeout(() => this.room.loadMembersIfNeeded());
 
-    // TODO: remove below line
-    window.selectedRoom = this;
+    if (__ENV_APP__.mode === 'development') { window.selectedRoom = this; }
 
   }
 

@@ -29,12 +29,14 @@ Made by Me
 
     getJoinedRoomMembers
 
+    selectedRoom.room.eventNames()
     Coisas que não atualiza sozinho:
-        Room name (Na home / no titulo da room)
-        Alteração de friend nickname
-        O username do display da conta logada
-        O atualizar de emojis de rooms só funciona quando muda de room
+        Room name (Na home / no titulo da room).
+        Alteração de friend nickname.
+        O username do display da conta logada.
+        O atualizar de emojis de rooms só funciona quando muda de room.
         Lista de usuários online na room ainda não atualiza em tempo real.
+        Banner do space.
 
     =======================================================
 
