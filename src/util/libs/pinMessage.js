@@ -48,6 +48,13 @@ export async function getPinnedMessages(room) {
 
     const pinnedEventsId = clone(getPinnedMessagesRaw(room));
     try {
+
+        if (pinnedEventsId.length > PIN_LIMIT) {
+            while (pinnedEventsId.length > PIN_LIMIT) {
+                pinnedEventsId.shift();
+            }
+        }
+
         for (const item in pinnedEventsId) {
             if (typeof pinnedEventsId[item] === 'string') {
                 pinnedEventsId[item] = await room.findEventById(pinnedEventsId[item]);
@@ -55,6 +62,7 @@ export async function getPinnedMessages(room) {
                 // tinyTimeline.getEvents();
             }
         }
+
     } catch (err) {
         console.error(err);
         alert(err.message);
