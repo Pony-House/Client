@@ -30,7 +30,7 @@ export function getPinnedMessagesRaw(room, filterLimit = true) {
 
             const pinData = pinEvent[0].getContent();
             if (objType(pinData, 'object') && Array.isArray(pinData.pinned)) {
-                result = pinData.pinned;
+                result = clone(pinData.pinned);
             }
 
         }
@@ -62,10 +62,10 @@ export function canPinMessage(room, userId) {
 }
 
 // Get pin messages list
-export async function getPinnedMessages(room) {
+export async function getPinnedMessages(room, filterLimit = true) {
 
     // Get List
-    const pinnedEventsId = clone(getPinnedMessagesRaw(room));
+    const pinnedEventsId = getPinnedMessagesRaw(room, filterLimit);
     try {
 
         // Get events
@@ -103,8 +103,8 @@ export function setPinMessage(room, newEventsId, isPinned = true) {
             try {
 
                 // Get List
-                const eventsId = clone(getPinnedMessagesRaw(room));
-                const eventsIdOld = clone(getPinnedMessagesRaw(room));
+                const eventsId = getPinnedMessagesRaw(room);
+                const eventsIdOld = getPinnedMessagesRaw(room);
                 if (typeof newEventsId === 'string' && newEventsId.length > 0) {
 
                     // Add data
