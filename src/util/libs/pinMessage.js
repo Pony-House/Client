@@ -7,6 +7,7 @@ import { getCurrentState } from "../matrixUtil";
 import { objType } from '../tools';
 // import { getRoomInfo } from '../../app/organisms/room/Room';
 
+const PIN_LIMIT = 50;
 const eventName = 'm.room.pinned_events';
 
 export function getPinnedMessagesRaw(room) {
@@ -88,7 +89,10 @@ export function setPinMessage(room, newEventsId, isPinned = true) {
 
                 }
 
-                if ((isPinned && eventsId.length > eventsIdOld.length) || (!isPinned && eventsId.length < eventsIdOld.length)) {
+                if (
+                    ((isPinned && eventsId.length > eventsIdOld.length) || (!isPinned && eventsId.length < eventsIdOld.length)) &&
+                    eventsId.length <= PIN_LIMIT
+                ) {
 
                     const data = { pinned: eventsId };
 
