@@ -861,11 +861,9 @@ class RoomTimeline extends EventEmitter {
             if (tinyThis._ydoc_update_time.cache.length <= 1) {
               if (tinyThis._ydoc_update_time.cache[0]) {
                 const newTinyData = clone(tinyThis._ydoc_update_time.cache[0]);
-                console.log('single', newTinyData);
                 tinyThis._insertCrdt(newTinyData.update, newTinyData.itemType, newTinyData.parent, newTinyData.eventName).then(eventResult);
               }
             } else {
-              console.log('multi', clone(tinyThis._ydoc_update_time.cache));
               tinyThis._insertCrdtMulti(clone(tinyThis._ydoc_update_time.cache)).then(eventResult);
             }
 
