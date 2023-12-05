@@ -10,7 +10,9 @@ import settings from './settings';
 import { messageIsClassicCrdt } from '../../util/libs/crdt';
 import { objType } from '../../util/tools';
 
-global.Y = Y;
+const delayYdocUpdate = 100;
+
+if (__ENV_APP__.mode === 'development') { global.Y = Y; }
 let timeoutForceChatbox = null;
 
 function isEdited(mEvent) {
@@ -159,6 +161,7 @@ class RoomTimeline extends EventEmitter {
     this._ydoc_cache = [];
 
     this._ydoc_cache_timeout = null;
+    this._ydoc_update_time = { timeout: null, cache: [] };
 
     setTimeout(() => this.room.loadMembersIfNeeded());
 
@@ -441,9 +444,24 @@ class RoomTimeline extends EventEmitter {
         }
 
         // Send to Crdt
-        this._addCrdt(content, mEvent.getDate());
+        const eventDate = mEvent.getDate();
+
+        // Single
+        if (!Array.isArray(content.multiData)) {
+          this._addCrdt(content, eventDate);
+        }
+
+        // Multi
+        else {
+          for (const item in content.multiData) {
+            if (objType(content.multiData[item], 'object')) {
+              this._addCrdt(content.multiData[item], eventDate);
+            }
+          }
+        }
 
       }
+
     } else {
       if (!Array.isArray(this.crdt.CLASSIC)) this.crdt.CLASSIC = [];
       this.crdt.CLASSIC.push(mEvent);
@@ -722,6 +740,10 @@ class RoomTimeline extends EventEmitter {
     return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { data, store, type, parent });
   }
 
+  _insertCrdtMulti(multiData) {
+    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { multiData });
+  }
+
   _insertSnapshotCrdt(snapshot, type, parent, store = 'DEFAULT') {
     return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { snapshot, store, type, parent });
   }
@@ -779,8 +801,7 @@ class RoomTimeline extends EventEmitter {
           // Event Name
           const eventName = 'DEFAULT';
 
-          // Insert CRDT and prepare to check snapshot sender
-          tinyThis._insertCrdt(enableyJsItem.convertToString(update), itemType, parent, eventName).then(() => {
+          const eventResult = () => {
 
             // Get CRDT List and user Id
             const items = tinyThis.crdt[eventName];
@@ -804,7 +825,7 @@ class RoomTimeline extends EventEmitter {
                 ) {
 
                   // Is Data
-                  if (typeof content.data === 'string' && content.data.length > 0) {
+                  if ((typeof content.data === 'string' && content.data.length > 0) || (Array.isArray(content.multiData) && content.multiData.length > 0)) {
                     crdtCount++;
                   }
 
@@ -828,7 +849,30 @@ class RoomTimeline extends EventEmitter {
               tinyThis._insertSnapshotCrdt(tinyThis.snapshotCrdt(), itemType, parent, eventName);
             }
 
-          });
+          };
+
+          // Prepare Data
+          tinyThis._ydoc_update_time.cache.push({ update: enableyJsItem.convertToString(update), itemType, parent, eventName });
+          if (tinyThis._ydoc_update_time.timeout) clearTimeout(tinyThis._ydoc_update_time.timeout);
+
+          // Insert CRDT and prepare to check snapshot sender
+          tinyThis._ydoc_update_time.timeout = setTimeout(() => {
+
+            if (tinyThis._ydoc_update_time.cache.length <= 1) {
+              if (tinyThis._ydoc_update_time.cache[0]) {
+                const newTinyData = clone(tinyThis._ydoc_update_time.cache[0]);
+                console.log('single', newTinyData);
+                tinyThis._insertCrdt(newTinyData.update, newTinyData.itemType, newTinyData.parent, newTinyData.eventName).then(eventResult);
+              }
+            } else {
+              console.log('multi', clone(tinyThis._ydoc_update_time.cache));
+              tinyThis._insertCrdtMulti(clone(tinyThis._ydoc_update_time.cache)).then(eventResult);
+            }
+
+            delete tinyThis._ydoc_update_time.cache;
+            tinyThis._ydoc_update_time.cache = [];
+
+          }, delayYdocUpdate);
 
         } catch (err) {
           console.error(err);
