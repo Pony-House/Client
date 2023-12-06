@@ -444,18 +444,18 @@ class RoomTimeline extends EventEmitter {
         }
 
         // Send to Crdt
-        const eventDate = mEvent.getDate();
+        const eventDate = moment(mEvent.getDate());
 
         // Single
         if (!Array.isArray(content.multiData)) {
-          this._addCrdt(content, eventDate);
+          this._addCrdt(content, eventDate.toDate());
         }
 
         // Multi
         else {
           for (const item in content.multiData) {
             if (objType(content.multiData[item], 'object')) {
-              this._addCrdt(content.multiData[item], eventDate);
+              this._addCrdt(content.multiData[item], eventDate.clone().add(Number(item), 'seconds').toDate());
             }
           }
         }
