@@ -258,7 +258,7 @@ function usePaginate(
     const limit = eventLimitRef.current;
 
     if (roomTimeline.isOngoingPagination) return;
-    const tLength = roomTimeline.timeline.length;
+    const tLength = roomTimeline && roomTimeline.timeline && typeof roomTimeline.timeline.length === 'number' ? roomTimeline.timeline.length : 0;
 
     if (timelineScroll.bottom < SCROLL_TRIGGER_POS) {
 
@@ -389,7 +389,7 @@ function useEventArrive(roomTimeline, readUptoEvtStore, timelineScrollRef, event
 
     const handleEvent = (event) => {
 
-      const tLength = roomTimeline.timeline.length;
+      const tLength = roomTimeline && roomTimeline.timeline && typeof roomTimeline.timeline.length === 'number' ? roomTimeline.timeline.length : 0;
       const isViewingLive = roomTimeline.isServingLiveTimeline() && limit.length >= tLength - 1;
       const isAttached = timelineScroll.bottom < SCROLL_TRIGGER_POS;
 

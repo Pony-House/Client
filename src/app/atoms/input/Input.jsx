@@ -12,7 +12,7 @@ function Input({
   return (
     <>
 
-      {label !== '' && <label className="small text-gray" htmlFor={id}>{label}</label>}
+      {label !== '' && <label className="small text-gray" for={id}>{label}</label>}
 
       {resizable
         ? (
