@@ -154,7 +154,7 @@ class RoomTimeline extends EventEmitter {
     this.isOngoingPagination = false;
     this.ongoingDecryptionCount = 0;
     this.initialized = false;
-    this.ydoc = null;
+    this._ydoc = null;
 
     this.ydoc_last_update = null;
 
@@ -179,7 +179,7 @@ class RoomTimeline extends EventEmitter {
     return new Promise((resolve) => {
 
       const tryYdoc = () => {
-        if (tinyThis.ydoc) { resolve(tinyThis.ydoc); } else {
+        if (tinyThis._ydoc) { resolve(tinyThis._ydoc); } else {
           setTimeout(tryYdoc, 100);
         }
       };
@@ -189,7 +189,7 @@ class RoomTimeline extends EventEmitter {
     });
   }
 
-  getYdoc() { return this.ydoc; }
+  ydoc() { return this._ydoc; }
 
   isServingLiveTimeline() {
     return getLastLinkedTimeline(this.activeTimeline) === this.liveTimeline;
@@ -222,7 +222,7 @@ class RoomTimeline extends EventEmitter {
       Array.isArray(tinyIds) ? tinyIds : null
 
     // Exist Doc
-    if (this.ydoc) {
+    if (this._ydoc) {
 
       // Prepare Functions
       const tinyResult = {};
@@ -236,14 +236,14 @@ class RoomTimeline extends EventEmitter {
       };
 
       // Null. Get all
-      if (!ids || ids.length < 1) { this.ydoc.share.forEach(getData); }
+      if (!ids || ids.length < 1) { this._ydoc.share.forEach(getData); }
 
       // Get Values
       else {
 
         for (const id in ids) {
 
-          const item = this.ydoc.share.get(ids[id]);
+          const item = this._ydoc.share.get(ids[id]);
 
           if (item) {
             getData(item, ids[0]);
@@ -269,7 +269,7 @@ class RoomTimeline extends EventEmitter {
     const tinyThis = this;
 
     // Checker
-    if (this.ydoc) {
+    if (this._ydoc) {
       try {
         if (this.ydoc_last_update === null || timestamp > this.ydoc_last_update) {
 
@@ -299,12 +299,12 @@ class RoomTimeline extends EventEmitter {
                 typeof content.parent === 'string' && typeof content.type === 'string' &&
                 content.parent.length > 0 && content.type.length > 0
               ) {
-                enableyJsItem.action(this.ydoc, content.type, content.parent);
+                enableyJsItem.action(this._ydoc, content.type, content.parent);
               }
 
               // Apply update
               const before = clone(this.ydocToJson());
-              Y.applyUpdate(this.ydoc, memoryData);
+              Y.applyUpdate(this._ydoc, memoryData);
               const after = clone(this.ydocToJson());
 
               if (objectHash(before) === objectHash(after)) {
@@ -329,7 +329,7 @@ class RoomTimeline extends EventEmitter {
             if (objType(content.snapshot.types, 'object')) {
               for (const key in content.snapshot.types) {
                 if (typeof content.snapshot.types[key] === 'string' && content.snapshot.types[key].length > 0) {
-                  enableyJsItem.action(this.ydoc, content.snapshot.types[key], key);
+                  enableyJsItem.action(this._ydoc, content.snapshot.types[key], key);
                 }
               }
             }
@@ -347,7 +347,7 @@ class RoomTimeline extends EventEmitter {
 
               // Apply update
               this.ydoc_last_update = timestamp;
-              Y.applyUpdate(this.ydoc, memoryData);
+              Y.applyUpdate(this._ydoc, memoryData);
 
             }
 
@@ -371,7 +371,7 @@ class RoomTimeline extends EventEmitter {
 
       const tinyTimeout = () => {
 
-        if (tinyThis.ydoc) {
+        if (tinyThis._ydoc) {
 
           for (const item in tinyThis._ydoc_cache) {
             tinyThis._addCrdt(tinyThis._ydoc_cache[item].content, tinyThis._ydoc_cache[item].timestamp);
@@ -734,11 +734,11 @@ class RoomTimeline extends EventEmitter {
 
   snapshotCrdt() {
 
-    const update = enableyJsItem.convertToString(Y.encodeStateAsUpdate(this.ydoc));
-    const encode = enableyJsItem.convertToString(Y.encodeSnapshot(Y.snapshot(this.ydoc)));
+    const update = enableyJsItem.convertToString(Y.encodeStateAsUpdate(this._ydoc));
+    const encode = enableyJsItem.convertToString(Y.encodeSnapshot(Y.snapshot(this._ydoc)));
 
     const types = {};
-    this.ydoc.share.forEach((value, key) => {
+    this._ydoc.share.forEach((value, key) => {
 
       try {
         types[key] = String(value.constructor.name.startsWith('_') ? value.constructor.name.substring(1) : value.constructor.name).toLocaleLowerCase();
@@ -919,10 +919,10 @@ class RoomTimeline extends EventEmitter {
   _ydocEnable(ydoc) {
 
     const tinyThis = this;
-    this.ydoc = ydoc;
+    this._ydoc = ydoc;
     this._ydoc_matrix_update = [];
 
-    this.ydoc.on('update', (update) => {
+    this._ydoc.on('update', (update) => {
 
       const updateInfo = Y.decodeUpdate(update);
 
@@ -942,7 +942,7 @@ class RoomTimeline extends EventEmitter {
         // Get new value type
         else if (type === 'structs') {
 
-          const struct = tinyThis.ydoc.store.clients.get(info.key);
+          const struct = tinyThis._ydoc.store.clients.get(info.key);
           if (Array.isArray(struct) && struct.length > 0 && struct[struct.length - 1]) {
 
             const item = struct[struct.length - 1];
@@ -1049,7 +1049,7 @@ class RoomTimeline extends EventEmitter {
   }
 
   _disableYdoc() {
-    this.ydoc.destroy();
+    this._ydoc.destroy();
     this._ydoc_matrix_update = [];
   }
 
