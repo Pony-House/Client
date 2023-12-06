@@ -11,6 +11,7 @@ import { messageIsClassicCrdt } from '../../util/libs/crdt';
 import { objType } from '../../util/tools';
 
 const delayYdocUpdate = 100;
+const hashTryLimit = 10;
 
 if (__ENV_APP__.mode === 'development') { global.Y = Y; }
 let timeoutForceChatbox = null;
@@ -161,6 +162,8 @@ class RoomTimeline extends EventEmitter {
     this._ydoc_cache = [];
     this._ydoc_send_events = [];
     this._ydoc_sending_event = false;
+    this._ydoc_error_hash = null;
+    this._ydoc_error_hash_count = 0;
 
     this._ydoc_cache_timeout = null;
     this._ydoc_update_time = { timeout: null, cache: [] };
@@ -749,12 +752,30 @@ class RoomTimeline extends EventEmitter {
 
       this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', newData).then(() => {
         tinyThis._ydoc_sending_event = false;
+        tinyThis._ydoc_error_hash = null;
+        tinyThis._ydoc_error_hash_count = 0;
         tinyThis._tryInsertCrdtAgain();
       }).catch(err => {
+
         console.error(err);
         this._ydoc_send_events.unshift(newData);
         tinyThis._ydoc_sending_event = false;
-        tinyThis._tryInsertCrdtAgain();
+
+        const newError = objectHash(newData);
+
+        if (newError !== tinyThis._ydoc_error_hash) {
+          tinyThis._ydoc_error_hash = newError;
+          tinyThis._ydoc_error_hash_count = 0;
+        } else {
+          tinyThis._ydoc_error_hash_count++;
+        }
+
+        if (tinyThis._ydoc_error_hash_count <= hashTryLimit) {
+          tinyThis._tryInsertCrdtAgain();
+        } else {
+          alert(err.message, 'CRDT SYNC ERROR!');
+        }
+
       });
 
     }
@@ -771,11 +792,13 @@ class RoomTimeline extends EventEmitter {
 
       this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', newData).then(() => {
         tinyThis._ydoc_sending_event = false;
+        tinyThis._ydoc_error_hash = null;
         tinyThis._tryInsertCrdtAgain();
       }).catch(err => {
         console.error(err);
         this._ydoc_send_events.unshift(newData);
         tinyThis._ydoc_sending_event = false;
+        tinyThis._ydoc_error_hash = objectHash(newData);
         tinyThis._tryInsertCrdtAgain();
       });
 
@@ -795,11 +818,13 @@ class RoomTimeline extends EventEmitter {
 
       this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', newData).then(() => {
         tinyThis._ydoc_sending_event = false;
+        tinyThis._ydoc_error_hash = null;
         tinyThis._tryInsertCrdtAgain();
       }).catch(err => {
         console.error(err);
         this._ydoc_send_events.unshift(newData);
         tinyThis._ydoc_sending_event = false;
+        tinyThis._ydoc_error_hash = objectHash(newData);
         tinyThis._tryInsertCrdtAgain();
       });
 
@@ -819,11 +844,13 @@ class RoomTimeline extends EventEmitter {
 
       this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', newData).then(() => {
         tinyThis._ydoc_sending_event = false;
+        tinyThis._ydoc_error_hash = null;
         tinyThis._tryInsertCrdtAgain();
       }).catch(err => {
         console.error(err);
         this._ydoc_send_events.unshift(newData);
         tinyThis._ydoc_sending_event = false;
+        tinyThis._ydoc_error_hash = objectHash(newData);
         tinyThis._tryInsertCrdtAgain();
       });
 
