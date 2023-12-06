@@ -720,6 +720,7 @@ class RoomTimeline extends EventEmitter {
 
     const update = enableyJsItem.convertToString(Y.encodeStateAsUpdate(this.ydoc));
     const encode = enableyJsItem.convertToString(Y.encodeSnapshot(Y.snapshot(this.ydoc)));
+    this.doc.setVersion(this.doc.version + 1);
 
     const types = {};
     this.ydoc.share.forEach((value, key) => {
@@ -852,7 +853,7 @@ class RoomTimeline extends EventEmitter {
           };
 
           // Prepare Data
-          tinyThis._ydoc_update_time.cache.push({ update: enableyJsItem.convertToString(update), itemType, parent, eventName });
+          tinyThis._ydoc_update_time.cache.push({ data: enableyJsItem.convertToString(update), type: itemType, parent, store: eventName });
           if (tinyThis._ydoc_update_time.timeout) clearTimeout(tinyThis._ydoc_update_time.timeout);
 
           // Insert CRDT and prepare to check snapshot sender
@@ -861,7 +862,7 @@ class RoomTimeline extends EventEmitter {
             if (tinyThis._ydoc_update_time.cache.length <= 1) {
               if (tinyThis._ydoc_update_time.cache[0]) {
                 const newTinyData = clone(tinyThis._ydoc_update_time.cache[0]);
-                tinyThis._insertCrdt(newTinyData.update, newTinyData.itemType, newTinyData.parent, newTinyData.eventName).then(eventResult);
+                tinyThis._insertCrdt(newTinyData.data, newTinyData.type, newTinyData.parent, newTinyData.store).then(eventResult);
               }
             } else {
               tinyThis._insertCrdtMulti(clone(tinyThis._ydoc_update_time.cache)).then(eventResult);
