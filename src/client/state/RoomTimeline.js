@@ -159,6 +159,8 @@ class RoomTimeline extends EventEmitter {
 
     this._ydoc_matrix_update = [];
     this._ydoc_cache = [];
+    this._ydoc_send_events = [];
+    this._ydoc_sending_event = false;
 
     this._ydoc_cache_timeout = null;
     this._ydoc_update_time = { timeout: null, cache: [] };
@@ -737,16 +739,98 @@ class RoomTimeline extends EventEmitter {
 
   }
 
+  async _tryInsertCrdtAgain() {
+    if (this._ydoc_send_events.length > 0) {
+
+      this._ydoc_sending_event = true;
+
+      const tinyThis = this;
+      const newData = this._ydoc_send_events.shift();
+
+      this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', newData).then(() => {
+        tinyThis._ydoc_sending_event = false;
+        tinyThis._tryInsertCrdtAgain();
+      }).catch(err => {
+        console.error(err);
+        this._ydoc_send_events.unshift(newData);
+        tinyThis._ydoc_sending_event = false;
+        tinyThis._tryInsertCrdtAgain();
+      });
+
+    }
+  }
+
   _insertCrdt(data, type, parent, store = 'DEFAULT') {
-    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { data, store, type, parent });
+
+    const newData = { data, store, type, parent };
+    if (!this._ydoc_sending_event) {
+
+      // this._ydoc_send_events
+      const tinyThis = this;
+      this._ydoc_sending_event = true;
+
+      this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', newData).then(() => {
+        tinyThis._ydoc_sending_event = false;
+        tinyThis._tryInsertCrdtAgain();
+      }).catch(err => {
+        console.error(err);
+        this._ydoc_send_events.unshift(newData);
+        tinyThis._ydoc_sending_event = false;
+        tinyThis._tryInsertCrdtAgain();
+      });
+
+    } else {
+      this._ydoc_send_events.push(newData);
+    }
+
   }
 
   _insertCrdtMulti(multiData) {
-    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { multiData });
+
+    const newData = { multiData };
+    if (!this._ydoc_sending_event) {
+
+      const tinyThis = this;
+      this._ydoc_sending_event = true;
+
+      this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', newData).then(() => {
+        tinyThis._ydoc_sending_event = false;
+        tinyThis._tryInsertCrdtAgain();
+      }).catch(err => {
+        console.error(err);
+        this._ydoc_send_events.unshift(newData);
+        tinyThis._ydoc_sending_event = false;
+        tinyThis._tryInsertCrdtAgain();
+      });
+
+    } else {
+      this._ydoc_send_events.push(newData);
+    }
+
   }
 
   _insertSnapshotCrdt(snapshot, type, parent, store = 'DEFAULT') {
-    return this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', { snapshot, store, type, parent });
+
+    const newData = { snapshot, store, type, parent };
+    if (!this._ydoc_sending_event) {
+
+      const tinyThis = this;
+      this._ydoc_sending_event = true;
+
+      this.matrixClient.sendEvent(this.roomId, 'pony.house.crdt', newData).then(() => {
+        tinyThis._ydoc_sending_event = false;
+        tinyThis._tryInsertCrdtAgain();
+      }).catch(err => {
+        console.error(err);
+        this._ydoc_send_events.unshift(newData);
+        tinyThis._ydoc_sending_event = false;
+        tinyThis._tryInsertCrdtAgain();
+      });
+
+    } else {
+      this._ydoc_send_events.push(newData);
+    }
+
   }
 
   // Active Listens
