@@ -10,3 +10,6 @@
 - Friend nickname added
 - Appearance settings issues fixed
 - Auto start tab added.
+- ydoc script update .
+- new ydoc snapshot updater .
+- roomtimeline issues fixed.
