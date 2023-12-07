@@ -107,7 +107,7 @@
     "@rollup/plugin-inject": "5.0.5",
     "@rollup/plugin-wasm": "6.2.2",
     "@types/node": "20.10.4",
-    "@types/react": "18.2.39",
+    "@types/react": "18.2.42",
     "@types/react-dom": "18.2.17",
     "@typescript-eslint/eslint-plugin": "6.13.2",
     "@typescript-eslint/parser": "6.13.2",
