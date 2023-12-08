@@ -18,16 +18,16 @@ const themes = {
   black: { data: blackTheme, id: 'black-theme', type: 'dark-solid' },
 
   butter: { data: butterTheme, id: 'butter-theme', type: 'dark2' },
-  butter_no_grandient: { data: butterTheme, id: 'butter-theme-no-grandient', type: 'dark2-solid' },
+  butter_no_gradient: { data: butterTheme, id: 'butter-theme-no-gradient', type: 'dark2-solid' },
 
   dark: { data: darkTheme, id: 'dark-theme', type: 'dark' },
-  dark_no_grandient: { data: darkTheme, id: 'dark-theme-no-grandient', type: 'dark-solid' },
+  dark_no_gradient: { data: darkTheme, id: 'dark-theme-no-gradient', type: 'dark-solid' },
 
   silver: { data: silverTheme, id: 'silver-theme', type: 'silver' },
-  silver_no_grandient: { data: silverTheme, id: 'silver-theme-no-grandient', type: 'silver-solid' },
+  silver_no_gradient: { data: silverTheme, id: 'silver-theme-no-gradient', type: 'silver-solid' },
 
   white: { data: whiteTheme, id: '', type: 'light' },
-  white_no_grandient: { data: whiteTheme, id: 'white-theme-no-grandient', type: 'light-solid' },
+  white_no_gradient: { data: whiteTheme, id: 'white-theme-no-gradient', type: 'light-solid' },
 
 };
 
@@ -50,17 +50,17 @@ class Settings extends EventEmitter {
   constructor() {
 
     super();
-    this.themes = [themes.white, themes.white_no_grandient, themes.silver, themes.silver_no_grandient, themes.dark, themes.dark_no_grandient, themes.butter, themes.butter_no_grandient, themes.black];
+    this.themes = [themes.white, themes.white_no_gradient, themes.silver, themes.silver_no_gradient, themes.dark, themes.dark_no_gradient, themes.butter, themes.butter_no_gradient, themes.black];
 
     this.themesName = [
       { text: 'Light' },
-      { text: 'Light (No Grandient)' },
+      { text: 'Light (No Gradients)' },
       { text: 'Silver' },
-      { text: 'Silver (No Grandient)' },
+      { text: 'Silver (No Gradients)' },
       { text: 'Dark' },
-      { text: 'Dark (No Grandient)' },
+      { text: 'Dark (No Gradients)' },
       { text: 'Butter' },
-      { text: 'Butter (No Grandient)' },
+      { text: 'Butter (No Gradients)' },
       { text: 'Black (Beta)' },
     ];
 

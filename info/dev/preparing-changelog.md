@@ -13,4 +13,4 @@
 - ydoc script update .
 - new ydoc snapshot updater.
 - roomtimeline issues fixed.
-- no-grandient themes added.
+- no-gradient themes added.
