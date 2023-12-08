@@ -9,8 +9,10 @@
   cursor: pointer;
   position: relative;
 
-  .avatar-container__large {
-    margin-left: 2px;
+  @-moz-document url-prefix() {
+    .avatar-container__large {
+      margin-left: 2px;
+    }
   }
 
   &__process {
