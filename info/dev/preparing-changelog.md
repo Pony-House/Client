@@ -10,7 +10,8 @@
 - Friend nickname added
 - Appearance settings issues fixed
 - Auto start tab added.
-- ydoc script update .
-- new ydoc snapshot updater.
+- Ydoc script update .
+- New ydoc snapshot updater.
 - roomtimeline issues fixed.
 - no-gradient themes added.
+- Image uploader firefox css fixed.
