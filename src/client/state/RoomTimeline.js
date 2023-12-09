@@ -764,38 +764,46 @@ class RoomTimeline extends EventEmitter {
 
       if (tinyThis._ydoc_send_events.length > 0) {
 
-        tinyThis._ydoc_sending_event = true;
-
         const newData = tinyThis._ydoc_send_events.shift();
 
-        tinyThis.matrixClient.sendEvent(tinyThis.roomId, 'pony.house.crdt', newData).then(() => {
-          tinyThis._ydoc_sending_event = false;
-          tinyThis._ydoc_error_hash = null;
-          tinyThis._ydoc_error_hash_count = 0;
-          resolve(tinyThis._tryInsertCrdtAgain());
-        }).catch(err => {
+        if (!tinyThis._ydoc_sending_event) {
 
-          console.error(err);
+          tinyThis._ydoc_sending_event = true;
+
+          tinyThis.matrixClient.sendEvent(tinyThis.roomId, 'pony.house.crdt', newData).then(() => {
+            tinyThis._ydoc_sending_event = false;
+            tinyThis._ydoc_error_hash = null;
+            tinyThis._ydoc_error_hash_count = 0;
+            resolve(tinyThis._tryInsertCrdtAgain());
+          }).catch(err => {
+
+            console.error(err);
+            tinyThis._ydoc_send_events.unshift(newData);
+            tinyThis._ydoc_sending_event = false;
+
+            const newError = objectHash(newData);
+
+            if (newError !== tinyThis._ydoc_error_hash) {
+              tinyThis._ydoc_error_hash = newError;
+              tinyThis._ydoc_error_hash_count = 0;
+            } else {
+              tinyThis._ydoc_error_hash_count++;
+            }
+
+            if (tinyThis._ydoc_error_hash_count <= hashTryLimit) {
+              resolve(tinyThis._tryInsertCrdtAgain());
+            } else {
+              alert(err.message, 'CRDT SYNC ERROR!');
+              reject(err);
+            }
+
+          });
+
+        } else {
           tinyThis._ydoc_send_events.unshift(newData);
           tinyThis._ydoc_sending_event = false;
-
-          const newError = objectHash(newData);
-
-          if (newError !== tinyThis._ydoc_error_hash) {
-            tinyThis._ydoc_error_hash = newError;
-            tinyThis._ydoc_error_hash_count = 0;
-          } else {
-            tinyThis._ydoc_error_hash_count++;
-          }
-
-          if (tinyThis._ydoc_error_hash_count <= hashTryLimit) {
-            resolve(tinyThis._tryInsertCrdtAgain());
-          } else {
-            alert(err.message, 'CRDT SYNC ERROR!');
-            reject(err);
-          }
-
-        });
+          resolve(tinyThis._tryInsertCrdtAgain());
+        }
 
       }
 
@@ -825,9 +833,10 @@ class RoomTimeline extends EventEmitter {
           resolve(tinyThis._tryInsertCrdtAgain());
         });
 
+      } else {
+        tinyThis._ydoc_send_events.push(newData);
+        resolve(tinyThis._tryInsertCrdtAgain());
       }
-
-      tinyThis._ydoc_send_events.push(newData);
 
     });
   }
@@ -853,9 +862,10 @@ class RoomTimeline extends EventEmitter {
           resolve(tinyThis._tryInsertCrdtAgain());
         });
 
+      } else {
+        tinyThis._ydoc_send_events.push(newData);
+        resolve(tinyThis._tryInsertCrdtAgain());
       }
-
-      tinyThis._ydoc_send_events.push(newData);
 
     });
   }
@@ -881,9 +891,10 @@ class RoomTimeline extends EventEmitter {
           resolve(tinyThis._tryInsertCrdtAgain());
         });
 
+      } else {
+        tinyThis._ydoc_send_events.push(newData);
+        resolve(tinyThis._tryInsertCrdtAgain());
       }
-
-      tinyThis._ydoc_send_events.push(newData);
 
     });
   }
@@ -909,9 +920,10 @@ class RoomTimeline extends EventEmitter {
           resolve(tinyThis._tryInsertCrdtAgain());
         });
 
+      } else {
+        tinyThis._ydoc_send_events.push(newData);
+        resolve(tinyThis._tryInsertCrdtAgain());
       }
-
-      tinyThis._ydoc_send_events.push(newData);
 
     });
   }
