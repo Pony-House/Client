@@ -38,6 +38,7 @@ function PeopleSelectorBanner({
   const customStatusRef = useRef(null);
   const profileBanner = useRef(null);
   const userNameRef = useRef(null);
+  const userPronounsRef = useRef(null);
   const displayNameRef = useRef(null);
   const profileAvatar = useRef(null);
 
@@ -91,6 +92,20 @@ function PeopleSelectorBanner({
 
           displayName.append(ethereumIcon);
 
+        }
+
+      }
+
+      // Get Pronouns Data
+      if (userPronounsRef.current) {
+
+        const pronounsDOM = $(userPronounsRef.current);
+
+        // Message Icon
+        if (typeof presence.pronouns === 'string' && presence.pronouns.length > 0) {
+          pronounsDOM.removeClass('d-none').text(presence.pronouns);
+        } else {
+          pronounsDOM.empty().addClass('d-none');
         }
 
       }
@@ -282,6 +297,7 @@ function PeopleSelectorBanner({
 
           <h6 ref={displayNameRef} className='emoji-size-fix m-0 mb-1 fw-bold display-name'><span className='button'>{twemojifyReact(name)}</span></h6>
           <small ref={userNameRef} className='text-gray emoji-size-fix username'><span className='button'>{twemojifyReact(user.userId)}</span></small>
+          <div ref={userPronounsRef} className='text-gray emoji-size-fix pronouns small d-none' />
 
           <div ref={customStatusRef} className='d-none mt-2 emoji-size-fix small user-custom-status' />
 

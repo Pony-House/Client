@@ -95,6 +95,11 @@ export function parsePresenceStatus(presence, userId) {
                     tinyResult.banner = mx.mxcUrlToHttp(tinyParse.banner);
                 }
 
+                // Pronouns
+                if (typeof tinyParse.pronouns === 'string' && tinyParse.pronouns.length > 0) {
+                    tinyResult.pronouns = tinyParse.pronouns.substring(0, 20);
+                }
+
                 // Profile Bio
                 if (typeof tinyParse.bio === 'string' && tinyParse.bio.length > 0) {
                     tinyResult.bio = tinyParse.bio.substring(0, 190);

@@ -388,6 +388,7 @@ function ProfileViewer() {
   const [lightbox, setLightbox] = useState(false);
 
   const userNameRef = useRef(null);
+  const userPronounsRef = useRef(null);
   const displayNameRef = useRef(null);
 
   useRerenderOnProfileChange(roomId, userId);
@@ -528,7 +529,7 @@ function ProfileViewer() {
           }
 
           // About Page
-          renderAbout(ethereumValid, displayNameRef, customStatusRef, profileBanner, bioRef, timezoneRef, content);
+          renderAbout(userPronounsRef, ethereumValid, displayNameRef, customStatusRef, profileBanner, bioRef, timezoneRef, content);
 
         }
 
@@ -693,6 +694,7 @@ function ProfileViewer() {
 
               <h6 ref={displayNameRef} className='emoji-size-fix m-0 mb-1 fw-bold display-name'><span className='button'>{twemojifyReact(username)}</span></h6>
               <small ref={userNameRef} className='text-gray emoji-size-fix username'><span className='button'>{twemojifyReact(userId)}</span></small>
+              <div ref={userPronounsRef} className='text-gray emoji-size-fix pronouns small d-none' />
 
               <div ref={customStatusRef} className='d-none mt-2 emoji-size-fix small user-custom-status' />
               <ul ref={menubarRef} id='usertabs' className='nav nav-underline mt-2 small' />

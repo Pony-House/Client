@@ -29,7 +29,7 @@ const dNoneChange = (ref, enabled) => {
 
 };
 
-export default function renderAbout(ethereumValid, displayNameRef, customStatusRef, profileBanner, bioRef, timezoneRef, content) {
+export default function renderAbout(userPronounsRef, ethereumValid, displayNameRef, customStatusRef, profileBanner, bioRef, timezoneRef, content) {
 
     // Ethereum
     if (ethereumValid) {
@@ -125,6 +125,21 @@ export default function renderAbout(ethereumValid, displayNameRef, customStatusR
 
         } else {
             dNoneChange(timezoneDOM, true);
+        }
+
+    }
+
+
+    // Get Pronouns Data
+    if (userPronounsRef.current && content && content.presenceStatusMsg) {
+
+        const pronounsDOM = $(userPronounsRef.current);
+
+        // Message Icon
+        if (typeof content.presenceStatusMsg.pronouns === 'string' && content.presenceStatusMsg.pronouns.length > 0) {
+            pronounsDOM.removeClass('d-none').text(content.presenceStatusMsg.pronouns);
+        } else {
+            pronounsDOM.empty().addClass('d-none');
         }
 
     }

@@ -329,7 +329,7 @@ function ProfileSection() {
                 <li className="list-group-item border-0">
                     <div className='small'>Pronouns</div>
                     <div className='very-small text-gray'>Enter your pronouns.</div>
-                    <input ref={pronounsRef} type='text' className="form-control form-control-bg" maxLength="30" defaultValue={userPronouns} />
+                    <input ref={pronounsRef} type='text' className="form-control form-control-bg" maxLength="20" defaultValue={userPronouns} />
                     <Button className='mt-2' onClick={sendPronouns} variant="primary">Submit</Button>
                 </li>
 
