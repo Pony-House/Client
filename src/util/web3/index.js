@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import clone from 'clone';
+import Web3 from 'web3';
 import provider from 'eth-provider';
 import Web3WsProvider from 'web3-providers-ws';
 
