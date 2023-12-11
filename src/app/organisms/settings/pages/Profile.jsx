@@ -21,6 +21,7 @@ function ProfileSection() {
 
     const customStatusRef = useRef(null);
     const bioRef = useRef(null);
+    const pronounsRef = useRef(null);
     const timezoneRef = useRef(null);
 
     const [customStatusIcon, setcustomStatusIcon] = useState(typeof userProfile.msgIcon === 'string' ?
@@ -33,6 +34,7 @@ function ProfileSection() {
     const [banner, setBanner] = useState(userProfile.banner);
     const [customStatus, setCustomStatus] = useState(userProfile.msg);
     const [userBio, setUserBio] = useState(userProfile.bio);
+    const [userPronouns, setUserPronouns] = useState(userProfile.pronouns);
     const [userTimezone, setUserTimezone] = useState(userProfile.timezone);
 
     const sendSetStatus = (item) => {
@@ -104,6 +106,28 @@ function ProfileSection() {
             emitUpdateProfile(content);
 
             toast('The biography of your profile has been successfully updated.');
+
+        }
+    };
+
+    const sendPronouns = () => {
+        if (pronounsRef && pronounsRef.current) {
+
+            const content = initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
+
+            const { value } = pronounsRef.current;
+            if (typeof value === 'string' && value.length > 0) {
+                setUserPronouns(value);
+                content.pronouns = value;
+            } else {
+                setUserPronouns(null);
+                content.pronouns = null;
+            }
+
+            initMatrix.matrixClient.setAccountData('pony.house.profile', content);
+            emitUpdateProfile(content);
+
+            toast('Your pronouns has been successfully updated.');
 
         }
     };
@@ -298,8 +322,15 @@ function ProfileSection() {
                 <li className="list-group-item border-0">
                     <div className='small'>About me</div>
                     <div className='very-small text-gray'>Enter a small biography about you.</div>
-                    <textarea ref={bioRef} className="form-control form-control-bg" placeholder="" rows="7" maxLength="190" defaultValue={userBio} />
+                    <textarea ref={bioRef} className="form-control form-control-bg" rows="7" maxLength="190" defaultValue={userBio} />
                     <Button className='mt-2' onClick={sendBio} variant="primary">Submit</Button>
+                </li>
+
+                <li className="list-group-item border-0">
+                    <div className='small'>Pronouns</div>
+                    <div className='very-small text-gray'>Enter your pronouns.</div>
+                    <input ref={pronounsRef} type='text' className="form-control form-control-bg" maxLength="30" defaultValue={userPronouns} />
+                    <Button className='mt-2' onClick={sendPronouns} variant="primary">Submit</Button>
                 </li>
 
                 <li className="list-group-item border-0">
