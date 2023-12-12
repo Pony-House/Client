@@ -76,13 +76,13 @@ export default function startQuery() {
     $(document).on('focus', onPageShow);
 
     // Select Range
-    $.fn.selectRange = (start, end) => {
+    $.fn.selectRange = function (start, end) {
 
         if (typeof start === "number") {
 
             if (typeof end !== "number") { end = start; }
 
-            return this.each(() => {
+            return this.each(function () {
                 if (this.setSelectionRange) {
                     this.focus();
                     this.setSelectionRange(start, end);
@@ -104,17 +104,17 @@ export default function startQuery() {
     };
 
     // Tooltip
-    $.fn.tooltip = (type, configObject) => {
+    $.fn.tooltip = function (type, configObject) {
         this.each(() => {
 
-            if (!$(this).data('bs-tooltip')) {
+            if (!this.data('bs-tooltip')) {
 
                 if (configObject) {
-                    $(this).data('bs-tooltip', new bootstrap.Modal(this, configObject));
+                    this.data('bs-tooltip', new bootstrap.Modal(this.get(0), configObject));
                 } else if (typeof type !== 'string') {
-                    $(this).data('bs-tooltip', new bootstrap.Modal(this, type));
+                    this.data('bs-tooltip', new bootstrap.Modal(this.get(0), type));
                 } else {
-                    $(this).data('bs-tooltip', new bootstrap.Modal(this));
+                    this.data('bs-tooltip', new bootstrap.Modal(this.get(0)));
                 }
 
             }
