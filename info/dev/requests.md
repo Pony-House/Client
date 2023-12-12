@@ -37,6 +37,7 @@ Made by Me
         O atualizar de emojis de rooms só funciona quando muda de room.
         Lista de usuários online na room ainda não atualiza em tempo real.
         Banner do space.
+        Clock das mensagens.
 
     =======================================================
 
