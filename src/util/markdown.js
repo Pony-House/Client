@@ -21,13 +21,13 @@ const timestampFormats = {
   html: (item, fromNow = false) => ({
 
     order: defaultRules.inlineCode.order + 0.1,
-    match: inlineRegex(new RegExp(`^<t:(.*):${item}>`, 'g')),
+    match: inlineRegex(new RegExp(`^{t:(.*):${item}}`, 'g')),
 
     parse: (capture, parse, state) => ({
       content: parse(capture[1], state)
     }),
 
-    plain: (node, output, state) => `<t:${output(node.content, state)}:${item}>`,
+    plain: (node, output, state) => `{t:${output(node.content, state)}:${item}}`,
     html: (node, output, state) => {
 
       const timestamp = Number(output(node.content, state)) * 1000;
