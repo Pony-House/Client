@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import clone from 'clone';
 import hljs from 'highlight.js';
 import * as linkify from "linkifyjs";
+import * as bootstrap from 'bootstrap/dist/js/bootstrap.esm';
 
 import { hljsFixer, resizeWindowChecker, chatboxScrollToBottom, toast } from '../../../util/tools';
 import { twemojifyReact } from '../../../util/twemojify';
