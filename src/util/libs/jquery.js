@@ -110,11 +110,11 @@ export default function startQuery() {
             if (!this.data('bs-tooltip')) {
 
                 if (configObject) {
-                    this.data('bs-tooltip', new bootstrap.Modal(this.get(0), configObject));
+                    this.data('bs-tooltip', new bootstrap.Tooltip(this.get(0), configObject));
                 } else if (typeof type !== 'string') {
-                    this.data('bs-tooltip', new bootstrap.Modal(this.get(0), type));
+                    this.data('bs-tooltip', new bootstrap.Tooltip(this.get(0), type));
                 } else {
-                    this.data('bs-tooltip', new bootstrap.Modal(this.get(0)));
+                    this.data('bs-tooltip', new bootstrap.Tooltip(this.get(0)));
                 }
 
             }
