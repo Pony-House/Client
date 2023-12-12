@@ -3,7 +3,6 @@ module.exports = {
     '$': 'readonly',
     'web3': 'readonly',
     'ethereum': 'readonly',
-    'bootstrap': 'readonly',
     'tinyAPI': 'readonly',
     'arguments': 'readonly',
     'getLogData': 'readonly',
@@ -11,8 +10,6 @@ module.exports = {
     '__ENV_APP__': 'readonly',
     'autoLaunch': 'readonly',
     'Olm': 'readonly',
-    'vegaLite': 'readonly',
-    'vegaEmbed': 'readonly',
     'qrcode': 'readonly',
   },
   env: {

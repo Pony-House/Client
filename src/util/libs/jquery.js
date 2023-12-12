@@ -1,3 +1,5 @@
+import * as bootstrap from 'bootstrap/dist/js/bootstrap.esm';
+
 // Window Hidden Detector
 let hiddenWindow = 'windowHidden';
 function onPageShow(event) {
