@@ -15,4 +15,5 @@
 - roomtimeline issues fixed.
 - no-gradient themes added.
 - Image uploader firefox css fixed.
-- pronouns profile support added.
+- Pronouns profile support added.
+- New clock configs.

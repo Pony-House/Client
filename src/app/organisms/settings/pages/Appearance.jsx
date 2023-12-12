@@ -28,6 +28,8 @@ function AppearanceSection() {
     const [hideMembershipEvents, setHideMembershipEvents] = useState(settings.hideMembershipEvents);
     const [hideNickAvatarEvents, setHideNickAvatarEvents] = useState(settings.hideNickAvatarEvents);
 
+    const [is24hours, setIs24hours] = useState(settings.is24hours);
+
     const ponyHouseZoomRef = useRef(null);
     const ponyHouseZoomRangeRef = useRef(null);
 
@@ -196,6 +198,25 @@ function AppearanceSection() {
                         )}
                         content={<div className="very-small text-gray">Hide nick and avatar change messages from room timeline.</div>}
                     />
+                </ul>
+            </div>
+
+            <div className="card noselect mt-3">
+                <ul className="list-group list-group-flush">
+                    <li className="list-group-item very-small text-gray">Time format</li>
+
+                    <SettingTile
+                        title="24 hours clock"
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={is24hours}
+                                onToggle={toggleAppearanceAction('is24hours', setIs24hours)}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">Do not use the standard 12-hour clock. The next loads of the room will apply the configuration.</div>}
+                    />
+
                 </ul>
             </div>
 

@@ -29,4 +29,4 @@ const momentFormat = {
 
 // Export Module
 export default moment;
-export { momentFormat };
+export { momentFormat, calendarFormat };
