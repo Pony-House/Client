@@ -19,7 +19,7 @@ import { useDeviceList } from '../../hooks/useDeviceList';
 import { useCrossSigningStatus } from '../../hooks/useCrossSigningStatus';
 import { accessSecretStorage } from './SecretStorageAccess';
 
-import moment from '../../../util/libs/momentjs';
+import moment, { momentFormat } from '../../../util/libs/momentjs';
 
 const promptDeviceName = async (deviceName) => new Promise((resolve) => {
   let isCompleted = false;
@@ -180,7 +180,7 @@ function DeviceManage() {
               <div className="very-small text-gray">
                 Last activity
                 <span style={{ color: 'var(--tc-surface-normal)' }}>
-                  {moment(new Date(lastTS)).format(' hh:mm A, DD/MM/YYYY')}
+                  {moment(new Date(lastTS)).format(` ${momentFormat.clock()}, ${momentFormat.calendar()}`)}
                 </span>
                 {lastIP ? ` at ${lastIP}` : ''}
               </div>

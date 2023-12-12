@@ -26,7 +26,7 @@ import TimelineScroll from './TimelineScroll';
 import EventLimit from './EventLimit';
 import { getCurrentState } from '../../../util/matrixUtil';
 import tinyAPI from '../../../util/mods';
-import moment from '../../../util/libs/momentjs';
+import moment, { momentFormat } from '../../../util/libs/momentjs';
 
 const PAG_LIMIT = 30;
 const MAX_MSG_DIFF_MINUTES = 5;
@@ -97,7 +97,7 @@ function RoomIntroContainer({ event, timeline }) {
       name={room.name}
       heading={twemojifyReact(heading)}
       desc={desc}
-      time={event ? `Created at ${moment(event.getDate()).format('DD MMMM YYYY, hh:mm A')}` : null}
+      time={event ? `Created at ${moment(event.getDate()).format(`DD MMMM YYYY, ${momentFormat.clock()}`)}` : null}
     />
   );
 }

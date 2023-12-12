@@ -5,18 +5,18 @@ import SimpleMarkdown from '@khanacademy/simple-markdown';
 import { idRegex, parseIdUri } from './common';
 import { resizeWindowChecker } from './tools';
 import rainbowText from './libs/rainbowText';
-import moment from './libs/momentjs';
+import moment, { momentFormat } from './libs/momentjs';
 
 const timestampFormats = {
 
-  t: `hh:mm A`,
-  T: `hh:mm:ss A`,
+  t: momentFormat.clock,
+  T: momentFormat.clock2,
 
-  d: `MM/DD/YYYY`,
+  d: momentFormat.calendar,
   D: `MMMM DD, YYYY`,
 
-  f: `MMMM DD, YYYY hh:mm A`,
-  F: `dddd MMMM DD, YYYY hh:mm A`,
+  f: () => `MMMM DD, YYYY ${momentFormat.clock()}`,
+  F: () => `dddd MMMM DD, YYYY ${momentFormat.clock}`,
 
   html: (item, fromNow = false) => ({
 
@@ -34,7 +34,7 @@ const timestampFormats = {
 
       return htmlTag(
         'span',
-        (!fromNow ? moment(timestamp).format(timestampFormats[item]) : moment(timestamp).fromNow()),
+        (!fromNow ? moment(timestamp).format(typeof timestampFormats[item] === 'function' ? timestampFormats[item]() : timestampFormats[item]) : moment(timestamp).fromNow()),
         { 'data-mx-timestamp': String(timestamp), 'timestamp-type': item },
       );
 
@@ -55,7 +55,7 @@ setInterval(() => {
 
       if (!Number.isNaN(timestamp) && typeof type === 'string') {
         if (type !== 'R') {
-          tinyItem.text(moment(timestamp).format(timestampFormats[type]));
+          tinyItem.text(moment(timestamp).format(typeof timestampFormats[type] === 'function' ? timestampFormats[type]() : timestampFormats[type]));
         } else {
           tinyItem.text(moment(timestamp).fromNow());
         }

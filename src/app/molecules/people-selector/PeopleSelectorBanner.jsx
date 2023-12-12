@@ -12,7 +12,7 @@ import { objType, toast } from '../../../util/tools';
 import { copyToClipboard } from '../../../util/common';
 import copyText from '../../organisms/profile-viewer/copyText';
 import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
-import moment from '../../../util/libs/momentjs';
+import moment, { momentFormat } from '../../../util/libs/momentjs';
 
 const timezoneAutoUpdate = { text: null, html: null, value: null };
 setInterval(() => {
@@ -20,7 +20,7 @@ setInterval(() => {
 
     let timezoneText = 'null';
     try {
-      timezoneText = moment().tz(timezoneAutoUpdate.value).format('MMMM Do YYYY, hh:mm a');
+      timezoneText = moment().tz(timezoneAutoUpdate.value).format(`MMMM Do YYYY, ${momentFormat.clock()}`);
     } catch {
       timezoneText = 'ERROR!';
     }
@@ -146,7 +146,7 @@ function PeopleSelectorBanner({
 
             let timezoneText = 'null';
             try {
-              timezoneText = moment().tz(presence.timezone).format('MMMM Do YYYY, hh:mm a');
+              timezoneText = moment().tz(presence.timezone).format(`MMMM Do YYYY, ${momentFormat.clock()}`);
             } catch {
               timezoneText = 'ERROR!';
               timezoneDOM.addClass('d-none');

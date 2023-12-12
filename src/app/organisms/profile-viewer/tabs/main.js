@@ -1,7 +1,7 @@
 import { twemojify } from '../../../../util/twemojify';
 import { copyToClipboard } from '../../../../util/common';
 import { toast } from '../../../../util/tools';
-import moment from '../../../../util/libs/momentjs';
+import moment, { momentFormat } from '../../../../util/libs/momentjs';
 
 const timezoneAutoUpdate = { text: null, html: null, value: null };
 setInterval(() => {
@@ -9,7 +9,7 @@ setInterval(() => {
 
         let timezoneText = 'null';
         try {
-            timezoneText = moment().tz(timezoneAutoUpdate.value).format('MMMM Do YYYY, hh:mm a');
+            timezoneText = moment().tz(timezoneAutoUpdate.value).format(`MMMM Do YYYY, ${momentFormat.clock()}`);
         } catch {
             timezoneText = 'ERROR!';
         }
@@ -105,7 +105,7 @@ export default function renderAbout(userPronounsRef, ethereumValid, displayNameR
 
                 let timezoneText = 'null';
                 try {
-                    timezoneText = moment().tz(content.presenceStatusMsg.timezone).format('MMMM Do YYYY, hh:mm a');
+                    timezoneText = moment().tz(content.presenceStatusMsg.timezone).format(`MMMM Do YYYY, ${momentFormat.clock()}`);
                 } catch {
                     timezoneText = 'ERROR!';
                     dNoneChange(timezoneDOM, true);
