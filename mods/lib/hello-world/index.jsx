@@ -1,12 +1,13 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import moment from '../../../src/util/libs/momentjs';
 
 import jReact from '../jReact';
 
 export default function helloWorld() {
 
     // Normal Welcome
-    console.log(`[Tiny Plugin] Hello World!`);
+    console.log(`[Tiny Plugin] Hello World!`, moment());
 
     // jQuery Welcome
     console.log(`[Tiny Plugin] jQuery + React Demo`,

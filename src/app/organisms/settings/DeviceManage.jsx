@@ -19,7 +19,7 @@ import { useDeviceList } from '../../hooks/useDeviceList';
 import { useCrossSigningStatus } from '../../hooks/useCrossSigningStatus';
 import { accessSecretStorage } from './SecretStorageAccess';
 
-moment.locale('en');
+import moment from '../../../util/libs/momentjs';
 
 const promptDeviceName = async (deviceName) => new Promise((resolve) => {
   let isCompleted = false;

@@ -9,6 +9,7 @@ import cons from './cons';
 import settings from './settings';
 import { messageIsClassicCrdt } from '../../util/libs/crdt';
 import { objType } from '../../util/tools';
+import moment from '../../util/libs/momentjs';
 
 const delayYdocUpdate = 100;
 const hashTryLimit = 10;

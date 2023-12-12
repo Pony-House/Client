@@ -12,6 +12,7 @@ import { objType, toast } from '../../../util/tools';
 import { copyToClipboard } from '../../../util/common';
 import copyText from '../../organisms/profile-viewer/copyText';
 import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
+import moment from '../../../util/libs/momentjs';
 
 const timezoneAutoUpdate = { text: null, html: null, value: null };
 setInterval(() => {

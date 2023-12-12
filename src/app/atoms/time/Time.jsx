@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { isInSameDay } from '../../../util/common';
-
-moment.locale('en');
+import moment from '../../../util/libs/momentjs';
 
 function Time({ timestamp, fullTime, className }) {
   const date = new Date(timestamp);

@@ -5,8 +5,8 @@ import SimpleMarkdown from '@khanacademy/simple-markdown';
 import { idRegex, parseIdUri } from './common';
 import { resizeWindowChecker } from './tools';
 import rainbowText from './libs/rainbowText';
+import moment from './libs/momentjs';
 
-moment.locale('en');
 const timestampFormats = {
 
   t: `hh:mm A`,

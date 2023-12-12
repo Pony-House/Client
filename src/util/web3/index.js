@@ -8,6 +8,7 @@ import { objType } from '../tools';
 import startStatus from './status';
 import initMatrix from '../../client/initMatrix';
 import modWeb3Cfg from '../../../mods/web3';
+import moment from '../libs/momentjs';
 
 const tinyCrypto = {};
 

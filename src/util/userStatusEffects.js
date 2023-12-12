@@ -3,6 +3,7 @@ import initMatrix from '../client/initMatrix';
 import { emitUpdateProfile } from '../client/action/navigation';
 import tinyAPI from './mods';
 import { countObj } from './tools';
+import moment from './libs/momentjs';
 
 // Cache Data
 const userInteractions = {

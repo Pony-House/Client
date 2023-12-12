@@ -4,7 +4,6 @@ module.exports = {
     'web3': 'readonly',
     'ethereum': 'readonly',
     'bootstrap': 'readonly',
-    'moment': 'readonly',
     'tinyAPI': 'readonly',
     'arguments': 'readonly',
     'getLogData': 'readonly',

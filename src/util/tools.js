@@ -3,6 +3,7 @@ import { Capacitor } from '@capacitor/core';
 
 import tinyAPI from './mods';
 import { twemojify } from './twemojify';
+import moment from './libs/momentjs';
 
 let resizePlace = null;
 let resizeTimeout = null;

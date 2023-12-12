@@ -1,6 +1,7 @@
 import { twemojify } from '../../../../util/twemojify';
 import { copyToClipboard } from '../../../../util/common';
 import { toast } from '../../../../util/tools';
+import moment from '../../../../util/libs/momentjs';
 
 const timezoneAutoUpdate = { text: null, html: null, value: null };
 setInterval(() => {

@@ -14,6 +14,7 @@ import { toast } from '../../../../util/tools';
 import { getStatusCSS } from '../../../../util/onlineStatus';
 import { confirmDialog } from '../../../molecules/confirm-dialog/ConfirmDialog';
 import defaultAvatar from '../../../atoms/avatar/defaultAvatar';
+import moment from '../../../../util/libs/momentjs';
 
 function ProfileSection() {
 

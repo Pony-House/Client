@@ -26,8 +26,7 @@ import TimelineScroll from './TimelineScroll';
 import EventLimit from './EventLimit';
 import { getCurrentState } from '../../../util/matrixUtil';
 import tinyAPI from '../../../util/mods';
-
-moment.locale('en');
+import moment from '../../../util/libs/momentjs';
 
 const PAG_LIMIT = 30;
 const MAX_MSG_DIFF_MINUTES = 5;
