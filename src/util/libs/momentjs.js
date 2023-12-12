@@ -1,25 +1,26 @@
 // Module
 import moment from 'moment-timezone';
 import { getAppearance } from './appearance';
+import { objType } from '../tools';
 
 // Module Config
 moment.locale('en');
 
 const calendarFormat = [
-    'MM/DD/YYYY',
-    'DD/MM/YYYY',
-    'YYYY/MM/DD',
-    'YYYY/DD/MM',
-    'MM/YYYY/DD',
-    'DD/YYYY/MM',
+    { text: 'MM/DD/YYYY' },
+    { text: 'DD/MM/YYYY' },
+    { text: 'YYYY/MM/DD' },
+    { text: 'YYYY/DD/MM' },
+    { text: 'MM/YYYY/DD' },
+    { text: 'DD/YYYY/MM' },
 ];
 
 const momentFormat = {
 
     calendar: () => {
         const tinyFormat = calendarFormat[Number(getAppearance().calendarFormat)];
-        if (typeof tinyFormat === 'string') return tinyFormat;
-        return calendarFormat[0];
+        if (objType(tinyFormat, 'object') && typeof tinyFormat.text === 'string') return tinyFormat.text;
+        return calendarFormat[0].text;
     },
 
     clock: () => !getAppearance().is24hours ? 'hh:mm A' : 'HH:mm',

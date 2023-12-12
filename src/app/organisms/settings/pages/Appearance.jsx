@@ -10,7 +10,8 @@ import {
     toggleSystemTheme, toggleMarkdown, toggleMembershipEvents, toggleNickAvatarEvents,
 } from '../../../../client/action/settings';
 import { tinyAppZoomValidator } from '../../../../util/tools';
-import { getAppearance, toggleAppearanceAction } from '../../../../util/libs/appearance';
+import { getAppearance, toggleAppearanceAction, setAppearance } from '../../../../util/libs/appearance';
+import { calendarFormat } from '../../../../util/libs/momentjs';
 
 function AppearanceSection() {
 
@@ -28,7 +29,8 @@ function AppearanceSection() {
     const [hideMembershipEvents, setHideMembershipEvents] = useState(settings.hideMembershipEvents);
     const [hideNickAvatarEvents, setHideNickAvatarEvents] = useState(settings.hideNickAvatarEvents);
 
-    const [is24hours, setIs24hours] = useState(settings.is24hours);
+    const [is24hours, setIs24hours] = useState(appearanceSettings.is24hours);
+    const [calendarFormatOption, setCalendarFormat] = useState(appearanceSettings.calendarFormat);
 
     const ponyHouseZoomRef = useRef(null);
     const ponyHouseZoomRangeRef = useRef(null);
@@ -106,7 +108,7 @@ function AppearanceSection() {
 
                     <li className="list-group-item">
 
-                        <label for='pony_house_zoom' className="form-label small">Zoom</label>
+                        <label htmlFor='pony_house_zoom' className="form-label small">Zoom</label>
 
                         <input ref={ponyHouseZoomRef} type="number" max={200} min={50} className="form-control form-control-bg" id='pony_house_zoom' />
                         <input ref={ponyHouseZoomRangeRef} max={200} min={50} type="range" className="form-range" />
@@ -215,6 +217,24 @@ function AppearanceSection() {
                             />
                         )}
                         content={<div className="very-small text-gray">Do not use the standard 12-hour clock. The next loads of the room will apply the configuration.</div>}
+                    />
+
+                    <SettingTile
+                        title='Calendar format'
+                        content={(
+                            <div className='mt-2'>
+                                <SegmentedControls
+                                    type='select'
+                                    selected={typeof calendarFormatOption === 'number' && calendarFormatOption > -1 ? calendarFormatOption : 0}
+                                    segments={calendarFormat}
+                                    onSelect={(index) => {
+                                        const value = Number(index);
+                                        setAppearance('calendarFormat', value);
+                                        setCalendarFormat(value);
+                                    }}
+                                />
+                            </div>
+                        )}
                     />
 
                 </ul>
