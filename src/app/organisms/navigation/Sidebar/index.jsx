@@ -1,24 +1,18 @@
 import React from 'react';
 
-import {
-  openShortcutSpaces, openInviteList,
-  openSearch, openSettings,
-} from '../../../../client/action/navigation';
+import { openShortcutSpaces, openSearch, openSettings } from '../../../../client/action/navigation';
 
 import { isCrossVerified } from '../../../../util/matrixUtil';
 
 import Avatar from '../../../atoms/avatar/Avatar';
-import NotificationBadge from '../../../atoms/badge/NotificationBadge';
 import ScrollView from '../../../atoms/scroll/ScrollView';
 import SidebarAvatar from '../../../molecules/sidebar-avatar/SidebarAvatar';
 
 import { useDeviceList } from '../../../hooks/useDeviceList';
-
 import { tabText as settingTabText } from '../../settings/Settings';
-
 import SpaceShortcut from './SpaceShortcut';
-import { notificationClasses } from './Notification';
-import FeaturedTab, { useTotalInvites } from './FeaturedTab';
+import FeaturedTab from './FeaturedTab';
+import InviteSidebar from './InviteSidebar';
 
 // Cross Sigin Alert
 function CrossSigninAlert() {
@@ -40,7 +34,6 @@ function CrossSigninAlert() {
 // Sidebar
 function SideBar() {
 
-  const [totalInvites] = useTotalInvites();
 
   return (
     <>
@@ -51,16 +44,7 @@ function SideBar() {
             <div id='space-feature' className="featured-container">
 
               <FeaturedTab />
-
-              {totalInvites !== 0 && (
-                <SidebarAvatar
-                  tooltip="Invites"
-                  onClick={() => openInviteList()}
-                  avatar={<Avatar faSrc="bi bi-envelope-plus-fill" size="normal" />}
-                  notificationBadge={<NotificationBadge className={notificationClasses} alert content={totalInvites} />}
-                />
-              )}
-
+              <InviteSidebar />
               <CrossSigninAlert />
 
             </div>
