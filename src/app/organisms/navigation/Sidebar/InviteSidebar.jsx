@@ -13,7 +13,7 @@ import * as roomActions from '../../../../client/action/room';
 import { objType } from '../../../../util/tools';
 import { getDataList } from '../../../../util/selectedRoom';
 
-export function getPrivacyRefuseRoom(member, newRoom, isInverse = false) {
+export function getPrivacyRefuseRoom(member, newRoom, isInverse = false, totalInvites = null) {
 
   const mx = initMatrix.matrixClient;
   const content = mx.getAccountData('pony.house.privacy')?.getContent() ?? {};
@@ -37,7 +37,13 @@ export function getPrivacyRefuseRoom(member, newRoom, isInverse = false) {
 
   }
 
-  if (!isInverse || ((!objType(member, 'object') || typeof member.roomId !== 'string') && !newRoom)) {
+  if (
+    (
+      !isInverse && (
+        typeof totalInvites !== 'number' || totalInvites !== 0
+      )
+    ) || ((!objType(member, 'object') || typeof member.roomId !== 'string') && !newRoom)
+  ) {
     return (content?.roomAutoRefuse === true && !whitelisted);
   }
 
@@ -103,7 +109,7 @@ export default function InviteSidebar() {
 
   const [totalInvites] = useTotalInvites();
 
-  return !getPrivacyRefuseRoom({ roomId: lastMemberRoomId }, null, true) && totalInvites !== 0 && (
+  return !getPrivacyRefuseRoom({ roomId: lastMemberRoomId }, null, true, totalInvites) && totalInvites !== 0 && (
     <SidebarAvatar
       tooltip="Invites"
       onClick={() => openInviteList()}
