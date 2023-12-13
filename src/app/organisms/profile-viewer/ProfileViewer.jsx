@@ -664,7 +664,7 @@ function ProfileViewer() {
               onKeyDown={toggleLightbox}
             >
               <Avatar ref={profileAvatar} imageSrc={avatarUrl} text={username} bgColor={colorMXID(userId)} size="large" isDefaultImage />
-              <i ref={statusRef} className={`user-status pe-2 ${getUserStatus(user)}`} />
+              <i ref={statusRef} className={`user-status user-status-icon pe-2 ${getUserStatus(user)}`} />
             </div>
 
 

@@ -170,7 +170,7 @@ function RoomSelector({
           isDefaultImage={isDefault}
         />
 
-        {user ? <i ref={statusRef} className={`user-status ${getUserStatus(user)}`} /> : null}
+        {user ? <i ref={statusRef} className={`user-status user-status-icon ${getUserStatus(user)}`} /> : null}
 
       </div>
 

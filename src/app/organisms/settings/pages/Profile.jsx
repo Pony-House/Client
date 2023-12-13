@@ -253,7 +253,7 @@ function ProfileSection() {
                 {items.map((item) => (
                     <MenuItem
                         className={profileStatus === item.type ? 'text-start btn-text-success' : 'text-start'}
-                        faSrc={item.faSrc}
+                        faSrc={`user-status-icon ${item.faSrc}`}
                         key={item.type}
                         onClick={() => sendSetStatus(item)}
                     >

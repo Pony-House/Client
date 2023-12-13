@@ -144,7 +144,7 @@ function ProfileAvatarMenu() {
                 if (statusRef && statusRef.current && typeof event.status === 'string' && event.status.length > 0) {
                     const tinyUser = mx.getUser(mx.getUserId());
                     tinyUser.presenceStatusMsg = JSON.stringify(event);
-                    statusRef.current.className = getUserStatus(user2);
+                    statusRef.current.className = `user-status-icon ${getUserStatus(user2)}`;
                 }
 
             }
@@ -222,7 +222,7 @@ function ProfileAvatarMenu() {
     const content = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
     user.presence = 'online';
     user.presenceStatusMsg = JSON.stringify(content);
-    const newStatus = getUserStatus(user);
+    const newStatus = `user-status-icon ${getUserStatus(user)}`;
 
     const appearanceSettings = getAppearance();
 

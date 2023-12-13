@@ -21,6 +21,26 @@
   color: #b8913b !important;
 }
 
+.user-status-icon {
+  text-shadow:
+    3px 0 var(--bg-surface-low),
+    -3px 0 var(--bg-surface-low),
+    0 3px var(--bg-surface-low),
+    0 -3px var(--bg-surface-low),
+    2px 0 var(--bg-surface-low),
+    -2px 0 var(--bg-surface-low),
+    0 2px var(--bg-surface-low),
+    0 -2px var(--bg-surface-low),
+    1px 1px var(--bg-surface-low),
+    -1px -1px var(--bg-surface-low),
+    1px -1px var(--bg-surface-low),
+    -1px 1px var(--bg-surface-low),
+    2px 2px var(--bg-surface-low),
+    -2px -2px var(--bg-surface-low),
+    2px -2px var(--bg-surface-low),
+    -2px 2px var(--bg-surface-low);
+}
+
 @import 'jquery-ui/dist/themes/base/jquery-ui.min.css';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
