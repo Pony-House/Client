@@ -1,4 +1,3 @@
-    --> Se a timeline não estiver carregando, pode clicar no load timeline para forçar carregar.
     --> Ícone do microfone saindo do lugar quando clicado. (sidebar)
     --> Colocar bordar nos ícones de status.
 
