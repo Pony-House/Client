@@ -50,6 +50,16 @@ const copyFiles = {
     },
 
     {
+      src: 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
+      dest: 'js/',
+    },
+
+    {
+      src: 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map',
+      dest: 'js/',
+    },
+
+    {
       src: 'node_modules/@matrix-org/olm/olm.wasm',
       dest: '',
     },

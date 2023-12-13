@@ -1,6 +1,5 @@
 import { Toast } from '@capacitor/toast';
 import { Capacitor } from '@capacitor/core';
-import * as bootstrap from 'bootstrap/dist/js/bootstrap.esm';
 
 import tinyAPI from './mods';
 import { twemojify } from './twemojify';

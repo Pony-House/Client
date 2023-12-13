@@ -9,6 +9,7 @@ module.exports = {
     'playLogData': 'readonly',
     '__ENV_APP__': 'readonly',
     'autoLaunch': 'readonly',
+    'bootstrap': 'readonly',
     'Olm': 'readonly',
     'qrcode': 'readonly',
   },
