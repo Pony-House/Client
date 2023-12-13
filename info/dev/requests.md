@@ -3,8 +3,6 @@
 
     --> Criar leitor de mensagens fixadas
 
-    Permissão para convidar usuários.
-
     =======================================================
 
 https://help.soundcloud.com/hc/en-us/articles/115003568008-Embedding-a-track-or-playlist-
