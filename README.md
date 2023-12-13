@@ -96,3 +96,25 @@ To build the desktop app:
 ```sh
 yarn electron:build # Compiles the app into the release/ directory
 ```
+
+## FAQ
+
+### Is my data shared with third parties?
+
+Nope. This repository creator is not sharing data with third parties. This makes the project solely dependent on the community if any new glitch is discovered. The only peoples capable of collecting data are the homeserver owners and third-party stuff.
+
+### Why is the list of homeservers empty by default instead of having default homeservers like matrix.org?
+
+This helps new matrix users not get lost when they are being guided to use a specific new homeserver.
+
+### My website that is hosting this client was blocked from access by browser extensions.
+
+This client sends notification permission requests at the exact moment the page is loaded. Some security extensions may consider this a privacy violation. Sometimes this type of thing doesn't happen on the Pony House domain because I (JasminDreasond) always try to contact the staff of these extensions so the domain can be added to the whitelist.
+
+### This client has web3 functionalities. Is this matrix client a crypto wallet?
+
+Nope. Pony House has access to crypto wallet APIs that are installed in your browser or on your computer. And this function can be turned off in the settings.
+
+### Does the client support the purchase and sale of NFTs?
+
+Nope. But you can install mods from third-party creators that code this type of feature.
