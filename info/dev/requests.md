@@ -1,5 +1,3 @@
-    --> Fazer o marcador que separa a lista de amigos da lista de DMs estranhos.
-
     --> Criar leitor de mensagens fixadas
 
     =======================================================
