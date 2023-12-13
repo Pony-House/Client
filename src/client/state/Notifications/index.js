@@ -14,6 +14,7 @@ import { html, plain } from '../../../util/markdown';
 import { getAccountStatus } from '../../../app/organisms/navigation/ProfileAvatarMenu';
 import { messageIsClassicCrdt } from '../../../util/libs/crdt';
 import { checkerFavIcon } from '../../../util/libs/favicon';
+import { getPrivacyRefuseRoom } from '../../../app/organisms/navigation/Sidebar/InviteSidebar';
 
 const soundFiles = {
   notification: new Audio('./sound/notification.ogg'),
@@ -534,7 +535,7 @@ class Notifications extends EventEmitter {
         this.deleteNoti(room.roomId);
       }
 
-      if (membership === 'invite') {
+      if (membership === 'invite' && !getPrivacyRefuseRoom()) {
         this._playInviteSound();
       }
 

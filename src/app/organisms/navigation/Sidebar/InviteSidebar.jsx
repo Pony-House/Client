@@ -11,7 +11,7 @@ import NotificationBadge from '../../../atoms/badge/NotificationBadge';
 
 import * as roomActions from '../../../../client/action/room';
 
-const getPrivacyRefuseRoom = () => {
+export function getPrivacyRefuseRoom() {
   const content = initMatrix.matrixClient.getAccountData('pony.house.privacy')?.getContent() ?? {};
   return (content?.roomAutoRefuse === true);
 };
@@ -71,7 +71,7 @@ export default function InviteSidebar() {
 
   const [totalInvites] = useTotalInvites();
 
-  return totalInvites !== 0 && (
+  return !getPrivacyRefuseRoom() && totalInvites !== 0 && (
     <SidebarAvatar
       tooltip="Invites"
       onClick={() => openInviteList()}
