@@ -198,34 +198,3 @@ export default function FeaturedTab() {
         </>
     );
 };
-
-// Total Invites
-export function useTotalInvites() {
-
-    // Rooms
-    const { roomList } = initMatrix;
-    const totalInviteCount = () => roomList.inviteRooms.size
-        + roomList.inviteSpaces.size
-        + roomList.inviteDirects.size;
-    const [totalInvites, updateTotalInvites] = useState(totalInviteCount());
-
-    // Effect
-    useEffect(() => {
-
-        // Change
-        const onInviteListChange = () => {
-            updateTotalInvites(totalInviteCount());
-        };
-
-        // Events
-        roomList.on(cons.events.roomList.INVITELIST_UPDATED, onInviteListChange);
-        return () => {
-            roomList.removeListener(cons.events.roomList.INVITELIST_UPDATED, onInviteListChange);
-        };
-
-    }, []);
-
-    // Complete
-    return [totalInvites];
-
-};

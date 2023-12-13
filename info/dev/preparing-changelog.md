@@ -20,3 +20,4 @@
 - Try load chat page button added.
 - Category button position fixed.
 - Icon status border added.
+- New privacy setting - auto refuse room.

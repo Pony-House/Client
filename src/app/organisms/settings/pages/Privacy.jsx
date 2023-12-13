@@ -7,32 +7,50 @@ import SettingTile from '../../../molecules/setting-tile/SettingTile';
 import { toggleAction } from '../Api';
 
 function PrivacySection() {
-    const [hideTypingWarn, sethideTypingWarn] = useState(false);
+    const [hideTypingWarn, setHideTypingWarn] = useState(false);
+    const [roomAutoRefuse, setRoomAutoRefuse] = useState(false);
 
     useEffect(() => {
 
         const content = initMatrix.matrixClient.getAccountData('pony.house.privacy')?.getContent() ?? {};
-        sethideTypingWarn((content.hideTypingWarn === true));
+        setHideTypingWarn((content.hideTypingWarn === true));
+        setRoomAutoRefuse((content.roomAutoRefuse === true));
 
     }, []);
 
     return (
         <div>
             <div className="card noselect mt-3">
+
                 <ul className="list-group list-group-flush">
-                    <li className="list-group-item very-small text-gray">Chat room</li>
+                    <li className="list-group-item very-small text-gray">Rooms</li>
+
                     <SettingTile
                         title={"Disable \"typing\" warning"}
                         options={(
                             <Toggle
                                 className='d-inline-flex'
                                 isActive={hideTypingWarn}
-                                onToggle={toggleAction('pony.house.privacy', 'hideTypingWarn', sethideTypingWarn)}
+                                onToggle={toggleAction('pony.house.privacy', 'hideTypingWarn', setHideTypingWarn)}
                             />
                         )}
                         content={<div className="very-small text-gray">Users will no longer be able to see whether or not you are typing.</div>}
                     />
+
+                    <SettingTile
+                        title="Auto refuse room and spaces invites"
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={roomAutoRefuse}
+                                onToggle={toggleAction('pony.house.privacy', 'roomAutoRefuse', setRoomAutoRefuse)}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">All invitations will automatically attempt to be refused.</div>}
+                    />
+
                 </ul>
+
             </div>
         </div>
     );

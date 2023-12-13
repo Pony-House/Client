@@ -1,5 +1,4 @@
     --> Fazer o marcador que separa a lista de amigos da lista de DMs estranhos.
-    --> Fazer uma configuração se o usuário vai ou não receber notificação de DMs estranhos.
 
     --> Criar leitor de mensagens fixadas
 
