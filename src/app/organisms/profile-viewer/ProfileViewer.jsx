@@ -550,7 +550,7 @@ function ProfileViewer() {
 
       // Update Note
       const tinyNoteUpdate = (event) => {
-        addToDataFolder('user_cache', 'note', userId, $(event.target).val(), 500);
+        addToDataFolder('user_cache', 'note', userId, $(event.target).val(), 200);
       };
 
       const tinyNoteSpacing = (event) => {

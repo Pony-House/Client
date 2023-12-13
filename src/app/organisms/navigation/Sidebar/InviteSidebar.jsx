@@ -26,13 +26,9 @@ export function getPrivacyRefuseRoom(member, newRoom) {
       const inviterId = room.getDMInviter === 'function' && room.getDMInviter() || typeof room.getCreator === 'function' && room.getCreator();
       if (typeof inviterId === 'string') {
 
-        const tinyNote = getDataList('user_cache', 'note', inviterId);
-        const nickname = getDataList('user_cache', 'friend_nickname', inviterId);
+        const isWhitelist = getDataList('user_cache', 'whitelist', inviterId);
 
-        if (
-          (typeof tinyNote === 'string' && tinyNote.trim().length > 0) ||
-          (typeof nickname === 'string' && nickname.trim().length > 0)
-        ) {
+        if (isWhitelist) {
           whitelisted = true;
         }
 

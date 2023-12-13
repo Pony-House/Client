@@ -250,7 +250,7 @@ function PeopleSelectorBanner({
 
       // Update Note
       const tinyNoteUpdate = (event) => {
-        addToDataFolder('user_cache', 'note', user.userId, $(event.target).val(), 500);
+        addToDataFolder('user_cache', 'note', user.userId, $(event.target).val(), 200);
       };
 
       // Read Events
