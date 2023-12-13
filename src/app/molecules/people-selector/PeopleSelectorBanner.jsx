@@ -322,7 +322,7 @@ function PeopleSelectorBanner({
 
           <hr />
 
-          <label for="tiny-note" className="form-label text-gray text-uppercase fw-bold very-small mb-2">Note</label>
+          <label htmlFor="tiny-note" className="form-label text-gray text-uppercase fw-bold very-small mb-2">Note</label>
           <textarea ref={noteRef} spellCheck="false" className="form-control form-control-bg emoji-size-fix small" id="tiny-note" placeholder="Insert a note here" />
 
 

@@ -6,7 +6,8 @@ function RoomViewPin({ roomId }) {
 
 
 
-}
+};
+
 RoomViewPin.propTypes = {
     roomId: PropTypes.string.isRequired,
 };

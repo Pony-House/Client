@@ -7,7 +7,6 @@ function Toggle({ isActive, onToggle, disabled, className }) {
   if (onToggle === null) return <span className={className} />;
 
   return (
-    // eslint-disable-next-line jsx-a11y/control-has-associated-label
     <button
       onClick={() => onToggle(!isActive)}
       className={tinyClass}

@@ -27,18 +27,21 @@ import EventLimit from './EventLimit';
 import { getCurrentState } from '../../../util/matrixUtil';
 import tinyAPI from '../../../util/mods';
 import moment, { momentFormat } from '../../../util/libs/momentjs';
+import { rule3 } from '../../../util/tools';
 
-const PAG_LIMIT = 30;
+let loadingPage = false;
+const PAG_LIMIT = 50;
 const MAX_MSG_DIFF_MINUTES = 5;
 const PLACEHOLDER_COUNT = 2;
 const PLACEHOLDERS_HEIGHT = 96 * PLACEHOLDER_COUNT;
 const SCROLL_TRIGGER_POS = PLACEHOLDERS_HEIGHT * 4;
 
 function loadingMsgPlaceholders(key, count = 2) {
+
   const pl = [];
   const genPlaceholders = () => {
     for (let i = 0; i < count; i += 1) {
-      pl.push(<PlaceholderMessage key={`placeholder-${i}${key}`} />);
+      pl.push(<PlaceholderMessage loadingPage={loadingPage} key={`placeholder-${i}${key}`} />);
     }
     return pl;
   };
@@ -48,7 +51,8 @@ function loadingMsgPlaceholders(key, count = 2) {
       {genPlaceholders()}
     </React.Fragment>
   );
-}
+
+};
 
 function RoomIntroContainer({ event, timeline }) {
   const [, nameForceUpdate] = useForceUpdate();
@@ -253,10 +257,15 @@ function usePaginate(
 
   const autoPaginate = useCallback(async () => {
 
+    loadingPage = true;
     const timelineScroll = timelineScrollRef.current;
     const limit = eventLimitRef.current;
 
-    if (roomTimeline.isOngoingPagination) return;
+    if (roomTimeline.isOngoingPagination) {
+      loadingPage = false;
+      return;
+    }
+
     const tLength = roomTimeline && roomTimeline.timeline && typeof roomTimeline.timeline.length === 'number' ? roomTimeline.timeline.length : 0;
 
     if (timelineScroll.bottom < SCROLL_TRIGGER_POS) {
@@ -268,6 +277,7 @@ function usePaginate(
       } else if (roomTimeline.canPaginateForward()) {
         // paginate from server.
         await roomTimeline.paginateTimeline(false, PAG_LIMIT);
+        loadingPage = false;
         return;
       }
 
@@ -285,6 +295,8 @@ function usePaginate(
       }
 
     }
+
+    loadingPage = false;
 
   }, [roomTimeline]);
 
@@ -740,13 +752,28 @@ function RoomViewContent({ eventId, roomTimeline, isUserList }) {
 
   };
 
+  const phMsgQuery = '#chatbox > tbody > tr.ph-msg:not(.no-loading)';
+  const noLoadingPageButton = () => {
+    const target = $(phMsgQuery);
+    target.removeClass('no-loading').off('click', noLoadingPageButton);
+    forceUpdateLimit();
+  };
+
   setTimeout(() => {
     if (roomTimeline.timeline.length < 1) {
       autoPaginate().then(() => {
+
+        if (roomTimeline.timeline.length <= rule3(50, 10, PAG_LIMIT)) {
+          $(phMsgQuery).addClass('no-loading').off('click', noLoadingPageButton).on('click', noLoadingPageButton);
+        }
+
         if (roomTimeline.timeline.length < 1) {
           tinyAPI.emit('emptyTimeline', forceUpdateLimit);
         }
+
       });
+    } else if (roomTimeline.timeline.length <= rule3(50, 10, PAG_LIMIT)) {
+      $(phMsgQuery).addClass('no-loading').off('click', noLoadingPageButton).on('click', noLoadingPageButton);
     }
   }, 100);
 

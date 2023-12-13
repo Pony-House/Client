@@ -1,3 +1,15 @@
+/* Message Loader */
+.ph-msg.no-loading {
+  .placeholder-glow .placeholder {
+    animation: none !important;
+  }
+
+  &:hover .placeholder-glow .placeholder {
+    cursor: pointer !important;
+    background-color: var(--tc-link) !important;
+  }
+}
+
 /* Code Editor */
 .hljs {
   display: block;

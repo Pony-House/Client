@@ -11,7 +11,6 @@ function Checkbox({
   if (onToggle === null) return <span className={className} />;
 
   return (
-    // eslint-disable-next-line jsx-a11y/control-has-associated-label
     <button
       onClick={() => onToggle(!isActive)}
       className={className}
