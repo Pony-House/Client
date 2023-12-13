@@ -22,16 +22,16 @@ export function getPrivacyRefuseRoom(member, newRoom) {
   if (content?.roomAutoRefuse === true) {
 
     const room = objType(member, 'object') && typeof member.roomId === 'string' ? mx.getRoom(member.roomId) : newRoom || null;
-    if (room && typeof room.getDMInviter === 'function' && typeof room.getCreator === 'function') {
-      const inviterId = room.getDMInviter() || room.getCreator();
+    if (room) {
+      const inviterId = room.getDMInviter === 'function' && room.getDMInviter() || typeof room.getCreator === 'function' && room.getCreator();
       if (typeof inviterId === 'string') {
 
         const tinyNote = getDataList('user_cache', 'note', inviterId);
         const nickname = getDataList('user_cache', 'friend_nickname', inviterId);
 
         if (
-          (typeof tinyNote === 'string' && tinyNote.length > 0) ||
-          (typeof nickname === 'string' && nickname.length > 0)
+          (typeof tinyNote === 'string' && tinyNote.trim().length > 0) ||
+          (typeof nickname === 'string' && nickname.trim().length > 0)
         ) {
           whitelisted = true;
         }
