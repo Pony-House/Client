@@ -193,9 +193,9 @@ function RoomsCategory({
   }
 
   const buttonData = (
-    <button className="py-2 text-truncate" onClick={() => setIsOpen(!isOpen)} type="button">
-      <RawIcon fa={isOpen ? "fa-solid fa-chevron-down" : "fa-solid fa-chevron-right"} size="extra-small" />
-      <span className="text-gray very-small text-uppercase text-truncate ms-2" >{name}</span>
+    <button className={`py-2 text-truncate${!isOpen ? ' category-open' : ''}`} onClick={() => setIsOpen(!isOpen)} type="button">
+      <RawIcon fa={`fa-solid c-icon ${isOpen ? "fa-chevron-down" : "fa-chevron-right"}`} size="extra-small" />
+      <span className="text-gray very-small text-uppercase text-truncate ms-2 c-text" >{name}</span>
     </button>
   );
 

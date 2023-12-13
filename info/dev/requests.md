@@ -43,8 +43,6 @@ Made by Me
 
     =======================================================
 
-    --> Ajeitar o css do ocultador de lista de canais.
-
     --> Ajeitar... Ao criar uma sala, o app está jogando para o menu de homes. Isso não pode acotecer se a room for dentro de um space.
     (Isso também acontece quando tenta criar uma DM)
 

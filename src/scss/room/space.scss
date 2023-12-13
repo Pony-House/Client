@@ -98,9 +98,14 @@
   }
 }
 
-.category-button span,
-.category-button button {
-  color: var(--tc-surface-low);
+.category-button {
+  span,
+  button {
+    color: var(--tc-surface-low);
+  }
+  .category-open > .c-icon {
+    margin-right: 4.5px;
+  }
 }
 
 .category-button:hover span,
