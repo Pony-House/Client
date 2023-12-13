@@ -131,9 +131,16 @@
 
   .tiny-block,
   .tiny-block::before {
-    margin-top: -15px;
+    margin-top: -16px;
     top: -5px;
     left: -4px;
+  }
+
+  @-moz-document url-prefix() {
+    .tiny-block,
+    .tiny-block::before {
+      margin-top: -15px;
+    }
   }
 
   .tiny-block-2,
