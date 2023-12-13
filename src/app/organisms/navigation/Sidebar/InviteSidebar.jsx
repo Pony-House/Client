@@ -23,7 +23,7 @@ export function getPrivacyRefuseRoom(member, newRoom) {
 
     const room = objType(member, 'object') && typeof member.roomId === 'string' ? mx.getRoom(member.roomId) : newRoom || null;
     if (room) {
-      const inviterId = room.getDMInviter === 'function' && room.getDMInviter() || typeof room.getCreator === 'function' && room.getCreator();
+      const inviterId = room.getDMInviter === 'function' ? room.getDMInviter() : typeof room.getCreator === 'function' ? room.getCreator() : null;
       if (typeof inviterId === 'string') {
 
         const isWhitelist = getDataList('user_cache', 'whitelist', inviterId);
@@ -96,7 +96,7 @@ export default function InviteSidebar() {
 
   const [totalInvites] = useTotalInvites();
 
-  return !getPrivacyRefuseRoom() && totalInvites !== 0 && (
+  return totalInvites !== 0 && (
     <SidebarAvatar
       tooltip="Invites"
       onClick={() => openInviteList()}

@@ -19,6 +19,7 @@ function UserOptions({ userId, afterOptionSelect }) {
     return (
         <div className="noselect emoji-size-fix w-100" style={{ maxWidth: '256px' }}>
             <MenuHeader>{twemojifyReact(`User Options for ${user?.userId}`)}</MenuHeader>
+
             <MenuItem className="text-start" faSrc="fa-solid fa-user-pen" onClick={async () => {
 
                 afterOptionSelect();
@@ -43,7 +44,7 @@ function UserOptions({ userId, afterOptionSelect }) {
 
             }} >Change Friend Nickname</MenuItem>
 
-            <MenuItem className="text-start" faSrc="fa-solid fa-user-pen" onClick={() => {
+            {userId !== mx.getUserId() ? <MenuItem className="text-start" faSrc="fa-solid fa-user-pen" onClick={() => {
 
                 afterOptionSelect();
                 if (isWhitelist) {
@@ -52,7 +53,8 @@ function UserOptions({ userId, afterOptionSelect }) {
                     addToDataFolder('user_cache', 'whitelist', userId, true);
                 }
 
-            }} >{!isWhitelist ? 'Add Invite Whitelist' : 'Remove Invite Whitelist'}</MenuItem>
+            }} >{!isWhitelist ? 'Add Invite Whitelist' : 'Remove Invite Whitelist'}</MenuItem> : null}
+
         </div>
     );
 }
