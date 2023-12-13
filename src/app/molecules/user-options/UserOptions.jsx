@@ -52,7 +52,7 @@ function UserOptions({ userId, afterOptionSelect }) {
                     addToDataFolder('user_cache', 'whitelist', userId, true);
                 }
 
-            }} >{!isWhitelist ? 'Add Whitelist' : 'Remove Whitelist'}</MenuItem>
+            }} >{!isWhitelist ? 'Add Invite Whitelist' : 'Remove Invite Whitelist'}</MenuItem>
         </div>
     );
 }

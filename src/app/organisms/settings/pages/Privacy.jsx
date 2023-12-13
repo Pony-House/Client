@@ -46,7 +46,7 @@ function PrivacySection() {
                                 onToggle={toggleAction('pony.house.privacy', 'roomAutoRefuse', setRoomAutoRefuse)}
                             />
                         )}
-                        content={<div className="very-small text-gray">All invitations will automatically attempt to be refused. If this user has a note or a friend nickname, this option will be ignored.</div>}
+                        content={<div className="very-small text-gray">All invitations will automatically attempt to be refused. Whitelisted users will be ignored by this option.</div>}
                     />
 
                 </ul>
