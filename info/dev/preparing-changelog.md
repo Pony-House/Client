@@ -19,3 +19,4 @@
 - New clock configs.
 - Try load chat page button added.
 - Category button position fixed.
+- Icon status border added.
