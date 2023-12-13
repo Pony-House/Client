@@ -10,10 +10,39 @@ import { notificationClasses } from './Notification';
 import NotificationBadge from '../../../atoms/badge/NotificationBadge';
 
 import * as roomActions from '../../../../client/action/room';
+import { objType } from '../../../../util/tools';
+import { getDataList } from '../../../../util/selectedRoom';
 
-export function getPrivacyRefuseRoom() {
-  const content = initMatrix.matrixClient.getAccountData('pony.house.privacy')?.getContent() ?? {};
-  return (content?.roomAutoRefuse === true);
+export function getPrivacyRefuseRoom(member, newRoom) {
+
+  const mx = initMatrix.matrixClient;
+  const content = mx.getAccountData('pony.house.privacy')?.getContent() ?? {};
+  let whitelisted = false;
+
+  if (content?.roomAutoRefuse === true) {
+
+    const room = objType(member, 'object') && typeof member.roomId === 'string' ? mx.getRoom(member.roomId) : newRoom || null;
+    if (room && typeof room.getDMInviter === 'function' && typeof room.getCreator === 'function') {
+      const inviterId = room.getDMInviter() || room.getCreator();
+      if (typeof inviterId === 'string') {
+
+        const tinyNote = getDataList('user_cache', 'note', inviterId);
+        const nickname = getDataList('user_cache', 'friend_nickname', inviterId);
+
+        if (
+          (typeof tinyNote === 'string' && tinyNote.length > 0) ||
+          (typeof nickname === 'string' && nickname.length > 0)
+        ) {
+          whitelisted = true;
+        }
+
+      }
+    }
+
+  }
+
+  return (content?.roomAutoRefuse === true && !whitelisted);
+
 };
 
 // Total Invites
@@ -57,7 +86,7 @@ export default function InviteSidebar() {
 
       if (member.membership === "invite" && member.userId === mx.getUserId()) {
         // mx.joinRoom(member.roomId);
-        if (getPrivacyRefuseRoom()) roomActions.leave(member.roomId);
+        if (getPrivacyRefuseRoom(member)) roomActions.leave(member.roomId);
       }
 
     };

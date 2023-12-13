@@ -38,7 +38,7 @@ function PrivacySection() {
                     />
 
                     <SettingTile
-                        title="Auto refuse room and spaces invites"
+                        title="Auto refuse room and spaces invite"
                         options={(
                             <Toggle
                                 className='d-inline-flex'
@@ -46,7 +46,7 @@ function PrivacySection() {
                                 onToggle={toggleAction('pony.house.privacy', 'roomAutoRefuse', setRoomAutoRefuse)}
                             />
                         )}
-                        content={<div className="very-small text-gray">All invitations will automatically attempt to be refused.</div>}
+                        content={<div className="very-small text-gray">All invitations will automatically attempt to be refused. If this user has a note or a friend nickname, this option will be ignored.</div>}
                     />
 
                 </ul>

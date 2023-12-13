@@ -535,7 +535,7 @@ class Notifications extends EventEmitter {
         this.deleteNoti(room.roomId);
       }
 
-      if (membership === 'invite' && !getPrivacyRefuseRoom()) {
+      if (membership === 'invite' && !getPrivacyRefuseRoom(null, room)) {
         this._playInviteSound();
       }
 
