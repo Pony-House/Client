@@ -13,7 +13,7 @@ import * as roomActions from '../../../../client/action/room';
 import { objType } from '../../../../util/tools';
 import { getDataList } from '../../../../util/selectedRoom';
 
-export function getPrivacyRefuseRoom(member, newRoom) {
+export function getPrivacyRefuseRoom(member, newRoom, isInverse = false) {
 
   const mx = initMatrix.matrixClient;
   const content = mx.getAccountData('pony.house.privacy')?.getContent() ?? {};
@@ -37,7 +37,11 @@ export function getPrivacyRefuseRoom(member, newRoom) {
 
   }
 
-  return (content?.roomAutoRefuse === true && !whitelisted);
+  if (!isInverse || ((!objType(member, 'object') || typeof member.roomId !== 'string') && !newRoom)) {
+    return (content?.roomAutoRefuse === true && !whitelisted);
+  }
+
+  return false;
 
 };
 
@@ -75,6 +79,8 @@ function useTotalInvites() {
 // Notification Update
 export default function InviteSidebar() {
 
+  const [lastMemberRoomId, setLastMemberRoomId] = useState(null);
+
   const mx = initMatrix.matrixClient;
   useEffect(() => {
 
@@ -83,6 +89,7 @@ export default function InviteSidebar() {
       if (member.membership === "invite" && member.userId === mx.getUserId()) {
         // mx.joinRoom(member.roomId);
         if (getPrivacyRefuseRoom(member)) roomActions.leave(member.roomId);
+        setLastMemberRoomId(member.roomId);
       }
 
     };
@@ -96,7 +103,7 @@ export default function InviteSidebar() {
 
   const [totalInvites] = useTotalInvites();
 
-  return totalInvites !== 0 && (
+  return !getPrivacyRefuseRoom({ roomId: lastMemberRoomId }, null, true) && totalInvites !== 0 && (
     <SidebarAvatar
       tooltip="Invites"
       onClick={() => openInviteList()}
