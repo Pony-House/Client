@@ -156,6 +156,20 @@ const permissionsInfo = {
     default: 50,
   },
 
+  'org.matrix.msc3401.call': {
+    parent: 'events',
+    name: 'Group call',
+    description: 'org.matrix.msc3401.call',
+    default: 50,
+  },
+
+  'org.matrix.msc3401.call.member': {
+    parent: 'events',
+    name: 'Group call member',
+    description: 'org.matrix.msc3401.call.member',
+    default: 50,
+  },
+
   'pony.house.settings': {
     parent: 'events',
     name: `Modify ${__ENV_APP__.info.name} settings`,
@@ -183,6 +197,7 @@ const roomPermsGroups = {
   'General Permissions': ['users_default', 'events_default', 'm.reaction', 'redact', 'notifications'],
   'Manage members permissions': ['invite', 'kick', 'ban'],
   'Room profile permissions': ['m.room.avatar', 'm.room.name', 'm.room.topic'],
+  'Call permissions': ['org.matrix.msc3401.call', 'org.matrix.msc3401.call.member'],
   'Settings permissions': ['state_default', 'm.room.canonical_alias', 'm.room.power_levels', 'm.room.encryption', 'm.room.history_visibility', 'im.ponies.emote_rooms', 'im.ponies.room_emotes'],
   'Other permissions': ['m.room.tombstone', 'm.room.pinned_events', 'm.room.server_acl', 'im.vector.modular.widgets'],
 };
@@ -191,6 +206,7 @@ const spacePermsGroups = {
   'General Permissions': ['users_default', 'm.space.child'],
   'Manage members permissions': ['invite', 'kick', 'ban'],
   'Space profile permissions': ['m.room.avatar', 'm.room.name', 'm.room.topic'],
+  'Call permissions': ['org.matrix.msc3401.call', 'org.matrix.msc3401.call.member'],
   'Settings permissions': ['state_default', 'm.room.canonical_alias', 'm.room.power_levels', 'im.ponies.emote_rooms', 'im.ponies.room_emotes', 'pony.house.settings'],
 };
 
