@@ -81,7 +81,7 @@ function PeopleSelector({
     >
 
       <Avatar imageAnimSrc={imageAnimSrc} imageSrc={imageSrc} text={name} bgColor={color} size="small" isDefaultImage />
-      {!disableStatus ? <i ref={statusRef} className={getUserStatus(user)} /> : ''}
+      {!disableStatus ? <i ref={statusRef} className={`user-status-icon ${getUserStatus(user)}`} /> : ''}
 
       <div className="small people-selector__name text-start">
         <span className='emoji-size-fix'>{twemojifyReact(name)}</span>
