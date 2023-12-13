@@ -22,7 +22,7 @@ export function changeFavIcon(value, unread = false, notis = 0) {
 
         favIconQuery().attr('href', newValue);
         // document.title = !unread ? favicon.title : `${typeof notis === 'number' && notis > 0 ? `${notis <= 99 ? `(${String(notis)})` : '(+99)'} ` : ''}${favicon.title}`;
-        document.title = !unread ? favicon.title : `${typeof notis === 'number' && notis > 0 ? `(⚫) ` : ''}${favicon.title}`;
+        document.title = !unread ? favicon.title : `${typeof notis === 'number' && notis > 0 ? `(•) ` : ''}${favicon.title}`;
 
     }
 };
