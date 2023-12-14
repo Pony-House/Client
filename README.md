@@ -113,7 +113,7 @@ This client sends notification permission requests at the exact moment the page 
 
 ### Can I completely disable IPFS and Web3?
 
-Yep. This option can be modified in the `.env` file so you can deploy a client without access to the features.
+Yep. To disable it via the client, you need to go to the settings tabs. To permanently deactivate the features, you need to modify the `.env` file so you can deploy a client without access to the features.
 
 ### This client has web3 functionalities. Is this matrix client a crypto wallet?
 
