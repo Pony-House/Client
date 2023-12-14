@@ -1,4 +1,5 @@
-// import { ENVapp } from "../src/start";
+// ELECTRON GLITCH
+// import { ENVapp } from "../src/util/tools";
 
 const defaultNames = {
     philomena: 'Philomena Booru',

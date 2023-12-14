@@ -3,23 +3,24 @@ import React from 'react';
 import initMatrix from '../../../../client/initMatrix';
 import cons from '../../../../client/state/cons';
 import Button from '../../../atoms/button/Button';
+import { ENVapp } from '../../../../util/tools';
 
 function AboutSection() {
 
     const deps = [
-        ['Matrix JS SDK', __ENV_APP__.deps['matrix-js-sdk']],
-        ['Moment Timezone', __ENV_APP__.deps['moment-timezone']],
-        ['Photo Swipe', __ENV_APP__.deps.photoswipe],
-        ['Web3.js', __ENV_APP__.deps.web3],
-        ['Yjs', __ENV_APP__.deps.yjs],
-        ['Bootstrap UI', __ENV_APP__.deps.bootstrap],
-        ['Bootstrap Icons', __ENV_APP__.deps['bootstrap-icons']],
-        ['Font Awesome', __ENV_APP__.deps['@fortawesome/fontawesome-free']],
-        ['Crypto Fonts', __ENV_APP__.deps['@cryptofonts/cryptofont']],
-        ['Emoji Mart Data', __ENV_APP__.deps['@emoji-mart/data']],
-        ['jQuery', __ENV_APP__.deps.jquery],
-        ['jQuery UI', __ENV_APP__.deps['jquery-ui']],
-        ['Linkifyjs', __ENV_APP__.deps.linkifyjs],
+        ['Matrix JS SDK', ENVapp.deps['matrix-js-sdk']],
+        ['Moment Timezone', ENVapp.deps['moment-timezone']],
+        ['Photo Swipe', ENVapp.deps.photoswipe],
+        ['Web3.js', ENVapp.deps.web3],
+        ['Yjs', ENVapp.deps.yjs],
+        ['Bootstrap UI', ENVapp.deps.bootstrap],
+        ['Bootstrap Icons', ENVapp.deps['bootstrap-icons']],
+        ['Font Awesome', ENVapp.deps['@fortawesome/fontawesome-free']],
+        ['Crypto Fonts', ENVapp.deps['@cryptofonts/cryptofont']],
+        ['Emoji Mart Data', ENVapp.deps['@emoji-mart/data']],
+        ['jQuery', ENVapp.deps.jquery],
+        ['jQuery UI', ENVapp.deps['jquery-ui']],
+        ['Linkifyjs', ENVapp.deps.linkifyjs],
         ['OLM Version', initMatrix.matrixClient.olmVersion.join('.')],
         ['Verification Methods', initMatrix.matrixClient.verificationMethods.join(', ')],
     ];
@@ -44,11 +45,11 @@ function AboutSection() {
                             <div className='col-md-11 pe-0'>
 
                                 <h4>
-                                    {__ENV_APP__.info.name}
+                                    {ENVapp.info.name}
                                     <span className="very-small text-gray" style={{ margin: '0 var(--sp-extra-tight)' }}>{`v${cons.version}`}</span>
                                 </h4>
 
-                                <div>{__ENV_APP__.info.description}</div>
+                                <div>{ENVapp.info.description}</div>
 
                                 <div className="mt-3">
                                     <Button className='me-1' onClick={() => window.open('https://github.com/Pony-House/Client')}>Source code</Button>
@@ -98,7 +99,7 @@ function AboutSection() {
                     </li>
 
                     <li className="list-group-item border-0">
-                        <div className='small'>{`The ${__ENV_APP__.info.name} is a fork from the `}<a href="https://github.com/cinnyapp/cinny" target="_blank" rel="noreferrer noopener">Cinny</a>. All source code base credits go to this group.</div>
+                        <div className='small'>{`The ${ENVapp.info.name} is a fork from the `}<a href="https://github.com/cinnyapp/cinny" target="_blank" rel="noreferrer noopener">Cinny</a>. All source code base credits go to this group.</div>
                     </li>
 
                 </ul>

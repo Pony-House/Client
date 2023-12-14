@@ -12,6 +12,7 @@ import PowerLevelSelector from '../power-level-selector/PowerLevelSelector';
 import SettingTile from '../setting-tile/SettingTile';
 
 import { useForceUpdate } from '../../hooks/useForceUpdate';
+import { ENVapp } from '../../../util/tools';
 
 const permissionsInfo = {
 
@@ -172,8 +173,8 @@ const permissionsInfo = {
 
   'pony.house.settings': {
     parent: 'events',
-    name: `Modify ${__ENV_APP__.info.name} settings`,
-    description: `Set minimum power level to modify room ${__ENV_APP__.info.name} settings.`,
+    name: `Modify ${ENVapp.info.name} settings`,
+    description: `Set minimum power level to modify room ${ENVapp.info.name} settings.`,
     default: 50,
   },
 

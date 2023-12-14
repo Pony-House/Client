@@ -9,7 +9,7 @@ import SettingTile from '../../../molecules/setting-tile/SettingTile';
 import {
     toggleSystemTheme, toggleMarkdown, toggleMembershipEvents, toggleNickAvatarEvents,
 } from '../../../../client/action/settings';
-import { tinyAppZoomValidator } from '../../../../util/tools';
+import { ENVapp, tinyAppZoomValidator } from '../../../../util/tools';
 import { getAppearance, toggleAppearanceAction, setAppearance } from '../../../../util/libs/appearance';
 import { calendarFormat } from '../../../../util/libs/momentjs';
 
@@ -114,7 +114,7 @@ function AppearanceSection() {
                         <input ref={ponyHouseZoomRangeRef} max={200} min={50} type="range" className="form-range" />
 
                         <div className="very-small text-gray">
-                            {`Set the application zoom. If the configuration doesn't work, it's because your ${__ENV_APP__.electron_mode ? 'client' : 'browser'} is not compatible. (Beta)`}
+                            {`Set the application zoom. If the configuration doesn't work, it's because your ${ENVapp.electron_mode ? 'client' : 'browser'} is not compatible. (Beta)`}
                             <button type="button" className="ms-3 btn btn-sm btn-secondary" onClick={async () => {
 
                                 const ponyHouseZoomRange = $(ponyHouseZoomRangeRef.current);

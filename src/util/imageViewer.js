@@ -2,7 +2,7 @@
 import FileSaver from 'file-saver';
 import PhotoSwipeLightbox from 'photoswipe';
 import { getFileContentType } from './fileMime';
-import { chatboxScrollToBottom, toast } from './tools';
+import { ENVapp, chatboxScrollToBottom, toast } from './tools';
 
 export default function imageViewer(lightbox, imgQuery, name, url, readMime = false, scrollDown = true) {
     return new Promise(async (resolve, reject) => {
@@ -61,7 +61,7 @@ export default function imageViewer(lightbox, imgQuery, name, url, readMime = fa
                 // Register Buttons
                 pswp.on('uiRegister', () => {
 
-                    if (!__ENV_APP__.electron_mode) {
+                    if (!ENVapp.electron_mode) {
                         pswp.ui.registerElement({
                             name: 'new-window-button',
                             ariaLabel: 'Open Url',

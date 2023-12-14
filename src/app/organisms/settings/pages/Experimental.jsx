@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { ENVapp } from '../../../../util/tools';
 
 // import Toggle from '../../../atoms/button/Toggle';
 // import SettingTile from '../../../molecules/setting-tile/SettingTile';
@@ -53,7 +54,7 @@ function ExperimentalSection() {
                 </ul>
             </div>
 
-            {__ENV_APP__.electron_mode ? <div className="card noselect mt-3">
+            {ENVapp.electron_mode ? <div className="card noselect mt-3">
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item very-small text-gray">DevTools</li>
                     <li className="list-group-item small">

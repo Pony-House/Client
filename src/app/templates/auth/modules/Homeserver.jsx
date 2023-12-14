@@ -10,6 +10,7 @@ import IconButton from '../../../atoms/button/IconButton';
 import Input from '../../../atoms/input/Input';
 import Spinner from '../../../atoms/spinner/Spinner';
 import ContextMenu, { MenuItem, MenuHeader } from '../../../atoms/context-menu/ContextMenu';
+import { ENVapp } from '../../../..//util/tools';
 
 let searchingHs = null;
 function Homeserver({ onChange }) {
@@ -61,7 +62,7 @@ function Homeserver({ onChange }) {
     useEffect(() => {
         try {
 
-            const result = __ENV_APP__.login ?? {};
+            const result = ENVapp.login ?? {};
             const selectedHs = !Number.isNaN(result.defaultHomeserver) && Number.isFinite(result.defaultHomeserver) ? result.defaultHomeserver : 0;
             const allowCustom = result.allowCustomHomeservers;
             const hsList = Array.isArray(result.homeserverList) ? result.homeserverList : [];

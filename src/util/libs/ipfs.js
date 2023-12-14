@@ -1,4 +1,5 @@
 import CIDTool from 'cid-tool';
+import { ENVapp } from '../tools';
 
 export function getIpfsCfg(folder, getDefault = true, domainsParse = false) {
 
@@ -62,7 +63,7 @@ export function getIpfsCfg(folder, getDefault = true, domainsParse = false) {
         return null;
     }
 
-    if (!__ENV_APP__.ipfs) content.ipfsEnabled = false;
+    if (!ENVapp.ipfs) content.ipfsEnabled = false;
     return content;
 
 };

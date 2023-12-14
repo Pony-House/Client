@@ -4,7 +4,7 @@ import clone from 'clone';
 
 import initMatrix from '../../client/initMatrix';
 import { getCurrentState } from "../matrixUtil";
-import { objType } from '../tools';
+import { ENVapp, objType } from '../tools';
 // import { getRoomInfo } from '../../app/organisms/room/Room';
 
 // Info
@@ -166,7 +166,7 @@ export function setPinMessage(room, newEventsId, isPinned = true) {
 };
 
 // DEV
-if (__ENV_APP__.mode === 'development') {
+if (ENVapp.mode === 'development') {
     global.pinManager = {
         getRaw: getPinnedMessagesRaw,
         get: getPinnedMessages,

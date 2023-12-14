@@ -15,6 +15,7 @@ import { getAccountStatus } from '../../../app/organisms/navigation/ProfileAvata
 import { messageIsClassicCrdt } from '../../../util/libs/crdt';
 import { checkerFavIcon } from '../../../util/libs/favicon';
 import { getPrivacyRefuseRoom } from '../../../app/organisms/navigation/Sidebar/InviteSidebar';
+import { ENVapp } from '../../../util/tools';
 
 const soundFiles = {
   notification: new Audio('./sound/notification.ogg'),
@@ -268,7 +269,7 @@ class Notifications extends EventEmitter {
 
     // Check Window
     if (
-      (!__ENV_APP__.electron_mode || typeof window.getElectronShowStatus !== 'function' || window.getElectronShowStatus()) &&
+      (!ENVapp.electron_mode || typeof window.getElectronShowStatus !== 'function' || window.getElectronShowStatus()) &&
       !$('body').hasClass('modal-open') &&
       navigation.selectedRoomId === room.roomId &&
       document.visibilityState === 'visible' &&
@@ -349,7 +350,7 @@ class Notifications extends EventEmitter {
 
         // Silent Mode
         let noti;
-        if (__ENV_APP__.electron_mode) {
+        if (ENVapp.electron_mode) {
           notiData.silent = true;
           noti = await window.desktopNotification(notiData);
         } else {
@@ -358,7 +359,7 @@ class Notifications extends EventEmitter {
         }
 
         // Play Notification
-        if (__ENV_APP__.electron_mode) {
+        if (ENVapp.electron_mode) {
 
           if (settings.isNotificationSounds) {
             noti.on('show', () => this._playNotiSound());
@@ -388,7 +389,7 @@ class Notifications extends EventEmitter {
         }
 
         // Send Notification
-        if (__ENV_APP__.electron_mode) {
+        if (ENVapp.electron_mode) {
           noti.show();
         }
 

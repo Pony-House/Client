@@ -13,9 +13,6 @@ import App from './app/pages/App';
 import { startCustomThemes } from '../mods';
 import { getOsSettings } from './util/libs/osSettings';
 
-const ENVapp = clone(__ENV_APP__);
-export { ENVapp };
-
 function startApp(appProtocol) {
 
     const osSettings = getOsSettings();

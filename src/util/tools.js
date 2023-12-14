@@ -1,5 +1,6 @@
 import { Toast } from '@capacitor/toast';
 import { Capacitor } from '@capacitor/core';
+import clone from 'clone';
 
 import tinyAPI from './mods';
 import { twemojify } from './twemojify';
@@ -34,6 +35,12 @@ const blobCreator = (result) => {
     return new Blob([], { type: 'text/plain' });
 
 };
+
+// ENV
+const ENVapp = clone(global.__ENV_APP__);
+export { ENVapp };
+
+global.getEnvApp = () => clone(global.__ENV_APP__);
 
 // Export
 export { tinyAppZoomValidator, blobCreator };

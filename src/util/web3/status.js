@@ -1,5 +1,5 @@
 import { tinyCrypto } from ".";
-import { toast } from "../tools";
+import { ENVapp, toast } from "../tools";
 
 let header;
 export function setEthereumStatusButton(newHeader) { header = newHeader; };
@@ -11,7 +11,7 @@ export default function startStatus() {
 
             if (!tinyCrypto.existEthereum()) {
 
-                if (!__ENV_APP__.electron_mode) toast('You don\'t have a ethereum Wallet installed in your browser!', 'Ethereum Wallet');
+                if (!ENVapp.electron_mode) toast('You don\'t have a ethereum Wallet installed in your browser!', 'Ethereum Wallet');
 
                 if (header) header.addClass('ethereum-none');
                 tinyCrypto.allowActions = false;

@@ -8,7 +8,7 @@ import { getUserStatus, updateUserStatusIcon, getPresence } from '../../../util/
 import initMatrix from '../../../client/initMatrix';
 import { cssColorMXID } from '../../../util/colorMXID';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
-import { objType, toast } from '../../../util/tools';
+import { ENVapp, objType, toast } from '../../../util/tools';
 import { copyToClipboard } from '../../../util/common';
 import copyText from '../../organisms/profile-viewer/copyText';
 import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
@@ -68,7 +68,7 @@ function PeopleSelectorBanner({
     if (content && objType(content.presenceStatusMsg, 'object')) {
 
       const presence = content.presenceStatusMsg;
-      const ethereumValid = (__ENV_APP__.web3 && presence.ethereum && presence.ethereum.valid);
+      const ethereumValid = (ENVapp.web3 && presence.ethereum && presence.ethereum.valid);
 
       // Ethereum
       if (ethereumValid) {
