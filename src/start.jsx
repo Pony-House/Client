@@ -13,6 +13,9 @@ import App from './app/pages/App';
 import { startCustomThemes } from '../mods';
 import { getOsSettings } from './util/libs/osSettings';
 
+const ENVapp = clone(__ENV_APP__);
+export { ENVapp };
+
 function startApp(appProtocol) {
 
     const osSettings = getOsSettings();
@@ -25,7 +28,6 @@ function startApp(appProtocol) {
     startQuery();
 
     console.log(`[app] Starting app using the protocol "${appProtocol}" mode.`);
-    global.getEnvApp = () => clone(__ENV_APP__);
     global.Buffer = Buffer;
 
     if (osSettings.startMinimized && typeof global.electronWindowIsVisible === 'function') {

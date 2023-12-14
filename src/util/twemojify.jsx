@@ -14,6 +14,7 @@ import { sanitizeText } from './sanitize';
 
 import keywords from '../../mods/keywords';
 import openTinyURL from './message/urlProtection';
+// import { ENVapp } from '../start';
 
 // Register Protocols
 linkify.registerCustomProtocol('matrix');
@@ -25,21 +26,21 @@ linkify.registerCustomProtocol('irc');
 
 linkify.registerCustomProtocol('ftp');
 
-if (__ENV_APP__.ipfs) {
-  linkify.registerCustomProtocol('ipfs');
-}
+// if (ENVapp.ipfs) {
+linkify.registerCustomProtocol('ipfs');
+// }
 
-if (__ENV_APP__.web3) {
-  linkify.registerCustomProtocol('bitcoin');
-  linkify.registerCustomProtocol('dogecoin');
-  linkify.registerCustomProtocol('monero');
+// if (ENVapp.web3) {
+linkify.registerCustomProtocol('bitcoin');
+linkify.registerCustomProtocol('dogecoin');
+linkify.registerCustomProtocol('monero');
 
-  linkify.registerCustomProtocol('ethereum');
-  linkify.registerCustomProtocol('web3');
+linkify.registerCustomProtocol('ethereum');
+linkify.registerCustomProtocol('web3');
 
-  linkify.registerCustomProtocol('ar');
-  linkify.registerCustomProtocol('lbry');
-}
+linkify.registerCustomProtocol('ar');
+linkify.registerCustomProtocol('lbry');
+// }
 
 // Register Keywords
 const tinywords = [];
