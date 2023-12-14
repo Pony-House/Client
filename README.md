@@ -111,6 +111,10 @@ This helps new matrix users not get lost when they are being guided to use a spe
 
 This client sends notification permission requests at the exact moment the page is loaded. Some security extensions may consider this a privacy violation. Sometimes this type of thing doesn't happen on the Pony House domain because I (JasminDreasond) always try to contact the staff of these extensions so the domain can be added to the whitelist.
 
+### Can I completely disable IPFS and Web3?
+
+Yep. This option can be modified in the `.env` file so you can deploy a client without access to the features.
+
 ### This client has web3 functionalities. Is this matrix client a crypto wallet?
 
 Nope. Pony House has access to crypto wallet APIs that are installed in your browser or on your computer. And this function can be turned off in the settings.
