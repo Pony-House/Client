@@ -520,7 +520,7 @@ function ProfileViewer() {
         // Update Status Icon
         const content = updateUserStatusIcon(status, tinyUser);
         const existPresence = (content && content.presenceStatusMsg);
-        const ethereumValid = (existPresence && content.presenceStatusMsg.ethereum && content.presenceStatusMsg.ethereum.valid);
+        const ethereumValid = (__ENV_APP__.web3 && existPresence && content.presenceStatusMsg.ethereum && content.presenceStatusMsg.ethereum.valid);
         if (existPresence) {
 
           // Ethereum
