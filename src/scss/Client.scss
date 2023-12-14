@@ -98,5 +98,13 @@ body:not(.disable-navigation-wrapper) {
     .room-view .nav-sidebar-1 {
       display: none !important;
     }
+    &.theme-type-dark,
+    &.theme-type-dark2,
+    &.theme-type-silver,
+    &.theme-type-light {
+      .navigation-wrapper {
+        width: 72px;
+      }
+    }
   }
 }
