@@ -18,7 +18,7 @@ import initMatrix from '../../../client/initMatrix';
 import navigation from '../../../client/state/navigation';
 import cons from '../../../client/state/cons';
 import DragDrop from './DragDrop';
-import { ENVapp, btModal, dice, resizeWindowChecker, scrollFixer, tinyAppZoomValidator } from '../../../util/tools';
+import { btModal, dice, resizeWindowChecker, scrollFixer, tinyAppZoomValidator } from '../../../util/tools';
 import { startUserAfk, stopUserAfk } from '../../../util/userStatusEffects';
 import Mods from './Mods';
 import appLoadMsg from '../../../../mods/appLoadMsg';
@@ -26,7 +26,7 @@ import LoadingPage from './Loading';
 
 let versionChecked = false;
 
-if (ENVapp.electron_mode) {
+if (__ENV_APP__.electron_mode) {
   window.setElectronResize(() => resizeWindowChecker());
 }
 
@@ -143,13 +143,13 @@ function Client() {
         <p className="loading__message small">{loadingMsg}</p>
 
         <div className="loading__appname">
-          <Text variant="h2" weight="medium">{ENVapp.info.name}</Text>
+          <Text variant="h2" weight="medium">{__ENV_APP__.info.name}</Text>
         </div>
       </div>
     );
   }
 
-  if (ENVapp.electron_mode && !versionChecked && global.checkVersions) {
+  if (__ENV_APP__.electron_mode && !versionChecked && global.checkVersions) {
     versionChecked = true;
     global.checkVersions().then(versionData => {
       if (versionData && typeof versionData.value.name === 'string' && versionData.result === 1) {

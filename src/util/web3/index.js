@@ -4,7 +4,7 @@ import Web3 from 'web3';
 import provider from 'eth-provider';
 import Web3WsProvider from 'web3-providers-ws';
 
-import { ENVapp, objType } from '../tools';
+import { objType } from '../tools';
 import startStatus from './status';
 import initMatrix from '../../client/initMatrix';
 import modWeb3Cfg from '../../../mods/web3';
@@ -174,7 +174,7 @@ export function getWeb3Cfg(folder, getDefault = true) {
     return null;
   }
 
-  if (!ENVapp.web3) content.web3Enabled = false;
+  if (!__ENV_APP__.web3) content.web3Enabled = false;
   return content;
 
 };
@@ -234,10 +234,10 @@ tinyCrypto.decimals = Object.freeze({
 const startWeb3 = () => {
 
   // Check if Web3 has been injected by the browser (Mist/MetaMask).
-  if ((typeof ethereum !== 'undefined' && (window.ethereum.isMetaMask || window.ethereum.isFrame)) || ENVapp.electron_mode) {
+  if ((typeof ethereum !== 'undefined' && (window.ethereum.isMetaMask || window.ethereum.isFrame)) || __ENV_APP__.electron_mode) {
 
     // Checker
-    tinyCrypto.existEthereum = () => (typeof window.ethereum !== 'undefined' || ENVapp.electron_mode);
+    tinyCrypto.existEthereum = () => (typeof window.ethereum !== 'undefined' || __ENV_APP__.electron_mode);
     tinyCrypto.isUnlocked = () => (window.ethereum && window.ethereum._isUnlocked);
     tinyCrypto.existWalletApp = () => (tinyCrypto.existEthereum() && tinyCrypto.isUnlocked());
 
@@ -584,14 +584,14 @@ const startWeb3 = () => {
     }
 
     // Electron Mode
-    else if (ENVapp.electron_mode) {
+    else if (__ENV_APP__.electron_mode) {
 
       tinyCrypto.changeNetwork = (chainId) => tinyCrypto.provider.eth.switchEthereumChain({ chainId: tinyCrypto.provider.utils.toHex(chainId) });
 
       tinyCrypto.protocol = 'frame';
       tinyCrypto.provider = new Web3(new Web3WsProvider('ws://127.0.0.1:1248', {
 
-        headers: { Origin: ENVapp.info.name },
+        headers: { Origin: __ENV_APP__.info.name },
 
         clientConfig: {
           maxReceivedFrameSize: 100000000,   // bytes - default: 1MiB

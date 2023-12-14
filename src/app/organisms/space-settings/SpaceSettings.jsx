@@ -27,7 +27,6 @@ import PonyHouseSettings from './PonyHouseSettings';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 import { useForceUpdate } from '../../hooks/useForceUpdate';
-import { ENVapp } from '../../../util/tools';
 
 const tabText = {
   GENERAL: 'General',
@@ -157,7 +156,7 @@ function GeneralSettings({ roomId, profileMode }) {
 
       <div className="card noselect mb-3">
         <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">{`${ENVapp.info.name} Settings`}</li>
+          <li className="list-group-item very-small text-gray">{`${__ENV_APP__.info.name} Settings`}</li>
           <PonyHouseSettings roomId={roomId} room={room} />
         </ul>
       </div>

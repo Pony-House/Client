@@ -7,7 +7,6 @@ import Avatar from '../../atoms/avatar/Avatar';
 
 import LoadingScreen from './modules/LoadingScreen';
 import AuthCard from './modules/AuthCard';
-import { ENVapp } from '../../../util/tools';
 
 function Auth() {
   const [loginToken, setLoginToken] = useState(getUrlPrams('loginToken'));
@@ -55,7 +54,7 @@ function Auth() {
 
                       <div className="d-flex align-items-center mb-3 pb-1">
                         <Avatar imageSrc="./img/png/cinny-main.png" />
-                        <span className="ms-3 h2 fw-bold mb-0">{ENVapp.info.name}</span>
+                        <span className="ms-3 h2 fw-bold mb-0">{__ENV_APP__.info.name}</span>
                       </div>
 
                       <AuthCard />

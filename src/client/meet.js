@@ -1,4 +1,3 @@
-import { ENVapp } from "../util/tools";
 
 // Server
 const domain = 'meet.jit.si';
@@ -78,7 +77,7 @@ const options = {
     interfaceConfigOverwrite: {
 
         // App Template
-        APP_NAME: ENVapp.info.name,
+        APP_NAME: __ENV_APP__.info.name,
         DEFAULT_BACKGROUND: '#040404',
 
         AUDIO_LEVEL_PRIMARY_COLOR: 'rgba(255,255,255,0.4)',

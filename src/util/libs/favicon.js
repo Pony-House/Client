@@ -1,5 +1,3 @@
-import { ENVapp } from "../tools";
-
 const urlBase = './img/png/';
 const favicon = {
 
@@ -58,13 +56,13 @@ export function checkerFavIcon() {
         const finalNumber = directCount || indirectCount;
         if (finalNumber > 0) {
             changeFavIcon('cinny-unread-red.png', true, finalNumber);
-            if (ENVapp.electron_mode) {
+            if (__ENV_APP__.electron_mode) {
                 global.changeTrayIcon('cinny-unread-red.png');
                 global.changeAppIcon('cinny-unread-red.png');
             }
         } else {
             changeFavIcon('cinny.png', false, finalNumber);
-            if (ENVapp.electron_mode) {
+            if (__ENV_APP__.electron_mode) {
                 global.changeTrayIcon('cinny.png');
                 global.changeAppIcon('cinny.png');
             }

@@ -18,7 +18,7 @@ import NotificationBadge from '../../../atoms/badge/NotificationBadge';
 import { getUserWeb3Account, tinyCrypto } from '../../../../util/web3';
 import navigation from '../../../../client/state/navigation';
 import { setEthereumStatusButton } from '../../../../util/web3/status';
-import { ENVapp, objType } from '../../../../util/tools';
+import { objType } from '../../../../util/tools';
 import { colorMXID } from '../../../../util/colorMXID';
 import { getAppearance, getAnimatedImageUrl } from '../../../../util/libs/appearance';
 
@@ -139,7 +139,7 @@ export default function FeaturedTab() {
                 ) : null}
             />
 
-            {ENVapp.web3 && userWeb3.address ? <SidebarAvatar
+            {__ENV_APP__.web3 && userWeb3.address ? <SidebarAvatar
                 ref={ethereumButton}
                 tooltip={`Ethereum${!userWeb3.valid ? ' (INVALID ACCOUNT)' : ''}`}
                 className={`ethereum-sidebar-icon ${userWeb3.valid ? 'ethereum-valid' : 'ethereum-invalid'}${!tinyCrypto.existEthereum() ? ' ethereum-none' : ''}`}

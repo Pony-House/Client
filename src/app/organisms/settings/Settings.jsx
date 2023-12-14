@@ -8,7 +8,7 @@ import Tabs from '../../atoms/tabs/Tabs';
 import PopupWindow from '../../molecules/popup-window/PopupWindow';
 import { ImagePackUser, ImagePackGlobal } from '../../molecules/image-pack/ImagePack';
 import ProfileEditor from '../profile-editor/ProfileEditor';
-import { ENVapp, resizeWindowChecker } from '../../../util/tools';
+import { resizeWindowChecker } from '../../../util/tools';
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
 import ProfileSection from './pages/Profile';
@@ -103,17 +103,17 @@ tabItems.push({
   render: () => <PrivacySection />,
 });
 
-if (ENVapp.electron_mode) {
+if (__ENV_APP__.electron_mode) {
   tabItems.push({
 
-    text: tabText.OS.replace('{OS}', ENVapp.platform === 'win32' ? 'Windows' :
-      ENVapp.platform === 'linux' ? 'Linux' :
-        ENVapp.platform === 'darwin' ? 'Mac'
+    text: tabText.OS.replace('{OS}', __ENV_APP__.platform === 'win32' ? 'Windows' :
+      __ENV_APP__.platform === 'linux' ? 'Linux' :
+        __ENV_APP__.platform === 'darwin' ? 'Mac'
           : 'OS'),
 
-    faSrc: ENVapp.platform === 'win32' ? 'fa-brands fa-windows' :
-      ENVapp.platform === 'linux' ? 'fa-brands fa-linux' :
-        ENVapp.platform === 'darwin' ? 'fa-brands fa-apple'
+    faSrc: __ENV_APP__.platform === 'win32' ? 'fa-brands fa-windows' :
+      __ENV_APP__.platform === 'linux' ? 'fa-brands fa-linux' :
+        __ENV_APP__.platform === 'darwin' ? 'fa-brands fa-apple'
           : 'fa-solid fa-computer',
 
     disabled: false,
@@ -122,11 +122,11 @@ if (ENVapp.electron_mode) {
   });
 }
 
-if (ENVapp.web3 || ENVapp.ipfs) {
+if (__ENV_APP__.web3 || __ENV_APP__.ipfs) {
 
   tabItems.push({ type: 'divider', });
 
-  if (ENVapp.ipfs) {
+  if (__ENV_APP__.ipfs) {
     tabItems.push({
       text: tabText.IPFS,
       faSrc: "fa-solid fa-cube",
@@ -135,7 +135,7 @@ if (ENVapp.web3 || ENVapp.ipfs) {
     });
   }
 
-  if (ENVapp.web3) {
+  if (__ENV_APP__.web3) {
     tabItems.push({
       text: tabText.WEB3,
       faSrc: "fa-brands fa-ethereum",

@@ -12,10 +12,9 @@ import twemoji from 'twemoji';
 import Tooltip from '../app/atoms/tooltip/Tooltip';
 import { sanitizeText } from './sanitize';
 
-// ELECTRON GLITCH
-// import { ENVapp } from './tools';
 import keywords from '../../mods/keywords';
 import openTinyURL from './message/urlProtection';
+// import { ENVapp } from '../start';
 
 // Register Protocols
 linkify.registerCustomProtocol('matrix');

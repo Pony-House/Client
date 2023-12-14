@@ -8,13 +8,13 @@ import cons from './cons';
 
 import settings from './settings';
 import { messageIsClassicCrdt } from '../../util/libs/crdt';
-import { ENVapp, objType } from '../../util/tools';
+import { objType } from '../../util/tools';
 import moment from '../../util/libs/momentjs';
 
 const delayYdocUpdate = 100;
 const hashTryLimit = 10;
 
-if (ENVapp.mode === 'development') { global.Y = Y; }
+if (__ENV_APP__.mode === 'development') { global.Y = Y; }
 let timeoutForceChatbox = null;
 
 function isEdited(mEvent) {
@@ -171,7 +171,7 @@ class RoomTimeline extends EventEmitter {
 
     setTimeout(() => this.room.loadMembersIfNeeded());
 
-    if (ENVapp.mode === 'development') { window.selectedRoom = this; }
+    if (__ENV_APP__.mode === 'development') { window.selectedRoom = this; }
 
   }
 

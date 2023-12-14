@@ -38,7 +38,6 @@ import renderEthereum from './tabs/ethereum';
 
 import copyText from './copyText';
 import tinyAPI from '../../../util/mods';
-import { ENVapp } from '../../../util/tools';
 
 function ModerationTools({
   roomId, userId,
@@ -521,7 +520,7 @@ function ProfileViewer() {
         // Update Status Icon
         const content = updateUserStatusIcon(status, tinyUser);
         const existPresence = (content && content.presenceStatusMsg);
-        const ethereumValid = (ENVapp.web3 && existPresence && content.presenceStatusMsg.ethereum && content.presenceStatusMsg.ethereum.valid);
+        const ethereumValid = (__ENV_APP__.web3 && existPresence && content.presenceStatusMsg.ethereum && content.presenceStatusMsg.ethereum.valid);
         if (existPresence) {
 
           // Ethereum

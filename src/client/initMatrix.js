@@ -10,7 +10,6 @@ import Notifications from './state/Notifications';
 import { cryptoCallbacks } from './state/secretStorageKeys';
 import navigation from './state/navigation';
 import logger from './logger';
-import { ENVapp } from '../util/tools';
 
 global.Olm = Olm;
 
@@ -77,7 +76,7 @@ class InitMatrix extends EventEmitter {
       PREPARED: (prevState) => {
         logger.log(`PREPARED state`);
         logger.log(`Previous state: `, prevState);
-        if (ENVapp.mode === 'development') { global.initMatrix = this; }
+        if (__ENV_APP__.mode === 'development') { global.initMatrix = this; }
         if (prevState === null) {
           this.roomList = new RoomList(this.matrixClient);
           this.accountData = new AccountData(this.roomList);

@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import Toggle from '../../../atoms/button/Toggle';
 import SettingTile from '../../../molecules/setting-tile/SettingTile';
 import { getOsSettings, toggleOsSettingsAction } from '../../../../util/libs/osSettings';
-import { ENVapp } from '../../../../util/tools';
 
 function OsSection() {
 
@@ -12,8 +11,8 @@ function OsSection() {
     const [startMinimized, setStartMinimized] = useState(osSettings.startMinimized);
     const [autoLaunchEnabled, setAutoLaunchEnabled] = useState(false);
 
-    if (ENVapp.electron_mode) {
-        autoLaunch.start(ENVapp.info.name);
+    if (__ENV_APP__.electron_mode) {
+        autoLaunch.start(__ENV_APP__.info.name);
     }
 
     useEffect(() => {
@@ -47,7 +46,7 @@ function OsSection() {
                                 }}
                             />
                         )}
-                        content={<div className="very-small text-gray">Save yourself a few clicks and let {ENVapp.info.name} greet you on computer startup.</div>}
+                        content={<div className="very-small text-gray">Save yourself a few clicks and let {__ENV_APP__.info.name} greet you on computer startup.</div>}
                     />
 
                     <SettingTile

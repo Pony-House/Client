@@ -2,7 +2,7 @@ import { App } from '@capacitor/app';
 import initMatrix from '../client/initMatrix';
 import { emitUpdateProfile } from '../client/action/navigation';
 import tinyAPI from './mods';
-import { ENVapp, countObj } from './tools';
+import { countObj } from './tools';
 import moment from './libs/momentjs';
 
 // Cache Data
@@ -44,7 +44,7 @@ export function setVoiceChatMode(value = true) {
 // Get
 export function getUserAfk(type = 'seconds') {
 
-    if (ENVapp.electron_mode && global.systemIdleTime?.get) {
+    if (__ENV_APP__.electron_mode && global.systemIdleTime?.get) {
         global.systemIdleTime.exec();
         return global.systemIdleTime.get();
     }
@@ -107,7 +107,7 @@ export function startUserAfk() {
         userInteractions.afkTime.interval = null;
     }
 
-    if (!ENVapp.electron_mode) {
+    if (!__ENV_APP__.electron_mode) {
         $(window).on("mousemove", lastTimestampUpdate);
         userInteractions.afkTime.value = moment().valueOf();
     }
@@ -119,13 +119,13 @@ export function startUserAfk() {
 // Stop
 export function stopUserAfk() {
 
-    if (!ENVapp.electron_mode) $(window).on("mousemove", lastTimestampUpdate);
+    if (!__ENV_APP__.electron_mode) $(window).on("mousemove", lastTimestampUpdate);
     if (userInteractions.afkTime.interval) {
         clearInterval(userInteractions.afkTime.interval);
         userInteractions.afkTime.interval = null;
     }
 
-    if (!ENVapp.electron_mode) userInteractions.afkTime.value = null;
+    if (!__ENV_APP__.electron_mode) userInteractions.afkTime.value = null;
 
 };
 

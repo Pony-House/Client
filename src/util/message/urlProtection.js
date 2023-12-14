@@ -2,7 +2,7 @@
 import { Capacitor } from '@capacitor/core';
 import { Browser } from '@capacitor/browser';
 
-import { ENVapp, btModal, objType } from '../tools';
+import { btModal, objType } from '../tools';
 import tinyAPI from '../mods';
 import convertProtocols from '../libs/convertProtocols';
 import { setLoadingPage } from '../../app/templates/client/Loading';
@@ -74,7 +74,7 @@ export default async (url, vanillaUrl) => {
             const tinyModal = btModal({
 
                 id: 'trust-tiny-url',
-                title: `Leaving ${ENVapp.info.name}`,
+                title: `Leaving ${__ENV_APP__.info.name}`,
 
                 dialog: 'modal-dialog-centered modal-lg',
                 body,
