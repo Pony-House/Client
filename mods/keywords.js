@@ -49,6 +49,7 @@ keywords.push({
     href: `https://ubuntu.com/`
 });
 
+// ELECTRON GLITCH ON __ENV_APP__
 // if (__ENV_APP__.ipfs) {
 keywords.push({
     title: `IPFS - Inter Planetary File System`,
@@ -187,6 +188,7 @@ keywords.push({
     href: `https://equestria.social/`
 });
 
+// ELECTRON GLITCH ON __ENV_APP__
 // if (__ENV_APP__.web3) {
 
 // Crypto Social
