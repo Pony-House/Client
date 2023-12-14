@@ -139,7 +139,7 @@ export default function FeaturedTab() {
                 ) : null}
             />
 
-            {userWeb3.address ? <SidebarAvatar
+            {__ENV_APP__.web3 && userWeb3.address ? <SidebarAvatar
                 ref={ethereumButton}
                 tooltip={`Ethereum${!userWeb3.valid ? ' (INVALID ACCOUNT)' : ''}`}
                 className={`ethereum-sidebar-icon ${userWeb3.valid ? 'ethereum-valid' : 'ethereum-invalid'}${!tinyCrypto.existEthereum() ? ' ethereum-none' : ''}`}

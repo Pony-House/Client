@@ -115,6 +115,9 @@ export default defineConfig(({ command, mode }) => {
       welcome: String(env.appWelcome)
     },
 
+    web3: !!(env.web3 === true || env.web3 === 'true'),
+    ipfs: !!(env.ipfs === true || env.ipfs === 'true'),
+
     login: {
       defaultHomeserver: Number(env.defaultHomeserver),
       allowCustomHomeservers: !!(typeof env.allowCustomHomeservers === 'string' && env.allowCustomHomeservers === 'true'),

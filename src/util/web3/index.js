@@ -174,6 +174,7 @@ export function getWeb3Cfg(folder, getDefault = true) {
     return null;
   }
 
+  if (!__ENV_APP__.web3) content.web3Enabled = false;
   return content;
 
 };
