@@ -83,22 +83,6 @@ tabItems.push({
 tabItems.push({ type: 'divider', });
 
 tabItems.push({
-  text: tabText.IPFS,
-  faSrc: "fa-solid fa-cube",
-  disabled: false,
-  render: () => <IpfsSection />,
-});
-
-tabItems.push({
-  text: tabText.WEB3,
-  faSrc: "fa-brands fa-ethereum",
-  disabled: false,
-  render: () => <Web3Section />,
-});
-
-tabItems.push({ type: 'divider', });
-
-tabItems.push({
   text: tabText.NOTIFICATIONS,
   faSrc: "fa-solid fa-bell",
   disabled: false,
@@ -137,6 +121,22 @@ if (__ENV_APP__.electron_mode) {
 
   });
 }
+
+tabItems.push({ type: 'divider', });
+
+tabItems.push({
+  text: tabText.IPFS,
+  faSrc: "fa-solid fa-cube",
+  disabled: false,
+  render: () => <IpfsSection />,
+});
+
+tabItems.push({
+  text: tabText.WEB3,
+  faSrc: "fa-brands fa-ethereum",
+  disabled: false,
+  render: () => <Web3Section />,
+});
 
 tabItems.push({ type: 'divider', });
 

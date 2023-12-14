@@ -1,3 +1,5 @@
+    --> Ajeitar ícone grupo de canais de space
+
     --> Criar leitor de mensagens fixadas
 
     =======================================================
