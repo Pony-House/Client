@@ -25,6 +25,7 @@ function startApp(appProtocol) {
     startQuery();
 
     console.log(`[app] Starting app using the protocol "${appProtocol}" mode.`);
+    global.getEnvApp = () => clone(__ENV_APP__);
     global.Buffer = Buffer;
 
     if (osSettings.startMinimized && typeof global.electronWindowIsVisible === 'function') {
