@@ -44,7 +44,7 @@ function UserOptions({ userId, afterOptionSelect }) {
 
             }} >Change Friend Nickname</MenuItem>
 
-            {userId !== mx.getUserId() ? <MenuItem className="text-start" faSrc="fa-solid fa-user-pen" onClick={() => {
+            {userId !== mx.getUserId() ? <MenuItem className="text-start" faSrc="fa-solid fa-envelope-circle-check" onClick={() => {
 
                 afterOptionSelect();
                 if (isWhitelist) {
