@@ -25,7 +25,7 @@ const staticLookup = () => async (hostname, _, cb) => {
         throw new Error(`Unable to resolve ${hostname}`);
     }
 
-    console.log(ips);
+    // console.log(ips);
     cb(null, ips[0], 4);
 
 };
