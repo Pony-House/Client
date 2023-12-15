@@ -34,7 +34,7 @@ class InitMatrix extends EventEmitter {
       dbName: 'web-sync-store',
     });
 
-    this.matrixClient = sdk.createClient({
+    const clientOps = {
 
       baseUrl: secret.baseUrl,
 
@@ -51,7 +51,16 @@ class InitMatrix extends EventEmitter {
         'm.sas.v1',
       ],
 
-    });
+    };
+
+    if (__ENV_APP__.electron_mode) {
+      clientOps.fetchFn = (url, ops) => {
+        if (typeof global.insertMatrixAgent === 'function') ops.agent = global.insertMatrixAgent(!url.href.startsWith('http://') ? 'https' : 'http');
+        return global.fetch(url.href, ops);
+      };
+    }
+
+    this.matrixClient = sdk.createClient(clientOps);
 
     await indexedDBStore.startup();
 
