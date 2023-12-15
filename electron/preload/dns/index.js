@@ -1,8 +1,78 @@
 import http from 'http';
 import https from 'https';
-import dns from 'dns/promises';
-import fetch from 'node-fetch';
 
+import dns from 'dns/promises';
+import { Resolver } from 'node:dns';
+import ipaddr from 'ipaddr.js';
+
+import fetch from 'node-fetch';
+import nativeDns from 'native-node-dns';
+
+// Server
+const customDnsPort = 8468;
+const customDnsIP = `127.0.0.1:${String(customDnsPort)}`;
+const ttl = 600;
+
+const server = nativeDns.createServer();
+const resolver = new Resolver();
+
+resolver.setServers([customDnsIP]);
+
+
+// Request detector
+server.on('request', (request, response) => {
+
+    // Show Domain
+    console.log('Custom DNS -->', request.question[0].name);
+
+    // Resolver
+    const resolverDefault = (err, addresses) => {
+
+        // Check DNS Address
+        if (Array.isArray(addresses)) {
+            for (const item in addresses) {
+                if (typeof addresses[item] === 'string' && ipaddr.isValid(addresses[item])) {
+
+                    const ip = ipaddr.parse(addresses[item]);
+                    const type = ip.kind();
+
+                    if (type === 'ipv4') {
+                        response.answer.push(nativeDns.A({
+                            name: request.question[0].name,
+                            address: addresses[item],
+                            ttl,
+                        }));
+                    }
+
+                    else if (type === 'ipv6') {
+                        response.answer.push(nativeDns.AAAA({
+                            name: request.question[0].name,
+                            address: addresses[item],
+                            ttl,
+                        }));
+                    }
+
+                }
+            }
+        }
+
+        // Complete
+        response.send();
+
+    };
+
+    // Excute default resolver
+    dns.resolve(request.question[0].name, resolverDefault);
+
+});
+
+// Error
+server.on('error', console.error);
+
+// Start
+server.serve(customDnsPort);
+
+// Cache
 const tinyCache = {};
 
 setInterval(() => {
@@ -15,6 +85,7 @@ setInterval(() => {
     }
 }, 60000);
 
+// Send lookup
 const staticLookup = () => async (hostname, _, cb) => {
 
     if (!tinyCache[hostname]) {

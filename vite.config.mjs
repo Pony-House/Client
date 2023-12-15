@@ -195,6 +195,10 @@ export default defineConfig(({ command, mode }) => {
 
     result.clearScreen = false;
 
+    const rollupOptions = {
+      external: Object.keys('dependencies' in pkg ? pkg.dependencies : {}),
+    };
+
     result.plugins.push(electron([
 
       {
@@ -215,9 +219,7 @@ export default defineConfig(({ command, mode }) => {
             sourcemap,
             minify: isBuild,
             outDir: 'dist-electron/main',
-            rollupOptions: {
-              external: Object.keys('dependencies' in pkg ? pkg.dependencies : {}),
-            },
+            rollupOptions,
           },
         },
 
@@ -238,9 +240,7 @@ export default defineConfig(({ command, mode }) => {
             sourcemap: sourcemap ? 'inline' : undefined, // #332
             minify: isBuild,
             outDir: 'dist-electron/preload',
-            rollupOptions: {
-              external: Object.keys('dependencies' in pkg ? pkg.dependencies : {}),
-            },
+            rollupOptions,
           },
         },
 

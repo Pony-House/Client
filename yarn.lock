@@ -1621,6 +1621,11 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
+"binaryheap@>= 0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/binaryheap/-/binaryheap-0.0.3.tgz#0d6136c84e9f1a5a90c0b97178c3e00df59820d6"
+  integrity sha512-9JFb4Yt5R9FZwbJaxOayF+T5sxn5eiU2NA9/LOeI1g2FUFRTdxpdmWppikO4O5AbNze8s0sL6ZuFxB1y4Ay8GA==
+
 bl@^1.0.0:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/bl/-/bl-1.2.3.tgz#1e8dd80142eac80d7158c9dccc047fb620e035e7"
@@ -1768,6 +1773,13 @@ buffer@^5.1.0, buffer@^5.2.1:
   dependencies:
     base64-js "^1.3.1"
     ieee754 "^1.1.13"
+
+"buffercursor@>= 0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/buffercursor/-/buffercursor-0.0.12.tgz#78a9a7f4343ae7d820a8999acc80de591e25a779"
+  integrity sha512-Z+6Jm/eW6ITeqcFQKVXX7LYIGk7rENqCKHJ4CbWfJMeLpQZJj1v70WehkLmp+1kFN/QyCgpQ3Z0dKUHAwSbf9w==
+  dependencies:
+    verror "^1.4.0"
 
 builder-util-runtime@9.2.3:
   version "9.2.3"
@@ -3917,6 +3929,16 @@ invariant@^2.2.4:
   dependencies:
     loose-envify "^1.0.0"
 
+ipaddr.js@2.1.0, "ipaddr.js@>= 0.1.1":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-2.1.0.tgz#2119bc447ff8c257753b196fc5f1ce08a4cdf39f"
+  integrity sha512-LlbxQ7xKzfBusov6UMi4MFpEg0m+mAm9xyNGEduwXMEDuf4WfzB/RZwMVYEd7IKGvh4IUkEXYxtAVu9T3OelJQ==
+
+ipaddr.js@~0.1.3:
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-0.1.9.tgz#a9c78ccc12dc9010f296ab9aef2f61f432d69efa"
+  integrity sha512-dp0C1YYJuZMlFCM9eah1GbCVGRwcvLuCHDWfqUhIS6WqLO6jFK3GJHRQrD+OTID/mS3grl3gqGJ76QsOTpNsRw==
+
 is-absolute-url@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/is-absolute-url/-/is-absolute-url-2.1.0.tgz#50530dfb84fcc9aa7dbe7852e83a37b93b9f2aa6"
@@ -4752,6 +4774,31 @@ nanoid@^3.3.7:
   version "3.3.7"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.7.tgz#d0c301a691bc8d54efa0a2226ccf3fe2fd656bd8"
   integrity sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==
+
+native-node-dns-cache@>=0.0.3:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/native-node-dns-cache/-/native-node-dns-cache-0.0.5.tgz#cbb500777a140bc2d1898d206f79978a8edb9ee0"
+  integrity sha512-cQZLl4DhYKgggoA8ZBZWkUIHhurW54ByLdaQHKGbW4JsLXJBfxvN0Jh0BMhyJXnRUjho9UV7M+NKd+uqArun3g==
+  dependencies:
+    binaryheap ">= 0.0.3"
+    native-node-dns-packet ">= 0.1.2"
+
+"native-node-dns-packet@>= 0.1.2", native-node-dns-packet@>=0.1.3:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/native-node-dns-packet/-/native-node-dns-packet-0.1.5.tgz#033e3d09764270f74825491de6a096aea15db14d"
+  integrity sha512-XEE/pCAsWsh6vkQBjVxBJKz7NvDgZmTUpNDPZ0DTQ8OLCFseRuqtPYSDXEH6rNKAvBblN2nSS/1fhdlo9iJAeA==
+  dependencies:
+    buffercursor ">= 0.0.12"
+    ipaddr.js ">= 0.1.1"
+
+native-node-dns@0.7.6:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/native-node-dns/-/native-node-dns-0.7.6.tgz#73300f48c4e4ff1510be6038cdbb6e27c2fe3ebe"
+  integrity sha512-1ySui/Uhcpg5B6wdSn2JdTkNMjPUwR/gWmrpwzhbjQUxJb+++wnH9N2KhFLMu3Fx3uhzqXvZlZLfn4odQO4nAA==
+  dependencies:
+    ipaddr.js "~0.1.3"
+    native-node-dns-cache ">=0.0.3"
+    native-node-dns-packet ">=0.1.3"
 
 native-run@^1.7.3:
   version "1.7.4"
@@ -6703,7 +6750,7 @@ vendors@^1.0.0:
   resolved "https://registry.yarnpkg.com/vendors/-/vendors-1.0.4.tgz#e2b800a53e7a29b93506c3cf41100d16c4c4ad8e"
   integrity sha512-/juG65kTL4Cy2su4P8HjtkTxk6VmJDiOPBufWniqQ6wknac6jNiXS9vU+hO3wgusiyqWlzTbVHi0dyJqRONg3w==
 
-verror@^1.10.0:
+verror@^1.10.0, verror@^1.4.0:
   version "1.10.1"
   resolved "https://registry.yarnpkg.com/verror/-/verror-1.10.1.tgz#4bf09eeccf4563b109ed4b3d458380c972b0cdeb"
   integrity sha512-veufcmxri4e3XSrT0xwfUR7kguIkaxBeosDg00yDWhk49wdwkSUrvvsm7nc75e1PUyvIeZj6nS8VQRYz2/S4Xg==
