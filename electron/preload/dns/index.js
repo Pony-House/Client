@@ -41,7 +41,6 @@ export default (href, ops) => new Promise((resolve, reject) => {
         ops.agent = insertMatrixAgent(!href.startsWith('http://') ? 'https' : 'http');
         if (ops.signal) delete ops.signal;
         fetch(href, ops).then(res => {
-            console.log(res);
             resolve({
 
                 status: res.status,
