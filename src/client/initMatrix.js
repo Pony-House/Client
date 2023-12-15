@@ -55,7 +55,7 @@ class InitMatrix extends EventEmitter {
 
     if (__ENV_APP__.electron_mode) {
       clientOps.fetchFn = (url, ops) => {
-        if (typeof global.insertMatrixAgent === 'function') ops.agent = global.insertMatrixAgent(!url.href.startsWith('http://') ? 'https' : 'http');
+        if (typeof global.insertMatrixAgent === 'function') return global.insertMatrixAgent(url.href, ops);
         return global.fetch(url.href, ops);
       };
     }
