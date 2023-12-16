@@ -105,7 +105,7 @@ contextBridge.exposeInMainWorld('desktopNotification', (options: object) =>
   startNotifications(options),
 );
 
-contextBridge.exposeInMainWorld('insertMatrixAgent', insertMatrixAgent);
+contextBridge.exposeInMainWorld('nodeFetch', insertMatrixAgent);
 contextBridge.exposeInMainWorld('startCustomDNS', startCustomDNS);
 contextBridge.exposeInMainWorld('focusAppWindow', () =>
   ipcRenderer.send('tiny-focus-window', true),
