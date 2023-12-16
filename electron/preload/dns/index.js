@@ -123,7 +123,7 @@ export default (href, ops) => new Promise((resolve, reject) => {
     if (href.startsWith('https://') || href.startsWith('http://')) {
         if (startedDNS) ops.agent = agents[href.startsWith('https://') ? 'https' : 'http'];
         if (ops.signal) delete ops.signal;
-        fetch(href, ops).then(res => {
+        fetch(href, ops = {}).then(res => {
 
             const headers = {};
             for (const item in res.headers) {
