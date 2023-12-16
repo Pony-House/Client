@@ -87,7 +87,7 @@ function PonyHouseSettings({ roomId, room }) {
 
         <SettingTile
             title="Display room avatars"
-            content={<div className="very-small text-gray">Instead of showing the traditional room icons of this space, you can click here for this sace to show room avatars instead. Update your space page after applying this configuration.</div>}
+            content={<div className="very-small text-gray">Instead of showing the traditional room icons of this space, you can click here for this space to show room avatars instead. Update your space page after applying this configuration.</div>}
             options={(
                 <Toggle
                     className='d-inline-flex'
