@@ -6,7 +6,7 @@ import startNotifications from './notification';
 import './idle/seconds';
 import './idle/status';
 import startAutoLaunch from './auto-launch';
-import insertMatrixAgent from './dns';
+import insertMatrixAgent, { startCustomDNS } from './dns';
 
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
   return new Promise((resolve) => {
@@ -106,6 +106,7 @@ contextBridge.exposeInMainWorld('desktopNotification', (options: object) =>
 );
 
 contextBridge.exposeInMainWorld('insertMatrixAgent', insertMatrixAgent);
+contextBridge.exposeInMainWorld('startCustomDNS', startCustomDNS);
 contextBridge.exposeInMainWorld('focusAppWindow', () =>
   ipcRenderer.send('tiny-focus-window', true),
 );

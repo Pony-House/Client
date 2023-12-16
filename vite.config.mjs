@@ -105,6 +105,7 @@ export default defineConfig(({ command, mode }) => {
     version: pkg.version,
     deps: pkg.dependencies,
     platform: process.platform,
+    custom_dns_port: Number(env.customDnsPort),
 
     info: {
       name: String(pkg.short_name),

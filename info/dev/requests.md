@@ -1,4 +1,5 @@
     --> Ajeitar ícone grupo de canais de space
+    --> Menu mobile de ícones precisa parar de ser table usar flex.
 
     --> Criar leitor de mensagens fixadas
 

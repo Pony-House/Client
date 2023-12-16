@@ -13,20 +13,29 @@ import logger from './logger';
 
 global.Olm = Olm;
 
+const startCustomDNS = () => {
+  if (__ENV_APP__.electron_mode) {
+    if (typeof global.startCustomDNS === 'function') global.startCustomDNS(__ENV_APP__.mode !== 'development' ? __ENV_APP__.custom_dns_port : __ENV_APP__.custom_dns_port - 1);
+  }
+};
+
 class InitMatrix extends EventEmitter {
   constructor() {
     super();
-
     navigation.initMatrix = this;
+    startCustomDNS();
   }
 
   async init() {
+    startCustomDNS();
     await this.startClient();
     this.setupSync();
     this.listenEvents();
   }
 
   async startClient() {
+
+    startCustomDNS();
 
     const indexedDBStore = new sdk.IndexedDBStore({
       indexedDB: global.indexedDB,
@@ -75,6 +84,7 @@ class InitMatrix extends EventEmitter {
   }
 
   setupSync() {
+    startCustomDNS();
     const sync = {
       NULL: () => {
         logger.log(`NULL state`);
@@ -114,6 +124,7 @@ class InitMatrix extends EventEmitter {
   }
 
   listenEvents() {
+    startCustomDNS();
     this.matrixClient.on('Session.logged_out', async () => {
       this.matrixClient.stopClient();
       await this.matrixClient.clearStores();
@@ -123,6 +134,7 @@ class InitMatrix extends EventEmitter {
   }
 
   async logout() {
+    startCustomDNS();
     this.matrixClient.stopClient();
     try {
       await this.matrixClient.logout();
@@ -135,6 +147,7 @@ class InitMatrix extends EventEmitter {
   }
 
   clearCacheAndReload() {
+    startCustomDNS();
     this.matrixClient.stopClient();
     this.matrixClient.store.deleteAllData().then(() => {
       window.location.reload();

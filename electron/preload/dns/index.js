@@ -9,15 +9,10 @@ import fetch from 'node-fetch';
 import nativeDns from 'native-node-dns';
 
 // Server
-const customDnsPort = 8468;
-const customDnsIP = `127.0.0.1:${String(customDnsPort)}`;
 const ttl = 600;
-
 const server = nativeDns.createServer();
 const resolver = new Resolver();
-
-resolver.setServers([customDnsIP]);
-
+let startedDNS = false;
 
 // Request detector
 server.on('request', (request, response) => {
@@ -70,7 +65,19 @@ server.on('request', (request, response) => {
 server.on('error', console.error);
 
 // Start
-server.serve(customDnsPort);
+export function startCustomDNS(customDnsPort) {
+    if (!startedDNS) {
+
+        startedDNS = true;
+        server.serve(customDnsPort);
+
+        const serverAddress = `127.0.0.1:${String(customDnsPort)}`;
+        resolver.setServers([serverAddress]);
+
+        console.log(`[custom-dns] Server started at ${serverAddress}`);
+
+    }
+};
 
 // Cache
 const tinyCache = {};
@@ -107,11 +114,33 @@ const staticDnsAgent = (scheme) => {
 };
 
 const insertMatrixAgent = (type = 'https') => staticDnsAgent(type);
+const agents = {
+    http: insertMatrixAgent('http'),
+    https: insertMatrixAgent('https'),
+};
+
 export default (href, ops) => new Promise((resolve, reject) => {
     if (href.startsWith('https://') || href.startsWith('http://')) {
-        ops.agent = insertMatrixAgent(!href.startsWith('http://') ? 'https' : 'http');
+        if (startedDNS) ops.agent = agents[href.startsWith('https://') ? 'https' : 'http'];
         if (ops.signal) delete ops.signal;
         fetch(href, ops).then(res => {
+
+            const headers = {};
+            for (const item in res.headers) {
+                if (typeof res.headers[item] === 'string' || typeof res.headers[item] === 'number') {
+                    headers[item] = res.headers[item];
+                }
+            }
+
+            headers.get = (value) => {
+
+                if (typeof res.headers[value] === 'string' || typeof res.headers[value] === 'number') {
+                    return res.headers[value];
+                }
+
+                return null;
+            };
+
             resolve({
 
                 status: res.status,
@@ -123,7 +152,7 @@ export default (href, ops) => new Promise((resolve, reject) => {
                 url: res.url,
                 redirected: res.redirected,
 
-                headers: res.headers,
+                headers: headers,
 
                 json: () => res.json(),
                 clone: () => res.clone(),
@@ -133,6 +162,7 @@ export default (href, ops) => new Promise((resolve, reject) => {
                 formData: () => res.formData(),
 
             });
+
         }).catch(reject);
     } else { reject(new Error('INVALID URL TYPE!')); }
 });
