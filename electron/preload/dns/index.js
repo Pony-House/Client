@@ -132,14 +132,8 @@ export default (href, ops) => new Promise((resolve, reject) => {
                 }
             }
 
-            headers.get = (value) => {
-
-                if (typeof res.headers[value] === 'string' || typeof res.headers[value] === 'number') {
-                    return res.headers[value];
-                }
-
-                return null;
-            };
+            headers.get = (value) => res.headers.get(value);
+            headers.raw = () => res.headers.raw();
 
             resolve({
 
@@ -151,8 +145,7 @@ export default (href, ops) => new Promise((resolve, reject) => {
                 timeout: res.timeout,
                 url: res.url,
                 redirected: res.redirected,
-
-                headers: headers,
+                headers,
 
                 json: () => res.json(),
                 clone: () => res.clone(),
