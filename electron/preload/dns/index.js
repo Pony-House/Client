@@ -2,7 +2,6 @@ import http from 'http';
 import https from 'https';
 
 import dns from 'dns/promises';
-import { Resolver } from 'node:dns';
 import ipaddr from 'ipaddr.js';
 
 import fetch from 'node-fetch';
@@ -11,17 +10,14 @@ import nativeDns from 'native-node-dns';
 // Server
 const ttl = 600;
 const server = nativeDns.createServer();
-const resolver = new Resolver();
+const resolver = new dns.Resolver();
 let startedDNS = false;
 
 // Request detector
 server.on('request', (request, response) => {
 
-    // Show Domain
-    console.log('Custom DNS -->', request.question[0].name);
-
     // Resolver
-    const resolverDefault = (err, addresses) => {
+    const resolverDefault = (addresses) => {
 
         // Check DNS Address
         if (Array.isArray(addresses)) {
@@ -56,8 +52,8 @@ server.on('request', (request, response) => {
 
     };
 
-    // Excute default resolver
-    dns.resolve(request.question[0].name, resolverDefault);
+    // Excute Default OS Resolver
+    dns.resolve(request.question[0].name).then(resolverDefault).catch(console.error);
 
 });
 
@@ -94,18 +90,23 @@ setInterval(() => {
 
 // Send lookup
 const staticLookup = () => async (hostname, _, cb) => {
+    if (startedDNS) {
 
-    if (!tinyCache[hostname]) {
-        tinyCache[hostname] = { ips: await dns.resolve(hostname), timeout: 60 };
+        if (!tinyCache[hostname]) {
+            const ips = await resolver.resolve(hostname);
+            tinyCache[hostname] = { ips, timeout: 60 };
+        }
+
+        const ips = tinyCache[hostname].ips;
+        if (ips.length === 0) {
+            throw new Error(`Unable to resolve ${hostname}`);
+        }
+
+        cb(null, ips[0], 4);
+
+    } else {
+        setTimeout(() => staticLookup(hostname, _, cb), 1000);
     }
-
-    const ips = tinyCache[hostname].ips;
-    if (ips.length === 0) {
-        throw new Error(`Unable to resolve ${hostname}`);
-    }
-
-    cb(null, ips[0], 4);
-
 };
 
 const staticDnsAgent = (scheme) => {
