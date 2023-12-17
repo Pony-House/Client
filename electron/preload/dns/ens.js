@@ -1,5 +1,5 @@
 
 
-export default function ensResolver(domain, resolve) {
+export default function ensResolver(domain, resolve, customDNS) {
     resolve([]);
 };

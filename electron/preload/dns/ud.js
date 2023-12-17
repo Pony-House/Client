@@ -1,50 +1,50 @@
 const udResolver = {
 
-    'x': (domain, resolve) => {
+    'x': (domain, resolve, customDNS) => {
         resolve([]);
     },
 
-    'crypto': (domain, resolve) => {
+    'crypto': (domain, resolve, customDNS) => {
         resolve([]);
     },
 
-    'nft': (domain, resolve) => {
+    'nft': (domain, resolve, customDNS) => {
         resolve([]);
     },
 
-    'wallet': (domain, resolve) => {
+    'wallet': (domain, resolve, customDNS) => {
         resolve([]);
     },
 
-    'polygon': (domain, resolve) => {
+    'polygon': (domain, resolve, customDNS) => {
         resolve([]);
     },
 
-    'unstoppable': (domain, resolve) => {
+    'unstoppable': (domain, resolve, customDNS) => {
         resolve([]);
     },
 
-    'blockchain': (domain, resolve) => {
+    'blockchain': (domain, resolve, customDNS) => {
         resolve([]);
     },
 
-    'dao': (domain, resolve) => {
+    'dao': (domain, resolve, customDNS) => {
         resolve([]);
     },
 
-    '888': (domain, resolve) => {
+    '888': (domain, resolve, customDNS) => {
         resolve([]);
     },
 
-    'go': (domain, resolve) => {
+    'go': (domain, resolve, customDNS) => {
         resolve([]);
     },
 
-    'zil': (domain, resolve) => {
+    'zil': (domain, resolve, customDNS) => {
         resolve([]);
     },
 
-    'bitcoin': (domain, resolve) => {
+    'bitcoin': (domain, resolve, customDNS) => {
         resolve([]);
     },
 

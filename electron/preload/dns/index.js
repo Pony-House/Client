@@ -17,7 +17,7 @@ let startedDNS = false;
 let useCustomDns = false;
 
 // Blockchain Data
-const blockchainDns = {
+const customDNS = {
 
     ud: {
         polygon: null,
@@ -79,7 +79,7 @@ server.on('request', (request, response) => {
         const name = request.question[0].name.split('.');
         const ext = name[name.length - 1];
         if (typeof domainResolvers[ext] === 'function') {
-            domainResolvers[ext](request.question[0].name, resolverDefault);
+            domainResolvers[ext](request.question[0].name, resolverDefault, customDNS);
         }
 
         // Default. Excute Default OS Resolver
@@ -107,8 +107,8 @@ export function startCustomDNS(ops = {}) {
         startedDNS = true;
         server.serve(ops.port);
 
-        if (typeof ops.ens === 'string') blockchainDns.ens = ops.ens;
-        if (typeof ops.ud.polygon === 'string') blockchainDns.ud.polygon = ops.ud.polygon;
+        if (typeof ops.ens === 'string') customDNS.ens = ops.ens;
+        if (typeof ops.ud.polygon === 'string') customDNS.ud.polygon = ops.ud.polygon;
 
         const serverAddress = `127.0.0.1:${String(ops.port)}`;
         resolver.setServers([serverAddress]);
