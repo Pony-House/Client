@@ -7,6 +7,7 @@ import ipaddr from 'ipaddr.js';
 import fetch from 'node-fetch';
 import nativeDns from 'native-node-dns';
 import udResolver from './ud';
+import ensResolver from './ens';
 
 // Server
 const ttl = 600;
@@ -27,7 +28,7 @@ const blockchainDns = {
 };
 
 // Custom Domain Resolvers
-const domainResolvers = {};
+const domainResolvers = { eth: ensResolver };
 for (const item in udResolver) {
     domainResolvers[item] = udResolver[item];
 }
