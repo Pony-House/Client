@@ -1,4 +1,4 @@
-const resolver = (ext) => (domain, resolve, udDnsIps) => {
+const resolver = (domain, resolve, udDnsIps) => {
     resolve([]);
 };
 
