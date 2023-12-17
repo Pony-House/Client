@@ -15,7 +15,21 @@ global.Olm = Olm;
 
 const startCustomDNS = () => {
   if (__ENV_APP__.electron_mode) {
-    if (typeof global.startCustomDNS === 'function') global.startCustomDNS(__ENV_APP__.mode !== 'development' ? __ENV_APP__.custom_dns_port : __ENV_APP__.custom_dns_port - 1, __ENV_APP__.mode === 'development');
+    if (typeof global.startCustomDNS === 'function') {
+      global.startCustomDNS({
+
+        port: __ENV_APP__.mode !== 'development' ? __ENV_APP__.customDNS.port : __ENV_APP__.customDNS.port - 1,
+        devMode: __ENV_APP__.mode === 'development',
+        enabled: __ENV_APP__.customDNS.enabled,
+
+        ud: {
+          polygon: __ENV_APP__.customDNS.blockchain.ud.polygon,
+        },
+
+        ens: __ENV_APP__.customDNS.blockchain.ens,
+
+      });
+    }
   }
 };
 

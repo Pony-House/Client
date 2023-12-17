@@ -105,7 +105,22 @@ export default defineConfig(({ command, mode }) => {
     version: pkg.version,
     deps: pkg.dependencies,
     platform: process.platform,
-    custom_dns_port: Number(env.customDnsPort),
+    customDNS: {
+
+      enabled: !!(env.customDns === true || env.customDns === 'true'),
+      port: Number(env.customDnsPort),
+
+      blockchain: {
+
+        ud: {
+          polygon: env.UdPolygonDns,
+        },
+
+        ens: env.UdPolygonDns,
+
+      },
+
+    },
 
     info: {
       name: String(pkg.short_name),

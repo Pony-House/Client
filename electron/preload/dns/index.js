@@ -12,6 +12,17 @@ const ttl = 600;
 const server = nativeDns.createServer();
 const resolver = new dns.Resolver();
 let startedDNS = false;
+let useCustomDns = false;
+
+const blockchainDns = {
+
+    ud: {
+        polygon: null,
+    },
+
+    ens: null,
+
+};
 
 // Request detector
 server.on('request', (request, response) => {
@@ -61,16 +72,20 @@ server.on('request', (request, response) => {
 server.on('error', console.error);
 
 // Start
-export function startCustomDNS(customDnsPort, isDev) {
+export function startCustomDNS(ops = {}) {
     if (!startedDNS) {
 
+        useCustomDns = ops.enabled;
         startedDNS = true;
-        server.serve(customDnsPort);
+        server.serve(ops.port);
 
-        const serverAddress = `127.0.0.1:${String(customDnsPort)}`;
+        if (typeof ops.ens === 'string') blockchainDns.ens = ops.ens;
+        if (typeof ops.ud.polygon === 'string') blockchainDns.ud.polygon = ops.ud.polygon;
+
+        const serverAddress = `127.0.0.1:${String(ops.port)}`;
         resolver.setServers([serverAddress]);
 
-        console.log(`[custom-dns]${isDev ? ' [dev-mode] 1 number in the port value was decreased to avoid conflict with the production version. ' : ' '}Server started at ${serverAddress}`);
+        console.log(`[custom-dns]${ops.devMode ? ' [dev-mode] 1 number in the port value was decreased to avoid conflict with the production version. ' : ' '}Server started at ${serverAddress}`);
 
     }
 };
@@ -122,7 +137,7 @@ const agents = {
 
 export default (href, ops = {}) => new Promise((resolve, reject) => {
     if (href.startsWith('https://') || href.startsWith('http://')) {
-        if (startedDNS) ops.agent = agents[href.startsWith('https://') ? 'https' : 'http'];
+        if (startedDNS && useCustomDns) ops.agent = agents[href.startsWith('https://') ? 'https' : 'http'];
         if (ops.signal) delete ops.signal;
         fetch(href, ops).then(res => {
 
