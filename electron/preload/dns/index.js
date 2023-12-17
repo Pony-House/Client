@@ -6,6 +6,7 @@ import ipaddr from 'ipaddr.js';
 
 import fetch from 'node-fetch';
 import nativeDns from 'native-node-dns';
+import udResolver from './ud';
 
 // Server
 const ttl = 600;
@@ -14,6 +15,7 @@ const resolver = new dns.Resolver();
 let startedDNS = false;
 let useCustomDns = false;
 
+// Blockchain Data
 const blockchainDns = {
 
     ud: {
@@ -24,47 +26,72 @@ const blockchainDns = {
 
 };
 
+// Custom Domain Resolvers
+const domainResolvers = {};
+for (const item in udResolver) {
+    domainResolvers[item] = udResolver[item];
+}
+
 // Request detector
 server.on('request', (request, response) => {
 
-    // Resolver
-    const resolverDefault = (addresses) => {
+    // Checker
+    if (Array.isArray(request.question) && request.question[0] && typeof request.question[0].name === 'string') {
 
-        // Check DNS Address
-        if (Array.isArray(addresses)) {
-            for (const item in addresses) {
-                if (typeof addresses[item] === 'string' && ipaddr.isValid(addresses[item])) {
+        // Resolver
+        const resolverDefault = (addresses) => {
 
-                    const ip = ipaddr.parse(addresses[item]);
-                    const type = ip.kind();
+            // Check DNS Address
+            if (Array.isArray(addresses)) {
+                for (const item in addresses) {
+                    if (typeof addresses[item] === 'string' && ipaddr.isValid(addresses[item])) {
 
-                    if (type === 'ipv4') {
-                        response.answer.push(nativeDns.A({
-                            name: request.question[0].name,
-                            address: addresses[item],
-                            ttl,
-                        }));
+                        const ip = ipaddr.parse(addresses[item]);
+                        const type = ip.kind();
+
+                        if (type === 'ipv4') {
+                            response.answer.push(nativeDns.A({
+                                name: request.question[0].name,
+                                address: addresses[item],
+                                ttl,
+                            }));
+                        }
+
+                        else if (type === 'ipv6') {
+                            response.answer.push(nativeDns.AAAA({
+                                name: request.question[0].name,
+                                address: addresses[item],
+                                ttl,
+                            }));
+                        }
+
                     }
-
-                    else if (type === 'ipv6') {
-                        response.answer.push(nativeDns.AAAA({
-                            name: request.question[0].name,
-                            address: addresses[item],
-                            ttl,
-                        }));
-                    }
-
                 }
             }
+
+            // Complete
+            response.send();
+
+        };
+
+        // Custom Resolver
+        const name = request.question[0].name.split('.');
+        const ext = name[name.length - 1];
+        if (typeof domainResolvers[ext] === 'function') {
+            domainResolvers[ext](request.question[0].name, resolverDefault);
         }
 
-        // Complete
+        // Default. Excute Default OS Resolver
+        else {
+            dns.resolve(request.question[0].name).then(resolverDefault).catch(console.error);
+        }
+
+    }
+
+    // Nope
+    else {
         response.send();
-
-    };
-
-    // Excute Default OS Resolver
-    dns.resolve(request.question[0].name).then(resolverDefault).catch(console.error);
+    }
 
 });
 
