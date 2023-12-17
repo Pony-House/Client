@@ -1,6 +1,6 @@
 
 
 export default function ensResolver(domain, resolve, customDNS) {
-    const ensIp = customDNS.ens;
+    const ens = customDNS.ens;
     resolve([]);
 };

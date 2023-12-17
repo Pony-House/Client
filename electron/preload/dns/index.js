@@ -1,6 +1,7 @@
 import http from 'http';
 import https from 'https';
 
+import { Web3 } from 'web3';
 import dns from 'dns/promises';
 import ipaddr from 'ipaddr.js';
 
@@ -107,8 +108,8 @@ export function startCustomDNS(ops = {}) {
         startedDNS = true;
         server.serve(ops.port);
 
-        if (typeof ops.ens === 'string') customDNS.ens = ops.ens;
-        if (typeof ops.ud.polygon === 'string') customDNS.ud.polygon = ops.ud.polygon;
+        if (typeof ops.ens === 'string') customDNS.ens = new Web3(ops.ens);
+        if (typeof ops.ud.polygon === 'string') customDNS.ud.polygon = new Web3(ops.ud.polygon);
 
         const serverAddress = `127.0.0.1:${String(ops.port)}`;
         resolver.setServers([serverAddress]);
