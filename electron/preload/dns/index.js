@@ -65,7 +65,7 @@ server.on('request', (request, response) => {
 server.on('error', console.error);
 
 // Start
-export function startCustomDNS(customDnsPort) {
+export function startCustomDNS(customDnsPort, isDev) {
     if (!startedDNS) {
 
         startedDNS = true;
@@ -74,7 +74,7 @@ export function startCustomDNS(customDnsPort) {
         const serverAddress = `127.0.0.1:${String(customDnsPort)}`;
         resolver.setServers([serverAddress]);
 
-        console.log(`[custom-dns] Server started at ${serverAddress}`);
+        console.log(`[custom-dns]${isDev ? ' [dev-mode] 1 number in the port value was decreased to avoid conflict with the production version. ' : ' '}Server started at ${serverAddress}`);
 
     }
 };
