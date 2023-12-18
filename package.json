@@ -83,7 +83,7 @@
     "matrix-js-sdk": "30.2.0",
     "moment-timezone": "0.5.43",
     "native-node-dns": "0.7.6",
-    "node-fetch": "2",
+    "node-fetch": "3",
     "object-hash": "3.0.0",
     "photoswipe": "5.4.3",
     "prop-types": "15.8.1",
