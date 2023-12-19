@@ -46,12 +46,33 @@ const Avatar = React.forwardRef(({
     if (freezeAvatarRef.current) {
 
       const img = $(freezeAvatarRef.current.freeze.current);
-      console.log(img);
+      const loadingimg = img.attr('loadingimg');
+      if (loadingimg !== 'true' && loadingimg !== true) {
 
-      if (typeof freezeAvatarRef.current.render === 'function') freezeAvatarRef.current.render();
-      return () => {
-        if (freezeAvatarRef.current && typeof freezeAvatarRef.current.destroy === 'function') freezeAvatarRef.current.destroy();
-      };
+        img.attr('loadingimg', 'true');
+        let tinyNode = freezeAvatarRef.current.freeze.current;
+        for (let i = 0; i < animParentsCount + 2; i++) {
+          tinyNode = tinyNode.parentNode;
+        }
+
+        // Final Node
+        tinyNode = $(tinyNode);
+
+        // Insert Effects
+        tinyNode.hover(
+          () => {
+            if (typeof freezeAvatarRef.current.start === 'function') freezeAvatarRef.current.start();
+          }, () => {
+            if (typeof freezeAvatarRef.current.stop === 'function') freezeAvatarRef.current.stop();
+          }
+        );
+
+        if (typeof freezeAvatarRef.current.render === 'function') freezeAvatarRef.current.render();
+        return () => {
+          if (freezeAvatarRef.current && typeof freezeAvatarRef.current.destroy === 'function') freezeAvatarRef.current.destroy();
+        };
+
+      }
 
     }
 
