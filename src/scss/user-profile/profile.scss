@@ -7,6 +7,10 @@
   }
 }
 
+.notification-badge {
+  z-index: 1;
+}
+
 .space-drawer-body {
   .room-selector {
     .room-selector__options > button > i {

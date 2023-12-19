@@ -1,7 +1,5 @@
     --> net::ERR_FAILED 429 (Too Many Requests)
 
-    -- Imagens gif ser redimencionada.
-
     --> Menu mobile de ícones precisa parar de ser table usar flex.
 
     --> Criar leitor de mensagens fixadas

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ReactFreezeframe from 'react-freezeframe';
 
@@ -19,6 +19,9 @@ const Avatar = React.forwardRef(({
   text, bgColor, iconSrc, faSrc, iconColor, imageSrc, size, className, imgClass, imageAnimSrc, isDefaultImage, animParentsCount, theRef,
 }, ref) => {
 
+  // Freeze Avatar
+  const freezeAvatarRef = useRef(null);
+
   // Avatar Config
   const appearanceSettings = getAppearance();
 
@@ -37,7 +40,13 @@ const Avatar = React.forwardRef(({
   // Default Avatar
   const tinyDa = defaultAvatar(colorCode);
   setTimeout(forceLoadAvatars, 100);
-  useEffect(() => { forceLoadAvatars(); }, []);
+  useEffect(() => {
+    forceLoadAvatars();
+    if (freezeAvatarRef.current && typeof freezeAvatarRef.current.render === 'function') freezeAvatarRef.current.render();
+    return () => {
+      if (freezeAvatarRef.current && typeof freezeAvatarRef.current.destroy === 'function') freezeAvatarRef.current.destroy();
+    };
+  }, []);
 
   /*
 
@@ -66,6 +75,8 @@ const Avatar = React.forwardRef(({
 
   */
 
+  console.log(freezeAvatarRef);
+
   // Render
   return (
     <div ref={ref} className={`avatar-container avatar-container__${size} ${className} noselect`}>
@@ -76,7 +87,7 @@ const Avatar = React.forwardRef(({
         imageSrc !== null || isDefaultImage
 
           // Image
-          ? (!imageAnimSrc || !appearanceSettings.isAnimateAvatarsEnabled ?
+          ? !imageAnimSrc || !appearanceSettings.isAnimateAvatarsEnabled ?
 
             // Default Image
             <img
@@ -93,6 +104,7 @@ const Avatar = React.forwardRef(({
 
             // Custom Image
             <ReactFreezeframe
+              ref={freezeAvatarRef}
               alt={text || 'avatar'}
               src={imageAnimSrc}
               options={{
@@ -101,8 +113,6 @@ const Avatar = React.forwardRef(({
                 overlay: false
               }}
             />
-
-          )
 
           // Icons
           : faSrc !== null
