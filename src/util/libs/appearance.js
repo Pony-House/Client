@@ -17,6 +17,8 @@ export function getAppearance(folder, getDefault = true) {
         content.showUserDMstatus = typeof content.showUserDMstatus === 'boolean' ? content.showUserDMstatus : true;
         content.pinDMmessages = typeof content.pinDMmessages === 'boolean' ? content.pinDMmessages : true;
 
+        content.useFreezePlugin = typeof content.useFreezePlugin === 'boolean' ? content.useFreezePlugin : true;
+
     }
 
     if (typeof folder === 'string' && folder.length > 0) {

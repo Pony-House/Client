@@ -41,41 +41,21 @@ const Avatar = React.forwardRef(({
   const tinyDa = defaultAvatar(colorCode);
   setTimeout(forceLoadAvatars, 100);
   useEffect(() => {
+
     forceLoadAvatars();
-    if (freezeAvatarRef.current && typeof freezeAvatarRef.current.render === 'function') freezeAvatarRef.current.render();
-    return () => {
-      if (freezeAvatarRef.current && typeof freezeAvatarRef.current.destroy === 'function') freezeAvatarRef.current.destroy();
-    };
+    if (freezeAvatarRef.current) {
+
+      const img = $(freezeAvatarRef.current.freeze.current);
+      console.log(img);
+
+      if (typeof freezeAvatarRef.current.render === 'function') freezeAvatarRef.current.render();
+      return () => {
+        if (typeof freezeAvatarRef.current.destroy === 'function') freezeAvatarRef.current.destroy();
+      };
+
+    }
+
   }, []);
-
-  /*
-
-  <img
-
-    className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
-
-    draggable='false'
-    loadedimg={appearanceSettings.isAnimateAvatarsEnabled ? 'false' : null}
-    loadingimg={appearanceSettings.isAnimateAvatarsEnabled ? 'false' : null}
-
-    animparentscount={appearanceSettings.isAnimateAvatarsEnabled ? animParentsCount : null}
-
-    animsrc={appearanceSettings.isAnimateAvatarsEnabled ? imageAnimSrc : null}
-    normalsrc={appearanceSettings.isAnimateAvatarsEnabled ? imageSrc : null}
-    defaultavatar={appearanceSettings.isAnimateAvatarsEnabled ? tinyDa : null}
-
-    src={appearanceSettings.isAnimateAvatarsEnabled ? tinyDa : imageSrc}
-
-    onLoad={appearanceSettings.isAnimateAvatarsEnabled ? loadAvatar : null}
-
-    onError={(e) => { e.target.src = ImageBrokenSVG; }}
-    alt={text || 'avatar'}
-
-  />
-
-  */
-
-  console.log(freezeAvatarRef);
 
   // Render
   return (
@@ -102,17 +82,44 @@ const Avatar = React.forwardRef(({
 
             :
 
-            // Custom Image
-            <ReactFreezeframe
-              ref={freezeAvatarRef}
-              alt={text || 'avatar'}
-              src={imageAnimSrc}
-              options={{
-                responsive: true,
-                trigger: false,
-                overlay: false
-              }}
-            />
+            appearanceSettings.useFreezePlugin ?
+
+              // Custom Image
+              <ReactFreezeframe
+                ref={freezeAvatarRef}
+                alt={text || 'avatar'}
+                src={imageAnimSrc}
+                options={{
+                  responsive: true,
+                  trigger: false,
+                  overlay: false
+                }}
+              />
+
+              :
+
+              <img
+
+                className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
+
+                draggable='false'
+                loadedimg={appearanceSettings.isAnimateAvatarsEnabled ? 'false' : null}
+                loadingimg={appearanceSettings.isAnimateAvatarsEnabled ? 'false' : null}
+
+                animparentscount={appearanceSettings.isAnimateAvatarsEnabled ? animParentsCount : null}
+
+                animsrc={appearanceSettings.isAnimateAvatarsEnabled ? imageAnimSrc : null}
+                normalsrc={appearanceSettings.isAnimateAvatarsEnabled ? imageSrc : null}
+                defaultavatar={appearanceSettings.isAnimateAvatarsEnabled ? tinyDa : null}
+
+                src={appearanceSettings.isAnimateAvatarsEnabled ? tinyDa : imageSrc}
+
+                onLoad={appearanceSettings.isAnimateAvatarsEnabled ? loadAvatar : null}
+
+                onError={(e) => { e.target.src = ImageBrokenSVG; }}
+                alt={text || 'avatar'}
+
+              />
 
           // Icons
           : faSrc !== null
