@@ -1,3 +1,5 @@
+// https://docs.unstoppabledomains.com/resolution/guides/records-reference/#dns-records
+
 // Create Polygon
 const createPolygon = (eth) => {
 
@@ -39,16 +41,17 @@ const resolver = (domain, resolve, ud, ens) => {
 
                 // Get Polygon Ips
                 const domains = [];
-                for (const item in ipArray) {
 
-                    // Insert Domains
-                    const insertDomains = (ips) => {
-                        if (Array.isArray(ips)) {
-                            for (const item2 in ips) {
-                                domains.push(ips[item2]);
-                            }
+                // Insert Domains
+                const insertDomains = (ips) => {
+                    if (Array.isArray(ips)) {
+                        for (const item2 in ips) {
+                            domains.push(ips[item2]);
                         }
-                    };
+                    }
+                };
+
+                for (const item in ipArray) {
 
                     // Convert to Array
                     ipArray[item] = ipArray[item].trim();

@@ -11,7 +11,7 @@ import NotificationBadge from '../../../atoms/badge/NotificationBadge';
 
 import * as roomActions from '../../../../client/action/room';
 import { objType } from '../../../../util/tools';
-import { getDataList } from '../../../../util/selectedRoom';
+import { addToDataFolder, getDataList } from '../../../../util/selectedRoom';
 
 export function getPrivacyRefuseRoom(member, newRoom, isInverse = false, totalInvites = null) {
 
@@ -23,16 +23,25 @@ export function getPrivacyRefuseRoom(member, newRoom, isInverse = false, totalIn
 
     const room = objType(member, 'object') && typeof member.roomId === 'string' ? mx.getRoom(member.roomId) : newRoom || null;
     if (room) {
-      const inviterId = room.getDMInviter === 'function' ? room.getDMInviter() : typeof room.getCreator === 'function' ? room.getCreator() : null;
-      if (typeof inviterId === 'string') {
+      const serverWhitelist = getDataList('server_cache', 'whitelist_invite', member.roomId);
 
-        const isWhitelist = getDataList('user_cache', 'whitelist', inviterId);
+      if (serverWhitelist) {
+        whitelisted = true;
+      } else {
 
-        if (isWhitelist) {
-          whitelisted = true;
+        const inviterId = room.getDMInviter === 'function' ? room.getDMInviter() : typeof room.getCreator === 'function' ? room.getCreator() : null;
+        if (typeof inviterId === 'string') {
+
+          const isWhitelist = getDataList('user_cache', 'whitelist', inviterId);
+
+          if (isWhitelist) {
+            whitelisted = true;
+          }
+
         }
 
       }
+
     }
 
   }
@@ -49,6 +58,10 @@ export function getPrivacyRefuseRoom(member, newRoom, isInverse = false, totalIn
 
   return false;
 
+};
+
+export function setPrivacyRefuseRoom(roomId, value) {
+  addToDataFolder('server_cache', 'whitelist_invite', roomId, value);
 };
 
 // Total Invites
