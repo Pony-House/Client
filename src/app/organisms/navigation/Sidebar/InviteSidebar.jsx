@@ -106,9 +106,15 @@ export default function InviteSidebar() {
     const roomJoinValidator = (event, member) => {
 
       if (member.membership === "invite" && member.userId === mx.getUserId()) {
+
         // mx.joinRoom(member.roomId);
-        if (getPrivacyRefuseRoom(member)) roomActions.leave(member.roomId);
+
+        if (getPrivacyRefuseRoom(member)) {
+          roomActions.leave(member.roomId);
+        }
+
         setLastMemberRoomId(member.roomId);
+
       }
 
     };

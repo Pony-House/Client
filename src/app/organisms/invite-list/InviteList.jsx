@@ -10,6 +10,7 @@ import Button from '../../atoms/button/Button';
 import Spinner from '../../atoms/spinner/Spinner';
 import PopupWindow from '../../molecules/popup-window/PopupWindow';
 import RoomTile from '../../molecules/room-tile/RoomTile';
+import { setPrivacyRefuseRoom } from '../navigation/Sidebar/InviteSidebar';
 
 function InviteList({ isOpen, onRequestClose }) {
   const [procInvite, changeProcInvite] = useState(new Set());
@@ -17,6 +18,7 @@ function InviteList({ isOpen, onRequestClose }) {
   function acceptInvite(roomId, isDM) {
     procInvite.add(roomId);
     changeProcInvite(new Set(Array.from(procInvite)));
+    setPrivacyRefuseRoom(roomId, true);
     roomActions.join(roomId, isDM);
   }
   function rejectInvite(roomId, isDM) {
