@@ -50,7 +50,7 @@ const Avatar = React.forwardRef(({
 
       if (typeof freezeAvatarRef.current.render === 'function') freezeAvatarRef.current.render();
       return () => {
-        if (typeof freezeAvatarRef.current.destroy === 'function') freezeAvatarRef.current.destroy();
+        if (freezeAvatarRef.current && typeof freezeAvatarRef.current.destroy === 'function') freezeAvatarRef.current.destroy();
       };
 
     }
