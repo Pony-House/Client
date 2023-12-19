@@ -16,9 +16,9 @@ function InviteList({ isOpen, onRequestClose }) {
   const [procInvite, changeProcInvite] = useState(new Set());
 
   function acceptInvite(roomId, isDM) {
+    setPrivacyRefuseRoom(roomId, true);
     procInvite.add(roomId);
     changeProcInvite(new Set(Array.from(procInvite)));
-    setPrivacyRefuseRoom(roomId, true);
     roomActions.join(roomId, isDM);
   }
   function rejectInvite(roomId, isDM) {
