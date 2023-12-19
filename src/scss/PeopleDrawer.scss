@@ -5,7 +5,9 @@
   background: var(--bg-surface);
   background: var(--bg-surface-gradient-2);
 
-  .avatar-react {
+  .avatar-react,
+  .ff-canvas,
+  .ff-image {
     height: 32px;
     width: 32px;
   }

@@ -3,7 +3,19 @@
 .avatar-container {
   width: 42px;
   height: 42px;
-  border-radius: var(--bo-radius);
+
+  &,
+  .react-freezeframe canvas,
+  .react-freezeframe img {
+    border-radius: var(--bo-radius);
+  }
+
+  .react-freezeframe {
+    canvas,
+    img {
+      image-rendering: pixelated !important;
+    }
+  }
 
   &__large {
     width: var(--av-large);

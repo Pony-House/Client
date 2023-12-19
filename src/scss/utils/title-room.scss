@@ -1,41 +1,55 @@
 /* Title Room */
 .room-info {
-  .avatar-react {
+  .avatar-react,
+  .ff-canvas,
+  .ff-image {
     height: 65px;
   }
 
   @media (max-width: 1920px) {
-    .avatar-react {
+    .avatar-react,
+    .ff-canvas,
+    .ff-image {
       height: 57px;
     }
   }
 
   @media (max-width: 1600px) {
-    .avatar-react {
+    .avatar-react,
+    .ff-canvas,
+    .ff-image {
       height: 55px;
     }
   }
 
   @media (max-width: 1470px) {
-    .avatar-react {
+    .avatar-react,
+    .ff-canvas,
+    .ff-image {
       height: 45px;
     }
   }
 
   @media (max-width: 1380px) {
-    .avatar-react {
+    .avatar-react,
+    .ff-canvas,
+    .ff-image {
       height: 35px;
     }
   }
 
   @media (max-width: 1315px) {
-    .avatar-react {
+    .avatar-react,
+    .ff-canvas,
+    .ff-image {
       height: 25px;
     }
   }
 
   @media (max-width: 991px) {
-    .avatar-react {
+    .avatar-react,
+    .ff-canvas,
+    .ff-image {
       height: 80px;
     }
   }

@@ -3,7 +3,9 @@
     height: 42px;
   }
 
-  .avatar-base .avatar-react {
+  .avatar-base .avatar-react,
+  .avatar-base.ff-canvas,
+  .avatar-base .ff-image {
     height: 30px;
     position: relative;
     top: -3px;

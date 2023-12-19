@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import ReactFreezeframe from 'react-freezeframe';
 
-import { loadAvatar, forceLoadAvatars } from './load';
+// import { loadAvatar, forceLoadAvatars } from './load';
+import { forceLoadAvatars } from './load';
 import { twemojifyReact } from '../../../util/twemojify';
 
 import Text from '../text/Text';
@@ -37,6 +39,33 @@ const Avatar = React.forwardRef(({
   setTimeout(forceLoadAvatars, 100);
   useEffect(() => { forceLoadAvatars(); }, []);
 
+  /*
+
+  <img
+
+    className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
+
+    draggable='false'
+    loadedimg={appearanceSettings.isAnimateAvatarsEnabled ? 'false' : null}
+    loadingimg={appearanceSettings.isAnimateAvatarsEnabled ? 'false' : null}
+
+    animparentscount={appearanceSettings.isAnimateAvatarsEnabled ? animParentsCount : null}
+
+    animsrc={appearanceSettings.isAnimateAvatarsEnabled ? imageAnimSrc : null}
+    normalsrc={appearanceSettings.isAnimateAvatarsEnabled ? imageSrc : null}
+    defaultavatar={appearanceSettings.isAnimateAvatarsEnabled ? tinyDa : null}
+
+    src={appearanceSettings.isAnimateAvatarsEnabled ? tinyDa : imageSrc}
+
+    onLoad={appearanceSettings.isAnimateAvatarsEnabled ? loadAvatar : null}
+
+    onError={(e) => { e.target.src = ImageBrokenSVG; }}
+    alt={text || 'avatar'}
+
+  />
+
+  */
+
   // Render
   return (
     <div ref={ref} className={`avatar-container avatar-container__${size} ${className} noselect`}>
@@ -47,7 +76,7 @@ const Avatar = React.forwardRef(({
         imageSrc !== null || isDefaultImage
 
           // Image
-          ? (!imageAnimSrc ?
+          ? (!imageAnimSrc || !appearanceSettings.isAnimateAvatarsEnabled ?
 
             // Default Image
             <img
@@ -63,27 +92,14 @@ const Avatar = React.forwardRef(({
             :
 
             // Custom Image
-            <img
-
-              className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
-
-              draggable='false'
-              loadedimg={appearanceSettings.isAnimateAvatarsEnabled ? 'false' : null}
-              loadingimg={appearanceSettings.isAnimateAvatarsEnabled ? 'false' : null}
-
-              animparentscount={appearanceSettings.isAnimateAvatarsEnabled ? animParentsCount : null}
-
-              animsrc={appearanceSettings.isAnimateAvatarsEnabled ? imageAnimSrc : null}
-              normalsrc={appearanceSettings.isAnimateAvatarsEnabled ? imageSrc : null}
-              defaultavatar={appearanceSettings.isAnimateAvatarsEnabled ? tinyDa : null}
-
-              src={appearanceSettings.isAnimateAvatarsEnabled ? tinyDa : imageSrc}
-
-              onLoad={appearanceSettings.isAnimateAvatarsEnabled ? loadAvatar : null}
-
-              onError={(e) => { e.target.src = ImageBrokenSVG; }}
+            <ReactFreezeframe
               alt={text || 'avatar'}
-
+              src={imageAnimSrc}
+              options={{
+                responsive: true,
+                trigger: false,
+                overlay: false
+              }}
             />
 
           )
