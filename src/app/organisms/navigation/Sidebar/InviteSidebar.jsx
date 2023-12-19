@@ -23,7 +23,7 @@ export function getPrivacyRefuseRoom(member, newRoom, isInverse = false, totalIn
 
     const room = objType(member, 'object') && typeof member.roomId === 'string' ? mx.getRoom(member.roomId) : newRoom || null;
     if (room) {
-      const serverWhitelist = getDataList('server_cache', 'whitelist_invite', member.roomId);
+      const serverWhitelist = getDataList('server_cache', 'whitelist_invite', room.roomId);
 
       if (serverWhitelist) {
         whitelisted = true;
