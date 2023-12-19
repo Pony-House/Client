@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import ReactFreezeframe from 'react-freezeframe';
+import Freezeframe from 'freezeframe';
 
-// import { loadAvatar, forceLoadAvatars } from './load';
-import { forceLoadAvatars } from './load';
+import { loadAvatar, forceLoadAvatars } from './load';
 import { twemojifyReact } from '../../../util/twemojify';
 
 import Text from '../text/Text';
@@ -45,13 +44,19 @@ const Avatar = React.forwardRef(({
     forceLoadAvatars();
     if (freezeAvatarRef.current) {
 
-      const img = $(freezeAvatarRef.current.freeze.current);
+      const avatar = new Freezeframe(freezeAvatarRef.current, {
+        responsive: true,
+        trigger: false,
+        overlay: false
+      });
+
+      const img = $(avatar.$images[0]);
       const loadingimg = img.attr('loadingimg');
       if (loadingimg !== 'true' && loadingimg !== true) {
 
         img.attr('loadingimg', 'true');
-        let tinyNode = freezeAvatarRef.current.freeze.current;
-        for (let i = 0; i < animParentsCount + 2; i++) {
+        let tinyNode = avatar.$images[0];
+        for (let i = 0; i < animParentsCount + 1; i++) {
           tinyNode = tinyNode.parentNode;
         }
 
@@ -61,15 +66,15 @@ const Avatar = React.forwardRef(({
         // Insert Effects
         tinyNode.hover(
           () => {
-            if (typeof freezeAvatarRef.current.start === 'function') freezeAvatarRef.current.start();
+            if (typeof avatar.start === 'function') avatar.start();
           }, () => {
-            if (typeof freezeAvatarRef.current.stop === 'function') freezeAvatarRef.current.stop();
+            if (typeof avatar.stop === 'function') avatar.stop();
           }
         );
 
-        if (typeof freezeAvatarRef.current.render === 'function') freezeAvatarRef.current.render();
+        if (typeof avatar.render === 'function') avatar.render();
         return () => {
-          if (freezeAvatarRef.current && typeof freezeAvatarRef.current.destroy === 'function') freezeAvatarRef.current.destroy();
+          if (avatar && typeof avatar.destroy === 'function') avatar.destroy();
         };
 
       }
@@ -106,16 +111,16 @@ const Avatar = React.forwardRef(({
             appearanceSettings.useFreezePlugin ?
 
               // Custom Image
-              <ReactFreezeframe
-                ref={freezeAvatarRef}
-                alt={text || 'avatar'}
-                src={imageAnimSrc}
-                options={{
-                  responsive: true,
-                  trigger: false,
-                  overlay: false
-                }}
-              />
+              <div className='react-freezeframe'>
+                <img
+
+                  ref={freezeAvatarRef}
+                  className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
+                  src={imageAnimSrc}
+                  alt={text || 'avatar'}
+
+                />
+              </div>
 
               :
 
@@ -124,18 +129,18 @@ const Avatar = React.forwardRef(({
                 className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
 
                 draggable='false'
-                loadedimg={appearanceSettings.isAnimateAvatarsEnabled ? 'false' : null}
-                loadingimg={appearanceSettings.isAnimateAvatarsEnabled ? 'false' : null}
+                loadedimg='false'
+                loadingimg='false'
 
-                animparentscount={appearanceSettings.isAnimateAvatarsEnabled ? animParentsCount : null}
+                animparentscount={animParentsCount}
 
-                animsrc={appearanceSettings.isAnimateAvatarsEnabled ? imageAnimSrc : null}
-                normalsrc={appearanceSettings.isAnimateAvatarsEnabled ? imageSrc : null}
-                defaultavatar={appearanceSettings.isAnimateAvatarsEnabled ? tinyDa : null}
+                animsrc={imageAnimSrc}
+                normalsrc={imageSrc}
+                defaultavatar={tinyDa}
 
-                src={appearanceSettings.isAnimateAvatarsEnabled ? tinyDa : imageSrc}
+                src={tinyDa}
 
-                onLoad={appearanceSettings.isAnimateAvatarsEnabled ? loadAvatar : null}
+                onLoad={loadAvatar}
 
                 onError={(e) => { e.target.src = ImageBrokenSVG; }}
                 alt={text || 'avatar'}
