@@ -19,6 +19,7 @@ function setCategoryOpen({ roomName }) {
 
   const dom = $(`#category_bt_${roomName}`);
   const iconDom = $(`#category_bd_${roomName} .ic-base`);
+  const iconDom2 = $(`#category_bd_${roomName}`);
 
   // Disable
   if (tinyIsOpen) {
@@ -26,6 +27,7 @@ function setCategoryOpen({ roomName }) {
     dom.addClass('category-hide');
     iconDom.removeClass('fa-chevron-down');
     iconDom.addClass('fa-chevron-right');
+    iconDom2.removeClass('category-open');
   }
 
   // Enable
@@ -34,6 +36,7 @@ function setCategoryOpen({ roomName }) {
     dom.removeClass('category-hide');
     iconDom.removeClass('fa-chevron-right');
     iconDom.addClass('fa-chevron-down');
+    iconDom2.addClass('category-open');
   }
 
 
@@ -176,9 +179,9 @@ function RoomsCategory({
     }
 
     rooms.push((
-      <div className='category-button'>
-        <button className="py-2" id={roomIdB1} onClick={() => { setCategoryOpen({ roomName: roomDivId }) }} type="button">
-          <RawIcon fa={tinyIsOpen ? "fa-solid fa-chevron-down" : "fa-solid fa-chevron-right"} size="extra-small" />
+      <div className='category-button generated-category'>
+        <button className={`py-2${tinyIsOpen ? ' category-open' : ''}`} id={roomIdB1} onClick={() => { setCategoryOpen({ roomName: roomDivId }) }} type="button">
+          <RawIcon fa={tinyIsOpen ? "fa-solid c-icon fa-chevron-down" : "fa-solid fa-chevron-right"} size="extra-small" />
           <span className="text-gray very-small text-uppercase ms-2">{roomCategory[item].name}</span>
         </button>
       </div>
