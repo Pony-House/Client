@@ -22,6 +22,7 @@
 }
 
 .user-status-icon {
+  z-index: 1;
   text-shadow:
     2px 0 var(--bg-surface-low),
     -2px 0 var(--bg-surface-low),
