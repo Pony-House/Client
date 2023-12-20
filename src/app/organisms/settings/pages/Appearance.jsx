@@ -287,7 +287,7 @@ function AppearanceSection() {
                                 onToggle={toggleAppearanceAction('useFreezePlugin', setUseFreezePlugin)}
                             />
                         )}
-                        content={<div className="very-small text-gray">All client avatars will be rendered using the plugin freezeframe.</div>}
+                        content={<div className="very-small text-gray">All client avatars will be rendered using the plugin freezeframe. If the images are in low resolution, please disable this options.</div>}
                     />
 
                     <SettingTile
