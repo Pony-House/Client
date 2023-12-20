@@ -1,4 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { getAppearance, toggleAppearanceAction } from '../../../../util/libs/appearance';
+import SettingTile from '../../../molecules/setting-tile/SettingTile';
+import Toggle from '../../../atoms/button/Toggle';
 
 // import Toggle from '../../../atoms/button/Toggle';
 // import SettingTile from '../../../molecules/setting-tile/SettingTile';
@@ -35,6 +38,8 @@ import React, { useEffect } from 'react';
 
 function ExperimentalSection() {
     // const [isUsingUseGPU, setUsingUseGPU] = useState(false);
+    const appearanceSettings = getAppearance();
+    const [useFreezePlugin, setUseFreezePlugin] = useState(appearanceSettings.useFreezePlugin);
 
     useEffect(() => {
         // const isEnabledgpu = global.localStorage.getItem('usingUseGPU');
@@ -63,6 +68,25 @@ function ExperimentalSection() {
                     </li>
                 </ul>
             </div> : null}
+
+            <div className="card noselect mt-3">
+                <ul className="list-group list-group-flush">
+                    <li className="list-group-item very-small text-gray">User avatars</li>
+
+                    <SettingTile
+                        title="Use freezeframe on avatars"
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={useFreezePlugin}
+                                onToggle={toggleAppearanceAction('useFreezePlugin', setUseFreezePlugin)}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">All client avatars will be rendered using the plugin freezeframe. If the images are in low resolution, please disable this options.</div>}
+                    />
+
+                </ul>
+            </div>
 
         </div>
     );

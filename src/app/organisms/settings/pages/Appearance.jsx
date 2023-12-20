@@ -26,7 +26,6 @@ function AppearanceSection() {
 
     const [isAnimateAvatarsEnabled, setAnimateAvatarsEnabled] = useState(appearanceSettings.isAnimateAvatarsEnabled);
     const [enableAnimParams, setEnableAnimParams] = useState(appearanceSettings.enableAnimParams);
-    const [useFreezePlugin, setUseFreezePlugin] = useState(appearanceSettings.useFreezePlugin);
 
     const [isMarkdown, setIsMarkdown] = useState(settings.isMarkdown);
     const [hideMembershipEvents, setHideMembershipEvents] = useState(settings.hideMembershipEvents);
@@ -276,18 +275,6 @@ function AppearanceSection() {
                             />
                         )}
                         content={<div className="very-small text-gray">This configuration is disabled by default as not all matrix homeservers are compatible with this configuration. If your homeserver is compatible, this will help you load images faster and save bandwidth. If your gifs suddenly become static, turn this setting off.</div>}
-                    />
-
-                    <SettingTile
-                        title="Use freezeframe on avatars"
-                        options={(
-                            <Toggle
-                                className='d-inline-flex'
-                                isActive={useFreezePlugin}
-                                onToggle={toggleAppearanceAction('useFreezePlugin', setUseFreezePlugin)}
-                            />
-                        )}
-                        content={<div className="very-small text-gray">All client avatars will be rendered using the plugin freezeframe. If the images are in low resolution, please disable this options.</div>}
                     />
 
                     <SettingTile
