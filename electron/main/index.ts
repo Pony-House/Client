@@ -235,14 +235,14 @@ if (!gotTheLock) {
           },
         },
         { type: 'separator' },
-        {
+        /* {
           label: 'DevTools (Advanced User)',
           click: () => {
             if (appStarted) {
               if (win) win.webContents.openDevTools();
             }
           },
-        },
+        }, */
         {
           label: 'Quit',
           click: () => {
