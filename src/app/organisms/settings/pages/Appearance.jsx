@@ -20,10 +20,13 @@ function AppearanceSection() {
 
     const [showUserDMstatus, setShowUserStatus] = useState(appearanceSettings.showUserDMstatus);
     const [pinDMmessages, setPinDMmessages] = useState(appearanceSettings.pinDMmessages);
-    const [isAnimateAvatarsEnabled, setAnimateAvatarsEnabled] = useState(appearanceSettings.isAnimateAvatarsEnabled);
-    const [enableAnimParams, setEnableAnimParams] = useState(appearanceSettings.enableAnimParams);
+
     const [isEmbedEnabled, setEmbedEnabled] = useState(appearanceSettings.isEmbedEnabled);
     const [isUNhoverEnabled, setUNhoverEnabled] = useState(appearanceSettings.isUNhoverEnabled);
+
+    const [isAnimateAvatarsEnabled, setAnimateAvatarsEnabled] = useState(appearanceSettings.isAnimateAvatarsEnabled);
+    const [enableAnimParams, setEnableAnimParams] = useState(appearanceSettings.enableAnimParams);
+    const [useFreezePlugin, setUseFreezePlugin] = useState(appearanceSettings.useFreezePlugin);
 
     const [isMarkdown, setIsMarkdown] = useState(settings.isMarkdown);
     const [hideMembershipEvents, setHideMembershipEvents] = useState(settings.hideMembershipEvents);
@@ -245,6 +248,25 @@ function AppearanceSection() {
                     <li className="list-group-item very-small text-gray">User message</li>
 
                     <SettingTile
+                        title="Enable username hover"
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={isUNhoverEnabled}
+                                onToggle={toggleAppearanceAction('isUNhoverEnabled', setUNhoverEnabled)}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">When you hover over a user nickname, the username will be displayed.</div>}
+                    />
+
+                </ul>
+            </div>
+
+            <div className="card noselect mt-3">
+                <ul className="list-group list-group-flush">
+                    <li className="list-group-item very-small text-gray">User avatars</li>
+
+                    <SettingTile
                         title="Use native gif thumbs"
                         options={(
                             <Toggle
@@ -257,6 +279,18 @@ function AppearanceSection() {
                     />
 
                     <SettingTile
+                        title="Use freezeframe on avatars"
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={useFreezePlugin}
+                                onToggle={toggleAppearanceAction('useFreezePlugin', setUseFreezePlugin)}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">All client avatars will be rendered using the plugin freezeframe.</div>}
+                    />
+
+                    <SettingTile
                         title="Enable animated hover avatars"
                         options={(
                             <Toggle
@@ -266,18 +300,6 @@ function AppearanceSection() {
                             />
                         )}
                         content={<div className="very-small text-gray">Turn on animated avatars that are displayed when you mouse over it.</div>}
-                    />
-
-                    <SettingTile
-                        title="Enable username hover"
-                        options={(
-                            <Toggle
-                                className='d-inline-flex'
-                                isActive={isUNhoverEnabled}
-                                onToggle={toggleAppearanceAction('isUNhoverEnabled', setUNhoverEnabled)}
-                            />
-                        )}
-                        content={<div className="very-small text-gray">When you hover over a user nickname, the username will be displayed.</div>}
                     />
 
                 </ul>
