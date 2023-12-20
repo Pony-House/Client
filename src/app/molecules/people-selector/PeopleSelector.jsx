@@ -96,7 +96,7 @@ function PeopleSelector({
 }
 
 PeopleSelector.defaultProps = {
-  avatarSize: 24,
+  avatarSize: 32,
   avatarAnimSrc: null,
   avatarSrc: null,
   peopleRole: null,

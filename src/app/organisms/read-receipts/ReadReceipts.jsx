@@ -43,13 +43,13 @@ function ReadReceipts() {
     return (
       <PeopleSelector
         disableStatus
-        avatarSize={24}
+        avatarSize={32}
         key={userId}
         onClick={() => {
           setIsOpen(false);
           openProfileViewer(userId, roomId);
         }}
-        avatarSrc={member?.getAvatarUrl(initMatrix.matrixClient.baseUrl, 24, 24, 'crop')}
+        avatarSrc={member?.getAvatarUrl(initMatrix.matrixClient.baseUrl, 32, 32, 'crop')}
         name={getUserDisplayName(userId)}
         color={colorMXID(userId)}
       />

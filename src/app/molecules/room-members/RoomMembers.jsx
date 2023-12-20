@@ -26,7 +26,7 @@ function normalizeMembers(members) {
     userId: member.userId,
     name: getUsernameOfRoomMember(member),
     username: member.userId.slice(1, member.userId.indexOf(':')),
-    avatarSrc: member.getAvatarUrl(mx.baseUrl, 24, 24, 'crop'),
+    avatarSrc: member.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'),
     peopleRole: getPowerLabel(member.powerLevel),
     powerLevel: members.powerLevel,
   }));
@@ -160,7 +160,7 @@ function RoomMembers({ roomId, profileMode }) {
           {mList.map((member) => (
             <PeopleSelector
               disableStatus
-              avatarSize={24}
+              avatarSize={32}
               key={member.userId}
               contextMenu={(e) => {
 

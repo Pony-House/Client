@@ -177,8 +177,8 @@ function Search() {
     let iconSrc = null;
 
     if (item.type === 'direct') {
-      imageSrc = item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
-      imageAnimSrc = !appearanceSettings.enableAnimParams ? item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop')) || null;
+      imageSrc = item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
+      imageAnimSrc = !appearanceSettings.enableAnimParams ? item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
     } else {
       iconSrc = joinRuleToIconSrc(item.room.getJoinRule(), item.type === 'space');
     }

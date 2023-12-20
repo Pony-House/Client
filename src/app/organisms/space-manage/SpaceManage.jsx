@@ -78,16 +78,16 @@ function SpaceManageItem({
   const isJoined = !!(room?.getMyMembership() === 'join' || null);
   const name = room?.name || roomInfo.name || roomInfo.canonical_alias || roomId;
 
-  let imageSrc = mx.mxcUrlToHttp(roomInfo.avatar_url, 24, 24, 'crop') || null;
+  let imageSrc = mx.mxcUrlToHttp(roomInfo.avatar_url, 32, 32, 'crop') || null;
   if (!imageSrc && room) {
-    imageSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
-    if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
+    imageSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
+    if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
   }
 
-  let imageAnimSrc = !appearanceSettings.enableAnimParams ? mx.mxcUrlToHttp(roomInfo.avatar_url) : mx.mxcUrlToHttp(roomInfo.avatar_url, 24, 24, 'crop') || null;
+  let imageAnimSrc = !appearanceSettings.enableAnimParams ? mx.mxcUrlToHttp(roomInfo.avatar_url) : mx.mxcUrlToHttp(roomInfo.avatar_url, 32, 32, 'crop') || null;
   if (!imageAnimSrc && room) {
-    imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop')) || null;
-    if (imageAnimSrc === null) imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop')) || null;
+    imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
+    if (imageAnimSrc === null) imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
   }
 
   const isDM = directs.has(roomId);

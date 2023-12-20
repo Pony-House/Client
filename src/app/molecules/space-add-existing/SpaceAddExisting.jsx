@@ -131,11 +131,11 @@ function SpaceAddExistingContent({ roomId }) {
 
             const room = mx.getRoom(rId);
 
-            let imageSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
-            if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop') || null;
+            let imageSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
+            if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
 
-            let imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 24, 24, 'crop')) || null;
-            if (imageAnimSrc === null) imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 24, 24, 'crop')) || null;
+            let imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
+            if (imageAnimSrc === null) imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
 
             const parentSet = roomIdToParents.get(rId);
             const parentNames = parentSet
