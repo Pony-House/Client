@@ -1,5 +1,9 @@
-import { contextBridge } from 'electron';
+import { contextBridge, ipcRenderer } from 'electron';
 import AutoLaunch from 'auto-launch';
+
+ipcRenderer.on('check-version', () => {
+    if (typeof global.checkVersions === 'function') global.checkVersions();
+});
 
 let tinyModule;
 const autoLaunch = {
