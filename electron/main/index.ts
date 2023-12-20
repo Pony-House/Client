@@ -226,7 +226,13 @@ if (!gotTheLock) {
       const tray = new Tray(icon);
       const contextMenu = Menu.buildFromTemplate([
         {
-          label: 'Show App',
+          label: title,
+          enabled: false,
+          icon,
+        },
+        { type: 'separator' },
+        {
+          label: `Open ${title}`,
           click: () => {
             if (appStarted) {
               if (win) win.show();
@@ -244,7 +250,7 @@ if (!gotTheLock) {
           },
         }, */
         {
-          label: 'Quit',
+          label: `Quit ${title}`,
           click: () => {
             isQuiting = true;
             app.quit();
