@@ -203,16 +203,20 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
       const isJoined = initMatrix.matrixClient.getRoom(room.room_id)?.getMyMembership() === 'join';
       const desc = (typeof room.topic === 'string' ? room.topic : null);
 
+      /*
+            animParentsCount={3}
+      imageAnimSrc={typeof room.avatar_url === 'string' ?
+        !appearanceSettings.enableAnimParams ? initMatrix.matrixClient.mxcUrlToHttp(room.avatar_url) : getAnimatedImageUrl(initMatrix.matrixClient.mxcUrlToHttp(room.avatar_url, 42, 42, 'crop'))
+        : null}
+      */
+
       return (
         <div className="col-md-4">
           <div className="card p-3 m-2" style={{ 'height': '350px' }}>
 
             <h4 className="card-title">
               <Avatar
-                animParentsCount={3}
-                imageAnimSrc={typeof room.avatar_url === 'string' ?
-                  !appearanceSettings.enableAnimParams ? initMatrix.matrixClient.mxcUrlToHttp(room.avatar_url) : getAnimatedImageUrl(initMatrix.matrixClient.mxcUrlToHttp(room.avatar_url, 42, 42, 'crop'))
-                  : null}
+
                 imageSrc={typeof room.avatar_url === 'string' ? initMatrix.matrixClient.mxcUrlToHttp(room.avatar_url, 42, 42, 'crop') : null}
                 bgColor={colorMXID(alias)}
                 text={name}
