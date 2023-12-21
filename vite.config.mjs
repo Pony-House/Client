@@ -133,6 +133,7 @@ export default defineConfig(({ command, mode }) => {
 
     web3: !!(env.web3 === true || env.web3 === 'true'),
     ipfs: !!(env.ipfs === true || env.ipfs === 'true'),
+    enableAnimParams: !!(env.useAnimParams === true || env.useAnimParams === 'true'),
 
     login: {
       defaultHomeserver: Number(env.defaultHomeserver),
