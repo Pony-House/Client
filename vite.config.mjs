@@ -116,7 +116,7 @@ export default defineConfig(({ command, mode }) => {
           polygon: env.UD_POLYGON_DNS,
         },
 
-        ens: env.UD_POLYGON_DNS,
+        ens: env.ETHEREUM_DNS,
 
       },
 
