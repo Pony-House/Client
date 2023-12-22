@@ -145,7 +145,7 @@ export default defineConfig(({ command, mode }) => {
 
   let HOMESERVER_LIST = 0;
   while (typeof env[`HOMESERVER_LIST${HOMESERVER_LIST}`] === 'string') {
-    envData.login.HOMESERVER_LIST.push(env[`HOMESERVER_LIST${HOMESERVER_LIST}`]);
+    envData.LOGIN.HOMESERVER_LIST.push(env[`HOMESERVER_LIST${HOMESERVER_LIST}`]);
     HOMESERVER_LIST++;
   }
 
