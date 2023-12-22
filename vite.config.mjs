@@ -99,54 +99,54 @@ export default defineConfig(({ command, mode }) => {
 
   const envData = {
 
-    mode,
-    command,
-    electron_mode: electronMode,
-    version: pkg.version,
-    deps: pkg.dependencies,
-    platform: process.platform,
-    customDNS: {
+    MODE: mode,
+    COMMAND: command,
+    ELECTRON_MODE: electronMode,
+    VERSION: pkg.version,
+    DEPS: pkg.dependencies,
+    PLATFORM: process.platform,
+    CUSTOM_DNS: {
 
-      enabled: !!(env.customDns === true || env.customDns === 'true'),
-      port: Number(env.customDnsPort),
+      ENABLED: !!(env.CUSTOM_DNS === true || env.CUSTOM_DNS === 'true'),
+      PORT: Number(env.CUSTOM_DNS_PORT),
 
-      blockchain: {
+      BLOCKCHAIN: {
 
         ud: {
-          polygon: env.UdPolygonDns,
+          polygon: env.UD_POLYGON_DNS,
         },
 
-        ens: env.UdPolygonDns,
+        ens: env.UD_POLYGON_DNS,
 
       },
 
     },
 
-    info: {
+    INFO: {
       name: String(pkg.short_name),
       description: pkg.description,
       keywords: pkg.keywords,
       author: pkg.author,
       license: pkg.license,
-      welcome: String(env.appWelcome)
+      welcome: String(env.APP_WELCOME)
     },
 
-    web3: !!(env.web3 === true || env.web3 === 'true'),
-    ipfs: !!(env.ipfs === true || env.ipfs === 'true'),
-    enableAnimParams: !!(env.useAnimParams === true || env.useAnimParams === 'true'),
+    WEB3: !!(env.WEB3 === true || env.WEB3 === 'true'),
+    IPFS: !!(env.IPFS === true || env.IPFS === 'true'),
+    USE_ANIM_PARAMS: !!(env.USE_ANIM_PARAMS === true || env.USE_ANIM_PARAMS === 'true'),
 
-    login: {
-      defaultHomeserver: Number(env.defaultHomeserver),
-      allowCustomHomeservers: !!(typeof env.allowCustomHomeservers === 'string' && env.allowCustomHomeservers === 'true'),
-      homeserverList: [],
+    LOGIN: {
+      DEFAULT_HOMESERVER: Number(env.DEFAULT_HOMESERVER),
+      ALLOW_CUSTOM_HOMESERVERS: !!(typeof env.ALLOW_CUSTOM_HOMESERVERS === 'string' && env.ALLOW_CUSTOM_HOMESERVERS === 'true'),
+      HOMESERVER_LIST: [],
     },
 
   };
 
-  let homeserverList = 0;
-  while (typeof env[`homeserverList${homeserverList}`] === 'string') {
-    envData.login.homeserverList.push(env[`homeserverList${homeserverList}`]);
-    homeserverList++;
+  let HOMESERVER_LIST = 0;
+  while (typeof env[`HOMESERVER_LIST${HOMESERVER_LIST}`] === 'string') {
+    envData.login.HOMESERVER_LIST.push(env[`HOMESERVER_LIST${HOMESERVER_LIST}`]);
+    HOMESERVER_LIST++;
   }
 
   // Result object

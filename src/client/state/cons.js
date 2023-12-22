@@ -3,7 +3,7 @@ import { compareVersions } from 'compare-versions';
 
 const cons = {
 
-  version: __ENV_APP__.version,
+  version: __ENV_APP__.VERSION,
 
   secretKey: {
     ACCESS_TOKEN: 'cinny_access_token',
@@ -12,7 +12,7 @@ const cons = {
     BASE_URL: 'cinny_hs_base_url',
   },
 
-  DEVICE_DISPLAY_NAME: `${__ENV_APP__.info.name} (${__ENV_APP__.electron_mode ? 'Desktop' : Capacitor.isNativePlatform() ? 'Mobile' : 'Browser'})`,
+  DEVICE_DISPLAY_NAME: `${__ENV_APP__.INFO.name} (${__ENV_APP__.ELECTRON_MODE ? 'Desktop' : Capacitor.isNativePlatform() ? 'Mobile' : 'Browser'})`,
   IN_CINNY_SPACES: 'in.cinny.spaces',
 
   tabs: {

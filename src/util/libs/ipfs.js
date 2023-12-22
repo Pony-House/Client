@@ -62,7 +62,7 @@ export function getIpfsCfg(folder, getDefault = true, domainsParse = false) {
         return null;
     }
 
-    if (!__ENV_APP__.ipfs) content.ipfsEnabled = false;
+    if (!__ENV_APP__.IPFS) content.ipfsEnabled = false;
     return content;
 
 };

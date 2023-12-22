@@ -58,7 +58,7 @@ function ExperimentalSection() {
                 </ul>
             </div>
 
-            {__ENV_APP__.electron_mode ? <div className="card noselect mt-3">
+            {__ENV_APP__.ELECTRON_MODE ? <div className="card noselect mt-3">
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item very-small text-gray">DevTools</li>
                     <li className="list-group-item small">

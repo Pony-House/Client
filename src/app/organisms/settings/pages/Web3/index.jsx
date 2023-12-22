@@ -77,7 +77,7 @@ function Web3Section() {
 
                     {userWeb3.address ? <>
 
-                        {__ENV_APP__.electron_mode ? <p>It looks like you are using the desktop version! To use the application with your web3 wallet, you need to have the frame wallet installed on your computer.</p> : ''}
+                        {__ENV_APP__.ELECTRON_MODE ? <p>It looks like you are using the desktop version! To use the application with your web3 wallet, you need to have the frame wallet installed on your computer.</p> : ''}
                         <p>Wallet connected: <strong className={userWeb3.valid ? 'text-success' : 'text-danger'}>{userWeb3.address}</strong></p>
 
                         <button type="button" className="btn btn-sm btn-danger my-1 my-sm-0" onClick={async () => {
@@ -91,7 +91,7 @@ function Web3Section() {
 
                     </> : <>
 
-                        <p>Connect your wallet to start configuring your account integration.{__ENV_APP__.electron_mode ? ' It looks like you are using the desktop version! To use the application with your web3 wallet, you need to have the frame wallet installed on your computer.' : ''}</p>
+                        <p>Connect your wallet to start configuring your account integration.{__ENV_APP__.ELECTRON_MODE ? ' It looks like you are using the desktop version! To use the application with your web3 wallet, you need to have the frame wallet installed on your computer.' : ''}</p>
 
                         <button type="button" className={`btn btn-sm btn-primary my-1 my-sm-0${tinyCrypto.protocol === null ? ' disabled' : ''}`} disabled={tinyCrypto.protocol === null} onClick={() => {
                             setLoadingPage();

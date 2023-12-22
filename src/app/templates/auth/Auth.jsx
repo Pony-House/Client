@@ -54,7 +54,7 @@ function Auth() {
 
                       <div className="d-flex align-items-center mb-3 pb-1">
                         <Avatar imageSrc="./img/png/cinny-main.png" />
-                        <span className="ms-3 h2 fw-bold mb-0">{__ENV_APP__.info.name}</span>
+                        <span className="ms-3 h2 fw-bold mb-0">{__ENV_APP__.INFO.name}</span>
                       </div>
 
                       <AuthCard />

@@ -116,7 +116,7 @@ function AppearanceSection() {
                         <input ref={ponyHouseZoomRangeRef} max={200} min={50} type="range" className="form-range" />
 
                         <div className="very-small text-gray">
-                            {`Set the application zoom. If the configuration doesn't work, it's because your ${__ENV_APP__.electron_mode ? 'client' : 'browser'} is not compatible. (Beta)`}
+                            {`Set the application zoom. If the configuration doesn't work, it's because your ${__ENV_APP__.ELECTRON_MODE ? 'client' : 'browser'} is not compatible. (Beta)`}
                             <button type="button" className="ms-3 btn btn-sm btn-secondary" onClick={async () => {
 
                                 const ponyHouseZoomRange = $(ponyHouseZoomRangeRef.current);

@@ -61,7 +61,7 @@ export default function imageViewer(lightbox, imgQuery, name, url, readMime = fa
                 // Register Buttons
                 pswp.on('uiRegister', () => {
 
-                    if (!__ENV_APP__.electron_mode) {
+                    if (!__ENV_APP__.ELECTRON_MODE) {
                         pswp.ui.registerElement({
                             name: 'new-window-button',
                             ariaLabel: 'Open Url',

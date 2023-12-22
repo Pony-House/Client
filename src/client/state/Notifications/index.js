@@ -268,7 +268,7 @@ class Notifications extends EventEmitter {
 
     // Check Window
     if (
-      (!__ENV_APP__.electron_mode || typeof window.getElectronShowStatus !== 'function' || window.getElectronShowStatus()) &&
+      (!__ENV_APP__.ELECTRON_MODE || typeof window.getElectronShowStatus !== 'function' || window.getElectronShowStatus()) &&
       !$('body').hasClass('modal-open') &&
       navigation.selectedRoomId === room.roomId &&
       document.visibilityState === 'visible' &&
@@ -349,7 +349,7 @@ class Notifications extends EventEmitter {
 
         // Silent Mode
         let noti;
-        if (__ENV_APP__.electron_mode) {
+        if (__ENV_APP__.ELECTRON_MODE) {
           notiData.silent = true;
           noti = await window.desktopNotification(notiData);
         } else {
@@ -358,7 +358,7 @@ class Notifications extends EventEmitter {
         }
 
         // Play Notification
-        if (__ENV_APP__.electron_mode) {
+        if (__ENV_APP__.ELECTRON_MODE) {
 
           if (settings.isNotificationSounds) {
             noti.on('show', () => this._playNotiSound());
@@ -388,7 +388,7 @@ class Notifications extends EventEmitter {
         }
 
         // Send Notification
-        if (__ENV_APP__.electron_mode) {
+        if (__ENV_APP__.ELECTRON_MODE) {
           noti.show();
         }
 

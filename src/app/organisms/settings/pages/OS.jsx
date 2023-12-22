@@ -11,8 +11,8 @@ function OsSection() {
     const [startMinimized, setStartMinimized] = useState(osSettings.startMinimized);
     const [autoLaunchEnabled, setAutoLaunchEnabled] = useState(false);
 
-    if (__ENV_APP__.electron_mode) {
-        autoLaunch.start(__ENV_APP__.info.name);
+    if (__ENV_APP__.ELECTRON_MODE) {
+        autoLaunch.start(__ENV_APP__.INFO.name);
     }
 
     useEffect(() => {
@@ -46,7 +46,7 @@ function OsSection() {
                                 }}
                             />
                         )}
-                        content={<div className="very-small text-gray">Save yourself a few clicks and let {__ENV_APP__.info.name} greet you on computer startup.</div>}
+                        content={<div className="very-small text-gray">Save yourself a few clicks and let {__ENV_APP__.INFO.name} greet you on computer startup.</div>}
                     />
 
                     <SettingTile

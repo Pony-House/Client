@@ -14,7 +14,7 @@ import moment from '../../util/libs/momentjs';
 const delayYdocUpdate = 100;
 const hashTryLimit = 10;
 
-if (__ENV_APP__.mode === 'development') { global.Y = Y; }
+if (__ENV_APP__.MODE === 'development') { global.Y = Y; }
 let timeoutForceChatbox = null;
 
 function isEdited(mEvent) {
@@ -171,7 +171,7 @@ class RoomTimeline extends EventEmitter {
 
     setTimeout(() => this.room.loadMembersIfNeeded());
 
-    if (__ENV_APP__.mode === 'development') { window.selectedRoom = this; }
+    if (__ENV_APP__.MODE === 'development') { window.selectedRoom = this; }
 
   }
 

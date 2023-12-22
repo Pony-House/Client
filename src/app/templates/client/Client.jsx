@@ -26,7 +26,7 @@ import LoadingPage from './Loading';
 
 let versionChecked = false;
 
-if (__ENV_APP__.electron_mode) {
+if (__ENV_APP__.ELECTRON_MODE) {
   window.setElectronResize(() => resizeWindowChecker());
 }
 
@@ -143,13 +143,13 @@ function Client() {
         <p className="loading__message small">{loadingMsg}</p>
 
         <div className="loading__appname">
-          <Text variant="h2" weight="medium">{__ENV_APP__.info.name}</Text>
+          <Text variant="h2" weight="medium">{__ENV_APP__.INFO.name}</Text>
         </div>
       </div>
     );
   }
 
-  if (__ENV_APP__.electron_mode && !versionChecked && global.checkVersions) {
+  if (__ENV_APP__.ELECTRON_MODE && !versionChecked && global.checkVersions) {
     versionChecked = true;
     global.checkVersions().then(versionData => {
       if (versionData && typeof versionData.value.name === 'string' && versionData.result === 1) {

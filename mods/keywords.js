@@ -50,7 +50,7 @@ keywords.push({
 });
 
 // ELECTRON GLITCH ON __ENV_APP__
-// if (__ENV_APP__.ipfs) {
+// if (__ENV_APP__.IPFS) {
 keywords.push({
     title: `IPFS - Inter Planetary File System`,
     name: `ipfs`,
@@ -189,7 +189,7 @@ keywords.push({
 });
 
 // ELECTRON GLITCH ON __ENV_APP__
-// if (__ENV_APP__.web3) {
+// if (__ENV_APP__.WEB3) {
 
 // Crypto Social
 keywords.push({

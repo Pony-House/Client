@@ -74,7 +74,7 @@ export default async (url, vanillaUrl) => {
             const tinyModal = btModal({
 
                 id: 'trust-tiny-url',
-                title: `Leaving ${__ENV_APP__.info.name}`,
+                title: `Leaving ${__ENV_APP__.INFO.name}`,
 
                 dialog: 'modal-dialog-centered modal-lg',
                 body,

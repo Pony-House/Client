@@ -68,7 +68,7 @@ function PeopleSelectorBanner({
     if (content && objType(content.presenceStatusMsg, 'object')) {
 
       const presence = content.presenceStatusMsg;
-      const ethereumValid = (__ENV_APP__.web3 && presence.ethereum && presence.ethereum.valid);
+      const ethereumValid = (__ENV_APP__.WEB3 && presence.ethereum && presence.ethereum.valid);
 
       // Ethereum
       if (ethereumValid) {

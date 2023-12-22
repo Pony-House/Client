@@ -166,7 +166,7 @@ export function setPinMessage(room, newEventsId, isPinned = true) {
 };
 
 // DEV
-if (__ENV_APP__.mode === 'development') {
+if (__ENV_APP__.MODE === 'development') {
     global.pinManager = {
         getRaw: getPinnedMessagesRaw,
         get: getPinnedMessages,

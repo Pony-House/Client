@@ -61,10 +61,10 @@ function Homeserver({ onChange }) {
     useEffect(() => {
         try {
 
-            const result = __ENV_APP__.login ?? {};
-            const selectedHs = !Number.isNaN(result.defaultHomeserver) && Number.isFinite(result.defaultHomeserver) ? result.defaultHomeserver : 0;
-            const allowCustom = result.allowCustomHomeservers;
-            const hsList = Array.isArray(result.homeserverList) ? result.homeserverList : [];
+            const ENV = __ENV_APP__.LOGIN ?? {};
+            const selectedHs = !Number.isNaN(ENV.DEFAULT_HOMESERVER) && Number.isFinite(ENV.DEFAULT_HOMESERVER) ? ENV.DEFAULT_HOMESERVER : 0;
+            const allowCustom = ENV.ALLOW_CUSTOM_HOMESERVERS;
+            const hsList = Array.isArray(ENV.HOMESERVER_LIST) ? ENV.HOMESERVER_LIST : [];
 
             if (!hsList?.length > 0 || selectedHs < 0 || selectedHs >= hsList?.length) {
                 throw new Error();

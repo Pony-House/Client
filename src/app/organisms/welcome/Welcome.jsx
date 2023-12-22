@@ -8,9 +8,9 @@ function Welcome() {
       <center>
         <img className="app-welcome__logo noselect" src="./img/png/cinny-main.png" alt="App logo" />
 
-        <h2 className='mt-3'>{`Welcome to ${__ENV_APP__.info.name}`}</h2>
+        <h2 className='mt-3'>{`Welcome to ${__ENV_APP__.INFO.name}`}</h2>
 
-        <h6>{__ENV_APP__.info.welcome}</h6>
+        <h6>{__ENV_APP__.INFO.welcome}</h6>
 
       </center>
     </div>

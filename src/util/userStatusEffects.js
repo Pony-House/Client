@@ -44,7 +44,7 @@ export function setVoiceChatMode(value = true) {
 // Get
 export function getUserAfk(type = 'seconds') {
 
-    if (__ENV_APP__.electron_mode && global.systemIdleTime?.get) {
+    if (__ENV_APP__.ELECTRON_MODE && global.systemIdleTime?.get) {
         global.systemIdleTime.exec();
         return global.systemIdleTime.get();
     }
@@ -107,7 +107,7 @@ export function startUserAfk() {
         userInteractions.afkTime.interval = null;
     }
 
-    if (!__ENV_APP__.electron_mode) {
+    if (!__ENV_APP__.ELECTRON_MODE) {
         $(window).on("mousemove", lastTimestampUpdate);
         userInteractions.afkTime.value = moment().valueOf();
     }
@@ -119,13 +119,13 @@ export function startUserAfk() {
 // Stop
 export function stopUserAfk() {
 
-    if (!__ENV_APP__.electron_mode) $(window).on("mousemove", lastTimestampUpdate);
+    if (!__ENV_APP__.ELECTRON_MODE) $(window).on("mousemove", lastTimestampUpdate);
     if (userInteractions.afkTime.interval) {
         clearInterval(userInteractions.afkTime.interval);
         userInteractions.afkTime.interval = null;
     }
 
-    if (!__ENV_APP__.electron_mode) userInteractions.afkTime.value = null;
+    if (!__ENV_APP__.ELECTRON_MODE) userInteractions.afkTime.value = null;
 
 };
 

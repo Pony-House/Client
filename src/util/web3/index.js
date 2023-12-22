@@ -174,7 +174,7 @@ export function getWeb3Cfg(folder, getDefault = true) {
     return null;
   }
 
-  if (!__ENV_APP__.web3) content.web3Enabled = false;
+  if (!__ENV_APP__.WEB3) content.web3Enabled = false;
   return content;
 
 };
@@ -234,10 +234,10 @@ tinyCrypto.decimals = Object.freeze({
 const startWeb3 = () => {
 
   // Check if Web3 has been injected by the browser (Mist/MetaMask).
-  if (__ENV_APP__.web3 && ((typeof ethereum !== 'undefined' && (window.ethereum.isMetaMask || window.ethereum.isFrame)) || __ENV_APP__.electron_mode)) {
+  if (__ENV_APP__.WEB3 && ((typeof ethereum !== 'undefined' && (window.ethereum.isMetaMask || window.ethereum.isFrame)) || __ENV_APP__.ELECTRON_MODE)) {
 
     // Checker
-    tinyCrypto.existEthereum = () => (typeof window.ethereum !== 'undefined' || __ENV_APP__.electron_mode);
+    tinyCrypto.existEthereum = () => (typeof window.ethereum !== 'undefined' || __ENV_APP__.ELECTRON_MODE);
     tinyCrypto.isUnlocked = () => (window.ethereum && window.ethereum._isUnlocked);
     tinyCrypto.existWalletApp = () => (tinyCrypto.existEthereum() && tinyCrypto.isUnlocked());
 
@@ -584,14 +584,14 @@ const startWeb3 = () => {
     }
 
     // Electron Mode
-    else if (__ENV_APP__.electron_mode) {
+    else if (__ENV_APP__.ELECTRON_MODE) {
 
       tinyCrypto.changeNetwork = (chainId) => tinyCrypto.provider.eth.switchEthereumChain({ chainId: tinyCrypto.provider.utils.toHex(chainId) });
 
       tinyCrypto.protocol = 'frame';
       tinyCrypto.provider = new Web3(new Web3WsProvider('ws://127.0.0.1:1248', {
 
-        headers: { Origin: __ENV_APP__.info.name },
+        headers: { Origin: __ENV_APP__.INFO.name },
 
         clientConfig: {
           maxReceivedFrameSize: 100000000,   // bytes - default: 1MiB
