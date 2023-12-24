@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
@@ -10,7 +11,7 @@ import { joinRuleToIconSrc } from '../../../util/matrixUtil';
 import { updateName } from '../../../util/roomName';
 
 import IconButton from '../../atoms/button/IconButton';
-import RoomSelector from '../../molecules/room-selector/RoomSelector';
+import RoomSelector, { ThreadSelector } from '../../molecules/room-selector/RoomSelector';
 import RoomOptions from '../../molecules/room-options/RoomOptions';
 import SpaceOptions from '../../molecules/space-options/SpaceOptions';
 
@@ -105,6 +106,11 @@ function Selector({
   }, []);
 
   // Options
+  if (!room) {
+    console.warn(`Selector: Room ${roomId} not found`);
+    return null;
+  }
+
   const openOptions = (e) => {
 
     // Get Cords
@@ -126,39 +132,51 @@ function Selector({
 
   };
 
-  // Complete Data
-  return (
-    <RoomSelector
-      notSpace={notSpace}
-      key={roomId}
-      isProfile={isProfile}
-      name={roomName}
-      roomId={roomId}
-      animParentsCount={3}
-      user={user}
-      room={room}
-      imageAnimSrc={isDM || notSpace ? imageAnimSrc : null}
-      imageSrc={isDM || notSpace ? imageSrc : null}
-      iconSrc={isDM ? null : joinRuleToIconSrc(room.getJoinRule(), room.isSpaceRoom())}
-      isSelected={navigation.selectedRoomId === roomId}
-      isMuted={isMuted}
-      isUnread={!isMuted && noti.hasNoti(roomId)}
-      notificationCount={abbreviateNumber(noti.getTotalNoti(roomId))}
-      isAlert={noti.getHighlightNoti(roomId) !== 0}
-      onClick={onClick}
-      onContextMenu={openOptions}
-      options={(
-        <IconButton
-          size="extra-small"
-          tooltip="Options"
-          tooltipPlacement="left"
-          fa="bi bi-three-dots-vertical"
-          onClick={openOptions}
-        />
-      )}
-    />
-  );
+  const openThreads = room
+    .getThreads()
+    .filter((thread) => thread.id === navigation.selectedThreadId);
 
+  return (
+    <>
+      <RoomSelector
+        notSpace={notSpace}
+        key={roomId}
+        isProfile={isProfile}
+        name={roomName}
+        roomId={roomId}
+        animParentsCount={3}
+        user={user}
+        room={room}
+        imageAnimSrc={isDM || notSpace ? imageAnimSrc : null}
+        imageSrc={isDM || notSpace ? imageSrc : null}
+        iconSrc={isDM ? null : joinRuleToIconSrc(room.getJoinRule(), room.isSpaceRoom())}
+        isSelected={navigation.selectedRoomId === roomId && navigation.selectedThreadId === null}
+        isMuted={isMuted}
+        isUnread={!isMuted && noti.hasNoti(roomId)}
+        notificationCount={abbreviateNumber(noti.getTotalNoti(roomId))}
+        isAlert={noti.getHighlightNoti(roomId) !== 0}
+        onClick={onClick}
+        onContextMenu={openOptions}
+        options={
+          <IconButton
+            size="extra-small"
+            tooltip="Options"
+            tooltipPlacement="left"
+            fa="bi bi-three-dots-vertical"
+            onClick={openOptions}
+          />
+        }
+      />
+      {openThreads.map((thread) => (
+        <ThreadSelector
+          key={thread.id}
+          thread={thread}
+          isMuted={isMuted}
+          isSelected={navigation.selectedThreadId === thread.id}
+        />
+      ))}
+    </>
+  );
 }
 
 // Default

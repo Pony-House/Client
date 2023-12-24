@@ -27,13 +27,14 @@ export function selectSpace(roomId) {
   });
 }
 
-export function selectRoom(roomId, eventId, forceScroll = false) {
+export function selectRoom(roomId, eventId, threadId, forceScroll = false) {
   $('.space-drawer-menu-item').removeClass('active');
   setSelectRoom(roomId);
   appDispatcher.dispatch({
     type: cons.actions.navigation.SELECT_ROOM,
     roomId,
     eventId,
+    threadId,
     forceScroll,
   });
 }

@@ -709,3 +709,5 @@ export function html(source, state) {
   el.innerHTML = source;
   return render(mapChildren(el.content), state, mdPlainOut, mdHtmlOut);
 }
+
+export { mdParser };

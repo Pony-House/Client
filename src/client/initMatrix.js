@@ -91,6 +91,7 @@ class InitMatrix extends EventEmitter {
 
     await this.matrixClient.startClient({
       lazyLoadMembers: true,
+      threadSupport: true,
     });
 
     this.matrixClient.setGlobalErrorOnUnknownDevices(false);

@@ -53,6 +53,15 @@
   }
 }
 
+.thread-selector__lines {
+  width: var(--av-extra-small);
+  height: var(--av-extra-small);
+}
+
+.room-header__thread-name {
+  color: var(--tc-primary-low);
+}
+
 .room-selector__content {
   @extend .cp-fx__item-one;
   @extend .cp-fx__row--s-c;

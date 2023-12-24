@@ -14,13 +14,21 @@ import RoomViewCmdBar from './RoomViewCmdBar';
 
 const viewEvent = new EventEmitter();
 
-function RoomView({ roomTimeline, eventId, isUserList }) {
+function RoomView({
+  roomTimeline,
+  eventId,
+  isUserList,
+}) {
+
   const refcmdInput = useRef(null);
   const refRoomInput = useRef(null);
   const roomViewRef = useRef(null);
-  const { roomId } = roomTimeline;
+
+  // eslint-disable-next-line react/prop-types
+  const { roomId, threadId } = roomTimeline;
 
   useEffect(() => {
+
     const settingsToggle = (isVisible) => {
 
       const roomView = $(roomViewRef.current);
@@ -36,44 +44,34 @@ function RoomView({ roomTimeline, eventId, isUserList }) {
       } else roomViewContent.css('visibility', 'visible');
 
     };
+
     navigation.on(cons.events.navigation.ROOM_SETTINGS_TOGGLED, settingsToggle);
     return () => {
       navigation.removeListener(cons.events.navigation.ROOM_SETTINGS_TOGGLED, settingsToggle);
     };
+
   }, []);
 
   return <div className="room-view" ref={roomViewRef}>
-    <RoomViewHeader roomId={roomId} />
+    <RoomViewHeader roomId={roomId} threadId={threadId} />
     <div className="room-view__content-wrapper">
       <div className="room-view__scrollable">
-        <RoomViewContent
-          isUserList={isUserList}
-          eventId={eventId}
-          roomTimeline={roomTimeline}
-        />
-        <RoomViewFloating
-          refRoomInput={refRoomInput}
-          refcmdInput={refcmdInput}
-          roomId={roomId}
-          roomTimeline={roomTimeline}
-        />
+        <RoomViewContent isUserList={isUserList} eventId={eventId} roomTimeline={roomTimeline} />
+        <RoomViewFloating refRoomInput={refRoomInput} refcmdInput={refcmdInput} roomId={roomId} roomTimeline={roomTimeline} />
       </div>
       <div className="room-view__sticky">
         <RoomViewInput
           refRoomInput={refRoomInput}
           roomId={roomId}
+          threadId={threadId}
           roomTimeline={roomTimeline}
           viewEvent={viewEvent}
         />
-        <RoomViewCmdBar
-          roomId={roomId}
-          refcmdInput={refcmdInput}
-          roomTimeline={roomTimeline}
-          viewEvent={viewEvent}
-        />
+        <RoomViewCmdBar roomId={roomId} refcmdInput={refcmdInput} roomTimeline={roomTimeline} viewEvent={viewEvent} />
       </div>
     </div>
   </div>;
+
 }
 
 RoomView.defaultProps = {

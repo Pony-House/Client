@@ -10,6 +10,48 @@
   }
 }
 
+.message__threadSummary {
+  background-color: var(--bg-surface-hover);
+  padding: var(--sp-ultra-tight);
+  border-radius: calc(var(--bo-radius) / 2);
+  margin-top: var(--sp-extra-tight);
+  width: fit-content;
+  cursor: pointer;
+
+  &-count p {
+    color: var(--tc-link);
+  }
+
+  :hover > &-count p {
+    text-decoration: underline;
+  }
+
+  &-lastReply-sender span {
+    color: var(--tc-surface-high);
+  }
+
+  &-lastReply-body {
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: fit-content;
+  }
+  &-lastReply-body span {
+    color: var(--tc-surface-low);
+  }
+
+  &-lastReply {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-ultra-tight);
+
+    .avatar-container {
+      // move it sliiiightly down
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+  }
+}
+
 /* Code Editor */
 .hljs {
   display: block;

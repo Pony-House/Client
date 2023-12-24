@@ -1,5 +1,12 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/prop-types */
 import React, {
-  useState, useEffect, useLayoutEffect, useCallback, useRef,
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+  useRef,
 } from 'react';
 import PropTypes from 'prop-types';
 
@@ -46,19 +53,25 @@ function loadingMsgPlaceholders(key, count = 2) {
     return pl;
   };
 
-  return (
-    <React.Fragment key={`placeholder-container${key}`}>
-      {genPlaceholders()}
-    </React.Fragment>
-  );
+  return <React.Fragment key={`placeholder-container${key}-2`}>{genPlaceholders()}</React.Fragment>;
 
-};
+}
 
-function RoomIntroContainer({ event, timeline }) {
+function RoomIntroContainer({
+  event,
+  timeline,
+}) {
+
   const [, nameForceUpdate] = useForceUpdate();
   const mx = initMatrix.matrixClient;
   const { roomList } = initMatrix;
-  const { room } = timeline;
+  const { room, thread } = timeline;
+
+  // threads don't have a header
+  if (thread !== undefined) {
+    return null;
+  }
+
   const roomTopic = getCurrentState(room).getStateEvents('m.room.topic')[0]?.getContent().topic;
   const isDM = roomList.directs.has(timeline.roomId);
   let avatarSrc = room.getAvatarUrl(mx.baseUrl, 80, 80, 'crop');
@@ -85,6 +98,7 @@ function RoomIntroContainer({ event, timeline }) {
       </>
     );
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const handleUpdate = () => nameForceUpdate();
 
@@ -132,14 +146,14 @@ function renderEvent(
   setEdit,
   cancelEdit,
   isUserList,
-  isDM
+  isDM,
 ) {
-  const isBodyOnly = (prevMEvent !== null
-    && prevMEvent.getSender() === mEvent.getSender()
-    && prevMEvent.getType() !== 'm.room.member'
-    && prevMEvent.getType() !== 'm.room.create'
-    && diffMinutes(mEvent.getDate(), prevMEvent.getDate()) <= MAX_MSG_DIFF_MINUTES
-  );
+  const isBodyOnly =
+    prevMEvent !== null &&
+    prevMEvent.getSender() === mEvent.getSender() &&
+    prevMEvent.getType() !== 'm.room.member' &&
+    prevMEvent.getType() !== 'm.room.create' &&
+    diffMinutes(mEvent.getDate(), prevMEvent.getDate()) <= MAX_MSG_DIFF_MINUTES;
   const timestamp = mEvent.getTs();
 
   if (mEvent.getType() === 'm.room.member') {
@@ -172,7 +186,12 @@ function renderEvent(
   );
 }
 
-function useTimeline(roomTimeline, eventId, readUptoEvtStore, eventLimitRef) {
+function useTimeline(
+  roomTimeline,
+  eventId,
+  readUptoEvtStore,
+  eventLimitRef,
+) {
   const [timelineInfo, setTimelineInfo] = useState(null);
 
   const setEventTimeline = async (eId) => {
@@ -244,10 +263,12 @@ function usePaginate(
         readUptoEvtStore.setItem(roomTimeline.findEventByIdInTimelineSet(readUpToId));
       }
       limit.paginate(backwards, PAG_LIMIT, roomTimeline.timeline.length);
-      setTimeout(() => setInfo({
-        backwards,
-        loaded,
-      }));
+      setTimeout(() =>
+        setInfo({
+          backwards,
+          loaded,
+        }),
+      );
     };
     roomTimeline.on(cons.events.roomTimeline.PAGINATED, handlePaginatedFromServer);
     return () => {
@@ -322,10 +343,10 @@ function useHandleScroll(
     requestAnimationFrame(() => {
 
       // emit event to toggle scrollToBottom button visibility
-      const isAtBottom = (
-        timelineScroll.bottom < 16 && !roomTimeline.canPaginateForward()
-        && limit.length >= roomTimeline.timeline.length
-      );
+      const isAtBottom =
+        timelineScroll.bottom < 16 &&
+        !roomTimeline.canPaginateForward() &&
+        limit.length >= roomTimeline.timeline.length;
 
       roomTimeline.emit(cons.events.roomTimeline.AT_BOTTOM, isAtBottom);
       if (isAtBottom && readUptoEvtStore.getItem()) {
@@ -361,8 +382,12 @@ function useHandleScroll(
 
 }
 
-function useEventArrive(roomTimeline, readUptoEvtStore, timelineScrollRef, eventLimitRef) {
-
+function useEventArrive(
+  roomTimeline,
+  readUptoEvtStore,
+  timelineScrollRef,
+  eventLimitRef,
+) {
   const myUserId = initMatrix.matrixClient.getUserId();
   const [newEvent, setEvent] = useState(null);
 
@@ -411,7 +436,7 @@ function useEventArrive(roomTimeline, readUptoEvtStore, timelineScrollRef, event
         return;
       }
 
-      const isRelates = (event.getType() === 'm.reaction' || event.getRelation()?.rel_type === 'm.replace');
+      const isRelates = event.getType() === 'm.reaction' || event.getRelation()?.rel_type === 'm.replace';
       if (isRelates) {
         setEvent(event);
         return;
@@ -443,7 +468,11 @@ function useEventArrive(roomTimeline, readUptoEvtStore, timelineScrollRef, event
 
 let jumpToItemIndex = -1;
 
-function RoomViewContent({ eventId, roomTimeline, isUserList }) {
+function RoomViewContent({
+  eventId,
+  roomTimeline,
+  isUserList,
+}) {
 
   const [throttle] = useState(new Throttle());
 
@@ -481,6 +510,7 @@ function RoomViewContent({ eventId, roomTimeline, isUserList }) {
   const { timeline } = roomTimeline;
 
   useLayoutEffect(() => {
+
     if (!roomTimeline.initialized) {
       timelineScrollRef.current = new TimelineScroll(timelineSVRef.current);
       eventLimitRef.current = new EventLimit();
@@ -548,9 +578,13 @@ function RoomViewContent({ eventId, roomTimeline, isUserList }) {
   useEffect(() => {
 
     const timelineScroll = timelineScrollRef.current;
-    if (!roomTimeline.initialized) return;
+    if (!timelineScroll || !roomTimeline.initialized) return;
 
-    if (timelineScroll.bottom < 16 && !roomTimeline.canPaginateForward() && document.visibilityState === 'visible') {
+    if (
+      timelineScroll.bottom < 16 &&
+      !roomTimeline.canPaginateForward() &&
+      document.visibilityState === 'visible'
+    ) {
       timelineScroll.scrollToBottom();
     } else {
       timelineScroll.tryRestoringScroll();
@@ -573,22 +607,21 @@ function RoomViewContent({ eventId, roomTimeline, isUserList }) {
 
   });
 
-  const listenKeyboard = useCallback((event) => {
+  const listenKeyArrowUp = useCallback((e) => {
 
-    if (event.ctrlKey || event.altKey || event.metaKey) return;
-    if (event.key !== 'ArrowUp') return;
+    if (e.ctrlKey || e.altKey || e.metaKey) return;
+    if (e.key !== 'ArrowUp') return;
     if (navigation.isRawModalVisible) return;
 
     if (document.activeElement.id !== 'message-textarea') return;
     if (document.activeElement.value !== '') return;
 
-    const {
-      timeline: tl, activeTimeline, liveTimeline, matrixClient: mx,
-    } = roomTimeline;
-
+    const { timeline: tl, activeTimeline, liveTimeline, matrixClient: mx } = roomTimeline;
     const limit = eventLimitRef.current;
     if (activeTimeline !== liveTimeline) return;
     if (tl.length > limit.length) return;
+
+    e.preventDefault();
 
     const mTypes = ['m.text'];
     for (let i = tl.length - 1; i >= 0; i -= 1) {
@@ -596,17 +629,38 @@ function RoomViewContent({ eventId, roomTimeline, isUserList }) {
       const mE = tl[i];
 
       if (
-        mE.getSender() === mx.getUserId()
-        && mE.getType() === 'm.room.message'
-        && mTypes.includes(mE.getContent()?.msgtype)
+        mE.getSender() === mx.getUserId() &&
+        mE.getType() === 'm.room.message' &&
+        mTypes.includes(mE.getContent()?.msgtype)
       ) {
         setEditEventId(mE.getId());
         return;
       }
-
     }
+  },
+    [roomTimeline],
+  );
 
-  }, [roomTimeline]);
+  // escape to scroll down and mark as read
+  const listenKeyEscape = useCallback(
+    (e) => {
+      if (e.key !== 'Escape') return;
+      if (editEventId !== null) return;
+      roomTimeline.emit(cons.events.roomTimeline.SCROLL_TO_LIVE);
+      // hide "scroll to bottom"
+      roomTimeline.emit(cons.events.roomTimeline.AT_BOTTOM, true);
+    },
+    [editEventId, roomTimeline],
+  );
+
+  useEffect(() => {
+    document.body.addEventListener('keydown', listenKeyArrowUp);
+    document.body.addEventListener('keydown', listenKeyEscape);
+    return () => {
+      document.body.removeEventListener('keydown', listenKeyArrowUp);
+      document.body.removeEventListener('keydown', listenKeyEscape);
+    };
+  }, [listenKeyArrowUp, listenKeyEscape]);
 
   const handleTimelineScroll = (event) => {
 
@@ -650,15 +704,15 @@ function RoomViewContent({ eventId, roomTimeline, isUserList }) {
 
     const timelineSV = $(timelineSVRef.current);
     timelineSV.on('scroll', handleTimelineScrollJquery);
-    $('body').on('keydown', listenKeyboard);
+    $('body').on('keydown', listenKeyArrowUp);
     timelineSV.trigger('scroll');
 
     return () => {
-      $('body').off('keydown', listenKeyboard);
+      $('body').off('keydown', listenKeyArrowUp);
       $(timelineSVRef.current).off('scroll', handleTimelineScrollJquery);
     };
 
-  }, [listenKeyboard]);
+  }, [listenKeyArrowUp]);
 
   // Each time the timeline is loaded, this function is called
   const renderTimeline = () => {
@@ -666,6 +720,7 @@ function RoomViewContent({ eventId, roomTimeline, isUserList }) {
     const body = $('body');
     const tl = [];
     const limit = eventLimitRef.current;
+    if (limit === null) return [];
 
     let itemCountIndex = 0;
     jumpToItemIndex = -1;
@@ -700,38 +755,50 @@ function RoomViewContent({ eventId, roomTimeline, isUserList }) {
 
       let isNewEvent = false;
       if (!unreadDivider) {
-        unreadDivider = (readUptoEvent
-          && prevMEvent?.getTs() <= readUptoEvent.getTs()
-          && readUptoEvent.getTs() < mEvent.getTs());
+        unreadDivider =
+          readUptoEvent &&
+          prevMEvent?.getTs() <= readUptoEvent.getTs() &&
+          readUptoEvent.getTs() < mEvent.getTs();
         if (unreadDivider) {
           isNewEvent = true;
-          tl.push(<Divider key={`new-${mEvent.getId()}`} variant="success" text="New messages" roomId={roomTimeline.roomId} clickRemove />);
+          tl.push(<Divider key={`new-${mEvent.getId()}`} variant="bg" text="New messages" />);
           itemCountIndex += 1;
           if (jumpToItemIndex === -1) jumpToItemIndex = itemCountIndex;
         }
       }
       const dayDivider = prevMEvent && !isInSameDay(mEvent.getDate(), prevMEvent.getDate());
       if (dayDivider) {
-        tl.push(<Divider variant="bg" key={`divider-${mEvent.getId()}`} text={`${moment(mEvent.getDate()).format('MMMM DD, YYYY')}`} />);
+        tl.push(
+          <Divider
+            variant="bg"
+            key={`divider-${mEvent.getId()}`}
+            text={`${moment(mEvent.getDate()).format('MMMM DD, YYYY')}`}
+          />,
+        );
         itemCountIndex += 1;
       }
 
-      const focusId = timelineInfo.focusEventId;
+      if (timelineInfo === null) {
+        return [];
+      }
+      const focusId = timelineInfo?.focusEventId;
       const isFocus = focusId === mEvent.getId();
       if (isFocus) jumpToItemIndex = itemCountIndex;
 
-      tl.push(renderEvent(
-        timelineSVRef,
-        roomTimeline,
-        mEvent,
-        isNewEvent ? null : prevMEvent,
-        isFocus,
-        editEventId === mEvent.getId(),
-        setEditEventId,
-        cancelEdit,
-        isUserList,
-        isDM,
-      ));
+      tl.push(
+        renderEvent(
+          timelineSVRef,
+          roomTimeline,
+          mEvent,
+          isNewEvent ? null : prevMEvent,
+          isFocus,
+          editEventId === mEvent.getId(),
+          setEditEventId,
+          cancelEdit,
+          isUserList,
+          isDM,
+        ),
+      );
       itemCountIndex += 1;
     }
 
@@ -788,7 +855,8 @@ function RoomViewContent({ eventId, roomTimeline, isUserList }) {
       </div>
     </div>
   </ScrollView>;
-}
+
+};
 
 RoomViewContent.defaultProps = {
   eventId: null,

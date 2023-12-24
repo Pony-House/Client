@@ -1,7 +1,10 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-
 import TextareaAutosize from 'react-autosize-textarea';
+
+import { ReactEditor } from 'slate-react';
+import { Editor, Transforms } from 'slate';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -21,6 +24,7 @@ import RawIcon from '../../atoms/system-icons/RawIcon';
 import IconButton from '../../atoms/button/IconButton';
 import ScrollView from '../../atoms/scroll/ScrollView';
 import { MessageReply } from '../../molecules/message/Message';
+import { flattenNodes } from '../../molecules/markdown-input/MarkdownInput';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
@@ -32,9 +36,12 @@ let isTyping = false;
 let isCmdActivated = false;
 let cmdCursorPos = null;
 
-// Room View Input
 function RoomViewInput({
-  roomId, roomTimeline, viewEvent, refRoomInput,
+  roomId,
+  threadId,
+  roomTimeline,
+  viewEvent,
+  refRoomInput,
 }) {
 
   // Rec Ref
@@ -48,6 +55,8 @@ function RoomViewInput({
 
   // Inputs
   const textAreaRef = useRef(null);
+  const editor = useRef(null);
+  const editorElRef = useRef(null);
   const inputBaseRef = useRef(null);
   const uploadInputRef = useRef(null);
   const uploadProgressRef = useRef(null);
@@ -63,6 +72,29 @@ function RoomViewInput({
   // Request Focus
   function requestFocusInput() {
     $(textAreaRef.current).focus();
+  }
+
+  useEffect(() => {
+    roomsInput.on(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
+    viewEvent.on('focus_msg_input', requestFocusInput);
+    return () => {
+      roomsInput.removeListener(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
+      viewEvent.removeListener('focus_msg_input', requestFocusInput);
+    };
+  }, [roomsInput, viewEvent]);
+
+  function getEditorContent() {
+    const content = editor.current.children;
+    return flattenNodes(content);
+  }
+
+  function clearEditor() {
+    if (editor.current) Transforms.delete(editor.current, {
+      at: {
+        anchor: editor.current.start([]),
+        focus: editor.current.end([]),
+      },
+    });
   }
 
   // Send is Typing
@@ -326,14 +358,10 @@ function RoomViewInput({
     ];
 
     // Events
-    roomsInput.on(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
-    viewEvent.on('focus_msg_input', requestFocusInput);
     tinyRec.input.on('mousedown touchstart', holdTinyAudio[0]).on('mouseup mouseleave touchend', holdTinyAudio[1]).on('click', holdTinyAudio[3]);
 
     return () => {
       tinyRec.input.off('mousedown', holdTinyAudio[0]).off('mouseup mouseleave', holdTinyAudio[1]).off('click', holdTinyAudio[3]);
-      roomsInput.removeListener(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
-      viewEvent.removeListener('focus_msg_input', requestFocusInput);
     };
 
   }, []);
@@ -356,9 +384,11 @@ function RoomViewInput({
   }
 
   function rightOptionsA11Y(A11Y) {
+    if (rightOptionsRef.current === null) return;
     const rightOptions = rightOptionsRef.current.children;
     for (let index = 0; index < rightOptions.length; index += 1) {
-      rightOptions[index].tabIndex = A11Y ? 0 : -1;
+      const el = rightOptions[index];
+      el.tabIndex = A11Y ? 0 : -1;
     }
   }
 
@@ -381,6 +411,12 @@ function RoomViewInput({
   }
 
   function setCursorPosition(pos1, pos2) {
+
+    setTimeout(() => {
+      if (editor.current) ReactEditor.focus(editor.current);
+      if (editor.current) Transforms.select(editor.current, { path: [0, 0], offset: pos1 });
+    }, 0);
+
     return new Promise(resolve => {
       setTimeout(() => {
 
@@ -411,6 +447,7 @@ function RoomViewInput({
 
       }, 0);
     });
+
   }
 
   function replaceCmdWith(msg, cursor, replacement) {
@@ -442,8 +479,16 @@ function RoomViewInput({
 
   // Input
   function focusInput() {
+
     if (settings.isTouchScreenDevice) return;
     $(textAreaRef.current).focus();
+
+    // check if editor.current is in the DOM
+    if (!document.body.contains(editorElRef.current)) return;
+
+    if (editor.current) ReactEditor.focus(editor.current);
+    if (editor.current) Transforms.select(editor.current, Editor.end(editor.current, []));
+
   }
 
   // Set Reply
@@ -452,7 +497,10 @@ function RoomViewInput({
     setReplyTo({ userId, eventId, body });
 
     roomsInput.setReplyTo(roomId, {
-      userId, eventId, body, formattedBody,
+      userId,
+      eventId,
+      body,
+      formattedBody,
     });
 
     focusInput();
@@ -560,7 +608,7 @@ function RoomViewInput({
     textArea.prop('disabled', true).css('cursor', 'not-allowed');
 
     // Send Input
-    await roomsInput.sendInput(roomId, opt).catch(err => {
+    await roomsInput.sendInput(roomId, threadId, opt).catch(err => {
       toast(err.message);
     });
 
@@ -569,6 +617,7 @@ function RoomViewInput({
     focusInput();
 
     // Get Room ID
+    clearEditor();
     textArea.val(roomsInput.getMessage(roomId)).css('height', 'unset');
 
     // Reply Fix
@@ -614,6 +663,7 @@ function RoomViewInput({
       processCommand(msgBody.trim());
       textArea.val('');
       textArea.css('height', 'unset');
+      if (editor.current) editor.current.deleteFragment();
       return;
     }
 
@@ -649,7 +699,13 @@ function RoomViewInput({
 
   // Get Cursor
   function getCursorPosition() {
+
+    if (editor.current) {
+      return editor.current.selection.anchor.offset;
+    }
+
     return textAreaRef.current.selectionStart;
+
   }
 
   // Cmd
@@ -693,6 +749,12 @@ function RoomViewInput({
     recognizeCmd(e.target.value);
     if (!isCmdActivated) processTyping(msg);
   };
+
+  /* const handleMsgTypingPlugin = (e) => {
+    const msg = flattenNodes(e);
+    recognizeCmd(msg);
+    if (!isCmdActivated) processTyping(msg);
+  }; */
 
   // Keydown
   const handleKeyDown = (e) => {
@@ -783,7 +845,7 @@ function RoomViewInput({
   }
 
   const handleUploadClick = () => {
-    if (attachment === null) $(uploadInputRef.current).trigger('click');
+    if (attachment === null) uploadInputRef.current.click();
     else {
       roomsInput.cancelAttachment(roomId);
     }
@@ -794,6 +856,16 @@ function RoomViewInput({
     setAttachment(file);
     if (file !== null) roomsInput.setAttachment(roomId, file);
   }
+
+  useEffect(() => {
+    const focusOnLive = () => {
+      ReactEditor.focus(editor.current);
+    };
+    roomTimeline.addListener(cons.events.roomTimeline.SCROLL_TO_LIVE, focusOnLive);
+    return () => {
+      roomTimeline.removeListener(cons.events.roomTimeline.SCROLL_TO_LIVE, focusOnLive);
+    };
+  });
 
   // Render Inputs
   function renderInputs() {
@@ -806,11 +878,10 @@ function RoomViewInput({
     if (!canISend || tombstoneEvent) {
       return (
         <Text className="room-input__alert">
-          {
-            tombstoneEvent
-              ? tombstoneEvent.getContent()?.body ?? 'This room has been replaced and is no longer active.'
-              : 'You do not have permission to post to this room'
-          }
+          {tombstoneEvent
+            ? tombstoneEvent.getContent()?.body ??
+            'This room has been replaced and is no longer active.'
+            : 'You do not have permission to post to this room'}
         </Text>
       );
     }
@@ -820,10 +891,23 @@ function RoomViewInput({
     // Complete
     return (
       <>
+        <div
+          className={`room-input__option-container${attachment === null ? '' : ' room-attachment__option'
+            }`}
+        >
+          <input
+            onChange={uploadFileChange}
+            style={{ display: 'none' }}
+            ref={uploadInputRef}
+            type="file"
+          />
+          <IconButton
+            id="room-file-upload"
+            onClick={handleUploadClick}
+            tooltip={attachment === null ? 'Upload' : 'Cancel'}
+            fa="fa-solid fa-circle-plus"
+          />
 
-        <div id="chat-textarea-options" className={`room-input__option-container${attachment === null ? '' : ' room-attachment__option'}`}>
-          <input onChange={uploadFileChange} style={{ display: 'none' }} ref={uploadInputRef} type="file" />
-          <IconButton id="room-file-upload" onClick={handleUploadClick} tooltip={attachment === null ? 'Upload' : 'Cancel'} fa="fa-solid fa-circle-plus" />
           <IconButton className='d-none' id="room-more-textarea" onClick={() => { $('.room-input').removeClass('textarea-typing'); }} tooltip='More' fa="fa-solid fa-angle-right" />
         </div>
 
@@ -925,8 +1009,13 @@ function RoomViewInput({
 
     return (
       <div className="room-attachment">
-        <div className={`room-attachment__preview${fileType !== 'image' ? ' room-attachment__icon' : ''}`}>
-          {fileType === 'image' && <img alt={attachment.name} src={URL.createObjectURL(attachment)} />}
+        <div
+          className={`room-attachment__preview${fileType !== 'image' ? ' room-attachment__icon' : ''
+            }`}
+        >
+          {fileType === 'image' && (
+            <img alt={attachment.name} src={URL.createObjectURL(attachment)} />
+          )}
           {fileType === 'video' && <RawIcon fa="fa-solid fa-film" />}
           {fileType === 'audio' && <RawIcon fa="fa-solid fa-volume-high" />}
           {fileType !== 'image' && fileType !== 'video' && fileType !== 'audio' && <RawIcon fa="fa-solid fa-file" />}
@@ -982,6 +1071,7 @@ function RoomViewInput({
 // Room View PropTypes
 RoomViewInput.propTypes = {
   roomId: PropTypes.string.isRequired,
+  threadId: PropTypes.string,
   roomTimeline: PropTypes.shape({}).isRequired,
   viewEvent: PropTypes.shape({}).isRequired,
 };

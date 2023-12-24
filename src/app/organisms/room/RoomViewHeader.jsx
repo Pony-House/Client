@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { forceUnloadedAvatars } from '../../atoms/avatar/load';
@@ -6,7 +6,13 @@ import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
-import { toggleRoomSettings, openReusableContextMenu, openNavigation, selectRoomMode } from '../../../client/action/navigation';
+import navigation from '../../../client/state/navigation';
+import {
+  toggleRoomSettings,
+  openReusableContextMenu,
+  openNavigation,
+  selectRoomMode,
+} from '../../../client/action/navigation';
 import { togglePeopleDrawer /* , startVoiceChat */ } from '../../../client/action/settings';
 import { colorMXID } from '../../../util/colorMXID';
 import { getEventCords } from '../../../util/common';
@@ -21,8 +27,7 @@ import RoomOptions from '../../molecules/room-options/RoomOptions';
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 import RoomViewPin from './RoomViewPin';
 
-function RoomViewHeader({ roomId }) {
-
+function RoomViewHeader({ roomId, threadId }) {
   const [, forceUpdate] = useForceUpdate();
   const mx = initMatrix.matrixClient;
   const isDM = initMatrix.roomList.directs.has(roomId);
@@ -32,6 +37,18 @@ function RoomViewHeader({ roomId }) {
   avatarSrc = isDM ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop') : avatarSrc;
 
   const roomName = room.name;
+
+  const roomHeaderBtnRef = useRef(null);
+  useEffect(() => {
+    const settingsToggle = (isVisible) => {
+      const rawIcon = roomHeaderBtnRef.current.lastElementChild;
+      rawIcon.style.transform = isVisible ? 'rotateX(180deg)' : 'rotateX(0deg)';
+    };
+    navigation.on(cons.events.navigation.ROOM_SETTINGS_TOGGLED, settingsToggle);
+    return () => {
+      navigation.removeListener(cons.events.navigation.ROOM_SETTINGS_TOGGLED, settingsToggle);
+    };
+  }, []);
 
   useEffect(() => {
     const { roomList } = initMatrix;
@@ -48,12 +65,15 @@ function RoomViewHeader({ roomId }) {
     };
   }, [roomId]);
 
+  if (!room) {
+    console.warn(`RoomViewHeader: Room ${roomId} not found`);
+    return null;
+  }
+
   const openRoomOptions = (e) => {
-    openReusableContextMenu(
-      'bottom',
-      getEventCords(e, '.ic-btn'),
-      (closeMenu) => <RoomOptions roomId={roomId} afterOptionSelect={closeMenu} />,
-    );
+    openReusableContextMenu('bottom', getEventCords(e, '.ic-btn'), (closeMenu) => (
+      <RoomOptions roomId={roomId} afterOptionSelect={closeMenu} />
+    ));
   };
 
   //       <IconButton className="room-header__drawer-btn" onClick={startVoiceChat} tooltip="Start VC" fa="fa-solid fa-phone" />
@@ -71,70 +91,68 @@ function RoomViewHeader({ roomId }) {
     }
   };
 
-  return (
-    <Header>
+  return <Header>
 
-      <ul className='navbar-nav mr-auto'>
+    <ul className='navbar-nav mr-auto'>
 
-        <li className="nav-item back-navigation">
+      <li className="nav-item back-navigation">
 
-          <IconButton
-            className="nav-link nav-sidebar-1"
-            fa="fa-solid fa-chevron-left"
-            tooltip="Navigation sidebar"
-            tooltipPlacement="bottom"
-            onClick={navigationSidebarCallback}
-          />
+        <IconButton
+          className="nav-link nav-sidebar-1"
+          fa="fa-solid fa-chevron-left"
+          tooltip="Navigation sidebar"
+          tooltipPlacement="bottom"
+          onClick={navigationSidebarCallback}
+        />
 
-          <IconButton
-            className="nav-link nav-sidebar-2"
-            fa="fa-solid fa-chevron-right"
-            tooltip="Navigation sidebar"
-            tooltipPlacement="bottom"
-            onClick={navigationSidebarCallback}
-          />
+        <IconButton
+          className="nav-link nav-sidebar-2"
+          fa="fa-solid fa-chevron-right"
+          tooltip="Navigation sidebar"
+          tooltipPlacement="bottom"
+          onClick={navigationSidebarCallback}
+        />
 
-        </li>
+      </li>
 
-        <li className="nav-item avatar-base">
-          <button
-            className="nav-link btn btn-bg border-0 p-1"
-            onClick={() => toggleRoomSettings()}
-            type="button"
-          >
-            <Avatar className='d-inline-block me-2' imageSrc={avatarSrc} text={roomName} bgColor={colorMXID(roomId)} size="small" isDefaultImage />
-            <span className='me-2 text-truncate d-inline-block room-name'>{twemojifyReact(roomName)}</span>
-            <RawIcon fa="fa-solid fa-chevron-down room-icon" />
-          </button>
-        </li>
+      <li className="nav-item avatar-base">
+        <button
+          className="nav-link btn btn-bg border-0 p-1"
+          onClick={() => toggleRoomSettings()}
+          type="button"
+        >
+          <Avatar className='d-inline-block me-2' imageSrc={avatarSrc} text={roomName} bgColor={colorMXID(roomId)} size="small" isDefaultImage />
+          <span className='me-2 text-truncate d-inline-block room-name'>{twemojifyReact(roomName)}</span>
+          <RawIcon fa="fa-solid fa-chevron-down room-icon" />
+        </button>
+      </li>
 
-      </ul>
+    </ul>
 
-      <ul className='navbar-nav ms-auto mb-0 small' id='room-options'>
+    <ul className='navbar-nav ms-auto mb-0 small' id='room-options'>
 
-        {mx.isRoomEncrypted(roomId) === false && (
-          <li className="nav-item">
-            <IconButton className="nav-link btn btn-bg border-0" onClick={() => toggleRoomSettings(tabText.SEARCH)} tooltipPlacement="bottom" tooltip="Search" fa="fa-solid fa-magnifying-glass" />
-          </li>
-        )}
-
-        <li className="nav-item"><IconButton className="nav-link border-0 d-none d-sm-block" onClick={togglePeopleDrawer} tooltipPlacement="bottom" tooltip="People" fa="fa-solid fa-user" /></li>
-        <li className="nav-item"><IconButton className="nav-link border-0 d-none d-sm-block" onClick={() => toggleRoomSettings(tabText.MEMBERS)} tooltipPlacement="bottom" tooltip="Members" fa="fa-solid fa-users" /></li>
-
+      {mx.isRoomEncrypted(roomId) === false && (
         <li className="nav-item">
-          <IconButton
-            tooltipPlacement="bottom"
-            className="nav-link border-0"
-            onClick={openRoomOptions}
-            tooltip="Options"
-            fa="bi bi-three-dots-vertical"
-          />
+          <IconButton className="nav-link btn btn-bg border-0" onClick={() => toggleRoomSettings(tabText.SEARCH)} tooltipPlacement="bottom" tooltip="Search" fa="fa-solid fa-magnifying-glass" />
         </li>
+      )}
 
-      </ul>
+      <li className="nav-item"><IconButton className="nav-link border-0 d-none d-sm-block" onClick={togglePeopleDrawer} tooltipPlacement="bottom" tooltip="People" fa="fa-solid fa-user" /></li>
+      <li className="nav-item"><IconButton className="nav-link border-0 d-none d-sm-block" onClick={() => toggleRoomSettings(tabText.MEMBERS)} tooltipPlacement="bottom" tooltip="Members" fa="fa-solid fa-users" /></li>
 
-    </Header >
-  );
+      <li className="nav-item">
+        <IconButton
+          tooltipPlacement="bottom"
+          className="nav-link border-0"
+          onClick={openRoomOptions}
+          tooltip="Options"
+          fa="bi bi-three-dots-vertical"
+        />
+      </li>
+
+    </ul>
+
+  </Header>;
 
 }
 RoomViewHeader.propTypes = {

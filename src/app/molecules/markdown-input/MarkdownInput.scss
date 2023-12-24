@@ -1,0 +1,60 @@
+.markdown-input {
+  display: block;
+  width: 100%;
+  min-width: 0px;
+  height: 100%;
+  font-size: var(--fs-b1);
+
+  background-color: var(--bg-surface-low);
+  color: var(--tc-surface-normal);
+
+  border-radius: var(--bo-radius);
+  border: 1px solid var(--bg-surface-border);
+
+  display: flex;
+  align-items: center;
+}
+
+.markdown-input__editable {
+  padding: var(--sp-ultra-tight) calc(var(--sp-tight) - 2px);
+  width: 100%;
+  // the outline adds a blue border on firefox when selected which looks ugly
+  outline: none;
+}
+.markdown-input__placeholder {
+  user-select: none;
+  pointer-events: none;
+  opacity: 0.3;
+  padding: var(--sp-ultra-tight) calc(var(--sp-tight) - 2px);
+  width: 100%;
+  position: absolute;
+}
+
+.bold {
+  font-weight: bold;
+}
+.italic {
+  font-style: italic;
+}
+.strikethrough {
+  text-decoration: line-through;
+}
+.underline {
+  text-decoration: underline;
+}
+.inline-code {
+  font-family: monospace;
+  color: var(--tc-code) !important;
+}
+
+.link {
+  color: var(--tc-link);
+}
+
+.syntax {
+  color: var(--tc-surface-low);
+}
+
+.read-only {
+  cursor: not-allowed;
+}

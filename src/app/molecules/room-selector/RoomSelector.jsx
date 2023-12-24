@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { NotificationCountType } from 'matrix-js-sdk';
 
 import { twemojifyReact } from '../../../util/twemojify';
 import { colorMXID } from '../../../util/colorMXID';
@@ -14,10 +15,17 @@ import insertCustomStatus from '../people-selector/insertCustomStatus';
 import { objType } from '../../../util/tools';
 import { checkerFavIcon } from '../../../util/libs/favicon';
 import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
+import { selectRoom } from '../../../client/action/navigation';
 
 function RoomSelectorWrapper({
-  isSelected, isMuted, isUnread, onClick,
-  content, options, onContextMenu, className
+  isSelected,
+  isMuted,
+  isUnread,
+  onClick,
+  content,
+  options,
+  onContextMenu,
+  className,
 }) {
   const classes = ['room-selector'];
   if (isMuted) classes.push('room-selector--muted');
@@ -55,9 +63,25 @@ RoomSelectorWrapper.propTypes = {
 };
 
 function RoomSelector({
-  name, parentName, roomId, room, imageSrc, imageAnimSrc, animParentsCount, iconSrc,
-  isSelected, isMuted, isUnread, notificationCount, isAlert,
-  options, onClick, onContextMenu, isProfile, notSpace, user,
+  name,
+  parentName,
+  roomId,
+  room,
+  imageSrc,
+  imageAnimSrc,
+  animParentsCount,
+  iconSrc,
+  isSelected,
+  isMuted,
+  isUnread,
+  notificationCount,
+  isAlert,
+  options,
+  onClick,
+  onContextMenu,
+  isProfile,
+  notSpace,
+  user,
 }) {
 
   const [userData, setPresenceStatus] = useState(null);
@@ -239,3 +263,49 @@ RoomSelector.propTypes = {
 };
 
 export default RoomSelector;
+export function ThreadSelector({ thread, isSelected, isMuted }) {
+
+  const { rootEvent } = thread;
+
+  const notificationCount = thread.room.getThreadUnreadNotificationCount(
+    thread.id,
+    NotificationCountType.Total,
+  );
+  const highlightNotificationCount = thread.room.getThreadUnreadNotificationCount(
+    thread.id,
+    NotificationCountType.Highlight,
+  );
+  const isUnread = !isMuted && notificationCount > 0;
+  const isAlert = highlightNotificationCount > 0;
+
+  const name = rootEvent?.getContent()?.body ?? 'Unknown thread';
+
+  const onClick = () => {
+    selectRoom(thread.roomId, undefined, thread.id);
+  };
+
+  return (
+    <RoomSelectorWrapper
+      isSelected={isSelected}
+      isMuted={isMuted}
+      isUnread={!isMuted && notificationCount > 0}
+      content={
+        <>
+          <div className="thread-selector__lines">{/* TODO */}</div>
+          <Text variant="b1" weight={isUnread ? 'medium' : 'normal'}>
+            {twemojifyReact(name)}
+          </Text>
+          {isUnread && (
+            <NotificationBadge
+              alert={isAlert}
+              content={notificationCount > 0 ? notificationCount : null}
+            />
+          )}
+        </>
+      }
+      options={<div />}
+      onClick={onClick}
+      onContextMenu={() => { }}
+    />
+  );
+};

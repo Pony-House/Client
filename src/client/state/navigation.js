@@ -15,6 +15,7 @@ class Navigation extends EventEmitter {
     this.selectedSpacePath = [cons.tabs.DIRECTS];
 
     this.selectedRoomId = null;
+    this.selectedThreadId = null;
     this.isRoomSettings = false;
     this.recentRooms = [];
 
@@ -51,9 +52,9 @@ class Navigation extends EventEmitter {
     const { roomList, accountData } = this.initMatrix;
 
     if (
-      this.selectedTab === cons.tabs.HOME
-      && roomList.rooms.has(roomId)
-      && !roomList.roomIdToParents.has(roomId)
+      this.selectedTab === cons.tabs.HOME &&
+      roomList.rooms.has(roomId) &&
+      !roomList.roomIdToParents.has(roomId)
     ) {
 
       this.spaceToRoom.set(cons.tabs.HOME, {
@@ -81,6 +82,11 @@ class Navigation extends EventEmitter {
     if (!parents) return;
     if (parents.has(this.selectedSpaceId)) {
 
+      if (!this.selectedSpaceId) {
+        console.warn('Called _mapRoomToSpace but no selected space');
+        return;
+      }
+
       this.spaceToRoom.set(this.selectedSpaceId, {
         roomId,
         timestamp: Date.now(),
@@ -102,16 +108,17 @@ class Navigation extends EventEmitter {
 
   }
 
-  _selectRoom(roomId, eventId, forceScroll) {
+  _selectRoom(roomId, eventId, threadId, forceScroll) {
 
     const prevSelectedRoomId = this.selectedRoomId;
     this.selectedRoomId = roomId;
-
+    this.selectedThreadId = threadId ?? null;
     if (prevSelectedRoomId !== roomId) this._mapRoomToSpace(roomId);
     this.removeRecentRoom(prevSelectedRoomId);
     this.addRecentRoom(prevSelectedRoomId);
     this.removeRecentRoom(this.selectedRoomId);
 
+    // close the room settings when we select a room
     if (this.isRoomSettings && typeof this.selectedRoomId === 'string') {
       this.isRoomSettings = !this.isRoomSettings;
       tinyAPI.emit('roomSettingsToggled', this.isRoomSettings, null, forceScroll);
@@ -123,6 +130,7 @@ class Navigation extends EventEmitter {
       this.selectedRoomId,
       prevSelectedRoomId,
       eventId,
+      threadId,
       forceScroll,
     );
 
@@ -131,6 +139,7 @@ class Navigation extends EventEmitter {
       this.selectedRoomId,
       prevSelectedRoomId,
       eventId,
+      threadId,
       forceScroll,
     );
 
@@ -142,16 +151,12 @@ class Navigation extends EventEmitter {
     const { categorizedSpaces } = accountData;
 
     if (roomList.isOrphan(roomId)) {
-
-      if (roomList.directs.has(roomId)) {
-        this._selectSpace(null, true, false);
-        this._selectTab(cons.tabs.DIRECTS, false);
-        return;
-      }
-
       this._selectSpace(null, true, false);
-      this._selectTab(cons.tabs.HOME, false);
-
+      if (roomList.directs.has(roomId)) {
+        this._selectTab(cons.tabs.DIRECTS, false);
+      } else {
+        this._selectTab(cons.tabs.HOME, false);
+      }
       return;
 
     }
@@ -364,9 +369,10 @@ class Navigation extends EventEmitter {
 
     const actions = {
       [cons.actions.navigation.SELECT_TAB]: () => {
-        const roomId = (
+        const roomId =
           action.tabId !== cons.tabs.HOME && action.tabId !== cons.tabs.DIRECTS
-        ) ? action.tabId : null;
+            ? action.tabId
+            : null;
 
         tinyAPI.emit('selectTab', { roomId, tabId: action.tabId });
         this._selectSpace(roomId, true);
@@ -409,9 +415,9 @@ class Navigation extends EventEmitter {
       [cons.actions.navigation.SELECT_ROOM]: () => {
         tinyAPI.emit('selectedRoom', action.roomId, action.forceScroll);
         if (action.roomId) this._selectTabWithRoom(action.roomId, action.forceScroll);
-        this._selectRoom(action.roomId, action.eventId, action.forceScroll);
-        setTimeout(() => tinyAPI.emit('selectedRoomAfter', action.roomId, action.forceScroll), 100);
-        this.emit(cons.events.navigation.SELECTED_ROOM, action.roomId, action.eventId, action.forceScroll);
+        this._selectRoom(action.roomId, action.eventId, action.threadId, action.forceScroll);
+        setTimeout(() => tinyAPI.emit('selectedRoomAfter', action.roomId, action.threadId, action.forceScroll), 100);
+        this.emit(cons.events.navigation.SELECTED_ROOM, action.roomId, action.eventId, action.threadId, action.forceScroll);
       },
 
       [cons.actions.navigation.OPEN_SPACE_SETTINGS]: () => {
@@ -489,6 +495,7 @@ class Navigation extends EventEmitter {
           cons.events.navigation.JOIN_ALIAS_OPENED,
           action.term,
         );
+
       },
 
       [cons.actions.navigation.OPEN_INVITE_USER]: () => {

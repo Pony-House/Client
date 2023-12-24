@@ -57,15 +57,22 @@ function Room() {
   };
 
   useEffect(() => {
-    const handleRoomSelected = (rId, pRoomId, eId, forceScroll) => {
-
+    const handleRoomSelected = (
+      roomId,
+      prevRoomId,
+      eventId,
+      forceScroll,
+      threadId,
+    ) => {
       roomInfo.roomTimeline?.removeInternalListeners();
       $('.space-drawer-menu-item').removeClass('active');
 
-      if (mx.getRoom(rId)) {
+      if (mx.getRoom(roomId)) {
+        const threadTimeline = threadId ? RoomTimeline.newFromThread(threadId, roomId) : null;
+        const roomTimeline = threadTimeline ?? new RoomTimeline(roomId);
         sendRoomInfo({
-          roomTimeline: new RoomTimeline(rId),
-          eventId: eId ?? null,
+          roomTimeline,
+          eventId: eventId ?? null,
           forceScroll,
         });
       } else {
@@ -87,7 +94,7 @@ function Room() {
     return () => {
       navigation.removeListener(cons.events.navigation.ROOM_SELECTED, handleRoomSelected);
     };
-  }, [roomInfo]);
+  }, [mx, roomInfo]);
 
   useEffect(() => {
     const handleDrawerToggling = (visiblity) => setIsDrawer(visiblity);
