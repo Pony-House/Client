@@ -356,7 +356,7 @@ const MessageBody = React.memo(
       msgData = (<span ref={messageBody} className="custom-html">{msgData}</span>);
     }
 
-    return <div className={`text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''} ${className}`}>
+    return <div className={`text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''} ${className} message-body-status-${messageStatus}`}>
       {msgType === 'm.emote' && (
         <>
           {'* '}
@@ -749,8 +749,8 @@ const MessageOptions = React.memo(
         {canCreateThread && (
           <IconButton
             onClick={() => createThread()}
-            fa="fa-solid fa-heart-circle-plus"
-            size="extra-small"
+            fa="bi bi-layers"
+            size="normal"
             tooltip="Create thread"
           />
         )}
@@ -1047,35 +1047,6 @@ function getEditedBody(editedMEvent) {
   return [parsedContent.body, isCustomHTML, newContent.formatted_body ?? null];
 }
 
-function findLinksFromPlaintextBody(body) {
-  const matches = body.match(/((https?:\/\/[^\s)]+))/g) ?? [];
-  // deduplicate
-  return [...new Set(matches)];
-}
-
-function findLinksFromFormattedBody(body) {
-  // parse as html
-  const doc = new DOMParser().parseFromString(body, 'text/html');
-  // strip blockquotes since they're sometimes used like discord embeds
-  doc.querySelectorAll('blockquote').forEach((e) => e.remove());
-  // strip code blocks
-  doc.querySelectorAll('pre').forEach((e) => e.remove());
-
-  // convert back to plaintext
-  const plaintext = doc.body.textContent ?? '';
-  // find links
-  const matches = findLinksFromPlaintextBody(plaintext);
-
-  // also get the links from <a> tags
-  doc.querySelectorAll('a').forEach((e) => {
-    const href = e.getAttribute('href');
-    if (href && !/^https?:\/\/matrix.to/.test(href)) matches.push(href);
-  });
-
-  // deduplicate
-  return [...new Set(matches)];
-}
-
 function Message({
   mEvent,
   isBodyOnly,
@@ -1164,7 +1135,6 @@ function Message({
   }
 
   if (msgType === 'm.emote') classList.push('message--type-emote');
-
 
   // Emoji Type
   const isEdited = editedTimeline ? editedTimeline.has(eventId) : false;
@@ -1293,26 +1263,24 @@ function Message({
         {
           // User Avatar
           !isBodyOnly
-            ? (
-              <MessageAvatar
-                roomId={roomId}
-                avatarSrc={avatarSrc}
-                avatarAnimSrc={avatarAnimSrc}
-                userId={senderId}
-                username={username}
-                contextMenu={(e) => {
+            ? <MessageAvatar
+              roomId={roomId}
+              avatarSrc={avatarSrc}
+              avatarAnimSrc={avatarAnimSrc}
+              userId={senderId}
+              username={username}
+              contextMenu={(e) => {
 
-                  openReusableContextMenu(
-                    'bottom',
-                    getEventCords(e, '.ic-btn'),
-                    (closeMenu) => <UserOptions userId={senderId} afterOptionSelect={closeMenu} />,
-                  );
+                openReusableContextMenu(
+                  'bottom',
+                  getEventCords(e, '.ic-btn'),
+                  (closeMenu) => <UserOptions userId={senderId} afterOptionSelect={closeMenu} />,
+                );
 
-                  e.preventDefault();
+                e.preventDefault();
 
-                }}
-              />
-            )
+              }}
+            />
             : <MessageTime
               className='hc-time'
               timestamp={mEvent.getTs()}
@@ -1373,6 +1341,7 @@ function Message({
             content={content}
             msgType={msgType}
             isEdited={isEdited}
+            messageStatus={messageStatus}
           />
 
           {embeds.length > 0 ? <div className='message-embed message-url-embed'>
@@ -1491,6 +1460,7 @@ function Message({
           content={content}
           msgType={msgType}
           isEdited={isEdited}
+          messageStatus={messageStatus}
         />
       )}
 
@@ -1511,6 +1481,10 @@ function Message({
 
       {haveReactions && (
         <MessageReactionGroup roomTimeline={roomTimeline} mEvent={mEvent} />
+      )}
+
+      {roomTimeline && shouldShowThreadSummary(mEvent, roomTimeline) && (
+        <MessageThreadSummary thread={mEvent.thread} />
       )}
 
     </td>
