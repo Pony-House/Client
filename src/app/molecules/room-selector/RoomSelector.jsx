@@ -284,28 +284,25 @@ export function ThreadSelector({ thread, isSelected, isMuted }) {
     selectRoom(thread.roomId, undefined, thread.id);
   };
 
-  return (
-    <RoomSelectorWrapper
-      isSelected={isSelected}
-      isMuted={isMuted}
-      isUnread={!isMuted && notificationCount > 0}
-      content={
-        <>
-          <div className="thread-selector__lines">{/* TODO */}</div>
-          <Text variant="b1" weight={isUnread ? 'medium' : 'normal'}>
-            {twemojifyReact(name)}
-          </Text>
-          {isUnread && (
-            <NotificationBadge
-              alert={isAlert}
-              content={notificationCount > 0 ? notificationCount : null}
-            />
-          )}
-        </>
-      }
-      options={<div />}
-      onClick={onClick}
-      onContextMenu={() => { }}
-    />
-  );
+  return <RoomSelectorWrapper
+    isSelected={isSelected}
+    isMuted={isMuted}
+    isUnread={!isMuted && notificationCount > 0}
+    content={
+      <>
+        <div className="thread-selector__lines">{/* TODO */}</div>
+        <Text variant="b1" weight={isUnread ? 'medium' : 'normal'}>
+          <i class="bi bi-arrow-return-right me-2 thread-selector__icon" /> {twemojifyReact(name)}
+        </Text>
+        {isUnread && (
+          <NotificationBadge
+            alert={isAlert}
+            content={notificationCount > 0 ? notificationCount : null}
+          />
+        )}
+      </>
+    }
+    options={<div />}
+    onClick={onClick}
+  />;
 };
