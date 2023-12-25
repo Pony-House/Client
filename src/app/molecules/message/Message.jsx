@@ -1372,6 +1372,10 @@ function Message({
           <MessageReactionGroup roomTimeline={roomTimeline} mEvent={mEvent} />
         )}
 
+        {roomTimeline && shouldShowThreadSummary(mEvent, roomTimeline) && (
+          <MessageThreadSummary thread={mEvent.thread} />
+        )}
+
       </td>
 
       {children && (
