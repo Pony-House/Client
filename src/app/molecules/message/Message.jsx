@@ -889,7 +889,7 @@ const MessageThreadSummary = React.memo(({ thread }) => {
         {thread.length} message{thread.length > 1 ? 's' : ''} ›
       </Text>
     </div>
-    <div className="message__threadSummary-lastReply">
+    <div className="message__threadSummary-lastReply text-truncate text-white">
       {lastReply ? (
         <>
           {lastSender ? (
@@ -900,17 +900,17 @@ const MessageThreadSummary = React.memo(({ thread }) => {
                 bgColor={backgroundColorMXID(lastSender?.userId)}
                 size="ultra-small"
               />
-              <span className="message__threadSummary-lastReply-sender very-small">
-                <Text span>{lastSender?.name}</Text>{' '}
+              <span className="message__threadSummary-lastReply-sender very-small text-truncate">
+                {lastSender?.name}{' '}
               </span>
             </>
           ) : (
-            <span className="message__threadSummary-lastReply-sender very-small">
-              <Text span>Unknown user</Text>{' '}
+            <span className="message__threadSummary-lastReply-sender very-small text-truncate">
+              Unknown user{' '}
             </span>
           )}
-          <span className="message__threadSummary-lastReply-body very-small">
-            <Text span>{lastReply.getContent().body}</Text>
+          <span className="message__threadSummary-lastReply-body very-small text-truncate">
+            {lastReply.getContent().body}
           </span>
         </>
       ) : (
