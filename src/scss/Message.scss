@@ -181,6 +181,18 @@
     }
   }
 
+  .message__threadSummary {
+    .avatar-container {
+      height: 24px !important;
+      width: 24px !important;
+      img,
+      canvas {
+        height: 24px !important;
+        width: 24px !important;
+      }
+    }
+  }
+
   .chat-base {
     height: 42px !important;
     width: 42px !important;

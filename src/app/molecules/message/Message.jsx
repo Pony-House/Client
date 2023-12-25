@@ -883,7 +883,7 @@ const MessageThreadSummary = React.memo(({ thread }) => {
     setLastReply(thread.lastReply());
   });
 
-  return <button className="message__threadSummary" onClick={selectThread} type="button">
+  return <button className="message__threadSummary p-2 small" onClick={selectThread} type="button">
     <div className="message__threadSummary-count">
       <Text>
         {thread.length} message{thread.length > 1 ? 's' : ''} ›
@@ -900,16 +900,16 @@ const MessageThreadSummary = React.memo(({ thread }) => {
                 bgColor={backgroundColorMXID(lastSender?.userId)}
                 size="ultra-small"
               />
-              <span className="message__threadSummary-lastReply-sender">
+              <span className="message__threadSummary-lastReply-sender very-small">
                 <Text span>{lastSender?.name}</Text>{' '}
               </span>
             </>
           ) : (
-            <span className="message__threadSummary-lastReply-sender">
+            <span className="message__threadSummary-lastReply-sender very-small">
               <Text span>Unknown user</Text>{' '}
             </span>
           )}
-          <span className="message__threadSummary-lastReply-body">
+          <span className="message__threadSummary-lastReply-body very-small">
             <Text span>{lastReply.getContent().body}</Text>
           </span>
         </>
