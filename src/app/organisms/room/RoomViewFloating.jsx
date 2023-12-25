@@ -101,14 +101,14 @@ function RoomViewFloating({
 
   return (
     <>
-      <div className={`room-view__unread ${isJumpToEvent ? 'room-view__unread--open' : ''}`}>
+      <div className={`room-view__unread ${isJumpToEvent ? 'room-view__unread--open' : ''}${typeof roomTimeline.threadId === 'string' && roomTimeline.threadId.length > 0 && roomTimeline.timeline.length <= 1 ? ' d-none' : ''}`}>
         <Button faSrc="bi bi-chat-left-text-fill" onClick={jumpToEvent} variant="primary">
           <div className="very-small text-gray text-medium">Jump to unread messages</div>
         </Button>
         <Button faSrc="fa-solid fa-check-double" onClick={cancelJumpToEvent} variant="primary">
           <div className="very-small text-gray"><strong>Mark as read</strong></div>
         </Button>
-      </div>
+      </div >
       <div className={`room-view__typing${typingMembers.size > 0 ? ' room-view__typing--open' : ''}`}>
         <div className="ms-3 bouncing-loader"><div /></div>
         <div className='ms-2 mt-1 mb-2 small emoji-size-fix'>{getUsersActionJsx(roomId, [...typingMembers], 'typing...')}</div>
