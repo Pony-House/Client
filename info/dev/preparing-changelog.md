@@ -25,3 +25,4 @@
 - Freezeframe plugin added.
 - Check for Updates button added.
 - ENV Values uppercase.
+- Threads added.
