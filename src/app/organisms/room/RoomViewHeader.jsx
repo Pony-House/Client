@@ -41,8 +41,10 @@ function RoomViewHeader({ roomId, threadId }) {
   const roomHeaderBtnRef = useRef(null);
   useEffect(() => {
     const settingsToggle = (isVisible) => {
-      const rawIcon = roomHeaderBtnRef.current.lastElementChild;
-      rawIcon.style.transform = isVisible ? 'rotateX(180deg)' : 'rotateX(0deg)';
+      if (roomHeaderBtnRef.current) {
+        const rawIcon = roomHeaderBtnRef.current.lastElementChild;
+        rawIcon.style.transform = isVisible ? 'rotateX(180deg)' : 'rotateX(0deg)';
+      }
     };
     navigation.on(cons.events.navigation.ROOM_SETTINGS_TOGGLED, settingsToggle);
     return () => {

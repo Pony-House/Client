@@ -195,7 +195,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
   }
 
   function renderRoomList(rooms) {
-    const appearanceSettings = getAppearance();
+    // const appearanceSettings = getAppearance();
     return rooms.map((room) => {
 
       const alias = typeof room.canonical_alias === 'string' ? room.canonical_alias : room.room_id;

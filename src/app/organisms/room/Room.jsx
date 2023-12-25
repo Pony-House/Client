@@ -61,8 +61,8 @@ function Room() {
       roomId,
       prevRoomId,
       eventId,
-      forceScroll,
       threadId,
+      forceScroll,
     ) => {
       roomInfo.roomTimeline?.removeInternalListeners();
       $('.space-drawer-menu-item').removeClass('active');
