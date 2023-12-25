@@ -10,6 +10,30 @@
   }
 }
 
+/* Status Message */
+.message-body-status-cancelled {
+  color: var(--bs-danger) !important;
+}
+
+.message-body-status-encrypting {
+  color: var(--bs-secundary) !important;
+}
+
+.message-body-status-not_sent {
+  color: var(--bs-danger) !important;
+}
+
+.message-body-status-queued {
+  color: var(--bs-gray);
+}
+
+.message-body-status-sending {
+  color: var(--bs-gray);
+}
+
+/* message-body-status-sent */
+
+/* Thread */
 .message__threadSummary {
   background-color: var(--bg-surface-hover);
   padding: var(--sp-ultra-tight);
