@@ -16,6 +16,13 @@ const config: CapacitorConfig = {
     // sound: "beep.wav",
     // },
   },
+  android: {
+    buildOptions: {
+      keystorePath:
+        '/media/jasmindreasond/tiny-cookie-hd/git-repositories/Matrix/Pony-House/cinny/android/tinykey.jks',
+      keystoreAlias: 'JasminDreasond',
+    },
+  },
 };
 
 export default config;
