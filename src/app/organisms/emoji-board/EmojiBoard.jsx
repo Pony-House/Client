@@ -343,7 +343,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             setEmojiInfo({
                 unicode: '🙂',
                 shortcode: 'slight_smile',
-                src: 'https://twemoji.maxcdn.com/v/13.1.0/72x72/1f642.png',
+                src: `${TWEMOJI_BASE_URL}72x72/1f642.png`,
             });
             return;
         }
