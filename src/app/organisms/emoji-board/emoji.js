@@ -1,77 +1,7 @@
-import emojisData from '@emoji-mart/data';
-import clone from 'clone';
-
-const emojiGroups = [{
-  id: 'people',
-  name: 'Smileys & people',
-  order: 0,
-  emojis: [],
-}, {
-  id: 'nature',
-  name: 'Animals & nature',
-  order: 1,
-  emojis: [],
-}, {
-  id: 'foods',
-  name: 'Food & drinks',
-  order: 2,
-  emojis: [],
-}, {
-  id: 'activity',
-  name: 'Activity',
-  order: 3,
-  emojis: [],
-}, {
-  id: 'places',
-  name: 'Travel & places',
-  order: 4,
-  emojis: [],
-}, {
-  id: 'objects',
-  name: 'Objects',
-  order: 5,
-  emojis: [],
-}, {
-  id: 'symbols',
-  name: 'Symbols',
-  order: 6,
-  emojis: [],
-}, {
-  id: 'flags',
-  name: 'Flags',
-  order: 7,
-  emojis: [],
-}];
-Object.freeze(emojiGroups);
+import { installEmojis } from './data/emojibase-data';
 
 const defaultEmojis = [];
-emojisData.categories.forEach(category => {
-  for (const item in category.emojis) {
-    const emoji = emojisData.emojis[category.emojis[item]];
-    if (emoji) {
-
-      const em = {
-        hexcode: emoji.skins[0].unified.toUpperCase(),
-        label: emoji.name,
-        unicode: emoji.skins[0].native,
-        version: emoji.version,
-      };
-
-      em.shortcode = emoji.id;
-      em.shortcodes = emoji.id;
-      em.tags = clone(emoji.keywords);
-
-      const groupIndex = emojiGroups.findIndex(group => group.id === category.id);
-      if (groupIndex > -1) {
-        emojiGroups[groupIndex].emojis.push(em);
-      };
-
-      defaultEmojis.push(em);
-
-    }
-  }
-});
-
+installEmojis(defaultEmojis);
 const emojis = [];
 
 const addEmojiToList = data => {
@@ -119,7 +49,7 @@ const resetStickersList = () => {
 };
 
 export {
-  emojis, stickers, defaultEmojis, emojiGroups,
+  emojis, stickers, defaultEmojis,
   addEmojiToList, removeEmojiFromList, resetEmojisList, addDefaultEmojisToList,
   addStickerToList, removeStickerFromList, resetStickersList,
 };

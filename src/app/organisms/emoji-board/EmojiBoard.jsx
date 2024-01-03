@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
-import { emojiGroups, emojis, } from './emoji';
+import { emojis, } from './emoji';
 import { loadEmojiData, getEmojiData, ROW_EMOJIS_COUNT, ROW_STICKERS_COUNT } from './emojiData';
 
 import initMatrix from '../../../client/initMatrix';
@@ -20,19 +20,10 @@ import Text from '../../atoms/text/Text';
 import IconButton from '../../atoms/button/IconButton';
 import Input from '../../atoms/input/Input';
 import ScrollView from '../../atoms/scroll/ScrollView';
+import { emojiCateogoryList as cateogoryList, emojiGroups } from './data/emojibase-data';
 
 // Emoji Config
 let ROW_COUNT;
-const cateogoryList = [
-    [0, 'fa-solid fa-face-smile', 'Smilies'],
-    [1, 'fa-solid fa-dog', 'Animals'],
-    [2, 'fa-solid fa-mug-saucer', 'Food'],
-    [3, 'fa-solid fa-futbol', 'Activities'],
-    [4, 'fa-solid fa-camera', 'Travel'],
-    [5, 'fa-solid fa-building', 'Objects'],
-    [6, 'fa-solid fa-peace', 'Symbols'],
-    [7, 'fa-solid fa-flag', 'Flags'],
-];
 
 // Emoji Groups
 const EmojiGroup = React.memo(({ name, groupEmojis, className, isFav, }) => {
