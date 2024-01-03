@@ -14,27 +14,35 @@ import { startCustomThemes } from '../mods';
 import { getOsSettings } from './util/libs/osSettings';
 
 function startApp(appProtocol) {
+    const params = new URLSearchParams(window.location.search);
+    const pageType = params.get('type');
+    if (typeof pageType === 'string' && pageType.length > 0) {
 
-    const osSettings = getOsSettings();
-    startCustomThemes();
-    startSettings();
+        console.log(params);
 
-    getPWADisplayMode();
+    } else {
 
-    startWeb3();
-    startQuery();
+        const osSettings = getOsSettings();
+        startCustomThemes();
+        startSettings();
 
-    console.log(`[app] Starting app using the protocol "${appProtocol}" mode.`);
-    global.getEnvApp = () => clone(__ENV_APP__);
-    global.Buffer = Buffer;
+        getPWADisplayMode();
 
-    if (osSettings.startMinimized && typeof global.electronWindowIsVisible === 'function') {
-        global.electronWindowIsVisible(false);
+        startWeb3();
+        startQuery();
+
+        console.log(`[app] Starting app using the protocol "${appProtocol}" mode.`);
+        global.getEnvApp = () => clone(__ENV_APP__);
+        global.Buffer = Buffer;
+
+        if (osSettings.startMinimized && typeof global.electronWindowIsVisible === 'function') {
+            global.electronWindowIsVisible(false);
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        return root.render(<App />);
+
     }
-
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    return root.render(<App />);
-
 }
 
 export default startApp;
