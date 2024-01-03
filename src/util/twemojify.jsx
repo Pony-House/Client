@@ -71,7 +71,7 @@ export const TWEMOJI_BASE_URL = './img/twemoji/';
 
 // String Protocols
 global.String.prototype.toUnicode = function () {
-  let result = "";
+  let result = '';
   for (let i = 0; i < this.length; i++) {
     // Assumption: all characters are < 0xffff
     result += `\\u${(`000${this[i].charCodeAt(0).toString(16)}`).substring(-4)}`;
@@ -247,10 +247,33 @@ export function twemojifyReact(text, opts, linkifyEnabled = false, sanitize = tr
   return twemojifyAction(text, opts, linkifyEnabled, sanitize, maths, true);
 };
 
+const unicodeEmojiFix = (text) => {
+
+  let code = text.toLowerCase();
+
+  // Fix for "copyright" and "trademark" emojis
+  if (code.substring(0, 2) === "00") {
+    code = code.substring(2);
+
+    // Fix for keycap emojis
+    const regex = /-fe0f/i;
+    code = code.replace(regex, '');
+  }
+
+  // Fix for "Eye in Speech Bubble" emoji
+  if (code.includes("1f441")) {
+    const regex = /-fe0f/gi;
+    code = code.replace(regex, '');
+  }
+
+  return code;
+
+};
+
 export function twemojifyIcon(text, format = 'png', size = 72) {
-  return `${TWEMOJI_BASE_URL}${size}x${size}/${text.emojiToCode().toLowerCase()}.${format}`;
+  return `${TWEMOJI_BASE_URL}${size}x${size}/${unicodeEmojiFix(text)}.${format}`;
 }
 
 export function twemojifyUrl(text, format = 'png', size = 72) {
-  return `${TWEMOJI_BASE_URL}${format !== 'svg' ? `${size}x${size}` : 'svg'}/${text.toLowerCase()}.${format}`;
+  return `${TWEMOJI_BASE_URL}${format !== 'svg' ? `${size}x${size}` : 'svg'}/${unicodeEmojiFix(text)}.${format}`;
 }
