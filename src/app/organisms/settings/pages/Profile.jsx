@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import initMatrix from '../../../../client/initMatrix';
 import { getEventCords } from '../../../../util/common';
 import { emitUpdateProfile, openEmojiBoard } from '../../../../client/action/navigation';
-import { TWEMOJI_BASE_URL, twemojifyIcon } from '../../../../util/twemojify';
+import { twemojifyIcon, twemojifyUrl } from '../../../../util/twemojify';
 import Button from '../../../atoms/button/Button';
 import IconButton from '../../../atoms/button/IconButton';
 import ProfileEditor from '../../profile-editor/ProfileEditor';
@@ -291,7 +291,7 @@ function ProfileSection() {
                                                 setcustomStatusIcon(initMatrix.matrixClient.mxcUrlToHttp(emoji.mxc));
                                                 setcustomStatusValue(emoji.mxc);
                                             } else if (emoji.unicode) {
-                                                setcustomStatusIcon(`${TWEMOJI_BASE_URL}72x72/${emoji.hexcode.toLowerCase()}.png`);
+                                                setcustomStatusIcon(twemojifyUrl(emoji.hexcode));
                                                 setcustomStatusValue(emoji.unicode);
                                             } else {
                                                 setcustomStatusIcon(defaultAvatar(1));

@@ -13,7 +13,7 @@ import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import AsyncSearch from '../../../util/AsyncSearch';
 import { addToEmojiList, removeFromEmojiList } from './recent';
-import { TWEMOJI_BASE_URL } from '../../../util/twemojify';
+import { TWEMOJI_BASE_URL, twemojifyUrl } from '../../../util/twemojify';
 import { checkVisible } from '../../../util/tools';
 
 import Text from '../../atoms/text/Text';
@@ -55,7 +55,7 @@ const EmojiGroup = React.memo(({ name, groupEmojis, className, isFav, }) => {
                                 label={emoji.label?.toString()}
 
                                 hexcode={emoji.hexcode}
-                                style={{ backgroundImage: `url("${TWEMOJI_BASE_URL}72x72/${emoji.hexcode.toLowerCase()}.png")` }}
+                                style={{ backgroundImage: `url("${twemojifyUrl(emoji.hexcode)}")` }}
 
                             />
                         ) : (
@@ -336,7 +336,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
             setEmojiInfo({
                 unicode: '🙂',
                 shortcode: 'slight_smile',
-                src: `${TWEMOJI_BASE_URL}72x72/1f642.png`,
+                src: twemojifyUrl('1f642'),
             });
             return;
         }

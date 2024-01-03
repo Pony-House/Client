@@ -247,6 +247,10 @@ export function twemojifyReact(text, opts, linkifyEnabled = false, sanitize = tr
   return twemojifyAction(text, opts, linkifyEnabled, sanitize, maths, true);
 };
 
-export function twemojifyIcon(text, size = 72) {
-  return `${TWEMOJI_BASE_URL}${size}x${size}/${text.emojiToCode().toLowerCase()}.png`;
+export function twemojifyIcon(text, format = 'png', size = 72) {
+  return `${TWEMOJI_BASE_URL}${size}x${size}/${text.emojiToCode().toLowerCase()}.${format}`;
+}
+
+export function twemojifyUrl(text, format = 'png', size = 72) {
+  return `${TWEMOJI_BASE_URL}${size}x${size}/${text.toLowerCase()}.${format}`;
 }
