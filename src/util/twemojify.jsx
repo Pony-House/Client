@@ -252,5 +252,5 @@ export function twemojifyIcon(text, format = 'png', size = 72) {
 }
 
 export function twemojifyUrl(text, format = 'png', size = 72) {
-  return `${TWEMOJI_BASE_URL}${size}x${size}/${text.toLowerCase()}.${format}`;
+  return `${TWEMOJI_BASE_URL}${format !== 'svg' ? `${size}x${size}` : 'svg'}/${text.toLowerCase()}.${format}`;
 }
