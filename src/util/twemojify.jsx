@@ -14,6 +14,7 @@ import { sanitizeText } from './sanitize';
 
 import keywords from '../../mods/keywords';
 import openTinyURL from './message/urlProtection';
+import { tinyLinkifyFixer } from './clear-urls/clearUrls';
 
 // Register Protocols
 linkify.registerCustomProtocol('matrix');
@@ -108,27 +109,51 @@ const tinyRender = {
 
   html: type => ({ attributes, content }) => {
 
-    let tinyAttr = '';
-    for (const attr in attributes) {
-      tinyAttr += ` ${attr}${attributes[attr].length > 0 ? `=${attributes[attr]}` : ''}`;
+    if (tinyLinkifyFixer(type, content)) {
+
+      let tinyAttr = '';
+      for (const attr in attributes) {
+        tinyAttr += ` ${attr}${attributes[attr].length > 0 ? `=${attributes[attr]}` : ''}`;
+      }
+
+      if (type === 'keyword') {
+        tinyAttr += ' iskeyword="true"';
+      } else {
+        tinyAttr += ' iskeyword="false"';
+      }
+
+      const db = tinywordsDB[content.toLowerCase()];
+      return `<a${tinyAttr} title="${db?.title}">${content}</a>`;
+
     }
 
-    if (type === 'keyword') {
-      tinyAttr += ' iskeyword="true"';
-    } else {
-      tinyAttr += ' iskeyword="false"';
-    }
-
-    const db = tinywordsDB[content.toLowerCase()];
-    return `<a${tinyAttr} title="${db?.title}">${content}</a>`;
+    return content;
 
   },
 
   react: type => ({ attributes, content }) => {
-    const { href, ...props } = attributes;
-    const db = tinywordsDB[content.toLowerCase()];
-    const result = <a href={href} onClick={(e) => { e.preventDefault(); openTinyURL($(e.target).attr('href'), $(e.target).attr('href')); return false; }} {...props} iskeyword={type === 'keyword' ? 'true' : 'false'} className='lk-href'>{content}</a>;
-    return db?.title ? <Tooltip content={<small>{db.title}</small>} >{result}</Tooltip> : result;
+
+    if (tinyLinkifyFixer(type, content)) {
+
+      const { href, ...props } = attributes;
+      const db = tinywordsDB[content.toLowerCase()];
+      const result = <a
+        href={href}
+        onClick={(e) => {
+          e.preventDefault();
+          openTinyURL($(e.target).attr('href'), $(e.target).attr('href')); return false;
+        }} {...props}
+        iskeyword={type === 'keyword' ? 'true' : 'false'}
+        className='lk-href'>
+        {content}
+      </a>;
+
+      return db?.title ? <Tooltip content={<small>{db.title}</small>} >{result}</Tooltip> : result;
+
+    }
+
+    return <span>{content}</span>;
+
   }
 
 };

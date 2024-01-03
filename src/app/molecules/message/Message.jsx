@@ -67,6 +67,7 @@ import tinyAPI from '../../../util/mods';
 import { getAnimatedImageUrl, getAppearance } from '../../../util/libs/appearance';
 import UserOptions from '../user-options/UserOptions';
 import { getDataList } from '../../../util/selectedRoom';
+import { tinyLinkifyFixer } from '../../../util/clear-urls/clearUrls';
 
 function PlaceholderMessage() {
   return <tr className="ph-msg">
@@ -1102,21 +1103,30 @@ function Message({
   // Content Data
   let isCustomHTML = content.format === 'org.matrix.custom.html';
   let customHTML = isCustomHTML ? content.formatted_body : null;
-  let bodyUrls;
 
+  const bodyUrls = [];
   if (typeof body === 'string' && body.length > 0) {
 
     try {
-      bodyUrls = linkify.find(
+
+      const newBodyUrls = linkify.find(
         body.replace(/\> \<\@([\S\s]+?)\> ([\S\s]+?)\n\n|\> \<\@([\S\s]+?)\> ([\S\s]+?)\\n\\n/gm, '')
           .replace(/^((?:(?:[ ]{4}|\t).*(\R|$))+)|`{3}([\w]*)\n([\S\s]+?)`{3}|`{3}([\S\s]+?)`{3}|`{2}([\S\s]+?)`{2}|`([\S\s]+?)|\[([\S\s]+?)\]|\{([\S\s]+?)\}|\<([\S\s]+?)\>|\(([\S\s]+?)\)/gm, '')
       );
+
+      if (Array.isArray(newBodyUrls)) {
+        for (const item in newBodyUrls) {
+          if (tinyLinkifyFixer(newBodyUrls[item].type, newBodyUrls[item].value)) {
+            bodyUrls.push(newBodyUrls[item]);
+          }
+        }
+      }
+
     } catch (err) {
       console.error(err);
-      bodyUrls = [];
     }
 
-  } else { bodyUrls = []; }
+  }
 
   // Edit Data
   const edit = useCallback(() => {
@@ -1184,7 +1194,7 @@ function Message({
 
       // Check Urls on the message
       const appAppearance = getAppearance();
-      if (appAppearance.isEmbedEnabled === true && Array.isArray(bodyUrls) && bodyUrls.length > 0) {
+      if (appAppearance.isEmbedEnabled === true && bodyUrls.length > 0) {
 
         // Create embed base
         const newEmbeds = clone(embeds);

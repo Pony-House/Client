@@ -105,3 +105,7 @@ export function clearUrlsFromText(text: string): string {
   const regex = /https?:\/\/[^\s<]+[^<.,:;"'>)|\]\s]/g;
   return text.replace(regex, (match) => clearUrl(match));
 }
+
+export function tinyLinkifyFixer(type: string, content: string) {
+  return type !== 'url' || content.split('://').length > 1;
+}
