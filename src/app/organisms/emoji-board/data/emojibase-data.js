@@ -40,6 +40,8 @@ export function installEmojis(defaultEmojis) {
     for (const item in emojisData) {
 
         const emoji = emojisData[item];
+        // if (typeof emoji.version === 'number' && Math.floor(emoji.version) !== 15 && emoji.version !== 2) {
+
         const shortcodes = Array.isArray(shortcodesData[emoji.hexcode]) ? shortcodesData[emoji.hexcode] : typeof shortcodesData[emoji.hexcode] === 'string' ? [shortcodesData[emoji.hexcode]] : null;
 
         const em = {
@@ -59,6 +61,8 @@ export function installEmojis(defaultEmojis) {
         };
 
         defaultEmojis.push(em);
+
+        // }
 
     }
 

@@ -46,6 +46,8 @@ const EmojiGroup = React.memo(({ name, groupEmojis, className, isFav, }) => {
                                 className={`emoji${emoji.isFav || isFav ? ' fav-emoji' : ''}`}
                                 draggable="false"
 
+                                version={emoji.version?.toString()}
+
                                 alt={emoji.shortcodes?.toString()}
                                 unicode={emoji.unicode}
                                 shortcodes={emoji.shortcodes?.toString()}
