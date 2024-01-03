@@ -1,7 +1,11 @@
 import emojisData from 'emojibase-data/en/data.json';
 import messageData from 'emojibase-data/en/messages.json';
+
 import shortcodesData from 'emojibase-data/en/shortcodes/emojibase.json';
+import shortcodesDataLegacy from 'emojibase-data/en/shortcodes/emojibase-legacy.json';
+
 import clone from 'clone';
+
 import { capitalize } from '../../../../util/tools';
 
 const emojiGroups = [];
@@ -43,6 +47,14 @@ export function installEmojis(defaultEmojis) {
         // if (typeof emoji.version === 'number' && Math.floor(emoji.version) !== 15 && emoji.version !== 2) {
 
         const shortcodes = Array.isArray(shortcodesData[emoji.hexcode]) ? shortcodesData[emoji.hexcode] : typeof shortcodesData[emoji.hexcode] === 'string' ? [shortcodesData[emoji.hexcode]] : null;
+        const shortcodesLegacy = Array.isArray(shortcodesDataLegacy[emoji.hexcode]) ? shortcodesDataLegacy[emoji.hexcode] : typeof shortcodesDataLegacy[emoji.hexcode] === 'string' ? [shortcodesDataLegacy[emoji.hexcode]] : null;
+        if (Array.isArray(shortcodesLegacy)) {
+            for (const item2 in shortcodesLegacy) {
+                if (shortcodes.indexOf(shortcodesLegacy[item2] < 0)) {
+                    shortcodes.push(shortcodesLegacy[item2]);
+                }
+            }
+        }
 
         const em = {
             hexcode: emoji.hexcode.toUpperCase(),
