@@ -162,7 +162,9 @@ class RoomTimeline extends EventEmitter {
 
     this.matrixClient = matrixClient;
     this.roomId = roomId;
-    this.room = !this.isGuest ? this.matrixClient.getRoom(roomId) : new Room(roomId, this.matrixClient, this.isGuest);
+    // this.room = !this.isGuest ? this.matrixClient.getRoom(roomId) : new Room(roomId, this.matrixClient, this.isGuest);
+    this.room = this.matrixClient.getRoom(roomId);
+
     if (this.room === null) {
       throw new Error(`Created a RoomTimeline for a room that doesn't exist: ${roomId}`);
     }
