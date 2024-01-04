@@ -5,6 +5,15 @@ import { createClient } from 'matrix-js-sdk';
 
 import RoomTimeline from '../../client/state/RoomTimeline';
 
+/*
+
+    id: #test-room:example.com
+    hs: example.com
+
+    path: /?type=chatroom&id=%23test-room%3Aexample.com&hs=example.com
+
+*/
+
 function Chatroom({ roomId, homeserver }) {
 
     // States
