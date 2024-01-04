@@ -726,7 +726,7 @@ function RoomViewContent({
     jumpToItemIndex = -1;
     const readUptoEvent = readUptoEvtStore.getItem();
     let unreadDivider = false;
-    const isDM = initMatrix.roomList.directs.has(roomTimeline.roomId);
+    const isDM = initMatrix.roomList && initMatrix.roomList.directs.has(roomTimeline.roomId);
 
     let renderingHolders = false;
     if (roomTimeline.canPaginateBackward() || limit.from > 0) {
