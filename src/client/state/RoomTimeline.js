@@ -150,7 +150,9 @@ class RoomTimeline extends EventEmitter {
 
   constructor(roomId, matrixClient = initMatrix.matrixClient, isGuest = false, guestId = null) {
 
+    // Super!
     super();
+
     // These are local timelines
     this.timeline = [];
     this.crdt = {};
@@ -158,9 +160,11 @@ class RoomTimeline extends EventEmitter {
     this.reactionTimeline = new Map();
     this.typingMembers = new Set();
 
+    // Guest Data
     this.isGuest = isGuest;
     this.guestId = guestId;
 
+    // Client Prepare
     this.matrixClient = matrixClient;
     this.roomId = roomId;
     this.room = !this.isGuest ? this.matrixClient.getRoom(roomId) : new Room(roomId, this.matrixClient, this.guestId, {
@@ -168,22 +172,31 @@ class RoomTimeline extends EventEmitter {
       timelineSupport: true,
     });
 
+    // Nothing! Tiny cancel time.
     if (this.room === null) {
       throw new Error(`Created a RoomTimeline for a room that doesn't exist: ${roomId}`);
     }
 
+    // Is Guest
     if (this.isGuest) {
-      this.room.refreshLiveTimeline();
+      const tinyThis = this;
+      this.room.refreshLiveTimeline().then(() => {
+        tinyThis.liveTimeline = tinyThis.room.getLiveTimeline();
+        tinyThis.activeTimeline = tinyThis.liveTimeline;
+      });
     }
 
+    // Insert live timeline
     this.liveTimeline = this.room.getLiveTimeline();
     this.activeTimeline = this.liveTimeline;
 
+    // More data
     this.isOngoingPagination = false;
     this.ongoingDecryptionCount = 0;
     this.initialized = false;
-    this._ydoc = null;
 
+    // Ydoc data
+    this._ydoc = null;
     this.ydoc_last_update = null;
 
     this._ydoc_matrix_update = [];
@@ -196,8 +209,10 @@ class RoomTimeline extends EventEmitter {
     this._ydoc_cache_timeout = null;
     this._ydoc_update_time = { timeout: null, cache: [] };
 
+    // Load Members
     setTimeout(() => this.room.loadMembersIfNeeded());
 
+    // Dev
     if (__ENV_APP__.MODE === 'development') { window.selectedRoom = this; }
 
   }
