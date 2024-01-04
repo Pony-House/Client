@@ -117,7 +117,7 @@ function Chatroom({ roomId, homeserver }) {
 
     // Loaded
     if (!isLoading && matrixClient !== null && timeline !== null) {
-        console.log(userId, timeline, matrixClient, timeline);
+        console.log(timeline);
         return <>
             <div>{roomId}</div>
             <div>{homeserver}</div>
