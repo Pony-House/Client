@@ -12,7 +12,6 @@ import Spinner from '../atoms/spinner/Spinner';
 import ProcessWrapper from '../templates/auth/modules/ProcessWrapper';
 import { objType } from '../../util/tools';
 import { join } from '../../client/action/room';
-// import RoomView from '../organisms/room/RoomView';
 import RoomViewContent from '../organisms/room/RoomViewContent';
 
 global.Olm = Olm;
