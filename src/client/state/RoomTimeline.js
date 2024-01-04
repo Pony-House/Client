@@ -179,11 +179,40 @@ class RoomTimeline extends EventEmitter {
 
     // Is Guest
     if (this.isGuest) {
-      const tinyThis = this;
-      this.room.refreshLiveTimeline().then(() => {
-        tinyThis.liveTimeline = tinyThis.room.getLiveTimeline();
-        tinyThis.activeTimeline = tinyThis.liveTimeline;
-      });
+
+      this.loadGuestTimeline = () => {
+        const tinyThis = this;
+        this.room.refreshLiveTimeline().then(() => {
+
+          // Insert guest timeline
+          tinyThis.liveTimeline = tinyThis.room.getLiveTimeline();
+          tinyThis.activeTimeline = tinyThis.liveTimeline;
+
+          // Read Timeline
+          if (objType(tinyThis.liveTimeline, 'object') && Array.isArray(tinyThis.liveTimeline.events)) {
+            for (const item in tinyThis.liveTimeline.events) {
+
+              const event = tinyThis.liveTimeline.events[item];
+
+              tinyThis.matrixClient.emit(RoomEvent.Timeline,
+                event,
+                tinyThis.room,
+                true,
+                false,
+                {
+                  liveEvent: true,
+                  timeline: tinyThis.liveTimeline,
+                }
+              );
+
+            }
+          }
+
+        });
+      };
+
+      this.loadGuestTimeline();
+
     }
 
     // Insert live timeline
