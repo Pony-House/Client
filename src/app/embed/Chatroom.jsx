@@ -19,6 +19,7 @@ global.Olm = Olm;
 
     id: #test-room:example.com
     hs: example.com
+    joinGuest: false
 
     path: /?type=chatroom&id=%23test-room%3Aexample.com&hs=example.com
 
@@ -85,7 +86,7 @@ function Chatroom({ roomId, homeserver, joinGuest, theme }) {
                         }
                         else {
                             setMatrixClient(mx);
-                            setTimeline(new RoomTimeline(roomId, mx, true, mx.getUserId()));
+                            setTimeline(new RoomTimeline(aliasData.room_id, mx, true, mx.getUserId()));
                             setIsLoading(0);
                         }
 

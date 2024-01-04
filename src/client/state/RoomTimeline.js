@@ -11,7 +11,8 @@ import {
   RoomEvent,
   RoomMemberEvent,
 } from 'matrix-js-sdk';
-import initMatrix, { fetchFn } from '../initMatrix';
+// import initMatrix, { fetchFn as fetch } from '../initMatrix';
+import initMatrix from '../initMatrix';
 import cons from './cons';
 
 import settings from './settings';
@@ -19,7 +20,6 @@ import { messageIsClassicCrdt } from '../../util/libs/crdt';
 import { objType } from '../../util/tools';
 import moment from '../../util/libs/momentjs';
 
-const fetch = __ENV_APP__.ELECTRON_MODE ? (url, ops) => fetchFn({ href: url }, ops) : global.fetch;
 const delayYdocUpdate = 100;
 const hashTryLimit = 10;
 
@@ -542,12 +542,18 @@ class RoomTimeline extends EventEmitter {
   }
 
   // History Get
-  loadScriptFromEventId(startEventId) {
-
+  /* loadScriptFromEventId(startEventId, isFirst = true) {
     const url = `${this.matrixClient.baseUrl}/_matrix/client/r0/rooms/${encodeURIComponent(this.roomId)}/context/${encodeURIComponent(startEventId)}?limit=100&access_token=${this.matrixClient.getAccessToken()}`;
-    // return fetch(url);
+    return new Promise((resolve, reject) => {
+      fetch(url, {
+        'Content-Type': 'application/json',
+      }).then(res => res.json()).then(data => {
 
-  }
+        resolve(data);
+
+      }).catch(reject);
+    });
+  } */
 
   // Reset
   async _reset() {
