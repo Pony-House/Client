@@ -77,7 +77,7 @@ function Chatroom({ roomId, homeserver, joinGuest, theme }) {
                 mx.getRoomIdForAlias(roomId).then(aliasData => {
                     if (objType(aliasData, 'object')) {
 
-                        if (joinGuest === 'true' || joinGuest === true) {
+                        if (mx.isGuest() && (joinGuest === 'true' || joinGuest === true)) {
                             const via = aliasData?.servers.slice(0, 3) || [];
                             join(roomId, false, via).then(tinyRoom => {
                                 setTimeline(new RoomTimeline(tinyRoom));
