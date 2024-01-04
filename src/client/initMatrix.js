@@ -13,6 +13,14 @@ import logger from './logger';
 
 global.Olm = Olm;
 
+// eslint-disable-next-line import/no-mutable-exports
+const fetchFn = (url, ops) => {
+  if (typeof global.nodeFetch === 'function') return global.nodeFetch(url.href, ops);
+  return global.fetch(url.href, ops);
+};
+
+export { fetchFn };
+
 const startCustomDNS = () => {
   if (__ENV_APP__.ELECTRON_MODE) {
     if (typeof global.startCustomDNS === 'function') {
@@ -83,10 +91,7 @@ class InitMatrix extends EventEmitter {
     };
 
     if (__ENV_APP__.ELECTRON_MODE) {
-      clientOps.fetchFn = (url, ops) => {
-        if (typeof global.nodeFetch === 'function') return global.nodeFetch(url.href, ops);
-        return global.fetch(url.href, ops);
-      };
+      clientOps.fetchFn = fetchFn;
     }
 
     this.matrixClient = sdk.createClient(clientOps);

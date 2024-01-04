@@ -11,7 +11,7 @@ import {
   RoomEvent,
   RoomMemberEvent,
 } from 'matrix-js-sdk';
-import initMatrix from '../initMatrix';
+import initMatrix, { fetchFn } from '../initMatrix';
 import cons from './cons';
 
 import settings from './settings';
@@ -19,6 +19,7 @@ import { messageIsClassicCrdt } from '../../util/libs/crdt';
 import { objType } from '../../util/tools';
 import moment from '../../util/libs/momentjs';
 
+const fetch = __ENV_APP__.ELECTRON_MODE ? (url, ops) => fetchFn({ href: url }, ops) : global.fetch;
 const delayYdocUpdate = 100;
 const hashTryLimit = 10;
 
@@ -162,7 +163,11 @@ class RoomTimeline extends EventEmitter {
 
     this.matrixClient = matrixClient;
     this.roomId = roomId;
-    this.room = !this.isGuest ? this.matrixClient.getRoom(roomId) : new Room(roomId, this.matrixClient, this.guestId);
+    this.room = !this.isGuest ? this.matrixClient.getRoom(roomId) : new Room(roomId, this.matrixClient, this.guestId, {
+      lazyLoadMembers: true,
+      timelineSupport: true,
+    });
+
     if (this.room === null) {
       throw new Error(`Created a RoomTimeline for a room that doesn't exist: ${roomId}`);
     }
@@ -534,6 +539,14 @@ class RoomTimeline extends EventEmitter {
   _populateTimelines() {
     this.clearLocalTimelines();
     this._populateAllLinkedEvents(this.activeTimeline);
+  }
+
+  // History Get
+  loadScriptFromEventId(startEventId) {
+
+    const url = `${this.matrixClient.baseUrl}/_matrix/client/r0/rooms/${encodeURIComponent(this.roomId)}/context/${encodeURIComponent(startEventId)}?limit=100&access_token=${this.matrixClient.getAccessToken()}`;
+    // return fetch(url);
+
   }
 
   // Reset
