@@ -12,37 +12,49 @@ import { getPWADisplayMode } from "./util/PWA.js";
 import App from './app/pages/App';
 import { startCustomThemes } from '../mods';
 import { getOsSettings } from './util/libs/osSettings';
+import Chatroom from './app/embed/Chatroom';
 
 function startApp(appProtocol) {
+
     const params = new URLSearchParams(window.location.search);
     const pageType = params.get('type');
-    if (typeof pageType === 'string' && pageType.length > 0) {
+    const pageId = params.get('id');
 
-        console.log(params);
+    const root = ReactDOM.createRoot(document.getElementById('root'));
 
-    } else {
+    if (
+        typeof pageType === 'string' && pageType.length > 0 &&
+        typeof pageId === 'string' && pageId.length > 0
+    ) {
 
-        const osSettings = getOsSettings();
-        startCustomThemes();
-        startSettings();
-
-        getPWADisplayMode();
-
-        startWeb3();
-        startQuery();
-
-        console.log(`[app] Starting app using the protocol "${appProtocol}" mode.`);
-        global.getEnvApp = () => clone(__ENV_APP__);
-        global.Buffer = Buffer;
-
-        if (osSettings.startMinimized && typeof global.electronWindowIsVisible === 'function') {
-            global.electronWindowIsVisible(false);
+        if (pageType === 'chatroom') {
+            const hs = params.get('hs');
+            return root.render(<Chatroom roomId={params.get('id')} homeserver={typeof hs === 'string' && hs.length ? hs : null} />);
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        return root.render(<App />);
+        return root.render('');
 
     }
+
+    const osSettings = getOsSettings();
+    startCustomThemes();
+    startSettings();
+
+    getPWADisplayMode();
+
+    startWeb3();
+    startQuery();
+
+    console.log(`[app] Starting app using the protocol "${appProtocol}" mode.`);
+    global.getEnvApp = () => clone(__ENV_APP__);
+    global.Buffer = Buffer;
+
+    if (osSettings.startMinimized && typeof global.electronWindowIsVisible === 'function') {
+        global.electronWindowIsVisible(false);
+    }
+
+    return root.render(<App />);
+
 }
 
 export default startApp;

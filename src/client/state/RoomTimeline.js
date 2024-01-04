@@ -146,7 +146,7 @@ const enableyJsItem = {
 // Class
 class RoomTimeline extends EventEmitter {
 
-  constructor(roomId) {
+  constructor(roomId, matrixClient = initMatrix.matrixClient) {
 
     super();
     // These are local timelines
@@ -156,7 +156,7 @@ class RoomTimeline extends EventEmitter {
     this.reactionTimeline = new Map();
     this.typingMembers = new Set();
 
-    this.matrixClient = initMatrix.matrixClient;
+    this.matrixClient = matrixClient;
     this.roomId = roomId;
     this.room = this.matrixClient.getRoom(roomId);
     if (this.room === null) {
