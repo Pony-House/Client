@@ -11,6 +11,7 @@ import initMatrix from '../../client/initMatrix';
 import Spinner from '../atoms/spinner/Spinner';
 import ProcessWrapper from '../templates/auth/modules/ProcessWrapper';
 import { objType } from '../../util/tools';
+import { join } from '../../client/action/room';
 
 global.Olm = Olm;
 
@@ -23,7 +24,7 @@ global.Olm = Olm;
 
 */
 
-function Chatroom({ roomId, homeserver }) {
+function Chatroom({ roomId, homeserver, joinGuest, theme }) {
 
     // States
     const [isLoading, setIsLoading] = useState(1);
@@ -31,7 +32,6 @@ function Chatroom({ roomId, homeserver }) {
     const [errMessage, setErrorMessage] = useState(null);
     const [errCode, setErrorCode] = useState(null);
     const [matrixClient, setMatrixClient] = useState(null);
-    const [userId, setUserId] = useState(null);
 
     // Info
     const hsUrl = roomId.split(':')[1];
@@ -41,24 +41,21 @@ function Chatroom({ roomId, homeserver }) {
     useEffect(() => {
         if (isLoading === 1 && matrixClient === null) {
 
-            // User Id
-            let guestId = null;
-
             // Set Loading
             setIsLoading(2);
 
             // Guest User Mode
             const startGuest = async () => {
 
-                const tmpClient = await sdk.createClient({ baseUrl: MATRIX_INSTANCE });
-                const { user_id, device_id, access_token } = tmpClient.registerGuest();
+                const tmpClient = await sdk.createClient({ baseUrl: MATRIX_INSTANCE, timelineSupport: true, });
+                const guestData = await tmpClient.registerGuest();
 
                 const client = sdk.createClient({
 
                     baseUrl: MATRIX_INSTANCE,
-                    accessToken: access_token,
-                    userId: user_id,
-                    deviceId: device_id,
+                    accessToken: guestData.access_token,
+                    userId: guestData.user_id,
+                    deviceId: guestData.device_id,
                     timelineSupport: true,
 
                     verificationMethods: [
@@ -68,23 +65,34 @@ function Chatroom({ roomId, homeserver }) {
                 });
 
                 client.setGuest(true);
-                guestId = user_id || client.getUserId();
-                setUserId(guestId);
                 return client;
 
             };
 
             // Get Room
             const getRoom = (mx) => new Promise((resolve, reject) => {
-                mx.getRoomIdForAlias(roomId).then(alias => {
-                    if (objType(alias, 'object') && typeof alias.room_id === 'string') {
-                        setMatrixClient(mx);
-                        setTimeline(new RoomTimeline(alias.room_id, mx, true, guestId));
-                        setIsLoading(0);
+                if (__ENV_APP__.MODE === 'development') { global.initMatrix = { matrixClient: mx }; }
+                mx.getRoomIdForAlias(roomId).then(aliasData => {
+                    if (objType(aliasData, 'object')) {
+
+                        if (joinGuest === 'true' || joinGuest === true) {
+                            const via = aliasData?.servers.slice(0, 3) || [];
+                            join(roomId, false, via, mx).then(tinyRoom => {
+                                setMatrixClient(mx);
+                                setTimeline(new RoomTimeline(tinyRoom, mx));
+                                setIsLoading(0);
+                            });
+                        }
+                        else {
+                            setMatrixClient(mx);
+                            setTimeline(new RoomTimeline(roomId, mx, true, mx.getUserId()));
+                            setIsLoading(0);
+                        }
+
                     } else {
                         setIsLoading(3);
                         console.error('Invalid room alias data object!');
-                        console.log('Room alias data:', alias);
+                        console.log('Room alias data:', aliasData);
                         setErrorMessage('Invalid room alias data object!');
                         setErrorCode(500);
                     }
@@ -101,11 +109,7 @@ function Chatroom({ roomId, homeserver }) {
                     setIsLoading(0);
                 });
 
-                initMatrix.init(true).then((newUserId) => {
-                    guestId = newUserId;
-                    setUserId(newUserId);
-                    return getRoom(initMatrix.matrixClient)
-                }).catch(err => { console.error(err); setIsLoading(3); setErrorMessage(err.message); setErrorCode(err.code); });
+                initMatrix.init(true).then(() => getRoom(initMatrix.matrixClient)).catch(err => { console.error(err); setIsLoading(3); setErrorMessage(err.message); setErrorCode(err.code); });
 
             }
 
