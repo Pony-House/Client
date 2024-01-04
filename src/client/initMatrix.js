@@ -40,14 +40,14 @@ class InitMatrix extends EventEmitter {
     startCustomDNS();
   }
 
-  async init() {
+  async init(isGuest = false) {
     startCustomDNS();
-    await this.startClient();
+    await this.startClient(isGuest);
     this.setupSync();
     this.listenEvents();
   }
 
-  async startClient() {
+  async startClient(isGuest = false) {
 
     startCustomDNS();
 
@@ -68,7 +68,12 @@ class InitMatrix extends EventEmitter {
       cryptoStore: new sdk.IndexedDBCryptoStore(global.indexedDB, 'crypto-store'),
 
       deviceId: secret.deviceId,
+
+      useE2eForGroupCall: !isGuest,
+      isVoipWithNoMediaAllowed: !isGuest,
       timelineSupport: true,
+      supportsCallTransfer: !isGuest,
+
       cryptoCallbacks,
       verificationMethods: [
         'm.sas.v1',

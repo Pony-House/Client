@@ -27,14 +27,13 @@ function Chatroom({ roomId, homeserver }) {
     // States
     const [isLoading, setIsLoading] = useState(1);
     const [timeline, setTimeline] = useState(null);
+    const [errMessage, setErrorMessage] = useState(null);
+    const [errCode, setErrorCode] = useState(null);
     const [matrixClient, setMatrixClient] = useState(null);
 
     // Info
     const hsUrl = roomId.split(':')[1];
     const MATRIX_INSTANCE = `https://${homeserver || hsUrl}`;
-
-    // const timeline = new RoomTimeline(roomId);
-    console.log(timeline, matrixClient);
 
     // Load Data
     useEffect(() => {
@@ -68,6 +67,15 @@ function Chatroom({ roomId, homeserver }) {
 
             };
 
+            // Get Room
+            const getRoom = (mx) => {
+
+                setMatrixClient(mx);
+                setTimeline(new RoomTimeline(roomId, mx));
+                setIsLoading(0);
+
+            };
+
             // Start user
             if (isAuthenticated()) {
 
@@ -78,24 +86,34 @@ function Chatroom({ roomId, homeserver }) {
                     setIsLoading(0);
                 });
 
-                initMatrix.init().then(() => setMatrixClient(initMatrix.matrixClient)).catch(err => console.error(err));
+                initMatrix.init(true).then(() => getRoom(initMatrix.matrixClient)).catch(err => { console.error(err); alert(err.message); setIsLoading(3); setErrorMessage(err.message); setErrorCode(err.code); });
 
             }
 
             // Start Guest
-            else {
-                startGuest().then(client => { setMatrixClient(client); setIsLoading(0); }).catch(err => console.error(err));
-            }
+            else { startGuest().then(client => getRoom(client)).catch(err => { console.error(err); alert(err.message); setIsLoading(3); setErrorMessage(err.message); setErrorCode(err.code); }); }
 
         }
     }, []);
 
     // Loaded
-    if (!isLoading && matrixClient !== null) {
+    if (!isLoading && matrixClient !== null && timeline !== null) {
+        console.log(timeline, matrixClient, timeline);
         return <>
             <div>{roomId}</div>
             <div>{homeserver}</div>
         </>;
+    }
+
+    // Error
+    if (isLoading === 3) {
+        return <ProcessWrapper>
+            <h1 className='m-0 text-warning'><i class="fa-solid fa-triangle-exclamation" /></h1>
+            <div style={{ marginTop: 'var(--sp-normal)' }} className='text-danger'>
+                {typeof errCode === 'number' || typeof errCode === 'string' ? `${String(errCode)} - ` : ''}
+                {errMessage || 'Unknown error!'}
+            </div>
+        </ProcessWrapper>;
     }
 
     // Loading
