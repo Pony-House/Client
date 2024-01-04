@@ -20,6 +20,13 @@ function startApp(appProtocol) {
     const pageType = params.get('type');
     const pageId = params.get('id');
 
+    const osSettings = getOsSettings();
+    startCustomThemes();
+    startSettings();
+
+    getPWADisplayMode();
+    startQuery();
+
     const root = ReactDOM.createRoot(document.getElementById('root'));
 
     if (
@@ -36,14 +43,7 @@ function startApp(appProtocol) {
 
     }
 
-    const osSettings = getOsSettings();
-    startCustomThemes();
-    startSettings();
-
-    getPWADisplayMode();
-
     startWeb3();
-    startQuery();
 
     console.log(`[app] Starting app using the protocol "${appProtocol}" mode.`);
     global.getEnvApp = () => clone(__ENV_APP__);
