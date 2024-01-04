@@ -10,7 +10,10 @@ function Chatroom({ roomId, homeserver }) {
     // States
     const [timeline, setTimeline] = useState(null);
     const [matrixClient, setMatrixClient] = useState(null);
+
+    // Info
     const hsUrl = roomId.split(':')[1];
+    const MATRIX_INSTANCE = `https://${homeserver || hsUrl}`;
 
     // const timeline = new RoomTimeline(roomId);
     console.log(timeline, matrixClient);
@@ -19,9 +22,7 @@ function Chatroom({ roomId, homeserver }) {
 
         // Guest User Mode
         const startGuest = async () => {
-            if (matrixClient === null && typeof hsUrl === 'string' && hsUrl.length > 0) {
-
-                const MATRIX_INSTANCE = `https://${homeserver || hsUrl}`;
+            if (matrixClient === null) {
 
                 const tmpClient = await createClient(MATRIX_INSTANCE);
                 const { user_id, device_id, access_token } = tmpClient.registerGuest();
@@ -34,13 +35,13 @@ function Chatroom({ roomId, homeserver }) {
                 })
 
                 client.setGuest(true);
-                setMatrixClient(client);
+                return client;
 
             }
         };
 
         // Start Guest
-        startGuest();
+        startGuest().then(client => setMatrixClient(client)).catch(err => console.error(err));
 
     }, []);
 
