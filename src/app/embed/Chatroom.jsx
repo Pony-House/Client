@@ -10,6 +10,7 @@ import RoomTimeline from '../../client/state/RoomTimeline';
 import initMatrix from '../../client/initMatrix';
 import Spinner from '../atoms/spinner/Spinner';
 import ProcessWrapper from '../templates/auth/modules/ProcessWrapper';
+import { objType } from '../../util/tools';
 
 global.Olm = Olm;
 
@@ -68,13 +69,21 @@ function Chatroom({ roomId, homeserver }) {
             };
 
             // Get Room
-            const getRoom = (mx) => {
-
-                setMatrixClient(mx);
-                setTimeline(new RoomTimeline(roomId, mx));
-                setIsLoading(0);
-
-            };
+            const getRoom = (mx) => new Promise((resolve, reject) => {
+                mx.getRoomIdForAlias(roomId).then(alias => {
+                    if (objType(alias, 'object') && typeof alias.room_id === 'string') {
+                        setMatrixClient(mx);
+                        setTimeline(new RoomTimeline(alias.room_id, mx));
+                        setIsLoading(0);
+                    } else {
+                        setIsLoading(3);
+                        console.error('Invalid room alias data object!');
+                        console.log('Room alias data:', alias);
+                        setErrorMessage('Invalid room alias data object!');
+                        setErrorCode(500);
+                    }
+                }).catch(err => reject(err));
+            });
 
             // Start user
             if (isAuthenticated()) {
@@ -86,12 +95,12 @@ function Chatroom({ roomId, homeserver }) {
                     setIsLoading(0);
                 });
 
-                initMatrix.init(true).then(() => getRoom(initMatrix.matrixClient)).catch(err => { console.error(err); alert(err.message); setIsLoading(3); setErrorMessage(err.message); setErrorCode(err.code); });
+                initMatrix.init(true).then(() => getRoom(initMatrix.matrixClient)).catch(err => { console.error(err); setIsLoading(3); setErrorMessage(err.message); setErrorCode(err.code); });
 
             }
 
             // Start Guest
-            else { startGuest().then(client => getRoom(client)).catch(err => { console.error(err); alert(err.message); setIsLoading(3); setErrorMessage(err.message); setErrorCode(err.code); }); }
+            else { startGuest().then(client => getRoom(client)).catch(err => { console.error(err); setIsLoading(3); setErrorMessage(err.message); setErrorCode(err.code); }); }
 
         }
     }, []);
@@ -108,7 +117,7 @@ function Chatroom({ roomId, homeserver }) {
     // Error
     if (isLoading === 3) {
         return <ProcessWrapper>
-            <h1 className='m-0 text-warning'><i class="fa-solid fa-triangle-exclamation" /></h1>
+            <h1 className='m-0 text-warning'><i className="fa-solid fa-triangle-exclamation" /></h1>
             <div style={{ marginTop: 'var(--sp-normal)' }} className='text-danger'>
                 {typeof errCode === 'number' || typeof errCode === 'string' ? `${String(errCode)} - ` : ''}
                 {errMessage || 'Unknown error!'}
