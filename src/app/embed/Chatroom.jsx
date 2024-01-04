@@ -121,7 +121,11 @@ function Chatroom({ roomId, homeserver, joinGuest, theme }) {
 
     // Loaded
     if (!isLoading && roomTimeline !== null) {
-        return <RoomViewContent roomTimeline={roomTimeline} isUserList isGuest={!isAuthenticated()} />;
+        return <>
+
+            <RoomViewContent roomTimeline={roomTimeline} isUserList isGuest={!isAuthenticated()} />
+
+        </>;
     }
 
     // Error

@@ -816,6 +816,7 @@ function RoomViewContent({
 
     body.removeClass('cb-top-page');
 
+    if (tl.length < 1 && isGuest) { tl.push(<center className='small p-3'>Empty Timeline</center>); }
     return tl;
 
   };
