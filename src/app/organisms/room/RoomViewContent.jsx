@@ -416,7 +416,7 @@ function useEventArrive(
       }
 
       const { timeline } = roomTimeline;
-      const unreadMsgIsLast = timeline[timeline.length - 2].getId() === readUpToId;
+      const unreadMsgIsLast = timeline[timeline.length - 2] && timeline[timeline.length - 2].getId() === readUpToId;
       if (unreadMsgIsLast) {
         requestAnimationFrame(() => markAsRead(roomTimeline.roomId));
       }
