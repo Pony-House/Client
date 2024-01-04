@@ -50,10 +50,17 @@ function Chatroom({ roomId, homeserver }) {
                 const { user_id, device_id, access_token } = tmpClient.registerGuest();
 
                 const client = sdk.createClient({
+
                     baseUrl: MATRIX_INSTANCE,
                     accessToken: access_token,
                     userId: user_id,
                     deviceId: device_id,
+                    timelineSupport: true,
+
+                    verificationMethods: [
+                        'm.sas.v1',
+                    ],
+
                 });
 
                 client.setGuest(true);
