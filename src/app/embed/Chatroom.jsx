@@ -12,6 +12,8 @@ import Spinner from '../atoms/spinner/Spinner';
 import ProcessWrapper from '../templates/auth/modules/ProcessWrapper';
 import { objType } from '../../util/tools';
 import { join } from '../../client/action/room';
+// import RoomView from '../organisms/room/RoomView';
+import RoomViewContent from '../organisms/room/RoomViewContent';
 
 global.Olm = Olm;
 
@@ -29,10 +31,9 @@ function Chatroom({ roomId, homeserver, joinGuest, theme }) {
 
     // States
     const [isLoading, setIsLoading] = useState(1);
-    const [timeline, setTimeline] = useState(null);
+    const [roomTimeline, setTimeline] = useState(null);
     const [errMessage, setErrorMessage] = useState(null);
     const [errCode, setErrorCode] = useState(null);
-    const [matrixClient, setMatrixClient] = useState(null);
 
     // Info
     const hsUrl = roomId.split(':')[1];
@@ -40,7 +41,7 @@ function Chatroom({ roomId, homeserver, joinGuest, theme }) {
 
     // Load Data
     useEffect(() => {
-        if (isLoading === 1 && matrixClient === null) {
+        if (isLoading === 1) {
 
             // Set Loading
             setIsLoading(2);
@@ -66,27 +67,26 @@ function Chatroom({ roomId, homeserver, joinGuest, theme }) {
                 });
 
                 client.setGuest(true);
+                initMatrix.setMatrixClient(client);
                 return client;
 
             };
 
             // Get Room
-            const getRoom = (mx) => new Promise((resolve, reject) => {
-                if (__ENV_APP__.MODE === 'development') { global.initMatrix = { matrixClient: mx }; }
+            const getRoom = () => new Promise((resolve, reject) => {
+                const mx = initMatrix.matrixClient;
                 mx.getRoomIdForAlias(roomId).then(aliasData => {
                     if (objType(aliasData, 'object')) {
 
                         if (joinGuest === 'true' || joinGuest === true) {
                             const via = aliasData?.servers.slice(0, 3) || [];
-                            join(roomId, false, via, mx).then(tinyRoom => {
-                                setMatrixClient(mx);
-                                setTimeline(new RoomTimeline(tinyRoom, mx));
+                            join(roomId, false, via).then(tinyRoom => {
+                                setTimeline(new RoomTimeline(tinyRoom));
                                 setIsLoading(0);
                             });
                         }
                         else {
-                            setMatrixClient(mx);
-                            setTimeline(new RoomTimeline(aliasData.room_id, mx, true, mx.getUserId()));
+                            setTimeline(new RoomTimeline(aliasData.room_id, true, mx.getUserId()));
                             setIsLoading(0);
                         }
 
@@ -110,23 +110,19 @@ function Chatroom({ roomId, homeserver, joinGuest, theme }) {
                     setIsLoading(0);
                 });
 
-                initMatrix.init(true).then(() => getRoom(initMatrix.matrixClient)).catch(err => { console.error(err); setIsLoading(3); setErrorMessage(err.message); setErrorCode(err.code); });
+                initMatrix.init(true).then(() => getRoom()).catch(err => { console.error(err); setIsLoading(3); setErrorMessage(err.message); setErrorCode(err.code); });
 
             }
 
             // Start Guest
-            else { startGuest().then(client => getRoom(client)).catch(err => { console.error(err); setIsLoading(3); setErrorMessage(err.message); setErrorCode(err.code); }); }
+            else { startGuest().then(() => getRoom()).catch(err => { console.error(err); setIsLoading(3); setErrorMessage(err.message); setErrorCode(err.code); }); }
 
         }
     }, []);
 
     // Loaded
-    if (!isLoading && matrixClient !== null && timeline !== null) {
-        console.log(timeline);
-        return <>
-            <div>{roomId}</div>
-            <div>{homeserver}</div>
-        </>;
+    if (!isLoading && roomTimeline !== null) {
+        return <RoomViewContent roomTimeline={roomTimeline} isUserList />;
     }
 
     // Error

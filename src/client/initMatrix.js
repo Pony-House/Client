@@ -49,6 +49,11 @@ class InitMatrix extends EventEmitter {
     startCustomDNS();
   }
 
+  setMatrixClient(mx) {
+    this.matrixClient = mx;
+    if (__ENV_APP__.MODE === 'development') { global.initMatrix = { matrixClient: mx }; }
+  }
+
   async init(isGuest = false) {
     startCustomDNS();
     await this.startClient(isGuest);

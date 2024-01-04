@@ -148,7 +148,7 @@ const enableyJsItem = {
 // Class
 class RoomTimeline extends EventEmitter {
 
-  constructor(roomId, matrixClient = initMatrix.matrixClient, isGuest = false, guestId = null) {
+  constructor(roomId, isGuest = false, guestId = null) {
 
     // Super!
     super();
@@ -165,7 +165,7 @@ class RoomTimeline extends EventEmitter {
     this.guestId = guestId;
 
     // Client Prepare
-    this.matrixClient = matrixClient;
+    this.matrixClient = initMatrix.matrixClient;
     this.roomId = roomId;
     this.room = !this.isGuest ? this.matrixClient.getRoom(roomId) : new Room(roomId, this.matrixClient, this.guestId, {
       lazyLoadMembers: true,
@@ -193,7 +193,6 @@ class RoomTimeline extends EventEmitter {
             for (const item in tinyThis.liveTimeline.events) {
 
               const event = tinyThis.liveTimeline.events[item];
-
               tinyThis.matrixClient.emit(RoomEvent.Timeline,
                 event,
                 tinyThis.room,

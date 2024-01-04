@@ -859,7 +859,8 @@ function RoomViewInput({
 
   useEffect(() => {
     const focusOnLive = () => {
-      ReactEditor.focus(editor.current);
+      if (editor.current) ReactEditor.focus(editor.current);
+      $(textAreaRef.current).focus();
     };
     roomTimeline.addListener(cons.events.roomTimeline.SCROLL_TO_LIVE, focusOnLive);
     return () => {

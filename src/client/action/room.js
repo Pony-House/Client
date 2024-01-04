@@ -95,7 +95,8 @@ function convertToRoom(roomId) {
  * @param {boolean} isDM
  * @param {string[]} via
  */
-async function join(roomIdOrAlias, isDM = false, via = undefined, mx = initMatrix.matrixClient) {
+async function join(roomIdOrAlias, isDM = false, via = undefined) {
+  const mx = initMatrix.matrixClient;
   const roomIdParts = roomIdOrAlias.split(':');
   const viaServers = via || [roomIdParts[1]];
 
