@@ -472,6 +472,7 @@ function RoomViewContent({
   eventId,
   roomTimeline,
   isUserList,
+  isGuest,
 }) {
 
   const [throttle] = useState(new Throttle());
@@ -730,7 +731,7 @@ function RoomViewContent({
 
     let renderingHolders = false;
     if (roomTimeline.canPaginateBackward() || limit.from > 0) {
-      tl.push(loadingMsgPlaceholders(1, PLACEHOLDER_COUNT));
+      if (!isGuest) tl.push(loadingMsgPlaceholders(1, PLACEHOLDER_COUNT));
       itemCountIndex += PLACEHOLDER_COUNT;
     }
 
@@ -804,7 +805,7 @@ function RoomViewContent({
 
     if (roomTimeline.canPaginateForward() || limit.length < timeline.length) {
       renderingHolders = true;
-      tl.push(loadingMsgPlaceholders(2, PLACEHOLDER_COUNT));
+      if (!isGuest) tl.push(loadingMsgPlaceholders(2, PLACEHOLDER_COUNT));
     }
 
     if (renderingHolders) {
@@ -860,9 +861,11 @@ function RoomViewContent({
 
 RoomViewContent.defaultProps = {
   eventId: null,
+  isGuest: false,
 };
 RoomViewContent.propTypes = {
   eventId: PropTypes.string,
+  isGuest: PropTypes.bool,
   roomTimeline: PropTypes.shape({}).isRequired,
 };
 
