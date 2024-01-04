@@ -7,6 +7,7 @@ import {
   Direction,
   EventTimeline,
   MatrixEventEvent,
+  Room,
   RoomEvent,
   RoomMemberEvent,
 } from 'matrix-js-sdk';
@@ -146,7 +147,7 @@ const enableyJsItem = {
 // Class
 class RoomTimeline extends EventEmitter {
 
-  constructor(roomId, matrixClient = initMatrix.matrixClient) {
+  constructor(roomId, matrixClient = initMatrix.matrixClient, isGuest = false, guestId = null) {
 
     super();
     // These are local timelines
@@ -158,7 +159,7 @@ class RoomTimeline extends EventEmitter {
 
     this.matrixClient = matrixClient;
     this.roomId = roomId;
-    this.room = this.matrixClient.getRoom(roomId);
+    this.room = !isGuest ? this.matrixClient.getRoom(roomId) : new Room(roomId, this.matrixClient, guestId);
     if (this.room === null) {
       throw new Error(`Created a RoomTimeline for a room that doesn't exist: ${roomId}`);
     }

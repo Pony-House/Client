@@ -45,6 +45,7 @@ class InitMatrix extends EventEmitter {
     await this.startClient(isGuest);
     this.setupSync();
     this.listenEvents();
+    return secret.userId;
   }
 
   async startClient(isGuest = false) {

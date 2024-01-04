@@ -31,6 +31,7 @@ function Chatroom({ roomId, homeserver }) {
     const [errMessage, setErrorMessage] = useState(null);
     const [errCode, setErrorCode] = useState(null);
     const [matrixClient, setMatrixClient] = useState(null);
+    const [userId, setUserId] = useState(null);
 
     // Info
     const hsUrl = roomId.split(':')[1];
@@ -39,6 +40,9 @@ function Chatroom({ roomId, homeserver }) {
     // Load Data
     useEffect(() => {
         if (isLoading === 1 && matrixClient === null) {
+
+            // User Id
+            let guestId = null;
 
             // Set Loading
             setIsLoading(2);
@@ -64,6 +68,8 @@ function Chatroom({ roomId, homeserver }) {
                 });
 
                 client.setGuest(true);
+                guestId = user_id || client.getUserId();
+                setUserId(guestId);
                 return client;
 
             };
@@ -73,7 +79,7 @@ function Chatroom({ roomId, homeserver }) {
                 mx.getRoomIdForAlias(roomId).then(alias => {
                     if (objType(alias, 'object') && typeof alias.room_id === 'string') {
                         setMatrixClient(mx);
-                        setTimeline(new RoomTimeline(alias.room_id, mx));
+                        setTimeline(new RoomTimeline(alias.room_id, mx, true, guestId));
                         setIsLoading(0);
                     } else {
                         setIsLoading(3);
@@ -95,7 +101,11 @@ function Chatroom({ roomId, homeserver }) {
                     setIsLoading(0);
                 });
 
-                initMatrix.init(true).then(() => getRoom(initMatrix.matrixClient)).catch(err => { console.error(err); setIsLoading(3); setErrorMessage(err.message); setErrorCode(err.code); });
+                initMatrix.init(true).then((newUserId) => {
+                    guestId = newUserId;
+                    setUserId(newUserId);
+                    return getRoom(initMatrix.matrixClient)
+                }).catch(err => { console.error(err); setIsLoading(3); setErrorMessage(err.message); setErrorCode(err.code); });
 
             }
 
@@ -107,7 +117,7 @@ function Chatroom({ roomId, homeserver }) {
 
     // Loaded
     if (!isLoading && matrixClient !== null && timeline !== null) {
-        console.log(timeline, matrixClient, timeline);
+        console.log(userId, timeline, matrixClient, timeline);
         return <>
             <div>{roomId}</div>
             <div>{homeserver}</div>
