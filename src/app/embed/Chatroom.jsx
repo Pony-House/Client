@@ -33,7 +33,7 @@ function Chatroom({ roomId, homeserver }) {
         const startGuest = async () => {
             if (matrixClient === null) {
 
-                const tmpClient = await createClient(MATRIX_INSTANCE);
+                const tmpClient = await createClient({ baseUrl: MATRIX_INSTANCE });
                 const { user_id, device_id, access_token } = tmpClient.registerGuest();
 
                 const client = createClient({
