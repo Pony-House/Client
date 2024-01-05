@@ -25,6 +25,8 @@ import Avatar from '../../atoms/avatar/Avatar';
 import RoomOptions from '../../molecules/room-options/RoomOptions';
 
 import { useForceUpdate } from '../../hooks/useForceUpdate';
+import copyText from '../profile-viewer/copyText';
+
 import RoomViewPin from './RoomViewPin';
 
 function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions }) {
@@ -149,7 +151,8 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
 
         </button> : <button
           className="nav-link btn btn-bg border-0 p-1"
-          style={{ pointerEvents: 'none' }}
+          onClick={(event) => roomAlias ? copyText(event, 'Room alias successfully copied to the clipboard.') : null}
+          style={{ pointerEvents: !roomAlias ? 'none' : null }}
           type="button"
         >
 
