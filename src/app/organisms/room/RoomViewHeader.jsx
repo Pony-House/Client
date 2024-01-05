@@ -27,7 +27,7 @@ import RoomOptions from '../../molecules/room-options/RoomOptions';
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 import RoomViewPin from './RoomViewPin';
 
-function RoomViewHeader({ roomId, threadId, roomItem, disableActions }) {
+function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions }) {
 
   const [, forceUpdate] = useForceUpdate();
   const mx = initMatrix.matrixClient;
@@ -36,12 +36,13 @@ function RoomViewHeader({ roomId, threadId, roomItem, disableActions }) {
 
   const getAvatarUrl = () => isDM ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop') : room.getAvatarUrl(mx.baseUrl, 36, 36, 'crop');
   const [avatarSrc, setAvatarSrc] = useState(getAvatarUrl());
-  const [roomName, setRoomName] = useState(room.name);
+  const [roomName, setRoomName] = useState(roomAlias || room.name);
 
   const roomInfoUpdate = () => {
     const newAvatar = getAvatarUrl();
+    const newName = roomAlias || room.name;
     if (avatarSrc !== newAvatar) setAvatarSrc(newAvatar);
-    if (roomName !== room.name) setRoomName(room.name);
+    if (roomName !== newName) setRoomName(newName);
   };
 
   roomInfoUpdate();

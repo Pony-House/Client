@@ -104,13 +104,13 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, }) {
                         else {
 
                             setTimeline(new RoomTimeline(
-                                aliasData.room_id, true,
+                                aliasData.room_id, roomId, true,
                                 mx.getUserId(), ((
                                     typeof refreshTime === 'string' && refreshTime.length > 0
                                 ) || (
                                         typeof refreshTime === 'number' && refreshTime > 0
                                     )
-                                ) ? Number(refreshTime) : null
+                                ) ? Number(refreshTime) : null,
                             ));
 
                             setIsLoading(0);
@@ -150,7 +150,7 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, }) {
     // Loaded
     if (!isLoading && roomTimeline !== null) {
         return <>
-            <RoomViewHeader roomId={roomId} roomItem={roomTimeline.room} disableActions />
+            <RoomViewHeader roomId={roomId} roomItem={roomTimeline.room} roomAlias={roomTimeline.roomAlias} disableActions />
             <RoomViewContent roomTimeline={roomTimeline} isGuest={!isAuthenticated()} isUserList />
         </>;
     }
