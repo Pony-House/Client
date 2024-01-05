@@ -96,22 +96,30 @@ const MessageHeader = React.memo(
   ({
     userId,
     username,
+    usernameHover,
   }) => {
 
     const appAppearance = getAppearance();
     const tinyUsername = twemojifyReact(username);
+    let isUNhoverEnabled = appAppearance.isUNhoverEnabled;
 
-    return (
-      <span className='username-base emoji-size-fix' style={{ color: colorMXID(userId) }}>
-        <span className={`username${appAppearance.isUNhoverEnabled ? '' : ' disable-username'}`}>{tinyUsername}</span>
-        <span className={`user-id${appAppearance.isUNhoverEnabled ? '' : ' disable-username'}`}>{appAppearance.isUNhoverEnabled ? twemojifyReact(userId) : tinyUsername}</span>
-      </span>
-    );
+    const forceUsername = typeof usernameHover === 'string' && usernameHover.length > 0 ? usernameHover === 'on' ? 1 : 0 : -1;
+    if (forceUsername === 1) {
+      isUNhoverEnabled = true;
+    } else if (forceUsername === 0) {
+      isUNhoverEnabled = false;
+    }
+
+    return <span className='username-base emoji-size-fix' style={{ color: colorMXID(userId) }}>
+      <span className={`username${isUNhoverEnabled ? '' : ' disable-username'}`}>{tinyUsername}</span>
+      <span className={`user-id${isUNhoverEnabled ? '' : ' disable-username'}`}>{isUNhoverEnabled ? twemojifyReact(userId) : tinyUsername}</span>
+    </span>;
 
   },
 );
 
 MessageHeader.propTypes = {
+  usernameHover: PropTypes.string,
   userId: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
 };
@@ -1063,6 +1071,7 @@ function Message({
   timelineSVRef,
   isDM,
   isGuest,
+  usernameHover,
 }) {
 
   // Get Room Data
@@ -1322,6 +1331,7 @@ function Message({
           <div className='mb-1'>
 
             <MessageHeader
+              usernameHover={usernameHover}
               userId={senderId}
               username={username}
             />
@@ -1447,6 +1457,7 @@ function Message({
         <div className='mb-1'>
 
           <MessageHeader
+            usernameHover={usernameHover}
             userId={senderId}
             username={username}
           />

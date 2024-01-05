@@ -26,13 +26,14 @@ global.Olm = Olm;
 
     theme: silver-theme
 
+    usernameHover: null (on or off)
     refresh_time: null (In minutes)
 
-    path: /?type=chatroom&id=%23test-room%3Aexample.com&hs=example.com&theme=silver-theme
+    path: /?type=chatroom&id=%23test-room%3Aexample.com&hs=example.com&theme=silver-theme&username_hover=off
 
 */
 
-function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, }) {
+function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameHover }) {
 
     // States
     const [isLoading, setIsLoading] = useState(1);
@@ -151,7 +152,7 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, }) {
     if (!isLoading && roomTimeline !== null) {
         return <>
             <RoomViewHeader roomId={roomId} roomItem={roomTimeline.room} roomAlias={roomTimeline.roomAlias} disableActions />
-            <RoomViewContent roomTimeline={roomTimeline} isGuest={!isAuthenticated()} isUserList />
+            <RoomViewContent roomTimeline={roomTimeline} isGuest={!isAuthenticated()} usernameHover={usernameHover} isUserList />
         </>;
     }
 
