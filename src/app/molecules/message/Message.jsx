@@ -1062,6 +1062,7 @@ function Message({
   classNameMessage,
   timelineSVRef,
   isDM,
+  isGuest,
 }) {
 
   // Get Room Data
@@ -1302,7 +1303,7 @@ function Message({
 
       <td className='p-0 pe-3 py-1' colSpan={!children ? '2' : ''}>
 
-        {roomTimeline && !isEdit && (
+        {!isGuest && roomTimeline && !isEdit && (
           <MessageOptions
             customHTML={customHTML}
             body={body}
@@ -1429,7 +1430,7 @@ function Message({
 
     <td className='p-0 pe-3 py-1'>
 
-      {roomTimeline && !isEdit && (
+      {!isGuest && roomTimeline && !isEdit && (
         <MessageOptions
           roomid={roomId}
           senderid={senderId}
@@ -1518,6 +1519,7 @@ Message.defaultProps = {
   isEdit: false,
   setEdit: null,
   cancelEdit: null,
+  isGuest: false,
 };
 
 Message.propTypes = {
@@ -1529,6 +1531,7 @@ Message.propTypes = {
   focus: PropTypes.bool,
   fullTime: PropTypes.bool,
   isEdit: PropTypes.bool,
+  isGuest: PropTypes.bool,
   setEdit: PropTypes.func,
   cancelEdit: PropTypes.func,
 };

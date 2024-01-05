@@ -13,6 +13,7 @@ import ProcessWrapper from '../templates/auth/modules/ProcessWrapper';
 import { objType } from '../../util/tools';
 import { join } from '../../client/action/room';
 import RoomViewContent from '../organisms/room/RoomViewContent';
+import RoomViewHeader from '../organisms/room/RoomViewHeader';
 
 global.Olm = Olm;
 
@@ -122,9 +123,8 @@ function Chatroom({ roomId, homeserver, joinGuest, theme }) {
     // Loaded
     if (!isLoading && roomTimeline !== null) {
         return <>
-
+            <RoomViewHeader roomId={roomId} roomItem={roomTimeline.room} isGuest={!isAuthenticated()} disableActions />
             <RoomViewContent roomTimeline={roomTimeline} isUserList isGuest={!isAuthenticated()} />
-
         </>;
     }
 

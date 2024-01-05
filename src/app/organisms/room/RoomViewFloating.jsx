@@ -32,10 +32,10 @@ function useJumpToEvent(roomTimeline) {
 
     const { notifications } = initMatrix;
     const handleMarkAsRead = () => setEventId(null);
-    notifications.on(cons.events.notifications.FULL_READ, handleMarkAsRead);
+    if (notifications) notifications.on(cons.events.notifications.FULL_READ, handleMarkAsRead);
 
     return () => {
-      notifications.removeListener(cons.events.notifications.FULL_READ, handleMarkAsRead);
+      if (notifications) notifications.removeListener(cons.events.notifications.FULL_READ, handleMarkAsRead);
       setEventId(null);
     };
   }, [roomTimeline]);

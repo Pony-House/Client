@@ -75,10 +75,10 @@ function RoomViewInput({
   }
 
   useEffect(() => {
-    roomsInput.on(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
+    if (roomsInput) roomsInput.on(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
     viewEvent.on('focus_msg_input', requestFocusInput);
     return () => {
-      roomsInput.removeListener(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
+      if (roomsInput) roomsInput.removeListener(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
       viewEvent.removeListener('focus_msg_input', requestFocusInput);
     };
   }, [roomsInput, viewEvent]);
@@ -496,7 +496,7 @@ function RoomViewInput({
 
     setReplyTo({ userId, eventId, body });
 
-    roomsInput.setReplyTo(roomId, {
+    if (roomsInput) roomsInput.setReplyTo(roomId, {
       userId,
       eventId,
       body,
@@ -511,9 +511,11 @@ function RoomViewInput({
   useEffect(() => {
 
     // Events On
-    roomsInput.on(cons.events.roomsInput.UPLOAD_PROGRESS_CHANGES, uploadingProgress);
-    roomsInput.on(cons.events.roomsInput.ATTACHMENT_CANCELED, clearAttachment);
-    roomsInput.on(cons.events.roomsInput.FILE_UPLOADED, clearAttachment);
+    if (roomsInput) {
+      roomsInput.on(cons.events.roomsInput.UPLOAD_PROGRESS_CHANGES, uploadingProgress);
+      roomsInput.on(cons.events.roomsInput.ATTACHMENT_CANCELED, clearAttachment);
+      roomsInput.on(cons.events.roomsInput.FILE_UPLOADED, clearAttachment);
+    }
 
     viewEvent.on('cmd_fired', firedCmd);
 
@@ -523,9 +525,11 @@ function RoomViewInput({
     const textArea = $(textAreaRef.current);
     if (textArea.length > 0) {
       isTyping = false;
-      textArea.val(roomsInput.getMessage(roomId));
-      setAttachment(roomsInput.getAttachment(roomId));
-      setReplyTo(roomsInput.getReplyTo(roomId));
+      if (roomsInput) {
+        textArea.val(roomsInput.getMessage(roomId));
+        setAttachment(roomsInput.getAttachment(roomId));
+        setReplyTo(roomsInput.getReplyTo(roomId));
+      }
     }
 
     const textResize = () => {
@@ -549,9 +553,11 @@ function RoomViewInput({
     textArea.on('focus', focusUpdate[0]).on('blur', focusUpdate[1]).on('keydown', textResize).on('keypress', textResize).on('keyup', textResize);
     return () => {
 
-      roomsInput.removeListener(cons.events.roomsInput.UPLOAD_PROGRESS_CHANGES, uploadingProgress);
-      roomsInput.removeListener(cons.events.roomsInput.ATTACHMENT_CANCELED, clearAttachment);
-      roomsInput.removeListener(cons.events.roomsInput.FILE_UPLOADED, clearAttachment);
+      if (roomsInput) {
+        roomsInput.removeListener(cons.events.roomsInput.UPLOAD_PROGRESS_CHANGES, uploadingProgress);
+        roomsInput.removeListener(cons.events.roomsInput.ATTACHMENT_CANCELED, clearAttachment);
+        roomsInput.removeListener(cons.events.roomsInput.FILE_UPLOADED, clearAttachment);
+      }
 
       viewEvent.removeListener('cmd_fired', firedCmd);
       navigation.removeListener(cons.events.navigation.REPLY_TO_CLICKED, setUpReply);
@@ -568,10 +574,10 @@ function RoomViewInput({
       $(inputBaseRef.current).css('background-image', 'unset');
 
       if (msg.trim() === '') {
-        roomsInput.setMessage(roomId, '');
+        if (roomsInput) roomsInput.setMessage(roomId, '');
         return;
       }
-      roomsInput.setMessage(roomId, msg);
+      if (roomsInput) roomsInput.setMessage(roomId, msg);
 
     };
 
@@ -590,17 +596,17 @@ function RoomViewInput({
     if (typeof opt.autoMarkdown !== 'boolean') opt.autoMarkdown = true;
 
     // Is Seding?
-    if (roomsInput.isSending(roomId)) return;
+    if (roomsInput && roomsInput.isSending(roomId)) return;
 
     // Cancel Typing Warn
     if (!checkTypingPerm()) sendIsTyping(false);
 
     // Set Message
-    roomsInput.setMessage(roomId, body);
+    if (roomsInput) roomsInput.setMessage(roomId, body);
 
     // Prepare Files
     if (attachment !== null) {
-      roomsInput.setAttachment(roomId, attachment);
+      if (roomsInput) roomsInput.setAttachment(roomId, attachment);
     }
 
     // Prepare Message
@@ -608,7 +614,7 @@ function RoomViewInput({
     textArea.prop('disabled', true).css('cursor', 'not-allowed');
 
     // Send Input
-    await roomsInput.sendInput(roomId, threadId, opt).catch(err => {
+    if (roomsInput) await roomsInput.sendInput(roomId, threadId, opt).catch(err => {
       toast(err.message);
     });
 
@@ -618,7 +624,7 @@ function RoomViewInput({
 
     // Get Room ID
     clearEditor();
-    textArea.val(roomsInput.getMessage(roomId)).css('height', 'unset');
+    if (roomsInput) textArea.val(roomsInput.getMessage(roomId)).css('height', 'unset');
 
     // Reply Fix
     if (replyTo !== null) setReplyTo(null);
@@ -676,7 +682,7 @@ function RoomViewInput({
 
   // Sticker
   const handleSendSticker = async (data) => {
-    roomsInput.sendSticker(roomId, data);
+    if (roomsInput) roomsInput.sendSticker(roomId, data);
   };
 
   // Typing Progress
@@ -760,7 +766,7 @@ function RoomViewInput({
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') {
       e.preventDefault();
-      roomsInput.cancelReplyTo(roomId);
+      if (roomsInput) roomsInput.cancelReplyTo(roomId);
       setReplyTo(null);
     }
     if (e.key === 'Enter' && e.shiftKey === false && !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -786,7 +792,7 @@ function RoomViewInput({
         if (attachment === null) {
           setAttachment(image);
           if (image !== null) {
-            roomsInput.setAttachment(roomId, image);
+            if (roomsInput) roomsInput.setAttachment(roomId, image);
             return;
           }
         } else {
@@ -846,7 +852,7 @@ function RoomViewInput({
 
   const handleUploadClick = () => {
     if (attachment === null) uploadInputRef.current.click();
-    else {
+    else if (roomsInput) {
       roomsInput.cancelAttachment(roomId);
     }
   };
@@ -854,7 +860,7 @@ function RoomViewInput({
   function uploadFileChange(e) {
     const file = e.target.files.item(0);
     setAttachment(file);
-    if (file !== null) roomsInput.setAttachment(roomId, file);
+    if (roomsInput && file !== null) roomsInput.setAttachment(roomId, file);
   }
 
   useEffect(() => {
@@ -1056,7 +1062,7 @@ function RoomViewInput({
   // Complete
   return (
     <>
-      {replyTo !== null && attachReply()}
+      {roomsInput && replyTo !== null && attachReply()}
       {attachment !== null && attachFile()}
       <form ref={refRoomInput} className="room-input" onSubmit={(e) => { e.preventDefault(); }}>
         {

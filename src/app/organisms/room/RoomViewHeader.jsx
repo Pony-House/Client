@@ -27,11 +27,12 @@ import RoomOptions from '../../molecules/room-options/RoomOptions';
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 import RoomViewPin from './RoomViewPin';
 
-function RoomViewHeader({ roomId, threadId }) {
+function RoomViewHeader({ roomId, threadId, roomItem, disableActions }) {
+
   const [, forceUpdate] = useForceUpdate();
   const mx = initMatrix.matrixClient;
-  const isDM = initMatrix.roomList.directs.has(roomId);
-  const room = mx.getRoom(roomId);
+  const isDM = initMatrix.roomList && initMatrix.roomList.directs.has(roomId);
+  const room = !roomItem ? mx.getRoom(roomId) : roomItem;
 
   let avatarSrc = room.getAvatarUrl(mx.baseUrl, 36, 36, 'crop');
   avatarSrc = isDM ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop') : avatarSrc;
@@ -53,6 +54,7 @@ function RoomViewHeader({ roomId, threadId }) {
   }, []);
 
   useEffect(() => {
+
     const { roomList } = initMatrix;
     const handleProfileUpdate = (rId) => {
       forceUnloadedAvatars();
@@ -61,10 +63,13 @@ function RoomViewHeader({ roomId, threadId }) {
     };
 
     forceUnloadedAvatars();
-    roomList.on(cons.events.roomList.ROOM_PROFILE_UPDATED, handleProfileUpdate);
-    return () => {
-      roomList.removeListener(cons.events.roomList.ROOM_PROFILE_UPDATED, handleProfileUpdate);
-    };
+    if (roomList) {
+      roomList.on(cons.events.roomList.ROOM_PROFILE_UPDATED, handleProfileUpdate);
+      return () => {
+        roomList.removeListener(cons.events.roomList.ROOM_PROFILE_UPDATED, handleProfileUpdate);
+      };
+    }
+
   }, [roomId]);
 
   if (!room) {
@@ -97,7 +102,7 @@ function RoomViewHeader({ roomId, threadId }) {
 
     <ul className='navbar-nav mr-auto'>
 
-      <li className="nav-item back-navigation">
+      {!disableActions ? <li className="nav-item back-navigation">
 
         <IconButton
           className="nav-link nav-sidebar-1"
@@ -115,23 +120,32 @@ function RoomViewHeader({ roomId, threadId }) {
           onClick={navigationSidebarCallback}
         />
 
-      </li>
+      </li> : null}
 
       <li className="nav-item avatar-base">
-        <button
+
+        {!disableActions ? <button
           className="nav-link btn btn-bg border-0 p-1"
           onClick={() => toggleRoomSettings()}
           type="button"
         >
+
           <Avatar className='d-inline-block me-2' imageSrc={avatarSrc} text={roomName} bgColor={colorMXID(roomId)} size="small" isDefaultImage />
           <span className='me-2 text-truncate d-inline-block room-name'>{twemojifyReact(roomName)}</span>
           <RawIcon fa="fa-solid fa-chevron-down room-icon" />
-        </button>
+
+        </button> : <>
+
+          <Avatar className='d-inline-block me-2' imageSrc={avatarSrc} text={roomName} bgColor={colorMXID(roomId)} size="small" isDefaultImage />
+          <span className='me-2 text-truncate d-inline-block room-name'>{twemojifyReact(roomName)}</span>
+
+        </>}
+
       </li>
 
     </ul>
 
-    <ul className='navbar-nav ms-auto mb-0 small' id='room-options'>
+    {!disableActions ? <ul className='navbar-nav ms-auto mb-0 small' id='room-options'>
 
       {mx.isRoomEncrypted(roomId) === false && (
         <li className="nav-item">
@@ -152,13 +166,18 @@ function RoomViewHeader({ roomId, threadId }) {
         />
       </li>
 
-    </ul>
+    </ul> : null}
 
   </Header>;
 
 }
+RoomViewHeader.defaultProps = {
+  disableActions: false,
+};
+
 RoomViewHeader.propTypes = {
   roomId: PropTypes.string.isRequired,
+  disableActions: PropTypes.bool,
 };
 
 export default RoomViewHeader;

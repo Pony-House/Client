@@ -18,6 +18,8 @@ function RoomView({
   roomTimeline,
   eventId,
   isUserList,
+  roomItem,
+  isGuest,
 }) {
 
   const refcmdInput = useRef(null);
@@ -53,7 +55,7 @@ function RoomView({
   }, []);
 
   return <div className="room-view" ref={roomViewRef}>
-    <RoomViewHeader roomId={roomId} threadId={threadId} />
+    <RoomViewHeader roomId={roomId} threadId={threadId} roomItem={roomItem} isGuest={isGuest} />
     <div className="room-view__content-wrapper">
       <div className="room-view__scrollable">
         <RoomViewContent isUserList={isUserList} eventId={eventId} roomTimeline={roomTimeline} />
@@ -76,10 +78,12 @@ function RoomView({
 
 RoomView.defaultProps = {
   eventId: null,
+  isGuest: false,
 };
 RoomView.propTypes = {
   roomTimeline: PropTypes.shape({}).isRequired,
   eventId: PropTypes.string,
+  isGuest: PropTypes.bool,
 };
 
 export default RoomView;

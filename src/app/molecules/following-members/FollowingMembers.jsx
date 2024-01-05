@@ -24,10 +24,10 @@ function FollowingMembers({ roomTimeline }) {
     };
     updateFollowingMembers();
     roomTimeline.on(cons.events.roomTimeline.LIVE_RECEIPT, updateFollowingMembers);
-    roomsInput.on(cons.events.roomsInput.MESSAGE_SENT, handleOnMessageSent);
+    if (roomsInput) roomsInput.on(cons.events.roomsInput.MESSAGE_SENT, handleOnMessageSent);
     return () => {
       roomTimeline.removeListener(cons.events.roomTimeline.LIVE_RECEIPT, updateFollowingMembers);
-      roomsInput.removeListener(cons.events.roomsInput.MESSAGE_SENT, handleOnMessageSent);
+      if (roomsInput) roomsInput.removeListener(cons.events.roomsInput.MESSAGE_SENT, handleOnMessageSent);
     };
   }, [roomTimeline]);
 

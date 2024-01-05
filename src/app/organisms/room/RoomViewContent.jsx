@@ -147,6 +147,7 @@ function renderEvent(
   cancelEdit,
   isUserList,
   isDM,
+  isGuest,
 ) {
   const isBodyOnly =
     prevMEvent !== null &&
@@ -170,6 +171,7 @@ function renderEvent(
   }
   return (
     <Message
+      isGuest={isGuest}
       isDM={isDM}
       isUserList={isUserList}
       timelineSVRef={timelineSVRef}
@@ -798,6 +800,7 @@ function RoomViewContent({
           cancelEdit,
           isUserList,
           isDM,
+          isGuest,
         ),
       );
       itemCountIndex += 1;
