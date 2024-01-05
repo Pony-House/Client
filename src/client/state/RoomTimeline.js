@@ -641,6 +641,7 @@ class RoomTimeline extends EventEmitter {
     this.activeTimeline = this.liveTimeline;
     await this._reset();
     this.emit(cons.events.roomTimeline.READY, null);
+    updateRoomInfo();
     return true;
   }
 
@@ -719,6 +720,8 @@ class RoomTimeline extends EventEmitter {
       // Complete
       this.emit(cons.events.roomTimeline.PAGINATED, backwards, loaded);
       this.isOngoingPagination = false;
+
+      updateRoomInfo();
       return true;
 
     }
