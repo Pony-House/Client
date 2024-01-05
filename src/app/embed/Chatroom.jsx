@@ -170,7 +170,7 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, }) {
     return <ProcessWrapper>
         <Spinner />
         <div style={{ marginTop: 'var(--sp-normal)' }}>
-            {__ENV_APP__.INFO.name} - Chatroom Embed
+            {__ENV_APP__.INFO.name} - Room Embed
         </div>
     </ProcessWrapper>;
 
