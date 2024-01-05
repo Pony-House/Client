@@ -148,7 +148,7 @@ const enableyJsItem = {
 // Class
 class RoomTimeline extends EventEmitter {
 
-  constructor(roomId, isGuest = false, guestId = null) {
+  constructor(roomId, isGuest = false, guestId = null, refreshTime = null) {
 
     // Super!
     super();
@@ -211,6 +211,9 @@ class RoomTimeline extends EventEmitter {
       };
 
       this.loadGuestTimeline();
+      if (typeof refreshTime === 'number' && refreshTime > 0) {
+        this.refreshTimelineInterval = setInterval(() => this.loadGuestTimeline(), 60000 * refreshTime);
+      }
 
     }
 

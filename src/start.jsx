@@ -39,7 +39,7 @@ function startApp(appProtocol) {
 
         if (pageType === 'chatroom') {
             const hs = params.get('hs');
-            return root.render(<Chatroom roomId={pageId} homeserver={typeof hs === 'string' && hs.length ? hs : null} joinGuest={params.get('join_guest')} theme={params.get('theme')} />);
+            return root.render(<Chatroom roomId={pageId} homeserver={typeof hs === 'string' && hs.length ? hs : null} joinGuest={params.get('join_guest')} refreshTime={params.get('refresh_time')} theme={params.get('theme')} />);
         }
 
         return root.render('');

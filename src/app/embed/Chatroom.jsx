@@ -21,13 +21,15 @@ global.Olm = Olm;
 
     id: #test-room:example.com
     hs: example.com
-    joinGuest: false
+    join_guest: false
+
+    refresh_time: null (In minutes)
 
     path: /?type=chatroom&id=%23test-room%3Aexample.com&hs=example.com
 
 */
 
-function Chatroom({ roomId, homeserver, joinGuest, theme }) {
+function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, }) {
 
     // States
     const [isLoading, setIsLoading] = useState(1);
@@ -79,15 +81,29 @@ function Chatroom({ roomId, homeserver, joinGuest, theme }) {
                     if (objType(aliasData, 'object')) {
 
                         if (mx.isGuest() && (joinGuest === 'true' || joinGuest === true)) {
+
                             const via = aliasData?.servers.slice(0, 3) || [];
+
                             join(roomId, false, via).then(tinyRoom => {
                                 setTimeline(new RoomTimeline(tinyRoom));
                                 setIsLoading(0);
                             });
+
                         }
                         else {
-                            setTimeline(new RoomTimeline(aliasData.room_id, true, mx.getUserId()));
+
+                            setTimeline(new RoomTimeline(
+                                aliasData.room_id, true,
+                                mx.getUserId(), ((
+                                    typeof refreshTime === 'string' && refreshTime.length > 0
+                                ) || (
+                                        typeof refreshTime === 'number' && refreshTime > 0
+                                    )
+                                ) ? Number(refreshTime) : null
+                            ));
+
                             setIsLoading(0);
+
                         }
 
                     } else {
@@ -124,7 +140,7 @@ function Chatroom({ roomId, homeserver, joinGuest, theme }) {
     if (!isLoading && roomTimeline !== null) {
         return <>
             <RoomViewHeader roomId={roomId} roomItem={roomTimeline.room} disableActions />
-            <RoomViewContent roomTimeline={roomTimeline} isUserList isGuest={!isAuthenticated()} />
+            <RoomViewContent roomTimeline={roomTimeline} isGuest={!isAuthenticated()} isUserList />
         </>;
     }
 
