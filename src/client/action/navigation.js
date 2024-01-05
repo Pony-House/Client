@@ -76,6 +76,13 @@ export function toggleRoomSettings(tabText) {
   });
 }
 
+export function updateRoomInfo(info) {
+  appDispatcher.dispatch({
+    type: cons.actions.navigation.ROOM_INFO_UPDATE,
+    info,
+  });
+}
+
 export function openShortcutSpaces() {
   appDispatcher.dispatch({
     type: cons.actions.navigation.OPEN_SHORTCUT_SPACES,

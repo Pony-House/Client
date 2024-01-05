@@ -19,6 +19,7 @@ import settings from './settings';
 import { messageIsClassicCrdt } from '../../util/libs/crdt';
 import { objType } from '../../util/tools';
 import moment from '../../util/libs/momentjs';
+import { updateRoomInfo } from '../action/navigation';
 
 const delayYdocUpdate = 100;
 const hashTryLimit = 10;
@@ -192,15 +193,20 @@ class RoomTimeline extends EventEmitter {
           tinyThis.liveTimeline = tinyThis.room.getLiveTimeline();
           tinyThis.activeTimeline = tinyThis.liveTimeline;
 
+          // Update room info to RoomViewHeader.jsx
+          updateRoomInfo();
+
           // Read Timeline
           if (objType(tinyThis.liveTimeline, 'object') && Array.isArray(tinyThis.liveTimeline.events)) {
             for (const item in tinyThis.liveTimeline.events) {
 
+              // Anti Repeat
               let repeated = false;
               if (tinyThis.timeline.find(event => typeof event.getId === 'function' && typeof tinyThis.liveTimeline.events[item].getId === 'function' && event.getId() === tinyThis.liveTimeline.events[item].getId())) {
                 repeated = true;
               }
 
+              // Send events
               if (!repeated) {
                 const event = tinyThis.liveTimeline.events[item];
                 tinyThis.matrixClient.emit(RoomEvent.Timeline,

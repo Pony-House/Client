@@ -238,6 +238,10 @@ Use the msgOptions.custom object to customize the final result of your message. 
     tabText
     forceScroll
 
+### RoomInfoUpdated (Not ready for production)
+
+    roomInfo
+
 ### shortcutSpacesOpened (Not ready for production)
 
     <EMPTY>

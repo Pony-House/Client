@@ -453,6 +453,20 @@ class Navigation extends EventEmitter {
 
       },
 
+      [cons.actions.navigation.ROOM_INFO_UPDATE]: () => {
+
+        tinyAPI.emit(
+          'RoomInfoUpdated',
+          action.info,
+        );
+
+        this.emit(
+          cons.events.navigation.ROOM_INFO_UPDATED,
+          action.info,
+        );
+
+      },
+
       [cons.actions.navigation.OPEN_SHORTCUT_SPACES]: () => {
         tinyAPI.emit('shortcutSpacesOpened');
         this.emit(cons.events.navigation.SHORTCUT_SPACES_OPENED);

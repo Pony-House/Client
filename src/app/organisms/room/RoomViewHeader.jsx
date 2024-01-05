@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { forceUnloadedAvatars } from '../../atoms/avatar/load';
@@ -34,23 +34,32 @@ function RoomViewHeader({ roomId, threadId, roomItem, disableActions }) {
   const isDM = initMatrix.roomList && initMatrix.roomList.directs.has(roomId);
   const room = !roomItem ? mx.getRoom(roomId) : roomItem;
 
-  let avatarSrc = room.getAvatarUrl(mx.baseUrl, 36, 36, 'crop');
-  avatarSrc = isDM ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop') : avatarSrc;
+  const getAvatarUrl = () => isDM ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop') : room.getAvatarUrl(mx.baseUrl, 36, 36, 'crop');
+  const [avatarSrc, setAvatarSrc] = useState(getAvatarUrl());
 
   const roomName = room.name;
 
   const roomHeaderBtnRef = useRef(null);
   useEffect(() => {
+
     const settingsToggle = (isVisible) => {
       if (roomHeaderBtnRef.current) {
         const rawIcon = roomHeaderBtnRef.current.lastElementChild;
         rawIcon.style.transform = isVisible ? 'rotateX(180deg)' : 'rotateX(0deg)';
       }
     };
+
+    const roomInfoUpdate = () => {
+      setAvatarSrc(getAvatarUrl());
+    };
+
     navigation.on(cons.events.navigation.ROOM_SETTINGS_TOGGLED, settingsToggle);
+    navigation.on(cons.events.navigation.ROOM_INFO_UPDATED, roomInfoUpdate);
     return () => {
       navigation.removeListener(cons.events.navigation.ROOM_SETTINGS_TOGGLED, settingsToggle);
+      navigation.removeListener(cons.events.navigation.ROOM_INFO_UPDATED, roomInfoUpdate);
     };
+
   }, []);
 
   useEffect(() => {
