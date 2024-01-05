@@ -4,6 +4,8 @@ import { wasm } from '@rollup/plugin-wasm';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import inject from '@rollup/plugin-inject';
+import builtins from 'rollup-plugin-node-builtins';
+
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -164,6 +166,7 @@ export default defineConfig(({ command, mode }) => {
     },
 
     plugins: [
+      builtins(),
       viteStaticCopy(copyFiles),
       wasm(),
       react(),
@@ -187,6 +190,8 @@ export default defineConfig(({ command, mode }) => {
       }
     },
 
+    resolve: { alias: {}, },
+
   };
 
   // Electron Mode
@@ -204,12 +209,7 @@ export default defineConfig(({ command, mode }) => {
       fse.copySync(extensions[item].dist, path.join(__dirname, `./dist-electron/extensions/${extensions[item].path}`), { overwrite: true });
     }
 
-    result.resolve = {
-      alias: {
-        '@': path.join(__dirname, 'src')
-      },
-    };
-
+    result.resolve.alias['@'] = path.join(__dirname, 'src');
     result.clearScreen = false;
 
     const rollupOptions = {
