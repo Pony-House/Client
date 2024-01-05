@@ -134,12 +134,16 @@ function RoomViewHeader({ roomId, threadId, roomItem, disableActions }) {
           <span className='me-2 text-truncate d-inline-block room-name'>{twemojifyReact(roomName)}</span>
           <RawIcon fa="fa-solid fa-chevron-down room-icon" />
 
-        </button> : <>
+        </button> : <button
+          className="nav-link btn btn-bg border-0 p-1"
+          style={{ pointerEvents: 'none' }}
+          type="button"
+        >
 
           <Avatar className='d-inline-block me-2' imageSrc={avatarSrc} text={roomName} bgColor={colorMXID(roomId)} size="small" isDefaultImage />
           <span className='me-2 text-truncate d-inline-block room-name'>{twemojifyReact(roomName)}</span>
 
-        </>}
+        </button>}
 
       </li>
 
