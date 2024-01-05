@@ -302,3 +302,11 @@ export function twemojifyIcon(text, format = 'png', size = 72) {
 export function twemojifyUrl(text, format = 'png', size = 72) {
   return `${TWEMOJI_BASE_URL}${format !== 'svg' ? `${size}x${size}` : 'svg'}/${unicodeEmojiFix(text)}.${format}`;
 }
+
+export function twemojifyToUrl(text) {
+  try {
+    return twemojifyIcon(twemoji.convert.toCodePoint(text).toLowerCase());
+  } catch {
+    return '';
+  }
+}

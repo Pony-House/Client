@@ -1,5 +1,5 @@
 import initMatrix from '../client/initMatrix';
-import { twemojifyIcon } from './twemojify';
+import { twemojifyToUrl } from './twemojify';
 import { getUserWeb3Account } from './web3';
 import { getAppearance, getAnimatedImageUrl } from './libs/appearance';
 
@@ -82,7 +82,7 @@ export function parsePresenceStatus(presence, userId) {
 
                 if (typeof tinyParse.msgIcon === 'string' && tinyParse.msgIcon.length > 0) {
                     if (tinyParse.msgIcon.length <= 2) {
-                        tinyResult.msgIcon = twemojifyIcon(tinyParse.msgIcon);
+                        tinyResult.msgIcon = twemojifyToUrl(tinyParse.msgIcon);
                     } else {
                         const appearanceSettings = getAppearance();
                         tinyResult.msgIcon = !appearanceSettings.enableAnimParams ? initMatrix.matrixClient.mxcUrlToHttp(tinyParse.msgIcon) : getAnimatedImageUrl(initMatrix.matrixClient.mxcUrlToHttp(tinyParse.msgIcon, 50, 50, 'crop'));

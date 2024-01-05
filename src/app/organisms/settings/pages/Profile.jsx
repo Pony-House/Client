@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import initMatrix from '../../../../client/initMatrix';
 import { getEventCords } from '../../../../util/common';
 import { emitUpdateProfile, openEmojiBoard } from '../../../../client/action/navigation';
-import { twemojifyIcon, twemojifyUrl } from '../../../../util/twemojify';
+import { twemojifyToUrl, twemojifyUrl } from '../../../../util/twemojify';
 import Button from '../../../atoms/button/Button';
 import IconButton from '../../../atoms/button/IconButton';
 import ProfileEditor from '../../profile-editor/ProfileEditor';
@@ -26,7 +26,7 @@ function ProfileSection() {
     const timezoneRef = useRef(null);
 
     const [customStatusIcon, setcustomStatusIcon] = useState(typeof userProfile.msgIcon === 'string' ?
-        userProfile.msgIcon.length <= 2 ? twemojifyIcon(userProfile.msgIcon) : initMatrix.matrixClient.mxcUrlToHttp(userProfile.msgIcon)
+        userProfile.msgIcon.length <= 2 ? twemojifyToUrl(userProfile.msgIcon) : initMatrix.matrixClient.mxcUrlToHttp(userProfile.msgIcon)
         : defaultAvatar(1));
 
     const [customStatusValue, setcustomStatusValue] = useState(typeof userProfile.msgIcon === 'string' ? userProfile.msgIcon : null);
