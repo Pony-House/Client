@@ -83,6 +83,7 @@ export function parsePresenceStatus(presence, userId) {
                 if (typeof tinyParse.msgIcon === 'string' && tinyParse.msgIcon.length > 0) {
                     if (tinyParse.msgIcon.length <= 2) {
                         tinyResult.msgIcon = twemojifyToUrl(tinyParse.msgIcon);
+                        tinyResult.msgIconThumb = tinyResult.msgIcon;
                     } else {
                         const appearanceSettings = getAppearance();
                         tinyResult.msgIcon = !appearanceSettings.enableAnimParams ? initMatrix.matrixClient.mxcUrlToHttp(tinyParse.msgIcon) : getAnimatedImageUrl(initMatrix.matrixClient.mxcUrlToHttp(tinyParse.msgIcon, 50, 50, 'crop'));
