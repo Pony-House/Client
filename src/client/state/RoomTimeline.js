@@ -163,6 +163,7 @@ class RoomTimeline extends EventEmitter {
     // Guest Data
     this.isGuest = isGuest;
     this.guestId = guestId;
+    this.refreshTime = refreshTime;
 
     // Client Prepare
     this.matrixClient = initMatrix.matrixClient;
@@ -211,9 +212,6 @@ class RoomTimeline extends EventEmitter {
       };
 
       this.loadGuestTimeline();
-      if (typeof refreshTime === 'number' && refreshTime > 0) {
-        this.refreshTimelineInterval = setInterval(() => this.loadGuestTimeline(), 60000 * refreshTime);
-      }
 
     }
 
@@ -1284,9 +1282,14 @@ class RoomTimeline extends EventEmitter {
     this.matrixClient.on(RoomMemberEvent.Typing, this._listenTypingEvent);
     this.matrixClient.on(RoomEvent.Receipt, this._listenReciptEvent);
 
+    if (typeof this.refreshTime === 'number' && this.refreshTime > 0) {
+      this.refreshTimelineInterval = setInterval(() => this.loadGuestTimeline(), 60000 * this.refreshTime);
+    }
+
   }
 
   removeInternalListeners() {
+
     if (!this.initialized) return;
     this._disableYdoc();
 
@@ -1295,6 +1298,9 @@ class RoomTimeline extends EventEmitter {
     this.matrixClient.removeListener(MatrixEventEvent.Decrypted, this._listenDecryptEvent);
     this.matrixClient.removeListener(RoomMemberEvent.Typing, this._listenTypingEvent);
     this.matrixClient.removeListener(RoomEvent.Receipt, this._listenReciptEvent);
+
+    if (this.refreshTimelineInterval) clearInterval(this.refreshTimelineInterval);
+
   }
 }
 
