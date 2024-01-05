@@ -196,17 +196,24 @@ class RoomTimeline extends EventEmitter {
           if (objType(tinyThis.liveTimeline, 'object') && Array.isArray(tinyThis.liveTimeline.events)) {
             for (const item in tinyThis.liveTimeline.events) {
 
-              const event = tinyThis.liveTimeline.events[item];
-              tinyThis.matrixClient.emit(RoomEvent.Timeline,
-                event,
-                tinyThis.room,
-                true,
-                false,
-                {
-                  liveEvent: true,
-                  timeline: tinyThis.liveTimeline,
-                }
-              );
+              let repeated = false;
+              if (tinyThis.timeline.find(event => typeof event.getId === 'function' && typeof tinyThis.liveTimeline.events[item].getId === 'function' && event.getId() === tinyThis.liveTimeline.events[item].getId())) {
+                repeated = true;
+              }
+
+              if (!repeated) {
+                const event = tinyThis.liveTimeline.events[item];
+                tinyThis.matrixClient.emit(RoomEvent.Timeline,
+                  event,
+                  tinyThis.room,
+                  true,
+                  false,
+                  {
+                    liveEvent: true,
+                    timeline: tinyThis.liveTimeline,
+                  }
+                );
+              }
 
             }
           }
