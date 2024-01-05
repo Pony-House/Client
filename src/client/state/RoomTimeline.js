@@ -181,8 +181,11 @@ class RoomTimeline extends EventEmitter {
     // Is Guest
     if (this.isGuest) {
 
+      // Load Guest timeline
       this.loadGuestTimeline = () => {
+
         const tinyThis = this;
+
         this.room.refreshLiveTimeline().then(() => {
 
           // Insert guest timeline
@@ -209,8 +212,10 @@ class RoomTimeline extends EventEmitter {
           }
 
         });
+
       };
 
+      // First load
       this.loadGuestTimeline();
 
     }
@@ -1282,7 +1287,7 @@ class RoomTimeline extends EventEmitter {
     this.matrixClient.on(RoomMemberEvent.Typing, this._listenTypingEvent);
     this.matrixClient.on(RoomEvent.Receipt, this._listenReciptEvent);
 
-    if (typeof this.refreshTime === 'number' && this.refreshTime > 0) {
+    if (this.isGuest && typeof this.refreshTime === 'number' && this.refreshTime > 0) {
       this.refreshTimelineInterval = setInterval(() => this.loadGuestTimeline(), 60000 * this.refreshTime);
     }
 
