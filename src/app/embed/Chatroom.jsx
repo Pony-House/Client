@@ -14,6 +14,7 @@ import { objType } from '../../util/tools';
 import { join } from '../../client/action/room';
 import RoomViewContent from '../organisms/room/RoomViewContent';
 import RoomViewHeader from '../organisms/room/RoomViewHeader';
+import settings from '../../client/state/settings';
 
 global.Olm = Olm;
 
@@ -23,9 +24,11 @@ global.Olm = Olm;
     hs: example.com
     join_guest: false
 
+    theme: silver-theme
+
     refresh_time: null (In minutes)
 
-    path: /?type=chatroom&id=%23test-room%3Aexample.com&hs=example.com
+    path: /?type=chatroom&id=%23test-room%3Aexample.com&hs=example.com&theme=silver-theme
 
 */
 
@@ -36,6 +39,14 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, }) {
     const [roomTimeline, setTimeline] = useState(null);
     const [errMessage, setErrorMessage] = useState(null);
     const [errCode, setErrorCode] = useState(null);
+
+    // Theme
+    if (typeof theme === 'string' && theme.length > 0) {
+        const themeIndex = settings.getThemeById(theme);
+        if (themeIndex !== null) {
+            settings._clearTheme();
+        }
+    }
 
     // Info
     const hsUrl = roomId.split(':')[1];

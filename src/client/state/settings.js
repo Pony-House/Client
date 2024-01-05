@@ -213,7 +213,7 @@ class Settings extends EventEmitter {
 
   }
 
-  applyTheme() {
+  applyTheme(index = this.themeIndex) {
 
     this._clearTheme();
     const body = $('body');
@@ -228,13 +228,13 @@ class Settings extends EventEmitter {
         body.addClass(`theme-type-light`);
       }
 
-    } else if (this.themes[this.themeIndex]) {
-      body.addClass(this.themes[this.themeIndex].id !== '' ? this.themes[this.themeIndex].id : 'default-theme').addClass(
-        this.themes[this.themeIndex]?.type === 'dark' || this.themes[this.themeIndex]?.type === 'dark-solid' ||
-          this.themes[this.themeIndex]?.type === 'dark2' || this.themes[this.themeIndex]?.type === 'dark2-solid' ||
-          this.themes[this.themeIndex]?.type === 'light' || this.themes[this.themeIndex]?.type === 'light-solid' ||
-          this.themes[this.themeIndex]?.type === 'silver' || this.themes[this.themeIndex]?.type === 'silver-solid' ?
-          `theme-type-${this.themes[this.themeIndex]?.type}` : ''
+    } else if (this.themes[index]) {
+      body.addClass(this.themes[index].id !== '' ? this.themes[index].id : 'default-theme').addClass(
+        this.themes[index]?.type === 'dark' || this.themes[index]?.type === 'dark-solid' ||
+          this.themes[index]?.type === 'dark2' || this.themes[index]?.type === 'dark2-solid' ||
+          this.themes[index]?.type === 'light' || this.themes[index]?.type === 'light-solid' ||
+          this.themes[index]?.type === 'silver' || this.themes[index]?.type === 'silver-solid' ?
+          `theme-type-${this.themes[index]?.type}` : ''
       );
     }
 
