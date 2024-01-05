@@ -123,7 +123,7 @@ function Chatroom({ roomId, homeserver, joinGuest, theme }) {
     // Loaded
     if (!isLoading && roomTimeline !== null) {
         return <>
-            <RoomViewHeader roomId={roomId} roomItem={roomTimeline.room} isGuest={!isAuthenticated()} disableActions />
+            <RoomViewHeader roomId={roomId} roomItem={roomTimeline.room} disableActions />
             <RoomViewContent roomTimeline={roomTimeline} isUserList isGuest={!isAuthenticated()} />
         </>;
     }
