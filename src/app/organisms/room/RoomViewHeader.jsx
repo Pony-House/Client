@@ -36,8 +36,15 @@ function RoomViewHeader({ roomId, threadId, roomItem, disableActions }) {
 
   const getAvatarUrl = () => isDM ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop') : room.getAvatarUrl(mx.baseUrl, 36, 36, 'crop');
   const [avatarSrc, setAvatarSrc] = useState(getAvatarUrl());
+  const [roomName, setRoomName] = useState(room.name);
 
-  const roomName = room.name;
+  const roomInfoUpdate = () => {
+    const newAvatar = getAvatarUrl();
+    if (avatarSrc !== newAvatar) setAvatarSrc(newAvatar);
+    if (roomName !== room.name) setRoomName(room.name);
+  };
+
+  roomInfoUpdate();
 
   const roomHeaderBtnRef = useRef(null);
   useEffect(() => {
@@ -47,10 +54,6 @@ function RoomViewHeader({ roomId, threadId, roomItem, disableActions }) {
         const rawIcon = roomHeaderBtnRef.current.lastElementChild;
         rawIcon.style.transform = isVisible ? 'rotateX(180deg)' : 'rotateX(0deg)';
       }
-    };
-
-    const roomInfoUpdate = () => {
-      setAvatarSrc(getAvatarUrl());
     };
 
     navigation.on(cons.events.navigation.ROOM_SETTINGS_TOGGLED, settingsToggle);
