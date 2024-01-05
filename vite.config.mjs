@@ -4,7 +4,6 @@ import { wasm } from '@rollup/plugin-wasm';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import inject from '@rollup/plugin-inject';
-import builtins from 'rollup-plugin-node-builtins';
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -166,7 +165,6 @@ export default defineConfig(({ command, mode }) => {
     },
 
     plugins: [
-      builtins(),
       viteStaticCopy(copyFiles),
       wasm(),
       react(),
