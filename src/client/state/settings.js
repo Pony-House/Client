@@ -135,6 +135,24 @@ class Settings extends EventEmitter {
 
   }
 
+  getThemeIndexById(id) {
+
+    if (typeof id === 'string') {
+
+      const result = this.themes.findIndex(theme => theme.id === id);
+
+      if (result > -1) {
+        return result;
+      }
+
+      return null;
+
+    }
+
+    return null;
+
+  }
+
   getThemeNameById(id) {
 
     if (typeof id === 'string') {
