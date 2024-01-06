@@ -38,12 +38,14 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
     // States
     const [isLoading, setIsLoading] = useState(1);
     const [roomTimeline, setTimeline] = useState(null);
+    const [selectedTheme, setTheme] = useState(theme);
+
     const [errMessage, setErrorMessage] = useState(null);
     const [errCode, setErrorCode] = useState(null);
 
     // Theme
-    if (typeof theme === 'string' && theme.length > 0) {
-        const themeIndex = settings.getThemeById(theme);
+    if (typeof selectedTheme === 'string' && selectedTheme.length > 0) {
+        const themeIndex = settings.getThemeById(selectedTheme);
         if (themeIndex !== null) {
             settings._clearTheme();
         }
@@ -55,6 +57,8 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
 
     // Load Data
     useEffect(() => {
+
+        // Loading Progress
         if (isLoading === 1) {
 
             // Set Loading
@@ -146,6 +150,34 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
             else { startGuest().then(() => getRoom()).catch(err => { console.error(err); setIsLoading(3); setErrorMessage(err.message); setErrorCode(err.code); }); }
 
         }
+
+        // Iframe Message
+        const themeChangeIframe = () => (e) => {
+            try {
+
+                const data = objType(e, 'object') ?
+                    typeof e.data === 'string' ? JSON.parse(e.data) :
+                        objType(e.data) ? e.data : null
+                    : null;
+
+                if (objType(data, 'object')) {
+
+                    // Theme Change
+                    if (typeof data.theme === 'string') {
+                        setTheme(data.theme);
+                    }
+                }
+
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        window.addEventListener('message', themeChangeIframe);
+        return () => {
+            window.removeEventListener('message', themeChangeIframe);
+        }
+
     }, []);
 
     // Loaded
