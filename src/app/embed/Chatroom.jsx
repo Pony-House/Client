@@ -21,7 +21,7 @@ import cons from '../../client/state/cons';
 
 global.Olm = Olm;
 
-const ChatRoomFrame = React.forwardRef(({ roomId, refreshTime, className }) => {
+const ChatRoomFrame = React.forwardRef(({ roomId, refreshTime, className, style }) => {
 
     // Theme
     const frameRef = useRef(null);
@@ -52,6 +52,7 @@ const ChatRoomFrame = React.forwardRef(({ roomId, refreshTime, className }) => {
     return <iframe
         ref={frameRef}
         title={roomId}
+        style={style}
         className={className}
         src={`/?type=chatroom&id=${encodeURIComponent(roomId)}&join_guest=true&hs=${encodeURIComponent(new URL(initMatrix.matrixClient.baseUrl).hostname)}${typeof refreshTime === 'number' && refreshTime > 0 ? `&refresh_time=${encodeURIComponent(refreshTime)}` : ''}${objType(theme, 'object') && typeof theme.id === 'string' && theme.id.length > 0 ? `&theme=${encodeURIComponent(theme.id)}` : ''}`}
     />;
@@ -62,12 +63,14 @@ ChatRoomFrame.defaultProps = {
     refreshTime: null,
     roomId: null,
     className: null,
+    style: null,
 };
 
 ChatRoomFrame.propTypes = {
     roomId: PropTypes.string,
     className: PropTypes.string,
     refreshTime: PropTypes.number,
+    style: PropTypes.object,
 };
 
 export { ChatRoomFrame };
