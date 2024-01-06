@@ -94,11 +94,10 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
     const [errCode, setErrorCode] = useState(null);
 
     // Theme
-    if (typeof selectedTheme === 'string' && selectedTheme.length > 0) {
-        const themeIndex = settings.getThemeIndexById(selectedTheme);
-        if (themeIndex !== null) {
-            settings.applyTheme(themeIndex);
-        }
+    if (typeof selectedTheme === 'string') {
+        let themeIndex = settings.getThemeIndexById(selectedTheme);
+        if (themeIndex === null) themeIndex = settings.getThemeIndexById('');
+        if (themeIndex !== null) settings.applyTheme(themeIndex);
     }
 
     // Info
