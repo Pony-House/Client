@@ -90,7 +90,7 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
     const [isLoading, setIsLoading] = useState(1);
     const [roomTimeline, setTimeline] = useState(null);
     const [selectedTheme, setTheme] = useState(theme);
-    const [useSystemTheme, setUseSystemTheme] = useState(false);
+    const [useSystemTheme, setUseSystemTheme] = useState(settings.getUseSystemTheme());
 
     const [errMessage, setErrorMessage] = useState(null);
     const [errCode, setErrorCode] = useState(null);
