@@ -58,7 +58,7 @@ function RoomView({
     <RoomViewHeader roomId={roomId} threadId={threadId} roomItem={roomItem} isGuest={isGuest} />
     <div className="room-view__content-wrapper">
       <div className="room-view__scrollable">
-        <RoomViewContent isUserList={isUserList} eventId={eventId} roomTimeline={roomTimeline} />
+        <RoomViewContent refRoomInput={refRoomInput} isUserList={isUserList} eventId={eventId} roomTimeline={roomTimeline} />
         <RoomViewFloating refRoomInput={refRoomInput} refcmdInput={refcmdInput} roomId={roomId} roomTimeline={roomTimeline} />
       </div>
       <div className="room-view__sticky">

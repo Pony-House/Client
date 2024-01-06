@@ -149,6 +149,7 @@ function renderEvent(
   isDM,
   isGuest,
   usernameHover,
+  refRoomInput,
 ) {
   const isBodyOnly =
     prevMEvent !== null &&
@@ -172,6 +173,7 @@ function renderEvent(
   }
   return (
     <Message
+      refRoomInput={refRoomInput}
       usernameHover={usernameHover}
       isGuest={isGuest}
       isDM={isDM}
@@ -478,6 +480,7 @@ function RoomViewContent({
   isUserList,
   isGuest,
   usernameHover,
+  refRoomInput,
 }) {
 
   const [throttle] = useState(new Throttle());
@@ -805,6 +808,7 @@ function RoomViewContent({
           isDM,
           isGuest,
           usernameHover,
+          refRoomInput,
         ),
       );
       itemCountIndex += 1;

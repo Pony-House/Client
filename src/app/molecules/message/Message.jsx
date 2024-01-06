@@ -399,7 +399,7 @@ MessageBody.propTypes = {
 };
 
 // Message Edit
-function MessageEdit({ body, onSave, onCancel }) {
+function MessageEdit({ body, onSave, onCancel, refRoomInput }) {
   const editInputRef = useRef(null);
 
   useEffect(() => {
@@ -416,6 +416,7 @@ function MessageEdit({ body, onSave, onCancel }) {
 
     if (e.key === 'Enter' && e.shiftKey === false) {
       e.preventDefault();
+      $(refRoomInput.current).find('#message-textarea').focus();
       onSave(editInputRef.current.value, body);
     }
   };
@@ -424,6 +425,7 @@ function MessageEdit({ body, onSave, onCancel }) {
     className="message__edit"
     onSubmit={(e) => {
       e.preventDefault();
+      $(refRoomInput.current).find('#message-textarea').focus();
       onSave(editInputRef.current.value, body);
     }}
   >
@@ -907,7 +909,7 @@ const MessageThreadSummary = React.memo(({ thread }) => {
                 imageSrc={lastSenderAvatarSrc}
                 text={lastSender?.name}
                 bgColor={backgroundColorMXID(lastSender?.userId)}
-                size="ultra-small"
+                size="small"
               />
               <span className="message__threadSummary-lastReply-sender very-small text-truncate">
                 {lastSender?.name}{' '}
@@ -1072,6 +1074,7 @@ function Message({
   isDM,
   isGuest,
   usernameHover,
+  refRoomInput,
 }) {
 
   // Get Room Data
@@ -1376,6 +1379,7 @@ function Message({
 
         {isEdit && (
           <MessageEdit
+            refRoomInput={refRoomInput}
             body={(customHTML
               ? html(customHTML, { kind: 'edit', onlyPlain: true }).plain
               : plain(body, { kind: 'edit', onlyPlain: true }).plain)}
@@ -1492,6 +1496,7 @@ function Message({
 
       {isEdit && (
         <MessageEdit
+          refRoomInput={refRoomInput}
           body={(customHTML
             ? html(customHTML, { kind: 'edit', onlyPlain: true }).plain
             : plain(body, { kind: 'edit', onlyPlain: true }).plain)}
