@@ -31,10 +31,12 @@ const ChatroomFrame = React.forwardRef(({ roomId, refreshTime }) => {
     useEffect(() => {
 
         const applyWelcomeTheme = (index, newTheme) => {
-            if (frameRef.current && objType(newTheme, 'object') && typeof newTheme.id === 'string') {
-                frameRef.current.contentWindow.postMessage(JSON.stringify({
-                    theme: newTheme.id
-                }));
+            if (frameRef.current) {
+
+                frameRef.current.contentWindow.postMessage({
+                    theme: objType(newTheme, 'object') && typeof newTheme.id === 'string' ? newTheme.id : null
+                });
+
             }
         };
 
@@ -200,19 +202,18 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
         }
 
         // Iframe Message
-        const themeChangeIframe = () => (e) => {
+        const themeChangeIframe = (e) => {
+
             try {
 
-                const data = objType(e, 'object') ?
-                    typeof e.data === 'string' ? JSON.parse(e.data) :
-                        objType(e.data) ? e.data : null
-                    : null;
-
+                const data = objType(e.data, 'object') ? e.data : null;
                 if (objType(data, 'object')) {
 
                     // Theme Change
                     if (typeof data.theme === 'string') {
                         setTheme(data.theme);
+                    } else {
+                        setTheme('');
                     }
                 }
 
