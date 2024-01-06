@@ -17,7 +17,7 @@ import RoomViewContent from '../organisms/room/RoomViewContent';
 import RoomViewHeader from '../organisms/room/RoomViewHeader';
 
 import settings from '../../client/state/settings';
-import cons from '../../../../src/client/state/cons';
+import cons from '../../client/state/cons';
 
 global.Olm = Olm;
 
