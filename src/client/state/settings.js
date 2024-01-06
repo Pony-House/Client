@@ -228,7 +228,10 @@ class Settings extends EventEmitter {
         body.addClass(`theme-type-light`);
       }
 
+      this.emit(cons.events.settings.THEME_APPLIED, null, null);
+
     } else if (this.themes[index]) {
+
       body.addClass(this.themes[index].id !== '' ? this.themes[index].id : 'default-theme').addClass(
         this.themes[index]?.type === 'dark' || this.themes[index]?.type === 'dark-solid' ||
           this.themes[index]?.type === 'dark2' || this.themes[index]?.type === 'dark2-solid' ||
@@ -236,6 +239,9 @@ class Settings extends EventEmitter {
           this.themes[index]?.type === 'silver' || this.themes[index]?.type === 'silver-solid' ?
           `theme-type-${this.themes[index]?.type}` : ''
       );
+
+      this.emit(cons.events.settings.THEME_APPLIED, index, this.themes[index]);
+
     }
 
     this.changeMobileBackground('default');
@@ -243,17 +249,23 @@ class Settings extends EventEmitter {
   }
 
   setTheme(themeIndex) {
+
     this.themeIndex = themeIndex;
     setSettings('themeIndex', this.themeIndex);
     this.applyTheme();
+
+    this.emit(cons.events.settings.THEME_TOGGLED, this.themeIndex, this.themes[this.themeIndex]);
+
   }
 
   toggleUseSystemTheme() {
+
     this.useSystemTheme = !this.useSystemTheme;
     setSettings('useSystemTheme', this.useSystemTheme);
     this.applyTheme();
 
     this.emit(cons.events.settings.SYSTEM_THEME_TOGGLED, this.useSystemTheme);
+
   }
 
   getUseSystemTheme() {
