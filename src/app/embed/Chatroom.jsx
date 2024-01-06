@@ -32,9 +32,9 @@ const ChatroomFrame = React.forwardRef(({ roomId, refreshTime }) => {
 
         const applyWelcomeTheme = (index, newTheme) => {
             if (frameRef.current && objType(newTheme, 'object') && typeof newTheme.id === 'string') {
-                frameRef.current.contentWindow.postMessage({
+                frameRef.current.contentWindow.postMessage(JSON.stringify({
                     theme: newTheme.id
-                });
+                }));
             }
         };
 
@@ -93,7 +93,7 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
 
     // Theme
     if (typeof selectedTheme === 'string' && selectedTheme.length > 0) {
-        const themeIndex = settings.getThemeById(selectedTheme);
+        const themeIndex = settings.getThemeIndexById(selectedTheme);
         if (themeIndex !== null) {
             settings.applyTheme(themeIndex);
         }
