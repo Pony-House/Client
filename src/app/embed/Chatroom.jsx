@@ -1,22 +1,70 @@
 /* eslint-disable camelcase */
-import React, { useState, useEffect, } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import * as sdk from 'matrix-js-sdk';
 import Olm from '@matrix-org/olm';
 
 import { isAuthenticated } from '../../client/state/auth';
-
 import RoomTimeline from '../../client/state/RoomTimeline';
 import initMatrix from '../../client/initMatrix';
+
 import Spinner from '../atoms/spinner/Spinner';
 import ProcessWrapper from '../templates/auth/modules/ProcessWrapper';
 import { objType } from '../../util/tools';
 import { join } from '../../client/action/room';
+
 import RoomViewContent from '../organisms/room/RoomViewContent';
 import RoomViewHeader from '../organisms/room/RoomViewHeader';
+
 import settings from '../../client/state/settings';
+import cons from '../../../../src/client/state/cons';
 
 global.Olm = Olm;
+
+const ChatroomFrame = React.forwardRef(({ roomId, refreshTime }) => {
+
+    // Theme
+    const frameRef = useRef(null);
+    const theme = settings.getTheme();
+
+    // Effect
+    useEffect(() => {
+
+        const applyWelcomeTheme = (index, newTheme) => {
+            if (frameRef.current && objType(newTheme, 'object') && typeof newTheme.id === 'string') {
+                frameRef.current.contentWindow.postMessage({
+                    theme: newTheme.id
+                });
+            }
+        };
+
+        settings.on(cons.events.settings.THEME_APPLIED, applyWelcomeTheme);
+        return () => {
+            settings.off(cons.events.settings.THEME_APPLIED, applyWelcomeTheme);
+        };
+
+    });
+
+    // Frame
+    return <iframe
+        ref={frameRef}
+        title={roomId}
+        src={`/?type=chatroom&id=${encodeURIComponent(roomId)}&join_guest=true&hs=${encodeURIComponent(new URL(initMatrix.matrixClient.baseUrl).hostname)}${typeof refreshTime === 'number' && refreshTime > 0 ? `&refresh_time=${encodeURIComponent(refreshTime)}` : ''}${objType(theme, 'object') && typeof theme.id === 'string' && theme.id.length > 0 ? `&theme=${encodeURIComponent(theme.id)}` : ''}`}
+    />;
+
+});
+
+ChatroomFrame.defaultProps = {
+    refreshTime: null,
+    roomId: null,
+};
+
+ChatroomFrame.propTypes = {
+    roomId: PropTypes.string,
+    refreshTime: PropTypes.number,
+};
+
+export { ChatroomFrame };
 
 /*
 
