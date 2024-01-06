@@ -34,7 +34,8 @@ const ChatroomFrame = React.forwardRef(({ roomId, refreshTime }) => {
             if (frameRef.current) {
 
                 frameRef.current.contentWindow.postMessage({
-                    theme: objType(newTheme, 'object') && typeof newTheme.id === 'string' ? newTheme.id : null
+                    theme: objType(newTheme, 'object') && typeof newTheme.id === 'string' ? newTheme.id : null,
+                    useSystemTheme: settings.getUseSystemTheme(),
                 });
 
             }
@@ -89,6 +90,7 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
     const [isLoading, setIsLoading] = useState(1);
     const [roomTimeline, setTimeline] = useState(null);
     const [selectedTheme, setTheme] = useState(theme);
+    const [useSystemTheme, setUseSystemTheme] = useState(false);
 
     const [errMessage, setErrorMessage] = useState(null);
     const [errCode, setErrorCode] = useState(null);
@@ -97,7 +99,7 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
     if (typeof selectedTheme === 'string') {
         let themeIndex = settings.getThemeIndexById(selectedTheme);
         if (themeIndex === null) themeIndex = settings.getThemeIndexById('');
-        if (themeIndex !== null) settings.applyTheme(themeIndex);
+        if (themeIndex !== null) settings.applyTheme(themeIndex, typeof useSystemTheme === 'boolean' && useSystemTheme);
     }
 
     // Info
@@ -209,11 +211,14 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
                 if (objType(data, 'object')) {
 
                     // Theme Change
+                    setUseSystemTheme(data.useSystemTheme);
                     if (typeof data.theme === 'string') {
                         setTheme(data.theme);
                     } else {
                         setTheme('');
                     }
+                } else {
+                    setUseSystemTheme(true);
                 }
 
             } catch (err) {
