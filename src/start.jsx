@@ -12,7 +12,7 @@ import { getPWADisplayMode } from "./util/PWA.js";
 import App from './app/pages/App';
 import { startCustomThemes } from '../mods';
 import { getOsSettings } from './util/libs/osSettings';
-import Chatroom from './app/embed/Chatroom';
+import ChatRoom from './app/embed/ChatRoom';
 
 function startApp(appProtocol) {
 
@@ -39,7 +39,7 @@ function startApp(appProtocol) {
 
         if (pageType === 'chatroom') {
             const hs = params.get('hs');
-            return root.render(<Chatroom
+            return root.render(<ChatRoom
                 roomId={pageId}
                 homeserver={typeof hs === 'string' && hs.length ? hs : null}
                 joinGuest={params.get('join_guest')}

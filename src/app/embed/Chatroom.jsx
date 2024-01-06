@@ -21,7 +21,7 @@ import cons from '../../client/state/cons';
 
 global.Olm = Olm;
 
-const ChatroomFrame = React.forwardRef(({ roomId, refreshTime }) => {
+const ChatRoomFrame = React.forwardRef(({ roomId, refreshTime, className }) => {
 
     // Theme
     const frameRef = useRef(null);
@@ -52,22 +52,25 @@ const ChatroomFrame = React.forwardRef(({ roomId, refreshTime }) => {
     return <iframe
         ref={frameRef}
         title={roomId}
+        className={className}
         src={`/?type=chatroom&id=${encodeURIComponent(roomId)}&join_guest=true&hs=${encodeURIComponent(new URL(initMatrix.matrixClient.baseUrl).hostname)}${typeof refreshTime === 'number' && refreshTime > 0 ? `&refresh_time=${encodeURIComponent(refreshTime)}` : ''}${objType(theme, 'object') && typeof theme.id === 'string' && theme.id.length > 0 ? `&theme=${encodeURIComponent(theme.id)}` : ''}`}
     />;
 
 });
 
-ChatroomFrame.defaultProps = {
+ChatRoomFrame.defaultProps = {
     refreshTime: null,
     roomId: null,
+    className: null,
 };
 
-ChatroomFrame.propTypes = {
+ChatRoomFrame.propTypes = {
     roomId: PropTypes.string,
+    className: PropTypes.string,
     refreshTime: PropTypes.number,
 };
 
-export { ChatroomFrame };
+export { ChatRoomFrame };
 
 /*
 
@@ -84,7 +87,7 @@ export { ChatroomFrame };
 
 */
 
-function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameHover }) {
+function ChatRoom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameHover }) {
 
     // States
     const [isLoading, setIsLoading] = useState(1);
@@ -262,13 +265,13 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
 
 };
 
-Chatroom.defaultProps = {
+ChatRoom.defaultProps = {
     homeserver: null,
 };
 
-Chatroom.propTypes = {
+ChatRoom.propTypes = {
     roomId: PropTypes.string.isRequired,
     homeserver: PropTypes.string,
 };
 
-export default Chatroom;
+export default ChatRoom;
