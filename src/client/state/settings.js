@@ -231,12 +231,12 @@ class Settings extends EventEmitter {
 
   }
 
-  applyTheme(index = this.themeIndex) {
+  applyTheme(index = this.themeIndex, useSystemTheme = this.useSystemTheme) {
 
     this._clearTheme();
     const body = $('body');
 
-    if (this.useSystemTheme) {
+    if (useSystemTheme) {
 
       body.addClass('system-theme');
 
