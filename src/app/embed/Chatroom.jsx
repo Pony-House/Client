@@ -47,7 +47,7 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
     if (typeof selectedTheme === 'string' && selectedTheme.length > 0) {
         const themeIndex = settings.getThemeById(selectedTheme);
         if (themeIndex !== null) {
-            settings._clearTheme();
+            settings.applyTheme(themeIndex);
         }
     }
 
@@ -184,7 +184,7 @@ function Chatroom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
     if (!isLoading && roomTimeline !== null) {
         return <>
             <RoomViewHeader roomId={roomId} roomItem={roomTimeline.room} roomAlias={roomTimeline.roomAlias} disableActions />
-            <RoomViewContent roomTimeline={roomTimeline} isGuest={!isAuthenticated()} usernameHover={usernameHover} isUserList />
+            <RoomViewContent roomTimeline={roomTimeline} isGuest={!isAuthenticated()} usernameHover={usernameHover} disableActions isUserList />
         </>;
     }
 

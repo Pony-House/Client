@@ -1073,6 +1073,7 @@ function Message({
   timelineSVRef,
   isDM,
   isGuest,
+  disableActions,
   usernameHover,
   refRoomInput,
 }) {
@@ -1315,7 +1316,7 @@ function Message({
 
       <td className='p-0 pe-3 py-1' colSpan={!children ? '2' : ''}>
 
-        {!isGuest && roomTimeline && !isEdit && (
+        {!isGuest && !disableActions && roomTimeline && !isEdit && (
           <MessageOptions
             customHTML={customHTML}
             body={body}
@@ -1444,7 +1445,7 @@ function Message({
 
     <td className='p-0 pe-3 py-1'>
 
-      {!isGuest && roomTimeline && !isEdit && (
+      {!isGuest && !disableActions && roomTimeline && !isEdit && (
         <MessageOptions
           roomid={roomId}
           senderid={senderId}
@@ -1536,6 +1537,7 @@ Message.defaultProps = {
   setEdit: null,
   cancelEdit: null,
   isGuest: false,
+  disableActions: false,
 };
 
 Message.propTypes = {
@@ -1548,6 +1550,7 @@ Message.propTypes = {
   fullTime: PropTypes.bool,
   isEdit: PropTypes.bool,
   isGuest: PropTypes.bool,
+  disableActions: PropTypes.bool,
   setEdit: PropTypes.func,
   cancelEdit: PropTypes.func,
 };

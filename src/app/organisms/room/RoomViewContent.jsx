@@ -148,6 +148,7 @@ function renderEvent(
   isUserList,
   isDM,
   isGuest,
+  disableActions,
   usernameHover,
   refRoomInput,
 ) {
@@ -176,6 +177,7 @@ function renderEvent(
       refRoomInput={refRoomInput}
       usernameHover={usernameHover}
       isGuest={isGuest}
+      disableActions={disableActions}
       isDM={isDM}
       isUserList={isUserList}
       timelineSVRef={timelineSVRef}
@@ -479,6 +481,7 @@ function RoomViewContent({
   roomTimeline,
   isUserList,
   isGuest,
+  disableActions,
   usernameHover,
   refRoomInput,
 }) {
@@ -807,6 +810,7 @@ function RoomViewContent({
           isUserList,
           isDM,
           isGuest,
+          disableActions,
           usernameHover,
           refRoomInput,
         ),
@@ -874,10 +878,12 @@ function RoomViewContent({
 RoomViewContent.defaultProps = {
   eventId: null,
   isGuest: false,
+  disableActions: false,
 };
 RoomViewContent.propTypes = {
   eventId: PropTypes.string,
   isGuest: PropTypes.bool,
+  disableActions: PropTypes.bool,
   roomTimeline: PropTypes.shape({}).isRequired,
 };
 
