@@ -21,7 +21,7 @@ import cons from '../../client/state/cons';
 
 global.Olm = Olm;
 
-function ChatRoomFrame({ roomId, refreshTime, className, style, hsUrl }) {
+function ChatRoomFrame({ roomId, refreshTime, className, style, hsUrl, joinGuest }) {
 
     // Theme
     const frameRef = useRef(null);
@@ -57,7 +57,7 @@ function ChatRoomFrame({ roomId, refreshTime, className, style, hsUrl }) {
         title={roomId}
         style={style}
         className={className}
-        src={`/?type=chatroom&id=${encodeURIComponent(roomId)}&join_guest=true${baseUrl !== null ? `&hs=${encodeURIComponent(new URL(baseUrl).hostname)}` : ''}${typeof refreshTime === 'number' && refreshTime > 0 ? `&refresh_time=${encodeURIComponent(refreshTime)}` : ''}${objType(theme, 'object') && typeof theme.id === 'string' && theme.id.length > 0 ? `&theme=${encodeURIComponent(theme.id)}` : ''}`}
+        src={`/?type=chatroom&id=${encodeURIComponent(roomId)}&join_guest=${typeof joinGuest === 'boolean' && joinGuest ? 'true' : 'false'}${baseUrl !== null ? `&hs=${encodeURIComponent(new URL(baseUrl).hostname)}` : ''}${typeof refreshTime === 'number' && refreshTime > 0 ? `&refresh_time=${encodeURIComponent(refreshTime)}` : ''}${objType(theme, 'object') && typeof theme.id === 'string' && theme.id.length > 0 ? `&theme=${encodeURIComponent(theme.id)}` : ''}`}
     />;
 
 };
@@ -68,6 +68,7 @@ ChatRoomFrame.defaultProps = {
     className: null,
     style: null,
     hsUrl: null,
+    joinGuest: false,
 };
 
 ChatRoomFrame.propTypes = {
@@ -76,6 +77,7 @@ ChatRoomFrame.propTypes = {
     className: PropTypes.string,
     refreshTime: PropTypes.number,
     style: PropTypes.object,
+    joinGuest: PropTypes.bool,
 };
 
 export { ChatRoomFrame };
