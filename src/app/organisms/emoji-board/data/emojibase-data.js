@@ -8,6 +8,13 @@ import clone from 'clone';
 
 import { capitalize } from '../../../../util/tools';
 
+/*
+
+    Version compatible emojibase-data 7.0.1 for now.
+    The latest versions still need to be studied how to resolve related glitches in resolving remaining unicode detectors.
+
+*/
+
 const emojiGroups = [];
 const emojiCateogoryList = [];
 
