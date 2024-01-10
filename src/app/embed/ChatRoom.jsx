@@ -21,11 +21,14 @@ import cons from '../../client/state/cons';
 
 global.Olm = Olm;
 
-function ChatRoomFrame({ roomId, refreshTime, className, style }) {
+function ChatRoomFrame({ roomId, refreshTime, className, style, hsUrl }) {
 
     // Theme
     const frameRef = useRef(null);
     const theme = settings.getTheme();
+
+    // hsUrl: null (Custom homeserver url to use hs param)
+    const baseUrl = typeof hsUrl === 'string' ? hsUrl : initMatrix && initMatrix.matrixClient && typeof initMatrix.matrixClient.baseUrl === 'string' ? initMatrix.matrixClient.baseUrl : null;
 
     // Effect
     useEffect(() => {
@@ -48,14 +51,18 @@ function ChatRoomFrame({ roomId, refreshTime, className, style }) {
 
     });
 
+    console.log(frameRef, theme);
+
     // Frame
-    return <iframe
-        ref={frameRef}
-        title={roomId}
-        style={style}
-        className={className}
-        src={`/?type=chatroom&id=${encodeURIComponent(roomId)}&join_guest=true&hs=${encodeURIComponent(new URL(initMatrix.matrixClient.baseUrl).hostname)}${typeof refreshTime === 'number' && refreshTime > 0 ? `&refresh_time=${encodeURIComponent(refreshTime)}` : ''}${objType(theme, 'object') && typeof theme.id === 'string' && theme.id.length > 0 ? `&theme=${encodeURIComponent(theme.id)}` : ''}`}
-    />;
+    if (baseUrl !== null) {
+        return <iframe
+            ref={frameRef}
+            title={roomId}
+            style={style}
+            className={className}
+            src={`/?type=chatroom&id=${encodeURIComponent(roomId)}&join_guest=true&hs=${encodeURIComponent(new URL(baseUrl).hostname)}${typeof refreshTime === 'number' && refreshTime > 0 ? `&refresh_time=${encodeURIComponent(refreshTime)}` : ''}${objType(theme, 'object') && typeof theme.id === 'string' && theme.id.length > 0 ? `&theme=${encodeURIComponent(theme.id)}` : ''}`}
+        />;
+    }
 
 };
 
@@ -64,9 +71,11 @@ ChatRoomFrame.defaultProps = {
     roomId: null,
     className: null,
     style: null,
+    hsUrl: null,
 };
 
 ChatRoomFrame.propTypes = {
+    hsUrl: PropTypes.string,
     roomId: PropTypes.string,
     className: PropTypes.string,
     refreshTime: PropTypes.number,
