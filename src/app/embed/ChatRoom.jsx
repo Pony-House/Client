@@ -51,18 +51,14 @@ function ChatRoomFrame({ roomId, refreshTime, className, style, hsUrl }) {
 
     });
 
-    console.log(frameRef, theme);
-
     // Frame
-    if (baseUrl !== null) {
-        return <iframe
-            ref={frameRef}
-            title={roomId}
-            style={style}
-            className={className}
-            src={`/?type=chatroom&id=${encodeURIComponent(roomId)}&join_guest=true&hs=${encodeURIComponent(new URL(baseUrl).hostname)}${typeof refreshTime === 'number' && refreshTime > 0 ? `&refresh_time=${encodeURIComponent(refreshTime)}` : ''}${objType(theme, 'object') && typeof theme.id === 'string' && theme.id.length > 0 ? `&theme=${encodeURIComponent(theme.id)}` : ''}`}
-        />;
-    }
+    return <iframe
+        ref={frameRef}
+        title={roomId}
+        style={style}
+        className={className}
+        src={`/?type=chatroom&id=${encodeURIComponent(roomId)}&join_guest=true${baseUrl !== null ? `&hs=${encodeURIComponent(new URL(baseUrl).hostname)}` : ''}${typeof refreshTime === 'number' && refreshTime > 0 ? `&refresh_time=${encodeURIComponent(refreshTime)}` : ''}${objType(theme, 'object') && typeof theme.id === 'string' && theme.id.length > 0 ? `&theme=${encodeURIComponent(theme.id)}` : ''}`}
+    />;
 
 };
 
