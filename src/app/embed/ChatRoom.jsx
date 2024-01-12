@@ -62,6 +62,21 @@ function ChatRoomFrame({ roomId, refreshTime, className, style, hsUrl, joinGuest
 
 };
 
+function ChatRoomjFrame(roomId, data = {}) {
+
+    // Theme
+    const theme = settings.getTheme();
+
+    // hsUrl: null (Custom homeserver url to use hs param)
+    const baseUrl = typeof data.hsUrl === 'string' ? data.hsUrl : initMatrix && initMatrix.matrixClient && typeof initMatrix.matrixClient.baseUrl === 'string' ? initMatrix.matrixClient.baseUrl : null;
+    const iframe = $('<iframe>', { title: roomId, class: data.className }).css(data?.style);
+
+    // Frame
+    iframe.attr('src', `/?type=chatroom&id=${encodeURIComponent(roomId)}&join_guest=${typeof data.joinGuest === 'boolean' && data.joinGuest ? 'true' : 'false'}${baseUrl !== null ? `&hs=${encodeURIComponent(new URL(baseUrl).hostname)}` : ''}${typeof data.refreshTime === 'number' && data.refreshTime > 0 ? `&refresh_time=${encodeURIComponent(data.refreshTime)}` : ''}${objType(theme, 'object') && typeof theme.id === 'string' && theme.id.length > 0 ? `&theme=${encodeURIComponent(theme.id)}` : ''}`);
+    return iframe;
+
+};
+
 ChatRoomFrame.defaultProps = {
     refreshTime: null,
     roomId: null,
@@ -80,7 +95,7 @@ ChatRoomFrame.propTypes = {
     joinGuest: PropTypes.bool,
 };
 
-export { ChatRoomFrame };
+export { ChatRoomFrame, ChatRoomjFrame };
 
 /*
 
