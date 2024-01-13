@@ -231,7 +231,9 @@ class RoomTimeline extends EventEmitter {
       };
 
       // First load
-      this.loadGuestTimeline();
+      this._reset().then(() => {
+        this.loadGuestTimeline();
+      });
 
     }
 
