@@ -242,10 +242,10 @@ export function btModal(data) {
         $("<div>", { class: `modal-dialog ${data.dialog} modal-popup modal-dialog-scrollable` }).append(
             $("<div>", { class: "modal-content" }).append(
 
-                $("<div>", { class: "noselect modal-header" }).append(
+                typeof data.title === 'string' ? $("<div>", { class: "noselect modal-header" }).append(
                     $("<div>", { class: "h5 emoji-size-fix modal-title h4" }).text(data.title),
                     $("<button>", { type: "button", class: "btn-close", "data-bs-dismiss": "modal", 'aria-label': 'Close' })
-                ),
+                ) : null,
 
                 $("<div>", { class: `modal-body bg-bg2${typeof data.bodyClass === 'string' ? ` ${data.bodyClass}` : ''}` }).append(data.body),
                 footer,
