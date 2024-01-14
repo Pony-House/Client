@@ -37,6 +37,10 @@ export function comparePinEvents(content, prevContent) {
 
 };
 
+const openPinMessages = (evt) => {
+    evt.preventDefault();
+};
+
 export default function PinnedEventsMessage({ user, comparedPinMessages }) {
 
     // Items
@@ -46,11 +50,11 @@ export default function PinnedEventsMessage({ user, comparedPinMessages }) {
     return added.length > 0 ?
         <>
             <strong>{twemojifyReact(user)}</strong>
-            {` pinned ${added.length === 1 ? 'a' : added.length} ${added.length === 1 ? 'message' : 'messages'} to this channel. See all pinned messages.`}
+            {` pinned ${added.length === 1 ? 'a' : added.length} ${added.length === 1 ? 'message' : 'messages'} to this channel. See all `}<a href='#' onClick={openPinMessages}>pinned messages</a>.
         </> : removed.length > 0 ?
             <>
                 <strong>{twemojifyReact(user)}</strong>
-                {` unpinned ${removed.length === 1 ? 'a' : removed.length} ${removed.length === 1 ? 'message' : 'messages'} to this channel. See all pinned messages.`}
+                {` unpinned ${removed.length === 1 ? 'a' : removed.length} ${removed.length === 1 ? 'message' : 'messages'} to this channel. See all `}<a href='#' onClick={openPinMessages}>pinned messages</a>.
             </> : null;
 
 };
