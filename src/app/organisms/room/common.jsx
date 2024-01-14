@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { twemojifyReact } from '../../../util/twemojify';
+import { getAppearance } from '../../../util/libs/appearance';
 
 import initMatrix from '../../../client/initMatrix';
 import { getUsername, getUsernameOfRoomMember } from '../../../util/matrixUtil';
@@ -95,6 +96,8 @@ function parseTimelineChange(mEvent) {
     content,
   });
 
+  const appearanceSettings = getAppearance();
+
   const type = mEvent.getType();
   const date = mEvent.getDate();
   const content = mEvent.getContent();
@@ -145,13 +148,19 @@ function parseTimelineChange(mEvent) {
     }
   }
 
+  // Pin Messages
   if (typeof mEvent.getStateKey() === 'string') {
-
     const comparedPinMessages = comparePinEvents(content, mEvent.getPrevContent());
-    return makeReturnObj(`pinned-events-${comparedPinMessages.added.length > 0 ? 'added' : 'removed'}`, tJSXMsgs.pinnedEvents(date, senderName, comparedPinMessages));
+
+    if ((comparedPinMessages.added.length > 0 && !appearanceSettings.hidePinMessageEvents) || (comparedPinMessages.removed.length > 0 && !appearanceSettings.hideUnpinMessageEvents)) {
+      return makeReturnObj(`pinned-events-${comparedPinMessages.added.length > 0 ? 'added' : 'removed'}`, tJSXMsgs.pinnedEvents(date, senderName, comparedPinMessages));
+    }
+
+    return null;
 
   }
 
+  // Nothing
   return null;
 
 }

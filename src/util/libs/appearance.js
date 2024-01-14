@@ -22,6 +22,9 @@ export function getAppearance(folder, getDefault = true) {
 
         content.useFreezePlugin = typeof content.useFreezePlugin === 'boolean' ? content.useFreezePlugin : false;
 
+        content.hidePinMessageEvents = typeof content.hidePinMessageEvents === 'boolean' ? content.hidePinMessageEvents : false;
+        content.hideUnpinMessageEvents = typeof content.hideUnpinMessageEvents === 'boolean' ? content.hideUnpinMessageEvents : false;
+
     }
 
     if (typeof folder === 'string' && folder.length > 0) {
