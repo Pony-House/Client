@@ -8,7 +8,7 @@ import { btModal, objType } from '../../tools';
 
 import { setLoadingPage } from "../../../app/templates/client/Loading";
 import { twemojify } from "../../twemojify";
-// import { getRoomInfo } from '../../app/organisms/room/Room';
+import { getRoomInfo } from '../../../app/organisms/room/Room';
 
 import { openProfileViewer } from '../../../client/action/navigation';
 import defaultAvatar from '../../../app/atoms/avatar/defaultAvatar';
@@ -208,19 +208,22 @@ export function openPinMessageModal(room) {
         const body = [];
         const mx = initMatrix.matrixClient;
         const isCustomHTML = true;
+        let modal = null;
 
         for (const item in events) {
             try {
                 if (objType(events[item], 'object')) {
 
-                    // Test
-                    console.log('----------------------------------');
-                    console.log('thread', events[item].getThread());
-
                     // Prepare Data
                     const userId = events[item].getSender();
                     const userColor = colorMXID(userId);
                     const user = mx.getUser(userId);
+
+                    const thread = events[item].getThread();
+                    const roomId = room.roomId;
+                    const threadId = thread && typeof thread.id === 'string' ? thread.id : null;
+
+                    const eventId = events[item].getId();
 
                     const tinyUsername = twemojify(user.userId);
 
@@ -240,22 +243,13 @@ export function openPinMessageModal(room) {
 
                     messageDataEffects(msgData);
 
-
-                    /* {msgType === 'm.emote' && (
-                      <>
-                        {'* '}
-                        {twemojifyReact(senderName)}
-                        {' '}
-                      </>
-                    )}
-                    {msgData}
-                    {isEdited && <div className="very-small text-gray">(edited)</div>} */
+                    console.log('thread', threadId);
 
                     // Insert Body
-                    body.push($('<tr>', { eventid: events[item].getId(), class: 'message message--body-only user-you-message chatbox-portable' }).append(
+                    body.push($('<tr>', { eventid: eventId, class: 'message message--body-only user-you-message chatbox-portable' }).append(
 
                         // Avatar
-                        $('<td>', { class: 'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container' }).append($('<button>').on('click', () => openProfileViewer(userId, room.roomId)).append(
+                        $('<td>', { class: 'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container' }).append($('<button>').on('click', () => openProfileViewer(userId, roomId)).append(
                             $('<img>', { class: 'avatar-react', draggable: false, src: imageSrc !== null ? imageSrc : defaultAvatar(userColor), alt: 'avatar' }).on('load', (event) => {
                                 const e = event.originalEvent;
                                 e.target.style.backgroundColor = 'transparent';
@@ -266,7 +260,11 @@ export function openPinMessageModal(room) {
                         )),
 
                         // Message
-                        $('<td>', { class: 'p-0 pe-3 py-1 message-open-click' }).append(
+                        // eslint-disable-next-line no-loop-func
+                        $('<td>', { class: 'p-0 pe-3 py-1 message-open-click' }).on('click', () => {
+                            getRoomInfo().roomTimeline.loadEventTimeline(eventId);
+                            if (modal) modal.hide();
+                        }).append(
                             $('<div>', { class: 'mb-1' }).append(
 
                                 $('<span>', { class: 'username-base emoji-size-fix' }).css('color', userColor).append(
@@ -288,7 +286,7 @@ export function openPinMessageModal(room) {
         }
 
         // Send Modal
-        btModal({
+        modal = btModal({
 
             title: 'Pinned Messages',
 
@@ -307,6 +305,7 @@ export function openPinMessageModal(room) {
 // DEV
 if (__ENV_APP__.MODE === 'development') {
     global.pinManager = {
+        openModal: openPinMessageModal,
         getRaw: getPinnedMessagesRaw,
         getAll: getPinnedMessages,
         get: getPinnedMessage,
