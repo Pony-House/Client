@@ -1,7 +1,6 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable no-await-in-loop */
 import clone from 'clone';
-import { MatrixEvent } from 'matrix-js-sdk';
 
 import initMatrix from '../../../client/initMatrix';
 import { getCurrentState } from "../../matrixUtil";
@@ -14,6 +13,7 @@ import { openProfileViewer } from '../../../client/action/navigation';
 import defaultAvatar from '../../../app/atoms/avatar/defaultAvatar';
 import { colorMXID } from '../../colorMXID';
 import { createMessageData, isEmojiOnly, messageDataEffects } from '../../../app/molecules/message/Message';
+import { getEventById } from './cache';
 
 // Info
 const ImageBrokenSVG = './img/svg/image-broken.svg';
@@ -82,25 +82,8 @@ export async function getPinnedMessages(room, filterLimit = true) {
             try {
                 if (typeof pinnedEventsId[item] === 'string') {
                     const eventId = clone(pinnedEventsId[item]);
-                    pinnedEventsId[item] = await room.findEventById(eventId);
-                    if (!pinnedEventsId[item]) {
-
-                        const newEvent = await initMatrix.matrixClient.fetchRoomEvent(room.roomId, eventId);
-                        if (newEvent) {
-
-                            pinnedEventsId[item] = new MatrixEvent({
-                                origin_server_ts: newEvent.age,
-                                content: newEvent.content,
-                                event_id: eventId,
-                                room_id: room.roomId,
-                                sender: newEvent.sender,
-                                type: newEvent.type,
-                                unsigned: newEvent.unsigned,
-                            });
-
-                        }
-
-                    }
+                    pinnedEventsId[item] = await getEventById(room, eventId);
+                    if (pinnedEventsId[item] === null) pinnedEventsId[item] = eventId;
                     // const tinyTimeline = room.getTimelineForEvent
                     // tinyTimeline.getEvents();
                 }
@@ -225,7 +208,7 @@ export function openPinMessageModal(room) {
 
         for (const item in events) {
             try {
-                if (events[item]) {
+                if (objType(events[item], 'object')) {
 
                     // Test
                     console.log('----------------------------------');
