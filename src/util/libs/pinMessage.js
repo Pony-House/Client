@@ -12,7 +12,7 @@ import { setLoadingPage } from "../../app/templates/client/Loading";
 import { openProfileViewer } from '../../client/action/navigation';
 import defaultAvatar from '../../app/atoms/avatar/defaultAvatar';
 import { colorMXID } from '../colorMXID';
-import { createMessageData, isEmojiOnly } from '../../app/molecules/message/Message';
+import { createMessageData, isEmojiOnly, messageDataEffects } from '../../app/molecules/message/Message';
 
 // Info
 const ImageBrokenSVG = './img/svg/image-broken.svg';
@@ -197,6 +197,7 @@ export function openPinMessageModal(room) {
         // Prepare
         const body = [];
         const mx = initMatrix.matrixClient;
+        const isCustomHTML = true;
 
         for (const item in events) {
 
@@ -213,10 +214,11 @@ export function openPinMessageModal(room) {
             const imageSrc = user ? mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop') : null;
 
             const content = events[item].getContent();
-            const msgData = createMessageData(content, content.body, true, false, true);
+            const msgData = createMessageData(content, typeof content.formatted_body === 'string' ? content.formatted_body : content.body, isCustomHTML, false, true);
             const emojiOnly = isEmojiOnly(msgData, true);
 
-            console.log('msgData', msgData);
+            messageDataEffects(msgData);
+
             console.log('emojiOnly', emojiOnly);
 
             /* {msgType === 'm.emote' && (
@@ -245,7 +247,7 @@ export function openPinMessageModal(room) {
 
                 // Message
                 $('<td>', { class: 'p-0 pe-3 py-1' }).append(
-                    $('<div>', { class: `text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''}` }).append(null)
+                    $('<div>', { class: `text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''}` }).append(msgData)
                 ),
 
             ));

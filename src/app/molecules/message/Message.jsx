@@ -334,7 +334,48 @@ const createMessageData = (content, body, isCustomHTML = false, isSystem = false
 
 };
 
-export { createMessageData, isEmojiOnly };
+const messageDataEffects = (messageBody) => {
+
+  messageBody.find('pre code').each((index, value) => {
+
+    const el = $(value);
+    resizeWindowChecker();
+
+    if (!el.hasClass('hljs')) {
+      hljs.highlightElement(value);
+      el.addClass('chatbox-size-fix');
+    }
+
+    if (!el.hasClass('hljs-fix')) {
+      el.addClass('hljs-fix');
+      hljsFixer(el, 'MessageBody');
+    }
+
+    if (!el.hasClass('hljs')) {
+      el.addClass('hljs');
+    }
+
+  });
+
+  // Add tooltip on the emoji
+  messageBody.find('[data-mx-emoticon], .emoji').each((index, value) => {
+
+    const el = $(value);
+
+    if (!el.hasClass('emoji-fix')) {
+
+      if (!el.attr('title') && el.attr('alt')) el.attr('title', el.attr('alt'));
+
+      new bootstrap.Tooltip(value, { customClass: 'small' });
+      el.addClass('emoji-fix');
+
+    }
+
+  });
+
+};
+
+export { createMessageData, isEmojiOnly, messageDataEffects };
 
 // Message Body
 const MessageBody = React.memo(
@@ -353,42 +394,7 @@ const MessageBody = React.memo(
     const messageBody = useRef(null);
 
     useEffect(() => {
-      $(messageBody.current).find('pre code').each((index, value) => {
-
-        const el = $(value);
-        resizeWindowChecker();
-
-        if (!el.hasClass('hljs')) {
-          hljs.highlightElement(value);
-          el.addClass('chatbox-size-fix');
-        }
-
-        if (!el.hasClass('hljs-fix')) {
-          el.addClass('hljs-fix');
-          hljsFixer(el, 'MessageBody');
-        }
-
-        if (!el.hasClass('hljs')) {
-          el.addClass('hljs');
-        }
-
-      });
-
-      // Add tooltip on the emoji
-      $(messageBody.current).find('[data-mx-emoticon], .emoji').each((index, value) => {
-
-        const el = $(value);
-
-        if (!el.hasClass('emoji-fix')) {
-
-          if (!el.attr('title') && el.attr('alt')) el.attr('title', el.attr('alt'));
-
-          new bootstrap.Tooltip(value, { customClass: 'small' });
-          el.addClass('emoji-fix');
-
-        }
-
-      });
+      messageDataEffects($(messageBody.current))
     });
 
     // if body is not string it is a React element.
