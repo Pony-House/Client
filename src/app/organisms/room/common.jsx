@@ -145,7 +145,11 @@ function parseTimelineChange(mEvent) {
     }
   }
 
-  return makeReturnObj('pinned-events', tJSXMsgs.pinnedEvents(date, senderName, content, mEvent.getPrevContent()));
+  if (typeof mEvent.getStateKey() === 'string') {
+    return makeReturnObj('pinned-events', tJSXMsgs.pinnedEvents(date, senderName, content, mEvent.getPrevContent()));
+  }
+
+  return null;
 
 }
 
