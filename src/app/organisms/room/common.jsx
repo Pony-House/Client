@@ -23,7 +23,7 @@ import NameSetsMessage from './chat-messages/NameSets';
 import NameChangedMessage from './chat-messages/NameChanged';
 import NameRemovedMessage from './chat-messages/NameRemoved';
 
-import PinnedEventsMessage from './chat-messages/PinnedEventsMessage';
+import PinnedEventsMessage, { comparePinEvents } from './chat-messages/PinnedEventsMessage';
 
 function getTimelineJSXMessages() {
 
@@ -48,7 +48,7 @@ function getTimelineJSXMessages() {
     nameChanged(date, user, newName) { return <NameChangedMessage date={date} newName={newName} user={user} />; },
     nameRemoved(date, user, lastName) { return <NameRemovedMessage date={date} lastName={lastName} user={user} />; },
 
-    pinnedEvents(date, user, content, prevContent) { return <PinnedEventsMessage date={date} content={content} prevContent={prevContent} user={user} />; },
+    pinnedEvents(date, user, comparedPinMessages) { return <PinnedEventsMessage date={date} comparedPinMessages={comparedPinMessages} user={user} />; },
 
   };
 
@@ -146,7 +146,10 @@ function parseTimelineChange(mEvent) {
   }
 
   if (typeof mEvent.getStateKey() === 'string') {
-    return makeReturnObj('pinned-events', tJSXMsgs.pinnedEvents(date, senderName, content, mEvent.getPrevContent()));
+
+    const comparedPinMessages = comparePinEvents(content, mEvent.getPrevContent());
+    return makeReturnObj(`pinned-events-${comparedPinMessages.added.length > 0 ? 'added' : 'removed'}`, tJSXMsgs.pinnedEvents(date, senderName, comparedPinMessages));
+
   }
 
   return null;
