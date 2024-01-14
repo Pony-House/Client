@@ -1,6 +1,7 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable no-await-in-loop */
 import clone from 'clone';
+import { MatrixEvent } from 'matrix-js-sdk';
 
 import initMatrix from '../../client/initMatrix';
 import { getCurrentState } from "../matrixUtil";
@@ -78,10 +79,33 @@ export async function getPinnedMessages(room, filterLimit = true) {
 
         // Get events
         for (const item in pinnedEventsId) {
-            if (typeof pinnedEventsId[item] === 'string') {
-                pinnedEventsId[item] = await room.findEventById(pinnedEventsId[item]);
-                // const tinyTimeline = room.getTimelineForEvent
-                // tinyTimeline.getEvents();
+            try {
+                if (typeof pinnedEventsId[item] === 'string') {
+                    const eventId = clone(pinnedEventsId[item]);
+                    pinnedEventsId[item] = await room.findEventById(eventId);
+                    if (!pinnedEventsId[item]) {
+
+                        const newEvent = await initMatrix.matrixClient.fetchRoomEvent(room.roomId, eventId);
+                        if (newEvent) {
+
+                            pinnedEventsId[item] = new MatrixEvent({
+                                origin_server_ts: newEvent.age,
+                                content: newEvent.content,
+                                event_id: eventId,
+                                room_id: room.roomId,
+                                sender: newEvent.sender,
+                                type: newEvent.type,
+                                unsigned: newEvent.unsigned,
+                            });
+
+                        }
+
+                    }
+                    // const tinyTimeline = room.getTimelineForEvent
+                    // tinyTimeline.getEvents();
+                }
+            } catch (err) {
+                console.error(err);
             }
         }
 
@@ -200,58 +224,70 @@ export function openPinMessageModal(room) {
         const isCustomHTML = true;
 
         for (const item in events) {
+            try {
+                if (events[item]) {
 
-            // Test
-            console.log('----------------------------------');
-            console.log(events[item]);
-            console.log('date', events[item].getDate());
-            console.log('thread', events[item].getThread());
-            console.log('----------------------------------');
+                    // Test
+                    console.log('----------------------------------');
+                    console.log('date', events[item].getDate());
+                    console.log('thread', events[item].getThread());
 
-            // Prepare Data
-            const userId = events[item].getSender();
-            const user = mx.getUser(userId);
-            const imageSrc = user ? mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop') : null;
+                    // Prepare Data
+                    const userId = events[item].getSender();
+                    const user = mx.getUser(userId);
+                    const imageSrc = user ? mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop') : null;
 
-            const content = events[item].getContent();
-            const msgData = createMessageData(content, typeof content.formatted_body === 'string' ? content.formatted_body : content.body, isCustomHTML, false, true);
-            const emojiOnly = isEmojiOnly(msgData, true);
+                    const content = events[item].getContent();
+                    let msgData = createMessageData(content, typeof content.formatted_body === 'string' ? content.formatted_body : content.body, isCustomHTML, false, true);
+                    const emojiOnly = isEmojiOnly(msgData, true);
 
-            messageDataEffects(msgData);
+                    if (!isCustomHTML) {
+                        // If this is a plaintext message, wrap it in a <p> element (automatically applying
+                        // white-space: pre-wrap) in order to preserve newlines
+                        msgData = $('<p>', { class: 'm-0' }).append(msgData);
+                    } else {
+                        msgData = $('<span>', { class: 'custom-html' }).append(msgData);
+                    }
 
-            console.log('emojiOnly', emojiOnly);
+                    messageDataEffects(msgData);
 
-            /* {msgType === 'm.emote' && (
-              <>
-                {'* '}
-                {twemojifyReact(senderName)}
-                {' '}
-              </>
-            )}
-            {msgData}
-            {isEdited && <div className="very-small text-gray">(edited)</div>} */
+                    console.log('emojiOnly', emojiOnly);
 
-            // Insert Body
-            body.push($('<tr>', { eventid: events[item].getId(), class: 'message message--body-only user-you-message chatbox-portable' }).append(
+                    /* {msgType === 'm.emote' && (
+                      <>
+                        {'* '}
+                        {twemojifyReact(senderName)}
+                        {' '}
+                      </>
+                    )}
+                    {msgData}
+                    {isEdited && <div className="very-small text-gray">(edited)</div>} */
 
-                // Avatar
-                $('<td>', { class: 'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container' }).append($('<button>').on('click', () => openProfileViewer(userId, room.roomId)).append(
-                    $('<img>', { class: 'avatar-react', draggable: false, src: imageSrc !== null ? imageSrc : defaultAvatar(colorMXID(userId)), alt: 'avatar' }).on('load', (event) => {
-                        const e = event.originalEvent;
-                        e.target.style.backgroundColor = 'transparent';
-                    }).on('error', (event) => {
-                        const e = event.originalEvent;
-                        e.target.src = ImageBrokenSVG;
-                    })
-                )),
+                    // Insert Body
+                    body.push($('<tr>', { eventid: events[item].getId(), class: 'message message--body-only user-you-message chatbox-portable' }).append(
 
-                // Message
-                $('<td>', { class: 'p-0 pe-3 py-1' }).append(
-                    $('<div>', { class: `text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''}` }).append(msgData)
-                ),
+                        // Avatar
+                        $('<td>', { class: 'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container' }).append($('<button>').on('click', () => openProfileViewer(userId, room.roomId)).append(
+                            $('<img>', { class: 'avatar-react', draggable: false, src: imageSrc !== null ? imageSrc : defaultAvatar(colorMXID(userId)), alt: 'avatar' }).on('load', (event) => {
+                                const e = event.originalEvent;
+                                e.target.style.backgroundColor = 'transparent';
+                            }).on('error', (event) => {
+                                const e = event.originalEvent;
+                                e.target.src = ImageBrokenSVG;
+                            })
+                        )),
 
-            ));
+                        // Message
+                        $('<td>', { class: 'p-0 pe-3 py-1' }).append(
+                            $('<div>', { class: `text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''}` }).append(msgData)
+                        ),
 
+                    ));
+
+                }
+            } catch (err) {
+                console.error(err);
+            }
         }
 
         // Send Modal
