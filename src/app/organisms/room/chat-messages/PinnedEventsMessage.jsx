@@ -34,10 +34,14 @@ export default function PinnedEventsMessage({ user, content, prevContent }) {
     }
 
     // Result
-    console.log(tinyCache);
-    return <>
-        <strong>{twemojifyReact(user)}</strong>
-        {` pinned a message to this channel. See all pinned messages.`}
-    </>;
+    return tinyCache.added.length > 0 ?
+        <>
+            <strong>{twemojifyReact(user)}</strong>
+            {` pinned ${tinyCache.added.length === 1 ? 'a' : tinyCache.added.length} ${tinyCache.added.length === 1 ? 'message' : 'messages'} to this channel. See all pinned messages.`}
+        </> : tinyCache.removed.length > 0 ?
+            <>
+                <strong>{twemojifyReact(user)}</strong>
+                {` unpinned ${tinyCache.removed.length === 1 ? 'a' : tinyCache.removed.length} ${tinyCache.removed.length === 1 ? 'message' : 'messages'} to this channel. See all pinned messages.`}
+            </> : null;
 
 };
