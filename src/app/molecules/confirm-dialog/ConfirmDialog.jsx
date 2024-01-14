@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { openReusableDialog } from '../../../client/action/navigation';
@@ -9,15 +9,32 @@ import Button from '../../atoms/button/Button';
 function ConfirmDialog({
   desc, actionTitle, actionType, onComplete,
 }) {
-  return (
-    <div className="confirm-dialog">
-      <div className='small mb-3'>{desc}</div>
-      <div className="confirm-dialog__btn">
-        <Button variant={actionType} onClick={() => onComplete(true)}>{actionTitle}</Button>
-        <Button onClick={() => onComplete(false)}>Cancel</Button>
-      </div>
+
+  const textBase = useRef(null);
+
+  useEffect(() => {
+    if (textBase.current) {
+
+      const enterInput = (e) => {
+        if (e.key === 'Enter' || e.keyCode === 13) onComplete(true);
+      };
+
+      setTimeout(() => { $('body').on('keyup', enterInput); }, 100);
+      return () => {
+        $('body').off('keyup', enterInput);
+      };
+
+    }
+  });
+
+  return <div ref={textBase} className="confirm-dialog">
+    <div className='small mb-3'>{desc}</div>
+    <div className="confirm-dialog__btn">
+      <Button variant={actionType} onClick={() => onComplete(true)}>{actionTitle}</Button>
+      <Button onClick={() => onComplete(false)}>Cancel</Button>
     </div>
-  );
+  </div>;
+
 }
 ConfirmDialog.propTypes = {
   desc: PropTypes.string.isRequired,
