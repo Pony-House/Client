@@ -4,7 +4,7 @@ import clone from 'clone';
 
 import initMatrix from '../../client/initMatrix';
 import { getCurrentState } from "../matrixUtil";
-import { objType } from '../tools';
+import { btModal, objType } from '../tools';
 
 import { setLoadingPage } from "../../app/templates/client/Loading";
 // import { getRoomInfo } from '../../app/organisms/room/Room';
@@ -191,6 +191,11 @@ export function openPinMessageModal(room) {
         const body = [];
 
         for (const item in events) {
+
+            body.push($('<div>', { class: 'card' }).append($('<div>', { class: 'card-body small' }).append(
+                $('<div>').text(events[item].getId())
+            )));
+
             console.log('----------------------------------');
             console.log(events[item]);
             console.log('id', events[item].getId());
@@ -199,26 +204,18 @@ export function openPinMessageModal(room) {
             console.log('thread', events[item].getThread());
             console.log('content', events[item].getContent());
             console.log('----------------------------------');
+
         }
 
-        /* btModal({
+        btModal({
 
-    title: 'Ethereum Address',
+            title: 'Pinned Messages',
 
-    id: 'user-eth-address',
-    dialog: 'modal-lg modal-dialog-centered',
+            id: 'room-pinned-messages',
+            dialog: 'modal-lg modal-dialog-scrollable modal-dialog-centered',
+            body,
 
-    body: $('<center>', { class: 'small' }).append(
-
-        $('<h6>', { class: 'mb-4 noselect' }).text('Please enter the address correctly! Any type issue will be permanent loss of your funds!'),
-        $('<span>').text(user.displayName ? user.displayName : user.userId),
-        $('<br/>'),
-        $('<span>').text(ethereum.address),
-        $('<div>', { class: 'mt-3' }).append(qrcodeCanvas)
-
-    ),
-
-}); */
+        });
 
         // Complete
         setLoadingPage(false);
