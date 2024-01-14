@@ -23,6 +23,9 @@ function TimelineChange({
     case 'invite-cancel':
       faSrc = "fa-solid fa-user-minus";
       break;
+    case 'pinned-events':
+      faSrc = "bi bi-pin-angle-fill";
+      break;
     case 'avatar':
       faSrc = "fa-solid fa-id-badge";
       break;

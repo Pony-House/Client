@@ -160,7 +160,8 @@ function renderEvent(
     diffMinutes(mEvent.getDate(), prevMEvent.getDate()) <= MAX_MSG_DIFF_MINUTES;
   const timestamp = mEvent.getTs();
 
-  if (mEvent.getType() === 'm.room.member') {
+  const eventType = mEvent.getType();
+  if (eventType === 'm.room.member' || eventType === 'm.room.pinned_events') {
     const timelineChange = parseTimelineChange(mEvent);
     if (timelineChange === null) return <div key={mEvent.getId()} />;
     return (

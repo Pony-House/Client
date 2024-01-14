@@ -25,6 +25,7 @@ const cons = {
     'm.room.message',
     'm.room.encrypted',
     'm.room.member',
+    'm.room.pinned_events',
     'm.sticker',
   ],
 
