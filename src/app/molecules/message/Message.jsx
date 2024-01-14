@@ -14,7 +14,7 @@ import * as linkify from "linkifyjs";
 
 import Text from '../../atoms/text/Text';
 import { hljsFixer, resizeWindowChecker, chatboxScrollToBottom, toast } from '../../../util/tools';
-import { twemojifyReact } from '../../../util/twemojify';
+import { twemojify, twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 
 import {
@@ -241,6 +241,101 @@ MessageReplyWrapper.propTypes = {
   eventId: PropTypes.string.isRequired,
 };
 
+// Is Emoji only
+const isEmojiOnly = (msgContent, isJquery = false) => {
+
+  // Determine if this message should render with large emojis
+  // Criteria:
+  // - Contains only emoji
+  // - Contains no more than 10 emoji
+  let emojiOnly = false;
+  if (msgContent) {
+
+    if ((!isJquery && msgContent.type === 'img') || (isJquery && msgContent.prop("tagName"))) {
+      // If this messages contains only a single (inline) image
+      emojiOnly = true;
+    } else if (!isJquery && msgContent.constructor.name === 'Array') {
+
+      // Otherwise, it might be an array of images / text
+
+      // Count the number of emojis
+      const nEmojis = msgContent.filter((e) => e.type === 'img').length;
+
+      // Make sure there's no text besides whitespace and variation selector U+FE0F
+      if (nEmojis <= 10 && msgContent.every((element) => (
+        (typeof element === 'object' && element.type === 'img')
+        || (typeof element === 'string' && /^[\s\ufe0f]*$/g.test(element))
+      ))) {
+        emojiOnly = true;
+      }
+
+    } else if (isJquery) {
+
+      // Otherwise, it might be an array of images / text
+
+      // Count the number of emojis
+      const nEmojis = $.grep(msgContent, (e) => e.type === 'img').length;
+
+      // Make sure there's no text besides whitespace and variation selector U+FE0F
+      if (nEmojis <= 10 && $.grep(msgContent, (element) => (
+        (typeof element === 'object' && element.type === 'img') ||
+        (typeof element === 'string' && /^[\s\ufe0f]*$/g.test(element))
+      )).length === msgContent.length) {
+        emojiOnly = true;
+      }
+
+    }
+
+  }
+
+  return emojiOnly;
+
+};
+
+const createMessageData = (content, body, isCustomHTML = false, isSystem = false, isJquery = false) => {
+
+  let msgData = null;
+  if (isCustomHTML) {
+    try {
+
+      const insertMsg = () => !isJquery ? twemojifyReact(
+        sanitizeCustomHtml(initMatrix.matrixClient, body),
+        undefined,
+        true,
+        false,
+        true,
+      ) : twemojify(
+        sanitizeCustomHtml(initMatrix.matrixClient, body),
+        undefined,
+        true,
+        false,
+        true,
+      );
+
+      const msgOptions = tinyAPI.emit('messageBody', content, insertMsg);
+
+      if (typeof msgOptions.custom === 'undefined') {
+        msgData = insertMsg();
+      } else {
+        msgData = msgOptions.custom;
+      }
+
+    } catch {
+      console.error(`[matrix] [msg] Malformed custom html: `, body);
+      msgData = !isJquery ? twemojifyReact(body, undefined) : twemojify(body, undefined);
+    }
+  } else if (!isSystem) {
+    msgData = !isJquery ? twemojifyReact(body, undefined, true) : twemojify(body, undefined, true);
+  } else {
+    msgData = !isJquery ? twemojifyReact(body, undefined, true, false, true) : twemojify(body, undefined, true, false, true);
+  }
+
+  return msgData;
+
+};
+
+export { createMessageData, isEmojiOnly };
+
 // Message Body
 const MessageBody = React.memo(
   ({
@@ -299,61 +394,11 @@ const MessageBody = React.memo(
     // if body is not string it is a React element.
     if (typeof body !== 'string') return <div className="message__body">{body}</div>;
 
-    let msgData = null;
-    if (isCustomHTML) {
-      try {
+    // Message Data
+    let msgData = createMessageData(content, body, isCustomHTML, isSystem);
 
-        const insertMsg = () => twemojifyReact(
-          sanitizeCustomHtml(initMatrix.matrixClient, body),
-          undefined,
-          true,
-          false,
-          true,
-        );
-
-        const msgOptions = tinyAPI.emit('messageBody', content, insertMsg);
-
-        if (typeof msgOptions.custom === 'undefined') {
-          msgData = insertMsg();
-        } else {
-          msgData = msgOptions.custom;
-        }
-
-      } catch {
-        console.error(`[matrix] [msg] Malformed custom html: `, body);
-        msgData = twemojifyReact(body, undefined);
-      }
-    } else if (!isSystem) {
-      msgData = twemojifyReact(body, undefined, true);
-    } else {
-      msgData = twemojifyReact(body, undefined, true, false, true);
-    }
-
-    // Determine if this message should render with large emojis
-    // Criteria:
-    // - Contains only emoji
-    // - Contains no more than 10 emoji
-    let emojiOnly = false;
-    const msgContent = msgData?.props?.children?.props?.children;
-    if (msgContent) {
-      if (msgContent.type === 'img') {
-        // If this messages contains only a single (inline) image
-        emojiOnly = true;
-      } else if (msgContent.constructor.name === 'Array') {
-        // Otherwise, it might be an array of images / texb
-
-        // Count the number of emojis
-        const nEmojis = msgContent.filter((e) => e.type === 'img').length;
-
-        // Make sure there's no text besides whitespace and variation selector U+FE0F
-        if (nEmojis <= 10 && msgContent.every((element) => (
-          (typeof element === 'object' && element.type === 'img')
-          || (typeof element === 'string' && /^[\s\ufe0f]*$/g.test(element))
-        ))) {
-          emojiOnly = true;
-        }
-      }
-    }
+    // Emoji Only
+    const emojiOnly = isEmojiOnly(msgData?.props?.children?.props?.children);
 
     if (!isCustomHTML) {
       // If this is a plaintext message, wrap it in a <p> element (automatically applying

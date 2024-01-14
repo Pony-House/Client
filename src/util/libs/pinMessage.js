@@ -12,6 +12,7 @@ import { setLoadingPage } from "../../app/templates/client/Loading";
 import { openProfileViewer } from '../../client/action/navigation';
 import defaultAvatar from '../../app/atoms/avatar/defaultAvatar';
 import { colorMXID } from '../colorMXID';
+import { createMessageData, isEmojiOnly } from '../../app/molecules/message/Message';
 
 // Info
 const ImageBrokenSVG = './img/svg/image-broken.svg';
@@ -204,13 +205,29 @@ export function openPinMessageModal(room) {
             console.log(events[item]);
             console.log('date', events[item].getDate());
             console.log('thread', events[item].getThread());
-            console.log('content', events[item].getContent());
             console.log('----------------------------------');
 
             // Prepare Data
             const userId = events[item].getSender();
             const user = mx.getUser(userId);
             const imageSrc = user ? mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop') : null;
+
+            const content = events[item].getContent();
+            const msgData = createMessageData(content, content.body, true, false, true);
+            const emojiOnly = isEmojiOnly(msgData, true);
+
+            console.log('msgData', msgData);
+            console.log('emojiOnly', emojiOnly);
+
+            /* {msgType === 'm.emote' && (
+              <>
+                {'* '}
+                {twemojifyReact(senderName)}
+                {' '}
+              </>
+            )}
+            {msgData}
+            {isEdited && <div className="very-small text-gray">(edited)</div>} */
 
             // Insert Body
             body.push($('<tr>', { eventid: events[item].getId(), class: 'message message--body-only user-you-message chatbox-portable' }).append(
@@ -228,7 +245,7 @@ export function openPinMessageModal(room) {
 
                 // Message
                 $('<td>', { class: 'p-0 pe-3 py-1' }).append(
-                    $('<div>', { class: 'text-freedom message-body small text-bg emoji-size-fix' }).text(events[item].getId())
+                    $('<div>', { class: `text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''}` }).append(null)
                 ),
 
             ));
