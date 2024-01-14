@@ -1,7 +1,5 @@
     --> Menu mobile de ícones precisa parar de ser table usar flex.
 
-    --> Criar leitor de mensagens fixadas
-
     =======================================================
 
 https://help.soundcloud.com/hc/en-us/articles/115003568008-Embedding-a-track-or-playlist-
