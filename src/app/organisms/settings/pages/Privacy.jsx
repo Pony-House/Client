@@ -9,12 +9,14 @@ import { toggleAction } from '../Api';
 function PrivacySection() {
     const [hideTypingWarn, setHideTypingWarn] = useState(false);
     const [roomAutoRefuse, setRoomAutoRefuse] = useState(false);
+    const [sendReadReceipts, setSendReadReceipts] = useState(false);
 
     useEffect(() => {
 
         const content = initMatrix.matrixClient.getAccountData('pony.house.privacy')?.getContent() ?? {};
         setHideTypingWarn((content.hideTypingWarn === true));
         setRoomAutoRefuse((content.roomAutoRefuse === true));
+        setSendReadReceipts(typeof content.sendReadReceipts !== 'boolean' || content.sendReadReceipts === true);
 
     }, []);
 
@@ -47,6 +49,18 @@ function PrivacySection() {
                             />
                         )}
                         content={<div className="very-small text-gray">All invitations will automatically attempt to be refused. Whitelisted users will be ignored by this option. (The whitelisted user must be the owner of the DM or room for it to work.)</div>}
+                    />
+
+                    <SettingTile
+                        title="Send read receipts"
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={sendReadReceipts}
+                                onToggle={toggleAction('pony.house.privacy', 'sendReadReceipts', setSendReadReceipts)}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">Let other people know what messages you read.</div>}
                     />
 
                 </ul>

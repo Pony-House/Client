@@ -1,6 +1,5 @@
 import { ReceiptType } from 'matrix-js-sdk';
 import initMatrix from '../initMatrix';
-import settings from '../state/settings';
 
 // eslint-disable-next-line import/prefer-default-export
 export async function markAsRead(roomId, threadId) {
@@ -36,8 +35,8 @@ export async function markAsRead(roomId, threadId) {
 
   if (latestEvent === null) return;
 
-
-  const receiptType = settings.sendReadReceipts ? ReceiptType.Read : ReceiptType.ReadPrivate;
+  const content = mx.getAccountData('pony.house.privacy')?.getContent() ?? {};
+  const receiptType = typeof content.sendReadReceipts !== 'boolean' || content.sendReadReceipts === true ? ReceiptType.Read : ReceiptType.ReadPrivate;
   await mx.sendReadReceipt(latestEvent, receiptType);
 
 }
