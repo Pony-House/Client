@@ -7,12 +7,15 @@ import { getCurrentState } from "../../matrixUtil";
 import { btModal, objType } from '../../tools';
 
 import { setLoadingPage } from "../../../app/templates/client/Loading";
+import { twemojify } from "../../twemojify";
 // import { getRoomInfo } from '../../app/organisms/room/Room';
 
 import { openProfileViewer } from '../../../client/action/navigation';
 import defaultAvatar from '../../../app/atoms/avatar/defaultAvatar';
 import { colorMXID } from '../../colorMXID';
 import { createMessageData, isEmojiOnly, messageDataEffects } from '../../../app/molecules/message/Message';
+import { jqueryTime } from '../../../app/atoms/time/Time';
+
 import { getEventById } from './cache';
 
 // Info
@@ -212,12 +215,15 @@ export function openPinMessageModal(room) {
 
                     // Test
                     console.log('----------------------------------');
-                    console.log('date', events[item].getDate());
                     console.log('thread', events[item].getThread());
 
                     // Prepare Data
                     const userId = events[item].getSender();
+                    const userColor = colorMXID(userId);
                     const user = mx.getUser(userId);
+
+                    const tinyUsername = twemojify(user.userId);
+
                     const imageSrc = user ? mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop') : null;
 
                     const content = events[item].getContent();
@@ -234,7 +240,6 @@ export function openPinMessageModal(room) {
 
                     messageDataEffects(msgData);
 
-                    console.log('emojiOnly', emojiOnly);
 
                     /* {msgType === 'm.emote' && (
                       <>
@@ -251,7 +256,7 @@ export function openPinMessageModal(room) {
 
                         // Avatar
                         $('<td>', { class: 'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container' }).append($('<button>').on('click', () => openProfileViewer(userId, room.roomId)).append(
-                            $('<img>', { class: 'avatar-react', draggable: false, src: imageSrc !== null ? imageSrc : defaultAvatar(colorMXID(userId)), alt: 'avatar' }).on('load', (event) => {
+                            $('<img>', { class: 'avatar-react', draggable: false, src: imageSrc !== null ? imageSrc : defaultAvatar(userColor), alt: 'avatar' }).on('load', (event) => {
                                 const e = event.originalEvent;
                                 e.target.style.backgroundColor = 'transparent';
                             }).on('error', (event) => {
@@ -261,7 +266,16 @@ export function openPinMessageModal(room) {
                         )),
 
                         // Message
-                        $('<td>', { class: 'p-0 pe-3 py-1' }).append(
+                        $('<td>', { class: 'p-0 pe-3 py-1 message-open-click' }).append(
+                            $('<div>', { class: 'mb-1' }).append(
+
+                                $('<span>', { class: 'username-base emoji-size-fix' }).css('color', userColor).append(
+                                    $('<span>', { class: 'user-id' }).append(tinyUsername)
+                                ),
+
+                                $('<span>', { class: 'ms-2 very-small text-gray' }).append(jqueryTime(events[item].getTs()))
+
+                            ),
                             $('<div>', { class: `text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''}` }).append(msgData)
                         ),
 

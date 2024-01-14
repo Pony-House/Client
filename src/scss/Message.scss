@@ -3,6 +3,18 @@
   width: 20px !important;
 }
 
+#room-pinned-messages {
+  .message-open-click {
+    cursor: pointer !important;
+    .user-id {
+      display: inline-block !important;
+    }
+    .message-body {
+      pointer-events: none !important;
+    }
+  }
+}
+
 #chatbox,
 .chatbox-portable,
 #search-chatbox {

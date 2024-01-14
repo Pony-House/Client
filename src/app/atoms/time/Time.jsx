@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { isInSameDay } from '../../../util/common';
 import moment, { momentFormat } from '../../../util/libs/momentjs';
 
-function Time({ timestamp, fullTime, className }) {
+const timeBase = (timestamp, fullTime) => {
+
   const date = new Date(timestamp);
 
   const formattedFullTime = moment(date).format(`DD MMMM YYYY, ${momentFormat.clock()}`);
@@ -22,15 +23,21 @@ function Time({ timestamp, fullTime, className }) {
     }
   }
 
-  return (
-    <time
-      className={className}
-      dateTime={date.toISOString()}
-      title={formattedFullTime}
-    >
-      {formattedDate}
-    </time>
-  );
+  return { date, formattedFullTime, formattedDate };
+
+};
+
+function Time({ timestamp, fullTime, className }) {
+
+  const { date, formattedFullTime, formattedDate } = timeBase(timestamp, fullTime);
+
+  return <time
+    className={className}
+    dateTime={date.toISOString()}
+    title={formattedFullTime}
+  >
+    {formattedDate}
+  </time>;
 }
 
 Time.defaultProps = {
@@ -44,4 +51,18 @@ Time.propTypes = {
   fullTime: PropTypes.bool,
 };
 
+function jqueryTime(timestamp, fullTime, className) {
+
+  const { date, formattedFullTime, formattedDate } = timeBase(timestamp, fullTime);
+  const time = $('<time>', { class: className });
+
+  time.prop('dateTime', date.toISOString());
+  time.prop('title', formattedFullTime);
+
+  time.text(formattedDate);
+  return time;
+
+};
+
+export { jqueryTime };
 export default Time;
