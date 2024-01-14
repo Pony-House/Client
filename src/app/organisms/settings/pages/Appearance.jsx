@@ -243,7 +243,7 @@ function AppearanceSection() {
                         content={<div className="very-small text-gray">Format messages with markdown syntax before sending.</div>}
                     />
 
-                    {!Capacitor.isNativePlatform() ? <SettingTile
+                    {Capacitor.isNativePlatform() ? <SettingTile
                         title="Send message on enter"
                         options={(
                             <Toggle

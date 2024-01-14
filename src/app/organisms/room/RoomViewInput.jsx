@@ -774,7 +774,7 @@ function RoomViewInput({
       setReplyTo(null);
     }
 
-    if ((Capacitor.isNativePlatform() || appearanceSettings.sendMessageEnter) && e.key === 'Enter' && e.shiftKey === false && !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    if ((!Capacitor.isNativePlatform() || appearanceSettings.sendMessageEnter) && e.key === 'Enter' && e.shiftKey === false && !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       e.preventDefault();
       sendMessage();
     }
