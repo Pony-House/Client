@@ -3,17 +3,17 @@
 import clone from 'clone';
 import { MatrixEvent } from 'matrix-js-sdk';
 
-import initMatrix from '../../client/initMatrix';
-import { getCurrentState } from "../matrixUtil";
-import { btModal, objType } from '../tools';
+import initMatrix from '../../../client/initMatrix';
+import { getCurrentState } from "../../matrixUtil";
+import { btModal, objType } from '../../tools';
 
-import { setLoadingPage } from "../../app/templates/client/Loading";
+import { setLoadingPage } from "../../../app/templates/client/Loading";
 // import { getRoomInfo } from '../../app/organisms/room/Room';
 
-import { openProfileViewer } from '../../client/action/navigation';
-import defaultAvatar from '../../app/atoms/avatar/defaultAvatar';
-import { colorMXID } from '../colorMXID';
-import { createMessageData, isEmojiOnly, messageDataEffects } from '../../app/molecules/message/Message';
+import { openProfileViewer } from '../../../client/action/navigation';
+import defaultAvatar from '../../../app/atoms/avatar/defaultAvatar';
+import { colorMXID } from '../../colorMXID';
+import { createMessageData, isEmojiOnly, messageDataEffects } from '../../../app/molecules/message/Message';
 
 // Info
 const ImageBrokenSVG = './img/svg/image-broken.svg';
