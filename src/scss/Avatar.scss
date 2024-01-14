@@ -1,5 +1,14 @@
 @use './partials/flex';
 
+.chatbox-portable {
+  .avatar-container {
+    img,
+    canvas {
+      border-radius: var(--bo-radius);
+    }
+  }
+}
+
 .avatar-container {
   width: 42px;
   height: 42px;
@@ -59,6 +68,7 @@
   }
 }
 
+.chatbox-portable > tbody,
 #chatbox > tbody,
 #search-chatbox > tbody {
   > tr {

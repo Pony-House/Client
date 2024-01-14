@@ -4,6 +4,7 @@
 }
 
 #chatbox,
+.chatbox-portable,
 #search-chatbox {
   word-break: break-word;
 
@@ -240,6 +241,7 @@
 }
 
 #chatbox tr:hover,
+.chatbox-portable tr:hover,
 #search-chatbox tr:hover {
   .hc-time {
     display: block;
@@ -285,6 +287,7 @@ em-emoji-picker {
 
 @media (max-width: 576px) {
   #chatbox,
+  .chatbox-portable,
   #search-chatbox {
     .message__options {
       margin-top: -36px;

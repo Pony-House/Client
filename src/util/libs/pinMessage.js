@@ -9,7 +9,12 @@ import { btModal, objType } from '../tools';
 import { setLoadingPage } from "../../app/templates/client/Loading";
 // import { getRoomInfo } from '../../app/organisms/room/Room';
 
+import { openProfileViewer } from '../../client/action/navigation';
+import defaultAvatar from '../../app/atoms/avatar/defaultAvatar';
+import { colorMXID } from '../colorMXID';
+
 // Info
+const ImageBrokenSVG = './img/svg/image-broken.svg';
 const PIN_LIMIT = 50;
 const eventName = 'm.room.pinned_events';
 
@@ -188,32 +193,56 @@ export function openPinMessageModal(room) {
     setLoadingPage();
     getPinnedMessages(room).then(events => {
 
+        // Prepare
         const body = [];
+        const mx = initMatrix.matrixClient;
 
         for (const item in events) {
 
-            body.push($('<div>', { class: 'card' }).append($('<div>', { class: 'card-body small' }).append(
-                $('<div>').text(events[item].getId())
-            )));
-
+            // Test
             console.log('----------------------------------');
             console.log(events[item]);
-            console.log('id', events[item].getId());
             console.log('date', events[item].getDate());
-            console.log('sender', events[item].getSender());
             console.log('thread', events[item].getThread());
             console.log('content', events[item].getContent());
             console.log('----------------------------------');
 
+            // Prepare Data
+            const userId = events[item].getSender();
+            const user = mx.getUser(userId);
+            const imageSrc = user ? mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop') : null;
+
+            // Insert Body
+            body.push($('<tr>', { eventid: events[item].getId(), class: 'message message--body-only user-you-message chatbox-portable' }).append(
+
+                // Avatar
+                $('<td>', { class: 'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container' }).append($('<button>').on('click', () => openProfileViewer(userId, room.roomId)).append(
+                    $('<img>', { class: 'avatar-react', draggable: false, src: imageSrc !== null ? imageSrc : defaultAvatar(colorMXID(userId)), alt: 'avatar' }).on('load', (event) => {
+                        const e = event.originalEvent;
+                        e.target.style.backgroundColor = 'transparent';
+                    }).on('error', (event) => {
+                        const e = event.originalEvent;
+                        e.target.src = ImageBrokenSVG;
+                    })
+                )),
+
+                // Message
+                $('<td>', { class: 'p-0 pe-3 py-1' }).append(
+                    $('<div>', { class: 'text-freedom message-body small text-bg emoji-size-fix' }).text(events[item].getId())
+                ),
+
+            ));
+
         }
 
+        // Send Modal
         btModal({
 
             title: 'Pinned Messages',
 
             id: 'room-pinned-messages',
             dialog: 'modal-lg modal-dialog-scrollable modal-dialog-centered',
-            body,
+            body: $('<table>', { class: 'table table-borderless table-hover align-middle m-0' }).append($('<tbody>').append(body)),
 
         });
 
