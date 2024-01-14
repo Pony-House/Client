@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-
+import { Capacitor } from '@capacitor/core';
 
 import settings from '../../../../client/state/settings';
 import Toggle from '../../../atoms/button/Toggle';
@@ -20,6 +20,7 @@ function AppearanceSection() {
 
     const [showUserDMstatus, setShowUserStatus] = useState(appearanceSettings.showUserDMstatus);
     const [pinDMmessages, setPinDMmessages] = useState(appearanceSettings.pinDMmessages);
+    const [sendMessageEnter, setSendMessageEnter] = useState(appearanceSettings.sendMessageEnter);
 
     const [isEmbedEnabled, setEmbedEnabled] = useState(appearanceSettings.isEmbedEnabled);
     const [isUNhoverEnabled, setUNhoverEnabled] = useState(appearanceSettings.isUNhoverEnabled);
@@ -169,6 +170,7 @@ function AppearanceSection() {
             <div className="card noselect mt-3">
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item very-small text-gray">Room messages</li>
+
                     <SettingTile
                         title="Markdown formatting"
                         options={(
@@ -180,6 +182,7 @@ function AppearanceSection() {
                         )}
                         content={<div className="very-small text-gray">Format messages with markdown syntax before sending.</div>}
                     />
+
                     <SettingTile
                         title="Hide membership events"
                         options={(
@@ -191,6 +194,7 @@ function AppearanceSection() {
                         )}
                         content={<div className="very-small text-gray">Hide membership change messages from room timeline. (Join, Leave, Invite, Kick and Ban)</div>}
                     />
+
                     <SettingTile
                         title="Hide nick/avatar events"
                         options={(
@@ -202,6 +206,19 @@ function AppearanceSection() {
                         )}
                         content={<div className="very-small text-gray">Hide nick and avatar change messages from room timeline.</div>}
                     />
+
+                    {!Capacitor.isNativePlatform() ? <SettingTile
+                        title="Send message on enter"
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={sendMessageEnter}
+                                onToggle={toggleAppearanceAction('sendMessageEnter', setSendMessageEnter)}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">Send the typed message when the enter key is pressed.</div>}
+                    /> : null}
+
                 </ul>
             </div>
 

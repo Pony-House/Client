@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-autosize-textarea';
+import { Capacitor } from '@capacitor/core';
 
 import { ReactEditor } from 'slate-react';
 import { Editor, Transforms } from 'slate';
@@ -29,6 +30,7 @@ import { flattenNodes } from '../../molecules/markdown-input/MarkdownInput';
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
 import commands from '../../../commands';
+import { getAppearance } from '../../../util/libs/appearance';
 
 // Variables
 const CMD_REGEX = /(^\/|:|@)(\S*)$/;
@@ -764,15 +766,19 @@ function RoomViewInput({
 
   // Keydown
   const handleKeyDown = (e) => {
+
+    const appearanceSettings = getAppearance();
     if (e.key === 'Escape') {
       e.preventDefault();
       if (roomsInput) roomsInput.cancelReplyTo(roomId);
       setReplyTo(null);
     }
-    if (e.key === 'Enter' && e.shiftKey === false && !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+
+    if ((Capacitor.isNativePlatform() || appearanceSettings.sendMessageEnter) && e.key === 'Enter' && e.shiftKey === false && !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       e.preventDefault();
       sendMessage();
     }
+
   };
 
   // Handle Paste
