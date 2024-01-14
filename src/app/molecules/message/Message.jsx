@@ -399,7 +399,8 @@ MessageBody.propTypes = {
 };
 
 // Message Edit
-function MessageEdit({ body, onSave, onCancel, refRoomInput }) {
+function MessageEdit({ body, onSave, onCancel, refRoomInput, roomId, eventId, }) {
+
   const editInputRef = useRef(null);
 
   useEffect(() => {
@@ -407,6 +408,20 @@ function MessageEdit({ body, onSave, onCancel, refRoomInput }) {
     editInputRef.current.value = '';
     editInputRef.current.value = body;
   }, [body]);
+
+  const deleteMessage = async () => {
+
+    const isConfirmed = await confirmDialog(
+      'Delete message',
+      'Are you sure that you want to delete this message?',
+      'Delete',
+      'danger',
+    );
+
+    if (!isConfirmed) return;
+    redactEvent(roomId, eventId);
+
+  };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') {
@@ -417,16 +432,23 @@ function MessageEdit({ body, onSave, onCancel, refRoomInput }) {
     if (e.key === 'Enter' && e.shiftKey === false) {
       e.preventDefault();
       $(refRoomInput.current).find('#message-textarea').focus();
-      onSave(editInputRef.current.value, body);
+      if (editInputRef.current.value.trim().length > 0) {
+        onSave(editInputRef.current.value, body);
+      } else { deleteMessage(); }
     }
   };
 
   return <form
     className="message__edit"
     onSubmit={(e) => {
+
       e.preventDefault();
       $(refRoomInput.current).find('#message-textarea').focus();
-      onSave(editInputRef.current.value, body);
+
+      if (editInputRef.current.value.trim().length > 0) {
+        onSave(editInputRef.current.value, body);
+      } else { deleteMessage(); }
+
     }}
   >
     <Input
@@ -445,8 +467,12 @@ function MessageEdit({ body, onSave, onCancel, refRoomInput }) {
       <Button onClick={onCancel}>Cancel</Button>
     </div>
   </form>;
-}
+
+};
+
 MessageEdit.propTypes = {
+  roomId: PropTypes.string.isRequired,
+  eventId: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
   onSave: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
@@ -1380,6 +1406,8 @@ function Message({
 
         {isEdit && (
           <MessageEdit
+            roomId={roomId}
+            eventId={mEvent.getId()}
             refRoomInput={refRoomInput}
             body={(customHTML
               ? html(customHTML, { kind: 'edit', onlyPlain: true }).plain
@@ -1497,6 +1525,8 @@ function Message({
 
       {isEdit && (
         <MessageEdit
+          roomId={roomId}
+          eventId={mEvent.getId()}
           refRoomInput={refRoomInput}
           body={(customHTML
             ? html(customHTML, { kind: 'edit', onlyPlain: true }).plain
