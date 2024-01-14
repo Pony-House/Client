@@ -49,7 +49,7 @@ function getTimelineJSXMessages() {
     nameChanged(date, user, newName) { return <NameChangedMessage date={date} newName={newName} user={user} />; },
     nameRemoved(date, user, lastName) { return <NameRemovedMessage date={date} lastName={lastName} user={user} />; },
 
-    pinnedEvents(date, user, comparedPinMessages) { return <PinnedEventsMessage date={date} comparedPinMessages={comparedPinMessages} user={user} />; },
+    pinnedEvents(date, user, comparedPinMessages, room) { return <PinnedEventsMessage date={date} comparedPinMessages={comparedPinMessages} user={user} room={room} />; },
 
   };
 
@@ -97,6 +97,7 @@ function parseTimelineChange(mEvent) {
   });
 
   const appearanceSettings = getAppearance();
+  const mx = initMatrix.matrixClient;
 
   const type = mEvent.getType();
   const date = mEvent.getDate();
@@ -153,7 +154,7 @@ function parseTimelineChange(mEvent) {
     const comparedPinMessages = comparePinEvents(content, mEvent.getPrevContent());
 
     if ((comparedPinMessages.added.length > 0 && !appearanceSettings.hidePinMessageEvents) || (comparedPinMessages.removed.length > 0 && !appearanceSettings.hideUnpinMessageEvents)) {
-      return makeReturnObj(`pinned-events-${comparedPinMessages.added.length > 0 ? 'added' : 'removed'}`, tJSXMsgs.pinnedEvents(date, senderName, comparedPinMessages));
+      return makeReturnObj(`pinned-events-${comparedPinMessages.added.length > 0 ? 'added' : 'removed'}`, tJSXMsgs.pinnedEvents(date, senderName, comparedPinMessages, mx.getRoom(mEvent.getRoomId())));
     }
 
     return null;

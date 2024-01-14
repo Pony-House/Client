@@ -5,6 +5,8 @@ import clone from 'clone';
 import initMatrix from '../../client/initMatrix';
 import { getCurrentState } from "../matrixUtil";
 import { objType } from '../tools';
+
+import { setLoadingPage } from "../../app/templates/client/Loading";
 // import { getRoomInfo } from '../../app/organisms/room/Room';
 
 // Info
@@ -179,6 +181,49 @@ export function setPinMessage(room, newEventsId, isPinned = true) {
         }
 
     });
+};
+
+// Open Modal
+export function openPinMessageModal(room) {
+    setLoadingPage();
+    getPinnedMessages(room).then(events => {
+
+        const body = [];
+
+        for (const item in events) {
+            console.log('----------------------------------');
+            console.log(events[item]);
+            console.log('id', events[item].getId());
+            console.log('date', events[item].getDate());
+            console.log('sender', events[item].getSender());
+            console.log('thread', events[item].getThread());
+            console.log('content', events[item].getContent());
+            console.log('----------------------------------');
+        }
+
+        /* btModal({
+
+    title: 'Ethereum Address',
+
+    id: 'user-eth-address',
+    dialog: 'modal-lg modal-dialog-centered',
+
+    body: $('<center>', { class: 'small' }).append(
+
+        $('<h6>', { class: 'mb-4 noselect' }).text('Please enter the address correctly! Any type issue will be permanent loss of your funds!'),
+        $('<span>').text(user.displayName ? user.displayName : user.userId),
+        $('<br/>'),
+        $('<span>').text(ethereum.address),
+        $('<div>', { class: 'mt-3' }).append(qrcodeCanvas)
+
+    ),
+
+}); */
+
+        // Complete
+        setLoadingPage(false);
+
+    }).catch(() => setLoadingPage(false));
 };
 
 // DEV

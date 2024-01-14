@@ -27,7 +27,8 @@ import RoomOptions from '../../molecules/room-options/RoomOptions';
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 import copyText from '../profile-viewer/copyText';
 
-import RoomViewPin from './RoomViewPin';
+// import RoomViewPin from './RoomViewPin';
+import { openPinMessageModal } from '../../../util/libs/pinMessage';
 
 function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions }) {
 
@@ -172,6 +173,8 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
           <IconButton className="nav-link btn btn-bg border-0" onClick={() => toggleRoomSettings(tabText.SEARCH)} tooltipPlacement="bottom" tooltip="Search" fa="fa-solid fa-magnifying-glass" />
         </li>
       )}
+
+      <li className="nav-item"><IconButton className="nav-link border-0 d-none d-sm-block" onClick={() => openPinMessageModal(room)} tooltipPlacement="bottom" tooltip="Pinned Messages" fa="bi bi-pin-angle-fill" /></li>
 
       <li className="nav-item"><IconButton className="nav-link border-0 d-none d-sm-block" onClick={togglePeopleDrawer} tooltipPlacement="bottom" tooltip="People" fa="fa-solid fa-user" /></li>
       <li className="nav-item"><IconButton className="nav-link border-0 d-none d-sm-block" onClick={() => toggleRoomSettings(tabText.MEMBERS)} tooltipPlacement="bottom" tooltip="Members" fa="fa-solid fa-users" /></li>

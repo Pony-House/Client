@@ -1,6 +1,7 @@
 import React from 'react';
 import { twemojifyReact } from '../../../../util/twemojify';
 import { objType } from '../../../../util/tools';
+import { openPinMessageModal } from '../../../../util/libs/pinMessage';
 
 export function comparePinEvents(content, prevContent) {
 
@@ -37,14 +38,15 @@ export function comparePinEvents(content, prevContent) {
 
 };
 
-const openPinMessages = (evt) => {
-    evt.preventDefault();
-};
-
-export default function PinnedEventsMessage({ user, comparedPinMessages }) {
+export default function PinnedEventsMessage({ user, comparedPinMessages, room }) {
 
     // Items
     const { removed, added } = comparedPinMessages;
+
+    const openPinMessages = (evt) => {
+        evt.preventDefault();
+        openPinMessageModal(room);
+    };
 
     // Result
     return added.length > 0 ?
