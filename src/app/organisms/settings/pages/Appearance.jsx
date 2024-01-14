@@ -29,8 +29,12 @@ function AppearanceSection() {
     const [enableAnimParams, setEnableAnimParams] = useState(appearanceSettings.enableAnimParams);
 
     const [isMarkdown, setIsMarkdown] = useState(settings.isMarkdown);
+
     const [hideMembershipEvents, setHideMembershipEvents] = useState(settings.hideMembershipEvents);
     const [hideNickAvatarEvents, setHideNickAvatarEvents] = useState(settings.hideNickAvatarEvents);
+
+    const [hidePinMessageEvents, setHidePinMessageEvents] = useState(appearanceSettings.hidePinMessageEvents);
+    const [hideUnpinMessageEvents, setHideUnpinMessageEvents] = useState(appearanceSettings.hideUnpinMessageEvents);
 
     const [is24hours, setIs24hours] = useState(appearanceSettings.is24hours);
     const [calendarFormatOption, setCalendarFormat] = useState(appearanceSettings.calendarFormat);
@@ -169,6 +173,62 @@ function AppearanceSection() {
 
             <div className="card noselect mt-3">
                 <ul className="list-group list-group-flush">
+
+                    <li className="list-group-item very-small text-gray">Chat events</li>
+
+                    <SettingTile
+                        title="Hide membership"
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={hideMembershipEvents}
+                                onToggle={() => { toggleMembershipEvents(); setHideMembershipEvents(!hideMembershipEvents); updateState({}); }}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">Hide membership change messages from room timeline. (Join, Leave, Invite, Kick and Ban)</div>}
+                    />
+
+                    <SettingTile
+                        title="Hide pin message"
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={hidePinMessageEvents}
+                                onToggle={toggleAppearanceAction('hidePinMessageEvents', setHidePinMessageEvents)}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">Hide pin message warning from room timeline.</div>}
+                    />
+
+                    <SettingTile
+                        title="Hide unpin message"
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={hideUnpinMessageEvents}
+                                onToggle={toggleAppearanceAction('hideUnpinMessageEvents', setHideUnpinMessageEvents)}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">Hide unpin message warning from room timeline.</div>}
+                    />
+
+                    <SettingTile
+                        title="Hide nick/avatar"
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={hideNickAvatarEvents}
+                                onToggle={() => { toggleNickAvatarEvents(); setHideNickAvatarEvents(!hideNickAvatarEvents); updateState({}); }}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">Hide nick and avatar change messages from room timeline.</div>}
+                    />
+
+                </ul>
+            </div>
+
+            <div className="card noselect mt-3">
+                <ul className="list-group list-group-flush">
                     <li className="list-group-item very-small text-gray">Room messages</li>
 
                     <SettingTile
@@ -181,30 +241,6 @@ function AppearanceSection() {
                             />
                         )}
                         content={<div className="very-small text-gray">Format messages with markdown syntax before sending.</div>}
-                    />
-
-                    <SettingTile
-                        title="Hide membership events"
-                        options={(
-                            <Toggle
-                                className='d-inline-flex'
-                                isActive={hideMembershipEvents}
-                                onToggle={() => { toggleMembershipEvents(); setHideMembershipEvents(!hideMembershipEvents); updateState({}); }}
-                            />
-                        )}
-                        content={<div className="very-small text-gray">Hide membership change messages from room timeline. (Join, Leave, Invite, Kick and Ban)</div>}
-                    />
-
-                    <SettingTile
-                        title="Hide nick/avatar events"
-                        options={(
-                            <Toggle
-                                className='d-inline-flex'
-                                isActive={hideNickAvatarEvents}
-                                onToggle={() => { toggleNickAvatarEvents(); setHideNickAvatarEvents(!hideNickAvatarEvents); updateState({}); }}
-                            />
-                        )}
-                        content={<div className="very-small text-gray">Hide nick and avatar change messages from room timeline.</div>}
                     />
 
                     {!Capacitor.isNativePlatform() ? <SettingTile
