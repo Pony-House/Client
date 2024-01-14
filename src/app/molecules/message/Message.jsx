@@ -15,11 +15,8 @@ import * as linkify from "linkifyjs";
 import Text from '../../atoms/text/Text';
 import { hljsFixer, resizeWindowChecker, chatboxScrollToBottom, toast } from '../../../util/tools';
 import { twemojifyReact } from '../../../util/twemojify';
-
-
 import initMatrix from '../../../client/initMatrix';
 
-import settings from '../../../client/state/settings';
 import {
   getUsername,
   getUsernameOfRoomMember,
@@ -68,6 +65,7 @@ import { getAnimatedImageUrl, getAppearance } from '../../../util/libs/appearanc
 import UserOptions from '../user-options/UserOptions';
 import { getDataList } from '../../../util/selectedRoom';
 import { tinyLinkifyFixer } from '../../../util/clear-urls/clearUrls';
+import { canPinMessage, isPinnedMessage, setPinMessage } from '../../../util/libs/pinMessage';
 
 function PlaceholderMessage() {
   return <tr className="ph-msg">
@@ -725,6 +723,7 @@ function handleOpenViewSource(mEvent, roomTimeline) {
 
 const MessageOptions = React.memo(
   ({
+    refRoomInput,
     roomTimeline,
     mEvent,
     edit,
@@ -811,7 +810,7 @@ const MessageOptions = React.memo(
           />
         )}
         <ContextMenu
-          content={() => (
+          content={(hideMenu) => (
             <>
               <MenuHeader>Options</MenuHeader>
 
@@ -832,6 +831,18 @@ const MessageOptions = React.memo(
               >
                 Copy text
               </MenuItem>
+
+              {canPinMessage(room, myUserId) ? <MenuItem
+                className="text-start"
+                faSrc={`bi bi-pin-angle${!isPinnedMessage(room, eventid) ? '-fill' : ''}`}
+                onClick={() => {
+                  setPinMessage(room, eventid, !isPinnedMessage(room, eventid));
+                  $(refRoomInput.current).find('#message-textarea').focus();
+                  hideMenu();
+                }}
+              >
+                {!isPinnedMessage(room, eventid) ? 'Pin message' : 'Unpin message'}
+              </MenuItem> : null}
 
               <MenuItem
                 className="text-start"
@@ -1344,6 +1355,7 @@ function Message({
 
         {!isGuest && !disableActions && roomTimeline && !isEdit && (
           <MessageOptions
+            refRoomInput={refRoomInput}
             customHTML={customHTML}
             body={body}
             roomid={roomId}
@@ -1475,6 +1487,7 @@ function Message({
 
       {!isGuest && !disableActions && roomTimeline && !isEdit && (
         <MessageOptions
+          refRoomInput={refRoomInput}
           roomid={roomId}
           senderid={senderId}
           eventid={eventId}

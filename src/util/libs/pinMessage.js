@@ -59,7 +59,7 @@ export function getPinnedMessagesRaw(room, filterLimit = true) {
 // Perm checker
 export function canPinMessage(room, userId) {
     return getCurrentState(room).maySendStateEvent(eventName, userId);
-}
+};
 
 // Get pin messages list
 export async function getPinnedMessages(room, filterLimit = true) {
@@ -89,6 +89,22 @@ export async function getPinnedMessages(room, filterLimit = true) {
     // Complete
     return pinnedEventsId;
 
+};
+
+// Get pinned messages
+export function isPinnedMessage(room, eventId, filterLimit = true) {
+    const data = getPinnedMessagesRaw(room, filterLimit);
+    return Array.isArray(data) && data.length > 0 && data.indexOf(eventId) > -1;
+};
+
+export function getPinnedMessage(room, eventId, filterLimit = true) {
+    return new Promise((resolve, reject) => {
+        if (isPinnedMessage(room, eventId, filterLimit)) {
+            room.findEventById(eventId).then(resolve).catch(reject);
+        } else {
+            resolve(null);
+        }
+    });
 };
 
 // Set Pin to message
@@ -169,7 +185,9 @@ export function setPinMessage(room, newEventsId, isPinned = true) {
 if (__ENV_APP__.MODE === 'development') {
     global.pinManager = {
         getRaw: getPinnedMessagesRaw,
-        get: getPinnedMessages,
+        getAll: getPinnedMessages,
+        get: getPinnedMessage,
+        isPinned: isPinnedMessage,
         set: setPinMessage,
     };
 }
