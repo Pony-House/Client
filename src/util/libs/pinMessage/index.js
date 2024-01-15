@@ -234,7 +234,7 @@ export function openPinMessageModal(room) {
                         const content = events[item].getContent();
                         const msgBody = typeof content.formatted_body === 'string' ? content.formatted_body : content.body;
 
-                        let msgData = createMessageData(content, msgBody, isCustomHTML, false, true);
+                        let msgData = !events[item].isEncrypted() ? createMessageData(content, msgBody, isCustomHTML, false, true) : $(`<i class="bi bi-key-fill text-warning"></i> <strong>Unable to decrypt message.</strong>`);
                         // const msgDataReact = createMessageData(content, msgBody, isCustomHTML, false);
                         // const emojiOnly = isEmojiOnly(msgDataReact);
 

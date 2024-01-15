@@ -748,6 +748,7 @@ function RoomViewContent({
     }
 
     for (let i = limit.from; i < limit.length; i += 1) {
+
       if (i >= timeline.length) break;
       const mEvent = timeline[i];
       const prevMEvent = timeline[i - 1] ?? null;
@@ -817,6 +818,7 @@ function RoomViewContent({
         ),
       );
       itemCountIndex += 1;
+
     }
 
     if (roomTimeline.canPaginateForward() || limit.length < timeline.length) {

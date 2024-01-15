@@ -22,6 +22,13 @@ setInterval(() => {
     }
 }, 60000);
 
+export function getPinnedEventCache(roomId, eventId) {
+    if (tinyCache[roomId] && tinyCache[roomId][eventId]) {
+        return tinyCache[roomId][eventId].event;
+    }
+    return null;
+};
+
 export async function resetEventList() {
     for (const roomId in tinyCache) {
 
@@ -67,7 +74,8 @@ export async function getEventById(room, eventId) {
                 });
 
                 if (tinyCache[room.roomId][eventId].event.isEncrypted()) {
-                    // await tinyCache[room.roomId][eventId].event.attemptDecryption(initMatrix.matrixClient.getCrypto(), { isRetry: true });
+                    // Glitch
+                    // await tinyCache[room.roomId][eventId].event.attemptDecryption(initMatrix.matrixClient.getCrypto());
                 }
 
             } else {
