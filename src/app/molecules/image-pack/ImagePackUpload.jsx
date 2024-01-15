@@ -37,7 +37,8 @@ function ImagePackUpload({ onUpload, roomId, }) {
     shortcodeRef.current.value = '';
 
     if (!roomId) {
-      updateEmojiList(getSelectRoom());
+      const room = getSelectRoom();
+      updateEmojiList(room && room.roomId ? room.roomId : null);
     } else {
       updateEmojiList(roomId);
     }
