@@ -242,7 +242,7 @@ MessageReplyWrapper.propTypes = {
 };
 
 // Is Emoji only
-const isEmojiOnly = (msgContent, isJquery = false) => {
+const isEmojiOnly = (msgContent) => {
 
   // Determine if this message should render with large emojis
   // Criteria:
@@ -251,10 +251,10 @@ const isEmojiOnly = (msgContent, isJquery = false) => {
   let emojiOnly = false;
   if (msgContent) {
 
-    if ((!isJquery && msgContent.type === 'img') || (isJquery && msgContent.prop("tagName"))) {
+    if (msgContent.type === 'img') {
       // If this messages contains only a single (inline) image
       emojiOnly = true;
-    } else if (!isJquery && msgContent.constructor.name === 'Array') {
+    } else if (msgContent.constructor.name === 'Array') {
 
       // Otherwise, it might be an array of images / text
 
@@ -266,21 +266,6 @@ const isEmojiOnly = (msgContent, isJquery = false) => {
         (typeof element === 'object' && element.type === 'img')
         || (typeof element === 'string' && /^[\s\ufe0f]*$/g.test(element))
       ))) {
-        emojiOnly = true;
-      }
-
-    } else if (isJquery) {
-
-      // Otherwise, it might be an array of images / text
-
-      // Count the number of emojis
-      const nEmojis = $.grep(msgContent, (e) => e.type === 'img').length;
-
-      // Make sure there's no text besides whitespace and variation selector U+FE0F
-      if (nEmojis <= 10 && $.grep(msgContent, (element) => (
-        (typeof element === 'object' && element.type === 'img') ||
-        (typeof element === 'string' && /^[\s\ufe0f]*$/g.test(element))
-      )).length === msgContent.length) {
         emojiOnly = true;
       }
 

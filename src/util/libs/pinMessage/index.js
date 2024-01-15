@@ -230,8 +230,13 @@ export function openPinMessageModal(room) {
                     const imageSrc = user ? mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop') : null;
 
                     const content = events[item].getContent();
-                    let msgData = createMessageData(content, typeof content.formatted_body === 'string' ? content.formatted_body : content.body, isCustomHTML, false, true);
-                    const emojiOnly = isEmojiOnly(msgData, true);
+                    const msgBody = typeof content.formatted_body === 'string' ? content.formatted_body : content.body;
+
+                    let msgData = createMessageData(content, msgBody, isCustomHTML, false, true);
+                    // const msgDataReact = createMessageData(content, msgBody, isCustomHTML, false);
+                    // const emojiOnly = isEmojiOnly(msgDataReact);
+
+                    const emojiOnly = false;
 
                     if (!isCustomHTML) {
                         // If this is a plaintext message, wrap it in a <p> element (automatically applying
