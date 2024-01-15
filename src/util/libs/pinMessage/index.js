@@ -263,11 +263,15 @@ export function openPinMessageModal(room) {
                         // eslint-disable-next-line no-loop-func
                         $('<td>', { class: 'p-0 pe-3 py-1 message-open-click' }).on('click', () => {
 
+                            const roomTimeline = getRoomInfo().roomTimeline;
+
                             if (typeof threadId === 'string') {
-                                selectRoom(thread.roomId, undefined, thread.rootEvent?.getId());
+                                if (threadId !== roomTimeline.threadId) selectRoom(thread.roomId, undefined, thread.rootEvent?.getId());
+                            } else if (roomTimeline.room.roomId !== roomId || roomTimeline.threadId) {
+                                selectRoom(roomId);
                             }
 
-                            setTimeout(() => getRoomInfo().roomTimeline.loadEventTimeline(eventId), 100);
+                            setTimeout(() => roomTimeline.loadEventTimeline(eventId), 500);
                             if (modal) modal.hide();
 
                         }).append(
