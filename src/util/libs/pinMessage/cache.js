@@ -63,6 +63,7 @@ export async function getEventById(room, eventId) {
             const newEvent = await initMatrix.matrixClient.fetchRoomEvent(room.roomId, eventId);
             if (newEvent) {
 
+                // console.log(await initMatrix.olmDevice.decryptMessage(initMatrix.matrixClient.getDeviceCurve25519Key(), newEvent.content.session_id, newEvent.type, newEvent.content.ciphertext));
                 tinyCache[room.roomId][eventId].event = new MatrixEvent({
                     origin_server_ts: newEvent.age,
                     content: newEvent.content,
@@ -73,10 +74,10 @@ export async function getEventById(room, eventId) {
                     unsigned: newEvent.unsigned,
                 });
 
-                if (tinyCache[room.roomId][eventId].event.isEncrypted()) {
-                    // Glitch
-                    // await tinyCache[room.roomId][eventId].event.attemptDecryption(initMatrix.matrixClient.getCrypto());
-                }
+                // if (tinyCache[room.roomId][eventId].event.isEncrypted()) {
+                // Glitch
+                // await tinyCache[room.roomId][eventId].event.attemptDecryption(initMatrix.matrixClient.getCrypto());
+                // }
 
             } else {
                 tinyCache[room.roomId][eventId].event = null;

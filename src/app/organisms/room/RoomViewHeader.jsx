@@ -168,13 +168,15 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
 
     {!disableActions ? <ul className='navbar-nav ms-auto mb-0 small' id='room-options'>
 
-      {mx.isRoomEncrypted(roomId) === false && (
+      {mx.isRoomEncrypted(roomId) === false && (<>
+
         <li className="nav-item">
           <IconButton className="nav-link btn btn-bg border-0" onClick={() => toggleRoomSettings(tabText.SEARCH)} tooltipPlacement="bottom" tooltip="Search" fa="fa-solid fa-magnifying-glass" />
         </li>
-      )}
 
-      <li className="nav-item"><IconButton className="nav-link border-0 d-none d-sm-block" onClick={() => openPinMessageModal(room)} tooltipPlacement="bottom" tooltip="Pinned Messages" fa="bi bi-pin-angle-fill" /></li>
+        <li className="nav-item"><IconButton className="nav-link border-0 d-none d-sm-block" onClick={() => openPinMessageModal(room)} tooltipPlacement="bottom" tooltip="Pinned Messages" fa="bi bi-pin-angle-fill" /></li>
+
+      </>)}
 
       <li className="nav-item"><IconButton className="nav-link border-0 d-none d-sm-block" onClick={togglePeopleDrawer} tooltipPlacement="bottom" tooltip="People" fa="fa-solid fa-user" /></li>
       <li className="nav-item"><IconButton className="nav-link border-0 d-none d-sm-block" onClick={() => toggleRoomSettings(tabText.MEMBERS)} tooltipPlacement="bottom" tooltip="Members" fa="fa-solid fa-users" /></li>
