@@ -66,6 +66,10 @@ export async function getEventById(room, eventId) {
                     unsigned: newEvent.unsigned,
                 });
 
+                if (tinyCache[room.roomId][eventId].event.isEncrypted()) {
+                    // await tinyCache[room.roomId][eventId].event.attemptDecryption(initMatrix.matrixClient.getCrypto(), { isRetry: true });
+                }
+
             } else {
                 tinyCache[room.roomId][eventId].event = null;
             }

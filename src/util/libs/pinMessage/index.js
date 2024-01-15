@@ -13,7 +13,7 @@ import { getRoomInfo } from '../../../app/organisms/room/Room';
 import { openProfileViewer, selectRoom } from '../../../client/action/navigation';
 import defaultAvatar from '../../../app/atoms/avatar/defaultAvatar';
 import { colorMXID } from '../../colorMXID';
-import { createMessageData, isEmojiOnly, messageDataEffects } from '../../../app/molecules/message/Message';
+import { createMessageData, messageDataEffects } from '../../../app/molecules/message/Message';
 import { jqueryTime } from '../../../app/atoms/time/Time';
 
 import { getEventById } from './cache';
@@ -214,83 +214,89 @@ export function openPinMessageModal(room) {
             try {
                 if (objType(events[item], 'object')) {
 
-                    // Prepare Data
-                    const userId = events[item].getSender();
-                    const userColor = colorMXID(userId);
-                    const user = mx.getUser(userId);
-
-                    const thread = events[item].getThread();
-                    const roomId = room.roomId;
-                    const threadId = thread && typeof thread.id === 'string' ? thread.id : null;
-
+                    // is Redacted
                     const eventId = events[item].getId();
+                    if (!events[item].isRedacted()) {
 
-                    const tinyUsername = twemojify(user.userId);
+                        // Prepare Data
+                        const userId = events[item].getSender();
+                        const userColor = colorMXID(userId);
+                        const user = mx.getUser(userId);
 
-                    const imageSrc = user ? mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop') : null;
+                        const thread = events[item].getThread();
+                        const roomId = room.roomId;
+                        const threadId = thread && typeof thread.id === 'string' ? thread.id : null;
 
-                    const content = events[item].getContent();
-                    const msgBody = typeof content.formatted_body === 'string' ? content.formatted_body : content.body;
+                        const tinyUsername = twemojify(user.userId);
 
-                    let msgData = createMessageData(content, msgBody, isCustomHTML, false, true);
-                    // const msgDataReact = createMessageData(content, msgBody, isCustomHTML, false);
-                    // const emojiOnly = isEmojiOnly(msgDataReact);
+                        const imageSrc = user ? mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop') : null;
 
-                    const emojiOnly = false;
+                        const content = events[item].getContent();
+                        const msgBody = typeof content.formatted_body === 'string' ? content.formatted_body : content.body;
 
-                    if (!isCustomHTML) {
-                        // If this is a plaintext message, wrap it in a <p> element (automatically applying
-                        // white-space: pre-wrap) in order to preserve newlines
-                        msgData = $('<p>', { class: 'm-0' }).append(msgData);
-                    } else {
-                        msgData = $('<span>', { class: 'custom-html' }).append(msgData);
-                    }
+                        let msgData = createMessageData(content, msgBody, isCustomHTML, false, true);
+                        // const msgDataReact = createMessageData(content, msgBody, isCustomHTML, false);
+                        // const emojiOnly = isEmojiOnly(msgDataReact);
 
-                    messageDataEffects(msgData);
+                        const emojiOnly = false;
 
-                    // Insert Body
-                    body.push($('<tr>', { eventid: eventId, class: 'message message--body-only user-you-message chatbox-portable' }).append(
+                        if (!isCustomHTML) {
+                            // If this is a plaintext message, wrap it in a <p> element (automatically applying
+                            // white-space: pre-wrap) in order to preserve newlines
+                            msgData = $('<p>', { class: 'm-0' }).append(msgData);
+                        } else {
+                            msgData = $('<span>', { class: 'custom-html' }).append(msgData);
+                        }
 
-                        // Avatar
-                        $('<td>', { class: 'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container' }).append($('<button>').on('click', () => openProfileViewer(userId, roomId)).append(
-                            $('<img>', { class: 'avatar-react', draggable: false, src: imageSrc !== null ? imageSrc : defaultAvatar(userColor), alt: 'avatar' }).on('load', (event) => {
-                                const e = event.originalEvent;
-                                e.target.style.backgroundColor = 'transparent';
-                            }).on('error', (event) => {
-                                const e = event.originalEvent;
-                                e.target.src = ImageBrokenSVG;
-                            })
-                        )),
+                        messageDataEffects(msgData);
 
-                        // Message
-                        // eslint-disable-next-line no-loop-func
-                        $('<td>', { class: 'p-0 pe-3 py-1 message-open-click' }).on('click', () => {
+                        // Insert Body
+                        body.push($('<tr>', { eventid: eventId, class: 'message message--body-only user-you-message chatbox-portable' }).append(
 
-                            const roomTimeline = getRoomInfo().roomTimeline;
+                            // Avatar
+                            $('<td>', { class: 'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container' }).append($('<button>').on('click', () => openProfileViewer(userId, roomId)).append(
+                                $('<img>', { class: 'avatar-react', draggable: false, src: imageSrc !== null ? imageSrc : defaultAvatar(userColor), alt: 'avatar' }).on('load', (event) => {
+                                    const e = event.originalEvent;
+                                    e.target.style.backgroundColor = 'transparent';
+                                }).on('error', (event) => {
+                                    const e = event.originalEvent;
+                                    e.target.src = ImageBrokenSVG;
+                                })
+                            )),
 
-                            if (typeof threadId === 'string') {
-                                if (threadId !== roomTimeline.threadId) selectRoom(thread.roomId, eventId, thread.rootEvent?.getId());
-                            } else if (roomTimeline.room.roomId !== roomId || roomTimeline.threadId) {
-                                selectRoom(roomId, eventId);
-                            }
+                            // Message
+                            // eslint-disable-next-line no-loop-func
+                            $('<td>', { class: 'p-0 pe-3 py-1 message-open-click' }).on('click', () => {
 
-                            setTimeout(() => roomTimeline.loadEventTimeline(eventId), 500);
-                            if (modal) modal.hide();
+                                const roomTimeline = getRoomInfo().roomTimeline;
 
-                        }).append(
-                            $('<div>', { class: 'mb-1' }).append(
+                                if (typeof threadId === 'string') {
+                                    if (threadId !== roomTimeline.threadId) selectRoom(thread.roomId, eventId, thread.rootEvent?.getId());
+                                } else if (roomTimeline.room.roomId !== roomId || roomTimeline.threadId) {
+                                    selectRoom(roomId, eventId);
+                                }
 
-                                $('<span>', { class: 'username-base emoji-size-fix' }).css('color', userColor).append(
-                                    $('<span>', { class: 'user-id' }).append(tinyUsername)
+                                setTimeout(() => roomTimeline.loadEventTimeline(eventId), 500);
+                                if (modal) modal.hide();
+
+                            }).append(
+                                $('<div>', { class: 'mb-1' }).append(
+
+                                    $('<span>', { class: 'username-base emoji-size-fix' }).css('color', userColor).append(
+                                        $('<span>', { class: 'user-id' }).append(tinyUsername)
+                                    ),
+
+                                    $('<span>', { class: 'ms-2 very-small text-gray' }).append(jqueryTime(events[item].getTs()))
+
                                 ),
-
-                                $('<span>', { class: 'ms-2 very-small text-gray' }).append(jqueryTime(events[item].getTs()))
-
+                                $('<div>', { class: `text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''}` }).append(msgData)
                             ),
-                            $('<div>', { class: `text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''}` }).append(msgData)
-                        ),
 
-                    ));
+                        ));
+
+                    } else {
+                        setPinMessage(room, eventId, false);
+                    }
 
                 }
             } catch (err) {

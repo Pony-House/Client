@@ -1,5 +1,7 @@
     --> Menu mobile de ícones precisa parar de ser table usar flex.
 
+    --> Concertar o que está fazendo code markdown não ler quando está colado com o texto acima.
+
     =======================================================
 
 https://help.soundcloud.com/hc/en-us/articles/115003568008-Embedding-a-track-or-playlist-
