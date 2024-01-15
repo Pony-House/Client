@@ -298,6 +298,13 @@ export function openPinMessageModal(room) {
             }
         }
 
+        // Empty List
+        if (body.length < 1) {
+            body.push($('<tr>', { class: 'message message--body-only user-you-message chatbox-portable' }).append(
+                $('<td>', { class: 'p-0 pe-3 py-1 text-center text-bg-force small', colspan: 2 }).text('This room doesn\'t have any pinned message... yet.')
+            ));
+        }
+
         // Send Modal
         modal = btModal({
 
