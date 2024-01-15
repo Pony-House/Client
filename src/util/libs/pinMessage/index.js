@@ -10,7 +10,7 @@ import { setLoadingPage } from "../../../app/templates/client/Loading";
 import { twemojify } from "../../twemojify";
 import { getRoomInfo } from '../../../app/organisms/room/Room';
 
-import { openProfileViewer } from '../../../client/action/navigation';
+import { openProfileViewer, selectRoom } from '../../../client/action/navigation';
 import defaultAvatar from '../../../app/atoms/avatar/defaultAvatar';
 import { colorMXID } from '../../colorMXID';
 import { createMessageData, isEmojiOnly, messageDataEffects } from '../../../app/molecules/message/Message';
@@ -262,8 +262,14 @@ export function openPinMessageModal(room) {
                         // Message
                         // eslint-disable-next-line no-loop-func
                         $('<td>', { class: 'p-0 pe-3 py-1 message-open-click' }).on('click', () => {
-                            getRoomInfo().roomTimeline.loadEventTimeline(eventId);
+
+                            if (typeof threadId === 'string') {
+                                selectRoom(thread.roomId, undefined, thread.rootEvent?.getId());
+                            }
+
+                            setTimeout(() => getRoomInfo().roomTimeline.loadEventTimeline(eventId), 100);
                             if (modal) modal.hide();
+
                         }).append(
                             $('<div>', { class: 'mb-1' }).append(
 
