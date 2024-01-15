@@ -243,8 +243,6 @@ export function openPinMessageModal(room) {
 
                     messageDataEffects(msgData);
 
-                    console.log('thread', threadId);
-
                     // Insert Body
                     body.push($('<tr>', { eventid: eventId, class: 'message message--body-only user-you-message chatbox-portable' }).append(
 
@@ -266,9 +264,9 @@ export function openPinMessageModal(room) {
                             const roomTimeline = getRoomInfo().roomTimeline;
 
                             if (typeof threadId === 'string') {
-                                if (threadId !== roomTimeline.threadId) selectRoom(thread.roomId, undefined, thread.rootEvent?.getId());
+                                if (threadId !== roomTimeline.threadId) selectRoom(thread.roomId, eventId, thread.rootEvent?.getId());
                             } else if (roomTimeline.room.roomId !== roomId || roomTimeline.threadId) {
-                                selectRoom(roomId);
+                                selectRoom(roomId, eventId);
                             }
 
                             setTimeout(() => roomTimeline.loadEventTimeline(eventId), 500);

@@ -63,6 +63,7 @@ TimelineChange.propTypes = {
   variant: PropTypes.oneOf([
     'join', 'leave', 'invite',
     'invite-cancel', 'avatar', 'other',
+    'pinned-events-added', 'pinned-events-removed', 'pinned-events',
   ]),
   content: PropTypes.oneOfType([
     PropTypes.string,
