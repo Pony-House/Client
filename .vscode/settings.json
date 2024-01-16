@@ -12,8 +12,5 @@
       "fileMatch": ["/*electron-builder.json5", "/*electron-builder.json"],
       "url": "https://json.schemastore.org/electron-builder"
     }
-  ],
-  "[scss]": {
-    "editor.defaultFormatter": "sasa.vscode-sass-format"
-  }
+  ]
 }
