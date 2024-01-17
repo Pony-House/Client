@@ -2,6 +2,8 @@
 
     --> Concertar o que está fazendo code markdown não ler quando está colado com o texto acima.
 
+    Limite de reações
+
     =======================================================
 
 https://help.soundcloud.com/hc/en-us/articles/115003568008-Embedding-a-track-or-playlist-
