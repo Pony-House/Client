@@ -29,7 +29,7 @@ class MatrixTerms {
             type === 'is' ? 'SERVICE_TYPE_IS' : type === 'im' ? 'SERVICE_TYPE_IM' : null,
             this.baseUrl,
             this.mx.getAccessToken(),
-            [this[type]]
+            [this[type].href]
         );
 
         throw new Error('Invalid terms type!');
