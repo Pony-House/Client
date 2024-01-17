@@ -45,6 +45,14 @@
       .border-bottom {
         border-bottom: solid transparent !important;
       }
+      .logout:active,
+      .logout.active {
+        background-color: var(--bs-danger) !important;
+        color: var(--tc-surface-normal) !important;
+        i {
+          color: var(--tc-surface-normal) !important;
+        }
+      }
     }
 
     #settings-content {

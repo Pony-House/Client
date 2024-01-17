@@ -176,7 +176,7 @@ tabItems.push({ type: 'divider', });
 tabItems.push({
   text: tabText.LOGOUT,
   faSrc: "fa-solid fa-power-off",
-  className: 'btn-text-danger',
+  className: 'btn-text-danger logout',
   disabled: false,
   onClick: async () => {
     if (await confirmDialog('Logout', 'Are you sure that you want to logout your session?', 'Logout', 'danger')) {
