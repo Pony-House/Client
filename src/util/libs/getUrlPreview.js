@@ -8,9 +8,19 @@ const tinyCache = {};
 setInterval(() => {
     for (const item in tinyCache) {
         if (tinyCache[item] && typeof tinyCache[item].timeout > 0 && objType(tinyCache[item].data, 'object')) {
+
             tinyCache[item].timeout--;
+
+            // eslint-disable-next-line no-use-before-define
+            setTimeout(() => { urlPreviewStore.set(item, tinyCache[item]) }, 1);
+
         } else {
+
             delete tinyCache[item];
+
+            // eslint-disable-next-line no-use-before-define
+            setTimeout(() => { urlPreviewStore.delete(item) }, 1);
+
         }
     }
 }, 60000);
@@ -93,7 +103,21 @@ const urlPreviewStore = {
 
     delete: (url) => urlPreviewStore.set(url, null),
 
+    refresh: () => {
+
+        const newData = urlPreviewStore.get();
+
+        for (const item in newData) {
+            tinyCache[item] = newData[item];
+        }
+
+    },
+
 };
+
+urlPreviewStore.refresh();
+
+export { urlPreviewStore };
 
 export default function getUrlPreview(newUrl, ts = 0) {
     return new Promise((resolve, reject) => {
