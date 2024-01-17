@@ -259,6 +259,10 @@ body {
   font-variant-ligatures: no-contextual;
 }
 
+.font-primary {
+  font-family: var(--font-primary);
+}
+
 #root {
   width: 100%;
   height: 100%;
