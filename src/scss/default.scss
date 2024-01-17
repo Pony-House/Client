@@ -1,61 +1,8 @@
-/* Presence */
-.user-presence-offline,
-.user-presence-unavailable,
-.user-presence-offline:before,
-.user-presence-unavailable:before {
-  color: #bdbdbd !important;
-}
-
-.user-presence-dnd,
-.user-presence-dnd:before {
-  color: #b83b3b !important;
-}
-
-.user-presence-online,
-.user-presence-online:before {
-  color: #45b83b !important;
-}
-
-.user-presence-idle,
-.user-presence-idle:before {
-  color: #b8913b !important;
-}
-
-.user-status-icon {
-  z-index: 1;
-  text-shadow:
-    2px 0 var(--bg-surface-low),
-    -2px 0 var(--bg-surface-low),
-    0 2px var(--bg-surface-low),
-    0 -2px var(--bg-surface-low),
-    1px 1px var(--bg-surface-low),
-    -1px -1px var(--bg-surface-low),
-    1px -1px var(--bg-surface-low),
-    -1px 1px var(--bg-surface-low);
-  &::before {
-    background-color: var(--bg-surface-low);
-    border-radius: 100%;
-    padding: 2px;
-    right: 3px;
-    top: -7px !important;
-  }
-  &.user-presence-idle::before {
-    padding: 1px 3px;
-    right: 2px;
-  }
-}
-
 @import 'jquery-ui/dist/themes/base/jquery-ui.min.css';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 @import '@cryptofonts/cryptofont/cryptofont.min.css';
 @import 'bootstrap/scss/bootstrap';
-
-:root {
-  --bs-green: #45b83b;
-  --bs-success: #45b83b;
-  --bs-success-rgb: 69, 184, 59;
-}
 
 @import 'photoswipe/style.css';
 @import 'katex/dist/katex.min.css';
@@ -75,6 +22,8 @@
 @import './utils/message-body.scss';
 
 @import './Math.scss';
+
+@import './MarkdownInput.scss';
 
 @import './ScrollView.scss';
 @import './SegmentedControls.scss';

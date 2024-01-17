@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 import { Text, Descendant, createEditor } from 'slate';
-import './MarkdownInput.scss';
 import { SingleASTNode } from '@khanacademy/simple-markdown';
 import * as linkify from 'linkifyjs';
 
