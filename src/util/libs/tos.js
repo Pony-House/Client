@@ -2,11 +2,13 @@ import initMatrix from "../../client/initMatrix";
 
 class MatrixTerms {
 
-    constructor() {
+    constructor(baseUrl = initMatrix.matrixClient.baseUrl) {
 
         this.mx = initMatrix.matrixClient;
-        this.is = this.mx.termsUrlForService('SERVICE_TYPE_IS', this.mx.baseUrl);
-        this.im = this.mx.termsUrlForService('SERVICE_TYPE_IM', this.mx.baseUrl);
+        this.baseUrl = baseUrl;
+
+        this.is = this.mx.termsUrlForService('SERVICE_TYPE_IS', this.baseUrl);
+        this.im = this.mx.termsUrlForService('SERVICE_TYPE_IM', this.baseUrl);
 
     }
 
@@ -14,7 +16,7 @@ class MatrixTerms {
 
         if (type === 'is' || type === 'im') return this.mx.getTerms(
             type === 'is' ? 'SERVICE_TYPE_IS' : type === 'im' ? 'SERVICE_TYPE_IM' : null,
-            this.mx.baseUrl
+            this.baseUrl
         );
 
         throw new Error('Invalid terms type!');
@@ -25,7 +27,7 @@ class MatrixTerms {
 
         if (type === 'is' || type === 'im') return this.mx.agreeToTerms(
             type === 'is' ? 'SERVICE_TYPE_IS' : type === 'im' ? 'SERVICE_TYPE_IM' : null,
-            this.mx.baseUrl,
+            this.baseUrl,
             this.mx.getAccessToken(),
             [this[type]]
         );
