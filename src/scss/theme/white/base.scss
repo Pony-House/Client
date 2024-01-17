@@ -1,6 +1,9 @@
 @use '../../partials/screen';
 
 :root {
+  --font-primary: 'Atkinson Hyperlegible', sans-serif;
+  --font-secondary: 'Atkinson Hyperlegible', sans-serif;
+
   --bg-auth-normal: rgb(196, 196, 196);
   --bg-auth-gradient: linear-gradient(
     0deg,

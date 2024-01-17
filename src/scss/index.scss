@@ -253,6 +253,7 @@ body {
   background-color: var(--bg-surface-low) !important;
   font-size: 16px;
   font-weight: var(--fw-normal);
+  font-family: var(--font-secondary);
 
   /*Why font-variant-ligatures => https://github.com/rsms/inter/issues/222 */
   font-variant-ligatures: no-contextual;
