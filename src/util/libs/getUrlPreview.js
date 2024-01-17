@@ -19,6 +19,46 @@ const urlConvert = {
     http: (url) => `https${url.substring(4, url.length)}`,
 };
 
+const localStoragePlace = 'pony-house-url-preview';
+const urlPreviewStore = {
+
+    getAll: () => {
+        try {
+
+            const rawStorage = global.localStorage.getItem(localStoragePlace);
+            if (typeof rawStorage === 'string' && rawStorage.length > 0) {
+                const storage = JSON.parse(rawStorage);
+                return storage;
+            }
+
+        } catch (err) {
+            console.error(err);
+            return {};
+        }
+    },
+
+    get: (url) => {
+        const storage = urlPreviewStore.getAll();
+        if (linkify.test(url) && objType(storage[url], 'object')) return storage[url];
+        return null;
+    },
+
+    set: (url, data) => {
+
+        if (typeof url === 'string' && linkify.test(url) && objType(data, 'object')) {
+
+            const storage = urlPreviewStore.getAll();
+            storage[url] = data;
+            return global.localStorage.setItem(localStoragePlace, JSON.stringify(storage));
+
+        }
+
+        return null;
+
+    }
+
+};
+
 export default function getUrlPreview(newUrl, ts = 0) {
     return new Promise((resolve, reject) => {
         const mx = initMatrix.matrixClient;
@@ -42,7 +82,7 @@ export default function getUrlPreview(newUrl, ts = 0) {
                 }
 
                 mx.getUrlPreview(tinyUrl, ts).then(embed => {
-                    tinyCache[url.href] = { data: embed, timeout: 60 };
+                    tinyCache[url.href] = { data: embed, timeout: 1440 };
                     resolve(embed);
                 }).catch(err => {
                     tinyCache[url.href] = { data: null, timeout: 60 };
