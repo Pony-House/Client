@@ -81,7 +81,7 @@ function ProfileAvatarMenu() {
                 const tinyClone = clone(event);
 
                 // Afk Fix
-                if (tinyClone.afk) tinyClone.status = '🟠';
+                if (Array.isArray(tinyClone.afk_devices) && tinyClone.afk_devices.length > 0) tinyClone.status = '🟠';
                 tinyClone.ethereum = getUserWeb3Account();
                 if (typeof tinyClone.ethereum.valid !== 'undefined') delete tinyClone.ethereum.valid;
 

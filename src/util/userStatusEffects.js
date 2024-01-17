@@ -69,10 +69,14 @@ const intervalTimestamp = () => {
         const counter = getUserAfk();
         tinyAPI.emit('afkTimeCounter', counter);
         const content = initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
-        const originalAfk = content.afk;
+        const originalAfk = content.afk_devices;
         if (countObj(content) > 0) {
 
             tinyAPI.emit('afkTimeCounterProgress', counter);
+
+            if (!Array.isArray(!content.afk_devices)) content.afk_devices = [];
+            const deviceId = initMatrix.matrixClient.getDeviceId();
+            const deviceIdIndex = content.afk_devices.indexOf(deviceId);
 
             // 10 Minutes later...
             if (
@@ -80,15 +84,13 @@ const intervalTimestamp = () => {
                 (content.status === '🟢' || content.status === 'online') &&
                 (counter > 600 || content.status === '🟠' || content.status === 'idle' || !userInteractions.mobile.isActive)
             ) {
-                content.afk = true;
+                if (deviceIdIndex < 0 && content.afk_devices.length < 1) content.afk_devices.push(deviceId);
             }
 
             // Nope
-            else {
-                content.afk = false;
-            }
+            else if (deviceIdIndex > -1) content.afk_devices.splice(deviceIdIndex, 1);
 
-            if (typeof originalAfk !== 'boolean' || originalAfk !== content.afk) {
+            if (!Array.isArray(originalAfk) || originalAfk.length !== content.afk_devices.length) {
                 tinyAPI.emit('afkTimeCounterUpdated', counter);
                 initMatrix.matrixClient.setAccountData('pony.house.profile', content);
                 emitUpdateProfile(content);

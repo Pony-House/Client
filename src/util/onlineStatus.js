@@ -112,7 +112,7 @@ export function parsePresenceStatus(presence, userId) {
                 }
 
                 // User AFK
-                if (typeof tinyParse.afk === 'boolean' && tinyParse.afk) {
+                if (Array.isArray(tinyParse.afk_devices) && tinyParse.afk_devices.length > 0) {
                     tinyResult.afk = true;
                 } else {
                     tinyResult.afk = false;
