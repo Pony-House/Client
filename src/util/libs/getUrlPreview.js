@@ -22,7 +22,7 @@ const urlConvert = {
 const localStoragePlace = 'pony-house-url-preview';
 const urlPreviewStore = {
 
-    getAll: () => {
+    getRaw: () => {
         try {
 
             const rawStorage = global.localStorage.getItem(localStoragePlace);
@@ -37,25 +37,61 @@ const urlPreviewStore = {
         }
     },
 
+    validator: (value) => objType(value, 'object') && objType(value.data, 'object') && typeof value.timeout === 'number' && value.timeout > 0,
+
     get: (url) => {
-        const storage = urlPreviewStore.getAll();
-        if (linkify.test(url) && objType(storage[url], 'object')) return storage[url];
+
+        const storage = urlPreviewStore.getRaw();
+        if (typeof url === 'string') {
+
+            if (linkify.test(url)) {
+
+                if (urlPreviewStore.validator(storage[url])) {
+                    return storage[url];
+                }
+
+                urlPreviewStore.delete(url);
+
+            }
+
+        } else {
+
+            for (const url2 in storage) {
+                if (!urlPreviewStore.validator(storage[url2])) {
+                    delete storage[url2];
+                    urlPreviewStore.delete(url2);
+                }
+            }
+
+            return storage;
+
+        }
+
         return null;
+
     },
 
-    set: (url, data) => {
+    set: (url, value) => {
 
-        if (typeof url === 'string' && linkify.test(url) && objType(data, 'object')) {
+        if ((typeof url === 'string' && linkify.test(url)) || value === null) {
 
-            const storage = urlPreviewStore.getAll();
-            storage[url] = data;
+            const storage = urlPreviewStore.getRaw();
+
+            if (value !== null && urlPreviewStore.validator(value)) {
+                storage[url] = value;
+            } else if (storage[url]) {
+                delete storage[url];
+            }
+
             return global.localStorage.setItem(localStoragePlace, JSON.stringify(storage));
 
         }
 
         return null;
 
-    }
+    },
+
+    delete: (url) => urlPreviewStore.set(url, null),
 
 };
 
@@ -81,13 +117,20 @@ export default function getUrlPreview(newUrl, ts = 0) {
                     }
                 }
 
-                mx.getUrlPreview(tinyUrl, ts).then(embed => {
-                    tinyCache[url.href] = { data: embed, timeout: 1440 };
-                    resolve(embed);
-                }).catch(err => {
-                    tinyCache[url.href] = { data: null, timeout: 60 };
-                    reject(err);
-                });
+                const storeCache = urlPreviewStore.get(tinyUrl);
+                if (!storeCache) {
+
+                    mx.getUrlPreview(tinyUrl, ts).then(embed => {
+                        tinyCache[url.href] = { data: embed, timeout: 1440 };
+                        resolve(embed);
+                    }).catch(err => {
+                        tinyCache[url.href] = { data: null, timeout: 60 };
+                        reject(err);
+                    });
+
+                } else {
+                    resolve(storeCache.data);
+                }
 
             }
 
