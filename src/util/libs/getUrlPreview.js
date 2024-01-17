@@ -7,19 +7,19 @@ import convertProtocols from './convertProtocols';
 const tinyCache = {};
 setInterval(() => {
     for (const item in tinyCache) {
-        if (tinyCache[item] && typeof tinyCache[item].timeout > 0 && objType(tinyCache[item].data, 'object')) {
+        if (tinyCache[item].timeout > 0) {
 
             tinyCache[item].timeout--;
 
             // eslint-disable-next-line no-use-before-define
-            setTimeout(() => { urlPreviewStore.set(item, tinyCache[item]) }, 1);
+            setTimeout(() => { urlPreviewStore.set(item, tinyCache[item]); }, 1);
 
         } else {
 
             delete tinyCache[item];
 
             // eslint-disable-next-line no-use-before-define
-            setTimeout(() => { urlPreviewStore.delete(item) }, 1);
+            setTimeout(() => { urlPreviewStore.delete(item); }, 1);
 
         }
     }
@@ -40,6 +40,8 @@ const urlPreviewStore = {
                 const storage = JSON.parse(rawStorage);
                 return storage;
             }
+
+            return {};
 
         } catch (err) {
             console.error(err);
@@ -146,9 +148,11 @@ export default function getUrlPreview(newUrl, ts = 0) {
 
                     mx.getUrlPreview(tinyUrl, ts).then(embed => {
                         tinyCache[url.href] = { data: embed, timeout: 1440 };
+                        urlPreviewStore.set(url.href, tinyCache[url.href]);
                         resolve(embed);
                     }).catch(err => {
                         tinyCache[url.href] = { data: null, timeout: 60 };
+                        urlPreviewStore.delete(url.href);
                         reject(err);
                     });
 
