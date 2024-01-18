@@ -112,8 +112,17 @@ export function useDeviceList() {
     };
 
     // Events
+    const handleAccountData = (event) => {
+      if (event.getType() === 'pony.house.ping') {
+        const devicesData = mx.getAccountData('pony.house.ping').getContent() ?? {};
+        matrixDevices.emit('devicePing', objType(devicesData, 'object') && Array.isArray(devicesData.pings) ? devicesData.pings : []);
+      }
+    };
+
+    mx.on('accountData', handleAccountData);
     mx.on('crypto.devicesUpdated', handleDevicesUpdate);
     return () => {
+      mx.removeListener('accountData', handleAccountData);
       mx.removeListener('crypto.devicesUpdated', handleDevicesUpdate);
       isMounted = false;
     };
