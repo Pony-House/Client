@@ -1,4 +1,6 @@
 import { App } from '@capacitor/app';
+import clone from 'clone';
+
 import initMatrix from '../client/initMatrix';
 import { emitUpdateProfile } from '../client/action/navigation';
 import tinyAPI from './mods';
@@ -78,7 +80,7 @@ const intervalTimestamp = () => {
         const counter = getUserAfk();
         tinyAPI.emit('afkTimeCounter', counter);
         const content = initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
-        const originalAfk = content.active_devices;
+        const originalAfk = clone(content.active_devices);
         if (countObj(content) > 0) {
 
             // API progress...
