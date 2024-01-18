@@ -24,7 +24,27 @@ class MatrixDevices extends EventEmitter {
 };
 
 const matrixDevices = new MatrixDevices();
+const sendPing = () => {
 
+  const devicesMap = [];
+  const devices = matrixDevices.getDevices();
+  for (const item in devices) {
+    devicesMap.push({
+      userId: devices[item].user_id,
+      deviceId: devices[item].device_id,
+      payload: initMatrix.matrixClient.getDeviceId(),
+    });
+  }
+
+  console.log(devicesMap);
+  if (devicesMap.length > 0) {
+    initMatrix.matrixClient.queueToDevice({ eventType: 'devicePing', batch: devicesMap });
+  }
+
+};
+
+// setTimeout(() => sendPing(), 60000 * 30);
+let firstTime = true;
 export { matrixDevices };
 export function useDeviceList() {
 
@@ -39,11 +59,20 @@ export function useDeviceList() {
 
     // Start update
     const updateDevices = () => mx.getDevices().then((data) => {
+
       if (!isMounted) return;
+
       const devices = data.devices || [];
       matrixDevices.updateDevices(devices);
       matrixDevices.emit('devicesUpdated', devices);
+
+      if (firstTime) {
+        firstTime = false;
+        // sendPing();
+      }
+
       setDeviceList(devices);
+
     });
 
     // First check
@@ -56,10 +85,16 @@ export function useDeviceList() {
       }
     };
 
+    const handleDevicesPing = (deviceId) => {
+      // console.log(deviceId);
+    };
+
     // Events
     mx.on('crypto.devicesUpdated', handleDevicesUpdate);
+    mx.on('devicePing', handleDevicesPing);
     return () => {
       mx.removeListener('crypto.devicesUpdated', handleDevicesUpdate);
+      mx.removeListener('devicePing', handleDevicesPing);
       isMounted = false;
     };
 
