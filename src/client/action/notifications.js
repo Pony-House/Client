@@ -1,7 +1,6 @@
 import { ReceiptType } from 'matrix-js-sdk';
 import initMatrix from '../initMatrix';
 
-// eslint-disable-next-line import/prefer-default-export
 export async function markAsRead(roomId, threadId) {
 
   const mx = initMatrix.matrixClient;

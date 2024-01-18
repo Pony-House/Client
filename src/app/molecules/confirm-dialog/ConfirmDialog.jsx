@@ -50,7 +50,6 @@ ConfirmDialog.propTypes = {
  * @param {'primary' | 'success' | 'danger' | 'warning'} actionType type of action. default=primary
  * @return {Promise<boolean>} does it get's confirmed or not
  */
-// eslint-disable-next-line import/prefer-default-export
 export const confirmDialog = (title, desc, actionTitle, actionType = 'primary') => new Promise((resolve) => {
   let isCompleted = false;
   openReusableDialog(

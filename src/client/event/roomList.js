@@ -34,5 +34,4 @@ function initRoomListListener(roomList) {
   };
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export { initRoomListListener };
