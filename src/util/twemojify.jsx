@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import React, { lazy, Suspense } from 'react';
 
 import * as linkify from "linkifyjs";

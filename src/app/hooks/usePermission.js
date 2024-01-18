@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-
 import { useEffect, useState } from 'react';
 
 export function usePermission(name, initial) {
