@@ -41,8 +41,11 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
 
   const PER_PAGE_MEMBER = 50;
   const mx = initMatrix.matrixClient;
+  const { directs } = initMatrix.roomList;
+
   const room = mx.getRoom(roomId);
   const canInvite = room?.canInvite(mx.getUserId());
+  const isDM = directs.has(roomId);
 
   const newValues = [
     { name: 'Joined', value: 'join' },
@@ -61,7 +64,7 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
   const [searchedMembers, setSearchedMembers] = useState(null);
   const searchRef = useRef(null);
 
-  const newIsUserList = (usersCount !== 2 || membership.value !== 'join');
+  const newIsUserList = !isDM && (usersCount !== 2 || membership.value !== 'join');
   if (isUserList !== newIsUserList) setIsUserList(newIsUserList);
 
   const getMembersWithMembership = useCallback(
