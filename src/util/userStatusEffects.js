@@ -4,6 +4,7 @@ import { emitUpdateProfile } from '../client/action/navigation';
 import tinyAPI from './mods';
 import { countObj } from './tools';
 import moment from './libs/momentjs';
+import { matrixDevices } from '../app/hooks/useDeviceList';
 
 // Cache Data
 const userInteractions = {
@@ -21,6 +22,8 @@ const userInteractions = {
         value: null,
         interval: null
     },
+
+    devices: matrixDevices.getDevices(),
 
 };
 
@@ -59,6 +62,11 @@ export function getUserAfk(type = 'seconds') {
 
 export function enableAfkSystem(value = true) {
     if (typeof value === 'boolean') userInteractions.enabled = value;
+};
+
+// Devices
+const devicesUpdater = (devices) => {
+    userInteractions.devices = devices;
 };
 
 // Interval
@@ -109,6 +117,7 @@ export function startUserAfk() {
     if (userInteractions.afkTime.interval) {
         clearInterval(userInteractions.afkTime.interval);
         userInteractions.afkTime.interval = null;
+        matrixDevices.off('devicesUpdated', devicesUpdater);
     }
 
     if (!__ENV_APP__.ELECTRON_MODE) {
@@ -116,7 +125,9 @@ export function startUserAfk() {
         userInteractions.afkTime.value = moment().valueOf();
     }
 
+    userInteractions.devices = matrixDevices.getDevices();
     userInteractions.afkTime.interval = setInterval(intervalTimestamp, 1000);
+    matrixDevices.on('devicesUpdated', devicesUpdater);
 
 };
 
@@ -127,6 +138,7 @@ export function stopUserAfk() {
     if (userInteractions.afkTime.interval) {
         clearInterval(userInteractions.afkTime.interval);
         userInteractions.afkTime.interval = null;
+        matrixDevices.off('devicesUpdated', devicesUpdater);
     }
 
     if (!__ENV_APP__.ELECTRON_MODE) userInteractions.afkTime.value = null;
