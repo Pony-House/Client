@@ -64,7 +64,7 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
   const [searchedMembers, setSearchedMembers] = useState(null);
   const searchRef = useRef(null);
 
-  const newIsUserList = !isDM && (usersCount !== 2 || membership.value !== 'join');
+  const newIsUserList = (!isDM || usersCount !== 2 || membership.value !== 'join');
   if (isUserList !== newIsUserList) setIsUserList(newIsUserList);
 
   const getMembersWithMembership = useCallback(
