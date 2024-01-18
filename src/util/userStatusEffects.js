@@ -2,7 +2,7 @@ import { App } from '@capacitor/app';
 import initMatrix from '../client/initMatrix';
 import { emitUpdateProfile } from '../client/action/navigation';
 import tinyAPI from './mods';
-import { countObj } from './tools';
+import { countObj, objType } from './tools';
 import moment from './libs/momentjs';
 import { matrixDevices } from '../app/hooks/useDeviceList';
 
@@ -24,6 +24,7 @@ const userInteractions = {
     },
 
     devices: matrixDevices.getDevices(),
+    afkDevices: [],
 
 };
 
@@ -80,11 +81,27 @@ const intervalTimestamp = () => {
         const originalAfk = content.active_devices;
         if (countObj(content) > 0) {
 
+            // API progress...
             tinyAPI.emit('afkTimeCounterProgress', counter);
 
-            if (!Array.isArray(!content.active_devices)) content.active_devices = [];
+            // Get Data
+            if (!Array.isArray(content.active_devices)) content.active_devices = [];
             const deviceId = initMatrix.matrixClient.getDeviceId();
             const deviceIdIndex = content.active_devices.indexOf(deviceId);
+
+            // Remove Inactive
+            if (content.active_devices.length > 0) {
+
+                const newActiveDevices = [];
+                for (const item in content.active_devices) {
+                    if (userInteractions.afkDevices.indexOf(content.active_devices[item]) < 0) {
+                        newActiveDevices.push(content.active_devices[item]);
+                    }
+                }
+
+                content.active_devices = newActiveDevices;
+
+            }
 
             // 10 Minutes later...
             if (
@@ -111,8 +128,28 @@ const intervalTimestamp = () => {
     }
 };
 
+// Checker
 const devicePingChecker = (devices) => {
-    // console.log(devices); 
+
+    // Prepare
+    if (userInteractions.afkDevices) delete userInteractions.afkDevices;
+    userInteractions.afkDevices = [];
+
+    if (Array.isArray(devices)) {
+        for (const item in devices) {
+            if (objType(devices[item], 'object') && typeof devices[item].id === 'string' && typeof devices[item].unix === 'number') {
+
+
+                // 10 Minutes later...
+                const diff = moment().diff(moment(devices[item].unix * 1000), 'minutes');
+                if (diff > 10) {
+                    userInteractions.afkDevices.push(devices[item].id);
+                }
+
+            }
+        }
+    }
+
 };
 
 // Start

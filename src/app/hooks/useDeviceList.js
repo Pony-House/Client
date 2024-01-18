@@ -66,7 +66,10 @@ const sendPing = () => {
 
 };
 
+// 10 Minutes later...
 setTimeout(() => sendPing(), 60000 * 10);
+
+// Export
 let firstTime = true;
 export { matrixDevices };
 export function useDeviceList() {
