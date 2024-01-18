@@ -111,6 +111,10 @@ const intervalTimestamp = () => {
     }
 };
 
+const devicePingChecker = (devices) => {
+    // console.log(devices); 
+};
+
 // Start
 export function startUserAfk() {
 
@@ -128,6 +132,7 @@ export function startUserAfk() {
     userInteractions.devices = matrixDevices.getDevices();
     userInteractions.afkTime.interval = setInterval(intervalTimestamp, 1000);
     matrixDevices.on('devicesUpdated', devicesUpdater);
+    matrixDevices.on('devicePing', devicePingChecker);
 
 };
 
@@ -139,6 +144,7 @@ export function stopUserAfk() {
         clearInterval(userInteractions.afkTime.interval);
         userInteractions.afkTime.interval = null;
         matrixDevices.off('devicesUpdated', devicesUpdater);
+        matrixDevices.off('devicePing', devicePingChecker);
     }
 
     if (!__ENV_APP__.ELECTRON_MODE) userInteractions.afkTime.value = null;

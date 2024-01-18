@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
+import moment from 'moment-timezone';
+import objectHash from 'object-hash';
 import EventEmitter from 'events';
 
 import initMatrix from '../../client/initMatrix';
+import { objType } from '../../util/tools';
 
 // Emitter
 class MatrixDevices extends EventEmitter {
@@ -26,24 +29,44 @@ class MatrixDevices extends EventEmitter {
 const matrixDevices = new MatrixDevices();
 const sendPing = () => {
 
-  const devicesMap = [];
+  const mx = initMatrix.matrixClient;
   const devices = matrixDevices.getDevices();
-  for (const item in devices) {
-    devicesMap.push({
-      userId: devices[item].user_id,
-      deviceId: devices[item].device_id,
-      payload: initMatrix.matrixClient.getDeviceId(),
-    });
+  const hash = {};
+
+  const deviceId = mx.getDeviceId();
+  const devicesData = mx.getAccountData('pony.house.ping').getContent() ?? {};
+  const newDevicesData = { pings: [] };
+  try { hash.old = objectHash(devicesData); } catch { hash.old = null; }
+
+  if (objType(devicesData, 'object') && Array.isArray(devicesData.pings)) {
+    for (const item in devicesData.pings) {
+      if (
+        objType(newDevicesData.pings[item], 'object') &&
+        typeof newDevicesData.pings[item].id === 'string' &&
+        devices.find(device => device.device_id === newDevicesData.pings[item].id) &&
+        typeof newDevicesData.pings[item].unix === 'number'
+      ) {
+        newDevicesData.pings.push({ id: newDevicesData.pings[item].id, unix: newDevicesData.pings[item].unix });
+      }
+    }
   }
 
-  console.log(devicesMap);
-  if (devicesMap.length > 0) {
-    initMatrix.matrixClient.queueToDevice({ eventType: 'devicePing', batch: devicesMap });
+  const deviceItem = newDevicesData.pings.find(item => item.id === deviceId);
+  if (deviceItem) {
+    deviceItem.unix = moment().unix();
+  } else {
+    newDevicesData.pings.push({ id: deviceId, unix: moment().unix() });
+  }
+
+  try { hash.new = objectHash(newDevicesData); } catch { hash.new = null; }
+  if (hash.new !== hash.old) {
+    mx.setAccountData('pony.house.ping', newDevicesData);
+    matrixDevices.emit('devicePing', newDevicesData.pings);
   }
 
 };
 
-// setTimeout(() => sendPing(), 60000 * 30);
+setTimeout(() => sendPing(), 60000 * 10);
 let firstTime = true;
 export { matrixDevices };
 export function useDeviceList() {
@@ -68,7 +91,7 @@ export function useDeviceList() {
 
       if (firstTime) {
         firstTime = false;
-        // sendPing();
+        sendPing();
       }
 
       setDeviceList(devices);
@@ -85,16 +108,10 @@ export function useDeviceList() {
       }
     };
 
-    const handleDevicesPing = (deviceId) => {
-      // console.log(deviceId);
-    };
-
     // Events
     mx.on('crypto.devicesUpdated', handleDevicesUpdate);
-    mx.on('devicePing', handleDevicesPing);
     return () => {
       mx.removeListener('crypto.devicesUpdated', handleDevicesUpdate);
-      mx.removeListener('devicePing', handleDevicesPing);
       isMounted = false;
     };
 
