@@ -2,8 +2,6 @@
 
     --> Concertar o que está fazendo code markdown não ler quando está colado com o texto acima.
 
-    --> DM sem criptografia.
-
     Limite de reações
 
     =======================================================
