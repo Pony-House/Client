@@ -10,12 +10,14 @@ function PrivacySection() {
     const [hideTypingWarn, setHideTypingWarn] = useState(false);
     const [roomAutoRefuse, setRoomAutoRefuse] = useState(false);
     const [sendReadReceipts, setSendReadReceipts] = useState(false);
+    const [autoEncryptCreateDM, setAutoEncryptCreateDM] = useState(true);
 
     useEffect(() => {
 
         const content = initMatrix.matrixClient.getAccountData('pony.house.privacy')?.getContent() ?? {};
         setHideTypingWarn((content.hideTypingWarn === true));
         setRoomAutoRefuse((content.roomAutoRefuse === true));
+        setAutoEncryptCreateDM(typeof content.autoEncryptCreateDM !== 'boolean' || content.autoEncryptCreateDM === true);
         setSendReadReceipts(typeof content.sendReadReceipts !== 'boolean' || content.sendReadReceipts === true);
 
     }, []);
@@ -28,7 +30,7 @@ function PrivacySection() {
                     <li className="list-group-item very-small text-gray">Rooms</li>
 
                     <SettingTile
-                        title={"Disable \"typing\" warning"}
+                        title={"Disable the \"typing\" warning"}
                         options={(
                             <Toggle
                                 className='d-inline-flex'
@@ -61,6 +63,23 @@ function PrivacySection() {
                             />
                         )}
                         content={<div className="very-small text-gray">Let other people know what messages you read.</div>}
+                    />
+
+                </ul>
+
+                <ul className="list-group list-group-flush">
+                    <li className="list-group-item very-small text-gray">DMs</li>
+
+                    <SettingTile
+                        title='Enable auto encrypt in DM creation'
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={autoEncryptCreateDM}
+                                onToggle={toggleAction('pony.house.privacy', 'autoEncryptCreateDM', setAutoEncryptCreateDM)}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">All DM rooms you create will have encryption enabled by default.</div>}
                     />
 
                 </ul>

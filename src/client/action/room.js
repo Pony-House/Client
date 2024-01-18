@@ -161,6 +161,10 @@ async function create(options, isDM = false) {
 }
 
 async function createDM(userIdOrIds, isEncrypted = true) {
+
+  const privacySettings = initMatrix.matrixClient.getAccountData('pony.house.privacy')?.getContent() ?? {};
+  const autoEncryptCreateDM = typeof privacySettings.autoEncryptCreateDM !== 'boolean' || privacySettings.autoEncryptCreateDM === true;
+
   const options = {
     is_direct: true,
     invite: Array.isArray(userIdOrIds) ? userIdOrIds : [userIdOrIds],
@@ -168,7 +172,9 @@ async function createDM(userIdOrIds, isEncrypted = true) {
     preset: 'trusted_private_chat',
     initial_state: [],
   };
-  if (isEncrypted) {
+
+  if (autoEncryptCreateDM && isEncrypted) {
+
     options.initial_state.push({
       type: 'm.room.encryption',
       state_key: '',
@@ -176,10 +182,12 @@ async function createDM(userIdOrIds, isEncrypted = true) {
         algorithm: 'm.megolm.v1.aes-sha2',
       },
     });
+
   }
 
   const result = await create(options, true);
   return result;
+
 }
 
 async function createRoom(opts) {
