@@ -550,6 +550,7 @@ function toggleEmoji(
 }
 
 // Pick Emoji Modal
+const reactionLimit = 20;
 function pickEmoji(
   e,
   roomId,
@@ -557,9 +558,11 @@ function pickEmoji(
   roomTimeline,
   extraX = 0,
   extraX2 = 0,
+  reacts = null,
 ) {
 
   // Get Cords
+  let reactsLength = Array.isArray(reacts) ? reacts.length : null;
   const cords = getEventCords(e);
 
   // Mobile Screen - Viewport
@@ -579,7 +582,12 @@ function pickEmoji(
 
   // Open the Emoji Board
   openEmojiBoard(roomId, cords, 'emoji', (emoji) => {
-    toggleEmoji(roomId, eventId, emoji.mxc ?? emoji.unicode, emoji.shortcodes[0], roomTimeline);
+    if (reactsLength === null || reactsLength < reactionLimit) {
+      if (reactsLength !== null) reactsLength++;
+      toggleEmoji(roomId, eventId, emoji.mxc ?? emoji.unicode, emoji.shortcodes[0], roomTimeline);
+    } else {
+      e.target.click();
+    }
     shiftNuller(() => e.target.click());
   });
 
@@ -710,7 +718,7 @@ function MessageReactionGroup({ roomTimeline, mEvent }) {
   }
 
   // Create reaction list and limit the amount to 20
-  const reacts = Object.keys(reactions).sort((a, b) => reactions[a].index - reactions[b].index).slice(0, 20);
+  const reacts = Object.keys(reactions).sort((a, b) => reactions[a].index - reactions[b].index).slice(0, reactionLimit);
 
   return <div className="noselect">
 
@@ -732,7 +740,13 @@ function MessageReactionGroup({ roomTimeline, mEvent }) {
       <IconButton
         className='ms-2 btn-sm reaction-message'
         onClick={(e) => {
-          pickEmoji(e, roomId, mEvent.getId(), roomTimeline, -430);
+
+          if (reacts.length < reactionLimit) {
+            pickEmoji(e, roomId, mEvent.getId(), roomTimeline, -430, 0, reacts);
+          } else {
+            toast('Your reaction was not added because there are too many reactions on this message.', 'We appreciate the enthusiasm, but...');
+          }
+
         }}
         fa="fa-solid fa-heart-circle-plus"
         size="normal"
