@@ -29,3 +29,4 @@
 - Emoji list fix.
 - New embed to guest chatroom.
 - Pin messages support added.
+- Refresh page to avoid reconnect issues.
