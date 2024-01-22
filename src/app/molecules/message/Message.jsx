@@ -709,7 +709,8 @@ function MessageReactionGroup({ roomTimeline, mEvent }) {
 
   }
 
-  const reacts = Object.keys(reactions).sort((a, b) => reactions[a].index - reactions[b].index);
+  // Create reaction list and limit the amount to 20
+  const reacts = Object.keys(reactions).sort((a, b) => reactions[a].index - reactions[b].index).slice(0, 20);
 
   return <div className="noselect">
 
