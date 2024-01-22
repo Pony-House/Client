@@ -550,6 +550,7 @@ function toggleEmoji(
 }
 
 // Pick Emoji Modal
+const reactionLimit = 20;
 function pickEmoji(
   e,
   roomId,
@@ -557,9 +558,11 @@ function pickEmoji(
   roomTimeline,
   extraX = 0,
   extraX2 = 0,
+  reacts = null,
 ) {
 
   // Get Cords
+  let reactsLength = Array.isArray(reacts) ? reacts.length : null;
   const cords = getEventCords(e);
 
   // Mobile Screen - Viewport
@@ -579,7 +582,12 @@ function pickEmoji(
 
   // Open the Emoji Board
   openEmojiBoard(roomId, cords, 'emoji', (emoji) => {
-    toggleEmoji(roomId, eventId, emoji.mxc ?? emoji.unicode, emoji.shortcodes[0], roomTimeline);
+    if (reactsLength === null || reactsLength < reactionLimit) {
+      if (reactsLength !== null) reactsLength++;
+      toggleEmoji(roomId, eventId, emoji.mxc ?? emoji.unicode, emoji.shortcodes[0], roomTimeline);
+    } else {
+      e.target.click();
+    }
     shiftNuller(() => e.target.click());
   });
 
@@ -642,21 +650,28 @@ MessageReaction.propTypes = {
 };
 
 function MessageReactionGroup({ roomTimeline, mEvent }) {
+
   const { roomId, room, reactionTimeline } = roomTimeline;
   const mx = initMatrix.matrixClient;
   const reactions = {};
   const canSendReaction = getCurrentState(room).maySendEvent('m.reaction', mx.getUserId());
 
   const eventReactions = reactionTimeline.get(mEvent.getId());
-  const addReaction = (key, shortcode, count, senderId, isActive) => {
+
+  const addReaction = (key, shortcode, count, senderId, isActive, index) => {
+
+    let isNewReaction = false;
     let reaction = reactions[key];
     if (reaction === undefined) {
       reaction = {
+        index,
         count: 0,
         users: [],
         isActive: false,
       };
+      isNewReaction = true;
     }
+
     if (shortcode) reaction.shortcode = shortcode;
     if (count) {
       reaction.count = count;
@@ -667,57 +682,80 @@ function MessageReactionGroup({ roomTimeline, mEvent }) {
     }
 
     reactions[key] = reaction;
+    return isNewReaction;
+
   };
+
   if (eventReactions) {
+
+    let tinyIndex = 0;
     eventReactions.forEach((rEvent) => {
+
       if (rEvent.getRelation() === null) return;
+
       const reaction = rEvent.getRelation();
       const senderId = rEvent.getSender();
       const { shortcode } = rEvent.getContent();
       const isActive = senderId === mx.getUserId();
 
-      addReaction(reaction.key, shortcode, undefined, senderId, isActive);
+      if (addReaction(reaction.key, shortcode, undefined, senderId, isActive, tinyIndex)) {
+        tinyIndex++;
+      }
+
     });
+
   } else {
+
     // Use aggregated reactions
     const aggregatedReaction = mEvent.getServerAggregatedRelation('m.annotation')?.chunk;
     if (!aggregatedReaction) return null;
+
     aggregatedReaction.forEach((reaction) => {
       if (reaction.type !== 'm.reaction') return;
       addReaction(reaction.key, undefined, reaction.count, undefined, false);
     });
+
   }
 
-  return (
-    <div className="noselect">
-      {
-        Object.keys(reactions).map((key) => (
-          <MessageReaction
-            key={key}
-            reaction={key}
-            shortcode={reactions[key].shortcode}
-            count={reactions[key].count}
-            users={reactions[key].users}
-            isActive={reactions[key].isActive}
-            onClick={() => {
-              toggleEmoji(roomId, mEvent.getId(), key, reactions[key].shortcode, roomTimeline);
-            }}
-          />
-        ))
-      }
-      {canSendReaction && (
-        <IconButton
-          className='ms-2 btn-sm reaction-message'
-          onClick={(e) => {
-            pickEmoji(e, roomId, mEvent.getId(), roomTimeline, -430);
-          }}
-          fa="fa-solid fa-heart-circle-plus"
-          size="normal"
-          tooltip="Add reaction"
-        />
-      )}
-    </div>
-  );
+  // Create reaction list and limit the amount to 20
+  const reacts = Object.keys(reactions).sort((a, b) => reactions[a].index - reactions[b].index).slice(0, reactionLimit);
+
+  return <div className="noselect">
+
+    {reacts.map((key) => (
+      <MessageReaction
+        key={key}
+        reaction={key}
+        shortcode={reactions[key].shortcode}
+        count={reactions[key].count}
+        users={reactions[key].users}
+        isActive={reactions[key].isActive}
+        onClick={() => {
+          toggleEmoji(roomId, mEvent.getId(), key, reactions[key].shortcode, roomTimeline);
+        }}
+      />
+    ))}
+
+    {canSendReaction && (
+      <IconButton
+        className='ms-2 btn-sm reaction-message'
+        onClick={(e) => {
+
+          if (reacts.length < reactionLimit) {
+            pickEmoji(e, roomId, mEvent.getId(), roomTimeline, -430, 0, reacts);
+          } else {
+            toast('Your reaction was not added because there are too many reactions on this message.', 'We appreciate the enthusiasm, but...');
+          }
+
+        }}
+        fa="fa-solid fa-heart-circle-plus"
+        size="normal"
+        tooltip="Add reaction"
+      />
+    )}
+
+  </div>;
+
 }
 MessageReactionGroup.propTypes = {
   roomTimeline: PropTypes.shape({}).isRequired,

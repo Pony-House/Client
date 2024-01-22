@@ -23,6 +23,7 @@ import { getSelectRoom, getSelectSpace } from '../../../util/selectedRoom';
 import { getCurrentState } from '../../../util/matrixUtil';
 import { selectRoomMode } from '../../../client/action/navigation';
 import { setLoadingPage } from '../../templates/client/Loading';
+import { objType } from '../../../util/tools';
 
 // System State
 function useSystemState() {
@@ -55,9 +56,18 @@ function useSystemState() {
 
     // Detect recover from reconnect
     if (oldSystemState.value === 'ERROR' || oldSystemState.value === 'RECONNECTING' || oldSystemState.value === 'STOPPED') {
-      setLoadingPage('Refreshing...');
+
+      if (__ENV_APP__.ELECTRON_MODE && objType(global.useLoadingElectron, 'object') && typeof global.useLoadingElectron.appendLoading === 'function') {
+        global.useLoadingElectron.appendLoading();
+      } else {
+        $('body').empty();
+        setLoadingPage('Refreshing...');
+      }
+
       setIsRefreshing(true);
+
       window.location.reload();
+
     }
 
     // Insert new old

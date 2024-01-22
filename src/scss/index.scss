@@ -268,6 +268,11 @@ body {
   height: 100%;
 }
 
+#tippy-2,
+#tippy-1 {
+  z-index: 999 !important;
+}
+
 .hide-scrollbar::-webkit-scrollbar {
   width: 0px;
   height: 0px;
