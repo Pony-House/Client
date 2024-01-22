@@ -56,7 +56,7 @@ function jqueryTime(timestamp, fullTime, className) {
   const { date, formattedFullTime, formattedDate } = timeBase(timestamp, fullTime);
   const time = $('<time>', { class: className });
 
-  time.prop('dateTime', date.toISOString());
+  if (date && date.isValid()) time.prop('dateTime', date.toISOString());
   time.prop('title', formattedFullTime);
 
   time.text(formattedDate);

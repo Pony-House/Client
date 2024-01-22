@@ -528,3 +528,13 @@ export function tinyConfirm(text = '', title = 'App Alert') {
 
     });
 };
+
+// eslint-disable-next-line no-extend-native
+Date.prototype.isValid = function () {
+
+    // If the date object is invalid it
+    // will return 'NaN' on getTime()
+    // and NaN is never equal to itself
+    // eslint-disable-next-line no-self-compare
+    return this.getTime() === this.getTime();
+};
