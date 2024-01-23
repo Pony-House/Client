@@ -41,11 +41,27 @@
     @include dir.prop(border-radius, 0 4px 4px 0, 4px 0 0 4px);
     transition: height 200ms linear;
   }
+
   &--active:hover::before,
   &--active:focus::before,
   &--active::before {
     height: 28px;
   }
+
+  &:hover::before,
+  &:focus::before,
+  &::before {
+    margin-left: 3px;
+  }
+
+  @-moz-document url-prefix() {
+    &:hover::before,
+    &:focus::before,
+    &::before {
+      margin-left: 0px;
+    }
+  }
+
   &--active .avatar-container {
     background-color: var(--bg-surface);
   }
