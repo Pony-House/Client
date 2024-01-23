@@ -61,6 +61,9 @@ export default {
             'Vires in numerics',
             'Pika a boo!',
             'Yay!',
+            ':3',
+
+            'I found a bit coin in equestria. Bitcoin? Nope. Bits!',
 
             'Someone up there wants to help you.',
             'Have you ever thought that he can forgive you?',
@@ -97,6 +100,14 @@ export default {
 
             'The name of the founder of the Pony House project is JasminDreasond.',
             'The Pony House founder will always want your puddings! Keep your puddings safe!',
+
+            'Have you forgiven someone today?',
+
+            'Be careful, don\'t turn into what you hate so much.',
+            'Don\'t let the blue star fall. Or the whole world will fall together.',
+            'My biography must be turning into a smaller version of Charlie Chaplin\'s life.',
+
+            'Pudding',
 
         ],
 
