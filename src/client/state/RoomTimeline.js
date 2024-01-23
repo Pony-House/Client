@@ -519,40 +519,10 @@ class RoomTimeline extends EventEmitter {
 
   }
 
-  // Add to timeline
-  addToTimeline(mEvent) {
+  // Add CRDT to timeline
+  addCrdtToTimeline(evType, mEvent) {
 
-    const evType = mEvent.getType();
-    if (evType !== 'pony.house.crdt' && !messageIsClassicCrdt(mEvent)) {
-
-      // Filter Room Member Event and Matrix CRDT Events
-      if ((evType === 'm.room.member' && hideMemberEvents(mEvent))) {
-        return;
-      }
-
-      // Redacted
-      if (mEvent.isRedacted()) return;
-
-      // Is Reaction
-      if (isReaction(mEvent)) {
-        addToMap(this.reactionTimeline, mEvent);
-        return;
-      }
-
-      // Support event types filter
-      if (!cons.supportEventTypes.includes(evType)) return;
-      if (isEdited(mEvent)) {
-        addToMap(this.editedTimeline, mEvent);
-        return;
-      }
-
-      // Timeline insert
-      this.timeline.push(mEvent);
-
-    }
-
-    // CRDT
-    else if (evType === 'pony.house.crdt') {
+    if (evType === 'pony.house.crdt') {
 
       const content = mEvent.getContent();
       if (objType(content, 'object')) {
@@ -602,6 +572,45 @@ class RoomTimeline extends EventEmitter {
     } else {
       if (!Array.isArray(this.crdt.CLASSIC)) this.crdt.CLASSIC = [];
       this.crdt.CLASSIC.push(mEvent);
+    }
+
+  }
+
+  // Add to timeline
+  addToTimeline(mEvent) {
+
+    const evType = mEvent.getType();
+    if (evType !== 'pony.house.crdt' && !messageIsClassicCrdt(mEvent)) {
+
+      // Filter Room Member Event and Matrix CRDT Events
+      if ((evType === 'm.room.member' && hideMemberEvents(mEvent))) {
+        return;
+      }
+
+      // Redacted
+      if (mEvent.isRedacted()) return;
+
+      // Is Reaction
+      if (isReaction(mEvent)) {
+        addToMap(this.reactionTimeline, mEvent);
+        return;
+      }
+
+      // Support event types filter
+      if (!cons.supportEventTypes.includes(evType)) return;
+      if (isEdited(mEvent)) {
+        addToMap(this.editedTimeline, mEvent);
+        return;
+      }
+
+      // Timeline insert
+      this.timeline.push(mEvent);
+
+    }
+
+    // CRDT
+    else if (this._ydoc.initialized) {
+      this.addCrdtToTimeline(evType, mEvent);
     }
 
   }
