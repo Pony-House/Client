@@ -36,7 +36,13 @@ const sendPing = () => {
   const deviceId = mx.getDeviceId();
   const devicesData = mx.getAccountData('pony.house.ping').getContent() ?? {};
   const newDevicesData = { pings: [] };
-  try { hash.old = objectHash(devicesData); } catch { hash.old = null; }
+  try {
+    if (objType(devicesData, 'object')) {
+      hash.old = objectHash(devicesData);
+    } else {
+      hash.old = null;
+    }
+  } catch { hash.old = null; }
 
   if (objType(devicesData, 'object') && Array.isArray(devicesData.pings)) {
     for (const item in devicesData.pings) {
