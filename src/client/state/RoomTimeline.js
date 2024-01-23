@@ -1233,6 +1233,7 @@ class RoomTimeline extends EventEmitter {
 
   // Active Listens
   _listenEvents() {
+    this.initYdoc();
     this._listenRoomTimeline = (
       event,
       room,
