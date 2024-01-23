@@ -11,6 +11,9 @@ import { getRoomInfo } from './src/app/organisms/room/Room';
 // Get Room
 const selectedRoom = getRoomInfo().roomTimeline;
 
+// Start Ydoc
+selectedRoom.initYdoc();
+
 // Wait yDoc ready
 await selectedRoom.ydocWait();
 
