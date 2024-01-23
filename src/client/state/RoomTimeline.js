@@ -1113,7 +1113,7 @@ class RoomTimeline extends EventEmitter {
         // Get new value type
         else if (type === 'structs') {
 
-          const struct = tinyThis._ydoc.store.clients.get(info.key);
+          const struct = tinyThis._ydoc.data.store.clients.get(info.key);
           if (Array.isArray(struct) && struct.length > 0 && struct[struct.length - 1]) {
 
             const item = struct[struct.length - 1];
