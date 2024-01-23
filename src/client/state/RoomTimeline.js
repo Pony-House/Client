@@ -263,6 +263,7 @@ class RoomTimeline extends EventEmitter {
       cache_timeout: null,
 
       update_time: { timeout: null, cache: [] },
+      init_cache: [],
 
     };
 
@@ -611,6 +612,8 @@ class RoomTimeline extends EventEmitter {
     // CRDT
     else if (this._ydoc.initialized) {
       this.addCrdtToTimeline(evType, mEvent);
+    } else {
+      this._ydoc.init_cache.push({ evType, mEvent });
     }
 
   }
@@ -1235,14 +1238,31 @@ class RoomTimeline extends EventEmitter {
 
   initYdoc() {
     if (!this._ydoc.initialized) {
+
       this._ydoc.initialized = true;
       this._ydocEnable(new Y.Doc());
+
+      const initLength = this._ydoc.init_cache.length;
+      if (initLength > 0) {
+
+        for (let i = 0; i < initLength; i++) {
+
+          let initData;
+          try {
+            initData = this._ydoc.init_cache.shift();
+          } catch { initData = null; }
+
+          if (initData) this.addCrdtToTimeline(initData.evType, initData.mEvent);
+
+        }
+
+      }
+
     }
   }
 
   // Active Listens
   _listenEvents() {
-    this.initYdoc();
     this._listenRoomTimeline = (
       event,
       room,
