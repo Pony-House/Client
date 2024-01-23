@@ -249,6 +249,7 @@ class RoomTimeline extends EventEmitter {
     // Ydoc data
     this._ydoc = {
 
+      initialized: false,
       data: null,
       last_update: null,
 
@@ -1224,7 +1225,10 @@ class RoomTimeline extends EventEmitter {
   }
 
   initYdoc() {
-    if (!this._ydoc.data) this._ydocEnable(new Y.Doc());
+    if (!this._ydoc.initialized) {
+      this._ydoc.initialized = true;
+      this._ydocEnable(new Y.Doc());
+    }
   }
 
   // Active Listens
