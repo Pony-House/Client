@@ -333,6 +333,7 @@ class RoomTimeline extends EventEmitter {
 
   clearLocalTimelines() {
     this.timeline = [];
+    this._ydoc.init_cache = [];
     this.crdt = {};
   }
 
