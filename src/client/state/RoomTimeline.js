@@ -1233,7 +1233,7 @@ class RoomTimeline extends EventEmitter {
   }
 
   _disableYdoc() {
-    this._ydoc.data.destroy();
+    if (this._ydoc.data) this._ydoc.data.destroy();
     this._ydoc.matrix_update = [];
   }
 
