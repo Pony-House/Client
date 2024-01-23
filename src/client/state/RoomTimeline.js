@@ -285,6 +285,12 @@ class RoomTimeline extends EventEmitter {
 
   ydoc() { return this._ydoc; }
 
+  getYmap(id) { return this.ydoc().getMap(id); }
+
+  getYarray(id) { return this.ydoc().getArray(id); }
+
+  getYtext(id) { return this.ydoc().getText(id); }
+
   static newFromThread(threadId, roomId) {
 
     const roomTimeline = new RoomTimeline(roomId);
