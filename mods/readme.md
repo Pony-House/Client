@@ -144,6 +144,7 @@ console object = level, message
 ### messageBody
 
     content
+    data = { roomId, senderId, eventId }
     insertMsg
 
 The value "content" contains the data of the received message. The value "insertMsg" contains the default function of creating the message.
