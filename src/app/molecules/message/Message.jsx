@@ -389,7 +389,7 @@ const MessageBody = React.memo(
     if (typeof body !== 'string') return <div className="message__body">{body}</div>;
 
     // Message Data
-    let msgData = createMessageData(content, body, isCustomHTML, isSystem, roomId, senderId, eventId);
+    let msgData = createMessageData(content, body, isCustomHTML, isSystem, false, roomId, senderId, eventId);
 
     // Emoji Only
     const emojiOnly = isEmojiOnly(msgData?.props?.children?.props?.children);
