@@ -30,44 +30,55 @@ const matrixDevices = new MatrixDevices();
 const sendPing = () => {
 
   const mx = initMatrix.matrixClient;
-  const devices = matrixDevices.getDevices();
-  const hash = {};
+  if (mx && typeof mx.getAccountData === 'function') {
+    const eventData = mx.getAccountData('pony.house.ping');
+    if (eventData) {
 
-  const deviceId = mx.getDeviceId();
-  const devicesData = mx.getAccountData('pony.house.ping').getContent() ?? {};
-  const newDevicesData = { pings: [] };
-  try {
-    if (objType(devicesData, 'object')) {
-      hash.old = objectHash(devicesData);
-    } else {
-      hash.old = null;
-    }
-  } catch { hash.old = null; }
+      const devices = matrixDevices.getDevices();
+      const devicesData = eventData.getContent() ?? {};
+      const hash = {};
 
-  if (objType(devicesData, 'object') && Array.isArray(devicesData.pings)) {
-    for (const item in devicesData.pings) {
-      if (
-        objType(newDevicesData.pings[item], 'object') &&
-        typeof newDevicesData.pings[item].id === 'string' &&
-        devices.find(device => device.device_id === newDevicesData.pings[item].id) &&
-        typeof newDevicesData.pings[item].unix === 'number'
-      ) {
-        newDevicesData.pings.push({ id: newDevicesData.pings[item].id, unix: newDevicesData.pings[item].unix });
+      const deviceId = mx.getDeviceId();
+      const newDevicesData = { pings: [] };
+      try {
+        if (objType(devicesData, 'object')) {
+          hash.old = objectHash(devicesData);
+        } else {
+          hash.old = null;
+        }
+      } catch { hash.old = null; }
+
+      if (objType(devicesData, 'object') && Array.isArray(devicesData.pings)) {
+        for (const item in devicesData.pings) {
+          if (
+            objType(newDevicesData.pings[item], 'object') &&
+            typeof newDevicesData.pings[item].id === 'string' &&
+            devices.find(device => device.device_id === newDevicesData.pings[item].id) &&
+            typeof newDevicesData.pings[item].unix === 'number'
+          ) {
+            newDevicesData.pings.push({ id: newDevicesData.pings[item].id, unix: newDevicesData.pings[item].unix });
+          }
+        }
       }
+
+      const deviceItem = newDevicesData.pings.find(item => item.id === deviceId);
+      if (deviceItem) {
+        deviceItem.unix = moment().unix();
+      } else {
+        newDevicesData.pings.push({ id: deviceId, unix: moment().unix() });
+      }
+
+      try { hash.new = objectHash(newDevicesData); } catch { hash.new = null; }
+      if (hash.new !== hash.old) {
+        mx.setAccountData('pony.house.ping', newDevicesData);
+        matrixDevices.emit('devicePing', newDevicesData.pings);
+      }
+
+    } else {
+      setTimeout(sendPing, 200);
     }
-  }
-
-  const deviceItem = newDevicesData.pings.find(item => item.id === deviceId);
-  if (deviceItem) {
-    deviceItem.unix = moment().unix();
   } else {
-    newDevicesData.pings.push({ id: deviceId, unix: moment().unix() });
-  }
-
-  try { hash.new = objectHash(newDevicesData); } catch { hash.new = null; }
-  if (hash.new !== hash.old) {
-    mx.setAccountData('pony.house.ping', newDevicesData);
-    matrixDevices.emit('devicePing', newDevicesData.pings);
+    setTimeout(sendPing, 200);
   }
 
 };
