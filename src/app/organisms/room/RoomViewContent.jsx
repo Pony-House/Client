@@ -677,7 +677,7 @@ function RoomViewContent({
 
   const handleTimelineScroll = (event) => {
 
-    const tinyScroll = $('#chatbox-scroll');
+    /* const tinyScroll = $('#chatbox-scroll');
     const body = $('body');
     if (!body.hasClass('fo-cb-top-render')) body.addClass('cb-temp-noscroll');
 
@@ -696,7 +696,7 @@ function RoomViewContent({
       }
     } else {
       body.removeClass('cb-top-page');
-    }
+    } */
 
     const timelineScroll = timelineScrollRef.current;
     const timelineSV = $(timelineSVRef.current);
@@ -708,7 +708,7 @@ function RoomViewContent({
       handleScroll(backwards);
     }, 200)();
 
-    setTimeout(() => body.removeClass('cb-temp-noscroll'), 100);
+    // setTimeout(() => body.removeClass('cb-temp-noscroll'), 100);
 
   };
 
@@ -722,7 +722,7 @@ function RoomViewContent({
 
     return () => {
       $('body').off('keydown', listenKeyArrowUp);
-      $(timelineSVRef.current).off('scroll', handleTimelineScrollJquery);
+      timelineSV.off('scroll', handleTimelineScrollJquery);
     };
 
   }, [listenKeyArrowUp]);
@@ -730,7 +730,7 @@ function RoomViewContent({
   // Each time the timeline is loaded, this function is called
   const renderTimeline = () => {
 
-    const body = $('body');
+    // const body = $('body');
     const tl = [];
     const limit = eventLimitRef.current;
     if (limit === null) return [];
@@ -827,12 +827,12 @@ function RoomViewContent({
     }
 
     if (renderingHolders) {
-      body.addClass('fo-cb-top-render');
+      // body.addClass('fo-cb-top-render');
     } else {
-      body.removeClass('fo-cb-top-render');
+      // body.removeClass('fo-cb-top-render');
     }
 
-    body.removeClass('cb-top-page');
+    // body.removeClass('cb-top-page');
 
     if (tl.length < 1 && isGuest) { tl.push(<center className='small p-3'>Empty Timeline</center>); }
     return tl;

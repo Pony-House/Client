@@ -25,7 +25,7 @@ const delayYdocUpdate = 100;
 const hashTryLimit = 10;
 
 if (__ENV_APP__.MODE === 'development') { global.Y = Y; }
-let timeoutForceChatbox = null;
+// let timeoutForceChatbox = null;
 
 function isEdited(mEvent) {
   return mEvent.getRelation()?.rel_type === 'm.replace';
@@ -678,10 +678,10 @@ class RoomTimeline extends EventEmitter {
   async loadEventTimeline(eventId) {
 
     // we use first unfiltered EventTimelineSet for room pagination.
-    $('body').addClass('fo-cb-top').removeClass('cb-top-page');
-    if (timeoutForceChatbox) {
-      clearTimeout(timeoutForceChatbox);
-    }
+    // $('body').addClass('fo-cb-top').removeClass('cb-top-page');
+    // if (timeoutForceChatbox) {
+    //   clearTimeout(timeoutForceChatbox);
+    // }
 
     const timelineSet = this.getUnfilteredTimelineSet();
 
@@ -695,12 +695,12 @@ class RoomTimeline extends EventEmitter {
       await this._reset();
       this.emit(cons.events.roomTimeline.READY, eventId);
 
-      timeoutForceChatbox = setTimeout(() => $('body').removeClass('fo-cb-top'), 500);
+      // timeoutForceChatbox = setTimeout(() => $('body').removeClass('fo-cb-top'), 500);
 
       return true;
 
     } catch {
-      timeoutForceChatbox = setTimeout(() => $('body').removeClass('fo-cb-top'), 500);
+      // timeoutForceChatbox = setTimeout(() => $('body').removeClass('fo-cb-top'), 500);
       return false;
     }
 

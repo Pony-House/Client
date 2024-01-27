@@ -1386,7 +1386,7 @@ function Message({
     }
 
     // Complete
-    chatboxScrollToBottom(false, null);
+    // chatboxScrollToBottom(false, null);
     return () => {
       $(messageFinder).find('.message-url-embed').remove();
     };
@@ -1537,7 +1537,7 @@ function Message({
 
   }
 
-  chatboxScrollToBottom();
+  // chatboxScrollToBottom();
 
   // Bad Message
   const errorMessage = `<i class="bi bi-key-fill text-warning"></i> <strong>Unable to decrypt message.</strong>`;

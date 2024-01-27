@@ -92,7 +92,7 @@ export default function imageViewer(lightbox, imgQuery, name, url, readMime = fa
 
                 pswp.init();
                 if (lightbox && lightbox.loadAndOpen) lightbox.loadAndOpen(0);
-                if (scrollDown) chatboxScrollToBottom();
+                // if (scrollDown) chatboxScrollToBottom();
 
             }
 
