@@ -91,28 +91,6 @@ export function hljsFixer(el, where) {
 
 };
 
-export function chatboxScrollToBottom(forceScroll = false, scrollTime = 200) {
-
-    const body = $('body');
-    const checker = forceScroll || body.hasClass('cb-top-page');
-    const tinyAction = () => {
-        if (checker) {
-            for (let i = 0; i < 60; i++) {
-                setTimeout(() => {
-                    if (!body.hasClass('fo-cb-top') && !body.hasClass('fo-cb-top-render') && !body.hasClass('cb-temp-noscroll')) {
-                        $('#chatbox-scroll').scrollTop(99999);
-                    }
-                }, 3 * Number(i + 1));
-            }
-        }
-    };
-
-    if (typeof scrollTime === 'number') {
-        setTimeout(() => tinyAction(), scrollTime);
-    } else { tinyAction(); }
-
-};
-
 export function toast(msg, title) {
     return new Promise((resolve, reject) => {
         if (Capacitor.isNativePlatform()) {

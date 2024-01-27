@@ -5,7 +5,6 @@ import encrypt from 'browser-encrypt-attachment';
 
 import { BlurhashCanvas } from 'react-blurhash';
 import imageViewer from '../../../util/imageViewer';
-import { chatboxScrollToBottom } from '../../../util/tools';
 import Tooltip from '../../atoms/tooltip/Tooltip';
 import Text from '../../atoms/text/Text';
 import IconButton from '../../atoms/button/IconButton';
@@ -43,7 +42,7 @@ function getNativeHeight(width, height, maxWidth = 296) {
 }
 
 function FileHeader({
-  name, link, external, disableChatScroll,
+  name, link, external,
   file, type,
 }) {
   const [url, setUrl] = useState(null);
@@ -61,7 +60,6 @@ function FileHeader({
     }
   }
 
-  // if (!disableChatScroll) chatboxScrollToBottom();
   return (
     <div className="file-header">
       <Text className="file-name" variant="b3">{name}</Text>
@@ -91,13 +89,11 @@ function FileHeader({
   );
 }
 FileHeader.defaultProps = {
-  disableChatScroll: false,
   external: false,
   file: null,
   link: null,
 };
 FileHeader.propTypes = {
-  disableChatScroll: PropTypes.bool,
   name: PropTypes.string.isRequired,
   link: PropTypes.string,
   external: PropTypes.bool,
@@ -106,9 +102,8 @@ FileHeader.propTypes = {
 };
 
 function File({
-  name, link, file, type, disableChatScroll,
+  name, link, file, type,
 }) {
-  // if (!disableChatScroll) chatboxScrollToBottom();
   return (
     <div className="file-container">
       <FileHeader name={name} link={link} file={file} type={type} />
@@ -116,12 +111,10 @@ function File({
   );
 }
 File.defaultProps = {
-  disableChatScroll: false,
   file: null,
   type: '',
 };
 File.propTypes = {
-  disableChatScroll: PropTypes.bool,
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   type: PropTypes.string,
@@ -129,7 +122,7 @@ File.propTypes = {
 };
 
 function Image({
-  name, width, height, link, file, type, blurhash, className, classImage, disableChatScroll, ignoreContainer
+  name, width, height, link, file, type, blurhash, className, classImage, ignoreContainer
 }) {
   const [url, setUrl] = useState(null);
   const [blur, setBlur] = useState(true);
@@ -152,8 +145,6 @@ function Image({
     if (!url) return;
     setLightbox(!lightbox);
   };
-
-  // if (!disableChatScroll) chatboxScrollToBottom();
 
   const imgData = url !== null && (
     <img
@@ -206,7 +197,6 @@ function Image({
 }
 Image.defaultProps = {
   ignoreContainer: false,
-  disableChatScroll: false,
   file: null,
   width: null,
   height: null,
@@ -217,7 +207,6 @@ Image.defaultProps = {
 };
 Image.propTypes = {
   ignoreContainer: PropTypes.bool,
-  disableChatScroll: PropTypes.bool,
   name: PropTypes.string.isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
@@ -230,7 +219,7 @@ Image.propTypes = {
 };
 
 function Sticker({
-  name, height, width, link, file, type, disableChatScroll,
+  name, height, width, link, file, type,
 }) {
   const [url, setUrl] = useState(null);
 
@@ -247,8 +236,6 @@ function Sticker({
     };
   }, []);
 
-  // if (!disableChatScroll) chatboxScrollToBottom();
-
   return (
     <Tooltip
       placement='top'
@@ -261,14 +248,12 @@ function Sticker({
   );
 }
 Sticker.defaultProps = {
-  disableChatScroll: false,
   file: null,
   type: '',
   width: null,
   height: null,
 };
 Sticker.propTypes = {
-  disableChatScroll: PropTypes.bool,
   name: PropTypes.string.isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
@@ -278,7 +263,7 @@ Sticker.propTypes = {
 };
 
 function Audio({
-  name, link, type, file, disableChatScroll,
+  name, link, type, file,
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [url, setUrl] = useState(null);
@@ -292,8 +277,6 @@ function Audio({
     setIsLoading(true);
     loadAudio();
   }
-
-  // if (!disableChatScroll) chatboxScrollToBottom();
 
   return (
     <div className="file-container">
@@ -311,12 +294,10 @@ function Audio({
   );
 }
 Audio.defaultProps = {
-  disableChatScroll: false,
   file: null,
   type: '',
 };
 Audio.propTypes = {
-  disableChatScroll: PropTypes.bool,
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   type: PropTypes.string,
@@ -324,7 +305,7 @@ Audio.propTypes = {
 };
 
 function Video({
-  name, link, thumbnail, thumbnailFile, thumbnailType, disableChatScroll,
+  name, link, thumbnail, thumbnailFile, thumbnailType,
   width, height, file, type, blurhash,
 }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -355,8 +336,6 @@ function Video({
     setIsLoading(true);
     loadVideo();
   };
-
-  // if (!disableChatScroll) chatboxScrollToBottom();
 
   return (
     url === null ? (
@@ -395,7 +374,6 @@ function Video({
   );
 }
 Video.defaultProps = {
-  disableChatScroll: false,
   width: null,
   height: null,
   file: null,
@@ -406,7 +384,6 @@ Video.defaultProps = {
   blurhash: null,
 };
 Video.propTypes = {
-  disableChatScroll: PropTypes.bool,
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   thumbnail: PropTypes.string,

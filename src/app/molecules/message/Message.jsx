@@ -13,7 +13,7 @@ import hljs from 'highlight.js';
 import * as linkify from "linkifyjs";
 
 import Text from '../../atoms/text/Text';
-import { hljsFixer, resizeWindowChecker, chatboxScrollToBottom, toast } from '../../../util/tools';
+import { hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
 import { twemojify, twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 
@@ -1386,7 +1386,6 @@ function Message({
     }
 
     // Complete
-    // chatboxScrollToBottom(false, null);
     return () => {
       $(messageFinder).find('.message-url-embed').remove();
     };
@@ -1536,8 +1535,6 @@ function Message({
     </tr>;
 
   }
-
-  // chatboxScrollToBottom();
 
   // Bad Message
   const errorMessage = `<i class="bi bi-key-fill text-warning"></i> <strong>Unable to decrypt message.</strong>`;

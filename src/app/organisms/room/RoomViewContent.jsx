@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable react/prop-types */
 import React, {
   useState,
   useEffect,
@@ -41,7 +38,7 @@ const PAG_LIMIT = 50;
 const MAX_MSG_DIFF_MINUTES = 5;
 const PLACEHOLDER_COUNT = 2;
 const PLACEHOLDERS_HEIGHT = 96 * PLACEHOLDER_COUNT;
-const SCROLL_TRIGGER_POS = PLACEHOLDERS_HEIGHT * 4;
+const SCROLL_TRIGGER_POS = PLACEHOLDERS_HEIGHT / 2;
 
 function loadingMsgPlaceholders(key, count = 2) {
 
@@ -303,6 +300,7 @@ function usePaginate(
       if (limit.length < tLength) {
         // paginate from memory
         limit.paginate(false, PAG_LIMIT, tLength);
+        //
         forceUpdateLimit();
       } else if (roomTimeline.canPaginateForward()) {
         // paginate from server.
@@ -677,27 +675,6 @@ function RoomViewContent({
 
   const handleTimelineScroll = (event) => {
 
-    /* const tinyScroll = $('#chatbox-scroll');
-    const body = $('body');
-    if (!body.hasClass('fo-cb-top-render')) body.addClass('cb-temp-noscroll');
-
-    if (!body.hasClass('fo-cb-top') && !body.hasClass('fo-cb-top-render')) {
-      if (tinyScroll.length > 0) {
-
-        const scrollSize = tinyScroll.prop('scrollHeight') - $(window).height();
-        if (tinyScroll.scrollTop() >= scrollSize - 300) {
-          body.addClass('cb-top-page');
-        } else {
-          body.removeClass('cb-top-page');
-        }
-
-      } else {
-        body.addClass('cb-top-page');
-      }
-    } else {
-      body.removeClass('cb-top-page');
-    } */
-
     const timelineScroll = timelineScrollRef.current;
     const timelineSV = $(timelineSVRef.current);
     if ((!event || !event.target) && timelineSV.length < 1) return;
@@ -707,8 +684,6 @@ function RoomViewContent({
       if (typeof backwards !== 'boolean') return;
       handleScroll(backwards);
     }, 200)();
-
-    // setTimeout(() => body.removeClass('cb-temp-noscroll'), 100);
 
   };
 
@@ -730,23 +705,27 @@ function RoomViewContent({
   // Each time the timeline is loaded, this function is called
   const renderTimeline = () => {
 
-    // const body = $('body');
+    // Prepare timeline data
     const tl = [];
     const limit = eventLimitRef.current;
     if (limit === null) return [];
 
+    // More data
     let itemCountIndex = 0;
     jumpToItemIndex = -1;
     const readUptoEvent = readUptoEvtStore.getItem();
     let unreadDivider = false;
+
+    // Is DM
     const isDM = initMatrix.roomList && initMatrix.roomList.directs.has(roomTimeline.roomId);
 
-    let renderingHolders = false;
+    // Need pagination backward
     if (roomTimeline.canPaginateBackward() || limit.from > 0) {
       if (!isGuest) tl.push(loadingMsgPlaceholders(1, PLACEHOLDER_COUNT));
       itemCountIndex += PLACEHOLDER_COUNT;
     }
 
+    // Read limit timeline
     for (let i = limit.from; i < limit.length; i += 1) {
 
       if (i >= timeline.length) break;
@@ -821,18 +800,10 @@ function RoomViewContent({
 
     }
 
+    // Need pagination forward
     if (roomTimeline.canPaginateForward() || limit.length < timeline.length) {
-      renderingHolders = true;
       if (!isGuest) tl.push(loadingMsgPlaceholders(2, PLACEHOLDER_COUNT));
     }
-
-    if (renderingHolders) {
-      // body.addClass('fo-cb-top-render');
-    } else {
-      // body.removeClass('fo-cb-top-render');
-    }
-
-    // body.removeClass('cb-top-page');
 
     if (tl.length < 1 && isGuest) { tl.push(<center className='small p-3'>Empty Timeline</center>); }
     return tl;
