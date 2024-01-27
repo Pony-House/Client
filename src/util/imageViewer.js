@@ -4,7 +4,7 @@ import PhotoSwipeLightbox from 'photoswipe';
 import { getFileContentType } from './fileMime';
 import { toast } from './tools';
 
-export default function imageViewer(lightbox, imgQuery, name, url, readMime = false, scrollDown = true) {
+export default function imageViewer(lightbox, imgQuery, name, url, readMime = false) {
     return new Promise(async (resolve, reject) => {
         try {
 
