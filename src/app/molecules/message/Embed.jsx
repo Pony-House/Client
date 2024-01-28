@@ -22,11 +22,16 @@ function Embed({ embed }) {
 
     // URL Ref
     const tinyUrl = useRef(null);
+    const itemEmbed = useRef(null);
 
     const imgType = typeof embed['og:image:type'] === 'string' && embed['og:image:type'].length > 0 ? embed['og:image:type'].split('/') : null;
     useEffect(() => {
+
+        // console.log(itemEmbed);
+
         $(tinyUrl.current).on('click', tinyUrlAction);
         return () => { $(tinyUrl.current).off('click', tinyUrlAction); };
+
     });
 
     // Matrix
@@ -104,7 +109,7 @@ function Embed({ embed }) {
     }
 
     // Complete
-    return <div className='card mt-2'>
+    return <div ref={itemEmbed} className='card mt-2'>
         <div className='card-body'>
 
             {isThumb && typeof imgUrl === 'string' ? <span className='float-end'>

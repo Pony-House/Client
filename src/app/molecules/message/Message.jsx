@@ -1235,33 +1235,10 @@ function Message({
   let isCustomHTML = content.format === 'org.matrix.custom.html';
   let customHTML = isCustomHTML ? content.formatted_body : null;
 
-  const bodyUrls = [];
-  if (typeof body === 'string' && body.length > 0) {
-
-    try {
-
-      const newBodyUrls = linkify.find(
-        body.replace(/\> \<\@([\S\s]+?)\> ([\S\s]+?)\n\n|\> \<\@([\S\s]+?)\> ([\S\s]+?)\\n\\n/gm, '')
-          .replace(/^((?:(?:[ ]{4}|\t).*(\R|$))+)|`{3}([\w]*)\n([\S\s]+?)`{3}|`{3}([\S\s]+?)`{3}|`{2}([\S\s]+?)`{2}|`([\S\s]+?)|\[([\S\s]+?)\]|\{([\S\s]+?)\}|\<([\S\s]+?)\>|\(([\S\s]+?)\)/gm, '')
-      );
-
-      if (Array.isArray(newBodyUrls)) {
-        for (const item in newBodyUrls) {
-          if (tinyLinkifyFixer(newBodyUrls[item].type, newBodyUrls[item].value)) {
-            bodyUrls.push(newBodyUrls[item]);
-          }
-        }
-      }
-
-    } catch (err) {
-      console.error(err);
-    }
-
-  }
-
   // Edit Data
   const edit = useCallback(() => {
     if (eventId && setEdit) setEdit(eventId);
+    setEmbeds([]);
   }, [setEdit, eventId]);
 
   // Reply Data
@@ -1316,6 +1293,30 @@ function Message({
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
+
+    const bodyUrls = [];
+    if (typeof body === 'string' && body.length > 0) {
+
+      try {
+
+        const newBodyUrls = linkify.find(
+          body.replace(/\> \<\@([\S\s]+?)\> ([\S\s]+?)\n\n|\> \<\@([\S\s]+?)\> ([\S\s]+?)\\n\\n/gm, '')
+            .replace(/^((?:(?:[ ]{4}|\t).*(\R|$))+)|`{3}([\w]*)\n([\S\s]+?)`{3}|`{3}([\S\s]+?)`{3}|`{2}([\S\s]+?)`{2}|`([\S\s]+?)|\[([\S\s]+?)\]|\{([\S\s]+?)\}|\<([\S\s]+?)\>|\(([\S\s]+?)\)/gm, '')
+        );
+
+        if (Array.isArray(newBodyUrls)) {
+          for (const item in newBodyUrls) {
+            if (tinyLinkifyFixer(newBodyUrls[item].type, newBodyUrls[item].value)) {
+              bodyUrls.push(newBodyUrls[item]);
+            }
+          }
+        }
+
+      } catch (err) {
+        console.error(err);
+      }
+
+    }
 
     // Room jQuery base
     const messageFinder = `[roomid='${roomId}'][senderid='${senderId}'][eventid='${eventId}'][msgtype='${msgType}']`;
