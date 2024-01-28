@@ -11,8 +11,6 @@ export function fixScrollChat() {
             height = newHeight;
 
             const diffHeight = newHeight - oldHeight;
-            console.log(oldHeight, newHeight, diffHeight);
-
             scrollBar.animate({ scrollTop: scrollBar.scrollTop() + diffHeight }, 0);
 
         }
