@@ -1,22 +1,24 @@
-export default function mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded) {
+export function fixScrollChat() {
+    const scrollBar = $('#chatbox-scroll');
+    const roomView = scrollBar.find('> .room-view__content');
+    const height = roomView.height();
+    return {
+        height, execute() {
 
-    if (itemEmbed.current) {
-
-        if (embedHeight === null) {
-            setEmbedHeight(itemEmbed.current.offsetHeight);
-        } else if (isLoaded) {
-
-            let newHeight = itemEmbed.current.offsetHeight - embedHeight;
-            if (newHeight < 0) newHeight = 0;
-
-            // console.log(newHeight);
-            // const scrollBar = $('#chatbox-scroll');
-            // scrollBar.animate({ scrollTop: scrollBar.scrollTop() + newHeight + 150 }, 0);
+            const newHeight = roomView.height();
+            const diffHeight = newHeight - height;
+            console.log(height, newHeight, diffHeight);
 
         }
+    };
+};
 
-        // console.log(embedHeight);
-
+export function mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded) {
+    if (itemEmbed.current) {
+        if (embedHeight === null) {
+            setEmbedHeight(fixScrollChat());
+        } else if (isLoaded) {
+            embedHeight.execute()
+        }
     }
-
 };

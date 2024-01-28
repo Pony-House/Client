@@ -11,7 +11,7 @@ import IconButton from '../../atoms/button/IconButton';
 import Spinner from '../../atoms/spinner/Spinner';
 
 import { getBlobSafeMimeType } from '../../../util/mimetypes';
-import mediaFix from './mediaFix';
+import { mediaFix } from './mediaFix';
 
 async function getDecryptedBlob(response, type, decryptData) {
   const arrayBuffer = await response.arrayBuffer();
