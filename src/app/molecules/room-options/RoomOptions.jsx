@@ -12,6 +12,7 @@ import { MenuHeader, MenuItem } from '../../atoms/context-menu/ContextMenu';
 import RoomNotification from '../room-notification/RoomNotification';
 
 import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
+import { openPinMessageModal } from '../../../util/libs/pinMessage';
 
 function RoomOptions({ roomId, afterOptionSelect }) {
   const mx = initMatrix.matrixClient;
@@ -51,6 +52,7 @@ function RoomOptions({ roomId, afterOptionSelect }) {
       >
         Invite
       </MenuItem>
+      {mx.isRoomEncrypted(roomId) === false ? <MenuItem className="text-start d-sm-none" faSrc="bi bi-pin-angle-fill" onClick={() => { afterOptionSelect(); openPinMessageModal(room) }}>Pinned Messages</MenuItem> : null}
       <MenuItem className="text-start btn-text-danger" faSrc="fa-solid fa-arrow-right-from-bracket" onClick={handleLeaveClick}>Leave</MenuItem>
       <MenuHeader>Notification</MenuHeader>
       <RoomNotification roomId={roomId} />
