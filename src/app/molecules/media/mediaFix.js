@@ -15,7 +15,7 @@ export default function mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoade
 
         }
 
-        console.log(embedHeight);
+        // console.log(embedHeight);
 
     }
 
