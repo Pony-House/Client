@@ -1,13 +1,19 @@
+let height;
 export function fixScrollChat() {
     const scrollBar = $('#chatbox-scroll');
-    const roomView = scrollBar.find('> .room-view__content');
-    const height = roomView.height();
+    const roomView = scrollBar.find('> .room-view__content #chatbox');
+    height = roomView.height();
     return {
         height, execute() {
 
+            const oldHeight = height;
             const newHeight = roomView.height();
-            const diffHeight = newHeight - height;
-            console.log(height, newHeight, diffHeight);
+            height = newHeight;
+
+            const diffHeight = newHeight - oldHeight;
+            console.log(oldHeight, newHeight, diffHeight);
+
+            scrollBar.animate({ scrollTop: scrollBar.scrollTop() + diffHeight }, 0);
 
         }
     };
