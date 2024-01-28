@@ -814,7 +814,6 @@ class RoomTimeline extends EventEmitter {
 
         const mEvent = liveEvents[i];
         if (mEvent.getType() === 'm.room.member' && hideMemberEvents(mEvent)) {
-          // eslint-disable-next-line no-continue
           continue;
         }
 

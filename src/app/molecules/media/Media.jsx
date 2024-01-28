@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import encrypt from 'browser-encrypt-attachment';
@@ -11,6 +11,7 @@ import IconButton from '../../atoms/button/IconButton';
 import Spinner from '../../atoms/spinner/Spinner';
 
 import { getBlobSafeMimeType } from '../../../util/mimetypes';
+import mediaFix from './mediaFix';
 
 async function getDecryptedBlob(response, type, decryptData) {
   const arrayBuffer = await response.arrayBuffer();
@@ -265,33 +266,39 @@ Sticker.propTypes = {
 function Audio({
   name, link, type, file,
 }) {
+
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [url, setUrl] = useState(null);
+
+  const itemEmbed = useRef(null);
+  const [embedHeight, setEmbedHeight] = useState(null);
 
   async function loadAudio() {
     const myUrl = await getUrl(link, type, file);
     setUrl(myUrl);
     setIsLoading(false);
+    setIsLoaded(true);
   }
   function handlePlayAudio() {
     setIsLoading(true);
     loadAudio();
   }
 
-  return (
-    <div className="file-container">
-      <FileHeader name={name} link={file !== null ? url : url || link} type={type} external />
-      <div className="audio-container">
-        {url === null && isLoading && <Spinner size="small" />}
-        {url === null && !isLoading && <IconButton onClick={handlePlayAudio} tooltip="Play audio" fa="fa-solid fa-circle-play" />}
-        {url !== null && (
-          <audio autoPlay controls>
-            <source src={url} type={getBlobSafeMimeType(type)} />
-          </audio>
-        )}
-      </div>
+  useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded));
+  return <div ref={itemEmbed} className="file-container">
+    <FileHeader name={name} link={file !== null ? url : url || link} type={type} external />
+    <div className="audio-container">
+      {url === null && isLoading && <Spinner size="small" />}
+      {url === null && !isLoading && <IconButton onClick={handlePlayAudio} tooltip="Play audio" fa="fa-solid fa-circle-play" />}
+      {url !== null && (
+        <audio autoPlay controls>
+          <source src={url} type={getBlobSafeMimeType(type)} />
+        </audio>
+      )}
     </div>
-  );
+  </div>;
+
 }
 Audio.defaultProps = {
   file: null,
@@ -308,28 +315,38 @@ function Video({
   name, link, thumbnail, thumbnailFile, thumbnailType,
   width, height, file, type, blurhash,
 }) {
+
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [url, setUrl] = useState(null);
   const [thumbUrl, setThumbUrl] = useState(null);
   const [blur, setBlur] = useState(true);
 
+  const itemEmbed = useRef(null);
+  const [embedHeight, setEmbedHeight] = useState(null);
+
   useEffect(() => {
+
     let unmounted = false;
     async function fetchUrl() {
       const myThumbUrl = await getUrl(thumbnail, thumbnailType, thumbnailFile);
       if (unmounted) return;
       setThumbUrl(myThumbUrl);
     }
+
     if (thumbnail !== null) fetchUrl();
     return () => {
       unmounted = true;
     };
+
   }, []);
 
+  useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded));
   const loadVideo = async () => {
     const myUrl = await getUrl(link, type, file);
     setUrl(myUrl);
     setIsLoading(false);
+    setIsLoaded(true);
   };
 
   const handlePlayVideo = () => {
@@ -337,41 +354,29 @@ function Video({
     loadVideo();
   };
 
-  return (
-    url === null ? (
-      <div className="file-container">
-        <FileHeader name={name} link={file !== null ? url : url || link} type={type} external />
-        <div className="video-container">
+  return <div ref={itemEmbed} className={`file-container${url !== null ? ' file-open' : ''}`}>
+    <FileHeader name={name} link={file !== null ? url : url || link} type={type} external />
+    {url === null ?
 
-          {!isLoading && <IconButton onClick={handlePlayVideo} tooltip="Play video" fa="fa-solid fa-circle-play" />}
-          {blurhash && blur && <BlurhashCanvas hash={blurhash} punch={1} />}
-          {thumbUrl !== null && (
-            <img style={{ display: blur ? 'none' : 'unset' }} src={thumbUrl} onLoad={() => setBlur(false)} alt={name} />
-          )}
-          {isLoading && <Spinner size="small" />}
+      <div className="video-container">
 
-        </div>
+        {!isLoading && <IconButton onClick={handlePlayVideo} tooltip="Play video" fa="fa-solid fa-circle-play" />}
+        {blurhash && blur && <BlurhashCanvas hash={blurhash} punch={1} />}
+        {thumbUrl !== null && (
+          <img style={{ display: blur ? 'none' : 'unset' }} src={thumbUrl} onLoad={() => setBlur(false)} alt={name} />
+        )}
+        {isLoading && <Spinner size="small" />}
+
+      </div> :
+
+      <div className="ratio ratio-16x9 video-base">
+        <video srcwidth={width} srcheight={height} autoPlay controls poster={thumbUrl}>
+          <source src={url} type={getBlobSafeMimeType(type)} />
+        </video>
       </div>
-    ) : (
 
-      <Tooltip
-        placement='top'
-        content={<Text variant="b2">{name}</Text>}
-      >
-        <div className="file-container file-open">
-          <div className="video-container">
-
-            <div className="ratio ratio-16x9 video-base">
-              <video srcwidth={width} srcheight={height} autoPlay controls poster={thumbUrl}>
-                <source src={url} type={getBlobSafeMimeType(type)} />
-              </video>
-            </div>
-
-          </div>
-        </div>
-      </Tooltip>
-    )
-  );
+    }
+  </div>;
 }
 Video.defaultProps = {
   width: null,
