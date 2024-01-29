@@ -1,4 +1,4 @@
-let height;
+let height = null;
 export function fixScrollChat() {
     const scrollBar = $('#chatbox-scroll');
     const roomView = scrollBar.find('> .room-view__content #chatbox');
@@ -11,7 +11,7 @@ export function fixScrollChat() {
             height = newHeight;
 
             const diffHeight = newHeight - oldHeight;
-            scrollBar.animate({ scrollTop: scrollBar.scrollTop() + diffHeight }, 0);
+            if (diffHeight > 0) scrollBar.animate({ scrollTop: scrollBar.scrollTop() + diffHeight }, 0);
 
         }
     };
@@ -33,4 +33,8 @@ export function mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded = true
         }
 
     }
+};
+
+export function setMediaHeight(value = null) {
+    height = typeof value === 'number' && !Number.isNaN(value) && Number.isFinite(value) && value > -1 ? value : $('#chatbox-scroll > .room-view__content #chatbox').height();
 };
