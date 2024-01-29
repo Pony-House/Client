@@ -29,6 +29,7 @@ export function mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded = true
         if (isLoaded) {
             // eslint-disable-next-line no-unused-expressions
             embedHeight ? embedHeight.execute() : embedHeight2.execute();
+            setTimeout(() => embedHeight ? embedHeight.execute() : embedHeight2.execute(), 100);
         }
 
     }
