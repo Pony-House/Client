@@ -66,6 +66,7 @@ import UserOptions from '../user-options/UserOptions';
 import { getDataList } from '../../../util/selectedRoom';
 import { tinyLinkifyFixer } from '../../../util/clear-urls/clearUrls';
 import { canPinMessage, isPinnedMessage, setPinMessage } from '../../../util/libs/pinMessage';
+import { mediaFix } from '../media/mediaFix';
 
 function PlaceholderMessage() {
   return <tr className="ph-msg">
@@ -657,6 +658,9 @@ MessageReaction.propTypes = {
 
 function MessageReactionGroup({ roomTimeline, mEvent }) {
 
+  const itemEmbed = useRef(null);
+  const [embedHeight, setEmbedHeight] = useState(null);
+
   const { roomId, room, reactionTimeline } = roomTimeline;
   const mx = initMatrix.matrixClient;
   const reactions = {};
@@ -725,6 +729,9 @@ function MessageReactionGroup({ roomTimeline, mEvent }) {
 
   // Create reaction list and limit the amount to 20
   const reacts = Object.keys(reactions).sort((a, b) => reactions[a].index - reactions[b].index).slice(0, reactionLimit);
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
 
   return <div className="noselect">
 
@@ -1201,7 +1208,10 @@ function Message({
   const mx = initMatrix.matrixClient;
   const roomId = mEvent.getRoomId();
   const { editedTimeline, reactionTimeline } = roomTimeline ?? {};
+
   const [embeds, setEmbeds] = useState([]);
+  const [embedHeight, setEmbedHeight] = useState(null);
+  const itemEmbed = useRef(null);
 
   // Content Body
   const classList = ['message', isBodyOnly ? 'message--body-only' : 'message--full'];
@@ -1393,6 +1403,9 @@ function Message({
 
   }, []);
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => mediaFix(null, embedHeight, setEmbedHeight));
+
   // Normal Message
   if (msgType !== 'm.bad.encrypted') {
 
@@ -1490,7 +1503,7 @@ function Message({
             messageStatus={messageStatus}
           />
 
-          {embeds.length > 0 ? <div className='message-embed message-url-embed'>
+          {embeds.length > 0 ? <div ref={itemEmbed} className='message-embed message-url-embed'>
             {embeds.map(embed => {
               if (embed.data) return <Embed embed={embed.data} />
             })}

@@ -129,6 +129,9 @@ function Image({
   const [blur, setBlur] = useState(true);
   const [lightbox, setLightbox] = useState(false);
 
+  const itemEmbed = useRef(null);
+  const [embedHeight, setEmbedHeight] = useState(null);
+
   useEffect(() => {
     let unmounted = false;
     async function fetchUrl() {
@@ -154,6 +157,7 @@ function Image({
       style={{ display: blur ? 'none' : 'unset' }}
       onLoad={event => {
 
+        mediaFix(itemEmbed, embedHeight, setEmbedHeight);
         setBlur(false);
         let imageLoaded = false;
         if (!imageLoaded && event.target) {
@@ -172,6 +176,8 @@ function Image({
       alt={name}
     />
   );
+
+  useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
 
   if (!ignoreContainer) {
 
@@ -224,6 +230,9 @@ function Sticker({
 }) {
   const [url, setUrl] = useState(null);
 
+  const itemEmbed = useRef(null);
+  const [embedHeight, setEmbedHeight] = useState(null);
+
   useEffect(() => {
     let unmounted = false;
     async function fetchUrl() {
@@ -236,6 +245,8 @@ function Sticker({
       unmounted = true;
     };
   }, []);
+
+  useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
 
   return (
     <Tooltip

@@ -17,12 +17,19 @@ export function fixScrollChat() {
     };
 };
 
-export function mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded) {
-    if (itemEmbed.current) {
+export function mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded = true) {
+    if (itemEmbed === null || (itemEmbed && itemEmbed.current)) {
+
+        let embedHeight2;
         if (embedHeight === null) {
-            setEmbedHeight(fixScrollChat());
-        } else if (isLoaded) {
-            embedHeight.execute()
+            embedHeight2 = fixScrollChat();
+            setEmbedHeight(embedHeight2);
         }
+
+        if (isLoaded) {
+            // eslint-disable-next-line no-unused-expressions
+            embedHeight ? embedHeight.execute() : embedHeight2.execute();
+        }
+
     }
 };

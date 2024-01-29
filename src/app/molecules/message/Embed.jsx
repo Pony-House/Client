@@ -1,5 +1,5 @@
 import React, {
-    useEffect, useRef,
+    useEffect, useRef, useState,
 } from 'react';
 import PropTypes from 'prop-types';
 
@@ -11,6 +11,7 @@ import jReact from '../../../../mods/lib/jReact';
 import openTinyURL from '../../../util/message/urlProtection';
 import defaultAvatar from '../../atoms/avatar/defaultAvatar';
 import { countObj, objType } from '../../../util/tools';
+import { mediaFix } from '../media/mediaFix';
 
 const tinyUrlAction = (event) => {
     const e = event.originalEvent;
@@ -23,6 +24,7 @@ function Embed({ embed }) {
     // URL Ref
     const tinyUrl = useRef(null);
     const itemEmbed = useRef(null);
+    const [embedHeight, setEmbedHeight] = useState(null);
 
     const imgType = typeof embed['og:image:type'] === 'string' && embed['og:image:type'].length > 0 ? embed['og:image:type'].split('/') : null;
     useEffect(() => {
@@ -33,6 +35,8 @@ function Embed({ embed }) {
         return () => { $(tinyUrl.current).off('click', tinyUrlAction); };
 
     });
+
+    useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
 
     // Matrix
     const mx = initMatrix.matrixClient;
