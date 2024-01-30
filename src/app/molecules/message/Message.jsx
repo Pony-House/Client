@@ -1252,12 +1252,14 @@ function Message({
   // Edit Data
   const edit = useCallback(() => {
     if (eventId && setEdit) setEdit(eventId);
+    mediaFix(null, embedHeight, setEmbedHeight);
     setEmbeds([]);
   }, [setEdit, eventId]);
 
   // Reply Data
   const reply = useCallback(() => {
     if (eventId && senderId) replyTo(senderId, eventId, body, customHTML);
+    mediaFix(null, embedHeight, setEmbedHeight);
   }, [body, customHTML, eventId, senderId]);
 
   if (!eventId) {
