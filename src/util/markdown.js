@@ -30,7 +30,7 @@ const timestampFormats = {
       content: parse(capture[1], state)
     }),
 
-    plain: (node) => `{t:${node.content}:${item}}`,
+    plain: (node, output, state) => `{t:${output(node.content, state)}:${item}}`,
     html: (node, output, state) => {
 
       const timestamp = Number(output(node.content, state)) * 1000;
