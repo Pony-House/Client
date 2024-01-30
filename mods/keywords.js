@@ -92,12 +92,6 @@ keywords.push({
 
 // Tiny me
 keywords.push({
-    title: `Tiny Jasmini - Pony House Founder`,
-    name: [`jasmindreasond`, `tiny jasmini`, `jasmini`],
-    href: `https://www.google.com/search?q=jasmindreasond`
-});
-
-keywords.push({
     title: `Puddy Club - JasminDreasond Website`,
     name: `puddy club`,
     href: `https://puddy.club/`
