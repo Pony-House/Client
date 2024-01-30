@@ -31,6 +31,7 @@ import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
 import commands from '../../../commands';
 import { getAppearance } from '../../../util/libs/appearance';
+import { mediaFix } from '../../molecules/media/mediaFix';
 
 // Variables
 const CMD_REGEX = /(^\/|:|@)(\S*)$/;
@@ -48,6 +49,7 @@ function RoomViewInput({
 
   // Rec Ref
   const recAudioRef = useRef(null);
+  const [embedHeight, setEmbedHeight] = useState(null);
 
   // File
   const [attachment, setAttachment] = useState(null);
@@ -476,6 +478,7 @@ function RoomViewInput({
     textArea.focus();
 
     deactivateCmd();
+    mediaFix(null, embedHeight, setEmbedHeight);
 
   }
 
@@ -490,6 +493,7 @@ function RoomViewInput({
 
     if (editor.current) ReactEditor.focus(editor.current);
     if (editor.current) Transforms.select(editor.current, Editor.end(editor.current, []));
+    mediaFix(null, embedHeight, setEmbedHeight);
 
   }
 
@@ -497,6 +501,7 @@ function RoomViewInput({
   function setUpReply(userId, eventId, body, formattedBody) {
 
     setReplyTo({ userId, eventId, body });
+    mediaFix(null, embedHeight, setEmbedHeight);
 
     if (roomsInput) roomsInput.setReplyTo(roomId, {
       userId,
@@ -552,6 +557,7 @@ function RoomViewInput({
     ];
 
     // Complete
+    mediaFix(null, embedHeight, setEmbedHeight);
     textArea.on('focus', focusUpdate[0]).on('blur', focusUpdate[1]).on('keydown', textResize).on('keypress', textResize).on('keyup', textResize);
     return () => {
 
@@ -630,6 +636,7 @@ function RoomViewInput({
 
     // Reply Fix
     if (replyTo !== null) setReplyTo(null);
+    mediaFix(null, embedHeight, setEmbedHeight);
 
   };
 
@@ -653,6 +660,7 @@ function RoomViewInput({
     }
 
     commands[cmdName].exe(roomId, cmdData);
+    mediaFix(null, embedHeight, setEmbedHeight);
 
   };
 
@@ -684,7 +692,8 @@ function RoomViewInput({
 
   // Sticker
   const handleSendSticker = async (data) => {
-    if (roomsInput) roomsInput.sendSticker(roomId, data);
+    if (roomsInput) await roomsInput.sendSticker(roomId, data);
+    mediaFix(null, embedHeight, setEmbedHeight);
   };
 
   // Typing Progress
@@ -867,6 +876,7 @@ function RoomViewInput({
     const file = e.target.files.item(0);
     setAttachment(file);
     if (roomsInput && file !== null) roomsInput.setAttachment(roomId, file);
+    mediaFix(null, embedHeight, setEmbedHeight);
   }
 
   useEffect(() => {
