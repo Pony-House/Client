@@ -235,10 +235,10 @@
   resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-5.6.0.tgz#62a5e4697466beed4265da6f3939b42e8f00e642"
   integrity sha512-6O7xV6K6c8WvQzKxOe7fnhRyoVpS3TNDXy1FyfhvOvclBvu+1JddSdFvW4e4dSL60s2c00sCzNRgYhm+cn0/dQ==
 
-"@capacitor/app@5.0.6":
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/@capacitor/app/-/app-5.0.6.tgz#2ee02551115fd2e92dc7e81bc30a6c6fa78efa66"
-  integrity sha512-6ZXVdnNmaYILasC/RjQw+yfTmq2ZO7Q3v5lFcDVfq3PFGnybyYQh+RstBrYri+376OmXOXxBD7E6UxBhrMzXGA==
+"@capacitor/app@5.0.7":
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/@capacitor/app/-/app-5.0.7.tgz#f71e81320bcd504c400c1f503ba43a88ccac96e8"
+  integrity sha512-oad0jwQu+vgQDukeS9UV56yG10dlxkAGGl26IQpZlTmg3dTI9qSJtvhmlLfkF0nEtoj5IsVQUPE+NLH1oZkgGQ==
 
 "@capacitor/browser@5.1.0":
   version "5.1.0"
