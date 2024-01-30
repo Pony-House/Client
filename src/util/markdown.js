@@ -106,29 +106,37 @@ const timestampFormats = {
   f: () => `MMMM DD, YYYY ${momentFormat.clock()}`,
   F: () => `dddd MMMM DD, YYYY ${momentFormat.clock()}`,
 
-  html: (item, fromNow = false) => ({
+  validated: [],
 
-    order: defaultRules.inlineCode.order + 0.1,
-    match: inlineRegex(new RegExp(`^{t:(?<timestamp>-?\\d{1,13})(:${item})?}`, 'g')),
+  html: (item, fromNow = false) => {
 
-    parse: (capture, parse, state) => ({
-      content: parse(capture[1], state)
-    }),
+    timestampFormats.validated.push(item);
 
-    plain: (node, output, state) => `{t:${output(node.content, state)}:${item}}`,
-    html: (node, output, state) => {
+    return {
 
-      const timestamp = Number(output(node.content, state)) * 1000;
+      order: defaultRules.inlineCode.order + 0.1,
+      match: inlineRegex(new RegExp(`^{t:(?<timestamp>-?\\d{1,13})(:${item})?}`, 'g')),
 
-      return htmlTag(
-        'span',
-        (!fromNow ? moment(timestamp).format(typeof timestampFormats[item] === 'function' ? timestampFormats[item]() : timestampFormats[item]) : moment(timestamp).fromNow()),
-        { 'data-mx-timestamp': String(timestamp), 'timestamp-type': item },
-      );
+      parse: (capture, parse, state) => ({
+        content: parse(capture[1], state)
+      }),
 
-    },
+      plain: (node, output, state) => `{t:${!node.state ? output(node.content, state) : String(Number(node.content) / 1000)}:${item}}`,
+      html: (node, output, state) => {
 
-  })
+        const timestamp = Number(output(node.content, node.state || state)) * 1000;
+
+        return htmlTag(
+          'span',
+          (!fromNow ? moment(timestamp).format(typeof timestampFormats[item] === 'function' ? timestampFormats[item]() : timestampFormats[item]) : moment(timestamp).fromNow()),
+          { 'data-mx-timestamp': String(timestamp), 'timestamp-type': item },
+        );
+
+      },
+
+    };
+
+  }
 
 };
 
@@ -819,8 +827,8 @@ function mapElement(el) {
 
       if (el.hasAttribute('data-mx-timestamp')) {
         const type = el.getAttribute('timestamp-type');
-        if (typeof type === 'string' && type !== 'html' && timestampFormats[type]) {
-          return [{ type: `timestamp_${type}`, content: el.getAttribute('data-mx-timestamp') }];
+        if (typeof type === 'string' && timestampFormats.validated.indexOf(type) > -1) {
+          return [{ type: `timestamp_${type}`, content: el.getAttribute('data-mx-timestamp'), state: type }];
         }
       }
 
