@@ -32,7 +32,7 @@ import { getCurrentState } from '../../../util/matrixUtil';
 import tinyAPI from '../../../util/mods';
 import moment, { momentFormat } from '../../../util/libs/momentjs';
 import { rule3 } from '../../../util/tools';
-import { tinyFixScrollChat } from '../../molecules/media/mediaFix';
+// import { tinyFixScrollChat } from '../../molecules/media/mediaFix';
 
 let loadingPage = false;
 const PAG_LIMIT = 50;
@@ -162,7 +162,7 @@ function renderEvent(
   if (eventType === 'm.room.member' || eventType === 'm.room.pinned_events') {
     const timelineChange = parseTimelineChange(mEvent);
     if (timelineChange === null) return <div key={mEvent.getId()} />;
-    tinyFixScrollChat();
+    // tinyFixScrollChat();
     return (
       <TimelineChange
         key={mEvent.getId()}
@@ -173,7 +173,7 @@ function renderEvent(
     );
   }
 
-  tinyFixScrollChat();
+  // tinyFixScrollChat();
   return (
     <Message
       refRoomInput={refRoomInput}
