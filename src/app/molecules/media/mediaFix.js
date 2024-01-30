@@ -22,8 +22,8 @@ export function fixScrollChat() {
     };
 };
 
-export function tinyFixScrollChat() {
-    for (let i = 0; i < timeoutFixer.i; i++) {
+export function tinyFixScrollChat(tinyI = timeoutFixer.i) {
+    for (let i = 0; i < tinyI; i++) {
         setTimeout(() => {
             if (typeof height === 'number') {
 

@@ -4,6 +4,7 @@ import SimpleMarkdown from '@khanacademy/simple-markdown';
 import { idRegex, parseIdUri } from './common';
 import rainbowText from './libs/rainbowText';
 import moment, { momentFormat } from './libs/momentjs';
+import { tinyFixScrollChat } from '../app/molecules/media/mediaFix';
 
 // const discordRegex = /((`){1,3}|(\*){1,3}|(~){2}|(\|){2}|^(>){1,3}|(_){1,2})+/gm;
 
@@ -141,6 +142,7 @@ const timestampFormats = {
 };
 
 setInterval(() => {
+
   const timestamps = Array.from(document.querySelectorAll('[data-mx-timestamp]'));
   if (timestamps.length > 0) {
     timestamps.map(item => {
@@ -167,6 +169,9 @@ setInterval(() => {
 
     })
   }
+
+  tinyFixScrollChat(50);
+
 }, 1000);
 
 const {
