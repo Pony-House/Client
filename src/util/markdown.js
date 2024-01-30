@@ -30,7 +30,7 @@ const timestampFormats = {
       content: parse(capture[1], state)
     }),
 
-    plain: (node, output, state) => `{t:${output(node.content, state)}:${item}}`,
+    plain: (node) => `{t:${node.content}:${item}}`,
     html: (node, output, state) => {
 
       const timestamp = Number(output(node.content, state)) * 1000;
@@ -730,6 +730,14 @@ function mapElement(el) {
 
       if (el.hasAttribute('data-mx-maths')) {
         return [{ type: 'inlineMath', content: el.getAttribute('data-mx-maths') }];
+      }
+
+      if (el.hasAttribute('data-mx-timestamp')) {
+        const type = el.getAttribute('timestamp-type');
+        console.log(`timestamp_${type}`);
+        if (typeof type === 'string' && type !== 'html' && timestampFormats[type]) {
+          return [{ type: `timestamp_${type}`, content: el.getAttribute('data-mx-timestamp') }];
+        }
       }
 
       return mapChildren(el);
