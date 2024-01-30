@@ -6201,10 +6201,10 @@ slate-history@0.100.0:
   dependencies:
     is-plain-object "^5.0.0"
 
-slate-react@0.101.5:
-  version "0.101.5"
-  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.101.5.tgz#353cad5d514196493e9441b2a2876ee217028982"
-  integrity sha512-KfnC1Je7dIZo1Uv4g5d1+No8hKkgXKcSEGGOH7zzZEX9iYGckSg6aBgO0hFmoilidowSiSU45/baL5aeYma9Vg==
+slate-react@0.101.6:
+  version "0.101.6"
+  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.101.6.tgz#dd9209292b8c4c3edab4bc7c9c003b51465371e9"
+  integrity sha512-aMtp9FY127hKWTkCcTBonfKIwKJC2ESPqFdw2o/RuOk3RMQRwsWay8XTOHx8OBGOHanI2fsKaTAPF5zxOLA1Qg==
   dependencies:
     "@juggle/resize-observer" "^3.4.0"
     "@types/is-hotkey" "^0.1.8"
