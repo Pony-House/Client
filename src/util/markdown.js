@@ -7,6 +7,11 @@ import { resizeWindowChecker } from './tools';
 import rainbowText from './libs/rainbowText';
 import moment, { momentFormat } from './libs/momentjs';
 
+// const discordRegex = /((`){1,3}|(\*){1,3}|(~){2}|(\|){2}|^(>){1,3}|(_){1,2})+/gm;
+
+// Alternative syntax using RegExp constructor
+// const discordRegex = new RegExp('((`){1,3}|(\\*){1,3}|(~){2}|(\\|){2}|^(>){1,3}|(_){1,2})+', 'gm')
+
 const timestampFormats = {
 
   t: momentFormat.clock,
@@ -199,7 +204,8 @@ const markdownRules = {
   // Code Block
   codeBlock: {
     ...defaultRules.codeBlock,
-    plain: (node) => `\`\`\`${node.lang || ''}\n${node.content}\n\`\`\`\n`,
+    // match: blockRegex(/^(`{3}.*[\n\r][^]*?^`{3})$/gm),
+    plain: (node) => `\n\`\`\`${node.lang || ''}\n${node.content}\n\`\`\`\n`,
     html: (node) => {
 
       const autoCode = () => {
