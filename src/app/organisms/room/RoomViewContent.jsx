@@ -32,7 +32,7 @@ import { getCurrentState } from '../../../util/matrixUtil';
 import tinyAPI from '../../../util/mods';
 import moment, { momentFormat } from '../../../util/libs/momentjs';
 import { rule3 } from '../../../util/tools';
-// import { tinyFixScrollChat } from '../../molecules/media/mediaFix';
+import { mediaFix } from '../../molecules/media/mediaFix';
 
 let loadingPage = false;
 const PAG_LIMIT = 50;
@@ -490,6 +490,7 @@ function RoomViewContent({
 }) {
 
   const [throttle] = useState(new Throttle());
+  const [embedHeight, setEmbedHeight] = useState(null);
 
   const timelineSVRef = useRef(null);
   const timelineScrollRef = useRef(null);
@@ -560,6 +561,7 @@ function RoomViewContent({
 
     autoPaginate();
 
+    mediaFix(null, embedHeight, setEmbedHeight);
     roomTimeline.on(cons.events.roomTimeline.SCROLL_TO_LIVE, handleScrollToLive);
     return () => {
       if (timelineSVRef.current === null) return;

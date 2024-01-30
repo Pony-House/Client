@@ -178,6 +178,7 @@ function Image({
   );
 
   useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
+  // tinyFixScrollChat();
 
   if (!ignoreContainer) {
 
