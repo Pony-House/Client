@@ -734,7 +734,6 @@ function mapElement(el) {
 
       if (el.hasAttribute('data-mx-timestamp')) {
         const type = el.getAttribute('timestamp-type');
-        console.log(`timestamp_${type}`);
         if (typeof type === 'string' && type !== 'html' && timestampFormats[type]) {
           return [{ type: `timestamp_${type}`, content: el.getAttribute('data-mx-timestamp') }];
         }
