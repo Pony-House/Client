@@ -164,7 +164,7 @@ function Image({
 
           imageLoaded = true;
           const img = $(event.target);
-          const imgAction = () => { imageViewer(lightbox, img, name, url); };
+          const imgAction = () => { imageViewer({ lightbox, imgQuery: img, name, url }); };
 
           img.off('click', imgAction);
           img.on('click', imgAction);
