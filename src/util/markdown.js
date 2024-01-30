@@ -1,9 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
-import hljs from 'highlight.js';
 import SimpleMarkdown from '@khanacademy/simple-markdown';
 import { idRegex, parseIdUri } from './common';
-import { resizeWindowChecker } from './tools';
 import rainbowText from './libs/rainbowText';
 import moment, { momentFormat } from './libs/momentjs';
 
