@@ -1,6 +1,5 @@
     --> Menu mobile de ícones precisa parar de ser table usar flex.
 
-    --> Concertar o que está fazendo code markdown não ler quando está colado com o texto acima.
     --> Colocar o leitor de lista de threads.
     --> Fazer opção para uma room de informações ser realmente de informação.
 
