@@ -19,7 +19,7 @@ const timestampFormats = {
   D: `MMMM DD, YYYY`,
 
   f: () => `MMMM DD, YYYY ${momentFormat.clock()}`,
-  F: () => `dddd MMMM DD, YYYY ${momentFormat.clock}`,
+  F: () => `dddd MMMM DD, YYYY ${momentFormat.clock()}`,
 
   html: (item, fromNow = false) => ({
 
@@ -62,6 +62,12 @@ setInterval(() => {
         } else {
           tinyItem.text(moment(timestamp).fromNow());
         }
+      }
+
+      if (!tinyItem.hasClass('with-tooltip')) {
+        tinyItem.attr('title', moment(timestamp).format(timestampFormats.F()));
+        tinyItem.addClass('with-tooltip');
+        tinyItem.tooltip();
       }
 
       return item;
