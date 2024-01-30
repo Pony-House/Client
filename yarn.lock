@@ -285,10 +285,10 @@
   resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-5.6.0.tgz#c2776061526edf725acd67dd214c2fd87236a030"
   integrity sha512-iswpOcD5us10hIF5zS4w6k/ekW0A+2pXhDV4AHOBXR4VOkOMI8QJaavgl9JvZ/NVvVNJdEN2rOKCMNh4AH08sw==
 
-"@capacitor/local-notifications@5.0.6":
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/@capacitor/local-notifications/-/local-notifications-5.0.6.tgz#9684dbd7086e325e61b9297569ee9c06e5b8d8f9"
-  integrity sha512-DB+ZBjv3Ri/0mtSzjMxLMHNGfg5m615ewDfQxp++mu7pYUM1RkxfSiigw73+PlZXDow1YNQJRlzTkwEKs6Pf+g==
+"@capacitor/local-notifications@5.0.7":
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/@capacitor/local-notifications/-/local-notifications-5.0.7.tgz#e03ecc8add8a8394a1bd257ad29b410b5ac72077"
+  integrity sha512-Q16sAv9B55qrXRBgjsom3UAXQ9J5I9HxOToYtQ6jvM3237DphotvVSNriX2AGeXLi5nHkmNv2ZsFu17wTrRcpA==
 
 "@capacitor/status-bar@5.0.6":
   version "5.0.6"
