@@ -28,9 +28,9 @@ I see the Matrix project as one of the best alternatives to maintain at least tr
 ## Getting started
 Web app is available at https://client.pony.house/ and gets updated on each new release.
 
-To host Pony House on your own, download tarball of the app from [GitHub release](https://github.com/Pony-House/Client/releases/latest).
+To host Pony House on your own, download the app from [GitHub release](https://github.com/Pony-House/Client/releases/latest).
 You can serve the application with a webserver of your choice by simply copying `dist/` directory to the webroot. 
-To set default Homeserver on login and register page, place a customized [`config.json`](config.json) in webroot of your choice.
+To set default Homeserver on login and register page, place a customized [`.env`](.env) in webroot of your choice.
 
 ## Custom App Style
 Would you like to customize your login page to your website? Then you can check out some values available in the `config/custom-css.scss` file.
@@ -43,7 +43,7 @@ App title in `electron/main/index.ts`.
 
 If you would like to edit the version checker url, you can edit the `src/client/state/cons.js` file.
 
-If you would like to edit the homeservers list, you can edit the `config/config.json` file.
+If you would like to edit the homeservers list, you can edit the `.env` file.
 
 If you want to put a custom name or welcome message for the app, edit the .env file. (This will only affect the application within react.)
 
