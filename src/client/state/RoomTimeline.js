@@ -20,6 +20,7 @@ import { messageIsClassicCrdt } from '../../util/libs/crdt';
 import { objType } from '../../util/tools';
 import moment from '../../util/libs/momentjs';
 import { updateRoomInfo } from '../action/navigation';
+// import { tinyFixScrollChat } from "../../app/molecules/media/mediaFix";
 
 const delayYdocUpdate = 100;
 const hashTryLimit = 10;
@@ -822,10 +823,14 @@ class RoomTimeline extends EventEmitter {
           !isReaction(mEvent) &&
           !isEdited(mEvent) &&
           cons.supportEventTypes.includes(mEvent.getType())
-        )
+        ) {
+          // tinyFixScrollChat();
           return mEvent;
+        }
+
       }
 
+      // tinyFixScrollChat();
       return liveEvents[liveEvents.length - 1];
 
     };

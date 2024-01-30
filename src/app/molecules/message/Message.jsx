@@ -66,7 +66,7 @@ import UserOptions from '../user-options/UserOptions';
 import { getDataList } from '../../../util/selectedRoom';
 import { tinyLinkifyFixer } from '../../../util/clear-urls/clearUrls';
 import { canPinMessage, isPinnedMessage, setPinMessage } from '../../../util/libs/pinMessage';
-import { mediaFix } from '../media/mediaFix';
+import { mediaFix, tinyFixScrollChat } from '../media/mediaFix';
 
 function PlaceholderMessage() {
   return <tr className="ph-msg">
@@ -144,6 +144,7 @@ MessageTime.propTypes = {
 
 // Message Reply
 function MessageReply({ name, color, body }) {
+  tinyFixScrollChat();
   return <div className="pb-2 emoji-size-fix small text-reply">
     <RawIcon color={color} size="normal" fa="fa-solid fa-reply" />
     {' '}
