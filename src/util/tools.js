@@ -68,7 +68,7 @@ export function checkVisibleWindow() {
 }
 
 // HL JS fixer
-export function hljsFixer(el, where) {
+export function hljsFixer(el, where, callback = function () { }) {
 
     if (where === 'MessageBody') {
 
@@ -85,7 +85,8 @@ export function hljsFixer(el, where) {
             } else {
                 el.removeClass('hljs-fullview');
             }
-        });;
+            callback();
+        });
 
     }
 

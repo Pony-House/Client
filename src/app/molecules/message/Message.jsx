@@ -320,7 +320,7 @@ const createMessageData = (content, body, isCustomHTML = false, isSystem = false
 
 };
 
-const messageDataEffects = (messageBody) => {
+const messageDataEffects = (messageBody, embedHeight, setEmbedHeight) => {
 
   messageBody.find('pre code').each((index, value) => {
 
@@ -330,15 +330,18 @@ const messageDataEffects = (messageBody) => {
     if (!el.hasClass('hljs')) {
       hljs.highlightElement(value);
       el.addClass('chatbox-size-fix');
+      mediaFix(null, embedHeight, setEmbedHeight);
     }
 
     if (!el.hasClass('hljs-fix')) {
       el.addClass('hljs-fix');
-      hljsFixer(el, 'MessageBody');
+      hljsFixer(el, 'MessageBody', () => mediaFix(null, embedHeight, setEmbedHeight));
+      mediaFix(null, embedHeight, setEmbedHeight);
     }
 
     if (!el.hasClass('hljs')) {
       el.addClass('hljs');
+      mediaFix(null, embedHeight, setEmbedHeight);
     }
 
   });
@@ -381,9 +384,10 @@ const MessageBody = React.memo(
   }) => {
 
     const messageBody = useRef(null);
+    const [embedHeight, setEmbedHeight] = useState(null);
 
     useEffect(() => {
-      messageDataEffects($(messageBody.current))
+      messageDataEffects($(messageBody.current), embedHeight, setEmbedHeight)
     });
 
     // if body is not string it is a React element.
