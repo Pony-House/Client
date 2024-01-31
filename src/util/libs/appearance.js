@@ -54,6 +54,7 @@ class MatrixAppearance extends EventEmitter {
         if (typeof folder === 'string') {
             this.content[folder] = value;
             global.localStorage.setItem('ponyHouse-appearance', JSON.stringify(this.content));
+            this.emit(folder, value);
         }
     }
 
