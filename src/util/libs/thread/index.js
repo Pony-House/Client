@@ -1,19 +1,8 @@
 // import { MatrixEvent } from 'matrix-js-sdk';
+import moment from 'moment-timezone';
 
 import { objType } from '../../tools';
 import initMatrix, { fetchFn } from '../../../client/initMatrix';
-import moment from 'moment-timezone';
-
-/**
- * @param {string} roomId room id
- * @param {object} config 
- * @param {object} config.filter search filter.  default={"lazy_load_members":true}
- * @param {string} config.from A pagination token from a previous result. When not provided, the server starts paginating from the most recent event visible to the user (as per history visibility rules; topologically).
- * @param {'b' | 'f'} config.dir direction to load. default=b 
- * @param {'all' | 'participated'} config.include Optional (default all) flag to denote which thread roots are of interest to the caller. When all, all thread roots found in the room are returned. When participated, only thread roots for threads the user has participated in will be returned. default=all
- * @param {number} config.limit Optional limit for the maximum number of thread roots to include per response. Must be an integer greater than zero. Servers should apply a default value, and impose a maximum value to avoid resource exhaustion. default=30
- * @return {Promise<object>} the thread list result.
- */
 
 class ThreadsList {
 
@@ -27,6 +16,16 @@ class ThreadsList {
         this.roomId = typeof roomId === 'string' ? roomId : null;
     }
 
+    /**
+     * @param {string} roomId room id
+     * @param {object} config 
+     * @param {object} config.filter search filter.  default={"lazy_load_members":true}
+     * @param {string} config.from A pagination token from a previous result. When not provided, the server starts paginating from the most recent event visible to the user (as per history visibility rules; topologically).
+     * @param {'b' | 'f'} config.dir direction to load. default=b 
+     * @param {'all' | 'participated'} config.include Optional (default all) flag to denote which thread roots are of interest to the caller. When all, all thread roots found in the room are returned. When participated, only thread roots for threads the user has participated in will be returned. default=all
+     * @param {number} config.limit Optional limit for the maximum number of thread roots to include per response. Must be an integer greater than zero. Servers should apply a default value, and impose a maximum value to avoid resource exhaustion. default=30
+     * @return {Promise<object>} the thread list result.
+     */
     get(config = {}) {
         const tinyThis = this;
         return new Promise((resolve, reject) => {
