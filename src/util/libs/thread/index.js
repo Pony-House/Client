@@ -25,7 +25,7 @@ class ThreadsList {
      * @param {'all' | 'participated'} config.include Optional (default all) flag to denote which thread roots are of interest to the caller. When all, all thread roots found in the room are returned. When participated, only thread roots for threads the user has participated in will be returned. default=all
      * @param {number} config.limit Optional limit for the maximum number of thread roots to include per response. Must be an integer greater than zero. Servers should apply a default value, and impose a maximum value to avoid resource exhaustion. default=30
      * @return {Promise<object>} the thread list result.
-     */
+    */
     get(config = {}) {
         const tinyThis = this;
         return new Promise((resolve, reject) => {
