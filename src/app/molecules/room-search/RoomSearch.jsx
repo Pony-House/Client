@@ -12,7 +12,7 @@ import Spinner from '../../atoms/spinner/Spinner';
 import { Message } from '../message/Message';
 
 import { useStore } from '../../hooks/useStore';
-import { resizeWindowChecker } from '../../../util/tools';
+import { objType, resizeWindowChecker } from '../../../util/tools';
 
 const roomIdToBackup = new Map();
 
@@ -122,22 +122,27 @@ function RoomSearch({ roomId }) {
     <div className="room-search__result-item" key={timeline[0].getId()}>
       {timeline.map((mEvent) => {
         const id = mEvent.getId();
+        const content = mEvent.getContent();
         resizeWindowChecker();
-        return (
-          <React.Fragment key={id}>
-            <Message
-              className='p-0'
-              classNameMessage='chatbox-size-fix'
-              mEvent={mEvent}
-              isBodyOnly={false}
-              fullTime
-            >
-              <div className='h-100 w-100 d-inline'>
-                <Button className='float-end' onClick={() => selectRoom(roomId, id)}><i className="bi bi-skip-forward-fill" /></Button>
-              </div>
-            </Message>
-          </React.Fragment>
-        );
+        return <React.Fragment key={id}>
+          <Message
+            className='p-0'
+            classNameMessage='chatbox-size-fix'
+            mEvent={mEvent}
+            isBodyOnly={false}
+            fullTime
+          >
+            <div className='h-100 w-100 d-inline'>
+              <Button className='float-end' onClick={() => selectRoom(
+                roomId,
+                id,
+                objType(content['m.relates_to'], 'object') &&
+                  content['m.relates_to'].rel_type === 'm.thread' &&
+                  typeof content['m.relates_to'].event_id === 'string' ? content['m.relates_to'].event_id : undefined
+              )}><i className="bi bi-skip-forward-fill" /></Button>
+            </div>
+          </Message>
+        </React.Fragment>;
       })}
     </div>
   );
