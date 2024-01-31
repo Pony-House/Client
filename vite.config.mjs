@@ -134,6 +134,8 @@ export default defineConfig(({ command, mode }) => {
 
     WEB3: !!(env.WEB3 === true || env.WEB3 === 'true'),
     IPFS: !!(env.IPFS === true || env.IPFS === 'true'),
+
+    DISCORD_STYLE: !!(env.DISCORD_STYLE === true || env.DISCORD_STYLE === 'true'),
     USE_ANIM_PARAMS: !!(env.USE_ANIM_PARAMS === true || env.USE_ANIM_PARAMS === 'true'),
 
     LOGIN: {
