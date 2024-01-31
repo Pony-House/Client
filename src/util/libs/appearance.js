@@ -75,7 +75,9 @@ const toggleAppearanceAction = (dataFolder, setToggle) => data => {
     setToggle((data === true));
 };
 
-export { toggleAppearanceAction, matrixAppearance };
+export { toggleAppearanceAction };
+export default matrixAppearance;
+
 global.appearanceApi = {
     getCfg: getAppearance,
     setCfg: setAppearance,
