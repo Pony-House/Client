@@ -29,6 +29,7 @@ import copyText from '../profile-viewer/copyText';
 
 // import RoomViewPin from './RoomViewPin';
 import { openPinMessageModal } from '../../../util/libs/pinMessage';
+import { openThreadsMessageModal } from '../../../util/libs/thread';
 
 function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions }) {
 
@@ -114,6 +115,8 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
     }
   };
 
+  // <li className="nav-item"><IconButton className="nav-link border-0 d-none d-sm-block" onClick={() => openThreadsMessageModal(room)} tooltipPlacement="bottom" tooltip="Threads" fa="bi bi-layers" /></li>
+
   return <Header>
 
     <ul className='navbar-nav mr-auto'>
@@ -173,6 +176,8 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
         <li className="nav-item">
           <IconButton className="nav-link btn btn-bg border-0" onClick={() => toggleRoomSettings(tabText.SEARCH)} tooltipPlacement="bottom" tooltip="Search" fa="fa-solid fa-magnifying-glass" />
         </li>
+
+
 
         <li className="nav-item"><IconButton className="nav-link border-0 d-none d-sm-block" onClick={() => openPinMessageModal(room)} tooltipPlacement="bottom" tooltip="Pinned Messages" fa="bi bi-pin-angle-fill" /></li>
 
