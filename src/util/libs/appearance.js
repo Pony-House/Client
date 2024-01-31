@@ -1,60 +1,80 @@
-export function getAppearance(folder, getDefault = true) {
+import EventEmitter from 'events';
 
-    let content = global.localStorage.getItem('ponyHouse-appearance');
-
-    try {
-        content = JSON.parse(content) ?? {};
-    } catch (err) {
-        content = {};
-    }
-
-    if (getDefault) {
-
-        content.isEmbedEnabled = typeof content.isEmbedEnabled === 'boolean' ? content.isEmbedEnabled : true;
-        content.isUNhoverEnabled = typeof content.isUNhoverEnabled === 'boolean' ? content.isUNhoverEnabled : true;
-        content.isAnimateAvatarsEnabled = typeof content.isAnimateAvatarsEnabled === 'boolean' ? content.isAnimateAvatarsEnabled : true;
-
-        content.showUserDMstatus = typeof content.showUserDMstatus === 'boolean' ? content.showUserDMstatus : true;
-        content.pinDMmessages = typeof content.pinDMmessages === 'boolean' ? content.pinDMmessages : true;
-        content.sendMessageEnter = typeof content.sendMessageEnter === 'boolean' ? content.sendMessageEnter : true;
-
-        content.enableAnimParams = typeof content.enableAnimParams === 'boolean' ? content.enableAnimParams : !!__ENV_APP__.USE_ANIM_PARAMS;
-
-        content.useFreezePlugin = typeof content.useFreezePlugin === 'boolean' ? content.useFreezePlugin : false;
-
-        content.hidePinMessageEvents = typeof content.hidePinMessageEvents === 'boolean' ? content.hidePinMessageEvents : false;
-        content.hideUnpinMessageEvents = typeof content.hideUnpinMessageEvents === 'boolean' ? content.hideUnpinMessageEvents : false;
-
-    }
-
-    if (typeof folder === 'string' && folder.length > 0) {
-        if (typeof content[folder] !== 'undefined') return content[folder];
-        return null;
-    }
-
-    return content;
-
-};
-
+// Animated Image Url
 export function getAnimatedImageUrl(url) {
     if (typeof url === 'string') return `${url}&animated=true`;
     return null;
 };
 
+// Emitter
+class MatrixAppearance extends EventEmitter {
+
+    constructor() {
+
+        super();
+        this.content = global.localStorage.getItem('ponyHouse-appearance');
+
+        try {
+            this.content = JSON.parse(this.content) ?? {};
+        } catch (err) {
+            this.content = {};
+        }
+
+        this.content.isEmbedEnabled = typeof this.content.isEmbedEnabled === 'boolean' ? this.content.isEmbedEnabled : true;
+        this.content.isUNhoverEnabled = typeof this.content.isUNhoverEnabled === 'boolean' ? this.content.isUNhoverEnabled : true;
+        this.content.isAnimateAvatarsEnabled = typeof this.content.isAnimateAvatarsEnabled === 'boolean' ? this.content.isAnimateAvatarsEnabled : true;
+
+        this.content.showUserDMstatus = typeof this.content.showUserDMstatus === 'boolean' ? this.content.showUserDMstatus : true;
+        this.content.pinDMmessages = typeof this.content.pinDMmessages === 'boolean' ? this.content.pinDMmessages : true;
+        this.content.sendMessageEnter = typeof this.content.sendMessageEnter === 'boolean' ? this.content.sendMessageEnter : true;
+
+        this.content.enableAnimParams = typeof this.content.enableAnimParams === 'boolean' ? this.content.enableAnimParams : !!__ENV_APP__.USE_ANIM_PARAMS;
+
+        this.content.isDiscordStyleEnabled = typeof this.content.isDiscordStyleEnabled === 'boolean' ? this.content.isDiscordStyleEnabled : !!__ENV_APP__.DISCORD_STYLE;
+
+        this.content.useFreezePlugin = typeof this.content.useFreezePlugin === 'boolean' ? this.content.useFreezePlugin : false;
+
+        this.content.hidePinMessageEvents = typeof this.content.hidePinMessageEvents === 'boolean' ? this.content.hidePinMessageEvents : false;
+        this.content.hideUnpinMessageEvents = typeof this.content.hideUnpinMessageEvents === 'boolean' ? this.content.hideUnpinMessageEvents : false;
+
+    }
+
+    get(folder) {
+
+        if (typeof folder === 'string' && folder.length > 0) {
+            if (typeof this.content[folder] !== 'undefined') return this.content[folder];
+            return null;
+        }
+
+        return this.content;
+
+    }
+
+    set(folder, value) {
+        if (typeof folder === 'string') {
+            this.content[folder] = value;
+            global.localStorage.setItem('ponyHouse-appearance', JSON.stringify(this.content));
+        }
+    }
+
+};
+
+// Functions and class
+const matrixAppearance = new MatrixAppearance();
+export function getAppearance(folder) {
+    return matrixAppearance.get(folder);
+};
+
 export function setAppearance(folder, value) {
-    const content = getAppearance(null, false);
-    content[folder] = value;
-    global.localStorage.setItem('ponyHouse-appearance', JSON.stringify(content));
+    return matrixAppearance.set(folder, value);
 };
 
 const toggleAppearanceAction = (dataFolder, setToggle) => data => {
-
     setAppearance(dataFolder, data);
     setToggle((data === true));
-
 };
-export { toggleAppearanceAction };
 
+export { toggleAppearanceAction, matrixAppearance };
 global.appearanceApi = {
     getCfg: getAppearance,
     setCfg: setAppearance,

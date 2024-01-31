@@ -36,6 +36,8 @@ function AppearanceSection() {
     const [hidePinMessageEvents, setHidePinMessageEvents] = useState(appearanceSettings.hidePinMessageEvents);
     const [hideUnpinMessageEvents, setHideUnpinMessageEvents] = useState(appearanceSettings.hideUnpinMessageEvents);
 
+    const [isDiscordStyleEnabled, setDiscordStyleEnabled] = useState(appearanceSettings.isDiscordStyleEnabled);
+
     const [is24hours, setIs24hours] = useState(appearanceSettings.is24hours);
     const [calendarFormatOption, setCalendarFormat] = useState(appearanceSettings.calendarFormat);
 
@@ -309,6 +311,18 @@ function AppearanceSection() {
                             />
                         )}
                         content={<div className="very-small text-gray">When you hover over a user nickname, the username will be displayed.</div>}
+                    />
+
+                    <SettingTile
+                        title="The discord font style"
+                        options={(
+                            <Toggle
+                                className='d-inline-flex'
+                                isActive={isDiscordStyleEnabled}
+                                onToggle={toggleAppearanceAction('isDiscordStyleEnabled', setDiscordStyleEnabled)}
+                            />
+                        )}
+                        content={<div className="very-small text-gray">Are you looking for the discord style in your life? So check this option for this to come true in the font style.</div>}
                     />
 
                 </ul>
