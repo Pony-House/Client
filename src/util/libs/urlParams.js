@@ -37,8 +37,17 @@ class MatrixUrlParams extends EventEmitter {
 
     // Constructor
     constructor() {
+
+        // Data prepare
         super();
+        const tinyThis = this;
         this.params = new URLSearchParams(window.location.search);
+
+        // Event Change
+        window.addEventListener('popstate', () => {
+            tinyThis.params = new URLSearchParams(window.location.search);
+        });
+
     }
 
     // Get values
@@ -66,7 +75,7 @@ class MatrixUrlParams extends EventEmitter {
         return this.params.forEach(callback);
     }
 
-    // Manage
+    // Manager
     _getPath() {
         const newSearch = this.params.toString();
         return `${window.location.pathname}${typeof newSearch === 'string' && newSearch.length > 0 ? `?${newSearch}` : ''}`;
