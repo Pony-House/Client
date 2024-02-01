@@ -181,7 +181,7 @@ function RoomsCategory({
     rooms.push((
       <div className='category-button generated-category'>
         <button className={`py-2${tinyIsOpen ? ' category-open' : ''}`} id={roomIdB1} onClick={() => { setCategoryOpen({ roomName: roomDivId }) }} type="button">
-          <RawIcon fa={tinyIsOpen ? "fa-solid c-icon fa-chevron-down" : "fa-solid fa-chevron-right"} size="extra-small" />
+          <RawIcon fa={tinyIsOpen ? "fa-solid c-icon fa-chevron-down" : "fa-solid fa-chevron-right"} className='c-icon' size="extra-small" />
           <span className="text-gray very-small text-uppercase ms-2">{roomCategory[item].name}</span>
         </button>
       </div>
@@ -204,7 +204,7 @@ function RoomsCategory({
 
   // Complete
   return (
-    <div className={`${type !== 'directs' ? 'p-3 ' : 'px-3 pb-3 '}pe-2`}>
+    <div className={`${type !== 'directs' ? 'p-3 ' : 'px-3 pb-3 '}px-2`}>
       {!hideHeader && (
         <table className='category-button space-buttons w-100 m-0 p-0'>
           <tbody>

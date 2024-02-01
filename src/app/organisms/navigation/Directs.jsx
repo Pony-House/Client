@@ -67,7 +67,7 @@ function Directs({ size }) {
   return <>
 
     <div className="px-3 pe-2 pb-2 pt-4 text-truncate noselect">
-      <span className="text-gray very-small text-uppercase text-truncate ms-2">Rooms</span>
+      <span className="no-category-button text-gray very-small text-uppercase text-truncate ms-2">Rooms</span>
     </div>
 
     <RoomsCategory name="People" hideHeader roomIds={directIds} drawerPostie={drawerPostie} type='directs' isDM />
