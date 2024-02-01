@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 
 import { isInSameDay } from '../../../util/common';
 import moment, { momentFormat } from '../../../util/libs/momentjs';
+import matrixAppearance from '../../../util/libs/appearance';
 
 const timeBase = (timestamp, fullTime) => {
 
@@ -29,7 +30,21 @@ const timeBase = (timestamp, fullTime) => {
 
 function Time({ timestamp, fullTime, className }) {
 
+  const [, forceUpdate] = useReducer((count) => count + 1, 0);
   const { date, formattedFullTime, formattedDate } = timeBase(timestamp, fullTime);
+
+  useEffect(() => {
+
+    const updateClock = () => forceUpdate();
+    matrixAppearance.on('is24hours', updateClock);
+    matrixAppearance.on('calendarFormat', updateClock);
+
+    return () => {
+      matrixAppearance.off('is24hours', updateClock);
+      matrixAppearance.off('calendarFormat', updateClock);
+    };
+
+  });
 
   return <time
     className={className}

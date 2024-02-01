@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { twemojifyReact, twemojify } from '../../../util/twemojify';
@@ -11,7 +11,7 @@ import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 import { objType, toast } from '../../../util/tools';
 import { copyToClipboard } from '../../../util/common';
 import copyText from '../../organisms/profile-viewer/copyText';
-import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
+import matrixAppearance, { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 import moment, { momentFormat } from '../../../util/libs/momentjs';
 
 const timezoneAutoUpdate = { text: null, html: null, value: null };
@@ -34,6 +34,8 @@ setInterval(() => {
 function PeopleSelectorBanner({
   name, color, user
 }) {
+
+  const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
   const statusRef = useRef(null);
   const customStatusRef = useRef(null);
@@ -273,6 +275,19 @@ function PeopleSelectorBanner({
 
     }
   }, [user]);
+
+  useEffect(() => {
+
+    const updateClock = () => forceUpdate();
+    matrixAppearance.on('is24hours', updateClock);
+    matrixAppearance.on('calendarFormat', updateClock);
+
+    return () => {
+      matrixAppearance.off('is24hours', updateClock);
+      matrixAppearance.off('calendarFormat', updateClock);
+    };
+
+  });
 
   if (user) {
 

@@ -4,6 +4,7 @@ import React, {
   useLayoutEffect,
   useCallback,
   useRef,
+  useReducer,
 } from 'react';
 import PropTypes from 'prop-types';
 
@@ -33,6 +34,7 @@ import tinyAPI from '../../../util/mods';
 import moment, { momentFormat } from '../../../util/libs/momentjs';
 import { rule3 } from '../../../util/tools';
 import { mediaFix } from '../../molecules/media/mediaFix';
+import matrixAppearance from '../../../util/libs/appearance';
 
 let loadingPage = false;
 const PAG_LIMIT = 50;
@@ -489,6 +491,7 @@ function RoomViewContent({
   refRoomInput,
 }) {
 
+  const [, forceUpdate] = useReducer((count) => count + 1, 0);
   const [throttle] = useState(new Throttle());
   const [embedHeight, setEmbedHeight] = useState(null);
 
@@ -840,6 +843,19 @@ function RoomViewContent({
       $(phMsgQuery).addClass('no-loading').off('click', noLoadingPageButton).on('click', noLoadingPageButton);
     }
   }, 100);
+
+  useEffect(() => {
+
+    const updateClock = () => forceUpdate();
+    matrixAppearance.on('is24hours', updateClock);
+    matrixAppearance.on('calendarFormat', updateClock);
+
+    return () => {
+      matrixAppearance.off('is24hours', updateClock);
+      matrixAppearance.off('calendarFormat', updateClock);
+    };
+
+  });
 
   return <ScrollView id='chatbox-scroll' ref={timelineSVRef} autoHide>
     <div className="room-view__content" onClick={handleOnClickCapture}>

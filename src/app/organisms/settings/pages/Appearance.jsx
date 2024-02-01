@@ -273,7 +273,7 @@ function AppearanceSection() {
                                 onToggle={toggleAppearanceAction('is24hours', setIs24hours)}
                             />
                         )}
-                        content={<div className="very-small text-gray">Do not use the standard 12-hour clock. The next loads of the room will apply the configuration.</div>}
+                        content={<div className="very-small text-gray">Do not use the standard 12-hour clock.</div>}
                     />
 
                     <SettingTile
