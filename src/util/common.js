@@ -1,3 +1,5 @@
+import urlParams from './libs/urlParams';
+
 export function bytesToSize(bytes) {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
   if (bytes === 0) return 'n/a';
@@ -95,9 +97,7 @@ export class Throttle {
   }
 }
 
-export function getUrlPrams(paramName) {
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
+export function getUrlParams(paramName) {
   return urlParams.get(paramName);
 }
 

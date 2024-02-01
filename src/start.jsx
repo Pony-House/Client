@@ -13,15 +13,15 @@ import App from './app/pages/App';
 import { startCustomThemes } from '../mods';
 import { getOsSettings } from './util/libs/osSettings';
 import ChatRoom from './app/embed/ChatRoom';
+import urlParams from './util/libs/urlParams';
 
 function startApp(appProtocol) {
 
     global.getEnvApp = () => clone(__ENV_APP__);
     global.Buffer = Buffer;
 
-    const params = new URLSearchParams(window.location.search);
-    const pageType = params.get('type');
-    const pageId = params.get('id');
+    const pageType = urlParams.get('type');
+    const pageId = urlParams.get('id');
 
     const osSettings = getOsSettings();
     startCustomThemes();
@@ -38,14 +38,14 @@ function startApp(appProtocol) {
     ) {
 
         if (pageType === 'chatroom') {
-            const hs = params.get('hs');
+            const hs = urlParams.get('hs');
             return root.render(<ChatRoom
                 roomId={pageId}
                 homeserver={typeof hs === 'string' && hs.length ? hs : null}
-                joinGuest={params.get('join_guest')}
-                refreshTime={params.get('refresh_time')}
-                usernameHover={params.get('username_hover')}
-                theme={params.get('theme')}
+                joinGuest={urlParams.get('join_guest')}
+                refreshTime={urlParams.get('refresh_time')}
+                usernameHover={urlParams.get('username_hover')}
+                theme={urlParams.get('theme')}
             />);
         }
 

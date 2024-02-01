@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 
 import * as auth from '../../../client/action/auth';
 import cons from '../../../client/state/cons';
-import { getUrlPrams } from '../../../util/common';
+import { getUrlParams } from '../../../util/common';
 import Avatar from '../../atoms/avatar/Avatar';
 
 import LoadingScreen from './modules/LoadingScreen';
 import AuthCard from './modules/AuthCard';
 
 function Auth() {
-  const [loginToken, setLoginToken] = useState(getUrlPrams('loginToken'));
+  const [loginToken, setLoginToken] = useState(getUrlParams('loginToken'));
 
   useEffect(() => {
 
