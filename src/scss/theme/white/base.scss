@@ -433,4 +433,8 @@ body.discord-style {
   .very-small {
     font-size: 9pt;
   }
+
+  .badge:not(.notification-badge) {
+    font-size: 0.8em;
+  }
 }
