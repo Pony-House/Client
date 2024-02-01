@@ -97,6 +97,23 @@ src/app/templates/client/Loading.jsx
 
 <hr/>
 
+## Url Params API
+
+If you want to create resources that load quickly when the client page loads, you need to know how to manipulate the urlParams API.
+99% of the class is identical to the original URLSearchParams. (https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+
+The difference is that the methods below will update the url in real time, and will send events that have the same name as the method.
+
+    import { setLoadingPage } from '../../util/libs/urlParams.js';
+
+    urlParams.set();
+    urlParams.delete();
+    urlParams.append();
+
+    urlParams.on('set');
+    urlParams.on('delete');
+    urlParams.on('append');
+
 ## Methods
 
 ### logger.getData()
