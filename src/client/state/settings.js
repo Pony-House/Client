@@ -6,6 +6,7 @@ import appDispatcher from '../dispatcher';
 
 import cons from './cons';
 import tinyAPI from '../../util/mods';
+import matrixAppearance from '../../util/libs/appearance';
 import { objType } from '../../util/tools';
 
 import blackTheme from '../../scss/theme/black';
@@ -209,6 +210,7 @@ class Settings extends EventEmitter {
   _clearTheme() {
 
     $('body').removeClass('system-theme')
+      .removeClass('discord-style')
       .removeClass('theme-type-dark').removeClass('theme-type-dark-solid')
       .removeClass('theme-type-dark2').removeClass('theme-type-dark2-solid')
       .removeClass('theme-type-silver').removeClass('theme-type-silver-solid')
@@ -235,6 +237,10 @@ class Settings extends EventEmitter {
 
     this._clearTheme();
     const body = $('body');
+
+    if (matrixAppearance.get('isDiscordStyleEnabled')) {
+      body.addClass('discord-style');
+    }
 
     if (useSystemTheme) {
 

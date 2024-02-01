@@ -319,7 +319,15 @@ function AppearanceSection() {
                             <Toggle
                                 className='d-inline-flex'
                                 isActive={isDiscordStyleEnabled}
-                                onToggle={toggleAppearanceAction('isDiscordStyleEnabled', setDiscordStyleEnabled)}
+                                onToggle={toggleAppearanceAction('isDiscordStyleEnabled', (value) => {
+
+                                    const body = $('body');
+
+                                    body.removeClass('discord-style');
+                                    if (value) body.addClass('discord-style');
+                                    setDiscordStyleEnabled(value);
+
+                                })}
                             />
                         )}
                         content={<div className="very-small text-gray">Are you looking for the discord style in your life? So check this option for this to come true in the font style.</div>}

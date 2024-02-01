@@ -418,3 +418,19 @@
   --bg-surface-gradient-3: none !important;
   --bg-auth-gradient: none !important;
 }
+
+body.discord-style {
+  font-family: 'gg sans Normal Regular';
+  #chatbox .username-base {
+    font-family: 'gg sans SemiBold Regular';
+  }
+
+  small,
+  .small {
+    font-size: 11pt;
+  }
+
+  .very-small {
+    font-size: 9pt;
+  }
+}
