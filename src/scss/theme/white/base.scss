@@ -421,8 +421,18 @@
 
 body.discord-style {
   font-family: 'gg sans Normal Regular';
-  #chatbox .username-base {
-    font-family: 'gg sans SemiBold Regular';
+  #chatbox {
+    .username-base {
+      font-family: 'gg sans SemiBold Regular';
+    }
+
+    .message .chat-base time {
+      font-size: 9pt;
+      display: inline-block;
+      margin-top: -2px;
+      position: relative;
+      top: 2px;
+    }
   }
 
   #space-header {
