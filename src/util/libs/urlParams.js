@@ -79,20 +79,20 @@ class MatrixUrlParams extends EventEmitter {
     append(name, value) {
         this.params.append(name, value);
         this._replaceState();
-        this.emit('append', name, value);
+        this.emit('append', String(name), String(value));
     }
 
     set(name, value) {
         this.params.set(name, value);
         this._replaceState();
-        this.emit('set', name, value);
+        this.emit('set', String(name), String(value));
     }
 
     delete(name, value) {
         if (typeof value !== 'undefined') this.params.delete(name, value);
         this.params.delete(name);
         this._replaceState();
-        this.emit('delete', name, value);
+        this.emit('delete', String(name), String(value));
     }
 
 };
