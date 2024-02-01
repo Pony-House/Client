@@ -46,6 +46,7 @@ class MatrixUrlParams extends EventEmitter {
         // Event Change
         window.addEventListener('popstate', () => {
             tinyThis.params = new URLSearchParams(window.location.search);
+            tinyThis.emit('popstate', tinyThis.params.toString());
         });
 
     }
