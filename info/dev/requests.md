@@ -1,6 +1,8 @@
     --> Menu mobile de ícones precisa parar de ser table usar flex.
 
     --> Colocar o leitor de lista de threads.
+    --> Fazer o fixador de threads abaixo da room.
+
     --> Fazer opção para uma room de informações ser realmente de informação.
 
     =======================================================
