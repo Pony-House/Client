@@ -2,22 +2,32 @@ import { objType } from '../../../src/util/tools';
 import tinyAPI from '../../../src/util/mods';
 
 export default function sinkingYachts() {
+  // Welcome
+  console.log(`[Sinking Yachts] Scammers protection mod activated! https://sinking.yachts/`);
 
-    // Welcome
-    console.log(`[Sinking Yachts] Scammers protection mod activated! https://sinking.yachts/`);
-
-    // Function
-    tinyAPI.on('openUrlChecker', (data, host, protocol) => new Promise((resolve, reject) => {
-        if ((protocol === 'https:' || protocol === 'http:') && (!objType(data, 'object') || !data.isScammer)) {
-            const newTinyData = { isScammer: false };
-            fetch(`https://phish.sinking.yachts/v2/check/${host}`, {
-                method: 'GET',
-                headers: { 'Accept': 'application/json', },
-            }).then(res => res.json()).then(result => {
-                newTinyData.isScammer = result;
-                resolve(newTinyData);
-            }).catch(reject);
-        } else { resolve(data); }
-    }));
-
-};
+  // Function
+  tinyAPI.on(
+    'openUrlChecker',
+    (data, host, protocol) =>
+      new Promise((resolve, reject) => {
+        if (
+          (protocol === 'https:' || protocol === 'http:') &&
+          (!objType(data, 'object') || !data.isScammer)
+        ) {
+          const newTinyData = { isScammer: false };
+          fetch(`https://phish.sinking.yachts/v2/check/${host}`, {
+            method: 'GET',
+            headers: { Accept: 'application/json' },
+          })
+            .then((res) => res.json())
+            .then((result) => {
+              newTinyData.isScammer = result;
+              resolve(newTinyData);
+            })
+            .catch(reject);
+        } else {
+          resolve(data);
+        }
+      }),
+  );
+}

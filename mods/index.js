@@ -8,16 +8,14 @@ import unstoppableDomains from './web3/unstoppableDomains';
 import catppuccinTheme from './themes/catppuccin';
 
 export function startCustomThemes() {
-    catppuccinTheme();
-};
+  catppuccinTheme();
+}
 
 export default function startMods(firstTime) {
+  // sinkingYachts(firstTime);
+  // helloWorld(firstTime);
+  // startTest(firstTime);
 
-    // sinkingYachts(firstTime);
-    // helloWorld(firstTime);
-    // startTest(firstTime);
-
-    customMessages(firstTime);
-    unstoppableDomains(firstTime);
-
-}; 
+  customMessages(firstTime);
+  unstoppableDomains(firstTime);
+}
