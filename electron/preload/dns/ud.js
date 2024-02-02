@@ -40,7 +40,7 @@ const createPolygon = (eth) => {
 
 // Resolver
 const contracts = {};
-const resolver = (domain, resolve, ud, ens) => {
+const resolver = (domain, resolve, ud /* ens */) => {
   // Polygon
   if (!contracts.polygon && ud.polygon) contracts.polygon = createPolygon(ud.polygon.eth);
   if (contracts.polygon.getMany) {

@@ -24,7 +24,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   // showInstallPromotion();
 
   // Optionally, send analytics event that PWA install promo was shown.
-  console.log(`[PWA] 'beforeinstallprompt' event was fired.`);
+  console.log(`[PWA] 'beforeinstallprompt' event was fired.`, deferredPrompt);
 });
 
 window.addEventListener('appinstalled', () => {

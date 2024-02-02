@@ -1,12 +1,12 @@
 import { ReceiptType } from 'matrix-js-sdk';
 import initMatrix from '../initMatrix';
 
-export async function markAsRead(roomId, threadId) {
+export async function markAsRead(roomId /* threadId */) {
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
   if (!room) return;
 
-  const thread = threadId ? room.getThread(threadId) : null;
+  // const thread = threadId ? room.getThread(threadId) : null;
 
   initMatrix.notifications.deleteNoti(roomId);
 

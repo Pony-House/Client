@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-undef */
 import { ipcRenderer } from 'electron';
 import type { ProgressInfo } from 'electron-updater';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -5,7 +9,7 @@ import Modal from '@/components/update/Modal';
 import Progress from '@/components/update/Progress';
 import './update.module.scss';
 
-const Update = () => {
+function Update() {
   const [checking, setChecking] = useState(false);
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const [versionInfo, setVersionInfo] = useState<VersionInfo>();
@@ -119,7 +123,7 @@ const Update = () => {
               <div className="update-progress">
                 <div className="progress-title">Update progress:</div>
                 <div className="progress-bar">
-                  <Progress percent={progressInfo?.percent}></Progress>
+                  <Progress percent={progressInfo?.percent} />
                 </div>
               </div>
             </div>
@@ -133,6 +137,6 @@ const Update = () => {
       </button>
     </>
   );
-};
+}
 
 export default Update;

@@ -67,7 +67,7 @@ export function checkVisibleWindow() {
 }
 
 // HL JS fixer
-export function hljsFixer(el, where, callback = function () {}) {
+export function hljsFixer(el, where, callback = function () { }) {
   if (where === 'MessageBody') {
     el.html(
       `<table class="table table-borderless align-middle m-0"><tbody><tr><td class="code-line noselect">1</td><td class="code-text">${el.html()}</tbody></table>`,
@@ -101,6 +101,11 @@ export function toast(msg, title) {
   });
 }
 
+export function resizeWindowChecker(timeout = 500) {
+  // eslint-disable-next-line no-use-before-define
+  return tinyResizeFixer(timeout);
+}
+
 // Check Resize css Fixer
 const tinyResizeFixer = (timeout = 500) => {
   if (resizeTimeout) clearTimeout(resizeTimeout);
@@ -124,7 +129,6 @@ const tinyResizeFixer = (timeout = 500) => {
           resizePlace = resizePlaceDOM;
         }
 
-        // eslint-disable-next-line no-use-before-define
       } else {
         setTimeout(() => resizeWindowChecker(), 1);
         return;
@@ -182,9 +186,6 @@ const tinyResizeFixer = (timeout = 500) => {
   }, timeout);
 };
 
-export function resizeWindowChecker(timeout = 500) {
-  return tinyResizeFixer(timeout);
-}
 export function scrollFixer(event) {
   tinyAPI.emit('mouseWheel', event);
 }
@@ -238,14 +239,14 @@ export function btModal(data) {
       $('<div>', { class: 'modal-content' }).append(
         typeof data.title === 'string'
           ? $('<div>', { class: 'noselect modal-header' }).append(
-              $('<div>', { class: 'h5 emoji-size-fix modal-title h4' }).text(data.title),
-              $('<button>', {
-                type: 'button',
-                class: 'btn-close',
-                'data-bs-dismiss': 'modal',
-                'aria-label': 'Close',
-              }),
-            )
+            $('<div>', { class: 'h5 emoji-size-fix modal-title h4' }).text(data.title),
+            $('<button>', {
+              type: 'button',
+              class: 'btn-close',
+              'data-bs-dismiss': 'modal',
+              'aria-label': 'Close',
+            }),
+          )
           : null,
 
         $('<div>', {

@@ -5,26 +5,6 @@ import { objType } from '../tools';
 import convertProtocols from './convertProtocols';
 
 const tinyCache = {};
-setInterval(() => {
-  for (const item in tinyCache) {
-    if (tinyCache[item].timeout > 0) {
-      tinyCache[item].timeout--;
-
-      // eslint-disable-next-line no-use-before-define
-      setTimeout(() => {
-        urlPreviewStore.set(item, tinyCache[item]);
-      }, 1);
-    } else {
-      delete tinyCache[item];
-
-      // eslint-disable-next-line no-use-before-define
-      setTimeout(() => {
-        urlPreviewStore.delete(item);
-      }, 1);
-    }
-  }
-}, 60000);
-
 const urlConvert = {
   http: (url) => `https${url.substring(4, url.length)}`,
 };
@@ -102,6 +82,26 @@ const urlPreviewStore = {
     }
   },
 };
+
+setInterval(() => {
+  for (const item in tinyCache) {
+    if (tinyCache[item].timeout > 0) {
+      tinyCache[item].timeout--;
+
+      // eslint-disable-next-line no-use-before-define
+      setTimeout(() => {
+        urlPreviewStore.set(item, tinyCache[item]);
+      }, 1);
+    } else {
+      delete tinyCache[item];
+
+      // eslint-disable-next-line no-use-before-define
+      setTimeout(() => {
+        urlPreviewStore.delete(item);
+      }, 1);
+    }
+  }
+}, 60000);
 
 urlPreviewStore.refresh();
 

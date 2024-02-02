@@ -43,7 +43,7 @@ export function rgbToHsl(gr, gg, gb) {
     h /= 6;
   }
 
-  return { h: h, s: s, l: l };
+  return { h, s, l };
 }
 
 export function rca(len, type, pastel) {

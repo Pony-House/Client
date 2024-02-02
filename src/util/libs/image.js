@@ -1,6 +1,6 @@
 import imageViewer from '../imageViewer';
 
-export function openOnGallery(imgUrl, fileName, urlRevoke = false) {
+export function openOnGallery(imgUrl, fileName /* urlRevoke = false */) {
   const img = new Image();
   img.onload = function () {
     imageViewer({
@@ -9,7 +9,7 @@ export function openOnGallery(imgUrl, fileName, urlRevoke = false) {
       name: fileName,
       url: imgUrl,
       readMime: false,
-    }).then((pswp) => {
+    }).then((/* pswp */) => {
       /* pswp.on('close', () => {
                 pswp.destroy();
                 if (urlRevoke) window.URL.revokeObjectURL();
