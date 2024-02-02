@@ -266,7 +266,6 @@ export function openPinMessageModal(room) {
                   ),
 
                   // Message
-                  // eslint-disable-next-line no-loop-func
                   $('<td>', { class: 'p-0 pe-3 py-1 message-open-click' })
                     .on('click', () => {
                       const roomTimeline = getRoomInfo().roomTimeline;

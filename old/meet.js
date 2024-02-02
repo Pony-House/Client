@@ -7,9 +7,9 @@ const options = {
 
   // Selected Device
   devices: {
-    //audioInput: '<deviceLabel>',
-    //audioOutput: '<deviceLabel>',
-    //videoInput: '<deviceLabel>'
+    // audioInput: '<deviceLabel>',
+    // audioOutput: '<deviceLabel>',
+    // videoInput: '<deviceLabel>'
   },
 
   // Page Config
@@ -52,7 +52,7 @@ const options = {
     transcribingEnabled: false,
     disableSimulcast: false,
 
-    //etherpad_base: 'https://your-etherpad-installati.on/p/',
+    // etherpad_base: 'https://your-etherpad-installati.on/p/',
 
     giphy: {
       enabled: false,
@@ -65,7 +65,7 @@ const options = {
 
     whiteboard: {
       enabled: false,
-      //collabServerBaseUrl: 'https://excalidraw-backend.example.com'
+      // collabServerBaseUrl: 'https://excalidraw-backend.example.com'
     },
   },
 

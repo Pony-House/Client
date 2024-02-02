@@ -52,7 +52,6 @@ async function loginWithToken(baseUrl, token) {
   updateLocalStore(res.access_token, res.device_id, res.user_id, myBaseUrl);
 }
 
-// eslint-disable-next-line camelcase
 async function verifyEmail(baseUrl, email, client_secret, send_attempt, next_link) {
   const res = await fetch(`${baseUrl}/_matrix/client/r0/register/email/requestToken`, {
     method: 'POST',

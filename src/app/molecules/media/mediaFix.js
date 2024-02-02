@@ -1,4 +1,3 @@
-/* eslint-disable no-loop-func */
 const chatboxQuery = '#chatbox-scroll';
 const roomViewQuery = '> .room-view__content #chatbox';
 const timeoutFixer = { i: 200, value: 10 };
