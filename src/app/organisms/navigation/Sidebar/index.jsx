@@ -29,29 +29,24 @@ function CrossSigninAlert() {
       avatar={<Avatar faSrc="bi bi-shield-lock-fill btn-text-danger" size="normal" />}
     />
   );
-};
+}
 
 // Sidebar
 function SideBar() {
-
-
   return (
     <>
-      <center className='sidebar-item-1 h-100'>
+      <center className="sidebar-item-1 h-100">
         <ScrollView invisible>
           <div className="scrollable-content">
-
-            <div id='space-feature' className="featured-container">
-
+            <div id="space-feature" className="featured-container">
               <FeaturedTab />
               <InviteSidebar />
               <CrossSigninAlert />
-
             </div>
 
             <div className="sidebar-divider" />
 
-            <div id='space-container' className="space-container">
+            <div id="space-container" className="space-container">
               <SpaceShortcut />
               <SidebarAvatar
                 tooltip="Pin spaces"
@@ -59,26 +54,22 @@ function SideBar() {
                 avatar={<Avatar faSrc="bi bi-bookmark-plus-fill" size="normal" />}
               />
             </div>
-
           </div>
         </ScrollView>
       </center>
 
-      <center className='sidebar-item-2'>
+      <center className="sidebar-item-2">
         <div className="sidebar-divider" />
-        <div id='space-container-2' className="sticky-container">
-
+        <div id="space-container-2" className="sticky-container">
           <SidebarAvatar
             tooltip="Search"
             onClick={() => openSearch()}
             avatar={<Avatar faSrc="fa-solid fa-magnifying-glass" size="normal" />}
           />
-
         </div>
       </center>
-
     </>
   );
-};
+}
 
 export default SideBar;

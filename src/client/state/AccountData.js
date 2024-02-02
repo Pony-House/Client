@@ -72,7 +72,6 @@ class AccountData extends EventEmitter {
   accountActions(action) {
     const actions = {
       [cons.actions.accountData.CREATE_SPACE_SHORTCUT]: () => {
-
         const addRoomId = (id) => {
           if (this.spaceShortcut.has(id)) return;
           this.spaceShortcut.add(id);
@@ -88,10 +87,8 @@ class AccountData extends EventEmitter {
 
         tinyAPI.emit('spaceShortcutUpdate', action.roomId);
         this.emit(cons.events.accountData.SPACE_SHORTCUT_UPDATED, action.roomId);
-
       },
       [cons.actions.accountData.DELETE_SPACE_SHORTCUT]: () => {
-
         if (!this.spaceShortcut.has(action.roomId)) return;
 
         this.spaceShortcut.delete(action.roomId);
@@ -99,10 +96,8 @@ class AccountData extends EventEmitter {
 
         tinyAPI.emit('spaceShortcutUpdated', action.roomId);
         this.emit(cons.events.accountData.SPACE_SHORTCUT_UPDATED, action.roomId);
-
       },
       [cons.actions.accountData.MOVE_SPACE_SHORTCUTS]: () => {
-
         const { roomId, toIndex } = action;
         if (!this.spaceShortcut.has(roomId)) return;
 
@@ -116,10 +111,8 @@ class AccountData extends EventEmitter {
 
         tinyAPI.emit('spaceShortcutUpdated', roomId);
         this.emit(cons.events.accountData.SPACE_SHORTCUT_UPDATED, roomId);
-
       },
       [cons.actions.accountData.CATEGORIZE_SPACE]: () => {
-
         if (this.categorizedSpaces.has(action.roomId)) return;
 
         this.categorizedSpaces.add(action.roomId);
@@ -127,10 +120,8 @@ class AccountData extends EventEmitter {
 
         tinyAPI.emit('categorizeSpaceUpdated', action.roomId);
         this.emit(cons.events.accountData.CATEGORIZE_SPACE_UPDATED, action.roomId);
-
       },
       [cons.actions.accountData.UNCATEGORIZE_SPACE]: () => {
-
         if (!this.categorizedSpaces.has(action.roomId)) return;
 
         this.categorizedSpaces.delete(action.roomId);
@@ -138,7 +129,6 @@ class AccountData extends EventEmitter {
 
         tinyAPI.emit('categorizeSpaceUpdated', action.roomId);
         this.emit(cons.events.accountData.CATEGORIZE_SPACE_UPDATED, action.roomId);
-
       },
     };
     actions[action.type]?.();
@@ -146,7 +136,6 @@ class AccountData extends EventEmitter {
 
   _listenEvents() {
     this.matrixClient.on('accountData', (event) => {
-
       if (event.getType() !== cons.IN_CINNY_SPACES) return;
 
       this._populateSpaceShortcut();
@@ -158,28 +147,23 @@ class AccountData extends EventEmitter {
 
       tinyAPI.emit('categorizeSpaceUpdated');
       this.emit(cons.events.accountData.CATEGORIZE_SPACE_UPDATED);
-
     });
 
     this.roomList.on(cons.events.roomList.ROOM_LEAVED, (roomId) => {
       if (this.spaceShortcut.has(roomId)) {
-
         // if deleted space has shortcut remove it.
         this.spaceShortcut.delete(roomId);
         this._updateSpaceShortcutData([...this.spaceShortcut]);
 
         tinyAPI.emit('spaceShortcutUpdated', roomId);
         this.emit(cons.events.accountData.SPACE_SHORTCUT_UPDATED, roomId);
-
       }
       if (this.categorizedSpaces.has(roomId)) {
-
         this.categorizedSpaces.delete(roomId);
         this._updateCategorizedSpacesData([...this.categorizedSpaces]);
 
         tinyAPI.emit('categorizeSpaceUpdated', roomId);
         this.emit(cons.events.accountData.CATEGORIZE_SPACE_UPDATED, roomId);
-
       }
     });
   }

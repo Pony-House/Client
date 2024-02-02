@@ -8,12 +8,9 @@ import { objType } from '../../util/tools';
 
 // Emitter
 class MatrixDevices extends EventEmitter {
-
   constructor() {
-
     super();
     this.devices = [];
-
   }
 
   updateDevices(devices) {
@@ -23,17 +20,14 @@ class MatrixDevices extends EventEmitter {
   getDevices() {
     return this.devices;
   }
-
-};
+}
 
 const matrixDevices = new MatrixDevices();
 const sendPing = () => {
-
   const mx = initMatrix.matrixClient;
   if (mx && typeof mx.getAccountData === 'function') {
     const eventData = mx.getAccountData('pony.house.ping');
     if (eventData) {
-
       const devices = matrixDevices.getDevices();
       const devicesData = eventData.getContent() ?? {};
       const hash = {};
@@ -46,41 +40,48 @@ const sendPing = () => {
         } else {
           hash.old = null;
         }
-      } catch { hash.old = null; }
+      } catch {
+        hash.old = null;
+      }
 
       if (objType(devicesData, 'object') && Array.isArray(devicesData.pings)) {
         for (const item in devicesData.pings) {
           if (
             objType(newDevicesData.pings[item], 'object') &&
             typeof newDevicesData.pings[item].id === 'string' &&
-            devices.find(device => device.device_id === newDevicesData.pings[item].id) &&
+            devices.find((device) => device.device_id === newDevicesData.pings[item].id) &&
             typeof newDevicesData.pings[item].unix === 'number'
           ) {
-            newDevicesData.pings.push({ id: newDevicesData.pings[item].id, unix: newDevicesData.pings[item].unix });
+            newDevicesData.pings.push({
+              id: newDevicesData.pings[item].id,
+              unix: newDevicesData.pings[item].unix,
+            });
           }
         }
       }
 
-      const deviceItem = newDevicesData.pings.find(item => item.id === deviceId);
+      const deviceItem = newDevicesData.pings.find((item) => item.id === deviceId);
       if (deviceItem) {
         deviceItem.unix = moment().unix();
       } else {
         newDevicesData.pings.push({ id: deviceId, unix: moment().unix() });
       }
 
-      try { hash.new = objectHash(newDevicesData); } catch { hash.new = null; }
+      try {
+        hash.new = objectHash(newDevicesData);
+      } catch {
+        hash.new = null;
+      }
       if (hash.new !== hash.old) {
         mx.setAccountData('pony.house.ping', newDevicesData);
         matrixDevices.emit('devicePing', newDevicesData.pings);
       }
-
     } else {
       setTimeout(sendPing, 200);
     }
   } else {
     setTimeout(sendPing, 200);
   }
-
 };
 
 // 10 Minutes later...
@@ -90,33 +91,30 @@ setTimeout(() => sendPing(), 60000 * 10);
 let firstTime = true;
 export { matrixDevices };
 export function useDeviceList() {
-
   // Data
   const mx = initMatrix.matrixClient;
   const [deviceList, setDeviceList] = useState(null);
 
   // Effect
   useEffect(() => {
-
     let isMounted = true;
 
     // Start update
-    const updateDevices = () => mx.getDevices().then((data) => {
+    const updateDevices = () =>
+      mx.getDevices().then((data) => {
+        if (!isMounted) return;
 
-      if (!isMounted) return;
+        const devices = data.devices || [];
+        matrixDevices.updateDevices(devices);
+        matrixDevices.emit('devicesUpdated', devices);
 
-      const devices = data.devices || [];
-      matrixDevices.updateDevices(devices);
-      matrixDevices.emit('devicesUpdated', devices);
+        if (firstTime) {
+          firstTime = false;
+          sendPing();
+        }
 
-      if (firstTime) {
-        firstTime = false;
-        sendPing();
-      }
-
-      setDeviceList(devices);
-
-    });
+        setDeviceList(devices);
+      });
 
     // First check
     updateDevices();
@@ -132,7 +130,12 @@ export function useDeviceList() {
     const handleAccountData = (event) => {
       if (event.getType() === 'pony.house.ping') {
         const devicesData = mx.getAccountData('pony.house.ping').getContent() ?? {};
-        matrixDevices.emit('devicePing', objType(devicesData, 'object') && Array.isArray(devicesData.pings) ? devicesData.pings : []);
+        matrixDevices.emit(
+          'devicePing',
+          objType(devicesData, 'object') && Array.isArray(devicesData.pings)
+            ? devicesData.pings
+            : [],
+        );
       }
     };
 
@@ -143,10 +146,8 @@ export function useDeviceList() {
       mx.removeListener('crypto.devicesUpdated', handleDevicesUpdate);
       isMounted = false;
     };
-
   }, []);
 
   // Complete
   return deviceList;
-
-};
+}

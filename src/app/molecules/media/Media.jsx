@@ -42,10 +42,7 @@ function getNativeHeight(width, height, maxWidth = 296) {
   return '';
 }
 
-function FileHeader({
-  name, link, external,
-  file, type,
-}) {
+function FileHeader({ name, link, external, file, type }) {
   const [url, setUrl] = useState(null);
 
   async function getFile() {
@@ -63,19 +60,19 @@ function FileHeader({
 
   return (
     <div className="file-header">
-      <Text className="file-name" variant="b3">{name}</Text>
+      <Text className="file-name" variant="b3">
+        {name}
+      </Text>
       {link !== null && (
         <>
-          {
-            external && (
-              <IconButton
-                size="extra-small"
-                tooltip="Open in new tab"
-                fa="fa-solid fa-arrow-up-right-from-square"
-                onClick={() => window.open(url || link)}
-              />
-            )
-          }
+          {external && (
+            <IconButton
+              size="extra-small"
+              tooltip="Open in new tab"
+              fa="fa-solid fa-arrow-up-right-from-square"
+              onClick={() => window.open(url || link)}
+            />
+          )}
           <a href={url || link} download={name} target="_blank" rel="noreferrer">
             <IconButton
               size="extra-small"
@@ -102,9 +99,7 @@ FileHeader.propTypes = {
   type: PropTypes.string.isRequired,
 };
 
-function File({
-  name, link, file, type,
-}) {
+function File({ name, link, file, type }) {
   return (
     <div className="file-container">
       <FileHeader name={name} link={link} file={file} type={type} />
@@ -123,7 +118,16 @@ File.propTypes = {
 };
 
 function Image({
-  name, width, height, link, file, type, blurhash, className, classImage, ignoreContainer
+  name,
+  width,
+  height,
+  link,
+  file,
+  type,
+  blurhash,
+  className,
+  classImage,
+  ignoreContainer,
 }) {
   const [url, setUrl] = useState(null);
   const [blur, setBlur] = useState(true);
@@ -155,22 +159,20 @@ function Image({
       className={`${classImage}${ignoreContainer ? ` ${className}` : ''}`}
       draggable="false"
       style={{ display: blur ? 'none' : 'unset' }}
-      onLoad={event => {
-
+      onLoad={(event) => {
         mediaFix(itemEmbed, embedHeight, setEmbedHeight);
         setBlur(false);
         let imageLoaded = false;
         if (!imageLoaded && event.target) {
-
           imageLoaded = true;
           const img = $(event.target);
-          const imgAction = () => { imageViewer({ lightbox, imgQuery: img, name, url }); };
+          const imgAction = () => {
+            imageViewer({ lightbox, imgQuery: img, name, url });
+          };
 
           img.off('click', imgAction);
           img.on('click', imgAction);
-
         }
-
       }}
       src={url || link}
       alt={name}
@@ -181,7 +183,6 @@ function Image({
   // tinyFixScrollChat();
 
   if (!ignoreContainer) {
-
     return (
       <div className={`file-container${className ? ` ${className}` : ''}`}>
         <div
@@ -197,11 +198,9 @@ function Image({
         </div>
       </div>
     );
-
   }
 
   return imgData;
-
 }
 Image.defaultProps = {
   ignoreContainer: false,
@@ -226,9 +225,7 @@ Image.propTypes = {
   blurhash: PropTypes.string,
 };
 
-function Sticker({
-  name, height, width, link, file, type,
-}) {
+function Sticker({ name, height, width, link, file, type }) {
   const [url, setUrl] = useState(null);
 
   const itemEmbed = useRef(null);
@@ -250,11 +247,11 @@ function Sticker({
   useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
 
   return (
-    <Tooltip
-      placement='top'
-      content={<div className='small'>{name}</div>}
-    >
-      <div className="sticker-container" style={{ height: width !== null ? getNativeHeight(width, height, 170) : 'unset' }}>
+    <Tooltip placement="top" content={<div className="small">{name}</div>}>
+      <div
+        className="sticker-container"
+        style={{ height: width !== null ? getNativeHeight(width, height, 170) : 'unset' }}
+      >
         {url !== null && <img src={url || link} alt={name} />}
       </div>
     </Tooltip>
@@ -275,10 +272,7 @@ Sticker.propTypes = {
   type: PropTypes.string,
 };
 
-function Audio({
-  name, link, type, file,
-}) {
-
+function Audio({ name, link, type, file }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [url, setUrl] = useState(null);
@@ -298,19 +292,22 @@ function Audio({
   }
 
   useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded));
-  return <div ref={itemEmbed} className="file-container">
-    <FileHeader name={name} link={file !== null ? url : url || link} type={type} external />
-    <div className="audio-container">
-      {url === null && isLoading && <Spinner size="small" />}
-      {url === null && !isLoading && <IconButton onClick={handlePlayAudio} tooltip="Play audio" fa="fa-solid fa-circle-play" />}
-      {url !== null && (
-        <audio autoPlay controls>
-          <source src={url} type={getBlobSafeMimeType(type)} />
-        </audio>
-      )}
+  return (
+    <div ref={itemEmbed} className="file-container">
+      <FileHeader name={name} link={file !== null ? url : url || link} type={type} external />
+      <div className="audio-container">
+        {url === null && isLoading && <Spinner size="small" />}
+        {url === null && !isLoading && (
+          <IconButton onClick={handlePlayAudio} tooltip="Play audio" fa="fa-solid fa-circle-play" />
+        )}
+        {url !== null && (
+          <audio autoPlay controls>
+            <source src={url} type={getBlobSafeMimeType(type)} />
+          </audio>
+        )}
+      </div>
     </div>
-  </div>;
-
+  );
 }
 Audio.defaultProps = {
   file: null,
@@ -324,10 +321,17 @@ Audio.propTypes = {
 };
 
 function Video({
-  name, link, thumbnail, thumbnailFile, thumbnailType,
-  width, height, file, type, blurhash,
+  name,
+  link,
+  thumbnail,
+  thumbnailFile,
+  thumbnailType,
+  width,
+  height,
+  file,
+  type,
+  blurhash,
 }) {
-
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [url, setUrl] = useState(null);
@@ -338,7 +342,6 @@ function Video({
   const [embedHeight, setEmbedHeight] = useState(null);
 
   useEffect(() => {
-
     let unmounted = false;
     async function fetchUrl() {
       const myThumbUrl = await getUrl(thumbnail, thumbnailType, thumbnailFile);
@@ -350,7 +353,6 @@ function Video({
     return () => {
       unmounted = true;
     };
-
   }, []);
 
   useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded));
@@ -366,29 +368,38 @@ function Video({
     loadVideo();
   };
 
-  return <div ref={itemEmbed} className={`file-container${url !== null ? ' file-open' : ''}`}>
-    <FileHeader name={name} link={file !== null ? url : url || link} type={type} external />
-    {url === null ?
-
-      <div className="video-container">
-
-        {!isLoading && <IconButton onClick={handlePlayVideo} tooltip="Play video" fa="fa-solid fa-circle-play" />}
-        {blurhash && blur && <BlurhashCanvas hash={blurhash} punch={1} />}
-        {thumbUrl !== null && (
-          <img style={{ display: blur ? 'none' : 'unset' }} src={thumbUrl} onLoad={() => setBlur(false)} alt={name} />
-        )}
-        {isLoading && <Spinner size="small" />}
-
-      </div> :
-
-      <div className="ratio ratio-16x9 video-base">
-        <video srcwidth={width} srcheight={height} autoPlay controls poster={thumbUrl}>
-          <source src={url} type={getBlobSafeMimeType(type)} />
-        </video>
-      </div>
-
-    }
-  </div>;
+  return (
+    <div ref={itemEmbed} className={`file-container${url !== null ? ' file-open' : ''}`}>
+      <FileHeader name={name} link={file !== null ? url : url || link} type={type} external />
+      {url === null ? (
+        <div className="video-container">
+          {!isLoading && (
+            <IconButton
+              onClick={handlePlayVideo}
+              tooltip="Play video"
+              fa="fa-solid fa-circle-play"
+            />
+          )}
+          {blurhash && blur && <BlurhashCanvas hash={blurhash} punch={1} />}
+          {thumbUrl !== null && (
+            <img
+              style={{ display: blur ? 'none' : 'unset' }}
+              src={thumbUrl}
+              onLoad={() => setBlur(false)}
+              alt={name}
+            />
+          )}
+          {isLoading && <Spinner size="small" />}
+        </div>
+      ) : (
+        <div className="ratio ratio-16x9 video-base">
+          <video srcwidth={width} srcheight={height} autoPlay controls poster={thumbUrl}>
+            <source src={url} type={getBlobSafeMimeType(type)} />
+          </video>
+        </div>
+      )}
+    </div>
+  );
 }
 Video.defaultProps = {
   width: null,
@@ -413,6 +424,4 @@ Video.propTypes = {
   blurhash: PropTypes.string,
 };
 
-export {
-  File, Image, Sticker, Audio, Video,
-};
+export { File, Image, Sticker, Audio, Video };

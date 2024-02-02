@@ -83,7 +83,6 @@ function RoomSelector({
   notSpace,
   user,
 }) {
-
   const [userData, setPresenceStatus] = useState(null);
   const [imgAnimSrc, setImgAnimSrc] = useState(imageAnimSrc);
   const [imgSrc, setImgSrc] = useState(imageSrc);
@@ -100,40 +99,49 @@ function RoomSelector({
     setTimeout(() => insertCustomStatus(customStatusRef, content), 10);
   }
 
-  const existStatus = (
-    objType(userData, 'object') && objType(userData.presenceStatusMsg, 'object') &&
-    userData.presence !== 'offline' && userData.presence !== 'unavailable' &&
-    (
-      (userData.presenceStatusMsg.msg === 'string' && userData.presenceStatusMsg.msg.length > 0) ||
-      (typeof userData.presenceStatusMsg.msgIcon === 'string' && userData.presenceStatusMsg.msgIcon.length > 0)
-    )
-  );
+  const existStatus =
+    objType(userData, 'object') &&
+    objType(userData.presenceStatusMsg, 'object') &&
+    userData.presence !== 'offline' &&
+    userData.presence !== 'unavailable' &&
+    ((userData.presenceStatusMsg.msg === 'string' && userData.presenceStatusMsg.msg.length > 0) ||
+      (typeof userData.presenceStatusMsg.msgIcon === 'string' &&
+        userData.presenceStatusMsg.msgIcon.length > 0));
 
   useEffect(() => {
     if (user) {
-
       // Status
       const status = $(statusRef.current);
 
       // Update Status Profile
       const updateProfileStatus = (mEvent, tinyUser) => {
-
         // Presence
         const appearanceSettings = getAppearance();
         const content = updateUserStatusIcon(status, tinyUser);
 
         // Image
-        let newImageSrc = tinyUser && tinyUser.avatarUrl ? mx.mxcUrlToHttp(tinyUser.avatarUrl, 32, 32, 'crop') : (room && room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
-        if (room && newImageSrc === null) newImageSrc = room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
+        let newImageSrc =
+          tinyUser && tinyUser.avatarUrl
+            ? mx.mxcUrlToHttp(tinyUser.avatarUrl, 32, 32, 'crop')
+            : (room && room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) ||
+              null;
+        if (room && newImageSrc === null)
+          newImageSrc = room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
         setImgSrc(newImageSrc);
 
-        let newImageAnimSrc = tinyUser && tinyUser.avatarUrl ?
-          mx.mxcUrlToHttp(tinyUser.avatarUrl)
-          : (room &&
-            !appearanceSettings.enableAnimParams ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'))
-          ) || null;
+        let newImageAnimSrc =
+          tinyUser && tinyUser.avatarUrl
+            ? mx.mxcUrlToHttp(tinyUser.avatarUrl)
+            : (room && !appearanceSettings.enableAnimParams
+                ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)
+                : getAnimatedImageUrl(
+                    room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'),
+                  )) || null;
 
-        if (room && newImageAnimSrc === null) newImageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
+        if (room && newImageAnimSrc === null)
+          newImageAnimSrc = !appearanceSettings.enableAnimParams
+            ? room.getAvatarUrl(mx.baseUrl)
+            : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
         setImgAnimSrc(newImageAnimSrc);
 
         // Room Name
@@ -141,9 +149,7 @@ function RoomSelector({
 
         if (typeof tinyUser.displayName === 'string' && tinyUser.displayName.length > 0) {
           newRoomName = tinyUser.displayName;
-        }
-
-        else if (typeof tinyUser.userId === 'string' && tinyUser.userId.length > 0) {
+        } else if (typeof tinyUser.userId === 'string' && tinyUser.userId.length > 0) {
           newRoomName = tinyUser.userId;
         }
 
@@ -151,7 +157,6 @@ function RoomSelector({
         insertCustomStatus(customStatusRef, content);
 
         setPresenceStatus(content);
-
       };
 
       user.on('User.avatarUrl', updateProfileStatus);
@@ -165,65 +170,81 @@ function RoomSelector({
         user.removeListener('User.presence', updateProfileStatus);
         user.removeListener('User.avatarUrl', updateProfileStatus);
       };
-
     }
   });
 
   checkerFavIcon();
-  const isDefault = (!iconSrc || notSpace);
+  const isDefault = !iconSrc || notSpace;
 
-  return <RoomSelectorWrapper
-    className='text-truncate'
-    isSelected={isSelected}
-    isMuted={isMuted}
-    isUnread={isUnread}
-    content={(<div className={`text-truncate content${user ? ' content-dm' : ''}${existStatus ? ' content-with-custom-status' : ''}`}>
+  return (
+    <RoomSelectorWrapper
+      className="text-truncate"
+      isSelected={isSelected}
+      isMuted={isMuted}
+      isUnread={isUnread}
+      content={
+        <div
+          className={`text-truncate content${user ? ' content-dm' : ''}${existStatus ? ' content-with-custom-status' : ''}`}
+        >
+          <div
+            className={`float-start me-2 h-100 avatar avatar-type--${imgSrc || isDefault ? 'img' : 'icon'}`}
+          >
+            <Avatar
+              text={roomName}
+              bgColor={colorMXID(roomId)}
+              imageSrc={imgSrc}
+              animParentsCount={animParentsCount}
+              imageAnimSrc={imgAnimSrc}
+              iconColor="var(--ic-surface-low)"
+              iconSrc={!isProfile ? iconSrc : null}
+              faSrc={isProfile ? 'bi bi-person-badge-fill profile-icon-fa' : null}
+              size="extra-small"
+              isDefaultImage={isDefault}
+            />
 
-      <div className={`float-start me-2 h-100 avatar avatar-type--${imgSrc || isDefault ? 'img' : 'icon'}`}>
+            {user ? (
+              <i
+                ref={statusRef}
+                className={`user-status user-status-icon ${getUserStatus(user)}`}
+              />
+            ) : null}
+          </div>
 
-        <Avatar
-          text={roomName}
-          bgColor={colorMXID(roomId)}
-          imageSrc={imgSrc}
-          animParentsCount={animParentsCount}
-          imageAnimSrc={imgAnimSrc}
-          iconColor="var(--ic-surface-low)"
-          iconSrc={!isProfile ? iconSrc : null}
-          faSrc={isProfile ? 'bi bi-person-badge-fill profile-icon-fa' : null}
-          size="extra-small"
-          isDefaultImage={isDefault}
-        />
+          <Text
+            className={`text-truncate username-base${isUnread ? ' username-unread' : ''}`}
+            variant="b1"
+            weight={isUnread ? 'medium' : 'normal'}
+          >
+            {twemojifyReact(roomName)}
+            {parentName && (
+              <span className="very-small text-gray">
+                {' — '}
+                {twemojifyReact(parentName)}
+              </span>
+            )}
+          </Text>
 
-        {user ? <i ref={statusRef} className={`user-status user-status-icon ${getUserStatus(user)}`} /> : null}
+          {user ? (
+            <div
+              ref={customStatusRef}
+              className="very-small text-gray text-truncate emoji-size-fix-2 user-custom-status"
+            />
+          ) : null}
 
-      </div>
-
-      <Text className={`text-truncate username-base${isUnread ? ' username-unread' : ''}`} variant="b1" weight={isUnread ? 'medium' : 'normal'}>
-        {twemojifyReact(roomName)}
-        {parentName && (
-          <span className="very-small text-gray">
-            {' — '}
-            {twemojifyReact(parentName)}
-          </span>
-        )}
-      </Text>
-
-      {user ? <div ref={customStatusRef} className='very-small text-gray text-truncate emoji-size-fix-2 user-custom-status' /> : null}
-
-      {isUnread && (
-        <NotificationBadge
-          className='float-end'
-          alert={isAlert}
-          content={notificationCount !== 0 ? notificationCount : null}
-        />
-      )}
-
-    </div>)}
-    options={options}
-    onClick={onClick}
-    onContextMenu={onContextMenu}
-  />;
-
+          {isUnread && (
+            <NotificationBadge
+              className="float-end"
+              alert={isAlert}
+              content={notificationCount !== 0 ? notificationCount : null}
+            />
+          )}
+        </div>
+      }
+      options={options}
+      onClick={onClick}
+      onContextMenu={onContextMenu}
+    />
+  );
 }
 
 RoomSelector.defaultProps = {
@@ -252,10 +273,7 @@ RoomSelector.propTypes = {
   isSelected: PropTypes.bool,
   isMuted: PropTypes.bool,
   isUnread: PropTypes.bool.isRequired,
-  notificationCount: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]).isRequired,
+  notificationCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   isAlert: PropTypes.bool.isRequired,
   options: PropTypes.node,
   onClick: PropTypes.func.isRequired,
@@ -264,7 +282,6 @@ RoomSelector.propTypes = {
 
 export default RoomSelector;
 export function ThreadSelector({ thread, isSelected, isMuted }) {
-
   const { rootEvent } = thread;
 
   const notificationCount = thread.room.getThreadUnreadNotificationCount(
@@ -284,25 +301,27 @@ export function ThreadSelector({ thread, isSelected, isMuted }) {
     selectRoom(thread.roomId, undefined, thread.id);
   };
 
-  return <RoomSelectorWrapper
-    isSelected={isSelected}
-    isMuted={isMuted}
-    isUnread={!isMuted && notificationCount > 0}
-    content={
-      <>
-        <div className="thread-selector__lines">{/* TODO */}</div>
-        <Text variant="b1" weight={isUnread ? 'medium' : 'normal'}>
-          <i class="bi bi-arrow-return-right me-2 thread-selector__icon" /> {twemojifyReact(name)}
-        </Text>
-        {isUnread && (
-          <NotificationBadge
-            alert={isAlert}
-            content={notificationCount > 0 ? notificationCount : null}
-          />
-        )}
-      </>
-    }
-    options={<div />}
-    onClick={onClick}
-  />;
-};
+  return (
+    <RoomSelectorWrapper
+      isSelected={isSelected}
+      isMuted={isMuted}
+      isUnread={!isMuted && notificationCount > 0}
+      content={
+        <>
+          <div className="thread-selector__lines">{/* TODO */}</div>
+          <Text variant="b1" weight={isUnread ? 'medium' : 'normal'}>
+            <i class="bi bi-arrow-return-right me-2 thread-selector__icon" /> {twemojifyReact(name)}
+          </Text>
+          {isUnread && (
+            <NotificationBadge
+              alert={isAlert}
+              content={notificationCount > 0 ? notificationCount : null}
+            />
+          )}
+        </>
+      }
+      options={<div />}
+      onClick={onClick}
+    />
+  );
+}

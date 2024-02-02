@@ -65,7 +65,11 @@ function AuthRequest({ onComplete, makeRequest }) {
         </div>
         {status.ongoing && <Spinner size="small" />}
         {status.error && <div className="very-small text-gray">{status.error}</div>}
-        {(status === false || status.error) && <Button variant="primary" type="submit" disabled={!!status.error}>Continue</Button>}
+        {(status === false || status.error) && (
+          <Button variant="primary" type="submit" disabled={!!status.error}>
+            Continue
+          </Button>
+        )}
       </form>
     </div>
   );
@@ -96,7 +100,9 @@ export const authRequest = async (title, makeRequest) => {
     return new Promise((resolve) => {
       let isCompleted = false;
       openReusableDialog(
-        <Text variant="s1" weight="medium">{title}</Text>,
+        <Text variant="s1" weight="medium">
+          {title}
+        </Text>,
         (requestClose) => (
           <AuthRequest
             onComplete={(done) => {

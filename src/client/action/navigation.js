@@ -51,7 +51,7 @@ export function openSpaceSettings(roomId, tabText, isProfile = false) {
     type: cons.actions.navigation.OPEN_SPACE_SETTINGS,
     roomId,
     tabText,
-    isProfile
+    isProfile,
   });
 }
 
@@ -134,7 +134,13 @@ export function openProfileViewer(userId, roomId) {
 }
 
 export function openSettings(tabText) {
-  if (tinyCrypto && tinyCrypto.call && typeof tinyCrypto.call.requestAccounts === 'function' && tinyCrypto.isUnlocked()) tinyCrypto.call.requestAccounts();
+  if (
+    tinyCrypto &&
+    tinyCrypto.call &&
+    typeof tinyCrypto.call.requestAccounts === 'function' &&
+    tinyCrypto.isUnlocked()
+  )
+    tinyCrypto.call.requestAccounts();
   appDispatcher.dispatch({
     type: cons.actions.navigation.OPEN_SETTINGS,
     tabText,

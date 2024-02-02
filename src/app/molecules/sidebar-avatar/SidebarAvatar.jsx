@@ -7,35 +7,29 @@ import Text from '../../atoms/text/Text';
 import Tooltip from '../../atoms/tooltip/Tooltip';
 import { blurOnBubbling } from '../../atoms/button/script';
 
-const SidebarAvatar = React.forwardRef(({
-  className, tooltip, active, onClick,
-  onContextMenu, avatar, notificationBadge,
-}, ref) => {
+const SidebarAvatar = React.forwardRef(
+  ({ className, tooltip, active, onClick, onContextMenu, avatar, notificationBadge }, ref) => {
+    const classes = ['sidebar-avatar', 'position-relative'];
+    if (active) classes.push('sidebar-avatar--active');
+    if (className) classes.push(className);
 
-  const classes = ['sidebar-avatar', 'position-relative'];
-  if (active) classes.push('sidebar-avatar--active');
-  if (className) classes.push(className);
-
-  return (
-    <Tooltip
-      content={<Text variant="b1">{twemojifyReact(tooltip)}</Text>}
-      placement="right"
-    >
-      <button
-        ref={ref}
-        className={classes.join(' ')}
-        type="button"
-        onMouseUp={(e) => blurOnBubbling(e, '.sidebar-avatar')}
-        onClick={onClick}
-        onContextMenu={onContextMenu}
-      >
-        {avatar}
-        {notificationBadge}
-      </button>
-    </Tooltip>
-  );
-
-});
+    return (
+      <Tooltip content={<Text variant="b1">{twemojifyReact(tooltip)}</Text>} placement="right">
+        <button
+          ref={ref}
+          className={classes.join(' ')}
+          type="button"
+          onMouseUp={(e) => blurOnBubbling(e, '.sidebar-avatar')}
+          onClick={onClick}
+          onContextMenu={onContextMenu}
+        >
+          {avatar}
+          {notificationBadge}
+        </button>
+      </Tooltip>
+    );
+  },
+);
 SidebarAvatar.defaultProps = {
   className: null,
   active: false,

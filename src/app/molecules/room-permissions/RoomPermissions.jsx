@@ -14,7 +14,6 @@ import SettingTile from '../setting-tile/SettingTile';
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 
 const permissionsInfo = {
-
   users_default: {
     name: 'Default role',
     description: 'Set default role for all members.',
@@ -190,16 +189,34 @@ const permissionsInfo = {
     description: 'Set minimum power level to modify the emoji and sticker list.',
     default: 50,
   },
-
 };
 
 const roomPermsGroups = {
-  'General Permissions': ['users_default', 'events_default', 'm.reaction', 'redact', 'notifications'],
+  'General Permissions': [
+    'users_default',
+    'events_default',
+    'm.reaction',
+    'redact',
+    'notifications',
+  ],
   'Manage members permissions': ['invite', 'kick', 'ban'],
   'Room profile permissions': ['m.room.avatar', 'm.room.name', 'm.room.topic'],
   'Call permissions': ['org.matrix.msc3401.call', 'org.matrix.msc3401.call.member'],
-  'Settings permissions': ['state_default', 'm.room.canonical_alias', 'm.room.power_levels', 'm.room.encryption', 'm.room.history_visibility', 'im.ponies.emote_rooms', 'im.ponies.room_emotes'],
-  'Other permissions': ['m.room.tombstone', 'm.room.pinned_events', 'm.room.server_acl', 'im.vector.modular.widgets'],
+  'Settings permissions': [
+    'state_default',
+    'm.room.canonical_alias',
+    'm.room.power_levels',
+    'm.room.encryption',
+    'm.room.history_visibility',
+    'im.ponies.emote_rooms',
+    'im.ponies.room_emotes',
+  ],
+  'Other permissions': [
+    'm.room.tombstone',
+    'm.room.pinned_events',
+    'm.room.server_acl',
+    'im.vector.modular.widgets',
+  ],
 };
 
 const spacePermsGroups = {
@@ -207,7 +224,14 @@ const spacePermsGroups = {
   'Manage members permissions': ['invite', 'kick', 'ban'],
   'Space profile permissions': ['m.room.avatar', 'm.room.name', 'm.room.topic'],
   'Call permissions': ['org.matrix.msc3401.call', 'org.matrix.msc3401.call.member'],
-  'Settings permissions': ['state_default', 'm.room.canonical_alias', 'm.room.power_levels', 'im.ponies.emote_rooms', 'im.ponies.room_emotes', 'pony.house.settings'],
+  'Settings permissions': [
+    'state_default',
+    'm.room.canonical_alias',
+    'm.room.power_levels',
+    'im.ponies.emote_rooms',
+    'im.ponies.room_emotes',
+    'pony.house.settings',
+  ],
 };
 
 function useRoomStateUpdate(roomId) {
@@ -233,7 +257,10 @@ function RoomPermissions({ roomId, profileMode }) {
   const room = mx.getRoom(roomId);
   const pLEvent = getCurrentState(room).getStateEvents('m.room.power_levels')[0];
   const permissions = pLEvent.getContent();
-  const canChangePermission = getCurrentState(room).maySendStateEvent('m.room.power_levels', mx.getUserId());
+  const canChangePermission = getCurrentState(room).maySendStateEvent(
+    'm.room.power_levels',
+    mx.getUserId(),
+  );
   const myPowerLevel = room.getMember(mx.getUserId())?.powerLevel ?? 100;
 
   const handlePowerSelector = (e, permKey, parentKey, powerLevel) => {
@@ -258,75 +285,67 @@ function RoomPermissions({ roomId, profileMode }) {
       mx.sendStateEvent(roomId, 'm.room.power_levels', newPermissions);
     };
 
-    openReusableContextMenu(
-      'bottom',
-      getEventCords(e, '.btn-link'),
-      (closeMenu) => (
-        <PowerLevelSelector
-          value={powerLevel}
-          max={myPowerLevel}
-          onSelect={(pl) => {
-            closeMenu();
-            handlePowerLevelChange(pl);
-          }}
-        />
-      ),
-    );
+    openReusableContextMenu('bottom', getEventCords(e, '.btn-link'), (closeMenu) => (
+      <PowerLevelSelector
+        value={powerLevel}
+        max={myPowerLevel}
+        onSelect={(pl) => {
+          closeMenu();
+          handlePowerLevelChange(pl);
+        }}
+      />
+    ));
   };
 
   const permsGroups = room.isSpaceRoom() ? spacePermsGroups : roomPermsGroups;
   return (
     <div className="card noselect mb-3">
       <ul className="list-group list-group-flush">
-        {
-          Object.keys(permsGroups).map((groupKey) => {
-            const groupedPermKeys = permsGroups[groupKey];
-            return (<>
-
+        {Object.keys(permsGroups).map((groupKey) => {
+          const groupedPermKeys = permsGroups[groupKey];
+          return (
+            <>
               <li className="list-group-item very-small text-gray">{groupKey}</li>
-              {
-                groupedPermKeys.map((permKey) => {
-                  const permInfo = permissionsInfo[permKey];
+              {groupedPermKeys.map((permKey) => {
+                const permInfo = permissionsInfo[permKey];
 
-                  let powerLevel = 0;
-                  let permValue = permInfo.parent
-                    ? permissions[permInfo.parent]?.[permKey]
-                    : permissions[permKey];
+                let powerLevel = 0;
+                let permValue = permInfo.parent
+                  ? permissions[permInfo.parent]?.[permKey]
+                  : permissions[permKey];
 
-                  if (permValue === undefined) permValue = permInfo.default;
+                if (permValue === undefined) permValue = permInfo.default;
 
-                  if (typeof permValue === 'number') {
-                    powerLevel = permValue;
-                  } else if (permKey === 'notifications') {
-                    powerLevel = permValue.room ?? 50;
-                  }
-                  return (
-                    <SettingTile
-                      key={permKey}
-                      title={permInfo.name}
-                      content={<div className="very-small text-gray">{permInfo.description}</div>}
-                      options={(
-                        <Button
-                          onClick={
-                            canChangePermission
-                              ? (e) => handlePowerSelector(e, permKey, permInfo.parent, powerLevel)
-                              : null
-                          }
-                          faSrc={canChangePermission ? "fa-solid fa-check" : null}
-                        >
-                          <Text variant="b2">
-                            {`${getPowerLabel(powerLevel) || 'Member'} - ${powerLevel}`}
-                          </Text>
-                        </Button>
-                      )}
-                    />
-                  );
-                })
-              }
-
-            </>);
-          })
-        }
+                if (typeof permValue === 'number') {
+                  powerLevel = permValue;
+                } else if (permKey === 'notifications') {
+                  powerLevel = permValue.room ?? 50;
+                }
+                return (
+                  <SettingTile
+                    key={permKey}
+                    title={permInfo.name}
+                    content={<div className="very-small text-gray">{permInfo.description}</div>}
+                    options={
+                      <Button
+                        onClick={
+                          canChangePermission
+                            ? (e) => handlePowerSelector(e, permKey, permInfo.parent, powerLevel)
+                            : null
+                        }
+                        faSrc={canChangePermission ? 'fa-solid fa-check' : null}
+                      >
+                        <Text variant="b2">
+                          {`${getPowerLabel(powerLevel) || 'Member'} - ${powerLevel}`}
+                        </Text>
+                      </Button>
+                    }
+                  />
+                );
+              })}
+            </>
+          );
+        })}
       </ul>
     </div>
   );

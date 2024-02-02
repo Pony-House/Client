@@ -14,14 +14,7 @@ import RoomViewCmdBar from './RoomViewCmdBar';
 
 const viewEvent = new EventEmitter();
 
-function RoomView({
-  roomTimeline,
-  eventId,
-  isUserList,
-  roomItem,
-  isGuest,
-}) {
-
+function RoomView({ roomTimeline, eventId, isUserList, roomItem, isGuest }) {
   const refcmdInput = useRef(null);
   const refRoomInput = useRef(null);
   const roomViewRef = useRef(null);
@@ -30,9 +23,7 @@ function RoomView({
   const { roomId, threadId } = roomTimeline;
 
   useEffect(() => {
-
     const settingsToggle = (isVisible) => {
-
       const roomView = $(roomViewRef.current);
       roomView.toggleClass('room-view--dropped');
 
@@ -44,36 +35,50 @@ function RoomView({
           roomViewContent.css('visibility', 'hidden');
         }, 200);
       } else roomViewContent.css('visibility', 'visible');
-
     };
 
     navigation.on(cons.events.navigation.ROOM_SETTINGS_TOGGLED, settingsToggle);
     return () => {
       navigation.removeListener(cons.events.navigation.ROOM_SETTINGS_TOGGLED, settingsToggle);
     };
-
   }, []);
 
-  return <div className="room-view" ref={roomViewRef}>
-    <RoomViewHeader roomId={roomId} threadId={threadId} roomItem={roomItem} isGuest={isGuest} />
-    <div className="room-view__content-wrapper">
-      <div className="room-view__scrollable">
-        <RoomViewContent refRoomInput={refRoomInput} isUserList={isUserList} eventId={eventId} roomTimeline={roomTimeline} />
-        <RoomViewFloating refRoomInput={refRoomInput} refcmdInput={refcmdInput} roomId={roomId} roomTimeline={roomTimeline} />
-      </div>
-      <div className="room-view__sticky">
-        <RoomViewInput
-          refRoomInput={refRoomInput}
-          roomId={roomId}
-          threadId={threadId}
-          roomTimeline={roomTimeline}
-          viewEvent={viewEvent}
-        />
-        <RoomViewCmdBar roomId={roomId} refcmdInput={refcmdInput} roomTimeline={roomTimeline} viewEvent={viewEvent} />
+  return (
+    <div className="room-view" ref={roomViewRef}>
+      <RoomViewHeader roomId={roomId} threadId={threadId} roomItem={roomItem} isGuest={isGuest} />
+      <div className="room-view__content-wrapper">
+        <div className="room-view__scrollable">
+          <RoomViewContent
+            refRoomInput={refRoomInput}
+            isUserList={isUserList}
+            eventId={eventId}
+            roomTimeline={roomTimeline}
+          />
+          <RoomViewFloating
+            refRoomInput={refRoomInput}
+            refcmdInput={refcmdInput}
+            roomId={roomId}
+            roomTimeline={roomTimeline}
+          />
+        </div>
+        <div className="room-view__sticky">
+          <RoomViewInput
+            refRoomInput={refRoomInput}
+            roomId={roomId}
+            threadId={threadId}
+            roomTimeline={roomTimeline}
+            viewEvent={viewEvent}
+          />
+          <RoomViewCmdBar
+            roomId={roomId}
+            refcmdInput={refcmdInput}
+            roomTimeline={roomTimeline}
+            viewEvent={viewEvent}
+          />
+        </div>
       </div>
     </div>
-  </div>;
-
+  );
 }
 
 RoomView.defaultProps = {

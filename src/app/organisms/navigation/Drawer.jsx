@@ -27,18 +27,15 @@ import { objType } from '../../../util/tools';
 
 // System State
 function useSystemState() {
-
   // Data
   const [systemState, setSystemState] = useState({ status: null, value: null });
   const [oldSystemState, setOldSystemState] = useState({ status: null, value: null });
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
-
     // State Check
     const handleSystemState = (state) => {
       if (!isRefreshing) {
-
         if (state === 'ERROR' || state === 'RECONNECTING' || state === 'STOPPED') {
           const tinyStatus = { status: 'Connection lost!', value: state };
           tinyAPI.emit('systemState', tinyStatus);
@@ -46,18 +43,24 @@ function useSystemState() {
         }
 
         if (systemState !== null && systemState.status !== null) {
-          const tinyStatus = { status: null, value: state }
+          const tinyStatus = { status: null, value: state };
           tinyAPI.emit('systemState', tinyStatus);
           setSystemState(tinyStatus);
         }
-
       }
     };
 
     // Detect recover from reconnect
-    if (oldSystemState.value === 'ERROR' || oldSystemState.value === 'RECONNECTING' || oldSystemState.value === 'STOPPED') {
-
-      if (__ENV_APP__.ELECTRON_MODE && objType(global.useLoadingElectron, 'object') && typeof global.useLoadingElectron.appendLoading === 'function') {
+    if (
+      oldSystemState.value === 'ERROR' ||
+      oldSystemState.value === 'RECONNECTING' ||
+      oldSystemState.value === 'STOPPED'
+    ) {
+      if (
+        __ENV_APP__.ELECTRON_MODE &&
+        objType(global.useLoadingElectron, 'object') &&
+        typeof global.useLoadingElectron.appendLoading === 'function'
+      ) {
         global.useLoadingElectron.appendLoading();
       } else {
         $('body').empty();
@@ -67,7 +70,6 @@ function useSystemState() {
       setIsRefreshing(true);
 
       window.location.reload();
-
     }
 
     // Insert new old
@@ -78,18 +80,14 @@ function useSystemState() {
     return () => {
       initMatrix.matrixClient.removeListener('sync', handleSystemState);
     };
-
-
   }, [systemState]);
 
   // Complete
   return [systemState];
-
 }
 
 // Drawer
 function Drawer() {
-
   const [systemState] = useSystemState();
   const [selectedTab] = useSelectedTab();
   const [spaceId] = useSelectedSpace();
@@ -134,50 +132,52 @@ function Drawer() {
     $('#space-header > .navbar').removeClass('banner-mode').css('background-image', '');
   }
 
-  return <>
+  return (
+    <>
+      <div className={`space-drawer-body${avatarSrc ? ' drawer-with-banner' : ''}`}>
+        <DrawerHeader selectedTab={selectedTab} spaceId={spaceId} banner={avatarSrc} room={room} />
 
-    <div className={`space-drawer-body${avatarSrc ? ' drawer-with-banner' : ''}`}>
-      <DrawerHeader selectedTab={selectedTab} spaceId={spaceId} banner={avatarSrc} room={room} />
+        <ScrollView ref={scrollRef} autoHide>
+          {navigation.selectedSpacePath.length > 1 && selectedTab !== cons.tabs.DIRECTS && (
+            <DrawerBreadcrumb spaceId={spaceId} />
+          )}
 
-      <ScrollView ref={scrollRef} autoHide>
+          {!spaceId ? (
+            <center className="small text-start d-grid w-100">
+              <IconButton
+                ref={homeClickRef}
+                fa="fa-solid fa-house"
+                id="space-drawer-home-button"
+                className={`text-start mt-3 mx-3 space-drawer-menu-item${!getSelectRoom() && !getSelectSpace() ? ' active' : ''}`}
+                onClick={() => {
+                  global.resetRoomInfo();
+                  selectRoomMode('room');
+                  $(homeClickRef.current).addClass('active');
+                }}
+              >
+                <span className="ms-3">Home</span>
+              </IconButton>
+            </center>
+          ) : null}
 
-        {navigation.selectedSpacePath.length > 1 && selectedTab !== cons.tabs.DIRECTS && (
-          <DrawerBreadcrumb spaceId={spaceId} />
-        )}
+          {selectedTab !== cons.tabs.DIRECTS ? (
+            <Home spaceId={spaceId} />
+          ) : (
+            <Directs size={roomList.directs.size} />
+          )}
+        </ScrollView>
+      </div>
 
-        {
-          !spaceId ? <center className='small text-start d-grid w-100'>
-
-            <IconButton ref={homeClickRef} fa="fa-solid fa-house" id='space-drawer-home-button' className={`text-start mt-3 mx-3 space-drawer-menu-item${!getSelectRoom() && !getSelectSpace() ? ' active' : ''}`} onClick={() => {
-              global.resetRoomInfo();
-              selectRoomMode('room');
-              $(homeClickRef.current).addClass('active');
-            }}>
-              <span className='ms-3'>Home</span>
-            </IconButton>
-
-          </center> : null
-        }
-
-        {
-          selectedTab !== cons.tabs.DIRECTS
-            ? <Home spaceId={spaceId} />
-            : <Directs size={roomList.directs.size} />
-        }
-      </ScrollView>
-    </div>
-
-    {systemState !== null && systemState.status !== null ? <Modal dialogClassName='modal-dialog-centered modal-dialog-scrollable' show >
-      <Modal.Header className='noselect'>
-        <Modal.Title className='h5'>System Status</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className='small'>
-        {systemState.status}
-      </Modal.Body>
-    </Modal> : null}
-
-  </>;
-
+      {systemState !== null && systemState.status !== null ? (
+        <Modal dialogClassName="modal-dialog-centered modal-dialog-scrollable" show>
+          <Modal.Header className="noselect">
+            <Modal.Title className="h5">System Status</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="small">{systemState.status}</Modal.Body>
+        </Modal>
+      ) : null}
+    </>
+  );
 }
 
 export default Drawer;

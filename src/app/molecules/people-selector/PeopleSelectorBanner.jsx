@@ -11,30 +11,30 @@ import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 import { objType, toast } from '../../../util/tools';
 import { copyToClipboard } from '../../../util/common';
 import copyText from '../../organisms/profile-viewer/copyText';
-import matrixAppearance, { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
+import matrixAppearance, {
+  getAppearance,
+  getAnimatedImageUrl,
+} from '../../../util/libs/appearance';
 import moment, { momentFormat } from '../../../util/libs/momentjs';
 
 const timezoneAutoUpdate = { text: null, html: null, value: null };
 setInterval(() => {
   if (timezoneAutoUpdate.html && timezoneAutoUpdate.value) {
-
     let timezoneText = 'null';
     try {
-      timezoneText = moment().tz(timezoneAutoUpdate.value).format(`MMMM Do YYYY, ${momentFormat.clock()}`);
+      timezoneText = moment()
+        .tz(timezoneAutoUpdate.value)
+        .format(`MMMM Do YYYY, ${momentFormat.clock()}`);
     } catch {
       timezoneText = 'ERROR!';
     }
 
     timezoneAutoUpdate.text = timezoneText;
     timezoneAutoUpdate.html.text(timezoneText);
-
   }
 }, 60000);
 
-function PeopleSelectorBanner({
-  name, color, user
-}) {
-
+function PeopleSelectorBanner({ name, color, user }) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
   const statusRef = useRef(null);
@@ -60,48 +60,45 @@ function PeopleSelectorBanner({
   };
 
   const getCustomStatus = (content) => {
-
     // Get Status
     const customStatus = $(customStatusRef.current);
     const htmlStatus = [];
     let customStatusImg;
-    const isOffline = (content.presence === 'offline' || content.presence === 'unavailable');
+    const isOffline = content.presence === 'offline' || content.presence === 'unavailable';
 
     if (content && objType(content.presenceStatusMsg, 'object')) {
-
       const presence = content.presenceStatusMsg;
-      const ethereumValid = (__ENV_APP__.WEB3 && presence.ethereum && presence.ethereum.valid);
+      const ethereumValid = __ENV_APP__.WEB3 && presence.ethereum && presence.ethereum.valid;
 
       // Ethereum
       if (ethereumValid) {
-
         const displayName = $(displayNameRef.current);
         let ethereumIcon = displayName.find('#dm-ethereum-icon');
         if (ethereumIcon.length < 1) {
+          ethereumIcon = $('<span>', {
+            id: 'dm-ethereum-icon',
+            class: 'ms-2',
+            title: presence.ethereum.address,
+          }).append($('<i>', { class: 'fa-brands fa-ethereum' }));
 
-          ethereumIcon = $('<span>', { id: 'dm-ethereum-icon', class: 'ms-2', title: presence.ethereum.address }).append(
-            $('<i>', { class: 'fa-brands fa-ethereum' })
-          );
-
-          ethereumIcon.on('click', () => {
-            try {
-              copyToClipboard(presence.ethereum.address);
-              toast('Ethereum address successfully copied to the clipboard.');
-            } catch (err) {
-              console.error(err);
-              alert(err.message);
-            }
-          }).tooltip();
+          ethereumIcon
+            .on('click', () => {
+              try {
+                copyToClipboard(presence.ethereum.address);
+                toast('Ethereum address successfully copied to the clipboard.');
+              } catch (err) {
+                console.error(err);
+                alert(err.message);
+              }
+            })
+            .tooltip();
 
           displayName.append(ethereumIcon);
-
         }
-
       }
 
       // Get Pronouns Data
       if (userPronounsRef.current) {
-
         const pronounsDOM = $(userPronounsRef.current);
 
         // Message Icon
@@ -110,45 +107,39 @@ function PeopleSelectorBanner({
         } else {
           pronounsDOM.empty().addClass('d-none');
         }
-
       }
 
       // Get Bio Data
       if (bioRef.current) {
-
         const bioDOM = $(bioRef.current);
         const tinyBio = $('#dm-tiny-bio');
 
         if (tinyBio.length > 0) {
-
-          bioDOM.removeClass('d-none')
+          bioDOM.removeClass('d-none');
           if (typeof presence.bio === 'string' && presence.bio.length > 0) {
             tinyBio.html(twemojify(presence.bio.substring(0, 190), undefined, true, false));
           } else {
-            bioDOM.addClass('d-none')
+            bioDOM.addClass('d-none');
             tinyBio.html('');
           }
-
         } else {
-          bioDOM.addClass('d-none')
+          bioDOM.addClass('d-none');
         }
-
       }
 
       // Get Timezone Data
       if (timezoneRef.current) {
-
         const timezoneDOM = $(timezoneRef.current);
         const tinyTimezone = $('#dm-tiny-timezone');
 
         if (tinyTimezone.length > 0) {
-
           timezoneDOM.removeClass('d-none');
           if (typeof presence.timezone === 'string' && presence.timezone.length > 0) {
-
             let timezoneText = 'null';
             try {
-              timezoneText = moment().tz(presence.timezone).format(`MMMM Do YYYY, ${momentFormat.clock()}`);
+              timezoneText = moment()
+                .tz(presence.timezone)
+                .format(`MMMM Do YYYY, ${momentFormat.clock()}`);
             } catch {
               timezoneText = 'ERROR!';
               timezoneDOM.addClass('d-none');
@@ -161,31 +152,34 @@ function PeopleSelectorBanner({
             timezoneAutoUpdate.text = timezoneText;
 
             tinyTimezone.text(timezoneText);
-
           } else {
             timezoneDOM.addClass('d-none');
             tinyTimezone.html('');
           }
-
         } else {
           timezoneDOM.addClass('d-none');
         }
-
       }
 
       // Message Icon
       if (typeof presence.msgIcon === 'string' && presence.msgIcon.length > 0) {
-
-        customStatusImg = $('<img>', { src: presence.msgIconThumb, alt: 'icon', class: 'emoji me-1' });
+        customStatusImg = $('<img>', {
+          src: presence.msgIconThumb,
+          alt: 'icon',
+          class: 'emoji me-1',
+        });
         htmlStatus.push(customStatusImg);
 
         customStatusImg.data('pony-house-cs-normal', presence.msgIconThumb);
         customStatusImg.data('pony-house-cs-hover', presence.msgIcon);
-
       }
 
       if (typeof presence.msg === 'string' && presence.msg.length > 0) {
-        htmlStatus.push($('<span>', { class: 'text-truncate cs-text' }).html(twemojify(presence.msg.substring(0, 100))));
+        htmlStatus.push(
+          $('<span>', { class: 'text-truncate cs-text' }).html(
+            twemojify(presence.msg.substring(0, 100)),
+          ),
+        );
       }
 
       // Get Banner Data
@@ -198,7 +192,6 @@ function PeopleSelectorBanner({
           bannerDOM.css('background-image', '').removeClass('exist-banner');
         }
       }
-
     }
 
     // Custom Status
@@ -210,15 +203,19 @@ function PeopleSelectorBanner({
     }
 
     if (customStatusImg) {
-      customStatusImg.parent().parent().parent().hover(
-        () => {
-          customStatusImg.attr('src', customStatusImg.data('pony-house-cs-hover'));
-        }, () => {
-          customStatusImg.attr('src', customStatusImg.data('pony-house-cs-normal'));
-        }
-      );
+      customStatusImg
+        .parent()
+        .parent()
+        .parent()
+        .hover(
+          () => {
+            customStatusImg.attr('src', customStatusImg.data('pony-house-cs-hover'));
+          },
+          () => {
+            customStatusImg.attr('src', customStatusImg.data('pony-house-cs-normal'));
+          },
+        );
     }
-
   };
 
   if (user) {
@@ -227,10 +224,8 @@ function PeopleSelectorBanner({
 
   useEffect(() => {
     if (user) {
-
       // Update Status Profile
       const updateProfileStatus = (mEvent, tinyData) => {
-
         // Get Status
         const status = $(statusRef.current);
         const tinyUser = tinyData;
@@ -238,7 +233,6 @@ function PeopleSelectorBanner({
 
         // Update Status Icon
         getCustomStatus(updateUserStatusIcon(status, tinyUser));
-
       };
 
       // Read Events
@@ -246,7 +240,7 @@ function PeopleSelectorBanner({
 
       const tinyNoteSpacing = (event) => {
         const element = event.target;
-        element.style.height = "5px";
+        element.style.height = '5px';
         element.style.height = `${Number(element.scrollHeight)}px`;
       };
 
@@ -262,22 +256,25 @@ function PeopleSelectorBanner({
       user.on('User.presence', updateProfileStatus);
       $(displayNameRef.current).find('> .button').on('click', copyUsername.display);
       $(userNameRef.current).find('> .button').on('click', copyUsername.tag);
-      $(noteRef.current).on('change', tinyNoteUpdate).on('keypress keyup keydown', tinyNoteSpacing).val(tinyNote);
+      $(noteRef.current)
+        .on('change', tinyNoteUpdate)
+        .on('keypress keyup keydown', tinyNoteSpacing)
+        .val(tinyNote);
       return () => {
         $(displayNameRef.current).find('> .button').off('click', copyUsername.display);
         $(userNameRef.current).find('> .button').off('click', copyUsername.tag);
-        $(noteRef.current).off('change', tinyNoteUpdate).off('keypress keyup keydown', tinyNoteSpacing);
+        $(noteRef.current)
+          .off('change', tinyNoteUpdate)
+          .off('keypress keyup keydown', tinyNoteSpacing);
         user.removeListener('User.currentlyActive', updateProfileStatus);
         user.removeListener('User.lastPresenceTs', updateProfileStatus);
         user.removeListener('User.presence', updateProfileStatus);
         user.removeListener('User.avatarUrl', updateProfileStatus);
       };
-
     }
   }, [user]);
 
   useEffect(() => {
-
     const updateClock = () => forceUpdate();
     matrixAppearance.on('is24hours', updateClock);
     matrixAppearance.on('calendarFormat', updateClock);
@@ -286,70 +283,89 @@ function PeopleSelectorBanner({
       matrixAppearance.off('is24hours', updateClock);
       matrixAppearance.off('calendarFormat', updateClock);
     };
-
   });
 
   if (user) {
-
     const appearanceSettings = getAppearance();
 
-    return <>
-
-      <div ref={profileBanner} className={`profile-banner profile-bg${cssColorMXID(user.userId)}`} />
-
-      <div className='text-center profile-user-profile-avatar'>
-        <Avatar
-          ref={profileAvatar}
-          imageSrc={mx.mxcUrlToHttp(avatarUrl, 100, 100, 'crop')}
-          imageAnimSrc={!appearanceSettings.enableAnimParams ? mx.mxcUrlToHttp(avatarUrl) : getAnimatedImageUrl(mx.mxcUrlToHttp(avatarUrl, 100, 100, 'crop'))}
-          text={name} bgColor={color} size="large"
-          isDefaultImage
+    return (
+      <>
+        <div
+          ref={profileBanner}
+          className={`profile-banner profile-bg${cssColorMXID(user.userId)}`}
         />
-        <i ref={statusRef} className={`user-status user-status-icon pe-2 ${getUserStatus(user)}`} />
-      </div>
 
-      <div className='card bg-bg mx-3 text-start'>
-        <div className='card-body'>
-
-          <h6 ref={displayNameRef} className='emoji-size-fix m-0 mb-1 fw-bold display-name'><span className='button'>{twemojifyReact(name)}</span></h6>
-          <small ref={userNameRef} className='text-gray emoji-size-fix username'><span className='button'>{twemojifyReact(user.userId)}</span></small>
-          <div ref={userPronounsRef} className='text-gray emoji-size-fix pronouns small d-none' />
-
-          <div ref={customStatusRef} className='d-none mt-2 emoji-size-fix small user-custom-status' />
-
-          <div ref={timezoneRef} className='d-none'>
-
-            <hr />
-
-            <div className='text-gray text-uppercase fw-bold very-small mb-2'>Timezone</div>
-            <div id='dm-tiny-timezone' className='emoji-size-fix small text-freedom' />
-
-          </div>
-
-          <div ref={bioRef} className='d-none'>
-
-            <hr />
-
-            <div className='text-gray text-uppercase fw-bold very-small mb-2'>About me</div>
-            <div id='dm-tiny-bio' className='emoji-size-fix small text-freedom' />
-
-          </div>
-
-          <hr />
-
-          <label htmlFor="tiny-note" className="form-label text-gray text-uppercase fw-bold very-small mb-2">Note</label>
-          <textarea ref={noteRef} spellCheck="false" className="form-control form-control-bg emoji-size-fix small" id="tiny-note" placeholder="Insert a note here" />
-
-
+        <div className="text-center profile-user-profile-avatar">
+          <Avatar
+            ref={profileAvatar}
+            imageSrc={mx.mxcUrlToHttp(avatarUrl, 100, 100, 'crop')}
+            imageAnimSrc={
+              !appearanceSettings.enableAnimParams
+                ? mx.mxcUrlToHttp(avatarUrl)
+                : getAnimatedImageUrl(mx.mxcUrlToHttp(avatarUrl, 100, 100, 'crop'))
+            }
+            text={name}
+            bgColor={color}
+            size="large"
+            isDefaultImage
+          />
+          <i
+            ref={statusRef}
+            className={`user-status user-status-icon pe-2 ${getUserStatus(user)}`}
+          />
         </div>
-      </div>
 
-    </>;
+        <div className="card bg-bg mx-3 text-start">
+          <div className="card-body">
+            <h6 ref={displayNameRef} className="emoji-size-fix m-0 mb-1 fw-bold display-name">
+              <span className="button">{twemojifyReact(name)}</span>
+            </h6>
+            <small ref={userNameRef} className="text-gray emoji-size-fix username">
+              <span className="button">{twemojifyReact(user.userId)}</span>
+            </small>
+            <div ref={userPronounsRef} className="text-gray emoji-size-fix pronouns small d-none" />
 
+            <div
+              ref={customStatusRef}
+              className="d-none mt-2 emoji-size-fix small user-custom-status"
+            />
+
+            <div ref={timezoneRef} className="d-none">
+              <hr />
+
+              <div className="text-gray text-uppercase fw-bold very-small mb-2">Timezone</div>
+              <div id="dm-tiny-timezone" className="emoji-size-fix small text-freedom" />
+            </div>
+
+            <div ref={bioRef} className="d-none">
+              <hr />
+
+              <div className="text-gray text-uppercase fw-bold very-small mb-2">About me</div>
+              <div id="dm-tiny-bio" className="emoji-size-fix small text-freedom" />
+            </div>
+
+            <hr />
+
+            <label
+              htmlFor="tiny-note"
+              className="form-label text-gray text-uppercase fw-bold very-small mb-2"
+            >
+              Note
+            </label>
+            <textarea
+              ref={noteRef}
+              spellCheck="false"
+              className="form-control form-control-bg emoji-size-fix small"
+              id="tiny-note"
+              placeholder="Insert a note here"
+            />
+          </div>
+        </div>
+      </>
+    );
   }
 
   return null;
-
 }
 
 PeopleSelectorBanner.defaultProps = {

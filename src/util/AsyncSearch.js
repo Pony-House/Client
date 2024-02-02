@@ -2,7 +2,6 @@ import EventEmitter from 'events';
 import tinyAPI from './mods';
 
 class AsyncSearch extends EventEmitter {
-
   // Constructor
   constructor() {
     super();
@@ -100,16 +99,14 @@ class AsyncSearch extends EventEmitter {
       }
     }
 
-    if (lastFindingCount !== this.findingList.length
-      || lastFindingCount === 0) this._sendFindings();
+    if (lastFindingCount !== this.findingList.length || lastFindingCount === 0)
+      this._sendFindings();
     this._softReset();
-
   }
 
   // Match Search - Validate result
   // All emojis and stickers will come here to be validated whether or not to appear in the search result.
   _match(item) {
-
     // String
     if (typeof item === 'string') {
       return this._compare(item);
@@ -117,13 +114,11 @@ class AsyncSearch extends EventEmitter {
 
     // Object
     if (typeof item === 'object') {
-
       // Check Array Values
       if (Array.isArray(this.searchKeys)) {
         return !!this.searchKeys.find((key) => {
-
           if (typeof item[key] === 'string') {
-            return this._compare(item[key])
+            return this._compare(item[key]);
           }
 
           if (Array.isArray(item[key])) {
@@ -134,7 +129,6 @@ class AsyncSearch extends EventEmitter {
           }
 
           return null;
-
         });
       }
 
@@ -142,23 +136,19 @@ class AsyncSearch extends EventEmitter {
       if (typeof this.searchKeys === 'string') {
         return this._compare(item[this.searchKeys]);
       }
-
     }
 
     // Empty
     return false;
-
   }
 
   // Comparator values to confirm
   _compare(item) {
-
     if (typeof item !== 'string') return false;
     const myItem = this._normalize(item);
     if (this.isContain) return myItem.indexOf(this.term) !== -1;
 
     return myItem.startsWith(this.term);
-
   }
 
   // Normalize validator
@@ -171,8 +161,8 @@ class AsyncSearch extends EventEmitter {
 
   // Complete. Send results
   _sendFindings() {
-
-    tinyAPI.emit('searchResultSent',
+    tinyAPI.emit(
+      'searchResultSent',
 
       this.findingList,
       this.term,
@@ -181,13 +171,10 @@ class AsyncSearch extends EventEmitter {
         searchKeys: this.searchKeys,
         limit: this.limit,
       },
-
     );
 
     this.emit(this.RESULT_SENT, this.findingList, this.term);
-
   }
-
 }
 
 export default AsyncSearch;

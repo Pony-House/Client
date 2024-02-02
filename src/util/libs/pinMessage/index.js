@@ -3,11 +3,11 @@
 import clone from 'clone';
 
 import initMatrix from '../../../client/initMatrix';
-import { getCurrentState } from "../../matrixUtil";
+import { getCurrentState } from '../../matrixUtil';
 import { btModal, objType } from '../../tools';
 
-import { setLoadingPage } from "../../../app/templates/client/Loading";
-import { twemojify } from "../../twemojify";
+import { setLoadingPage } from '../../../app/templates/client/Loading';
+import { twemojify } from '../../twemojify';
 import { getRoomInfo } from '../../../app/organisms/room/Room';
 
 import { openProfileViewer, selectRoom } from '../../../client/action/navigation';
@@ -25,317 +25,325 @@ const eventName = 'm.room.pinned_events';
 
 // Get Messages
 export function getPinnedMessagesRaw(room, filterLimit = true) {
+  // Base
+  let result = [];
+  const mx = initMatrix.matrixClient;
 
-    // Base
-    let result = [];
-    const mx = initMatrix.matrixClient;
+  try {
+    // Get Status
+    const pinEvent =
+      typeof room !== 'string'
+        ? getCurrentState(room).getStateEvents(eventName)
+        : getCurrentState(mx.getRoom(room)).getStateEvents(eventName) ?? [];
 
-    try {
-
-        // Get Status
-        const pinEvent = typeof room !== 'string' ?
-            getCurrentState(room).getStateEvents(eventName) :
-            getCurrentState(mx.getRoom(room)).getStateEvents(eventName) ?? [];
-
-        // Get Content
-        if (Array.isArray(pinEvent) && pinEvent[0]) {
-
-            const pinData = pinEvent[0].getContent();
-            if (objType(pinData, 'object') && Array.isArray(pinData.pinned)) {
-                result = clone(pinData.pinned);
-            }
-
-        }
-
-        // Filter event amount
-        if (filterLimit && result.length > PIN_LIMIT) {
-            while (result.length > PIN_LIMIT) {
-                result.shift();
-            }
-        }
-
+    // Get Content
+    if (Array.isArray(pinEvent) && pinEvent[0]) {
+      const pinData = pinEvent[0].getContent();
+      if (objType(pinData, 'object') && Array.isArray(pinData.pinned)) {
+        result = clone(pinData.pinned);
+      }
     }
 
+    // Filter event amount
+    if (filterLimit && result.length > PIN_LIMIT) {
+      while (result.length > PIN_LIMIT) {
+        result.shift();
+      }
+    }
+  } catch (err) {
     // Error
-    catch (err) {
-        console.error(err);
-        alert(err.message);
-        result = [];
-    }
+    console.error(err);
+    alert(err.message);
+    result = [];
+  }
 
-    // Complete
-    return result;
-
-};
+  // Complete
+  return result;
+}
 
 // Perm checker
 export function canPinMessage(room, userId) {
-    return getCurrentState(room).maySendStateEvent(eventName, userId);
-};
+  return getCurrentState(room).maySendStateEvent(eventName, userId);
+}
 
 // Get pin messages list
 export async function getPinnedMessages(room, filterLimit = true) {
-
-    // Get List
-    const pinnedEventsId = getPinnedMessagesRaw(room, filterLimit);
-    try {
-
-        // Get events
-        for (const item in pinnedEventsId) {
-            try {
-                if (typeof pinnedEventsId[item] === 'string') {
-                    const eventId = clone(pinnedEventsId[item]);
-                    pinnedEventsId[item] = await getEventById(room, eventId);
-                    if (pinnedEventsId[item] === null) pinnedEventsId[item] = eventId;
-                    // const tinyTimeline = room.getTimelineForEvent
-                    // tinyTimeline.getEvents();
-                }
-            } catch (err) {
-                console.error(err);
-            }
+  // Get List
+  const pinnedEventsId = getPinnedMessagesRaw(room, filterLimit);
+  try {
+    // Get events
+    for (const item in pinnedEventsId) {
+      try {
+        if (typeof pinnedEventsId[item] === 'string') {
+          const eventId = clone(pinnedEventsId[item]);
+          pinnedEventsId[item] = await getEventById(room, eventId);
+          if (pinnedEventsId[item] === null) pinnedEventsId[item] = eventId;
+          // const tinyTimeline = room.getTimelineForEvent
+          // tinyTimeline.getEvents();
         }
-
-    }
-
-    // Error warn
-    catch (err) {
+      } catch (err) {
         console.error(err);
-        alert(err.message);
-        return [];
+      }
     }
+  } catch (err) {
+    // Error warn
+    console.error(err);
+    alert(err.message);
+    return [];
+  }
 
-    // Complete
-    return pinnedEventsId;
-
-};
+  // Complete
+  return pinnedEventsId;
+}
 
 // Get pinned messages
 export function isPinnedMessage(room, eventId, filterLimit = true) {
-    const data = getPinnedMessagesRaw(room, filterLimit);
-    return Array.isArray(data) && data.length > 0 && data.indexOf(eventId) > -1;
-};
+  const data = getPinnedMessagesRaw(room, filterLimit);
+  return Array.isArray(data) && data.length > 0 && data.indexOf(eventId) > -1;
+}
 
 export function getPinnedMessage(room, eventId, filterLimit = true) {
-    return new Promise((resolve, reject) => {
-        if (isPinnedMessage(room, eventId, filterLimit)) {
-            room.findEventById(eventId).then(resolve).catch(reject);
-        } else {
-            resolve(null);
-        }
-    });
-};
+  return new Promise((resolve, reject) => {
+    if (isPinnedMessage(room, eventId, filterLimit)) {
+      room.findEventById(eventId).then(resolve).catch(reject);
+    } else {
+      resolve(null);
+    }
+  });
+}
 
 // Set Pin to message
 export function setPinMessage(room, newEventsId, isPinned = true) {
-    return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
+    // Base
+    const mx = initMatrix.matrixClient;
 
-        // Base
-        const mx = initMatrix.matrixClient;
-
-        // Perm validator
-        if (canPinMessage(room, mx.getUserId())) {
-            try {
-
-                // Get List
-                const eventsId = getPinnedMessagesRaw(room);
-                const eventsIdOld = getPinnedMessagesRaw(room);
-                if (typeof newEventsId === 'string' && newEventsId.length > 0) {
-
-                    // Add data
-                    if (isPinned) {
-                        const event = await room.findEventById(newEventsId);
-                        if (event) {
-                            eventsId.push(newEventsId);
-                        }
-                    }
-
-                    // Remove data
-                    else {
-                        const index = eventsId.indexOf(newEventsId);
-                        if (index > -1) {
-                            eventsId.splice(index, 1);
-                        }
-                    }
-
-                }
-
-                // Validator
-                if (
-                    ((isPinned && eventsId.length > eventsIdOld.length) || (!isPinned && eventsId.length < eventsIdOld.length)) &&
-                    eventsId.length <= PIN_LIMIT
-                ) {
-
-                    // Prepare event
-                    const data = { pinned: eventsId };
-
-                    // Send Event
-                    mx.sendStateEvent(room.roomId, eventName, data).then((event) => {
-                        mx.sendEvent(room.roomId, eventName, data).then((msg) => {
-                            resolve({ event, msg });
-                        }).catch(reject);
-                    }).catch(reject);
-
-                }
-
-                // Nope
-                else {
-                    resolve(null);
-                }
-
+    // Perm validator
+    if (canPinMessage(room, mx.getUserId())) {
+      try {
+        // Get List
+        const eventsId = getPinnedMessagesRaw(room);
+        const eventsIdOld = getPinnedMessagesRaw(room);
+        if (typeof newEventsId === 'string' && newEventsId.length > 0) {
+          // Add data
+          if (isPinned) {
+            const event = await room.findEventById(newEventsId);
+            if (event) {
+              eventsId.push(newEventsId);
             }
+          }
 
-            // Error
-            catch (err) {
-                reject(err);
+          // Remove data
+          else {
+            const index = eventsId.indexOf(newEventsId);
+            if (index > -1) {
+              eventsId.splice(index, 1);
             }
-
+          }
         }
 
-        // No Permission
+        // Validator
+        if (
+          ((isPinned && eventsId.length > eventsIdOld.length) ||
+            (!isPinned && eventsId.length < eventsIdOld.length)) &&
+          eventsId.length <= PIN_LIMIT
+        ) {
+          // Prepare event
+          const data = { pinned: eventsId };
+
+          // Send Event
+          mx.sendStateEvent(room.roomId, eventName, data)
+            .then((event) => {
+              mx.sendEvent(room.roomId, eventName, data)
+                .then((msg) => {
+                  resolve({ event, msg });
+                })
+                .catch(reject);
+            })
+            .catch(reject);
+        }
+
+        // Nope
         else {
-            reject(new Error('No pin message permission!'));
+          resolve(null);
         }
+      } catch (err) {
+        // Error
+        reject(err);
+      }
+    }
 
-    });
-};
+    // No Permission
+    else {
+      reject(new Error('No pin message permission!'));
+    }
+  });
+}
 
 // Open Modal
 export function openPinMessageModal(room) {
-    setLoadingPage();
-    getPinnedMessages(room).then(events => {
+  setLoadingPage();
+  getPinnedMessages(room)
+    .then((events) => {
+      // Prepare
+      const body = [];
+      const mx = initMatrix.matrixClient;
+      const isCustomHTML = true;
+      let modal = null;
 
-        // Prepare
-        const body = [];
-        const mx = initMatrix.matrixClient;
-        const isCustomHTML = true;
-        let modal = null;
+      for (const item in events) {
+        try {
+          if (objType(events[item], 'object')) {
+            // is Redacted
+            const eventId = events[item].getId();
+            if (!events[item].isRedacted()) {
+              // Prepare Data
+              const userId = events[item].getSender();
+              const userColor = colorMXID(userId);
+              const user = mx.getUser(userId);
 
-        for (const item in events) {
-            try {
-                if (objType(events[item], 'object')) {
+              const thread = events[item].getThread();
+              const roomId = room.roomId;
+              const threadId = thread && typeof thread.id === 'string' ? thread.id : null;
 
-                    // is Redacted
-                    const eventId = events[item].getId();
-                    if (!events[item].isRedacted()) {
+              const tinyUsername = twemojify(user.userId);
 
-                        // Prepare Data
-                        const userId = events[item].getSender();
-                        const userColor = colorMXID(userId);
-                        const user = mx.getUser(userId);
+              const imageSrc = user ? mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop') : null;
 
-                        const thread = events[item].getThread();
-                        const roomId = room.roomId;
-                        const threadId = thread && typeof thread.id === 'string' ? thread.id : null;
+              const content = events[item].getContent();
+              const msgBody =
+                typeof content.formatted_body === 'string' ? content.formatted_body : content.body;
 
-                        const tinyUsername = twemojify(user.userId);
+              let msgData = !events[item].isEncrypted()
+                ? createMessageData(content, msgBody, isCustomHTML, false, true)
+                : $(
+                    `<i class="bi bi-key-fill text-warning"></i> <strong>Unable to decrypt message.</strong>`,
+                  );
+              // const msgDataReact = createMessageData(content, msgBody, isCustomHTML, false);
+              // const emojiOnly = isEmojiOnly(msgDataReact);
 
-                        const imageSrc = user ? mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop') : null;
+              const emojiOnly = false;
 
-                        const content = events[item].getContent();
-                        const msgBody = typeof content.formatted_body === 'string' ? content.formatted_body : content.body;
+              if (!isCustomHTML) {
+                // If this is a plaintext message, wrap it in a <p> element (automatically applying
+                // white-space: pre-wrap) in order to preserve newlines
+                msgData = $('<p>', { class: 'm-0' }).append(msgData);
+              } else {
+                msgData = $('<span>', { class: 'custom-html' }).append(msgData);
+              }
 
-                        let msgData = !events[item].isEncrypted() ? createMessageData(content, msgBody, isCustomHTML, false, true) : $(`<i class="bi bi-key-fill text-warning"></i> <strong>Unable to decrypt message.</strong>`);
-                        // const msgDataReact = createMessageData(content, msgBody, isCustomHTML, false);
-                        // const emojiOnly = isEmojiOnly(msgDataReact);
+              messageDataEffects(msgData);
 
-                        const emojiOnly = false;
+              // Insert Body
+              body.push(
+                $('<tr>', {
+                  eventid: eventId,
+                  class: 'message message--body-only user-you-message chatbox-portable',
+                }).append(
+                  // Avatar
+                  $('<td>', {
+                    class:
+                      'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container',
+                  }).append(
+                    $('<button>')
+                      .on('click', () => openProfileViewer(userId, roomId))
+                      .append(
+                        $('<img>', {
+                          class: 'avatar-react',
+                          draggable: false,
+                          src: imageSrc !== null ? imageSrc : defaultAvatar(userColor),
+                          alt: 'avatar',
+                        })
+                          .on('load', (event) => {
+                            const e = event.originalEvent;
+                            e.target.style.backgroundColor = 'transparent';
+                          })
+                          .on('error', (event) => {
+                            const e = event.originalEvent;
+                            e.target.src = ImageBrokenSVG;
+                          }),
+                      ),
+                  ),
 
-                        if (!isCustomHTML) {
-                            // If this is a plaintext message, wrap it in a <p> element (automatically applying
-                            // white-space: pre-wrap) in order to preserve newlines
-                            msgData = $('<p>', { class: 'm-0' }).append(msgData);
-                        } else {
-                            msgData = $('<span>', { class: 'custom-html' }).append(msgData);
-                        }
+                  // Message
+                  // eslint-disable-next-line no-loop-func
+                  $('<td>', { class: 'p-0 pe-3 py-1 message-open-click' })
+                    .on('click', () => {
+                      const roomTimeline = getRoomInfo().roomTimeline;
 
-                        messageDataEffects(msgData);
+                      if (typeof threadId === 'string') {
+                        if (threadId !== roomTimeline.threadId)
+                          selectRoom(thread.roomId, eventId, thread.rootEvent?.getId());
+                      } else if (roomTimeline.room.roomId !== roomId || roomTimeline.threadId) {
+                        selectRoom(roomId, eventId);
+                      }
 
-                        // Insert Body
-                        body.push($('<tr>', { eventid: eventId, class: 'message message--body-only user-you-message chatbox-portable' }).append(
+                      setTimeout(() => roomTimeline.loadEventTimeline(eventId), 500);
+                      if (modal) modal.hide();
+                    })
+                    .append(
+                      $('<div>', { class: 'mb-1' }).append(
+                        $('<span>', { class: 'username-base emoji-size-fix' })
+                          .css('color', userColor)
+                          .append($('<span>', { class: 'user-id' }).append(tinyUsername)),
 
-                            // Avatar
-                            $('<td>', { class: 'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container' }).append($('<button>').on('click', () => openProfileViewer(userId, roomId)).append(
-                                $('<img>', { class: 'avatar-react', draggable: false, src: imageSrc !== null ? imageSrc : defaultAvatar(userColor), alt: 'avatar' }).on('load', (event) => {
-                                    const e = event.originalEvent;
-                                    e.target.style.backgroundColor = 'transparent';
-                                }).on('error', (event) => {
-                                    const e = event.originalEvent;
-                                    e.target.src = ImageBrokenSVG;
-                                })
-                            )),
-
-                            // Message
-                            // eslint-disable-next-line no-loop-func
-                            $('<td>', { class: 'p-0 pe-3 py-1 message-open-click' }).on('click', () => {
-
-                                const roomTimeline = getRoomInfo().roomTimeline;
-
-                                if (typeof threadId === 'string') {
-                                    if (threadId !== roomTimeline.threadId) selectRoom(thread.roomId, eventId, thread.rootEvent?.getId());
-                                } else if (roomTimeline.room.roomId !== roomId || roomTimeline.threadId) {
-                                    selectRoom(roomId, eventId);
-                                }
-
-                                setTimeout(() => roomTimeline.loadEventTimeline(eventId), 500);
-                                if (modal) modal.hide();
-
-                            }).append(
-                                $('<div>', { class: 'mb-1' }).append(
-
-                                    $('<span>', { class: 'username-base emoji-size-fix' }).css('color', userColor).append(
-                                        $('<span>', { class: 'user-id' }).append(tinyUsername)
-                                    ),
-
-                                    $('<span>', { class: 'ms-2 very-small text-gray' }).append(jqueryTime(events[item].getTs()))
-
-                                ),
-                                $('<div>', { class: `text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''}` }).append(msgData)
-                            ),
-
-                        ));
-
-                    } else {
-                        setPinMessage(room, eventId, false);
-                    }
-
-                }
-            } catch (err) {
-                console.error(err);
+                        $('<span>', { class: 'ms-2 very-small text-gray' }).append(
+                          jqueryTime(events[item].getTs()),
+                        ),
+                      ),
+                      $('<div>', {
+                        class: `text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''}`,
+                      }).append(msgData),
+                    ),
+                ),
+              );
+            } else {
+              setPinMessage(room, eventId, false);
             }
+          }
+        } catch (err) {
+          console.error(err);
         }
+      }
 
-        // Empty List
-        if (body.length < 1) {
-            body.push($('<tr>', { class: 'message message--body-only user-you-message chatbox-portable' }).append(
-                $('<td>', { class: 'p-0 pe-3 py-1 text-center text-bg-force small', colspan: 2 }).text('This room doesn\'t have any pinned message... yet.')
-            ));
-        }
+      // Empty List
+      if (body.length < 1) {
+        body.push(
+          $('<tr>', {
+            class: 'message message--body-only user-you-message chatbox-portable',
+          }).append(
+            $('<td>', { class: 'p-0 pe-3 py-1 text-center text-bg-force small', colspan: 2 }).text(
+              "This room doesn't have any pinned message... yet.",
+            ),
+          ),
+        );
+      }
 
-        // Send Modal
-        modal = btModal({
+      // Send Modal
+      modal = btModal({
+        title: 'Pinned Messages',
 
-            title: 'Pinned Messages',
+        id: 'room-pinned-messages',
+        dialog: 'modal-lg modal-dialog-scrollable modal-dialog-centered',
+        body: $('<table>', { class: 'table table-borderless table-hover align-middle m-0' }).append(
+          $('<tbody>').append(body),
+        ),
+      });
 
-            id: 'room-pinned-messages',
-            dialog: 'modal-lg modal-dialog-scrollable modal-dialog-centered',
-            body: $('<table>', { class: 'table table-borderless table-hover align-middle m-0' }).append($('<tbody>').append(body)),
-
-        });
-
-        // Complete
-        setLoadingPage(false);
-
-    }).catch(() => setLoadingPage(false));
-};
+      // Complete
+      setLoadingPage(false);
+    })
+    .catch(() => setLoadingPage(false));
+}
 
 // DEV
 if (__ENV_APP__.MODE === 'development') {
-    global.pinManager = {
-        openModal: openPinMessageModal,
-        getRaw: getPinnedMessagesRaw,
-        getAll: getPinnedMessages,
-        get: getPinnedMessage,
-        isPinned: isPinnedMessage,
-        set: setPinMessage,
-    };
+  global.pinManager = {
+    openModal: openPinMessageModal,
+    getRaw: getPinnedMessagesRaw,
+    getAll: getPinnedMessages,
+    get: getPinnedMessage,
+    isPinned: isPinnedMessage,
+    set: setPinMessage,
+  };
 }

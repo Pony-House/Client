@@ -37,31 +37,38 @@ const tabText = {
   SECURITY: 'Security',
 };
 
-const tabItems = [{
-  faSrc: "fa-solid fa-gear",
-  text: tabText.GENERAL,
-  disabled: false,
-}, {
-  faSrc: "fa-solid fa-magnifying-glass",
-  text: tabText.SEARCH,
-  disabled: false,
-}, {
-  faSrc: "fa-solid fa-users",
-  text: tabText.MEMBERS,
-  disabled: false,
-}, {
-  faSrc: "fa-solid fa-face-smile",
-  text: tabText.EMOJIS,
-  disabled: false,
-}, {
-  faSrc: "fa-solid fa-shield",
-  text: tabText.PERMISSIONS,
-  disabled: false,
-}, {
-  faSrc: "fa-solid fa-lock",
-  text: tabText.SECURITY,
-  disabled: false,
-}];
+const tabItems = [
+  {
+    faSrc: 'fa-solid fa-gear',
+    text: tabText.GENERAL,
+    disabled: false,
+  },
+  {
+    faSrc: 'fa-solid fa-magnifying-glass',
+    text: tabText.SEARCH,
+    disabled: false,
+  },
+  {
+    faSrc: 'fa-solid fa-users',
+    text: tabText.MEMBERS,
+    disabled: false,
+  },
+  {
+    faSrc: 'fa-solid fa-face-smile',
+    text: tabText.EMOJIS,
+    disabled: false,
+  },
+  {
+    faSrc: 'fa-solid fa-shield',
+    text: tabText.PERMISSIONS,
+    disabled: false,
+  },
+  {
+    faSrc: 'fa-solid fa-lock',
+    text: tabText.SECURITY,
+    disabled: false,
+  },
+];
 
 function GeneralSettings({ roomId }) {
   const mx = initMatrix.matrixClient;
@@ -70,10 +77,8 @@ function GeneralSettings({ roomId }) {
 
   return (
     <>
-
       <div className="card noselect mb-3">
         <ul className="list-group list-group-flush">
-
           <li className="list-group-item very-small text-gray">Options</li>
           <MenuItem
             className="text-start"
@@ -100,13 +105,14 @@ function GeneralSettings({ roomId }) {
           >
             Leave
           </MenuItem>
-
         </ul>
       </div>
 
       <div className="card noselect mb-3">
         <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Notification (Changing this will only affect you)</li>
+          <li className="list-group-item very-small text-gray">
+            Notification (Changing this will only affect you)
+          </li>
           <RoomNotification roomId={roomId} />
         </ul>
       </div>
@@ -124,7 +130,6 @@ function GeneralSettings({ roomId }) {
           <RoomAliases roomId={roomId} />
         </ul>
       </div>
-
     </>
   );
 }
@@ -167,7 +172,6 @@ function RoomSettings({ roomId }) {
   const isProfile = false;
 
   useEffect(() => {
-
     let mounted = true;
     const settingsToggle = (isVisible, tab) => {
       if (!mounted) return;
@@ -183,36 +187,32 @@ function RoomSettings({ roomId }) {
       mounted = false;
       navigation.removeListener(cons.events.navigation.ROOM_SETTINGS_TOGGLED, settingsToggle);
     };
-
   }, []);
 
   if (!navigation.isRoomSettings) return null;
 
   return (
     <ScrollView autoHide>
-
       <Header>
-        <ul className='navbar-nav mr-auto mt-0 pt-2'>
-
+        <ul className="navbar-nav mr-auto mt-0 pt-2">
           <button
             className="nav-link btn btn-bg border-0 p-1"
             onClick={() => toggleRoomSettings()}
             type="button"
             onMouseUp={(e) => blurOnBubbling(e, '.room-settings__header-btn')}
           >
-            <strong className='me-2'>
+            <strong className="me-2">
               {`${room.name}`}
               <span style={{ color: 'var(--tc-surface-low)' }}> — room settings</span>
             </strong>
             <RawIcon size="small" fa="fa-solid fa-chevron-up" />
           </button>
-
         </ul>
       </Header>
 
       <RoomProfile profileMode={isProfile} roomId={roomId} />
       <Tabs
-        className='px-3'
+        className="px-3"
         items={tabItems}
         defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
         onSelect={handleTabChange}
@@ -225,7 +225,6 @@ function RoomSettings({ roomId }) {
         {selectedTab.text === tabText.PERMISSIONS && <RoomPermissions roomId={roomId} />}
         {selectedTab.text === tabText.SECURITY && <SecuritySettings roomId={roomId} />}
       </div>
-
     </ScrollView>
   );
 }

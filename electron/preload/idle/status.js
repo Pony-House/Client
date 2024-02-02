@@ -5,12 +5,14 @@ let idleSecs = 'active';
 let idleSecsCallback = (arg) => arg;
 
 contextBridge.exposeInMainWorld('systemIdleState', {
-    exec: () => ipcRenderer.send('systemIdleState', true),
-    callback: (callback) => { if (typeof callback === 'function') idleSecsCallback = callback; },
-    get: () => idleSecs,
+  exec: () => ipcRenderer.send('systemIdleState', true),
+  callback: (callback) => {
+    if (typeof callback === 'function') idleSecsCallback = callback;
+  },
+  get: () => idleSecs,
 });
 
 ipcRenderer.on('systemIdleState', (_event, arg) => {
-    idleSecs = arg;
-    if (typeof idleSecsCallback === 'function') idleSecsCallback(arg);
+  idleSecs = arg;
+  if (typeof idleSecsCallback === 'function') idleSecsCallback(arg);
 });

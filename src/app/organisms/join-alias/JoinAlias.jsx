@@ -69,7 +69,9 @@ function JoinAliasContent({ term, requestClose }) {
       } catch (err) {
         if (!mountStore.getItem()) return;
         setProcess(false);
-        setError(`Unable to find room/space with ${alias}. Either room/space is private or doesn't exist.`);
+        setError(
+          `Unable to find room/space with ${alias}. Either room/space is private or doesn't exist.`,
+        );
       }
     }
     try {
@@ -87,25 +89,24 @@ function JoinAliasContent({ term, requestClose }) {
   return (
     <form className="join-alias" onSubmit={handleSubmit}>
       <div>
-        <Input
-          label="Address"
-          value={term}
-          name="alias"
-          required
-        />
+        <Input label="Address" value={term} name="alias" required />
       </div>
-      {error && <Text className="join-alias__error" variant="b3">{error}</Text>}
+      {error && (
+        <Text className="join-alias__error" variant="b3">
+          {error}
+        </Text>
+      )}
       <div className="join-alias__btn">
-        {
-          process
-            ? (
-              <>
-                <Spinner size="small" />
-                <Text>{process}</Text>
-              </>
-            )
-            : <Button variant="primary" type="submit">Join</Button>
-        }
+        {process ? (
+          <>
+            <Spinner size="small" />
+            <Text>{process}</Text>
+          </>
+        ) : (
+          <Button variant="primary" type="submit">
+            Join
+          </Button>
+        )}
       </div>
     </form>
   );
@@ -143,9 +144,11 @@ function JoinAlias() {
     <Dialog
       className="modal-dialog-scrollable noselect"
       isOpen={data !== null}
-      title={(
-        <Text variant="s1" weight="medium" primary>Join with address</Text>
-      )}
+      title={
+        <Text variant="s1" weight="medium" primary>
+          Join with address
+        </Text>
+      }
       onRequestClose={requestClose}
     >
       {data ? <JoinAliasContent term={data.term} requestClose={requestClose} /> : <div />}

@@ -2,7 +2,6 @@ import { ReceiptType } from 'matrix-js-sdk';
 import initMatrix from '../initMatrix';
 
 export async function markAsRead(roomId, threadId) {
-
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
   if (!room) return;
@@ -35,7 +34,9 @@ export async function markAsRead(roomId, threadId) {
   if (latestEvent === null) return;
 
   const content = mx.getAccountData('pony.house.privacy')?.getContent() ?? {};
-  const receiptType = typeof content.sendReadReceipts !== 'boolean' || content.sendReadReceipts === true ? ReceiptType.Read : ReceiptType.ReadPrivate;
+  const receiptType =
+    typeof content.sendReadReceipts !== 'boolean' || content.sendReadReceipts === true
+      ? ReceiptType.Read
+      : ReceiptType.ReadPrivate;
   await mx.sendReadReceipt(latestEvent, receiptType);
-
 }

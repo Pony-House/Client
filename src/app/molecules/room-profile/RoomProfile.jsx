@@ -20,7 +20,6 @@ import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
 import { getCurrentState } from '../../../util/matrixUtil';
 
 function RoomProfile({ roomId, profileMode, isSpace }) {
-
   // First Data
   const isMountStore = useStore();
   const [isEditing, setIsEditing] = useState(false);
@@ -35,7 +34,9 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
   const isDM = initMatrix.roomList.directs.has(roomId);
 
   let avatarSrc = mx.getRoom(roomId).getAvatarUrl(mx.baseUrl);
-  avatarSrc = isDM ? mx.getRoom(roomId).getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : avatarSrc;
+  avatarSrc = isDM
+    ? mx.getRoom(roomId).getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)
+    : avatarSrc;
 
   const room = mx.getRoom(roomId);
   const currentState = getCurrentState(room);
@@ -46,7 +47,6 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
 
   const nameCinny = {};
   if (room.nameCinny) {
-
     if (typeof room.nameCinny.original === 'string') {
       nameCinny.original = room.nameCinny.original;
     } else {
@@ -64,7 +64,6 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
     } else {
       nameCinny.index = '';
     }
-
   } else {
     nameCinny.original = '';
     nameCinny.category = '';
@@ -102,7 +101,6 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
 
   // Submit
   const handleOnSubmit = async (e) => {
-
     // Prepare Values
     e.preventDefault();
     const { target } = e;
@@ -113,15 +111,12 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
 
     // Try
     try {
-
       // Change Name
       if (canChangeName) {
-
         // New Name
         let newName = `${roomNameInput.value}`;
 
         if (!isSpace) {
-
           // Check Index
           if (typeof roomCategory.value === 'string' && roomCategory.value.length > 0) {
             newName = `${roomCategory.value} - ${newName}`;
@@ -131,15 +126,12 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
             (typeof roomIndex.value === 'string' && roomIndex.value.length > 0) ||
             (typeof roomCategory.value === 'string' && roomCategory.value.length > 0)
           ) {
-
             if (typeof roomIndex.value === 'string' && roomIndex.value.length > 0) {
               newName = `${roomIndex.value} - ${newName}`;
             } else {
               newName = `0 - ${newName}`;
             }
-
           }
-
         }
 
         // Save Name
@@ -150,12 +142,10 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
           });
           await mx.setRoomName(roomId, newName);
         }
-
       }
 
       // Change Topic
       if (canChangeTopic) {
-
         // New Topic Name
         const newTopic = roomTopicInput.value;
 
@@ -169,7 +159,6 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
           }
           await mx.setRoomTopic(roomId, newTopic);
         }
-
       }
 
       // Save Complete
@@ -178,19 +167,14 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
         msg: 'Saved successfully',
         type: cons.status.SUCCESS,
       });
-
-    }
-
-    // Error
-    catch (err) {
-
+    } catch (err) {
+      // Error
       if (!isMountStore.getItem()) return;
 
       setStatus({
         msg: err.message || 'Unable to save.',
         type: cons.status.ERROR,
       });
-
     }
   };
 
@@ -229,66 +213,130 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
   // Render Edit Data
   const renderEditNameAndTopic = () => (
     <form className="room-profile__edit-form" onSubmit={handleOnSubmit}>
-
-      {canChangeName && <div><Input className='mb-3' onKeyDown={inputValidator} onChange={inputValidator} value={roomName} name="room-name" disabled={status.type === cons.status.IN_FLIGHT} label="Name" /></div>}
-      {!isSpace && canChangeName && <div><Input className='mb-3' value={nameCinny.index} type="number" name="room-index" disabled={status.type === cons.status.IN_FLIGHT} label="Index" /></div>}
-      {!isSpace && canChangeName && <div><Input className='mb-3' onKeyDown={inputValidator} onChange={inputValidator} value={nameCinny.category} name="room-category" disabled={status.type === cons.status.IN_FLIGHT} label="Category" /></div>}
-      {canChangeTopic && <div><Input className='mb-3' value={roomTopic} name="room-topic" disabled={status.type === cons.status.IN_FLIGHT} minHeight={100} resizable label="Topic" /></div>}
-
-      {(!canChangeName || !canChangeTopic) && <div className="very-small text-gray">{`You have permission to change ${room.isSpaceRoom() ? 'space' : 'room'} ${canChangeName ? 'name' : 'topic'} only.`}</div>}
-
-      {status.type === cons.status.IN_FLIGHT && <div className='very-small text-gray'>{status.msg}</div>}
-      {status.type === cons.status.SUCCESS && <div className='very-small text-success'>{status.msg}</div>}
-      {status.type === cons.status.ERROR && <div className='very-small text-danger' >{status.msg}</div>}
-
-      {status.type !== cons.status.IN_FLIGHT && (
-        <div className='mt-3'>
-          <Button className='mx-1' type="submit" variant="primary">Save</Button>
-          <Button className='mx-1' onClick={handleCancelEditing}>Cancel</Button>
+      {canChangeName && (
+        <div>
+          <Input
+            className="mb-3"
+            onKeyDown={inputValidator}
+            onChange={inputValidator}
+            value={roomName}
+            name="room-name"
+            disabled={status.type === cons.status.IN_FLIGHT}
+            label="Name"
+          />
+        </div>
+      )}
+      {!isSpace && canChangeName && (
+        <div>
+          <Input
+            className="mb-3"
+            value={nameCinny.index}
+            type="number"
+            name="room-index"
+            disabled={status.type === cons.status.IN_FLIGHT}
+            label="Index"
+          />
+        </div>
+      )}
+      {!isSpace && canChangeName && (
+        <div>
+          <Input
+            className="mb-3"
+            onKeyDown={inputValidator}
+            onChange={inputValidator}
+            value={nameCinny.category}
+            name="room-category"
+            disabled={status.type === cons.status.IN_FLIGHT}
+            label="Category"
+          />
+        </div>
+      )}
+      {canChangeTopic && (
+        <div>
+          <Input
+            className="mb-3"
+            value={roomTopic}
+            name="room-topic"
+            disabled={status.type === cons.status.IN_FLIGHT}
+            minHeight={100}
+            resizable
+            label="Topic"
+          />
         </div>
       )}
 
+      {(!canChangeName || !canChangeTopic) && (
+        <div className="very-small text-gray">{`You have permission to change ${room.isSpaceRoom() ? 'space' : 'room'} ${canChangeName ? 'name' : 'topic'} only.`}</div>
+      )}
+
+      {status.type === cons.status.IN_FLIGHT && (
+        <div className="very-small text-gray">{status.msg}</div>
+      )}
+      {status.type === cons.status.SUCCESS && (
+        <div className="very-small text-success">{status.msg}</div>
+      )}
+      {status.type === cons.status.ERROR && (
+        <div className="very-small text-danger">{status.msg}</div>
+      )}
+
+      {status.type !== cons.status.IN_FLIGHT && (
+        <div className="mt-3">
+          <Button className="mx-1" type="submit" variant="primary">
+            Save
+          </Button>
+          <Button className="mx-1" onClick={handleCancelEditing}>
+            Cancel
+          </Button>
+        </div>
+      )}
     </form>
   );
 
   // Room Name
   let profileName = '';
   if (profileMode) {
-
     const user = mx.getUser(mx.getUserId());
     profileName = user.displayName;
-
-  };
+  }
 
   // Render Panel
   const renderNameAndTopic = () => (
-    <div className="emoji-size-fix" style={{ marginBottom: avatarSrc && canChangeAvatar ? '24px' : '0' }}>
-
+    <div
+      className="emoji-size-fix"
+      style={{ marginBottom: avatarSrc && canChangeAvatar ? '24px' : '0' }}
+    >
       <div>
-
-        <h4 className='d-inline-block m-0 my-1'>
+        <h4 className="d-inline-block m-0 my-1">
           {twemojifyReact(roomName)}
-          {profileMode ? <small className='ms-3 very-small text-success'>
-            <i className="bi bi-patch-check-fill me-1" />
-            {`(${profileName}'s Profile)`}
-          </small> : ''}
+          {profileMode ? (
+            <small className="ms-3 very-small text-success">
+              <i className="bi bi-patch-check-fill me-1" />
+              {`(${profileName}'s Profile)`}
+            </small>
+          ) : (
+            ''
+          )}
         </h4>
 
-        {(nameCinny.category.length > 0) && (
-          <div className='d-inline-block m-0 my-1'>
-            <span style={{ marginRight: '8px', marginLeft: '18px' }}><RawIcon fa="fa-solid fa-grip-lines-vertical" /></span>
+        {nameCinny.category.length > 0 && (
+          <div className="d-inline-block m-0 my-1">
+            <span style={{ marginRight: '8px', marginLeft: '18px' }}>
+              <RawIcon fa="fa-solid fa-grip-lines-vertical" />
+            </span>
             <span>{twemojifyReact(nameCinny.category)}</span>
           </div>
         )}
 
-        {(nameCinny.index.length > 0) && (
-          <div className='d-inline-block m-0 my-1'>
-            <span style={{ marginRight: '8px', marginLeft: '8px' }}><RawIcon fa="fa-solid fa-grip-lines-vertical" /></span>
+        {nameCinny.index.length > 0 && (
+          <div className="d-inline-block m-0 my-1">
+            <span style={{ marginRight: '8px', marginLeft: '8px' }}>
+              <RawIcon fa="fa-solid fa-grip-lines-vertical" />
+            </span>
             <span>{twemojifyReact(nameCinny.index)}</span>
           </div>
         )}
 
-        <span>{' '}</span>
+        <span> </span>
 
         {(canChangeName || canChangeTopic) && (
           <IconButton
@@ -298,12 +346,12 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
             onClick={() => setIsEditing(true)}
           />
         )}
-
       </div>
 
       <div className="very-small text-gray">{room.getCanonicalAlias() || room.roomId}</div>
-      {roomTopic && <div className="very-small text-freedom">{twemojifyReact(roomTopic, undefined, true)}</div>}
-
+      {roomTopic && (
+        <div className="very-small text-freedom">{twemojifyReact(roomTopic, undefined, true)}</div>
+      )}
     </div>
   );
 
@@ -311,11 +359,18 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
   return (
     <div className="p-3 room-info">
       <div className="row">
-
-        <div className='col-sm-2 col-md-4 col-lg-2 p-0'>
-          {!canChangeAvatar && <center>
-            <Avatar imageSrc={avatarSrc} text={roomName} bgColor={colorMXID(roomId)} size="large" isDefaultImage />
-          </center>}
+        <div className="col-sm-2 col-md-4 col-lg-2 p-0">
+          {!canChangeAvatar && (
+            <center>
+              <Avatar
+                imageSrc={avatarSrc}
+                text={roomName}
+                bgColor={colorMXID(roomId)}
+                size="large"
+                isDefaultImage
+              />
+            </center>
+          )}
           {canChangeAvatar && (
             <ImageUpload
               text={roomName}
@@ -327,15 +382,13 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
           )}
         </div>
 
-        <div className='col-sm-10 col-md-8 col-lg-10'>
+        <div className="col-sm-10 col-md-8 col-lg-10">
           {!isEditing && renderNameAndTopic()}
           {isEditing && renderEditNameAndTopic()}
         </div>
-
       </div>
     </div>
   );
-
 }
 
 RoomProfile.propTypes = {

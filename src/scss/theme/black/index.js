@@ -1,19 +1,13 @@
 export default {
+  statusBar: {
+    backgroundColor: {
+      // --bg-surface
+      default: '#050505',
 
-    statusBar: {
+      // --bg-surface-low
+      low: '#000000',
+    },
 
-        backgroundColor: {
-
-            // --bg-surface
-            default: '#050505',
-
-            // --bg-surface-low
-            low: '#000000',
-
-        },
-
-        style: 'DARK'
-
-    }
-
+    style: 'DARK',
+  },
 };

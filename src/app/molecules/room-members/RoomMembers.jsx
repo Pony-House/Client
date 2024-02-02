@@ -1,6 +1,4 @@
-import React, {
-  useState, useEffect, useCallback,
-} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import initMatrix from '../../../client/initMatrix';
@@ -45,8 +43,7 @@ function useMemberOfMembership(roomId, membership) {
       if (isLoadingMembers) return;
       if (event && event?.getRoomId() !== roomId) return;
       const memberOfMembership = normalizeMembers(
-        room.getMembersWithMembership(membership)
-          .sort(memberByAtoZ).sort(memberByPowerLevel),
+        room.getMembersWithMembership(membership).sort(memberByAtoZ).sort(memberByPowerLevel),
       );
       setMembers(memberOfMembership);
     };
@@ -125,16 +122,11 @@ function RoomMembers({ roomId, profileMode }) {
   return (
     <div className="card noselect room-members">
       <ul className="list-group list-group-flush">
-
         <li className="list-group-item very-small text-gray">Search member</li>
 
         <li className="list-group-item ">
           <div>
-            <Input
-              onChange={handleSearch}
-              placeholder="Search for name"
-              autoFocus
-            />
+            <Input onChange={handleSearch} placeholder="Search for name" autoFocus />
           </div>
         </li>
 
@@ -142,12 +134,10 @@ function RoomMembers({ roomId, profileMode }) {
 
         <li className="list-group-item">
           <SegmentedControls
-            selected={
-              (() => {
-                const getSegmentIndex = { join: 0, invite: 1, ban: 2 };
-                return getSegmentIndex[membership];
-              })()
-            }
+            selected={(() => {
+              const getSegmentIndex = { join: 0, invite: 1, ban: 2 };
+              return getSegmentIndex[membership];
+            })()}
             segments={[{ text: 'Joined' }, { text: 'Invited' }, { text: 'Banned' }]}
             onSelect={(index) => {
               const memberships = ['join', 'invite', 'ban'];
@@ -163,15 +153,11 @@ function RoomMembers({ roomId, profileMode }) {
               avatarSize={32}
               key={member.userId}
               contextMenu={(e) => {
-
-                openReusableContextMenu(
-                  'bottom',
-                  getEventCords(e, '.ic-btn'),
-                  (closeMenu) => <UserOptions userId={member.userId} afterOptionSelect={closeMenu} />,
-                );
+                openReusableContextMenu('bottom', getEventCords(e, '.ic-btn'), (closeMenu) => (
+                  <UserOptions userId={member.userId} afterOptionSelect={closeMenu} />
+                ));
 
                 e.preventDefault();
-
               }}
               onClick={() => openProfileViewer(member.userId, roomId)}
               avatarSrc={member.avatarSrc}
@@ -180,22 +166,19 @@ function RoomMembers({ roomId, profileMode }) {
               peopleRole={member.peopleRole}
             />
           ))}
-          {
-            (searchMembers?.data.length === 0 || members.length === 0)
-            && (
-              <center className='p-3'>
-                {searchMembers ? `No results found for "${searchMembers.term}"` : 'No members to display'}
-              </center>
-            )
-          }
-          {
-            mList.length !== 0
-            && members.length > itemCount
-            && searchMembers === null
-            && <center className='m-3'><Button onClick={loadMorePeople}>View more</Button></center>
-          }
+          {(searchMembers?.data.length === 0 || members.length === 0) && (
+            <center className="p-3">
+              {searchMembers
+                ? `No results found for "${searchMembers.term}"`
+                : 'No members to display'}
+            </center>
+          )}
+          {mList.length !== 0 && members.length > itemCount && searchMembers === null && (
+            <center className="m-3">
+              <Button onClick={loadMorePeople}>View more</Button>
+            </center>
+          )}
         </li>
-
       </ul>
     </div>
   );

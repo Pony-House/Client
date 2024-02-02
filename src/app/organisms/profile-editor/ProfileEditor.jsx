@@ -13,7 +13,6 @@ import Input from '../../atoms/input/Input';
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
 function ProfileEditor({ userId }) {
-
   // Values
   const [isEditing, setIsEditing] = useState(false);
   const mx = initMatrix.matrixClient;
@@ -21,13 +20,14 @@ function ProfileEditor({ userId }) {
 
   // Config Base
   const displayNameRef = useRef(null);
-  const [avatarSrc, setAvatarSrc] = useState(user.avatarUrl ? mx.mxcUrlToHttp(user.avatarUrl) : null);
+  const [avatarSrc, setAvatarSrc] = useState(
+    user.avatarUrl ? mx.mxcUrlToHttp(user.avatarUrl) : null,
+  );
   const [username, setUsername] = useState(user.displayName);
   const [disabled, setDisabled] = useState(true);
 
   // User Effect
   useEffect(() => {
-
     let isMounted = true;
     mx.getProfileInfo(mx.getUserId()).then((info) => {
       if (!isMounted) return;
@@ -38,7 +38,6 @@ function ProfileEditor({ userId }) {
     return () => {
       isMounted = false;
     };
-
   }, [userId, user]);
 
   // Avatar Upload
@@ -85,7 +84,10 @@ function ProfileEditor({ userId }) {
     <form
       className="profile-editor__form"
       style={{ marginBottom: avatarSrc ? '24px' : '0' }}
-      onSubmit={(e) => { e.preventDefault(); saveDisplayName(); }}
+      onSubmit={(e) => {
+        e.preventDefault();
+        saveDisplayName();
+      }}
     >
       <div>
         <Input
@@ -95,7 +97,9 @@ function ProfileEditor({ userId }) {
           forwardRef={displayNameRef}
         />
       </div>
-      <Button variant="primary" type="submit" disabled={disabled}>Save</Button>
+      <Button variant="primary" type="submit" disabled={disabled}>
+        Save
+      </Button>
       <Button onClick={cancelDisplayNameChanges}>Cancel</Button>
     </form>
   );
@@ -103,7 +107,7 @@ function ProfileEditor({ userId }) {
   const renderInfo = () => (
     <div className="profile-editor__info" style={{ marginBottom: avatarSrc ? '24px' : '0' }}>
       <div>
-        <div className='h5 emoji-size-fix'>{twemojifyReact(username) ?? userId}</div>
+        <div className="h5 emoji-size-fix">{twemojifyReact(username) ?? userId}</div>
         <IconButton
           fa="fa-solid fa-pencil"
           size="extra-small"
@@ -111,7 +115,7 @@ function ProfileEditor({ userId }) {
           onClick={() => setIsEditing(true)}
         />
       </div>
-      <div className='small'>{mx.getUserId()}</div>
+      <div className="small">{mx.getUserId()}</div>
     </div>
   );
 
@@ -125,12 +129,9 @@ function ProfileEditor({ userId }) {
         onUpload={handleAvatarUpload}
         onRequestRemove={() => handleAvatarUpload(null)}
       />
-      {
-        isEditing ? renderForm() : renderInfo()
-      }
+      {isEditing ? renderForm() : renderInfo()}
     </div>
   );
-
 }
 
 ProfileEditor.defaultProps = {

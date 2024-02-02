@@ -20,10 +20,7 @@ import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearanc
 import { getDataList } from '../../../util/selectedRoom';
 
 // Selector Function
-function Selector({
-  roomId, isDM, drawerPostie, onClick, roomObject, isProfile, notSpace,
-}) {
-
+function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, notSpace }) {
   // Base Script
   const mx = initMatrix.matrixClient;
   const noti = initMatrix.notifications;
@@ -47,47 +44,48 @@ function Selector({
   let user;
   let roomName = room.name;
   if (isDM) {
-
     const usersCount = room.getJoinedMemberCount();
     if (usersCount === 2) {
-
       const members = room.getMembersWithMembership('join');
-      const member = members.find(m => m.userId !== mx.getUserId());
+      const member = members.find((m) => m.userId !== mx.getUserId());
       if (member) {
-
         user = mx.getUser(member.userId);
         const fNickname = getDataList('user_cache', 'friend_nickname', user.userId);
 
         if (typeof fNickname !== 'string' || fNickname.length === 0) {
-
           if (typeof user.displayName === 'string' && user.displayName.length > 0) {
             roomName = user.displayName;
-          }
-
-          else if (typeof user.userId === 'string' && user.userId.length > 0) {
+          } else if (typeof user.userId === 'string' && user.userId.length > 0) {
             roomName = user.userId;
           }
-
         } else {
           roomName = fNickname;
         }
-
       }
-
     }
-
   }
 
   // Image
-  let imageSrc = user && user.avatarUrl ? mx.mxcUrlToHttp(user.avatarUrl, 32, 32, 'crop') : room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
+  let imageSrc =
+    user && user.avatarUrl
+      ? mx.mxcUrlToHttp(user.avatarUrl, 32, 32, 'crop')
+      : room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
   if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
 
-  let imageAnimSrc = user && user.avatarUrl ?
-    !appearanceSettings.enableAnimParams ? mx.mxcUrlToHttp(user.avatarUrl) : getAnimatedImageUrl(mx.mxcUrlToHttp(user.avatarUrl, 32, 32, 'crop'))
-    :
-    !appearanceSettings.enableAnimParams ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'))
-      || null;
-  if (imageAnimSrc === null) imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
+  let imageAnimSrc =
+    user && user.avatarUrl
+      ? !appearanceSettings.enableAnimParams
+        ? mx.mxcUrlToHttp(user.avatarUrl)
+        : getAnimatedImageUrl(mx.mxcUrlToHttp(user.avatarUrl, 32, 32, 'crop'))
+      : !appearanceSettings.enableAnimParams
+        ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)
+        : getAnimatedImageUrl(
+            room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'),
+          ) || null;
+  if (imageAnimSrc === null)
+    imageAnimSrc = !appearanceSettings.enableAnimParams
+      ? room.getAvatarUrl(mx.baseUrl)
+      : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
 
   // Is Muted
   const isMuted = noti.getNotiType(roomId) === cons.notifs.MUTE;
@@ -112,7 +110,6 @@ function Selector({
   }
 
   const openOptions = (e) => {
-
     // Get Cords
     const cords = getEventCords(e, '.room-selector');
 
@@ -129,7 +126,6 @@ function Selector({
         ? (closeMenu) => <SpaceOptions roomId={roomId} afterOptionSelect={closeMenu} />
         : (closeMenu) => <RoomOptions roomId={roomId} afterOptionSelect={closeMenu} />,
     );
-
   };
 
   const openThreads = room
@@ -187,7 +183,6 @@ Selector.defaultProps = {
 };
 
 Selector.propTypes = {
-
   notSpace: PropTypes.bool,
   isProfile: PropTypes.bool,
   roomId: PropTypes.string.isRequired,
@@ -197,7 +192,6 @@ Selector.propTypes = {
 
   drawerPostie: PropTypes.shape({}).isRequired,
   onClick: PropTypes.func.isRequired,
-
 };
 
 export default Selector;

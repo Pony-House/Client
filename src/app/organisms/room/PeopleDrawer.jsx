@@ -1,12 +1,14 @@
-import React, {
-  useState, useEffect, useCallback, useRef,
-} from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import initMatrix from '../../../client/initMatrix';
 import { getPowerLabel, getUsernameOfRoomMember } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
-import { openInviteUser, openProfileViewer, openReusableContextMenu } from '../../../client/action/navigation';
+import {
+  openInviteUser,
+  openProfileViewer,
+  openReusableContextMenu,
+} from '../../../client/action/navigation';
 import AsyncSearch from '../../../util/AsyncSearch';
 import { memberByStatus, memberByPowerLevel } from '../../../util/sort';
 
@@ -38,7 +40,6 @@ function simplyfiMembers(members) {
 
 const asyncSearch = new AsyncSearch();
 function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
-
   const PER_PAGE_MEMBER = 50;
   const mx = initMatrix.matrixClient;
   const { directs } = initMatrix.roomList;
@@ -56,7 +57,7 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
   const usersCount = room.getJoinedMemberCount();
 
   tinyAPI.emit('roomMembersOptions', newValues, isUserList);
-  const defaultMembership = newValues.find(item => item.value === 'join');
+  const defaultMembership = newValues.find((item) => item.value === 'join');
 
   const [itemCount, setItemCount] = useState(PER_PAGE_MEMBER);
   const [membership, setMembership] = useState(defaultMembership);
@@ -64,7 +65,7 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
   const [searchedMembers, setSearchedMembers] = useState(null);
   const searchRef = useRef(null);
 
-  const newIsUserList = (!isDM || usersCount !== 2 || membership.value !== 'join');
+  const newIsUserList = !isDM || usersCount !== 2 || membership.value !== 'join';
   if (isUserList !== newIsUserList) setIsUserList(newIsUserList);
 
   const getMembersWithMembership = useCallback(
@@ -85,7 +86,7 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
 
   function handleSearch(e) {
     const term = e.target.value;
-    if (searchRef.current && term === '' || term === undefined) {
+    if ((searchRef.current && term === '') || term === undefined) {
       searchRef.current.value = '';
       searchRef.current.focus();
       setSearchedMembers(null);
@@ -101,23 +102,19 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
   }, [memberList]);
 
   useEffect(() => {
-
     let isLoadingMembers = false;
     let isRoomChanged = false;
 
     const updateMemberList = (event) => {
-
       if (isLoadingMembers) return;
       if (event && event?.getRoomId() !== roomId) return;
 
       // Default
       if (!Array.isArray(membership.custom)) {
-
         const membersWithMembership = getMembersWithMembership(membership.value);
         let membersData = [];
 
         if (membersWithMembership.length > 1000) {
-
           for (const item in membersWithMembership) {
             const user = mx.getUser(membersWithMembership[item].userId);
             if (user && user?.presence === 'online') {
@@ -126,19 +123,16 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
           }
 
           membersData.sort(memberByPowerLevel);
-
         } else {
           membersWithMembership.sort(memberByStatus).sort(memberByPowerLevel);
           membersData = membersWithMembership;
         }
 
         setMemberList(simplyfiMembers(membersData));
-
       }
 
       // Custom
       else setMemberList(membership.custom);
-
     };
 
     if (searchRef.current) searchRef.current.value = '';
@@ -165,7 +159,6 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
       mx.removeListener('RoomMember.powerLevel', updateMemberList);
       mx.removeListener('RoomMember.user', updateMemberList);
     };
-
   }, [roomId, membership]);
 
   useEffect(() => {
@@ -180,13 +173,11 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
   for (const item in newValues) {
     const vl = newValues[item];
     if (typeof vl.name === 'string' && typeof vl.value === 'string') {
-
       segments.push({ text: vl.name });
       selectMembership.push(() => setMembership(vl));
 
       segmentsIndex[vl.value] = segmentIndexCounter;
       segmentIndexCounter++;
-
     }
   }
 
@@ -195,136 +186,146 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
   return (
     <div className={`people-drawer${!isUserList ? ' people-drawer-banner' : ''}`}>
       <Header>
-
-        <ul className='navbar-nav mr-auto pb-1'>
-
-          {isUserList ? <li className="nav-item ps-2">
-            People
-            <div className="very-small text-gray">{`${usersCount} members`}</div>
-          </li> : <li className="nav-item ps-2">
-            User Room
-            <div className="very-small text-gray">The user private room</div>
-          </li>}
-
+        <ul className="navbar-nav mr-auto pb-1">
+          {isUserList ? (
+            <li className="nav-item ps-2">
+              People
+              <div className="very-small text-gray">{`${usersCount} members`}</div>
+            </li>
+          ) : (
+            <li className="nav-item ps-2">
+              User Room
+              <div className="very-small text-gray">The user private room</div>
+            </li>
+          )}
         </ul>
 
-        <ul className='navbar-nav ms-auto mb-0 small'>
+        <ul className="navbar-nav ms-auto mb-0 small">
           <li className="nav-item">
-            <IconButton onClick={() => openInviteUser(roomId)} tooltipPlacement="bottom" tooltip="Invite" fa="fa-solid fa-user-plus" disabled={!canInvite} />
+            <IconButton
+              onClick={() => openInviteUser(roomId)}
+              tooltipPlacement="bottom"
+              tooltip="Invite"
+              fa="fa-solid fa-user-plus"
+              disabled={!canInvite}
+            />
           </li>
         </ul>
-
       </Header>
 
       <div className={`people-drawer__content-wrapper people-drawer-select-${membership.value}`}>
-
-        <center className={`${isUserList ? 'p-3 ' : ''} w-100`} style={{
-          'height': '100%',
-          'overflowY': 'auto'
-        }}>
-
-          {isUserList ? <SegmentedControl
-            className='pb-3'
-            selected={
-              (() => {
+        <center
+          className={`${isUserList ? 'p-3 ' : ''} w-100`}
+          style={{
+            height: '100%',
+            overflowY: 'auto',
+          }}
+        >
+          {isUserList ? (
+            <SegmentedControl
+              className="pb-3"
+              selected={(() => {
                 const getSegmentIndex = segmentsIndex;
                 return getSegmentIndex[membership.value];
-              })()
-            }
-            segments={segments}
-            onSelect={(index) => {
-              const selectSegment = selectMembership;
-              selectSegment[index]?.();
-            }}
-          /> : null}
+              })()}
+              segments={segments}
+              onSelect={(index) => {
+                const selectSegment = selectMembership;
+                selectSegment[index]?.();
+              }}
+            />
+          ) : null}
 
-          {
-            mList.map((member) =>
-              !member.customSelector ?
-
-                isUserList ?
-
-                  <PeopleSelector
-                    avatarSize={32}
-                    key={member.userId}
-                    user={mx.getUser(member.userId)}
-                    onClick={() => typeof member.customClick !== 'function' ? openProfileViewer(member.userId, roomId) : member.customClick()}
-                    contextMenu={(e) => {
-
-                      openReusableContextMenu(
-                        'bottom',
-                        getEventCords(e, '.ic-btn'),
-                        (closeMenu) => <UserOptions userId={member.userId} afterOptionSelect={closeMenu} />,
-                      );
-
-                      e.preventDefault();
-
-                    }}
-                    avatarSrc={member.avatarSrc}
-                    name={member.name}
-                    color={colorMXID(member.userId)}
-                    peopleRole={member.peopleRole}
-                  /> :
-
-                  member.userId !== mx.getUserId() ? <PeopleSelectorBanner
-                    key={member.userId}
-                    user={mx.getUser(member.userId)}
-                    name={member.name}
-                    color={colorMXID(member.userId)}
-                    peopleRole={member.peopleRole}
-                  /> : ''
-
-                :
-
-                <member.customSelector
+          {mList.map((member) =>
+            !member.customSelector ? (
+              isUserList ? (
+                <PeopleSelector
+                  avatarSize={32}
                   key={member.userId}
                   user={mx.getUser(member.userId)}
-                  onClick={() => typeof member.customClick !== 'function' ? openProfileViewer(member.userId, roomId) : member.customClick()}
+                  onClick={() =>
+                    typeof member.customClick !== 'function'
+                      ? openProfileViewer(member.userId, roomId)
+                      : member.customClick()
+                  }
+                  contextMenu={(e) => {
+                    openReusableContextMenu('bottom', getEventCords(e, '.ic-btn'), (closeMenu) => (
+                      <UserOptions userId={member.userId} afterOptionSelect={closeMenu} />
+                    ));
+
+                    e.preventDefault();
+                  }}
                   avatarSrc={member.avatarSrc}
                   name={member.name}
                   color={colorMXID(member.userId)}
                   peopleRole={member.peopleRole}
                 />
+              ) : member.userId !== mx.getUserId() ? (
+                <PeopleSelectorBanner
+                  key={member.userId}
+                  user={mx.getUser(member.userId)}
+                  name={member.name}
+                  color={colorMXID(member.userId)}
+                  peopleRole={member.peopleRole}
+                />
+              ) : (
+                ''
+              )
+            ) : (
+              <member.customSelector
+                key={member.userId}
+                user={mx.getUser(member.userId)}
+                onClick={() =>
+                  typeof member.customClick !== 'function'
+                    ? openProfileViewer(member.userId, roomId)
+                    : member.customClick()
+                }
+                avatarSrc={member.avatarSrc}
+                name={member.name}
+                color={colorMXID(member.userId)}
+                peopleRole={member.peopleRole}
+              />
+            ),
+          )}
 
-            )
-          }
-
-          {isUserList ? <>
-            {
-              (searchedMembers?.data.length === 0 || memberList.length === 0)
-              && (
+          {isUserList ? (
+            <>
+              {(searchedMembers?.data.length === 0 || memberList.length === 0) && (
                 <div className="people-drawer__noresult">
                   <Text variant="b2">No results found!</Text>
                 </div>
-              )
-            }
+              )}
 
-            <div className="people-drawer__load-more">
-              {
-                mList.length !== 0
-                && memberList.length > itemCount
-                && searchedMembers === null
-                && (
-                  <Button onClick={loadMorePeople}>View more</Button>
-                )
-              }
-            </div>
-          </> : null}
-
+              <div className="people-drawer__load-more">
+                {mList.length !== 0 &&
+                  memberList.length > itemCount &&
+                  searchedMembers === null && <Button onClick={loadMorePeople}>View more</Button>}
+              </div>
+            </>
+          ) : null}
         </center>
 
-        {isUserList ? <div className="pt-1">
-          <form onSubmit={(e) => e.preventDefault()} className="people-search">
-            <div><Input forwardRef={searchRef} type="text" onChange={handleSearch} placeholder="Search" required /></div>
-            {
-              searchedMembers !== null
-              && <center><IconButton onClick={handleSearch} size="small" fa="fa-solid fa-xmark" /></center>
-            }
-          </form>
-        </div> : null}
-
+        {isUserList ? (
+          <div className="pt-1">
+            <form onSubmit={(e) => e.preventDefault()} className="people-search">
+              <div>
+                <Input
+                  forwardRef={searchRef}
+                  type="text"
+                  onChange={handleSearch}
+                  placeholder="Search"
+                  required
+                />
+              </div>
+              {searchedMembers !== null && (
+                <center>
+                  <IconButton onClick={handleSearch} size="small" fa="fa-solid fa-xmark" />
+                </center>
+              )}
+            </form>
+          </div>
+        ) : null}
       </div>
-
     </div>
   );
 }

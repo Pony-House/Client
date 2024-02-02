@@ -7,17 +7,17 @@ import Spinner from '../../../atoms/spinner/Spinner';
 import ProcessWrapper from './ProcessWrapper';
 
 function LoadingScreen({ message }) {
-    return (
-        <ProcessWrapper>
-            <Spinner />
-            <div style={{ marginTop: 'var(--sp-normal)' }}>
-                <Text variant="b1">{message}</Text>
-            </div>
-        </ProcessWrapper>
-    );
+  return (
+    <ProcessWrapper>
+      <Spinner />
+      <div style={{ marginTop: 'var(--sp-normal)' }}>
+        <Text variant="b1">{message}</Text>
+      </div>
+    </ProcessWrapper>
+  );
 }
 LoadingScreen.propTypes = {
-    message: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
 };
 
 export default LoadingScreen;

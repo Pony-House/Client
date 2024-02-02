@@ -9,43 +9,48 @@ import initMatrix from '../../../client/initMatrix';
 import { getCurrentState } from '../../../util/matrixUtil';
 
 function PonyHousePersonalSettings({ roomId, room }) {
+  const mx = initMatrix.matrixClient;
+  const userId = mx.getUserId();
+  const [isRoomIconsVisible, setRoomIconsVisible] = useState(false);
 
-    const mx = initMatrix.matrixClient;
-    const userId = mx.getUserId();
-    const [isRoomIconsVisible, setRoomIconsVisible] = useState(false);
+  const toggleShowRoomIcons = async (data) => {
+    await mx.sendStateEvent(roomId, 'pony.house.settings', { isActive: data }, 'roomIcons');
+    setRoomIconsVisible(data);
+  };
 
-    const toggleShowRoomIcons = async data => {
-        await mx.sendStateEvent(roomId, 'pony.house.settings', { isActive: data }, 'roomIcons');
-        setRoomIconsVisible(data);
-    };
+  // Pony Config
+  const canPonyHouse = getCurrentState(room).maySendStateEvent('pony.house.settings', userId);
+  useEffect(() => {
+    const roomIconCfg =
+      getCurrentState(room).getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ?? {};
+    setRoomIconsVisible(roomIconCfg.isActive === true);
+  }, [room]);
 
-    // Pony Config
-    const canPonyHouse = getCurrentState(room).maySendStateEvent('pony.house.settings', userId);
-    useEffect(() => {
-
-        const roomIconCfg = getCurrentState(room).getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ?? {};
-        setRoomIconsVisible((roomIconCfg.isActive === true));
-
-    }, [room]);
-
-    return <SettingTile
-        title="Display room avatars"
-        content={<div className="very-small text-gray">Instead of showing the traditional room icons of this space, you can click here for this space to show room avatars instead. Update your space page after applying this configuration.</div>}
-        options={(
-            <Toggle
-                className='d-inline-flex'
-                isActive={isRoomIconsVisible}
-                onToggle={toggleShowRoomIcons}
-                disabled={!canPonyHouse}
-            />
-        )}
-    />;
-
+  return (
+    <SettingTile
+      title="Display room avatars"
+      content={
+        <div className="very-small text-gray">
+          Instead of showing the traditional room icons of this space, you can click here for this
+          space to show room avatars instead. Update your space page after applying this
+          configuration.
+        </div>
+      }
+      options={
+        <Toggle
+          className="d-inline-flex"
+          isActive={isRoomIconsVisible}
+          onToggle={toggleShowRoomIcons}
+          disabled={!canPonyHouse}
+        />
+      }
+    />
+  );
 }
 
 PonyHousePersonalSettings.propTypes = {
-    room: PropTypes.object,
-    roomId: PropTypes.string.isRequired,
+  room: PropTypes.object,
+  roomId: PropTypes.string.isRequired,
 };
 
 export default PonyHousePersonalSettings;

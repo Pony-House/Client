@@ -27,19 +27,22 @@ function IgnoreUserList() {
   return (
     <div className="card noselect mt-3">
       <ul className="list-group list-group-flush">
-
         <li className="list-group-item very-small text-gray">Ignored users</li>
 
         <SettingTile
           title="Ignore user"
-          content={(
+          content={
             <div className="ignore-user-list__users">
-              <div className="very-small text-gray">Ignore userId if you do not want to receive their messages or invites.</div>
+              <div className="very-small text-gray">
+                Ignore userId if you do not want to receive their messages or invites.
+              </div>
               <form onSubmit={handleSubmit}>
                 <div>
                   <Input name="ignoreInput" required />
                 </div>
-                <Button variant="primary" type="submit">Ignore</Button>
+                <Button variant="primary" type="submit">
+                  Ignore
+                </Button>
               </form>
               {ignoredUsers.length > 0 && (
                 <div>
@@ -55,9 +58,8 @@ function IgnoreUserList() {
                 </div>
               )}
             </div>
-          )}
+          }
         />
-
       </ul>
     </div>
   );

@@ -19,15 +19,19 @@ const fetchBase = (url, ops) => {
   return global.fetch(url.href, ops);
 };
 
-const fetchFn = __ENV_APP__.ELECTRON_MODE ? (url, ops) => fetchFn({ href: url }, ops) : global.fetch;
+const fetchFn = __ENV_APP__.ELECTRON_MODE
+  ? (url, ops) => fetchFn({ href: url }, ops)
+  : global.fetch;
 export { fetchFn };
 
 const startCustomDNS = () => {
   if (__ENV_APP__.ELECTRON_MODE) {
     if (typeof global.startCustomDNS === 'function') {
       global.startCustomDNS({
-
-        port: __ENV_APP__.MODE !== 'development' ? __ENV_APP__.CUSTOM_DNS.PORT : __ENV_APP__.CUSTOM_DNS.PORT - 1,
+        port:
+          __ENV_APP__.MODE !== 'development'
+            ? __ENV_APP__.CUSTOM_DNS.PORT
+            : __ENV_APP__.CUSTOM_DNS.PORT - 1,
         devMode: __ENV_APP__.MODE === 'development',
         enabled: __ENV_APP__.CUSTOM_DNS.ENABLED,
 
@@ -36,7 +40,6 @@ const startCustomDNS = () => {
         },
 
         ens: __ENV_APP__.CUSTOM_DNS.BLOCKCHAIN.ens,
-
       });
     }
   }
@@ -51,7 +54,9 @@ class InitMatrix extends EventEmitter {
 
   setMatrixClient(mx) {
     this.matrixClient = mx;
-    if (__ENV_APP__.MODE === 'development') { global.initMatrix = { matrixClient: mx }; }
+    if (__ENV_APP__.MODE === 'development') {
+      global.initMatrix = { matrixClient: mx };
+    }
   }
 
   async init(isGuest = false) {
@@ -63,7 +68,6 @@ class InitMatrix extends EventEmitter {
   }
 
   async startClient(isGuest = false) {
-
     startCustomDNS();
 
     const indexedDBStore = new sdk.IndexedDBStore({
@@ -73,7 +77,6 @@ class InitMatrix extends EventEmitter {
     });
 
     const clientOps = {
-
       baseUrl: secret.baseUrl,
 
       accessToken: secret.accessToken,
@@ -90,10 +93,7 @@ class InitMatrix extends EventEmitter {
       supportsCallTransfer: !isGuest,
 
       cryptoCallbacks,
-      verificationMethods: [
-        'm.sas.v1',
-      ],
-
+      verificationMethods: ['m.sas.v1'],
     };
 
     if (__ENV_APP__.ELECTRON_MODE) {
@@ -112,7 +112,6 @@ class InitMatrix extends EventEmitter {
     });
 
     this.matrixClient.setGlobalErrorOnUnknownDevices(false);
-
   }
 
   setupSync() {
@@ -127,7 +126,9 @@ class InitMatrix extends EventEmitter {
       PREPARED: (prevState) => {
         logger.log(`PREPARED state`);
         logger.log(`Previous state: `, prevState);
-        if (__ENV_APP__.MODE === 'development') { global.initMatrix = this; }
+        if (__ENV_APP__.MODE === 'development') {
+          global.initMatrix = this;
+        }
         if (prevState === null) {
           this.roomList = new RoomList(this.matrixClient);
           this.accountData = new AccountData(this.roomList);

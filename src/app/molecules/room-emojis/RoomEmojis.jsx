@@ -40,7 +40,8 @@ function useRoomPacks(room) {
     };
   }, [room, mx]);
 
-  const isStateKeyAvailable = (key) => !getCurrentState(room).getStateEvents('im.ponies.room_emotes', key);
+  const isStateKeyAvailable = (key) =>
+    !getCurrentState(room).getStateEvents('im.ponies.room_emotes', key);
 
   const createPack = async (name) => {
     const packContent = {
@@ -54,10 +55,7 @@ function useRoomPacks(room) {
     } else {
       stateKey = packContent.pack.display_name.replace(/\s/g, '-');
       if (!isStateKeyAvailable(stateKey)) {
-        stateKey = suffixRename(
-          stateKey,
-          isStateKeyAvailable,
-        );
+        stateKey = suffixRename(stateKey, isStateKeyAvailable);
       }
     }
     await mx.sendStateEvent(room.roomId, 'im.ponies.room_emotes', packContent, stateKey);
@@ -81,7 +79,10 @@ function RoomEmojis({ roomId, profileMode }) {
   const room = mx.getRoom(roomId);
 
   const { usablePacks, createPack, deletePack } = useRoomPacks(room);
-  const canChange = getCurrentState(room).maySendStateEvent('im.ponies.emote_rooms', mx.getUserId());
+  const canChange = getCurrentState(room).maySendStateEvent(
+    'im.ponies.emote_rooms',
+    mx.getUserId(),
+  );
 
   const handlePackCreate = (e) => {
     e.preventDefault();
@@ -96,46 +97,45 @@ function RoomEmojis({ roomId, profileMode }) {
   return (
     <div className="card noselect mb-3">
       <ul className="list-group list-group-flush">
-
         {canChange && (
           <>
-
             <li className="list-group-item very-small text-gray">Create Pack</li>
 
             <li className="list-group-item">
               <form className="row" onSubmit={handlePackCreate}>
-
                 <div className="col-10">
                   <div>
                     <Input name="nameInput" placeholder="Pack Name" required />
                   </div>
                 </div>
                 <div className="col-2">
-                  <center className='h-100'><Button className='h-100' variant="primary" type="submit">Create pack</Button></center>
+                  <center className="h-100">
+                    <Button className="h-100" variant="primary" type="submit">
+                      Create pack
+                    </Button>
+                  </center>
                 </div>
-
               </form>
             </li>
-
           </>
         )}
 
-        {
-          usablePacks.length > 0
-            ? usablePacks.reverse().map((mEvent) => (
+        {usablePacks.length > 0 ? (
+          usablePacks
+            .reverse()
+            .map((mEvent) => (
               <ImagePack
                 key={mEvent.getId()}
                 roomId={roomId}
                 stateKey={mEvent.getStateKey()}
                 handlePackDelete={canChange ? deletePack : undefined}
               />
-            )) : (
-              <div className="room-emojis__empty">
-                <Text>No emoji or sticker pack.</Text>
-              </div>
-            )
-        }
-
+            ))
+        ) : (
+          <div className="room-emojis__empty">
+            <Text>No emoji or sticker pack.</Text>
+          </div>
+        )}
       </ul>
     </div>
   );

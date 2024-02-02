@@ -41,8 +41,10 @@ function Directs({ size }) {
     const selectorChanged = (selectedRoomId, prevSelectedRoomId) => {
       if (!drawerPostie.hasTopic('selector-change')) return;
       const addresses = [];
-      if (drawerPostie.hasSubscriber('selector-change', selectedRoomId)) addresses.push(selectedRoomId);
-      if (drawerPostie.hasSubscriber('selector-change', prevSelectedRoomId)) addresses.push(prevSelectedRoomId);
+      if (drawerPostie.hasSubscriber('selector-change', selectedRoomId))
+        addresses.push(selectedRoomId);
+      if (drawerPostie.hasSubscriber('selector-change', prevSelectedRoomId))
+        addresses.push(prevSelectedRoomId);
       if (addresses.length === 0) return;
       drawerPostie.post('selector-change', addresses, selectedRoomId);
     };
@@ -64,15 +66,24 @@ function Directs({ size }) {
     };
   }, []);
 
-  return <>
+  return (
+    <>
+      <div className="px-3 pe-2 pb-2 pt-4 text-truncate noselect">
+        <span className="no-category-button text-gray very-small text-uppercase text-truncate ms-2">
+          Rooms
+        </span>
+      </div>
 
-    <div className="px-3 pe-2 pb-2 pt-4 text-truncate noselect">
-      <span className="no-category-button text-gray very-small text-uppercase text-truncate ms-2">Rooms</span>
-    </div>
-
-    <RoomsCategory name="People" hideHeader roomIds={directIds} drawerPostie={drawerPostie} type='directs' isDM />
-
-  </>;
+      <RoomsCategory
+        name="People"
+        hideHeader
+        roomIds={directIds}
+        drawerPostie={drawerPostie}
+        type="directs"
+        isDM
+      />
+    </>
+  );
 }
 Directs.propTypes = {
   size: PropTypes.number.isRequired,

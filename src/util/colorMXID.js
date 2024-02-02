@@ -13,22 +13,22 @@ export function hashCode(str) {
     hash |= 0;
   }
   return Math.abs(hash);
-};
+}
 
 export function cssColorMXID(userId) {
   const colorNumber = hashCode(userId) % 8;
   return `--mx-uc-${colorNumber + 1}`;
-};
+}
 
 export function colorMXID(userId) {
   return `var(${cssColorMXID(userId)})`;
-};
+}
 
 export function cssBackgroundColorMXID(userId) {
   const colorNumber = hashCode(userId) % 8;
   return `--mx-bg-${colorNumber + 1}`;
-};
+}
 
 export function backgroundColorMXID(userId) {
   return `var(${cssBackgroundColorMXID(userId)})`;
-};
+}

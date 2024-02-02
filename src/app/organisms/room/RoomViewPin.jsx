@@ -2,14 +2,10 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { getPinnedMessages } from '../../../util/libs/pinMessage';
 
-function RoomViewPin({ roomId }) {
-
-
-
-};
+function RoomViewPin({ roomId }) {}
 
 RoomViewPin.propTypes = {
-    roomId: PropTypes.string.isRequired,
+  roomId: PropTypes.string.isRequired,
 };
 
 export default RoomViewPin;

@@ -5,7 +5,6 @@ import tinyAPI from '../../util/mods';
 
 class Navigation extends EventEmitter {
   constructor() {
-
     super();
     // this will attached by initMatrix
     this.initMatrix = {};
@@ -22,11 +21,9 @@ class Navigation extends EventEmitter {
     this.spaceToRoom = new Map();
 
     this.rawModelStack = [];
-
   }
 
   _addToSpacePath(roomId, asRoot) {
-
     if (typeof roomId !== 'string') {
       this.selectedSpacePath = [cons.tabs.HOME];
       return;
@@ -44,11 +41,9 @@ class Navigation extends EventEmitter {
     }
 
     this.selectedSpacePath.push(roomId);
-
   }
 
   _mapRoomToSpace(roomId) {
-
     const { roomList, accountData } = this.initMatrix;
 
     if (
@@ -56,32 +51,27 @@ class Navigation extends EventEmitter {
       roomList.rooms.has(roomId) &&
       !roomList.roomIdToParents.has(roomId)
     ) {
-
       this.spaceToRoom.set(cons.tabs.HOME, {
         roomId,
         timestamp: Date.now(),
       });
 
       return;
-
     }
 
     if (this.selectedTab === cons.tabs.DIRECTS && roomList.directs.has(roomId)) {
-
       this.spaceToRoom.set(cons.tabs.DIRECTS, {
         roomId,
         timestamp: Date.now(),
       });
 
       return;
-
     }
 
     const parents = roomList.roomIdToParents.get(roomId);
 
     if (!parents) return;
     if (parents.has(this.selectedSpaceId)) {
-
       if (!this.selectedSpaceId) {
         console.warn('Called _mapRoomToSpace but no selected space');
         return;
@@ -91,9 +81,7 @@ class Navigation extends EventEmitter {
         roomId,
         timestamp: Date.now(),
       });
-
     } else if (accountData.categorizedSpaces.has(this.selectedSpaceId)) {
-
       const categories = roomList.getCategorizedSpaces([this.selectedSpaceId]);
       const parent = [...parents].find((pId) => categories.has(pId));
 
@@ -102,14 +90,11 @@ class Navigation extends EventEmitter {
           roomId,
           timestamp: Date.now(),
         });
-
       }
     }
-
   }
 
   _selectRoom(roomId, eventId, threadId, forceScroll) {
-
     const prevSelectedRoomId = this.selectedRoomId;
     this.selectedRoomId = roomId;
     this.selectedThreadId = threadId ?? null;
@@ -122,7 +107,12 @@ class Navigation extends EventEmitter {
     if (this.isRoomSettings && typeof this.selectedRoomId === 'string') {
       this.isRoomSettings = !this.isRoomSettings;
       tinyAPI.emit('roomSettingsToggled', this.isRoomSettings, null, forceScroll);
-      this.emit(cons.events.navigation.ROOM_SETTINGS_TOGGLED, this.isRoomSettings, null, forceScroll);
+      this.emit(
+        cons.events.navigation.ROOM_SETTINGS_TOGGLED,
+        this.isRoomSettings,
+        null,
+        forceScroll,
+      );
     }
 
     tinyAPI.emit(
@@ -142,11 +132,9 @@ class Navigation extends EventEmitter {
       threadId,
       forceScroll,
     );
-
   }
 
   _selectTabWithRoom(roomId) {
-
     const { roomList, accountData } = this.initMatrix;
     const { categorizedSpaces } = accountData;
 
@@ -158,7 +146,6 @@ class Navigation extends EventEmitter {
         this._selectTab(cons.tabs.HOME, false);
       }
       return;
-
     }
 
     const parents = roomList.roomIdToParents.get(roomId);
@@ -189,7 +176,6 @@ class Navigation extends EventEmitter {
     }
 
     if (parents.size > 0) {
-
       const sortedParents = [...parents].sort((p1, p2) => {
         const t1 = this.spaceToRoom.get(p1)?.timestamp ?? 0;
         const t2 = this.spaceToRoom.get(p2)?.timestamp ?? 0;
@@ -198,13 +184,10 @@ class Navigation extends EventEmitter {
 
       this._selectSpace(sortedParents[0], true, false);
       this._selectTab(sortedParents[0], false);
-
     }
-
   }
 
   _getLatestActiveRoomId(roomIds) {
-
     const mx = this.initMatrix.matrixClient;
 
     let ts = 0;
@@ -221,11 +204,9 @@ class Navigation extends EventEmitter {
     });
 
     return roomId;
-
   }
 
   _getLatestSelectedRoomId(spaceIds) {
-
     let ts = 0;
     let roomId = null;
 
@@ -240,21 +221,17 @@ class Navigation extends EventEmitter {
     });
 
     return roomId;
-
   }
 
   _selectTab(tabId, selectRoom = true) {
-
     this.selectedTab = tabId;
     if (selectRoom) this._selectRoomWithTab(this.selectedTab);
 
     tinyAPI.emit('tabSelected', this.selectedTab);
     this.emit(cons.events.navigation.TAB_SELECTED, this.selectedTab);
-
   }
 
   _selectSpace(roomId, asRoot, selectRoom = true) {
-
     this._addToSpacePath(roomId, asRoot);
     this.selectedSpaceId = roomId;
 
@@ -262,11 +239,9 @@ class Navigation extends EventEmitter {
 
     tinyAPI.emit('spaceSelected', this.selectedSpaceId);
     this.emit(cons.events.navigation.SPACE_SELECTED, this.selectedSpaceId);
-
   }
 
   _selectRoomWithSpace(spaceId) {
-
     if (!spaceId) return;
     const { roomList, accountData, matrixClient } = this.initMatrix;
     const { categorizedSpaces } = accountData;
@@ -280,7 +255,6 @@ class Navigation extends EventEmitter {
     const children = [];
 
     if (categorizedSpaces.has(spaceId)) {
-
       const categories = roomList.getCategorizedSpaces([spaceId]);
 
       const latestSelectedRoom = this._getLatestSelectedRoomId([...categories.keys()]);
@@ -295,10 +269,7 @@ class Navigation extends EventEmitter {
           children.push(childId);
         });
       });
-
-    }
-
-    else {
+    } else {
       roomList.getSpaceChildren(spaceId).forEach((id) => {
         if (matrixClient.getRoom(id)?.isSpaceRoom() === false) {
           children.push(id);
@@ -312,14 +283,11 @@ class Navigation extends EventEmitter {
     }
 
     this._selectRoom(this._getLatestActiveRoomId(children));
-
   }
 
   _selectRoomWithTab(tabId) {
-
     const { roomList } = this.initMatrix;
     if (tabId === cons.tabs.HOME || tabId === cons.tabs.DIRECTS) {
-
       const data = this.spaceToRoom.get(tabId);
 
       if (data) {
@@ -330,11 +298,9 @@ class Navigation extends EventEmitter {
       const children = tabId === cons.tabs.HOME ? roomList.getOrphanRooms() : [...roomList.directs];
       this._selectRoom(this._getLatestActiveRoomId(children));
       return;
-
     }
 
     this._selectRoomWithSpace(tabId);
-
   }
 
   removeRecentRoom(roomId) {
@@ -346,14 +312,12 @@ class Navigation extends EventEmitter {
   }
 
   addRecentRoom(roomId) {
-
     if (typeof roomId !== 'string') return;
 
     this.recentRooms.push(roomId);
     if (this.recentRooms.length > 10) {
       this.recentRooms.splice(0, 1);
     }
-
   }
 
   get isRawModalVisible() {
@@ -366,7 +330,6 @@ class Navigation extends EventEmitter {
   }
 
   navigate(action) {
-
     const actions = {
       [cons.actions.navigation.SELECT_TAB]: () => {
         const roomId =
@@ -416,13 +379,28 @@ class Navigation extends EventEmitter {
         tinyAPI.emit('selectedRoom', action.roomId, action.forceScroll);
         if (action.roomId) this._selectTabWithRoom(action.roomId, action.forceScroll);
         this._selectRoom(action.roomId, action.eventId, action.threadId, action.forceScroll);
-        setTimeout(() => tinyAPI.emit('selectedRoomAfter', action.roomId, action.threadId, action.forceScroll), 100);
-        this.emit(cons.events.navigation.SELECTED_ROOM, action.roomId, action.eventId, action.threadId, action.forceScroll);
+        setTimeout(
+          () =>
+            tinyAPI.emit('selectedRoomAfter', action.roomId, action.threadId, action.forceScroll),
+          100,
+        );
+        this.emit(
+          cons.events.navigation.SELECTED_ROOM,
+          action.roomId,
+          action.eventId,
+          action.threadId,
+          action.forceScroll,
+        );
       },
 
       [cons.actions.navigation.OPEN_SPACE_SETTINGS]: () => {
         tinyAPI.emit('spaceSettingsOpened', action.roomId, action.tabText, action.isProfile);
-        this.emit(cons.events.navigation.SPACE_SETTINGS_OPENED, action.roomId, action.tabText, action.isProfile);
+        this.emit(
+          cons.events.navigation.SPACE_SETTINGS_OPENED,
+          action.roomId,
+          action.tabText,
+          action.isProfile,
+        );
       },
 
       [cons.actions.navigation.OPEN_SPACE_MANAGE]: () => {
@@ -436,35 +414,21 @@ class Navigation extends EventEmitter {
       },
 
       [cons.actions.navigation.TOGGLE_ROOM_SETTINGS]: () => {
-
         this.isRoomSettings = !this.isRoomSettings;
 
-        tinyAPI.emit(
-          'roomSettingsToggled',
-          this.isRoomSettings,
-          action.tabText,
-        );
+        tinyAPI.emit('roomSettingsToggled', this.isRoomSettings, action.tabText);
 
         this.emit(
           cons.events.navigation.ROOM_SETTINGS_TOGGLED,
           this.isRoomSettings,
           action.tabText,
         );
-
       },
 
       [cons.actions.navigation.ROOM_INFO_UPDATE]: () => {
+        tinyAPI.emit('RoomInfoUpdated', action.info);
 
-        tinyAPI.emit(
-          'RoomInfoUpdated',
-          action.info,
-        );
-
-        this.emit(
-          cons.events.navigation.ROOM_INFO_UPDATED,
-          action.info,
-        );
-
+        this.emit(cons.events.navigation.ROOM_INFO_UPDATED, action.info);
       },
 
       [cons.actions.navigation.OPEN_SHORTCUT_SPACES]: () => {
@@ -483,33 +447,15 @@ class Navigation extends EventEmitter {
       },
 
       [cons.actions.navigation.OPEN_CREATE_ROOM]: () => {
+        tinyAPI.emit('createRoomOpened', action.isSpace, action.parentId);
 
-        tinyAPI.emit(
-          'createRoomOpened',
-          action.isSpace,
-          action.parentId,
-        );
-
-        this.emit(
-          cons.events.navigation.CREATE_ROOM_OPENED,
-          action.isSpace,
-          action.parentId,
-        );
-
+        this.emit(cons.events.navigation.CREATE_ROOM_OPENED, action.isSpace, action.parentId);
       },
 
       [cons.actions.navigation.OPEN_JOIN_ALIAS]: () => {
+        tinyAPI.emit('joinAliasOpened', action.term);
 
-        tinyAPI.emit(
-          'joinAliasOpened',
-          action.term,
-        );
-
-        this.emit(
-          cons.events.navigation.JOIN_ALIAS_OPENED,
-          action.term,
-        );
-
+        this.emit(cons.events.navigation.JOIN_ALIAS_OPENED, action.term);
       },
 
       [cons.actions.navigation.OPEN_INVITE_USER]: () => {
@@ -534,14 +480,10 @@ class Navigation extends EventEmitter {
 
       [cons.actions.navigation.ETHEREUM_UPDATE]: () => {
         tinyAPI.emit('ethereumUpdated', action.address);
-        this.emit(
-          cons.events.navigation.ETHEREUM_UPDATED,
-          action.address
-        );
+        this.emit(cons.events.navigation.ETHEREUM_UPDATED, action.address);
       },
 
       [cons.actions.navigation.OPEN_EMOJIBOARD]: () => {
-
         tinyAPI.emit(
           'emojiboardOpened',
           action.roomId,
@@ -557,41 +499,21 @@ class Navigation extends EventEmitter {
           action.requestEmojiCallback,
           action.dom,
         );
-
       },
 
       [cons.actions.navigation.OPEN_READRECEIPTS]: () => {
+        tinyAPI.emit('readReceiptsOpened', action.roomId, action.userIds);
 
-        tinyAPI.emit(
-          'readReceiptsOpened',
-          action.roomId,
-          action.userIds,
-        );
-
-        this.emit(
-          cons.events.navigation.READRECEIPTS_OPENED,
-          action.roomId,
-          action.userIds,
-        );
-
+        this.emit(cons.events.navigation.READRECEIPTS_OPENED, action.roomId, action.userIds);
       },
 
       [cons.actions.navigation.OPEN_VIEWSOURCE]: () => {
+        tinyAPI.emit('viewSourceOpened', action.event);
 
-        tinyAPI.emit(
-          'viewSourceOpened',
-          action.event,
-        );
-
-        this.emit(
-          cons.events.navigation.VIEWSOURCE_OPENED,
-          action.event,
-        );
-
+        this.emit(cons.events.navigation.VIEWSOURCE_OPENED, action.event);
       },
 
       [cons.actions.navigation.CLICK_REPLY_TO]: () => {
-
         tinyAPI.emit(
           'replyToClicked',
           action.userId,
@@ -607,25 +529,15 @@ class Navigation extends EventEmitter {
           action.body,
           action.formattedBody,
         );
-
       },
 
       [cons.actions.navigation.OPEN_SEARCH]: () => {
+        tinyAPI.emit('searchOpened', action.term);
 
-        tinyAPI.emit(
-          'searchOpened',
-          action.term,
-        );
-
-        this.emit(
-          cons.events.navigation.SEARCH_OPENED,
-          action.term,
-        );
-
+        this.emit(cons.events.navigation.SEARCH_OPENED, action.term);
       },
 
       [cons.actions.navigation.OPEN_REUSABLE_CONTEXT_MENU]: () => {
-
         tinyAPI.emit(
           'reusableContextMenuOpened',
           action.placement,
@@ -641,17 +553,10 @@ class Navigation extends EventEmitter {
           action.render,
           action.afterClose,
         );
-
       },
 
       [cons.actions.navigation.OPEN_REUSABLE_DIALOG]: () => {
-
-        tinyAPI.emit(
-          'reusableDialogOpened',
-          action.title,
-          action.render,
-          action.afterClose,
-        );
+        tinyAPI.emit('reusableDialogOpened', action.title, action.render, action.afterClose);
 
         this.emit(
           cons.events.navigation.REUSABLE_DIALOG_OPENED,
@@ -659,34 +564,25 @@ class Navigation extends EventEmitter {
           action.render,
           action.afterClose,
         );
-
       },
 
       [cons.actions.navigation.OPEN_EMOJI_VERIFICATION]: () => {
-
-        tinyAPI.emit(
-          'emojiVerificationOpened',
-          action.request,
-          action.targetDevice,
-        );
+        tinyAPI.emit('emojiVerificationOpened', action.request, action.targetDevice);
 
         this.emit(
           cons.events.navigation.EMOJI_VERIFICATION_OPENED,
           action.request,
           action.targetDevice,
         );
-
       },
 
       [cons.actions.navigation.PROFILE_UPDATE]: () => {
         tinyAPI.emit('profileUpdated', action.content);
         this.emit(cons.events.navigation.PROFILE_UPDATED, action.content);
       },
-
     };
 
     actions[action.type]?.();
-
   }
 }
 

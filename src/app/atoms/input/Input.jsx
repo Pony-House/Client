@@ -4,56 +4,71 @@ import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-autosize-textarea';
 
 function Input({
-  id, label, name, value, placeholder,
-  required, type, onChange, forwardRef,
-  resizable, minHeight, onResize, state,
-  onKeyDown, disabled, autoFocus, className, className2
+  id,
+  label,
+  name,
+  value,
+  placeholder,
+  required,
+  type,
+  onChange,
+  forwardRef,
+  resizable,
+  minHeight,
+  onResize,
+  state,
+  onKeyDown,
+  disabled,
+  autoFocus,
+  className,
+  className2,
 }) {
   return (
     <>
+      {label !== '' && (
+        <label className="small text-gray" for={id}>
+          {label}
+        </label>
+      )}
 
-      {label !== '' && <label className="small text-gray" for={id}>{label}</label>}
-
-      {resizable
-        ? (
-          <TextareaAutosize
-            dir="auto"
-            style={{ minHeight: `${minHeight}px` }}
-            name={name}
-            id={id}
-            className={`form-control ${state !== 'normal' ? ` form-control-${state}` : 'form-control-bg'}${typeof className === 'string' ? ` ${className}` : ''}`}
-            ref={forwardRef}
-            type={type}
-            placeholder={placeholder}
-            required={required}
-            defaultValue={value}
-            autoComplete="off"
-            onChange={onChange}
-            onResize={onResize}
-            onKeyDown={onKeyDown}
-            disabled={disabled}
-            autoFocus={autoFocus}
-          />
-        ) : (
-          <input
-            dir="auto"
-            ref={forwardRef}
-            id={id}
-            name={name}
-            className={`form-control ${state !== 'normal' ? ` form-control-${state}` : 'form-control-bg'}${typeof className === 'string' ? ` ${className}` : ''}`}
-            type={type}
-            placeholder={placeholder}
-            required={required}
-            defaultValue={value}
-            autoComplete="off"
-            onChange={onChange}
-            onKeyDown={onKeyDown}
-            disabled={disabled}
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus={autoFocus}
-          />
-        )}
-
+      {resizable ? (
+        <TextareaAutosize
+          dir="auto"
+          style={{ minHeight: `${minHeight}px` }}
+          name={name}
+          id={id}
+          className={`form-control ${state !== 'normal' ? ` form-control-${state}` : 'form-control-bg'}${typeof className === 'string' ? ` ${className}` : ''}`}
+          ref={forwardRef}
+          type={type}
+          placeholder={placeholder}
+          required={required}
+          defaultValue={value}
+          autoComplete="off"
+          onChange={onChange}
+          onResize={onResize}
+          onKeyDown={onKeyDown}
+          disabled={disabled}
+          autoFocus={autoFocus}
+        />
+      ) : (
+        <input
+          dir="auto"
+          ref={forwardRef}
+          id={id}
+          name={name}
+          className={`form-control ${state !== 'normal' ? ` form-control-${state}` : 'form-control-bg'}${typeof className === 'string' ? ` ${className}` : ''}`}
+          type={type}
+          placeholder={placeholder}
+          required={required}
+          defaultValue={value}
+          autoComplete="off"
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+          disabled={disabled}
+          // eslint-disable-next-line jsx-a11y/no-autofocus
+          autoFocus={autoFocus}
+        />
+      )}
     </>
   );
 }

@@ -14,16 +14,22 @@ function RoomEncryption({ roomId }) {
   const room = mx.getRoom(roomId);
   const encryptionEvents = getCurrentState(room).getStateEvents('m.room.encryption');
   const [isEncrypted, setIsEncrypted] = useState(encryptionEvents.length > 0);
-  const canEnableEncryption = getCurrentState(room).maySendStateEvent('m.room.encryption', mx.getUserId());
+  const canEnableEncryption = getCurrentState(room).maySendStateEvent(
+    'm.room.encryption',
+    mx.getUserId(),
+  );
 
   const handleEncryptionEnable = async () => {
     const joinRule = room.getJoinRule();
-    const confirmMsg1 = 'It is not recommended to add encryption in public room. Anyone can find and join public rooms, so anyone can read messages in them.';
-    const confirmMsg2 = 'Once enabled, encryption for a room cannot be disabled. Messages sent in an encrypted room cannot be seen by the server, only by the participants of the room. Enabling encryption may prevent many bots and bridges from working correctly';
+    const confirmMsg1 =
+      'It is not recommended to add encryption in public room. Anyone can find and join public rooms, so anyone can read messages in them.';
+    const confirmMsg2 =
+      'Once enabled, encryption for a room cannot be disabled. Messages sent in an encrypted room cannot be seen by the server, only by the participants of the room. Enabling encryption may prevent many bots and bridges from working correctly';
 
-    const isConfirmed1 = (joinRule === 'public')
-      ? await confirmDialog('Enable encryption', confirmMsg1, 'Continue', 'warning')
-      : true;
+    const isConfirmed1 =
+      joinRule === 'public'
+        ? await confirmDialog('Enable encryption', confirmMsg1, 'Continue', 'warning')
+        : true;
     if (!isConfirmed1) return;
     if (await confirmDialog('Enable encryption', confirmMsg2, 'Enable', 'warning')) {
       setIsEncrypted(true);
@@ -36,17 +42,17 @@ function RoomEncryption({ roomId }) {
   return (
     <SettingTile
       title="Enable room encryption"
-      content={(
+      content={
         <div className="very-small text-gray">Once enabled, encryption cannot be disabled.</div>
-      )}
-      options={(
+      }
+      options={
         <Toggle
-          className='d-inline-flex'
+          className="d-inline-flex"
           isActive={isEncrypted}
           onToggle={handleEncryptionEnable}
           disabled={isEncrypted || !canEnableEncryption}
         />
-      )}
+      }
     />
   );
 }

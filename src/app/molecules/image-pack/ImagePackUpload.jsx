@@ -11,7 +11,7 @@ import IconButton from '../../atoms/button/IconButton';
 import { updateEmojiList } from '../../../client/action/navigation';
 import { getSelectRoom } from '../../../util/selectedRoom';
 
-function ImagePackUpload({ onUpload, roomId, }) {
+function ImagePackUpload({ onUpload, roomId }) {
   const mx = initMatrix.matrixClient;
   const inputRef = useRef(null);
   const shortcodeRef = useRef(null);
@@ -19,7 +19,6 @@ function ImagePackUpload({ onUpload, roomId, }) {
   const [progress, setProgress] = useState(false);
 
   const handleSubmit = async (evt) => {
-
     evt.preventDefault();
     if (!imgFile) return;
 
@@ -41,7 +40,6 @@ function ImagePackUpload({ onUpload, roomId, }) {
     } else {
       updateEmojiList(roomId);
     }
-
   };
 
   const handleFileChange = (evt) => {
@@ -59,19 +57,28 @@ function ImagePackUpload({ onUpload, roomId, }) {
 
   return (
     <form onSubmit={handleSubmit} className="image-pack-upload">
-      <input ref={inputRef} onChange={handleFileChange} style={{ display: 'none' }} type="file" accept=".png, .gif, .webp" required />
-      {
-        imgFile
-          ? (
-            <div className="image-pack-upload__file">
-              <IconButton onClick={handleRemove} fa="fa-solid fa-circle-plus" tooltip="Remove file" />
-              <Text>{imgFile.name}</Text>
-            </div>
-          )
-          : <Button onClick={() => inputRef.current.click()}>Import image</Button>
-      }
-      <div><Input forwardRef={shortcodeRef} name="shortcodeInput" placeholder="shortcode" required /></div>
-      <Button disabled={progress} variant="primary" type="submit">{progress ? 'Uploading...' : 'Upload'}</Button>
+      <input
+        ref={inputRef}
+        onChange={handleFileChange}
+        style={{ display: 'none' }}
+        type="file"
+        accept=".png, .gif, .webp"
+        required
+      />
+      {imgFile ? (
+        <div className="image-pack-upload__file">
+          <IconButton onClick={handleRemove} fa="fa-solid fa-circle-plus" tooltip="Remove file" />
+          <Text>{imgFile.name}</Text>
+        </div>
+      ) : (
+        <Button onClick={() => inputRef.current.click()}>Import image</Button>
+      )}
+      <div>
+        <Input forwardRef={shortcodeRef} name="shortcodeInput" placeholder="shortcode" required />
+      </div>
+      <Button disabled={progress} variant="primary" type="submit">
+        {progress ? 'Uploading...' : 'Upload'}
+      </Button>
     </form>
   );
 }

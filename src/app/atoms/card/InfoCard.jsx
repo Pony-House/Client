@@ -6,17 +6,21 @@ import IconButton from '../button/IconButton';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
 function InfoCard({
-  className, style,
-  variant, iconSrc, faSrc,
-  title, content,
-  rounded, requestClose,
+  className,
+  style,
+  variant,
+  iconSrc,
+  faSrc,
+  title,
+  content,
+  rounded,
+  requestClose,
 }) {
   const classes = [`info-card info-card--${variant}`];
   if (rounded) classes.push('info-card--rounded');
   if (className) classes.push(className);
   return (
     <div className={classes.join(' ')} style={style}>
-
       {iconSrc && (
         <div className="info-card__icon">
           <RawIcon color={`var(--ic-${variant}-high)`} src={iconSrc} />
@@ -37,7 +41,6 @@ function InfoCard({
       {requestClose && (
         <IconButton fa="fa-solid fa-xmark" variant={variant} onClick={requestClose} />
       )}
-
     </div>
   );
 }

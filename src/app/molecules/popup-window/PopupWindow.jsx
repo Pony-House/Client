@@ -8,19 +8,11 @@ import Text from '../../atoms/text/Text';
 import { MenuItem } from '../../atoms/context-menu/ContextMenu';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
-function PWContentSelector({
-  selected, variant, iconSrc,
-  type, onClick, children,
-}) {
+function PWContentSelector({ selected, variant, iconSrc, type, onClick, children }) {
   const pwcsClass = selected ? ' pw-content-selector--selected' : '';
   return (
     <div className={`pw-content-selector${pwcsClass}`}>
-      <MenuItem
-        variant={variant}
-        iconSrc={iconSrc}
-        type={type}
-        onClick={onClick}
-      >
+      <MenuItem variant={variant} iconSrc={iconSrc} type={type} onClick={onClick}>
         {children}
       </MenuItem>
     </div>
@@ -44,9 +36,17 @@ PWContentSelector.propTypes = {
 };
 
 function PopupWindow({
-  className, isOpen, title, contentTitle,
-  drawer, onAfterClose, onRequestClose, children, classBody,
-  size, id,
+  className,
+  isOpen,
+  title,
+  contentTitle,
+  drawer,
+  onAfterClose,
+  onRequestClose,
+  children,
+  classBody,
+  size,
+  id,
 }) {
   const haveDrawer = drawer !== null;
   const cTitle = contentTitle !== null ? contentTitle : title;
@@ -54,19 +54,16 @@ function PopupWindow({
   let finalTitle;
 
   if (typeof title !== 'undefined') {
-    finalTitle = (
-      typeof title === 'string'
-        ? twemojifyReact(title)
-        : title
-    );
-  }
-
-  else if (typeof cTitle !== 'undefined') {
+    finalTitle = typeof title === 'string' ? twemojifyReact(title) : title;
+  } else if (typeof cTitle !== 'undefined') {
     finalTitle =
-      typeof cTitle === 'string'
-        ? <Text variant="h2" weight="medium" primary>{twemojifyReact(cTitle)}</Text>
-        : cTitle
-      ;
+      typeof cTitle === 'string' ? (
+        <Text variant="h2" weight="medium" primary>
+          {twemojifyReact(cTitle)}
+        </Text>
+      ) : (
+        cTitle
+      );
   }
 
   return (
@@ -75,23 +72,24 @@ function PopupWindow({
       show={isOpen}
       onHide={onRequestClose}
       onExited={onAfterClose}
-      dialogClassName={className === null ? `${size} modal-dialog-scrollable modal-popup` : `${className} ${size} modal-dialog-scrollable modal-popup`}
+      dialogClassName={
+        className === null
+          ? `${size} modal-dialog-scrollable modal-popup`
+          : `${className} ${size} modal-dialog-scrollable modal-popup`
+      }
     >
-
-      {(finalTitle ? <Modal.Header className='noselect' closeButton>
-        <Modal.Title className='h5 emoji-size-fix'>{finalTitle}</Modal.Title>
-      </Modal.Header> : null)}
+      {finalTitle ? (
+        <Modal.Header className="noselect" closeButton>
+          <Modal.Title className="h5 emoji-size-fix">{finalTitle}</Modal.Title>
+        </Modal.Header>
+      ) : null}
 
       <Modal.Body className={`bg-bg2${classBody ? ` ${classBody}` : ''}`}>
-        {haveDrawer && (
-          { drawer }
-        )}
+        {haveDrawer && { drawer }}
         {children}
       </Modal.Body>
-
     </Modal>
   );
-
 }
 
 PopupWindow.defaultProps = {

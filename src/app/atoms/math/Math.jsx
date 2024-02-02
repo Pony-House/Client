@@ -5,9 +5,7 @@ import katex from 'katex';
 
 import 'katex/dist/contrib/copy-tex';
 
-const Math = React.memo(({
-  content, throwOnError, errorColor, displayMode,
-}) => {
+const Math = React.memo(({ content, throwOnError, errorColor, displayMode }) => {
   const ref = useRef(null);
 
   useEffect(() => {

@@ -4,7 +4,11 @@ import PropTypes from 'prop-types';
 import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
-import { openSpaceSettings, openSpaceManage, openInviteUser } from '../../../client/action/navigation';
+import {
+  openSpaceSettings,
+  openSpaceManage,
+  openInviteUser,
+} from '../../../client/action/navigation';
 import { markAsRead } from '../../../client/action/notifications';
 import { leave } from '../../../client/action/room';
 import {
@@ -52,16 +56,20 @@ function SpaceOptions({ roomId, afterOptionSelect }) {
     afterOptionSelect();
   };
   const handleSettingsClick = () => {
-
     const profileSetting = initMatrix.matrixClient.getAccountData('pony.house.profile');
-    if (profileSetting && profileSetting.event && profileSetting.event.type === 'pony.house.profile' && profileSetting.event.content && profileSetting.event.content.roomId === roomId) {
+    if (
+      profileSetting &&
+      profileSetting.event &&
+      profileSetting.event.type === 'pony.house.profile' &&
+      profileSetting.event.content &&
+      profileSetting.event.content.roomId === roomId
+    ) {
       openSpaceSettings(roomId, null, true);
     } else {
       openSpaceSettings(roomId);
     }
 
     afterOptionSelect();
-
   };
   const handleManageRoom = () => {
     openSpaceManage(roomId);
@@ -81,19 +89,24 @@ function SpaceOptions({ roomId, afterOptionSelect }) {
   };
 
   return (
-    <div className="noselect emoji-size-fix" style={{ maxWidth: 'calc(var(--navigation-drawer-width) - var(--sp-normal))' }}>
+    <div
+      className="noselect emoji-size-fix"
+      style={{ maxWidth: 'calc(var(--navigation-drawer-width) - var(--sp-normal))' }}
+    >
       <MenuHeader>{twemojifyReact(`Options for ${room?.name}`)}</MenuHeader>
-      <MenuItem className="text-start" faSrc="fa-solid fa-check-double" onClick={handleMarkAsRead}>Mark as read</MenuItem>
+      <MenuItem className="text-start" faSrc="fa-solid fa-check-double" onClick={handleMarkAsRead}>
+        Mark as read
+      </MenuItem>
       <MenuItem
         onClick={handleCategorizeClick}
-        faSrc={isCategorized ? "bi bi-grid" : "bi bi-grid-fill"}
+        faSrc={isCategorized ? 'bi bi-grid' : 'bi bi-grid-fill'}
       >
         {isCategorized ? 'Uncategorize subspaces' : 'Categorize subspaces'}
       </MenuItem>
       <MenuItem
         onClick={handlePinClick}
         className="text-start"
-        faSrc={isPinned ? "bi bi-pin-angle-fill" : "bi bi-pin-angle"}
+        faSrc={isPinned ? 'bi bi-pin-angle-fill' : 'bi bi-pin-angle'}
       >
         {isPinned ? 'Unpin from sidebar' : 'Pin to sidebar'}
       </MenuItem>
@@ -105,8 +118,12 @@ function SpaceOptions({ roomId, afterOptionSelect }) {
       >
         Invite
       </MenuItem>
-      <MenuItem className="text-start" onClick={handleManageRoom} iconSrc={HashSearchIC}>Manage rooms</MenuItem>
-      <MenuItem className="text-start" onClick={handleSettingsClick} faSrc="fa-solid fa-gear">Settings</MenuItem>
+      <MenuItem className="text-start" onClick={handleManageRoom} iconSrc={HashSearchIC}>
+        Manage rooms
+      </MenuItem>
+      <MenuItem className="text-start" onClick={handleSettingsClick} faSrc="fa-solid fa-gear">
+        Settings
+      </MenuItem>
       <MenuItem
         className="text-start btn-text-danger"
         onClick={handleLeaveClick}

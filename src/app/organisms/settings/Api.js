@@ -1,43 +1,39 @@
 import { objType } from '../../../util/tools';
 import initMatrix from '../../../client/initMatrix';
 
-const toggleAction = (dataFolder, valueName, setToggle) => data => {
+const toggleAction = (dataFolder, valueName, setToggle) => (data) => {
+  const content = initMatrix.matrixClient.getAccountData(dataFolder)?.getContent() ?? {};
+  content[valueName] = data;
 
-    const content = initMatrix.matrixClient.getAccountData(dataFolder)?.getContent() ?? {};
-    content[valueName] = data;
-
-    initMatrix.matrixClient.setAccountData(dataFolder, content);
-    setToggle((data === true));
-
+  initMatrix.matrixClient.setAccountData(dataFolder, content);
+  setToggle(data === true);
 };
 
-const toggleActionLocal = (dataFolder, valueName, setToggle) => data => {
+const toggleActionLocal = (dataFolder, valueName, setToggle) => (data) => {
+  let content = global.localStorage.getItem(dataFolder);
 
-    let content = global.localStorage.getItem(dataFolder);
+  try {
+    content = JSON.parse(content) ?? {};
+  } catch (err) {
+    content = {};
+  }
 
-    try {
-        content = JSON.parse(content) ?? {};
-    } catch (err) {
-        content = {};
-    }
+  if (!objType(content, 'object')) {
+    content = {};
+  }
+  if (typeof setToggle !== 'undefined') {
+    content[valueName] = data;
 
-    if (!objType(content, 'object')) { content = {}; }
-    if (typeof setToggle !== 'undefined') {
+    global.localStorage.setItem(dataFolder, JSON.stringify(content));
+    if (typeof setToggle === 'function') setToggle(data === true);
+    return;
+  }
 
-        content[valueName] = data;
+  if (valueName) {
+    return content[valueName];
+  }
 
-        global.localStorage.setItem(dataFolder, JSON.stringify(content));
-        if (typeof setToggle === 'function') setToggle((data === true));
-        return;
-
-    }
-
-    if (valueName) {
-        return content[valueName];
-    }
-
-    return content;
-
+  return content;
 };
 
 export { toggleAction, toggleActionLocal };

@@ -5,7 +5,11 @@ import { twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
-import { selectRoom, openReusableContextMenu, selectRoomMode } from '../../../client/action/navigation';
+import {
+  selectRoom,
+  openReusableContextMenu,
+  selectRoomMode,
+} from '../../../client/action/navigation';
 import * as roomActions from '../../../client/action/room';
 import { isRoomAliasAvailable, getIdServer } from '../../../util/matrixUtil';
 import { getEventCords } from '../../../util/common';
@@ -89,7 +93,7 @@ function CreateRoomContent({ isSpace, parentId, onRequestClose }) {
         topic,
         joinRule,
         alias: roomAlias,
-        isEncrypted: (isSpace || joinRule === 'public') ? false : isEncrypted,
+        isEncrypted: isSpace || joinRule === 'public' ? false : isEncrypted,
         powerLevel,
         isSpace,
         parentId,
@@ -128,36 +132,35 @@ function CreateRoomContent({ isSpace, parentId, onRequestClose }) {
 
   const joinRules = ['invite', 'restricted', 'public'];
   const joinRuleShortText = ['Private', 'Restricted', 'Public'];
-  const joinRuleText = ['Private (invite only)', 'Restricted (space member can join)', 'Public (anyone can join)'];
+  const joinRuleText = [
+    'Private (invite only)',
+    'Restricted (space member can join)',
+    'Public (anyone can join)',
+  ];
   const jrRoomIC = [HashLockIC, HashIC, HashGlobeIC];
   const jrSpaceIC = [SpaceLockIC, SpaceIC, SpaceGlobeIC];
   const handleJoinRule = (evt) => {
-    openReusableContextMenu(
-      'bottom',
-      getEventCords(evt, '.btn-link'),
-      (closeMenu) => (
-        <>
-          <MenuHeader>Visibility (who can join)</MenuHeader>
-          {
-            joinRules.map((rule) => (
-              <MenuItem
-                key={rule}
-                variant={rule === joinRule ? 'success' : 'link btn-bg'}
-                iconSrc={
-                  isSpace
-                    ? jrSpaceIC[joinRules.indexOf(rule)]
-                    : jrRoomIC[joinRules.indexOf(rule)]
-                }
-                onClick={() => { closeMenu(); setJoinRule(rule); }}
-                disabled={!parentId && rule === 'restricted'}
-              >
-                {joinRuleText[joinRules.indexOf(rule)]}
-              </MenuItem>
-            ))
-          }
-        </>
-      ),
-    );
+    openReusableContextMenu('bottom', getEventCords(evt, '.btn-link'), (closeMenu) => (
+      <>
+        <MenuHeader>Visibility (who can join)</MenuHeader>
+        {joinRules.map((rule) => (
+          <MenuItem
+            key={rule}
+            variant={rule === joinRule ? 'success' : 'link btn-bg'}
+            iconSrc={
+              isSpace ? jrSpaceIC[joinRules.indexOf(rule)] : jrRoomIC[joinRules.indexOf(rule)]
+            }
+            onClick={() => {
+              closeMenu();
+              setJoinRule(rule);
+            }}
+            disabled={!parentId && rule === 'restricted'}
+          >
+            {joinRuleText[joinRules.indexOf(rule)]}
+          </MenuItem>
+        ))}
+      </>
+    ));
   };
 
   return (
@@ -165,23 +168,27 @@ function CreateRoomContent({ isSpace, parentId, onRequestClose }) {
       <form className="create-room__form" onSubmit={handleSubmit}>
         <SettingTile
           title="Visibility"
-          options={(
+          options={
             <Button onClick={handleJoinRule} faSrc="fa-solid fa-check">
               {joinRuleShortText[joinRules.indexOf(joinRule)]}
             </Button>
-          )}
-          content={<div className="very-small text-gray">{`Select who can join this ${isSpace ? 'space' : 'room'}.`}</div>}
+          }
+          content={
+            <div className="very-small text-gray">{`Select who can join this ${isSpace ? 'space' : 'room'}.`}</div>
+          }
         />
         {joinRule === 'public' && (
           <div>
-            <Text className="create-room__address__label" variant="b2">{isSpace ? 'Space address' : 'Room address'}</Text>
+            <Text className="create-room__address__label" variant="b2">
+              {isSpace ? 'Space address' : 'Room address'}
+            </Text>
             <div className="create-room__address">
               <Text variant="b1">#</Text>
               <div>
                 <Input
                   value={addressValue}
                   onChange={validateAddress}
-                  state={(isValidAddress === false) ? 'error' : 'normal'}
+                  state={isValidAddress === false ? 'error' : 'normal'}
                   forwardRef={addressRef}
                   placeholder="my_address"
                   required
@@ -189,32 +196,48 @@ function CreateRoomContent({ isSpace, parentId, onRequestClose }) {
               </div>
               <Text variant="b1">{`:${userHs}`}</Text>
             </div>
-            {isValidAddress === false && <Text className="create-room__address__tip" variant="b3"><span style={{ color: 'var(--bg-danger)' }}>{`#${addressValue}:${userHs} is already in use`}</span></Text>}
+            {isValidAddress === false && (
+              <Text className="create-room__address__tip" variant="b3">
+                <span
+                  style={{ color: 'var(--bg-danger)' }}
+                >{`#${addressValue}:${userHs} is already in use`}</span>
+              </Text>
+            )}
           </div>
         )}
         {!isSpace && joinRule !== 'public' && (
           <SettingTile
             title="Enable end-to-end encryption"
             options={<Toggle isActive={isEncrypted} onToggle={setIsEncrypted} />}
-            content={<div className="very-small text-gray">You can’t disable this later. Bridges & most bots won’t work yet.</div>}
+            content={
+              <div className="very-small text-gray">
+                You can’t disable this later. Bridges & most bots won’t work yet.
+              </div>
+            }
           />
         )}
         <SettingTile
           title="Select your role"
-          options={(
+          options={
             <SegmentControl
               selected={roleIndex}
               segments={[{ text: 'Admin' }, { text: 'Founder' }]}
               onSelect={setRoleIndex}
             />
-          )}
-          content={(
-            <div className="very-small text-gray">Selecting Admin sets 100 power level whereas Founder sets 101.</div>
-          )}
+          }
+          content={
+            <div className="very-small text-gray">
+              Selecting Admin sets 100 power level whereas Founder sets 101.
+            </div>
+          }
         />
-        <div><Input name="topic" minHeight={174} resizable label="Topic (optional)" /></div>
+        <div>
+          <Input name="topic" minHeight={174} resizable label="Topic (optional)" />
+        </div>
         <div className="create-room__name-wrapper">
-          <div><Input name="name" label={`${isSpace ? 'Space' : 'Room'} name`} required /></div>
+          <div>
+            <Input name="name" label={`${isSpace ? 'Space' : 'Room'} name`} required />
+          </div>
           <Button
             disabled={isValidAddress === false || isCreatingRoom}
             iconSrc={isSpace ? SpacePlusIC : HashPlusIC}
@@ -230,7 +253,11 @@ function CreateRoomContent({ isSpace, parentId, onRequestClose }) {
             <Text>{`Creating ${isSpace ? 'space' : 'room'}...`}</Text>
           </div>
         )}
-        {typeof creatingError === 'string' && <Text className="create-room__error" variant="b3">{creatingError}</Text>}
+        {typeof creatingError === 'string' && (
+          <Text className="create-room__error" variant="b3">
+            {creatingError}
+          </Text>
+        )}
       </form>
     </div>
   );
@@ -275,26 +302,21 @@ function CreateRoom() {
     <Dialog
       className="modal-lg modal-dialog-scrollable noselect"
       isOpen={create !== null}
-      title={(
+      title={
         <Text variant="s1" weight="medium" primary>
           {parentId ? twemojifyReact(room.name) : 'Home'}
           <span style={{ color: 'var(--tc-surface-low)' }}>
             {` — create ${isSpace ? 'space' : 'room'}`}
           </span>
         </Text>
-      )}
+      }
       onRequestClose={onRequestClose}
     >
-      {
-        create
-          ? (
-            <CreateRoomContent
-              isSpace={isSpace}
-              parentId={parentId}
-              onRequestClose={onRequestClose}
-            />
-          ) : <div />
-      }
+      {create ? (
+        <CreateRoomContent isSpace={isSpace} parentId={parentId} onRequestClose={onRequestClose} />
+      ) : (
+        <div />
+      )}
     </Dialog>
   );
 }

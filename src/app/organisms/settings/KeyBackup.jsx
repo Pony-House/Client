@@ -36,7 +36,9 @@ function CreateKeyBackupDialog({ keyData }) {
       setDone(true);
     } catch (e) {
       deletePrivateKey(keyData.keyId);
-      await CryptoApi.deleteKeyBackupVersion(info && typeof info.version === 'string' ? info.version : undefined);
+      await CryptoApi.deleteKeyBackupVersion(
+        info && typeof info.version === 'string' ? info.version : undefined,
+      );
       if (!mountStore.getItem()) return;
       setDone(null);
     }
@@ -96,12 +98,9 @@ function RestoreKeyBackupDialog({ keyData }) {
 
     try {
       const backupInfo = await mx.getKeyBackupVersion();
-      const info = await mx.restoreKeyBackupWithSecretStorage(
-        backupInfo,
-        undefined,
-        undefined,
-        { progressCallback },
-      );
+      const info = await mx.restoreKeyBackupWithSecretStorage(backupInfo, undefined, undefined, {
+        progressCallback,
+      });
       if (!mountStore.getItem()) return;
       setStatus({ done: `Successfully restored backup keys (${info.imported}/${info.total}).` });
     } catch (e) {
@@ -171,11 +170,13 @@ function DeleteKeyBackupDialog({ requestClose }) {
       <Text variant="h1">{twemojifyReact('🗑')}</Text>
       <Text weight="medium">Deleting key backup is permanent.</Text>
       <Text>All encrypted messages keys stored on server will be deleted.</Text>
-      {
-        isDeleting
-          ? <Spinner size="small" />
-          : <Button variant="danger" onClick={deleteBackup}>Delete</Button>
-      }
+      {isDeleting ? (
+        <Spinner size="small" />
+      ) : (
+        <Button variant="danger" onClick={deleteBackup}>
+          Delete
+        </Button>
+      )}
     </div>
   );
 }
@@ -226,31 +227,40 @@ function KeyBackup() {
     const keyData = await accessSecretStorage('Restore Key Backup');
     if (keyData === null) return;
 
-    openReusableDialog(
-      'Restore Key Backup',
-      () => <RestoreKeyBackupDialog keyData={keyData} />,
-    );
+    openReusableDialog('Restore Key Backup', () => <RestoreKeyBackupDialog keyData={keyData} />);
   };
 
-  const openDeleteKeyBackup = () => openReusableDialog(
-    'Delete Key Backup',
-    (requestClose) => (
+  const openDeleteKeyBackup = () =>
+    openReusableDialog('Delete Key Backup', (requestClose) => (
       <DeleteKeyBackupDialog
         requestClose={(isDone) => {
           if (isDone) setKeyBackup(null);
           requestClose();
         }}
       />
-    ),
-  );
+    ));
 
   const renderOptions = () => {
     if (keyBackup === undefined) return <Spinner size="small" />;
-    if (keyBackup === null) return <Button variant="outline-primary" onClick={openCreateKeyBackup}>Create Backup</Button>;
+    if (keyBackup === null)
+      return (
+        <Button variant="outline-primary" onClick={openCreateKeyBackup}>
+          Create Backup
+        </Button>
+      );
     return (
       <>
-        <IconButton fa="fa-solid fa-upload" variant="success" onClick={openRestoreKeyBackup} tooltip="Restore backup" />
-        <IconButton fa="fa-solid fa-trash-can" onClick={openDeleteKeyBackup} tooltip="Delete backup" />
+        <IconButton
+          fa="fa-solid fa-upload"
+          variant="success"
+          onClick={openRestoreKeyBackup}
+          tooltip="Restore backup"
+        />
+        <IconButton
+          fa="fa-solid fa-trash-can"
+          onClick={openDeleteKeyBackup}
+          tooltip="Delete backup"
+        />
       </>
     );
   };
@@ -258,9 +268,12 @@ function KeyBackup() {
   return (
     <SettingTile
       title="Encrypted messages backup"
-      content={(
+      content={
         <>
-          <div className="very-small text-gray">Online backup your encrypted messages keys with your account data in case you lose access to your sessions. Your keys will be secured with a unique Security Key.</div>
+          <div className="very-small text-gray">
+            Online backup your encrypted messages keys with your account data in case you lose
+            access to your sessions. Your keys will be secured with a unique Security Key.
+          </div>
           {!isCSEnabled && (
             <InfoCard
               style={{ marginTop: 'var(--sp-ultra-tight)' }}
@@ -271,7 +284,7 @@ function KeyBackup() {
             />
           )}
         </>
-      )}
+      }
       options={isCSEnabled ? renderOptions() : null}
     />
   );

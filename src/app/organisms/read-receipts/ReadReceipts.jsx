@@ -65,9 +65,7 @@ function ReadReceipts() {
       onRequestClose={() => setIsOpen(false)}
     >
       <div style={{ marginTop: 'var(--sp-tight)', marginBottom: 'var(--sp-extra-loose)' }}>
-        {
-          readers.map(renderPeople)
-        }
+        {readers.map(renderPeople)}
       </div>
     </Dialog>
   );

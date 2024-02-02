@@ -1,21 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ScrollView = React.forwardRef(({
-  horizontal, vertical, autoHide, invisible, onScroll, children, className, id
-}, ref) => {
-  let scrollbarClasses = '';
-  if (horizontal) scrollbarClasses += ' scrollbar__h';
-  if (vertical) scrollbarClasses += ' scrollbar__v';
-  if (autoHide) scrollbarClasses += ' scrollbar--auto-hide';
-  if (invisible) scrollbarClasses += ' scrollbar--invisible';
-  if (className) scrollbarClasses += ` ${className}`;
-  return (
-    <div onScroll={onScroll} ref={ref} id={id} className={`scrollbar${scrollbarClasses}`}>
-      {children}
-    </div>
-  );
-});
+const ScrollView = React.forwardRef(
+  ({ horizontal, vertical, autoHide, invisible, onScroll, children, className, id }, ref) => {
+    let scrollbarClasses = '';
+    if (horizontal) scrollbarClasses += ' scrollbar__h';
+    if (vertical) scrollbarClasses += ' scrollbar__v';
+    if (autoHide) scrollbarClasses += ' scrollbar--auto-hide';
+    if (invisible) scrollbarClasses += ' scrollbar--invisible';
+    if (className) scrollbarClasses += ` ${className}`;
+    return (
+      <div onScroll={onScroll} ref={ref} id={id} className={`scrollbar${scrollbarClasses}`}>
+        {children}
+      </div>
+    );
+  },
+);
 
 ScrollView.defaultProps = {
   id: null,

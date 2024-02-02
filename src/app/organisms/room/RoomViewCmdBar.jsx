@@ -33,7 +33,6 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
     const cmdDOM = $('.cmd-bar');
     cmdDOM.removeClass('active');
     return cmds.map((cmd) => {
-
       cmdDOM.addClass('active');
 
       return (
@@ -50,7 +49,6 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
           <Text variant="b2">{`${cmd}${cmd.isOptions ? cmdOptString : ''}`}</Text>
         </CmdItem>
       );
-
     });
   }
 
@@ -66,7 +64,7 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
             shortcodes: emoji.shortcodes?.toString(),
           }),
           base: TWEMOJI_BASE_URL,
-        })
+        }),
       );
     }
 
@@ -94,7 +92,6 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
     cmdDOM.removeClass('active');
 
     return emos.map((emoji) => {
-
       cmdDOM.addClass('active');
 
       return (
@@ -111,17 +108,14 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
           <Text variant="b2">{`:${emoji.shortcode}:`}</Text>
         </CmdItem>
       );
-
     });
   }
 
   function renderNameSuggestion(namePrefix, members) {
-
     const cmdDOM = $('.cmd-bar');
     cmdDOM.removeClass('active');
 
     return members.map((member) => {
-
       cmdDOM.addClass('active');
 
       return (
@@ -137,7 +131,6 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
           <Text variant="b2">{twemojifyReact(member.name)}</Text>
         </CmdItem>
       );
-
     });
   }
 
@@ -152,7 +145,7 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
 const asyncSearch = new AsyncSearch();
 let cmdPrefix;
 let cmdOption;
-function RoomViewCmdBar({ roomId, roomTimeline, viewEvent, refcmdInput, }) {
+function RoomViewCmdBar({ roomId, roomTimeline, viewEvent, refcmdInput }) {
   const [cmd, setCmd] = useState(null);
 
   function displaySuggestions(suggestions) {
@@ -208,7 +201,11 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent, refcmdInput, }) {
         const parentRooms = [...parentIds].map((id) => mx.getRoom(id));
         const emojis = getEmojiForCompletion(mx, [mx.getRoom(roomId), ...parentRooms]);
         const recentEmoji = getEmojisList(20, 'recent_emoji');
-        asyncSearch.setup(emojis, { keys: ['shortcode', 'shortcodes'], isContain: true, limit: 20 });
+        asyncSearch.setup(emojis, {
+          keys: ['shortcode', 'shortcodes'],
+          isContain: true,
+          limit: 20,
+        });
         setCmd({
           prefix,
           suggestions: recentEmoji.length > 0 ? recentEmoji : emojis.slice(26, 46),
@@ -238,7 +235,6 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent, refcmdInput, }) {
   }
 
   function fireCmd(myCmd) {
-
     if (myCmd.prefix === '/') {
       viewEvent.emit('cmd_fired', {
         type: myCmd.result?.type,
@@ -248,9 +244,17 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent, refcmdInput, }) {
 
     if (myCmd.prefix === ':') {
       if (!myCmd.result.mxc) {
-        addToEmojiList({ isCustom: false, unicode: myCmd.result.unicode, mxc: null }, 'recent_emoji', 'emoji');
+        addToEmojiList(
+          { isCustom: false, unicode: myCmd.result.unicode, mxc: null },
+          'recent_emoji',
+          'emoji',
+        );
       } else {
-        addToEmojiList({ isCustom: true, unicode: null, mxc: myCmd.result.mxc }, 'recent_emoji', 'emoji');
+        addToEmojiList(
+          { isCustom: true, unicode: null, mxc: myCmd.result.mxc },
+          'recent_emoji',
+          'emoji',
+        );
       }
       viewEvent.emit('cmd_fired', {
         replace: myCmd.result.mxc ? `:${myCmd.result.shortcode}: ` : myCmd.result.unicode,
@@ -264,7 +268,6 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent, refcmdInput, }) {
     }
 
     deactivateCmd();
-
   }
 
   function listenKeyboard(event) {

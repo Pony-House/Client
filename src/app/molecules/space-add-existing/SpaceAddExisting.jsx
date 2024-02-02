@@ -28,14 +28,12 @@ function SpaceAddExistingContent({ roomId }) {
   const [selected, setSelected] = useState([]);
   const [searchIds, setSearchIds] = useState(null);
   const mx = initMatrix.matrixClient;
-  const {
-    spaces, rooms, directs, roomIdToParents,
-  } = initMatrix.roomList;
+  const { spaces, rooms, directs, roomIdToParents } = initMatrix.roomList;
 
   useEffect(() => {
-    const allIds = [...spaces, ...rooms, ...directs].filter((rId) => (
-      rId !== roomId && !roomIdToParents.get(rId)?.has(roomId)
-    ));
+    const allIds = [...spaces, ...rooms, ...directs].filter(
+      (rId) => rId !== roomId && !roomIdToParents.get(rId)?.has(roomId),
+    );
     setAllRoomIds(allIds);
   }, [roomId]);
 
@@ -63,20 +61,25 @@ function SpaceAddExistingContent({ roomId }) {
         via.push(getIdServer(rId));
       }
 
-      return mx.sendStateEvent(roomId, 'm.space.child', {
-        auto_join: false,
-        suggested: false,
-        via,
-      }, rId);
+      return mx.sendStateEvent(
+        roomId,
+        'm.space.child',
+        {
+          auto_join: false,
+          suggested: false,
+          via,
+        },
+        rId,
+      );
     });
 
     mountStore.setItem(true);
     await Promise.allSettled(promises);
     if (mountStore.getItem() !== true) return;
 
-    const allIds = [...spaces, ...rooms, ...directs].filter((rId) => (
-      rId !== roomId && !roomIdToParents.get(rId)?.has(roomId) && !selected.includes(rId)
-    ));
+    const allIds = [...spaces, ...rooms, ...directs].filter(
+      (rId) => rId !== roomId && !roomIdToParents.get(rId)?.has(roomId) && !selected.includes(rId),
+    );
     setAllRoomIds(allIds);
     setProcess(null);
     setSelected([]);
@@ -93,9 +96,7 @@ function SpaceAddExistingContent({ roomId }) {
       const searchedIds = allRoomIds.filter((rId) => {
         let name = mx.getRoom(rId)?.name;
         if (!name) return false;
-        name = name.normalize('NFKC')
-          .toLocaleLowerCase()
-          .replace(/\s/g, '');
+        name = name.normalize('NFKC').toLocaleLowerCase().replace(/\s/g, '');
         return name.includes(term);
       });
       setSearchIds(searchedIds);
@@ -111,78 +112,82 @@ function SpaceAddExistingContent({ roomId }) {
 
   return (
     <>
-      <form onSubmit={(ev) => { ev.preventDefault(); }}>
+      <form
+        onSubmit={(ev) => {
+          ev.preventDefault();
+        }}
+      >
         <div>
-          <Input
-            name="searchInput"
-            onChange={handleSearch}
-            placeholder="Search room"
-            autoFocus
-          />
+          <Input name="searchInput" onChange={handleSearch} placeholder="Search room" autoFocus />
         </div>
         {
-          // <IconButton size="small" type="button" onClick={handleSearchClear} fa="fa-solid fa-xmark" /> 
+          // <IconButton size="small" type="button" onClick={handleSearchClear} fa="fa-solid fa-xmark" />
         }
       </form>
-      <div className='my-3'>
+      <div className="my-3">
         {searchIds?.length === 0 && <Text>No results found</Text>}
-        {
-          (searchIds || allRoomIds).map((rId) => {
+        {(searchIds || allRoomIds).map((rId) => {
+          const room = mx.getRoom(rId);
 
-            const room = mx.getRoom(rId);
+          let imageSrc =
+            room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
+          if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
 
-            let imageSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
-            if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
+          let imageAnimSrc = !appearanceSettings.enableAnimParams
+            ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)
+            : getAnimatedImageUrl(
+                room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'),
+              ) || null;
+          if (imageAnimSrc === null)
+            imageAnimSrc = !appearanceSettings.enableAnimParams
+              ? room.getAvatarUrl(mx.baseUrl)
+              : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
 
-            let imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
-            if (imageAnimSrc === null) imageAnimSrc = !appearanceSettings.enableAnimParams ? room.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
+          const parentSet = roomIdToParents.get(rId);
+          const parentNames = parentSet
+            ? [...parentSet].map((parentId) => mx.getRoom(parentId).name)
+            : undefined;
+          const parents = parentNames ? parentNames.join(', ') : null;
 
-            const parentSet = roomIdToParents.get(rId);
-            const parentNames = parentSet
-              ? [...parentSet].map((parentId) => mx.getRoom(parentId).name)
-              : undefined;
-            const parents = parentNames ? parentNames.join(', ') : null;
+          const handleSelect = () => toggleSelection(rId);
 
-            const handleSelect = () => toggleSelection(rId);
-
-            return (
-              <RoomSelector
-                key={rId}
-                name={room.name}
-                parentName={parents}
-                roomId={rId}
-                animParentsCount={2}
-                imageSrc={directs.has(rId) ? imageSrc : null}
-                imageAnimSrc={directs.has(rId) ? imageAnimSrc : null}
-                iconSrc={
-                  directs.has(rId)
-                    ? null
-                    : joinRuleToIconSrc(room.getJoinRule(), room.isSpaceRoom())
-                }
-                isUnread={false}
-                notificationCount={0}
-                isAlert={false}
-                onClick={handleSelect}
-                options={(
-                  <Checkbox
-                    isActive={selected.includes(rId)}
-                    variant="success"
-                    onToggle={handleSelect}
-                    tabIndex={-1}
-                    disabled={process !== null}
-                  />
-                )}
-              />
-            );
-          })
-        }
+          return (
+            <RoomSelector
+              key={rId}
+              name={room.name}
+              parentName={parents}
+              roomId={rId}
+              animParentsCount={2}
+              imageSrc={directs.has(rId) ? imageSrc : null}
+              imageAnimSrc={directs.has(rId) ? imageAnimSrc : null}
+              iconSrc={
+                directs.has(rId) ? null : joinRuleToIconSrc(room.getJoinRule(), room.isSpaceRoom())
+              }
+              isUnread={false}
+              notificationCount={0}
+              isAlert={false}
+              onClick={handleSelect}
+              options={
+                <Checkbox
+                  isActive={selected.includes(rId)}
+                  variant="success"
+                  onToggle={handleSelect}
+                  tabIndex={-1}
+                  disabled={process !== null}
+                />
+              }
+            />
+          );
+        })}
       </div>
       {selected.length !== 0 && (
         <div className="space-add-existing__footer">
           {process && <Spinner size="small" />}
           <Text weight="medium">{process || `${selected.length} item selected`}</Text>
           {!process && (
-            <Button onClick={handleAdd} variant="primary">Add</Button>
+            <Button onClick={handleAdd} variant="primary">
+              Add
+            </Button>
           )}
         </div>
       )}
@@ -216,22 +221,18 @@ function SpaceAddExisting() {
 
   return (
     <Dialog
-      bodyClass='space-add-existing-modal add-existing-rooms'
+      bodyClass="space-add-existing-modal add-existing-rooms"
       isOpen={roomId !== null}
       className="modal-dialog-scrollable noselect"
-      title={(
+      title={
         <Text variant="s1" weight="medium" primary>
           {roomId && twemojifyReact(room.name)}
           <span style={{ color: 'var(--tc-surface-low)' }}> — add existing rooms</span>
         </Text>
-      )}
+      }
       onRequestClose={requestClose}
     >
-      {
-        roomId
-          ? <SpaceAddExistingContent roomId={roomId} />
-          : <div />
-      }
+      {roomId ? <SpaceAddExistingContent roomId={roomId} /> : <div />}
     </Dialog>
   );
 }

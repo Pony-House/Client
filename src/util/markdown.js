@@ -97,7 +97,6 @@ export const DiscordFormattingPatterns = {
 };
 
 const timestampFormats = {
-
   t: momentFormat.clock,
   T: momentFormat.clock2,
 
@@ -110,50 +109,54 @@ const timestampFormats = {
   validated: [],
 
   html: (item, fromNow = false) => {
-
     timestampFormats.validated.push(item);
 
     return {
-
       order: defaultRules.inlineCode.order + 0.1,
       match: inlineRegex(new RegExp(`^{t:(?<timestamp>-?\\d{1,13})(:${item})?}`, 'g')),
 
       parse: (capture, parse, state) => ({
-        content: parse(capture[1], state)
+        content: parse(capture[1], state),
       }),
 
-      plain: (node, output, state) => `{t:${!node.state ? output(node.content, state) : String(Number(node.content) / 1000)}:${item}}`,
+      plain: (node, output, state) =>
+        `{t:${!node.state ? output(node.content, state) : String(Number(node.content) / 1000)}:${item}}`,
       html: (node, output, state) => {
-
         const timestamp = Number(output(node.content, node.state || state)) * 1000;
 
         return htmlTag(
           'span',
-          (!fromNow ? moment(timestamp).format(typeof timestampFormats[item] === 'function' ? timestampFormats[item]() : timestampFormats[item]) : moment(timestamp).fromNow()),
+          !fromNow
+            ? moment(timestamp).format(
+                typeof timestampFormats[item] === 'function'
+                  ? timestampFormats[item]()
+                  : timestampFormats[item],
+              )
+            : moment(timestamp).fromNow(),
           { 'data-mx-timestamp': String(timestamp), 'timestamp-type': item },
         );
-
       },
-
     };
-
-  }
-
+  },
 };
 
 setInterval(() => {
-
   const timestamps = Array.from(document.querySelectorAll('[data-mx-timestamp]'));
   if (timestamps.length > 0) {
-    timestamps.map(item => {
-
+    timestamps.map((item) => {
       const tinyItem = $(item);
       const type = item.getAttribute('timestamp-type');
       const timestamp = Number(item.getAttribute('data-mx-timestamp'));
 
       if (!Number.isNaN(timestamp) && typeof type === 'string') {
         if (type !== 'R') {
-          tinyItem.text(moment(timestamp).format(typeof timestampFormats[type] === 'function' ? timestampFormats[type]() : timestampFormats[type]));
+          tinyItem.text(
+            moment(timestamp).format(
+              typeof timestampFormats[type] === 'function'
+                ? timestampFormats[type]()
+                : timestampFormats[type],
+            ),
+          );
         } else {
           tinyItem.text(moment(timestamp).fromNow());
         }
@@ -166,12 +169,10 @@ setInterval(() => {
       }
 
       return item;
-
-    })
+    });
   }
 
   tinyFixScrollChat(50);
-
 }, 1000);
 
 const {
@@ -185,12 +186,7 @@ const {
   sanitizeUrl,
 } = SimpleMarkdown;
 
-function htmlTag(
-  tagName,
-  content,
-  attributes,
-  isClosed,
-) {
+function htmlTag(tagName, content, attributes, isClosed) {
   let s = '';
   Object.entries(attributes ?? {}).forEach(([k, v]) => {
     if (v !== undefined) {
@@ -256,17 +252,17 @@ const plainRules = {
     html: ({ emoji }) =>
       emoji.mxc
         ? htmlTag(
-          'img',
-          null,
-          {
-            'data-mx-emoticon': null,
-            src: emoji.mxc,
-            alt: `:${emoji.shortcode}:`,
-            title: `:${emoji.shortcode}:`,
-            height: 32,
-          },
-          false,
-        )
+            'img',
+            null,
+            {
+              'data-mx-emoticon': null,
+              src: emoji.mxc,
+              alt: `:${emoji.shortcode}:`,
+              title: `:${emoji.shortcode}:`,
+              height: 32,
+            },
+            false,
+          )
         : emoji.unicode,
   },
   newline: {
@@ -298,7 +294,6 @@ const plainRules = {
 };
 
 const markdownRules = {
-
   // Default
   ...defaultRules,
   ...plainRules,
@@ -385,11 +380,11 @@ const markdownRules = {
       const LIST_BULLET = '(?:-|\\d+\\.)';
       const LIST_R = new RegExp(
         `^( *)(${LIST_BULLET}) ` +
-        `[\\s\\S]+?(?:\n{2,}(?! )` +
-        `(?!\\1${LIST_BULLET} )\\n*` +
-        // the \\s*$ here is so that we can parse the inside of nested
-        // lists, where our content might end before we receive two `\n`s
-        `|\\s*\n*$)`,
+          `[\\s\\S]+?(?:\n{2,}(?! )` +
+          `(?!\\1${LIST_BULLET} )\\n*` +
+          // the \\s*$ here is so that we can parse the inside of nested
+          // lists, where our content might end before we receive two `\n`s
+          `|\\s*\n*$)`,
       );
       const prevCaptureStr = state.prevCapture == null ? '' : state.prevCapture[0];
       const isStartOfLineCapture = /(?:^|\n)( *)$/.exec(prevCaptureStr);
@@ -402,7 +397,6 @@ const markdownRules = {
       return null;
     },
     plain: (node, output, state) => {
-
       const oldList = state._list;
       state._list = true;
 
@@ -420,7 +414,6 @@ const markdownRules = {
       }
 
       return items;
-
     },
   },
 
@@ -517,7 +510,6 @@ const markdownRules = {
   link: {
     ...defaultRules.link,
     plain: (node, output, state) => {
-
       const out = output(node.content, state);
       const target = sanitizeUrl(node.target) || '';
 
@@ -526,10 +518,8 @@ const markdownRules = {
       }
 
       return out;
-
     },
     html: (node, output, state) => {
-
       const out = output(node.content, state);
       const target = sanitizeUrl(node.target) || '';
 
@@ -541,7 +531,6 @@ const markdownRules = {
       }
 
       return target;
-
     },
   },
   image: {
@@ -572,28 +561,28 @@ const markdownRules = {
       new RegExp(
         // only match _s surrounding words.
         '^\\b_' +
-        '((?:__|\\\\[\\s\\S]|[^\\\\_])+?)_' +
-        '\\b' +
-        // Or match *s:
-        '|' +
-        // Only match *s that are followed by a non-space:
-        '^\\*(?=\\S)(' +
-        // Match at least one of:
-        '(?:' +
-        //  - `**`: so that bolds inside italics don't close the
-        //          italics
-        '\\*\\*|' +
-        //  - escape sequence: so escaped *s don't close us
-        '\\\\[\\s\\S]|' +
-        //  - whitespace: followed by a non-* (we don't
-        //          want ' *' to close an italics--it might
-        //          start a list)
-        '\\s+(?:\\\\[\\s\\S]|[^\\s\\*\\\\]|\\*\\*)|' +
-        //  - non-whitespace, non-*, non-backslash characters
-        '[^\\s\\*\\\\]' +
-        ')+?' +
-        // followed by a non-space, non-* then *
-        ')\\*(?!\\*)',
+          '((?:__|\\\\[\\s\\S]|[^\\\\_])+?)_' +
+          '\\b' +
+          // Or match *s:
+          '|' +
+          // Only match *s that are followed by a non-space:
+          '^\\*(?=\\S)(' +
+          // Match at least one of:
+          '(?:' +
+          //  - `**`: so that bolds inside italics don't close the
+          //          italics
+          '\\*\\*|' +
+          //  - escape sequence: so escaped *s don't close us
+          '\\\\[\\s\\S]|' +
+          //  - whitespace: followed by a non-* (we don't
+          //          want ' *' to close an italics--it might
+          //          start a list)
+          '\\s+(?:\\\\[\\s\\S]|[^\\s\\*\\\\]|\\*\\*)|' +
+          //  - non-whitespace, non-*, non-backslash characters
+          '[^\\s\\*\\\\]' +
+          ')+?' +
+          // followed by a non-space, non-* then *
+          ')\\*(?!\\*)',
       ),
     ),
     plain: (node, output, state) => `_${output(node.content, state)}_`,
@@ -616,7 +605,7 @@ const markdownRules = {
     order: defaultRules.inlineCode.order + 0.1,
     match: inlineRegex(/\[rainbow\]([\s\S]+?)\[\/rainbow\]/g),
     parse: (capture, parse, state) => ({
-      content: parse(capture[1], state)
+      content: parse(capture[1], state),
     }),
     plain: (node, output, state) => output(node.content, state),
     html: (node, output, state) => rainbowText(output(node.content, state)),
@@ -626,13 +615,10 @@ const markdownRules = {
     order: defaultRules.inlineCode.order + 0.1,
     match: inlineRegex(/^\<([\s\S]+?)\>/g),
     parse: (capture, parse, state) => ({
-      content: parse(capture[1], state)
+      content: parse(capture[1], state),
     }),
     plain: (node, output, state) => `<${output(node.content, state)}>`,
-    html: (node, output, state) => htmlTag(
-      'span',
-      output(node.content, state),
-    ),
+    html: (node, output, state) => htmlTag('span', output(node.content, state)),
   },
 
   // Inline Code
@@ -651,7 +637,6 @@ const markdownRules = {
       reason: capture[2],
     }),
     plain: (node, output, state) => {
-
       const warning = `spoiler${node.reason ? `: ${node.reason}` : ''}`;
 
       switch (state.kind) {
@@ -684,12 +669,10 @@ const markdownRules = {
     plain: (node) => `$${node.content}$`,
     html: (node) => mathHtml('span', node),
   },
-
 };
 
 // Convert Code back to script
 function mapElement(el) {
-
   switch (el.tagName) {
     case 'MX-REPLY':
       return [];
@@ -769,12 +752,10 @@ function mapElement(el) {
       ];
     }
     case 'IMG': {
-
       const src = el.getAttribute('src');
       let title = el.getAttribute('title');
 
       if (el.hasAttribute('data-mx-emoticon')) {
-
         if (title.length > 2 && title.startsWith(':') && title.endsWith(':')) {
           title = title.slice(1, -1);
         }
@@ -798,7 +779,6 @@ function mapElement(el) {
           title,
         },
       ];
-
     }
     case 'EM':
     case 'I':
@@ -833,7 +813,13 @@ function mapElement(el) {
       if (el.hasAttribute('data-mx-timestamp')) {
         const type = el.getAttribute('timestamp-type');
         if (typeof type === 'string' && timestampFormats.validated.indexOf(type) > -1) {
-          return [{ type: `timestamp_${type}`, content: el.getAttribute('data-mx-timestamp'), state: type }];
+          return [
+            {
+              type: `timestamp_${type}`,
+              content: el.getAttribute('data-mx-timestamp'),
+              state: type,
+            },
+          ];
         }
       }
 
@@ -842,7 +828,6 @@ function mapElement(el) {
     default:
       return mapChildren(el);
   }
-
 }
 
 function mapNode(n) {
@@ -864,7 +849,6 @@ function mapChildren(n) {
 }
 
 function render(content, state, plainOut, htmlOut) {
-
   let c = content;
   if (content.length === 1 && content[0].type === 'paragraph') {
     c = c[0].content;
@@ -886,7 +870,6 @@ function render(content, state, plainOut, htmlOut) {
     plain: plainStr,
     html: htmlStr,
   };
-
 }
 
 const plainParser = parserFor(plainRules, { disableAutoBlockNewlines: true });

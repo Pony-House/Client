@@ -6,36 +6,30 @@ import tinyAPI from '../../util/mods';
 import moment from '../../util/libs/momentjs';
 
 const logCache = {
+  data: [],
+  add: (level, msg) => {
+    if (typeof level === 'string' && (Array.isArray(msg) || typeof msg === 'string')) {
+      logCache.data.push({
+        level,
+        msg,
+        time: moment(),
+      });
 
-    data: [],
-    add: (level, msg) => {
-        if (typeof level === 'string' && (Array.isArray(msg) || typeof msg === 'string')) {
+      if (logCache.data.length > 1000) {
+        const tinyData = logCache.data.shift();
 
-            logCache.data.push({
-                level,
-                msg,
-                time: moment(),
-            });
+        consoleRemoveData(tinyData);
+        tinyAPI.emit('consoleRemoveData', tinyData);
+      }
 
-            if (logCache.data.length > 1000) {
+      const tinyData = { level, msg };
+      consoleNewData(tinyData);
+      tinyAPI.emit('consoleNewData', tinyData);
 
-                const tinyData = logCache.data.shift();
-
-                consoleRemoveData(tinyData);
-                tinyAPI.emit('consoleRemoveData', tinyData);
-
-            }
-
-            const tinyData = { level, msg };
-            consoleNewData(tinyData);
-            tinyAPI.emit('consoleNewData', tinyData);
-
-            consoleUpdate(logCache.data);
-            tinyAPI.emit('consoleUpdate', logCache.data);
-
-        }
+      consoleUpdate(logCache.data);
+      tinyAPI.emit('consoleUpdate', logCache.data);
     }
-
+  },
 };
 
 // rewrite matrix logger
@@ -47,79 +41,97 @@ mxLogger.trace = (...msg) => logCache.add('trace', msg);
 mxLogger.debug = (...msg) => logCache.add('debug', msg);
 
 function isLogString(value) {
-
-    for (const item in value) {
-        if (typeof value[item] !== 'string') {
-            return false;
-        }
+  for (const item in value) {
+    if (typeof value[item] !== 'string') {
+      return false;
     }
+  }
 
-    return true;
-
-};
+  return true;
+}
 
 function logDatatoString(value) {
+  if (Array.isArray(value) && isLogString(value)) {
+    return value.join(' ');
+  }
 
-    if (Array.isArray(value) && isLogString(value)) {
-        return value.join(' ');
-    }
+  if (typeof value === 'string') {
+    return value;
+  }
 
-    if (typeof value === 'string') {
-        return value;
-    }
-
-    return null;
-};
+  return null;
+}
 
 const createLogArgs = (type, args) => {
+  const tinyArgs = [type];
+  for (const item in args) {
+    tinyArgs.push(args[item]);
+  }
 
-    const tinyArgs = [type];
-    for (const item in args) {
-        tinyArgs.push(args[item]);
-    }
-
-    return tinyArgs;
-
+  return tinyArgs;
 };
 
 function playLogData() {
-    for (const item in logCache.data) {
-        console[logCache.data[item].level](`[${moment().format()}] [matrix]`, logDatatoString(logCache.data[item].msg));
-    }
+  for (const item in logCache.data) {
+    console[logCache.data[item].level](
+      `[${moment().format()}] [matrix]`,
+      logDatatoString(logCache.data[item].msg),
+    );
+  }
 }
 
 global.logger = {
+  logDatatoString,
+  isLogString,
 
-    logDatatoString,
-    isLogString,
+  getData: () => clone(logCache.data),
 
-    getData: () => clone(logCache.data),
+  debug() {
+    logCache.add.apply(this, createLogArgs('debug', arguments));
+  },
+  log() {
+    logCache.add.apply(this, createLogArgs('log', arguments));
+  },
+  info() {
+    logCache.add.apply(this, createLogArgs('info', arguments));
+  },
+  warn() {
+    logCache.add.apply(this, createLogArgs('warn', arguments));
+  },
+  error() {
+    logCache.add.apply(this, createLogArgs('error', arguments));
+  },
+  trace() {
+    logCache.add.apply(this, createLogArgs('trace', arguments));
+  },
 
-    debug() { logCache.add.apply(this, createLogArgs('debug', arguments)) },
-    log() { logCache.add.apply(this, createLogArgs('log', arguments)) },
-    info() { logCache.add.apply(this, createLogArgs('info', arguments)) },
-    warn() { logCache.add.apply(this, createLogArgs('warn', arguments)) },
-    error() { logCache.add.apply(this, createLogArgs('error', arguments)) },
-    trace() { logCache.add.apply(this, createLogArgs('trace', arguments)) },
-
-    play: playLogData,
-
+  play: playLogData,
 };
 
 export default {
+  logDatatoString,
+  isLogString,
 
-    logDatatoString,
-    isLogString,
+  getData: () => logCache.data,
 
-    getData: () => logCache.data,
+  debug() {
+    logCache.add.apply(this, createLogArgs('debug', arguments));
+  },
+  log() {
+    logCache.add.apply(this, createLogArgs('log', arguments));
+  },
+  info() {
+    logCache.add.apply(this, createLogArgs('info', arguments));
+  },
+  warn() {
+    logCache.add.apply(this, createLogArgs('warn', arguments));
+  },
+  error() {
+    logCache.add.apply(this, createLogArgs('error', arguments));
+  },
+  trace() {
+    logCache.add.apply(this, createLogArgs('trace', arguments));
+  },
 
-    debug() { logCache.add.apply(this, createLogArgs('debug', arguments)) },
-    log() { logCache.add.apply(this, createLogArgs('log', arguments)) },
-    info() { logCache.add.apply(this, createLogArgs('info', arguments)) },
-    warn() { logCache.add.apply(this, createLogArgs('warn', arguments)) },
-    error() { logCache.add.apply(this, createLogArgs('error', arguments)) },
-    trace() { logCache.add.apply(this, createLogArgs('trace', arguments)) },
-
-    play: playLogData,
-
+  play: playLogData,
 };

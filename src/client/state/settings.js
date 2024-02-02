@@ -29,9 +29,7 @@ const themes = {
 
   white: { data: whiteTheme, id: '', type: 'light' },
   white_no_gradient: { data: whiteTheme, id: 'white-theme-no-gradient', type: 'light-solid' },
-
 };
-
 
 function getSettings() {
   const settings = localStorage.getItem('settings');
@@ -47,11 +45,19 @@ function setSettings(key, value) {
 }
 
 class Settings extends EventEmitter {
-
   constructor() {
-
     super();
-    this.themes = [themes.white, themes.white_no_gradient, themes.silver, themes.silver_no_gradient, themes.dark, themes.dark_no_gradient, themes.butter, themes.butter_no_gradient, themes.black];
+    this.themes = [
+      themes.white,
+      themes.white_no_gradient,
+      themes.silver,
+      themes.silver_no_gradient,
+      themes.dark,
+      themes.dark_no_gradient,
+      themes.butter,
+      themes.butter_no_gradient,
+      themes.black,
+    ];
 
     this.themesName = [
       { text: 'Light' },
@@ -64,11 +70,13 @@ class Settings extends EventEmitter {
       { text: 'Butter (No Gradients)' },
       { text: 'Black (Beta)' },
     ];
-
   }
 
   insertTheme(data, type = 'push') {
-    if ((type === 'push' || type === 'unshift') && (typeof data[0] === 'string' || objType(data[0], 'object'))) {
+    if (
+      (type === 'push' || type === 'unshift') &&
+      (typeof data[0] === 'string' || objType(data[0], 'object'))
+    ) {
       this.themesName[type](typeof data[0] === 'string' ? { text: data[0] } : data[0]);
       this.themes[type](data[1]);
     }
@@ -76,24 +84,22 @@ class Settings extends EventEmitter {
 
   removeTheme(id) {
     if (typeof id === 'string') {
-
-      const index = this.themes.findIndex(theme => theme.id === id);
+      const index = this.themes.findIndex((theme) => theme.id === id);
       if (index > -1) {
         this.themes.splice(index, 1);
         this.themesName.splice(index, 1);
       }
-
     }
   }
 
   startData() {
-
     this.themeIndex = this.getThemeIndex();
-    tinyAPI.emit('loadThemes',
+    tinyAPI.emit(
+      'loadThemes',
       (data, type = 'push') => this.insertTheme(data, type),
       (id) => this.removeTheme(id),
       (id) => this.getThemeById(id),
-      (id) => this.getThemeNameById(id)
+      (id) => this.getThemeNameById(id),
     );
 
     this.useSystemTheme = this.getUseSystemTheme();
@@ -104,8 +110,8 @@ class Settings extends EventEmitter {
     this._showNotifications = this.getShowNotifications();
     this.isNotificationSounds = this.getIsNotificationSounds();
 
-    this.isTouchScreenDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
-
+    this.isTouchScreenDevice =
+      'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
   }
 
   getThemeIndex() {
@@ -119,57 +125,45 @@ class Settings extends EventEmitter {
   }
 
   getThemeById(id) {
-
     if (typeof id === 'string') {
-
-      const result = this.themes.find(theme => theme.id === id);
+      const result = this.themes.find((theme) => theme.id === id);
 
       if (result) {
         return result;
       }
 
       return null;
-
     }
 
     return null;
-
   }
 
   getThemeIndexById(id) {
-
     if (typeof id === 'string') {
-
-      const result = this.themes.findIndex(theme => theme.id === id);
+      const result = this.themes.findIndex((theme) => theme.id === id);
 
       if (result > -1) {
         return result;
       }
 
       return null;
-
     }
 
     return null;
-
   }
 
   getThemeNameById(id) {
-
     if (typeof id === 'string') {
-
-      const index = this.themes.findIndex(theme => theme.id === id);
+      const index = this.themes.findIndex((theme) => theme.id === id);
 
       if (index > -1 && this.themesName[index]) {
         return this.themesName[index];
       }
 
       return null;
-
     }
 
     return null;
-
   }
 
   getTheme() {
@@ -188,19 +182,15 @@ class Settings extends EventEmitter {
     const data = this.themes[this.themeIndex]?.data;
     return new Promise((resolve, reject) => {
       if (Capacitor.isNativePlatform()) {
-
         try {
-
           StatusBar.setBackgroundColor({ color: data.statusBar.backgroundColor[value] });
           StatusBar.setStyle({ style: data.statusBar.style });
-
         } catch (err) {
           reject(err);
           return;
         }
 
         resolve(true);
-
       } else {
         resolve(null);
       }
@@ -208,33 +198,33 @@ class Settings extends EventEmitter {
   }
 
   _clearTheme() {
-
-    $('body').removeClass('system-theme')
+    $('body')
+      .removeClass('system-theme')
       .removeClass('discord-style')
-      .removeClass('theme-type-dark').removeClass('theme-type-dark-solid')
-      .removeClass('theme-type-dark2').removeClass('theme-type-dark2-solid')
-      .removeClass('theme-type-silver').removeClass('theme-type-silver-solid')
-      .removeClass('theme-type-light').removeClass('theme-type-light-solid');
+      .removeClass('theme-type-dark')
+      .removeClass('theme-type-dark-solid')
+      .removeClass('theme-type-dark2')
+      .removeClass('theme-type-dark2-solid')
+      .removeClass('theme-type-silver')
+      .removeClass('theme-type-silver-solid')
+      .removeClass('theme-type-light')
+      .removeClass('theme-type-light-solid');
 
     if (Array.isArray(this.themes)) {
       this.themes.forEach((theme) => {
         if (typeof theme.id === 'string') {
-
           if (theme.id === '') {
             $('body').removeClass('default-theme');
             return;
           }
 
           $('body').removeClass(theme.id);
-
         }
       });
     }
-
   }
 
   applyTheme(index = this.themeIndex, useSystemTheme = this.useSystemTheme) {
-
     this._clearTheme();
     const body = $('body');
 
@@ -243,7 +233,6 @@ class Settings extends EventEmitter {
     }
 
     if (useSystemTheme) {
-
       body.addClass('system-theme');
 
       if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -253,43 +242,42 @@ class Settings extends EventEmitter {
       }
 
       this.emit(cons.events.settings.THEME_APPLIED, null, null);
-
     } else if (this.themes[index]) {
-
-      body.addClass(this.themes[index].id !== '' ? this.themes[index].id : 'default-theme').addClass(
-        this.themes[index]?.type === 'dark' || this.themes[index]?.type === 'dark-solid' ||
-          this.themes[index]?.type === 'dark2' || this.themes[index]?.type === 'dark2-solid' ||
-          this.themes[index]?.type === 'light' || this.themes[index]?.type === 'light-solid' ||
-          this.themes[index]?.type === 'silver' || this.themes[index]?.type === 'silver-solid' ?
-          `theme-type-${this.themes[index]?.type}` : ''
-      );
+      body
+        .addClass(this.themes[index].id !== '' ? this.themes[index].id : 'default-theme')
+        .addClass(
+          this.themes[index]?.type === 'dark' ||
+            this.themes[index]?.type === 'dark-solid' ||
+            this.themes[index]?.type === 'dark2' ||
+            this.themes[index]?.type === 'dark2-solid' ||
+            this.themes[index]?.type === 'light' ||
+            this.themes[index]?.type === 'light-solid' ||
+            this.themes[index]?.type === 'silver' ||
+            this.themes[index]?.type === 'silver-solid'
+            ? `theme-type-${this.themes[index]?.type}`
+            : '',
+        );
 
       this.emit(cons.events.settings.THEME_APPLIED, index, this.themes[index]);
-
     }
 
     this.changeMobileBackground('default');
-
   }
 
   setTheme(themeIndex) {
-
     this.themeIndex = themeIndex;
     setSettings('themeIndex', this.themeIndex);
     this.applyTheme();
 
     this.emit(cons.events.settings.THEME_TOGGLED, this.themeIndex, this.themes[this.themeIndex]);
-
   }
 
   toggleUseSystemTheme() {
-
     this.useSystemTheme = !this.useSystemTheme;
     setSettings('useSystemTheme', this.useSystemTheme);
     this.applyTheme();
 
     this.emit(cons.events.settings.SYSTEM_THEME_TOGGLED, this.useSystemTheme);
-
   }
 
   getUseSystemTheme() {
@@ -409,7 +397,7 @@ const settings = new Settings();
 export function startSettings() {
   settings.startData();
   settings.applyTheme();
-};
+}
 
 appDispatcher.register(settings.setter.bind(settings));
 export default settings;

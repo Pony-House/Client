@@ -21,41 +21,47 @@ import { accessSecretStorage } from './SecretStorageAccess';
 
 import moment, { momentFormat } from '../../../util/libs/momentjs';
 
-const promptDeviceName = async (deviceName) => new Promise((resolve) => {
-  let isCompleted = false;
+const promptDeviceName = async (deviceName) =>
+  new Promise((resolve) => {
+    let isCompleted = false;
 
-  const renderContent = (onComplete) => {
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      const name = e.target.session.value;
-      if (typeof name !== 'string') onComplete(null);
-      onComplete(name);
+    const renderContent = (onComplete) => {
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        const name = e.target.session.value;
+        if (typeof name !== 'string') onComplete(null);
+        onComplete(name);
+      };
+      return (
+        <form className="device-manage__rename" onSubmit={handleSubmit}>
+          <div>
+            <Input value={deviceName} label="Session name" name="session" />
+          </div>
+          <div className="device-manage__rename-btn">
+            <Button variant="primary" type="submit">
+              Save
+            </Button>
+            <Button onClick={() => onComplete(null)}>Cancel</Button>
+          </div>
+        </form>
+      );
     };
-    return (
-      <form className="device-manage__rename" onSubmit={handleSubmit}>
-        <div>
-          <Input value={deviceName} label="Session name" name="session" />
-        </div>
-        <div className="device-manage__rename-btn">
-          <Button variant="primary" type="submit">Save</Button>
-          <Button onClick={() => onComplete(null)}>Cancel</Button>
-        </div>
-      </form>
-    );
-  };
 
-  openReusableDialog(
-    <Text variant="s1" weight="medium">Edit session name</Text>,
-    (requestClose) => renderContent((name) => {
-      isCompleted = true;
-      resolve(name);
-      requestClose();
-    }),
-    () => {
-      if (!isCompleted) resolve(null);
-    },
-  );
-});
+    openReusableDialog(
+      <Text variant="s1" weight="medium">
+        Edit session name
+      </Text>,
+      (requestClose) =>
+        renderContent((name) => {
+          isCompleted = true;
+          resolve(name);
+          requestClose();
+        }),
+      () => {
+        if (!isCompleted) resolve(null);
+      },
+    );
+  });
 
 function DeviceManage() {
   const TRUNCATED_COUNT = 4;
@@ -86,7 +92,9 @@ function DeviceManage() {
     return (
       <div className="card noselect">
         <ul className="list-group list-group-flush">
-          <li className="list-group-item small pt-3 text-center"><Spinner size="small" /></li>
+          <li className="list-group-item small pt-3 text-center">
+            <Spinner size="small" />
+          </li>
           <li className="list-group-item small pb-3 text-center">Loading devices...</li>
         </ul>
       </div>
@@ -156,42 +164,67 @@ function DeviceManage() {
     return (
       <SettingTile
         key={deviceId}
-        title={(
+        title={
           <div className={`small ${isVerified !== false ? '' : 'text-danger'}`}>
             {displayName}
             <span className="very-small text-gray">{`${displayName ? ' — ' : ''}${deviceId}`}</span>
             {isCurrentDevice && <span className="ms-2 very-small badge bg-secondary">Current</span>}
           </div>
-        )}
-        options={
-          processing.includes(deviceId)
-            ? <Spinner size="small" />
-            : (
-              <>
-                {(isCSEnabled && canVerify) && <Button onClick={() => verify(deviceId, isCurrentDevice)} className='mx-1' variant="outline-success">Verify</Button>}
-                <IconButton size="small" className='mx-1' onClick={() => handleRename(device)} fa="fa-solid fa-pencil" tooltip="Rename" />
-                <IconButton size="small" className='mx-1' onClick={() => handleRemove(device)} fa="fa-solid fa-trash-can" tooltip="Remove session" />
-              </>
-            )
         }
-        content={(
+        options={
+          processing.includes(deviceId) ? (
+            <Spinner size="small" />
+          ) : (
+            <>
+              {isCSEnabled && canVerify && (
+                <Button
+                  onClick={() => verify(deviceId, isCurrentDevice)}
+                  className="mx-1"
+                  variant="outline-success"
+                >
+                  Verify
+                </Button>
+              )}
+              <IconButton
+                size="small"
+                className="mx-1"
+                onClick={() => handleRename(device)}
+                fa="fa-solid fa-pencil"
+                tooltip="Rename"
+              />
+              <IconButton
+                size="small"
+                className="mx-1"
+                onClick={() => handleRemove(device)}
+                fa="fa-solid fa-trash-can"
+                tooltip="Remove session"
+              />
+            </>
+          )
+        }
+        content={
           <>
             {lastTS && (
               <div className="very-small text-gray">
                 Last activity
                 <span style={{ color: 'var(--tc-surface-normal)' }}>
-                  {moment(new Date(lastTS)).format(` ${momentFormat.clock()}, ${momentFormat.calendar()}`)}
+                  {moment(new Date(lastTS)).format(
+                    ` ${momentFormat.clock()}, ${momentFormat.calendar()}`,
+                  )}
                 </span>
                 {lastIP ? ` at ${lastIP}` : ''}
               </div>
             )}
             {isCurrentDevice && (
               <div className="very-small text-gray">
-                {`Session Key: ${initMatrix.matrixClient.getDeviceEd25519Key().match(/.{1,4}/g).join(' ')}`}
+                {`Session Key: ${initMatrix.matrixClient
+                  .getDeviceEd25519Key()
+                  .match(/.{1,4}/g)
+                  .join(' ')}`}
               </div>
             )}
           </>
-        )}
+        }
       />
     );
   };
@@ -199,26 +232,28 @@ function DeviceManage() {
   const unverified = [];
   const verified = [];
   const noEncryption = [];
-  deviceList.sort((a, b) => b.last_seen_ts - a.last_seen_ts).forEach((device) => {
-    const isVerified = isCrossVerified(device.device_id);
-    if (isVerified === true) {
-      verified.push(device);
-    } else if (isVerified === false) {
-      unverified.push(device);
-    } else {
-      noEncryption.push(device);
-    }
-  });
+  deviceList
+    .sort((a, b) => b.last_seen_ts - a.last_seen_ts)
+    .forEach((device) => {
+      const isVerified = isCrossVerified(device.device_id);
+      if (isVerified === true) {
+        verified.push(device);
+      } else if (isVerified === false) {
+        unverified.push(device);
+      } else {
+        noEncryption.push(device);
+      }
+    });
   return (
     <div className="card noselect">
       <ul className="list-group list-group-flush">
-
         <li className="list-group-item very-small text-gray">Unverified sessions</li>
 
         {!isMeVerified && (
           <li className="list-group-item small text-primary p-3">
             <i className="fa-solid fa-circle-info me-2" />
-            Verify this session either with your Security Key/Phrase here or by initiating emoji verification from a verified session.
+            Verify this session either with your Security Key/Phrase here or by initiating emoji
+            verification from a verified session.
           </li>
         )}
         {isMeVerified && unverified.length > 0 && (
@@ -235,11 +270,11 @@ function DeviceManage() {
           </li>
         )}
 
-        {
-          unverified.length > 0
-            ? unverified.map((device) => renderDevice(device, false))
-            : <li className="list-group-item very-small text-gray p-3">No unverified sessions</li>
-        }
+        {unverified.length > 0 ? (
+          unverified.map((device) => renderDevice(device, false))
+        ) : (
+          <li className="list-group-item very-small text-gray p-3">No unverified sessions</li>
+        )}
 
         {noEncryption.length > 0 && (
           <li className="list-group-item small text-gray">Sessions without encryption support</li>
@@ -248,24 +283,25 @@ function DeviceManage() {
         {noEncryption.length > 0 && noEncryption.map((device) => renderDevice(device, null))}
 
         <li className="list-group-item very-small text-gray p-3">Verified sessions</li>
-        {
-          verified.length > 0
-            ? verified.map((device, index) => {
-              if (truncated && index >= TRUNCATED_COUNT) return null;
-              return renderDevice(device, true);
-            })
-            : <li className="list-group-item small">No verified sessions</li>
-        }
+        {verified.length > 0 ? (
+          verified.map((device, index) => {
+            if (truncated && index >= TRUNCATED_COUNT) return null;
+            return renderDevice(device, true);
+          })
+        ) : (
+          <li className="list-group-item small">No verified sessions</li>
+        )}
         {verified.length > TRUNCATED_COUNT && (
           <Button className="device-manage__info" onClick={() => setTruncated(!truncated)}>
             {truncated ? `View ${verified.length - 4} more` : 'View less'}
           </Button>
         )}
         {deviceList.length > 0 && (
-          <li className="list-group-item very-small text-gray p-3">Session names are visible to everyone, so do not put any private info here.</li>
+          <li className="list-group-item very-small text-gray p-3">
+            Session names are visible to everyone, so do not put any private info here.
+          </li>
         )}
       </ul>
-
     </div>
   );
 }

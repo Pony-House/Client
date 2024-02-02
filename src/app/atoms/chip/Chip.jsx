@@ -3,14 +3,11 @@ import PropTypes from 'prop-types';
 
 import RawIcon from '../system-icons/RawIcon';
 
-function Chip({
-  iconSrc, iconColor, text, children,
-  onClick,
-}) {
+function Chip({ iconSrc, iconColor, text, children, onClick }) {
   return (
     <button className="chip" type="button" onClick={onClick}>
       {iconSrc != null && <RawIcon src={iconSrc} color={iconColor} size="extra-small" />}
-      {(text != null && text !== '') && <div className="very-small text-gray">{text}</div>}
+      {text != null && text !== '' && <div className="very-small text-gray">{text}</div>}
       {children}
     </button>
   );

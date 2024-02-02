@@ -6,11 +6,9 @@
  */
 
 function blurOnBubbling(e, selector) {
-
   const bubblingPath = e.nativeEvent.composedPath();
 
   for (let elIndex = 0; elIndex < bubblingPath.length; elIndex += 1) {
-
     if (bubblingPath[elIndex] === document) {
       console.warn(blurOnBubbling, 'blurOnBubbling: not found selector in bubbling path');
       break;
@@ -20,10 +18,8 @@ function blurOnBubbling(e, selector) {
       setTimeout(() => bubblingPath[elIndex].blur(), 50);
       return true;
     }
-
   }
 
   return false;
-
 }
 export { blurOnBubbling };

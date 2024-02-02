@@ -27,21 +27,26 @@ function FollowingMembers({ roomTimeline }) {
     if (roomsInput) roomsInput.on(cons.events.roomsInput.MESSAGE_SENT, handleOnMessageSent);
     return () => {
       roomTimeline.removeListener(cons.events.roomTimeline.LIVE_RECEIPT, updateFollowingMembers);
-      if (roomsInput) roomsInput.removeListener(cons.events.roomsInput.MESSAGE_SENT, handleOnMessageSent);
+      if (roomsInput)
+        roomsInput.removeListener(cons.events.roomsInput.MESSAGE_SENT, handleOnMessageSent);
     };
   }, [roomTimeline]);
 
   const filteredM = followingMembers.filter((userId) => userId !== myUserId);
 
-  return filteredM.length !== 0 && (
-    <button
-      className="following-members emoji-size-fix"
-      onClick={() => openReadReceipts(roomId, followingMembers)}
-      type="button"
-    >
-      <RawIcon fa="bi bi-check-all" />
-      <small className='text-bg-low text-truncate'>{getUsersActionJsx(roomId, filteredM, 'following the conversation.')}</small>
-    </button>
+  return (
+    filteredM.length !== 0 && (
+      <button
+        className="following-members emoji-size-fix"
+        onClick={() => openReadReceipts(roomId, followingMembers)}
+        type="button"
+      >
+        <RawIcon fa="bi bi-check-all" />
+        <small className="text-bg-low text-truncate">
+          {getUsersActionJsx(roomId, filteredM, 'following the conversation.')}
+        </small>
+      </button>
+    )
   );
 }
 

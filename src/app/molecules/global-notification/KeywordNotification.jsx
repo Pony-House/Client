@@ -12,9 +12,7 @@ import SettingTile from '../setting-tile/SettingTile';
 import NotificationSelector from './NotificationSelector';
 
 import { useAccountData } from '../../hooks/useAccountData';
-import {
-  notifType, typeToLabel, getActionType, getTypeActions,
-} from './GlobalNotification';
+import { notifType, typeToLabel, getActionType, getTypeActions } from './GlobalNotification';
 
 const DISPLAY_NAME = '.m.rule.contains_display_name';
 const ROOM_PING = '.m.rule.roomnotif';
@@ -124,30 +122,20 @@ function useKeywordNotif() {
 }
 
 function GlobalNotification() {
-  const {
-    rulesToType,
-    pushRules,
-    setRule,
-    addKeyword,
-    removeKeyword,
-  } = useKeywordNotif();
+  const { rulesToType, pushRules, setRule, addKeyword, removeKeyword } = useKeywordNotif();
 
   const keywordRules = pushRules?.global?.content.filter((r) => r.rule_id !== USERNAME) ?? [];
 
   const onSelect = (evt, rule) => {
-    openReusableContextMenu(
-      'bottom',
-      getEventCords(evt, '.btn-link'),
-      (requestClose) => (
-        <NotificationSelector
-          value={rulesToType[rule]}
-          onSelect={(value) => {
-            if (rulesToType[rule] !== value) setRule(rule, value);
-            requestClose();
-          }}
-        />
-      ),
-    );
+    openReusableContextMenu('bottom', getEventCords(evt, '.btn-link'), (requestClose) => (
+      <NotificationSelector
+        value={rulesToType[rule]}
+        onSelect={(value) => {
+          if (rulesToType[rule] !== value) setRule(rule, value);
+          requestClose();
+        }}
+      />
+    ));
   };
 
   const handleSubmit = (evt) => {
@@ -162,61 +150,80 @@ function GlobalNotification() {
   return (
     <div className="card noselect mt-3">
       <ul className="list-group list-group-flush">
-
         <li className="list-group-item very-small text-gray">Mentions & keywords</li>
 
         <SettingTile
           title="Message containing my display name"
-          options={(
+          options={
             <Button onClick={(evt) => onSelect(evt, DISPLAY_NAME)} faSrc="fa-solid fa-check">
               {typeToLabel[rulesToType[DISPLAY_NAME]]}
             </Button>
-          )}
-          content={<div className="very-small text-gray">Default notification settings for all message containing your display name.</div>}
+          }
+          content={
+            <div className="very-small text-gray">
+              Default notification settings for all message containing your display name.
+            </div>
+          }
         />
 
         <SettingTile
           title="Message containing my username"
-          options={(
+          options={
             <Button onClick={(evt) => onSelect(evt, USERNAME)} faSrc="fa-solid fa-check">
               {typeToLabel[rulesToType[USERNAME]]}
             </Button>
-          )}
-          content={<div className="very-small text-gray">Default notification settings for all message containing your username.</div>}
+          }
+          content={
+            <div className="very-small text-gray">
+              Default notification settings for all message containing your username.
+            </div>
+          }
         />
 
         <SettingTile
           title="Message containing @room"
-          options={(
+          options={
             <Button onClick={(evt) => onSelect(evt, ROOM_PING)} faSrc="fa-solid fa-check">
               {typeToLabel[rulesToType[ROOM_PING]]}
             </Button>
-          )}
-          content={<div className="very-small text-gray">Default notification settings for all messages containing @room.</div>}
+          }
+          content={
+            <div className="very-small text-gray">
+              Default notification settings for all messages containing @room.
+            </div>
+          }
         />
 
         {rulesToType[KEYWORD] && (
           <SettingTile
             title="Message containing keywords"
-            options={(
+            options={
               <Button onClick={(evt) => onSelect(evt, KEYWORD)} faSrc="fa-solid fa-check">
                 {typeToLabel[rulesToType[KEYWORD]]}
               </Button>
-            )}
-            content={<div className="very-small text-gray">Default notification settings for all message containing keywords.</div>}
+            }
+            content={
+              <div className="very-small text-gray">
+                Default notification settings for all message containing keywords.
+              </div>
+            }
           />
         )}
 
         <SettingTile
           title="Keywords"
-          content={(
+          content={
             <div className="keyword-notification__keyword">
-              <div className="very-small text-gray">Get notification when a message contains keyword.</div>
+              <div className="very-small text-gray">
+                Get notification when a message contains keyword.
+              </div>
               <form onSubmit={handleSubmit}>
                 <div>
                   <Input name="keywordInput" required />
                 </div>
-                <Button variant="primary" type="submit">Add</Button>
+                <Button variant="primary" type="submit">
+                  Add
+                </Button>
               </form>
               {keywordRules.length > 0 && (
                 <div>
@@ -232,9 +239,8 @@ function GlobalNotification() {
                 </div>
               )}
             </div>
-          )}
+          }
         />
-
       </ul>
     </div>
   );

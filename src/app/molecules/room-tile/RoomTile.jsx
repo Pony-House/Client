@@ -8,10 +8,7 @@ import { colorMXID } from '../../../util/colorMXID';
 import Text from '../../atoms/text/Text';
 import Avatar from '../../atoms/avatar/Avatar';
 
-function RoomTile({
-  avatarSrc, avatarAnimSrc, name, id,
-  inviterName, memberCount, desc, options,
-}) {
+function RoomTile({ avatarSrc, avatarAnimSrc, name, id, inviterName, memberCount, desc, options }) {
   return (
     <div className="room-tile">
       <div className="room-tile__avatar">
@@ -26,23 +23,19 @@ function RoomTile({
       <div className="room-tile__content emoji-size-fix">
         <Text variant="s1">{twemojifyReact(name)}</Text>
         <div className="very-small text-gray">
-          {
-            inviterName !== null
-              ? `Invited by ${inviterName} to ${id}${memberCount === null ? '' : ` • ${memberCount} members`}`
-              : id + (memberCount === null ? '' : ` • ${memberCount} members`)
-          }
+          {inviterName !== null
+            ? `Invited by ${inviterName} to ${id}${memberCount === null ? '' : ` • ${memberCount} members`}`
+            : id + (memberCount === null ? '' : ` • ${memberCount} members`)}
         </div>
-        {
-          desc !== null && (typeof desc === 'string')
-            ? <Text className="room-tile__content__desc emoji-size-fix" variant="b2">{twemojifyReact(desc, undefined, true)}</Text>
-            : desc
-        }
+        {desc !== null && typeof desc === 'string' ? (
+          <Text className="room-tile__content__desc emoji-size-fix" variant="b2">
+            {twemojifyReact(desc, undefined, true)}
+          </Text>
+        ) : (
+          desc
+        )}
       </div>
-      {options !== null && (
-        <div className="room-tile__options">
-          {options}
-        </div>
-      )}
+      {options !== null && <div className="room-tile__options">{options}</div>}
     </div>
   );
 }
@@ -61,10 +54,7 @@ RoomTile.propTypes = {
   name: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   inviterName: PropTypes.string,
-  memberCount: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
+  memberCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   desc: PropTypes.node,
   options: PropTypes.node,
 };

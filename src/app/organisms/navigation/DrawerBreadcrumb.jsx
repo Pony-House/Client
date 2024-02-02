@@ -42,8 +42,9 @@ function DrawerBreadcrumb({ spaceId }) {
   }, [spaceId]);
 
   function getHomeNotiExcept(childId) {
-    const orphans = roomList.getOrphans()
-      .filter((id) => (id !== childId))
+    const orphans = roomList
+      .getOrphans()
+      .filter((id) => id !== childId)
       .filter((id) => !accountData.spaceShortcut.has(id));
 
     let noti = null;
@@ -85,53 +86,45 @@ function DrawerBreadcrumb({ spaceId }) {
 
   return (
     <div className="">
-
-      <nav className='p-3'>
+      <nav className="p-3">
         <ol className="breadcrumb">
+          {spacePath.map((id, index) => {
+            const noti =
+              id !== cons.tabs.HOME && index < spacePath.length
+                ? getNotiExcept(id, index === spacePath.length - 1 ? null : spacePath[index + 1])
+                : getHomeNotiExcept(index === spacePath.length - 1 ? null : spacePath[index + 1]);
 
-          {
-            spacePath.map((id, index) => {
-
-              const noti = (id !== cons.tabs.HOME && index < spacePath.length)
-                ? getNotiExcept(id, (index === spacePath.length - 1) ? null : spacePath[index + 1])
-                : getHomeNotiExcept((index === spacePath.length - 1) ? null : spacePath[index + 1]);
-
-              return (
-                <React.Fragment
-                  key={id}
+            return (
+              <React.Fragment key={id}>
+                <li
+                  className={`emoji-size-fix breadcrumb-item ${index === spacePath.length - 1 ? 'active' : ''}`}
                 >
-
-                  <li className={`emoji-size-fix breadcrumb-item ${index === spacePath.length - 1 ? 'active' : ''}`}>
-                    <a
-                      href='#'
-                      onClick={(event) => {
-                        if (id === cons.tabs.HOME) selectTab(id);
-                        else selectSpace(id);
-                        event.preventDefault();
-                      }}
-                    >
-                      {id === cons.tabs.HOME ? 'Home' : twemojifyReact(mx.getRoom(id).name)}
-                      {noti !== null && (
-                        <NotificationBadge
-                          className='ms-1'
-                          alert={noti.highlight !== 0}
-                          content={noti.total > 0 ? abbreviateNumber(noti.total) : null}
-                        />
-                      )}
-                    </a>
-                  </li>
-
-                </React.Fragment>
-              );
-            })
-          }
-
+                  <a
+                    href="#"
+                    onClick={(event) => {
+                      if (id === cons.tabs.HOME) selectTab(id);
+                      else selectSpace(id);
+                      event.preventDefault();
+                    }}
+                  >
+                    {id === cons.tabs.HOME ? 'Home' : twemojifyReact(mx.getRoom(id).name)}
+                    {noti !== null && (
+                      <NotificationBadge
+                        className="ms-1"
+                        alert={noti.highlight !== 0}
+                        content={noti.total > 0 ? abbreviateNumber(noti.total) : null}
+                      />
+                    )}
+                  </a>
+                </li>
+              </React.Fragment>
+            );
+          })}
         </ol>
       </nav>
 
-      <hr className='m-0 border-bg' />
-
-    </div >
+      <hr className="m-0 border-bg" />
+    </div>
   );
 }
 

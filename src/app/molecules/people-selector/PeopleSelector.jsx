@@ -14,9 +14,17 @@ import insertCustomStatus from './insertCustomStatus';
 import { getAnimatedImageUrl, getAppearance } from '../../../util/libs/appearance';
 
 function PeopleSelector({
-  avatarSrc, avatarAnimSrc, name, color, peopleRole, onClick, user, disableStatus, avatarSize, contextMenu
+  avatarSrc,
+  avatarAnimSrc,
+  name,
+  color,
+  peopleRole,
+  onClick,
+  user,
+  disableStatus,
+  avatarSize,
+  contextMenu,
 }) {
-
   const statusRef = useRef(null);
   const customStatusRef = useRef(null);
 
@@ -33,27 +41,34 @@ function PeopleSelector({
 
   useEffect(() => {
     if (user) {
-
       const mx = initMatrix.matrixClient;
 
       // Update Status Profile
       const updateProfileStatus = (mEvent, tinyData) => {
-
         // Get Status
         const appearanceSettings = getAppearance();
         const status = $(statusRef.current);
         const tinyUser = tinyData;
 
         // Image
-        const newImageSrc = tinyUser && tinyUser.avatarUrl ? mx.mxcUrlToHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop') : null;
+        const newImageSrc =
+          tinyUser && tinyUser.avatarUrl
+            ? mx.mxcUrlToHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop')
+            : null;
         setImageSrc(newImageSrc);
 
-        const newImageAnimSrc = tinyUser && tinyUser.avatarUrl ? !appearanceSettings.enableAnimParams ? mx.mxcUrlToHttp(tinyUser.avatarUrl) : getAnimatedImageUrl(mx.mxcUrlToHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop')) : null;
+        const newImageAnimSrc =
+          tinyUser && tinyUser.avatarUrl
+            ? !appearanceSettings.enableAnimParams
+              ? mx.mxcUrlToHttp(tinyUser.avatarUrl)
+              : getAnimatedImageUrl(
+                  mx.mxcUrlToHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop'),
+                )
+            : null;
         setImageAnimSrc(newImageAnimSrc);
 
         // Update Status Icon
         getCustomStatus(updateUserStatusIcon(status, tinyUser));
-
       };
 
       // Read Events
@@ -67,7 +82,6 @@ function PeopleSelector({
         user.removeListener('User.presence', updateProfileStatus);
         user.removeListener('User.avatarUrl', updateProfileStatus);
       };
-
     }
   }, [user]);
 
@@ -79,20 +93,35 @@ function PeopleSelector({
       onContextMenu={contextMenu}
       type="button"
     >
-
-      <Avatar imageAnimSrc={imageAnimSrc} imageSrc={imageSrc} text={name} bgColor={color} size="small" isDefaultImage />
-      {!disableStatus ? <i ref={statusRef} className={`user-status-icon ${getUserStatus(user)}`} /> : ''}
+      <Avatar
+        imageAnimSrc={imageAnimSrc}
+        imageSrc={imageSrc}
+        text={name}
+        bgColor={color}
+        size="small"
+        isDefaultImage
+      />
+      {!disableStatus ? (
+        <i ref={statusRef} className={`user-status-icon ${getUserStatus(user)}`} />
+      ) : (
+        ''
+      )}
 
       <div className="small people-selector__name text-start">
-        <span className='emoji-size-fix'>{twemojifyReact(name)}</span>
-        <div ref={customStatusRef} className='very-small text-gray text-truncate emoji-size-fix-2 user-custom-status' />
+        <span className="emoji-size-fix">{twemojifyReact(name)}</span>
+        <div
+          ref={customStatusRef}
+          className="very-small text-gray text-truncate emoji-size-fix-2 user-custom-status"
+        />
       </div>
 
-      {peopleRole !== null && <Text className="people-selector__role" variant="b3">{peopleRole}</Text>}
-
+      {peopleRole !== null && (
+        <Text className="people-selector__role" variant="b3">
+          {peopleRole}
+        </Text>
+      )}
     </button>
   );
-
 }
 
 PeopleSelector.defaultProps = {

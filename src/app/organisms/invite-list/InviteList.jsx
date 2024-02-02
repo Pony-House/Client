@@ -65,69 +65,87 @@ function InviteList({ isOpen, onRequestClose }) {
       <RoomTile
         key={myRoom.roomId}
         name={roomName}
-        avatarSrc={initMatrix.matrixClient.getRoom(roomId).getAvatarUrl(initMatrix.matrixClient.baseUrl, 42, 42, 'crop')}
+        avatarSrc={initMatrix.matrixClient
+          .getRoom(roomId)
+          .getAvatarUrl(initMatrix.matrixClient.baseUrl, 42, 42, 'crop')}
         id={roomAlias}
         inviterName={inviterName}
         options={
-          procInvite.has(myRoom.roomId)
-            ? (<Spinner size="small" />)
-            : (
-              <div className="invite-btn__container">
-                <Button className='me-2' onClick={() => rejectInvite(myRoom.roomId)}>Reject</Button>
-                <Button className='ms-2' onClick={() => acceptInvite(myRoom.roomId)} variant="primary">Accept</Button>
-              </div>
-            )
+          procInvite.has(myRoom.roomId) ? (
+            <Spinner size="small" />
+          ) : (
+            <div className="invite-btn__container">
+              <Button className="me-2" onClick={() => rejectInvite(myRoom.roomId)}>
+                Reject
+              </Button>
+              <Button
+                className="ms-2"
+                onClick={() => acceptInvite(myRoom.roomId)}
+                variant="primary"
+              >
+                Accept
+              </Button>
+            </div>
+          )
         }
       />
     );
   }
 
   return (
-    <PopupWindow
-      isOpen={isOpen}
-      title="Invites"
-      onRequestClose={onRequestClose}
-    >
+    <PopupWindow isOpen={isOpen} title="Invites" onRequestClose={onRequestClose}>
       <div className="invites-content">
         {initMatrix.roomList.inviteDirects.size !== 0 && (
           <div className="invites-content__subheading">
-            <div className="very-small text-gray"><strong>Direct Messages</strong></div>
+            <div className="very-small text-gray">
+              <strong>Direct Messages</strong>
+            </div>
           </div>
         )}
-        {
-          Array.from(initMatrix.roomList.inviteDirects).map((roomId) => {
-            const myRoom = initMatrix.matrixClient.getRoom(roomId);
-            if (myRoom === null) return null;
-            const roomName = myRoom.name;
-            return (
-              <RoomTile
-                key={myRoom.roomId}
-                name={roomName}
-                id={myRoom.getDMInviter() || roomId}
-                options={
-                  procInvite.has(myRoom.roomId)
-                    ? (<Spinner size="small" />)
-                    : (
-                      <div className="invite-btn__container">
-                        <Button className='me-2' onClick={() => rejectInvite(myRoom.roomId, true)}>Reject</Button>
-                        <Button className='ms-2' onClick={() => acceptInvite(myRoom.roomId, true)} variant="primary">Accept</Button>
-                      </div>
-                    )
-                }
-              />
-            );
-          })
-        }
+        {Array.from(initMatrix.roomList.inviteDirects).map((roomId) => {
+          const myRoom = initMatrix.matrixClient.getRoom(roomId);
+          if (myRoom === null) return null;
+          const roomName = myRoom.name;
+          return (
+            <RoomTile
+              key={myRoom.roomId}
+              name={roomName}
+              id={myRoom.getDMInviter() || roomId}
+              options={
+                procInvite.has(myRoom.roomId) ? (
+                  <Spinner size="small" />
+                ) : (
+                  <div className="invite-btn__container">
+                    <Button className="me-2" onClick={() => rejectInvite(myRoom.roomId, true)}>
+                      Reject
+                    </Button>
+                    <Button
+                      className="ms-2"
+                      onClick={() => acceptInvite(myRoom.roomId, true)}
+                      variant="primary"
+                    >
+                      Accept
+                    </Button>
+                  </div>
+                )
+              }
+            />
+          );
+        })}
         {initMatrix.roomList.inviteSpaces.size !== 0 && (
           <div className="invites-content__subheading">
-            <div className="very-small text-gray"><strong>Spaces</strong></div>
+            <div className="very-small text-gray">
+              <strong>Spaces</strong>
+            </div>
           </div>
         )}
         {Array.from(initMatrix.roomList.inviteSpaces).map(renderRoomTile)}
 
         {initMatrix.roomList.inviteRooms.size !== 0 && (
           <div className="invites-content__subheading">
-            <div className="very-small text-gray"><strong>Rooms</strong></div>
+            <div className="very-small text-gray">
+              <strong>Rooms</strong>
+            </div>
           </div>
         )}
         {Array.from(initMatrix.roomList.inviteRooms).map(renderRoomTile)}

@@ -11,61 +11,74 @@ import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 const nicknameSizeLimit = 30;
 
 function UserOptions({ userId, afterOptionSelect }) {
+  const mx = initMatrix.matrixClient;
+  const user = mx.getUser(userId);
+  const isWhitelist = getDataList('user_cache', 'whitelist', userId);
 
-    const mx = initMatrix.matrixClient;
-    const user = mx.getUser(userId);
-    const isWhitelist = getDataList('user_cache', 'whitelist', userId);
+  return (
+    <div className="noselect emoji-size-fix w-100" style={{ maxWidth: '256px' }}>
+      <MenuHeader>{twemojifyReact(`User Options for ${user?.userId}`)}</MenuHeader>
 
-    return (
-        <div className="noselect emoji-size-fix w-100" style={{ maxWidth: '256px' }}>
-            <MenuHeader>{twemojifyReact(`User Options for ${user?.userId}`)}</MenuHeader>
+      <MenuItem
+        className="text-start"
+        faSrc="fa-solid fa-user-pen"
+        onClick={async () => {
+          afterOptionSelect();
 
-            <MenuItem className="text-start" faSrc="fa-solid fa-user-pen" onClick={async () => {
+          const oldNickname = getDataList('user_cache', 'friend_nickname', userId);
+          const nickname = await tinyPrompt(
+            `This information will only be visible to you. The new username will be visible after updating the page you are currently viewing.\n\nPlease type the user ${user?.userId} nickname here:`,
+            'Friend Nickname',
+            {
+              placeholder: userId,
+              value: oldNickname,
+              maxlength: nicknameSizeLimit,
+            },
+            {
+              key: (e) => {
+                const input = $(e.target);
+                const value = input.val();
 
-                afterOptionSelect();
+                if (value.length > nicknameSizeLimit)
+                  input.val(value.substring(0, nicknameSizeLimit));
+              },
+            },
+          );
 
-                const oldNickname = getDataList('user_cache', 'friend_nickname', userId);
-                const nickname = await tinyPrompt(`This information will only be visible to you. The new username will be visible after updating the page you are currently viewing.\n\nPlease type the user ${user?.userId} nickname here:`, 'Friend Nickname', {
-                    placeholder: userId,
-                    value: oldNickname,
-                    maxlength: nicknameSizeLimit
-                }, {
-                    key: (e) => {
+          if (typeof nickname === 'string')
+            addToDataFolder('user_cache', 'friend_nickname', userId, nickname);
+        }}
+      >
+        Change Friend Nickname
+      </MenuItem>
 
-                        const input = $(e.target);
-                        const value = input.val();
-
-                        if (value.length > nicknameSizeLimit) input.val(value.substring(0, nicknameSizeLimit));
-
-                    }
-                });
-
-                if (typeof nickname === 'string') addToDataFolder('user_cache', 'friend_nickname', userId, nickname);
-
-            }} >Change Friend Nickname</MenuItem>
-
-            {userId !== mx.getUserId() ? <MenuItem className="text-start" faSrc="fa-solid fa-envelope-circle-check" onClick={() => {
-
-                afterOptionSelect();
-                if (isWhitelist) {
-                    addToDataFolder('user_cache', 'whitelist', userId, false);
-                } else {
-                    addToDataFolder('user_cache', 'whitelist', userId, true);
-                }
-
-            }} >{!isWhitelist ? 'Add Invite Whitelist' : 'Remove Invite Whitelist'}</MenuItem> : null}
-
-        </div>
-    );
+      {userId !== mx.getUserId() ? (
+        <MenuItem
+          className="text-start"
+          faSrc="fa-solid fa-envelope-circle-check"
+          onClick={() => {
+            afterOptionSelect();
+            if (isWhitelist) {
+              addToDataFolder('user_cache', 'whitelist', userId, false);
+            } else {
+              addToDataFolder('user_cache', 'whitelist', userId, true);
+            }
+          }}
+        >
+          {!isWhitelist ? 'Add Invite Whitelist' : 'Remove Invite Whitelist'}
+        </MenuItem>
+      ) : null}
+    </div>
+  );
 }
 
 UserOptions.defaultProps = {
-    afterOptionSelect: null,
+  afterOptionSelect: null,
 };
 
 UserOptions.propTypes = {
-    userId: PropTypes.string.isRequired,
-    afterOptionSelect: PropTypes.func,
+  userId: PropTypes.string.isRequired,
+  afterOptionSelect: PropTypes.func,
 };
 
 export default UserOptions;

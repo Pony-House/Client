@@ -58,7 +58,10 @@ function guessDMRoomTargetId(room, myUserId) {
   room.getJoinedMembers().forEach((member) => {
     if (member.userId === myUserId) return;
 
-    if (typeof oldestMemberTs === 'undefined' || (member.events.member && member.events.member.getTs() < oldestMemberTs)) {
+    if (
+      typeof oldestMemberTs === 'undefined' ||
+      (member.events.member && member.events.member.getTs() < oldestMemberTs)
+    ) {
       oldestMember = member;
       oldestMemberTs = member.events.member.getTs();
     }
@@ -66,14 +69,19 @@ function guessDMRoomTargetId(room, myUserId) {
   if (oldestMember) return oldestMember.userId;
 
   // if there are no joined members other than us, use the oldest member
-  getCurrentState(room).getMembers().forEach((member) => {
-    if (member.userId === myUserId) return;
+  getCurrentState(room)
+    .getMembers()
+    .forEach((member) => {
+      if (member.userId === myUserId) return;
 
-    if (typeof oldestMemberTs === 'undefined' || (member.events.member && member.events.member.getTs() < oldestMemberTs)) {
-      oldestMember = member;
-      oldestMemberTs = member.events.member.getTs();
-    }
-  });
+      if (
+        typeof oldestMemberTs === 'undefined' ||
+        (member.events.member && member.events.member.getTs() < oldestMemberTs)
+      ) {
+        oldestMember = member;
+        oldestMemberTs = member.events.member.getTs();
+      }
+    });
 
   if (typeof oldestMember === 'undefined') return myUserId;
   return oldestMember.userId;
@@ -152,7 +160,13 @@ async function create(options, isDM = false) {
     });
     return result;
   } catch (e) {
-    const errcodes = ['M_UNKNOWN', 'M_BAD_JSON', 'M_ROOM_IN_USE', 'M_INVALID_ROOM_STATE', 'M_UNSUPPORTED_ROOM_VERSION'];
+    const errcodes = [
+      'M_UNKNOWN',
+      'M_BAD_JSON',
+      'M_ROOM_IN_USE',
+      'M_INVALID_ROOM_STATE',
+      'M_UNSUPPORTED_ROOM_VERSION',
+    ];
     if (errcodes.includes(e.errcode)) {
       throw new Error(e);
     }
@@ -161,9 +175,11 @@ async function create(options, isDM = false) {
 }
 
 async function createDM(userIdOrIds, isEncrypted = true) {
-
-  const privacySettings = initMatrix.matrixClient.getAccountData('pony.house.privacy')?.getContent() ?? {};
-  const autoEncryptCreateDM = typeof privacySettings.autoEncryptCreateDM !== 'boolean' || privacySettings.autoEncryptCreateDM === true;
+  const privacySettings =
+    initMatrix.matrixClient.getAccountData('pony.house.privacy')?.getContent() ?? {};
+  const autoEncryptCreateDM =
+    typeof privacySettings.autoEncryptCreateDM !== 'boolean' ||
+    privacySettings.autoEncryptCreateDM === true;
 
   const options = {
     is_direct: true,
@@ -174,7 +190,6 @@ async function createDM(userIdOrIds, isEncrypted = true) {
   };
 
   if (autoEncryptCreateDM && isEncrypted) {
-
     options.initial_state.push({
       type: 'm.room.encryption',
       state_key: '',
@@ -182,12 +197,10 @@ async function createDM(userIdOrIds, isEncrypted = true) {
         algorithm: 'm.megolm.v1.aes-sha2',
       },
     });
-
   }
 
   const result = await create(options, true);
   return result;
-
 }
 
 async function createRoom(opts) {
@@ -255,10 +268,12 @@ async function createRoom(opts) {
       type: 'm.room.join_rules',
       content: {
         join_rule: 'restricted',
-        allow: [{
-          type: 'm.room_membership',
-          room_id: parentId,
-        }],
+        allow: [
+          {
+            type: 'm.room_membership',
+            room_id: parentId,
+          },
+        ],
       },
     });
   }
@@ -266,11 +281,16 @@ async function createRoom(opts) {
   const result = await create(options);
 
   if (parentId) {
-    await mx.sendStateEvent(parentId, 'm.space.child', {
-      auto_join: false,
-      suggested: false,
-      via: [getIdServer(mx.getUserId())],
-    }, result.room_id);
+    await mx.sendStateEvent(
+      parentId,
+      'm.space.child',
+      {
+        auto_join: false,
+        suggested: false,
+        via: [getIdServer(mx.getUserId())],
+      },
+      result.room_id,
+    );
   }
 
   return result;
@@ -335,10 +355,15 @@ async function setMyRoomNick(roomId, nick) {
   const mEvent = getCurrentState(room).getStateEvents('m.room.member', mx.getUserId());
   const content = mEvent?.getContent();
   if (!content) return;
-  await mx.sendStateEvent(roomId, 'm.room.member', {
-    ...content,
-    displayname: nick,
-  }, mx.getUserId());
+  await mx.sendStateEvent(
+    roomId,
+    'm.room.member',
+    {
+      ...content,
+      displayname: nick,
+    },
+    mx.getUserId(),
+  );
 }
 
 async function setMyRoomAvatar(roomId, mxc) {
@@ -347,19 +372,31 @@ async function setMyRoomAvatar(roomId, mxc) {
   const mEvent = getCurrentState(room).getStateEvents('m.room.member', mx.getUserId());
   const content = mEvent?.getContent();
   if (!content) return;
-  await mx.sendStateEvent(roomId, 'm.room.member', {
-    ...content,
-    avatar_url: mxc,
-  }, mx.getUserId());
+  await mx.sendStateEvent(
+    roomId,
+    'm.room.member',
+    {
+      ...content,
+      avatar_url: mxc,
+    },
+    mx.getUserId(),
+  );
 }
 
 export {
   convertToDm,
   convertToRoom,
-  join, leave,
-  createDM, createRoom,
-  invite, kick, ban, unban,
-  ignore, unignore,
+  join,
+  leave,
+  createDM,
+  createRoom,
+  invite,
+  kick,
+  ban,
+  unban,
+  ignore,
+  unignore,
   setPowerLevel,
-  setMyRoomNick, setMyRoomAvatar,
+  setMyRoomNick,
+  setMyRoomAvatar,
 };

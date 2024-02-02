@@ -3,109 +3,113 @@ import EventEmitter from 'events';
 
 // Events
 (function (history) {
+  // Push State
+  const pushState = history.pushState;
+  history.pushState = function (state, title, url) {
+    if (typeof history.onpushstate === 'function') {
+      history.onpushstate({ state, title, url });
+    }
 
-    // Push State
-    const pushState = history.pushState;
-    history.pushState = function (state, title, url) {
+    // Call your custom function here
+    return pushState.apply(history, arguments);
+  };
 
-        if (typeof history.onpushstate === 'function') {
-            history.onpushstate({ state, title, url });
-        }
+  // Replace State
+  const replaceState = history.pushState;
+  history.replaceState = function (state, title, url) {
+    if (typeof history.onreplacestate === 'function') {
+      history.onpushstate({ state, title, url });
+    }
 
-        // Call your custom function here
-        return pushState.apply(history, arguments);
-
-    };
-
-    // Replace State
-    const replaceState = history.pushState;
-    history.replaceState = function (state, title, url) {
-
-        if (typeof history.onreplacestate === 'function') {
-            history.onpushstate({ state, title, url });
-        }
-
-        // Call your custom function here
-        return replaceState.apply(history, arguments);
-
-    };
-
+    // Call your custom function here
+    return replaceState.apply(history, arguments);
+  };
 })(window.history);
 
 // Emitter
 class MatrixUrlParams extends EventEmitter {
+  // Constructor
+  constructor() {
+    // Data prepare
+    super();
+    const tinyThis = this;
+    this.params = new URLSearchParams(window.location.search);
 
-    // Constructor
-    constructor() {
+    // Event Change
+    window.addEventListener('popstate', () => {
+      tinyThis.params = new URLSearchParams(window.location.search);
+      tinyThis.emit('popstate', tinyThis.params.toString());
+    });
+  }
 
-        // Data prepare
-        super();
-        const tinyThis = this;
-        this.params = new URLSearchParams(window.location.search);
+  // Get values
+  entries() {
+    return this.params.entries();
+  }
 
-        // Event Change
-        window.addEventListener('popstate', () => {
-            tinyThis.params = new URLSearchParams(window.location.search);
-            tinyThis.emit('popstate', tinyThis.params.toString());
-        });
+  keys() {
+    return this.params.keys();
+  }
 
-    }
+  sort() {
+    return this.params.sort();
+  }
 
-    // Get values
-    entries() { return this.params.entries(); }
+  values() {
+    return this.params.values();
+  }
 
-    keys() { return this.params.keys(); }
+  toString() {
+    return this.params.toString();
+  }
 
-    sort() { return this.params.sort(); }
+  get(name) {
+    return this.params.get(name);
+  }
 
-    values() { return this.params.values(); }
+  getAll(name) {
+    return this.params.getAll(name);
+  }
 
-    toString() { return this.params.toString(); }
+  has(name, value) {
+    if (typeof value !== 'undefined') return this.params.has(name, value);
+    return this.params.has(name);
+  }
 
-    get(name) { return this.params.get(name); }
+  forEach(callback, thisArg) {
+    if (typeof thisArg !== 'undefined') return this.params.forEach(callback, thisArg);
+    return this.params.forEach(callback);
+  }
 
-    getAll(name) { return this.params.getAll(name); }
+  // Manager
+  _getPath() {
+    const newSearch = this.params.toString();
+    return `${window.location.pathname}${typeof newSearch === 'string' && newSearch.length > 0 ? `?${newSearch}` : ''}`;
+  }
 
-    has(name, value) {
-        if (typeof value !== 'undefined') return this.params.has(name, value);
-        return this.params.has(name);
-    }
+  _replaceState() {
+    window.history.replaceState(null, document.title, this._getPath());
+  }
 
-    forEach(callback, thisArg) {
-        if (typeof thisArg !== 'undefined') return this.params.forEach(callback, thisArg);
-        return this.params.forEach(callback);
-    }
+  append(name, value) {
+    this.params.append(name, value);
+    this._replaceState();
+    this.emit('append', String(name), String(value));
+  }
 
-    // Manager
-    _getPath() {
-        const newSearch = this.params.toString();
-        return `${window.location.pathname}${typeof newSearch === 'string' && newSearch.length > 0 ? `?${newSearch}` : ''}`;
-    }
+  set(name, value) {
+    this.params.set(name, value);
+    this._replaceState();
+    this.emit('set', String(name), String(value));
+  }
 
-    _replaceState() {
-        window.history.replaceState(null, document.title, this._getPath());
-    }
-
-    append(name, value) {
-        this.params.append(name, value);
-        this._replaceState();
-        this.emit('append', String(name), String(value));
-    }
-
-    set(name, value) {
-        this.params.set(name, value);
-        this._replaceState();
-        this.emit('set', String(name), String(value));
-    }
-
-    delete(name, value) {
-        if (typeof value !== 'undefined') this.params.delete(name, value);
-        this.params.delete(name);
-        this._replaceState();
-        this.emit('delete', String(name), String(value));
-    }
-
-};
+  delete(name, value) {
+    if (typeof value !== 'undefined') this.params.delete(name, value);
+    this.params.delete(name);
+    this._replaceState();
+    this.emit('delete', String(name), String(value));
+  }
+}
 
 // Functions and class
 const urlParams = new MatrixUrlParams();

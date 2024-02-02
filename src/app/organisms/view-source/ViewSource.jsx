@@ -8,19 +8,15 @@ import { hljsFixer } from '../../../util/tools';
 
 import PopupWindow from '../../molecules/popup-window/PopupWindow';
 
-
 function ViewSourceBlock({ title, json, className }) {
-
   useEffect(() => {
     $('.insert-hljs').each((index, element) => {
-
       hljs.highlightElement(element);
 
       const el = $(element);
 
       el.removeClass('insert-hljs');
       hljsFixer(el, 'ViewSource');
-
     });
   }, []);
 
@@ -29,14 +25,11 @@ function ViewSourceBlock({ title, json, className }) {
       <ul className="list-group list-group-flush">
         <li className="list-group-item very-small text-gray noselect">{title}</li>
         <pre>
-          <code className='insert-hljs language-json bg-bg3'>
-            {JSON.stringify(json, null, 2)}
-          </code>
+          <code className="insert-hljs language-json bg-bg3">{JSON.stringify(json, null, 2)}</code>
         </pre>
       </ul>
     </div>
   );
-
 }
 ViewSourceBlock.defaultProps = {
   className: '',
@@ -68,14 +61,16 @@ function ViewSource() {
 
   const renderViewSource = () => (
     <div className="view-source">
-      {event.isEncrypted() && <ViewSourceBlock title="Decrypted source" json={event.getEffectiveEvent()} />}
-      <ViewSourceBlock className='mt-3' title="Original source" json={event.event} />
+      {event.isEncrypted() && (
+        <ViewSourceBlock title="Decrypted source" json={event.getEffectiveEvent()} />
+      )}
+      <ViewSourceBlock className="mt-3" title="Original source" json={event.event} />
     </div>
   );
 
   return (
     <PopupWindow
-      size='modal-xl'
+      size="modal-xl"
       isOpen={isOpen}
       title="View source"
       onAfterClose={handleAfterClose}

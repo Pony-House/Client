@@ -37,38 +37,37 @@ const tabText = {
 };
 
 const tabItems = [
-
   {
-    faSrc: "fa-solid fa-gear",
+    faSrc: 'fa-solid fa-gear',
     text: tabText.GENERAL,
     disabled: false,
   },
 
-  { type: 'divider', },
+  { type: 'divider' },
 
   {
-    faSrc: "fa-solid fa-user",
+    faSrc: 'fa-solid fa-user',
     text: tabText.MEMBERS,
     disabled: false,
   },
 
   {
-    faSrc: "fa-solid fa-face-smile",
+    faSrc: 'fa-solid fa-face-smile',
     text: tabText.EMOJIS,
     disabled: false,
   },
 
-  { type: 'divider', },
+  { type: 'divider' },
 
   {
-    faSrc: "fa-solid fa-shield",
+    faSrc: 'fa-solid fa-shield',
     text: tabText.PERMISSIONS,
     disabled: false,
-  }];
+  },
+];
 
 // Config
 function GeneralSettings({ roomId, profileMode }) {
-
   // Prepare Settings
   const isPinned = initMatrix.accountData.spaceShortcut.has(roomId);
   const isCategorized = initMatrix.accountData.categorizedSpaces.has(roomId);
@@ -81,49 +80,48 @@ function GeneralSettings({ roomId, profileMode }) {
 
   return (
     <>
+      {window.matchMedia('screen and (min-width: 768px)').matches ? (
+        <div className="card noselect mb-3">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item very-small text-gray">Space ID</li>
 
-      {window.matchMedia('screen and (min-width: 768px)').matches ? <div className="card noselect mb-3">
-        <ul className="list-group list-group-flush">
-
-          <li className="list-group-item very-small text-gray">Space ID</li>
-
-          <li className="list-group-item border-0">
-            <RoomProfile profileMode={profileMode} roomId={roomId} isSpace />
-          </li>
-
-        </ul></div> : null}
+            <li className="list-group-item border-0">
+              <RoomProfile profileMode={profileMode} roomId={roomId} isSpace />
+            </li>
+          </ul>
+        </div>
+      ) : null}
 
       <div className="card noselect mb-3">
         <ul className="list-group list-group-flush">
-
-          <li className='list-group-item very-small text-gray'>Options</li>
+          <li className="list-group-item very-small text-gray">Options</li>
 
           <MenuItem
-            className='text-start'
+            className="text-start"
             onClick={() => {
               if (isCategorized) unCategorizeSpace(roomId);
               else categorizeSpace(roomId);
               forceUpdate();
             }}
-            faSrc={isCategorized ? "bi bi-grid" : "bi bi-grid-fill"}
+            faSrc={isCategorized ? 'bi bi-grid' : 'bi bi-grid-fill'}
           >
             {isCategorized ? 'Uncategorize subspaces' : 'Categorize subspaces'}
           </MenuItem>
 
           <MenuItem
-            className='text-start'
+            className="text-start"
             onClick={() => {
               if (isPinned) deleteSpaceShortcut(roomId);
               else createSpaceShortcut(roomId);
               forceUpdate();
             }}
-            faSrc={isPinned ? "bi bi-pin-angle-fill" : "bi bi-pin-angle"}
+            faSrc={isPinned ? 'bi bi-pin-angle-fill' : 'bi bi-pin-angle'}
           >
             {isPinned ? 'Unpin from sidebar' : 'Pin to sidebar'}
           </MenuItem>
 
           <MenuItem
-            className='text-start btn-text-danger'
+            className="text-start btn-text-danger"
             onClick={async () => {
               const isConfirmed = await confirmDialog(
                 'Leave space',
@@ -137,7 +135,6 @@ function GeneralSettings({ roomId, profileMode }) {
           >
             Leave
           </MenuItem>
-
         </ul>
       </div>
 
@@ -161,10 +158,8 @@ function GeneralSettings({ roomId, profileMode }) {
           <PonyHouseSettings roomId={roomId} room={room} />
         </ul>
       </div>
-
     </>
   );
-
 }
 
 GeneralSettings.propTypes = {
@@ -176,9 +171,7 @@ function useWindowToggle(setSelectedTab, setProfileMode) {
   const [tinyWindow, setWindow] = useState(null);
 
   useEffect(() => {
-
     const openSpaceSettings = (roomId, tab, isProfile) => {
-
       setProfileMode(isProfile);
       setWindow({ roomId, tabText });
 
@@ -188,14 +181,12 @@ function useWindowToggle(setSelectedTab, setProfileMode) {
       } else {
         setSelectedTab(tabItems[0]);
       }
-
     };
 
     navigation.on(cons.events.navigation.SPACE_SETTINGS_OPENED, openSpaceSettings);
     return () => {
       navigation.removeListener(cons.events.navigation.SPACE_SETTINGS_OPENED, openSpaceSettings);
     };
-
   }, []);
 
   const requestClose = () => setWindow(null);
@@ -231,66 +222,77 @@ function SpaceSettings() {
 
   return (
     <PopupWindow
-
-      id='settings-base'
+      id="settings-base"
       isOpen={isOpen}
       className="modal-dialog-scrollable noselect"
-
-      title={window.matchMedia('screen and (max-width: 768px)').matches ? <>
-        {isOpen && twemojifyReact(room.name)}
-        <span style={{ color: 'var(--tc-surface-low)' }}> — space settings</span>
-      </> : null}
-
-      size={window.matchMedia('screen and (max-width: 768px)').matches ? 'modal-xl' : 'modal-fullscreen'}
-
+      title={
+        window.matchMedia('screen and (max-width: 768px)').matches ? (
+          <>
+            {isOpen && twemojifyReact(room.name)}
+            <span style={{ color: 'var(--tc-surface-low)' }}> — space settings</span>
+          </>
+        ) : null
+      }
+      size={
+        window.matchMedia('screen and (max-width: 768px)').matches ? 'modal-xl' : 'modal-fullscreen'
+      }
       onRequestClose={requestClose}
-
     >
-      {isOpen && roomId &&
-        (
-          !window.matchMedia('screen and (max-width: 768px)').matches ?
-
-            <div className="my-0 py-0">
-
-              <div id='setting-tab' className='py-3 h-100 border-bg'>
-                <Tabs
-                  requestClose={requestClose}
-                  className='border-bottom border-bg'
-                  items={tabItems}
-                  defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
-                  onSelect={handleTabChange}
-                  isFullscreen
-                />
-              </div>
-
-              <div id="settings-content" className='py-3'>
-                {selectedTab.text === tabText.GENERAL && <GeneralSettings roomId={roomId} profileMode={profileMode} />}
-                {selectedTab.text === tabText.MEMBERS && <RoomMembers roomId={roomId} profileMode={profileMode} />}
-                {selectedTab.text === tabText.EMOJIS && <RoomEmojis roomId={roomId} profileMode={profileMode} />}
-                {selectedTab.text === tabText.PERMISSIONS && <RoomPermissions roomId={roomId} profileMode={profileMode} />}
-              </div>
-
-            </div>
-
-            :
-
-            <>
-              <RoomProfile profileMode={profileMode} roomId={roomId} isSpace />
+      {isOpen &&
+        roomId &&
+        (!window.matchMedia('screen and (max-width: 768px)').matches ? (
+          <div className="my-0 py-0">
+            <div id="setting-tab" className="py-3 h-100 border-bg">
               <Tabs
-                className='border-bottom border-bg'
+                requestClose={requestClose}
+                className="border-bottom border-bg"
                 items={tabItems}
                 defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
                 onSelect={handleTabChange}
+                isFullscreen
               />
-              <div className="pt-3">
-                {selectedTab.text === tabText.GENERAL && <GeneralSettings roomId={roomId} profileMode={profileMode} />}
-                {selectedTab.text === tabText.MEMBERS && <RoomMembers roomId={roomId} profileMode={profileMode} />}
-                {selectedTab.text === tabText.EMOJIS && <RoomEmojis roomId={roomId} profileMode={profileMode} />}
-                {selectedTab.text === tabText.PERMISSIONS && <RoomPermissions roomId={roomId} profileMode={profileMode} />}
-              </div>
-            </>
-        )
-      }
+            </div>
+
+            <div id="settings-content" className="py-3">
+              {selectedTab.text === tabText.GENERAL && (
+                <GeneralSettings roomId={roomId} profileMode={profileMode} />
+              )}
+              {selectedTab.text === tabText.MEMBERS && (
+                <RoomMembers roomId={roomId} profileMode={profileMode} />
+              )}
+              {selectedTab.text === tabText.EMOJIS && (
+                <RoomEmojis roomId={roomId} profileMode={profileMode} />
+              )}
+              {selectedTab.text === tabText.PERMISSIONS && (
+                <RoomPermissions roomId={roomId} profileMode={profileMode} />
+              )}
+            </div>
+          </div>
+        ) : (
+          <>
+            <RoomProfile profileMode={profileMode} roomId={roomId} isSpace />
+            <Tabs
+              className="border-bottom border-bg"
+              items={tabItems}
+              defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
+              onSelect={handleTabChange}
+            />
+            <div className="pt-3">
+              {selectedTab.text === tabText.GENERAL && (
+                <GeneralSettings roomId={roomId} profileMode={profileMode} />
+              )}
+              {selectedTab.text === tabText.MEMBERS && (
+                <RoomMembers roomId={roomId} profileMode={profileMode} />
+              )}
+              {selectedTab.text === tabText.EMOJIS && (
+                <RoomEmojis roomId={roomId} profileMode={profileMode} />
+              )}
+              {selectedTab.text === tabText.PERMISSIONS && (
+                <RoomPermissions roomId={roomId} profileMode={profileMode} />
+              )}
+            </div>
+          </>
+        ))}
     </PopupWindow>
   );
 }

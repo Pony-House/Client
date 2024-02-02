@@ -28,7 +28,9 @@ const failedDialog = () => {
   );
 
   openReusableDialog(
-    <Text variant="s1" weight="medium">Setup cross signing</Text>,
+    <Text variant="s1" weight="medium">
+      Setup cross signing
+    </Text>,
     renderFailure,
   );
 };
@@ -47,11 +49,11 @@ const securityKeyDialog = (key) => {
   const renderSecurityKey = () => (
     <div className="cross-signing__key">
       <Text weight="medium">Please save this security key somewhere safe.</Text>
-      <Text className="cross-signing__key-text">
-        {key.encodedPrivateKey}
-      </Text>
+      <Text className="cross-signing__key-text">{key.encodedPrivateKey}</Text>
       <div className="cross-signing__key-btn">
-        <Button variant="primary" onClick={() => copyKey(key)}>Copy</Button>
+        <Button variant="primary" onClick={() => copyKey(key)}>
+          Copy
+        </Button>
         <Button onClick={() => downloadKey(key)}>Download</Button>
       </div>
     </div>
@@ -61,7 +63,9 @@ const securityKeyDialog = (key) => {
   downloadKey();
 
   openReusableDialog(
-    <Text variant="s1" weight="medium">Security Key</Text>,
+    <Text variant="s1" weight="medium">
+      Security Key
+    </Text>,
     () => renderSecurityKey(),
   );
 };
@@ -111,7 +115,7 @@ function CrossSigningSetup() {
       errors.phrase = 'Phrase must contain 8-127 characters with no space.';
     }
     if (values.confirmPhrase.length > 0 && values.confirmPhrase !== values.phrase) {
-      errors.confirmPhrase = 'Phrase don\'t match.';
+      errors.confirmPhrase = "Phrase don't match.";
     }
     return errors;
   };
@@ -120,10 +124,14 @@ function CrossSigningSetup() {
     <div className="cross-signing__setup">
       <div className="cross-signing__setup-entry">
         <Text>
-          We will generate a <strong>Security Key</strong>,
-          which you can use to manage messages backup and session verification.
+          We will generate a <strong>Security Key</strong>, which you can use to manage messages
+          backup and session verification.
         </Text>
-        {genWithPhrase !== false && <Button variant="primary" onClick={() => setup()} disabled={genWithPhrase !== undefined}>Generate Key</Button>}
+        {genWithPhrase !== false && (
+          <Button variant="primary" onClick={() => setup()} disabled={genWithPhrase !== undefined}>
+            Generate Key
+          </Button>
+        )}
         {genWithPhrase === false && <Spinner size="small" />}
       </div>
       <Text className="cross-signing__setup-divider">OR</Text>
@@ -132,9 +140,7 @@ function CrossSigningSetup() {
         onSubmit={(values) => setup(values.phrase)}
         validate={validator}
       >
-        {({
-          values, errors, handleChange, handleSubmit,
-        }) => (
+        {({ values, errors, handleChange, handleSubmit }) => (
           <form
             className="cross-signing__setup-entry"
             onSubmit={handleSubmit}
@@ -142,8 +148,8 @@ function CrossSigningSetup() {
           >
             <Text>
               Alternatively you can also set a <strong>Security Phrase </strong>
-              so you don't have to remember long Security Key,
-              and optionally save the Key as backup.
+              so you don't have to remember long Security Key, and optionally save the Key as
+              backup.
             </Text>
             <div>
               <Input
@@ -156,7 +162,9 @@ function CrossSigningSetup() {
                 disabled={genWithPhrase !== undefined}
               />
             </div>
-            {errors.phrase && <div className="very-small text-gray cross-signing__error">{errors.phrase}</div>}
+            {errors.phrase && (
+              <div className="very-small text-gray cross-signing__error">{errors.phrase}</div>
+            )}
             <div>
               <Input
                 name="confirmPhrase"
@@ -168,8 +176,16 @@ function CrossSigningSetup() {
                 disabled={genWithPhrase !== undefined}
               />
             </div>
-            {errors.confirmPhrase && <div className="very-small text-gray cross-signing__error">{errors.confirmPhrase}</div>}
-            {genWithPhrase !== true && <Button variant="primary" type="submit" disabled={genWithPhrase !== undefined}>Set Phrase & Generate Key</Button>}
+            {errors.confirmPhrase && (
+              <div className="very-small text-gray cross-signing__error">
+                {errors.confirmPhrase}
+              </div>
+            )}
+            {genWithPhrase !== true && (
+              <Button variant="primary" type="submit" disabled={genWithPhrase !== undefined}>
+                Set Phrase & Generate Key
+              </Button>
+            )}
             {genWithPhrase === true && <Spinner size="small" />}
           </form>
         )}
@@ -180,7 +196,9 @@ function CrossSigningSetup() {
 
 const setupDialog = () => {
   openReusableDialog(
-    <Text variant="s1" weight="medium">Setup cross signing</Text>,
+    <Text variant="s1" weight="medium">
+      Setup cross signing
+    </Text>,
     () => <CrossSigningSetup />,
   );
 };
@@ -192,18 +210,22 @@ function CrossSigningReset() {
       <Text weight="medium">Resetting cross-signing keys is permanent.</Text>
       <Text>
         Anyone you have verified with will see security alerts and your message backup will be lost.
-        You almost certainly do not want to do this,
-        unless you have lost <strong>Security Key</strong> or <strong>Phrase</strong> and
-        every session you can cross-sign from.
+        You almost certainly do not want to do this, unless you have lost{' '}
+        <strong>Security Key</strong> or <strong>Phrase</strong> and every session you can
+        cross-sign from.
       </Text>
-      <Button variant="danger" onClick={setupDialog}>Reset</Button>
+      <Button variant="danger" onClick={setupDialog}>
+        Reset
+      </Button>
     </div>
   );
 }
 
 const resetDialog = () => {
   openReusableDialog(
-    <Text variant="s1" weight="medium">Reset cross signing</Text>,
+    <Text variant="s1" weight="medium">
+      Reset cross signing
+    </Text>,
     () => <CrossSigningReset />,
   );
 };
@@ -213,12 +235,23 @@ function CrossSignin() {
   return (
     <SettingTile
       title="Cross signing"
-      content={<div className="very-small text-gray">Setup to verify and keep track of all your sessions. Also required to backup encrypted message.</div>}
-      options={(
-        isCSEnabled
-          ? <Button className='my-2' variant="outline-danger" onClick={resetDialog}>Reset</Button>
-          : <Button className='my-2' variant="outline-primary" onClick={setupDialog}>Setup</Button>
-      )}
+      content={
+        <div className="very-small text-gray">
+          Setup to verify and keep track of all your sessions. Also required to backup encrypted
+          message.
+        </div>
+      }
+      options={
+        isCSEnabled ? (
+          <Button className="my-2" variant="outline-danger" onClick={resetDialog}>
+            Reset
+          </Button>
+        ) : (
+          <Button className="my-2" variant="outline-primary" onClick={setupDialog}>
+            Setup
+          </Button>
+        )
+      }
     />
   );
 }

@@ -101,7 +101,6 @@ function getVideoThumbnail(video, width, height, mimeType) {
 }
 
 class RoomsInput extends EventEmitter {
-
   constructor(mx, roomList) {
     super();
     this.matrixClient = mx;
@@ -281,8 +280,9 @@ class RoomsInput extends EventEmitter {
       const userLink = `<a href="https://matrix.to/#/${encodeURIComponent(
         reply.userId,
       )}">${sanitizeText(reply.userId)}</a>`;
-      const fallback = `<mx-reply><blockquote>${replyToLink}${userLink}<br />${reply.formattedBody || sanitizeText(reply.body)
-        }</blockquote></mx-reply>`;
+      const fallback = `<mx-reply><blockquote>${replyToLink}${userLink}<br />${
+        reply.formattedBody || sanitizeText(reply.body)
+      }</blockquote></mx-reply>`;
       content.formatted_body = fallback + content.formatted_body;
     }
 

@@ -5,33 +5,36 @@ import Modal from 'react-bootstrap/Modal';
 import { twemojifyReact } from '../../../util/twemojify';
 
 function Dialog({
-  className, isOpen, title, onAfterOpen, onAfterClose,
-  onRequestClose, children, invisibleScroll, bodyClass,
+  className,
+  isOpen,
+  title,
+  onAfterOpen,
+  onAfterClose,
+  onRequestClose,
+  children,
+  invisibleScroll,
+  bodyClass,
 }) {
-
   return (
     <Modal
       show={isOpen}
       onEntered={onAfterOpen}
       onHide={onRequestClose}
       onExited={onAfterClose}
-      dialogClassName={className === null ? 'modal-dialog-centered modal-dialog-scrollable' : `${className} modal-dialog-scrollable`}
+      dialogClassName={
+        className === null
+          ? 'modal-dialog-centered modal-dialog-scrollable'
+          : `${className} modal-dialog-scrollable`
+      }
     >
-      <Modal.Header className='noselect' closeButton>
-        <Modal.Title className='h5 emoji-size-fix'>
-          {
-            typeof title === 'string'
-              ? twemojifyReact(title)
-              : title
-          }
+      <Modal.Header className="noselect" closeButton>
+        <Modal.Title className="h5 emoji-size-fix">
+          {typeof title === 'string' ? twemojifyReact(title) : title}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body className={bodyClass}>
-        {children}
-      </Modal.Body>
+      <Modal.Body className={bodyClass}>{children}</Modal.Body>
     </Modal>
   );
-
 }
 
 Dialog.defaultProps = {

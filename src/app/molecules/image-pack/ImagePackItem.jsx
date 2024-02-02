@@ -11,23 +11,17 @@ import RawIcon from '../../atoms/system-icons/RawIcon';
 import IconButton from '../../atoms/button/IconButton';
 import ImagePackUsageSelector from './ImagePackUsageSelector';
 
-function ImagePackItem({
-  url, shortcode, usage, onUsageChange, onDelete, onRename,
-}) {
+function ImagePackItem({ url, shortcode, usage, onUsageChange, onDelete, onRename }) {
   const handleUsageSelect = (event) => {
-    openReusableContextMenu(
-      'bottom',
-      getEventCords(event, '.btn-link'),
-      (closeMenu) => (
-        <ImagePackUsageSelector
-          usage={usage}
-          onSelect={(newUsage) => {
-            onUsageChange(shortcode, newUsage);
-            closeMenu();
-          }}
-        />
-      ),
-    );
+    openReusableContextMenu('bottom', getEventCords(event, '.btn-link'), (closeMenu) => (
+      <ImagePackUsageSelector
+        usage={usage}
+        onSelect={(newUsage) => {
+          onUsageChange(shortcode, newUsage);
+          closeMenu();
+        }}
+      />
+    ));
   };
 
   return (
@@ -38,8 +32,22 @@ function ImagePackItem({
       </div>
       <div className="image-pack-item__usage">
         <div className="image-pack-item__btn">
-          {onRename && <IconButton tooltip="Rename" size="extra-small" fa="fa-solid fa-pencil" onClick={() => onRename(shortcode)} />}
-          {onDelete && <IconButton tooltip="Delete" size="extra-small" fa="fa-solid fa-trash-can" onClick={() => onDelete(shortcode)} />}
+          {onRename && (
+            <IconButton
+              tooltip="Rename"
+              size="extra-small"
+              fa="fa-solid fa-pencil"
+              onClick={() => onRename(shortcode)}
+            />
+          )}
+          {onDelete && (
+            <IconButton
+              tooltip="Delete"
+              size="extra-small"
+              fa="fa-solid fa-trash-can"
+              onClick={() => onDelete(shortcode)}
+            />
+          )}
         </div>
         <Button onClick={onUsageChange ? handleUsageSelect : undefined}>
           {onUsageChange && <RawIcon fa="fa-solid fa-check" size="extra-small" />}

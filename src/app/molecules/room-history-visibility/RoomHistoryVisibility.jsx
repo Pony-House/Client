@@ -14,33 +14,35 @@ const visibility = {
   JOINED: 'joined',
 };
 
-const items = [{
-  className: 'text-start',
-  text: 'Anyone (including guests)',
-  type: visibility.WORLD_READABLE,
-}, {
-  className: 'text-start',
-  text: 'Members (all messages)',
-  type: visibility.SHARED,
-}, {
-  className: 'text-start',
-  text: 'Members (messages after invite)',
-  type: visibility.INVITED,
-}, {
-  className: 'text-start',
-  text: 'Members (messages after join)',
-  type: visibility.JOINED,
-}];
+const items = [
+  {
+    className: 'text-start',
+    text: 'Anyone (including guests)',
+    type: visibility.WORLD_READABLE,
+  },
+  {
+    className: 'text-start',
+    text: 'Members (all messages)',
+    type: visibility.SHARED,
+  },
+  {
+    className: 'text-start',
+    text: 'Members (messages after invite)',
+    type: visibility.INVITED,
+  },
+  {
+    className: 'text-start',
+    text: 'Members (messages after join)',
+    type: visibility.JOINED,
+  },
+];
 
 function setHistoryVisibility(roomId, type) {
   const mx = initMatrix.matrixClient;
 
-  return mx.sendStateEvent(
-    roomId, 'm.room.history_visibility',
-    {
-      history_visibility: type,
-    },
-  );
+  return mx.sendStateEvent(roomId, 'm.room.history_visibility', {
+    history_visibility: type,
+  });
 }
 
 function useVisibility(roomId) {
@@ -52,11 +54,14 @@ function useVisibility(roomId) {
     setActiveType(room.getHistoryVisibility());
   }, [roomId]);
 
-  const setVisibility = useCallback((item) => {
-    if (item.type === activeType.type) return;
-    setActiveType(item.type);
-    setHistoryVisibility(roomId, item.type);
-  }, [activeType, roomId]);
+  const setVisibility = useCallback(
+    (item) => {
+      if (item.type === activeType.type) return;
+      setActiveType(item.type);
+      setHistoryVisibility(roomId, item.type);
+    },
+    [activeType, roomId],
+  );
 
   return [activeType, setVisibility];
 }
@@ -72,31 +77,30 @@ function RoomHistoryVisibility({ roomId }) {
 
   return (
     <>
+      {items.map((item) => {
+        const variant = `${item.className} ${activeType === item.type ? 'btn-text-success' : ''}`;
 
-      {
-        items.map((item) => {
+        return (
+          <MenuItem
+            className={variant}
+            variant="link btn-bg"
+            key={item.type}
+            iconSrc={item.iconSrc}
+            onClick={() => setVisibility(item)}
+            disabled={!canChange}
+          >
+            {item.text}
+            <span className="ms-4 float-end">
+              <RadioButton isActive={activeType === item.type} />
+            </span>
+          </MenuItem>
+        );
+      })}
 
-          const variant = `${item.className} ${activeType === item.type ? 'btn-text-success' : ''}`;
-
-          return (
-            <MenuItem
-              className={variant}
-              variant='link btn-bg'
-              key={item.type}
-              iconSrc={item.iconSrc}
-              onClick={() => setVisibility(item)}
-              disabled={(!canChange)}
-            >
-              {item.text}
-              <span className='ms-4 float-end'><RadioButton isActive={activeType === item.type} /></span>
-            </MenuItem >
-          );
-
-        })
-      }
-
-      <li className="list-group-item very-small text-gray">Changes to history visibility will only apply to future messages. The visibility of existing history will have no effect.</li>
-
+      <li className="list-group-item very-small text-gray">
+        Changes to history visibility will only apply to future messages. The visibility of existing
+        history will have no effect.
+      </li>
     </>
   );
 }

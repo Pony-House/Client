@@ -16,7 +16,6 @@ function EmojiBoardOpener() {
   const emojiBoardRef = useRef(null);
 
   function openEmojiBoard(roomId, cords, requestEmojiCallback, dom) {
-
     const opener = $(openerRef.current);
     $(emojiBoardRef.current).attr('board-type', dom);
 
@@ -30,12 +29,12 @@ function EmojiBoardOpener() {
     requestCallback = requestEmojiCallback;
 
     opener.trigger('click');
-    setTimeout(() => { $(scrollEmojisRef.current).trigger('scroll'); }, 500);
-
+    setTimeout(() => {
+      $(scrollEmojisRef.current).trigger('scroll');
+    }, 500);
   }
 
   function afterEmojiBoardToggle(isVisible) {
-
     isEmojiBoardVisible = isVisible;
 
     if (isVisible) {
@@ -45,7 +44,6 @@ function EmojiBoardOpener() {
         if (!isEmojiBoardVisible) requestCallback = null;
       }, 500);
     }
-
   }
 
   function addEmoji(emoji) {
@@ -61,10 +59,15 @@ function EmojiBoardOpener() {
 
   return (
     <ContextMenu
-      className='emoji-board-base'
-      content={(
-        <EmojiBoard onSelect={addEmoji} searchRef={searchRef} emojiBoardRef={emojiBoardRef} scrollEmojisRef={scrollEmojisRef} />
-      )}
+      className="emoji-board-base"
+      content={
+        <EmojiBoard
+          onSelect={addEmoji}
+          searchRef={searchRef}
+          emojiBoardRef={emojiBoardRef}
+          scrollEmojisRef={scrollEmojisRef}
+        />
+      }
       afterToggle={afterEmojiBoardToggle}
       render={(toggleMenu) => (
         <input

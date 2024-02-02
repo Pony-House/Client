@@ -7,9 +7,7 @@ import Button from '../button/Button';
 import ScrollView from '../scroll/ScrollView';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
-function ContextMenu({
-  content, placement, maxWidth, render, afterToggle, className
-}) {
+function ContextMenu({ content, placement, maxWidth, render, afterToggle, className }) {
   const [isVisible, setVisibility] = useState(false);
   const showMenu = () => setVisibility(true);
   const hideMenu = () => setVisibility(false);
@@ -24,7 +22,11 @@ function ContextMenu({
       className={`context-menu${className ? ` ${className}` : ''}`}
       visible={isVisible}
       onClickOutside={hideMenu}
-      content={<ScrollView invisible>{typeof content === 'function' ? content(hideMenu) : content}</ScrollView>}
+      content={
+        <ScrollView invisible>
+          {typeof content === 'function' ? content(hideMenu) : content}
+        </ScrollView>
+      }
       placement={placement}
       interactive
       arrow={false}
@@ -45,15 +47,9 @@ ContextMenu.defaultProps = {
 
 ContextMenu.propTypes = {
   className: PropTypes.string,
-  content: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.func,
-  ]).isRequired,
+  content: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
   placement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
-  maxWidth: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
+  maxWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   render: PropTypes.func.isRequired,
   afterToggle: PropTypes.func,
 };
@@ -70,10 +66,7 @@ MenuHeader.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-function MenuItem({
-  variant, iconSrc, faSrc, type,
-  onClick, children, disabled, className
-}) {
+function MenuItem({ variant, iconSrc, faSrc, type, onClick, children, disabled, className }) {
   return (
     <li className="list-group-item very-small text-gray w-100 p-0">
       <Button
@@ -116,6 +109,4 @@ function MenuBorder() {
   return <div style={{ borderBottom: '1px solid var(--bg-surface-border)' }}> </div>;
 }
 
-export {
-  ContextMenu as default, MenuHeader, MenuItem, MenuBorder,
-};
+export { ContextMenu as default, MenuHeader, MenuItem, MenuBorder };

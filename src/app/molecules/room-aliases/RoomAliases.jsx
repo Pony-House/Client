@@ -251,7 +251,9 @@ function RoomAliases({ roomId }) {
       return (
         <div className="room-aliases__item-btns">
           <Text variant="b2">
-            <span style={{ color: isError ? 'var(--tc-danger-high' : 'inherit' }}>{deleteAlias.msg}</span>
+            <span style={{ color: isError ? 'var(--tc-danger-high' : 'inherit' }}>
+              {deleteAlias.msg}
+            </span>
           </Text>
         </div>
       );
@@ -259,10 +261,24 @@ function RoomAliases({ roomId }) {
 
     return (
       <>
-        {canPublishAlias && !isMain && <Button className='m-2' onClick={() => handleSetMainAlias(alias)} variant="primary">Set as Main</Button>}
-        {!isPublished && canPublishAlias && <Button className='m-2' onClick={() => handlePublishAlias(alias)} variant="success">Publish</Button>}
-        {isPublished && canPublishAlias && <Button className='m-2' onClick={() => handleUnPublishAlias(alias)} variant="warning">Un-Publish</Button>}
-        <Button className='m-2' onClick={() => handleDeleteAlias(alias)} variant="danger">Delete</Button>
+        {canPublishAlias && !isMain && (
+          <Button className="m-2" onClick={() => handleSetMainAlias(alias)} variant="primary">
+            Set as Main
+          </Button>
+        )}
+        {!isPublished && canPublishAlias && (
+          <Button className="m-2" onClick={() => handlePublishAlias(alias)} variant="success">
+            Publish
+          </Button>
+        )}
+        {isPublished && canPublishAlias && (
+          <Button className="m-2" onClick={() => handleUnPublishAlias(alias)} variant="warning">
+            Un-Publish
+          </Button>
+        )}
+        <Button className="m-2" onClick={() => handleDeleteAlias(alias)} variant="danger">
+          Delete
+        </Button>
       </>
     );
   };
@@ -275,8 +291,13 @@ function RoomAliases({ roomId }) {
     return (
       <React.Fragment key={`${alias}-wrapper`}>
         <div className="room-aliases__alias-item" key={alias}>
-          <Checkbox variant="success" disabled={disabled} isActive={isActive} onToggle={() => handleAliasSelect(alias)} />
-          <div className='ms-3'>
+          <Checkbox
+            variant="success"
+            disabled={disabled}
+            isActive={isActive}
+            onToggle={() => handleAliasSelect(alias)}
+          />
+          <div className="ms-3">
             {alias}
             {isMain && <span>Main</span>}
           </div>
@@ -291,73 +312,91 @@ function RoomAliases({ roomId }) {
   if (validate.status === cons.status.SUCCESS) inputState = 'success';
   return (
     <>
-
       <SettingTile
         title="Publish to room directory"
-        content={<div className="very-small text-gray">{`Publish this ${room.isSpaceRoom() ? 'space' : 'room'} to the ${hsString}'s public room directory?`}</div>}
-        options={(
+        content={
+          <div className="very-small text-gray">{`Publish this ${room.isSpaceRoom() ? 'space' : 'room'} to the ${hsString}'s public room directory?`}</div>
+        }
+        options={
           <Toggle
-            className='d-inline-flex'
+            className="d-inline-flex"
             isActive={isPublic}
             onToggle={toggleDirectoryVisibility}
             disabled={!canPublishAlias}
           />
-        )}
+        }
       />
 
       <li className="list-group-item very-small text-gray">Published addresses</li>
 
       <li className="list-group-item very-small">
-        {(aliases.published.length === 0) && <Text className="room-aliases__message">No published addresses</Text>}
-        {(aliases.published.length > 0 && !aliases.main) && <Text className="room-aliases__message">No Main address (select one from below)</Text>}
+        {aliases.published.length === 0 && (
+          <Text className="room-aliases__message">No published addresses</Text>
+        )}
+        {aliases.published.length > 0 && !aliases.main && (
+          <Text className="room-aliases__message">No Main address (select one from below)</Text>
+        )}
         {aliases.published.map(renderAlias)}
         <Text className="room-aliases__message" variant="b3">
           {`Published addresses can be used by anyone on any server to join your ${room.isSpaceRoom() ? 'space' : 'room'}. To publish an address, it needs to be set as a local address first.`}
         </Text>
       </li>
 
-      {isLocalVisible && (<>
-        <li className="list-group-item very-small text-gray">Local addresses</li>
+      {isLocalVisible && (
+        <>
+          <li className="list-group-item very-small text-gray">Local addresses</li>
 
-        <li className="list-group-item very-small">
+          <li className="list-group-item very-small">
+            {aliases.local.length === 0 && (
+              <Text className="room-aliases__message">No local addresses</Text>
+            )}
+            {aliases.local.map(renderAlias)}
 
-          {(aliases.local.length === 0) && <Text className="room-aliases__message">No local addresses</Text>}
-          {aliases.local.map(renderAlias)}
+            <Text className="room-aliases__message" variant="b3">
+              {`Set local addresses for this ${room.isSpaceRoom() ? 'space' : 'room'} so users can find this ${room.isSpaceRoom() ? 'space' : 'room'} through your homeserver.`}
+            </Text>
 
-          <Text className="room-aliases__message" variant="b3">
-            {`Set local addresses for this ${room.isSpaceRoom() ? 'space' : 'room'} so users can find this ${room.isSpaceRoom() ? 'space' : 'room'} through your homeserver.`}
-          </Text>
-
-          <Text className="room-aliases__form-label" variant="b2">Add local address</Text>
-          <form className="room-aliases__form" onSubmit={handleAliasSubmit}>
-            <div className="room-aliases__input-wrapper">
-              <div>
-                <Input
-                  name="alias-input"
-                  state={inputState}
-                  onChange={handleAliasChange}
-                  placeholder={`my_${room.isSpaceRoom() ? 'space' : 'room'}_address`}
-                  required
-                />
+            <Text className="room-aliases__form-label" variant="b2">
+              Add local address
+            </Text>
+            <form className="room-aliases__form" onSubmit={handleAliasSubmit}>
+              <div className="room-aliases__input-wrapper">
+                <div>
+                  <Input
+                    name="alias-input"
+                    state={inputState}
+                    onChange={handleAliasChange}
+                    placeholder={`my_${room.isSpaceRoom() ? 'space' : 'room'}_address`}
+                    required
+                  />
+                </div>
               </div>
+              <Button variant="primary" type="submit">
+                Add
+              </Button>
+            </form>
+
+            <div className="room-aliases__input-status">
+              {validate.status === cons.status.SUCCESS && (
+                <Text className="room-aliases__valid" variant="b2">
+                  {validate.msg}
+                </Text>
+              )}
+              {validate.status === cons.status.ERROR && (
+                <Text className="room-aliases__invalid" variant="b2">
+                  {validate.msg}
+                </Text>
+              )}
             </div>
-            <Button variant="primary" type="submit">Add</Button>
-          </form>
-
-          <div className="room-aliases__input-status">
-            {validate.status === cons.status.SUCCESS && <Text className="room-aliases__valid" variant="b2">{validate.msg}</Text>}
-            {validate.status === cons.status.ERROR && <Text className="room-aliases__invalid" variant="b2">{validate.msg}</Text>}
-          </div>
-
-        </li>
-      </>)}
+          </li>
+        </>
+      )}
 
       <li className="list-group-item very-small">
         <Button onClick={() => setIsLocalVisible(!isLocalVisible)}>
           {`${isLocalVisible ? 'Hide' : 'Add / View'} local address`}
         </Button>
       </li>
-
     </>
   );
 }

@@ -27,7 +27,7 @@ function Home({ spaceId }) {
   let spaceIds = [];
   let roomIds = [];
   let directIds = [];
-  const roomSettings = { notSpace: (!spaceId) };
+  const roomSettings = { notSpace: !spaceId };
 
   if (spaceId) {
     const spaceChildIds = roomList.getSpaceChildren(spaceId) ?? [];
@@ -48,8 +48,10 @@ function Home({ spaceId }) {
     const selectorChanged = (selectedRoomId, prevSelectedRoomId) => {
       if (!drawerPostie.hasTopic('selector-change')) return;
       const addresses = [];
-      if (drawerPostie.hasSubscriber('selector-change', selectedRoomId)) addresses.push(selectedRoomId);
-      if (drawerPostie.hasSubscriber('selector-change', prevSelectedRoomId)) addresses.push(prevSelectedRoomId);
+      if (drawerPostie.hasSubscriber('selector-change', selectedRoomId))
+        addresses.push(selectedRoomId);
+      if (drawerPostie.hasSubscriber('selector-change', prevSelectedRoomId))
+        addresses.push(prevSelectedRoomId);
       if (addresses.length === 0) return;
       drawerPostie.post('selector-change', addresses, selectedRoomId);
     };
@@ -69,66 +71,85 @@ function Home({ spaceId }) {
       notifications.removeListener(cons.events.notifications.NOTI_CHANGED, notiChanged);
       notifications.removeListener(cons.events.notifications.MUTE_TOGGLED, notiChanged);
     };
-
   }, []);
 
   const room = mx.getRoom(spaceId);
 
   if (room) {
-    const roomIconCfg = getCurrentState(room).getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ?? {};
-    roomSettings.notSpace = (roomIconCfg.isActive === true);
+    const roomIconCfg =
+      getCurrentState(room).getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ?? {};
+    roomSettings.notSpace = roomIconCfg.isActive === true;
   }
 
   return (
     <>
       {!isCategorized && spaceIds.length !== 0 && (
-        <RoomsCategory notSpace={roomSettings.notSpace} type='home' name="Spaces" roomIds={spaceIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
+        <RoomsCategory
+          notSpace={roomSettings.notSpace}
+          type="home"
+          name="Spaces"
+          roomIds={spaceIds.sort(roomIdByAtoZ)}
+          drawerPostie={drawerPostie}
+        />
       )}
 
-      {
-
-        (
-          roomIds.length !== 0 && (
-            <RoomsCategory notSpace={roomSettings.notSpace} type='home' name="Rooms" roomIds={roomIds.sort(roomIdByAtoZ)} drawerPostie={drawerPostie} />
-          )
-        ) ||
-
-        (spaceIds.length < 1 &&
-          (
-            <center className='p-3 small text-warning'>
-              <div className='mb-3'>No rooms were found. Please enable some room.</div>
-              {spaceId && <Button variant='primary' onClick={() => { openSpaceManage(spaceId); }}>Manage rooms</Button>}
-            </center>
-          )
-        )
-
-      }
+      {(roomIds.length !== 0 && (
+        <RoomsCategory
+          notSpace={roomSettings.notSpace}
+          type="home"
+          name="Rooms"
+          roomIds={roomIds.sort(roomIdByAtoZ)}
+          drawerPostie={drawerPostie}
+        />
+      )) ||
+        (spaceIds.length < 1 && (
+          <center className="p-3 small text-warning">
+            <div className="mb-3">No rooms were found. Please enable some room.</div>
+            {spaceId && (
+              <Button
+                variant="primary"
+                onClick={() => {
+                  openSpaceManage(spaceId);
+                }}
+              >
+                Manage rooms
+              </Button>
+            )}
+          </center>
+        ))}
 
       {directIds.length !== 0 && (
-        <RoomsCategory notSpace={roomSettings.notSpace} type='home' name="People" roomIds={directIds.sort(roomIdByActivity)} drawerPostie={drawerPostie} />
+        <RoomsCategory
+          notSpace={roomSettings.notSpace}
+          type="home"
+          name="People"
+          roomIds={directIds.sort(roomIdByActivity)}
+          drawerPostie={drawerPostie}
+        />
       )}
 
-      {isCategorized && [...categories.keys()].sort(roomIdByAtoZ).map((catId) => {
-        const rms = [];
-        const dms = [];
-        categories.get(catId).forEach((id) => {
-          if (directs.has(id)) dms.push(id);
-          else rms.push(id);
-        });
-        rms.sort(roomIdByAtoZ);
-        dms.sort(roomIdByActivity);
-        return (
-          <RoomsCategory
-            type='home'
-            notSpace={roomSettings.notSpace}
-            key={catId}
-            spaceId={catId}
-            name={mx.getRoom(catId).name}
-            roomIds={rms.concat(dms)}
-            drawerPostie={drawerPostie}
-          />
-        );
-      })}
+      {isCategorized &&
+        [...categories.keys()].sort(roomIdByAtoZ).map((catId) => {
+          const rms = [];
+          const dms = [];
+          categories.get(catId).forEach((id) => {
+            if (directs.has(id)) dms.push(id);
+            else rms.push(id);
+          });
+          rms.sort(roomIdByAtoZ);
+          dms.sort(roomIdByActivity);
+          return (
+            <RoomsCategory
+              type="home"
+              notSpace={roomSettings.notSpace}
+              key={catId}
+              spaceId={catId}
+              name={mx.getRoom(catId).name}
+              roomIds={rms.concat(dms)}
+              drawerPostie={drawerPostie}
+            />
+          );
+        })}
     </>
   );
 }

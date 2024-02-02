@@ -7,10 +7,7 @@ import Avatar from '../../atoms/avatar/Avatar';
 import Spinner from '../../atoms/spinner/Spinner';
 import RawIcon from '../../atoms/system-icons/RawIcon';
 
-function ImageUpload({
-  text, bgColor, imageSrc, onUpload, onRequestRemove, className,
-  size,
-}) {
+function ImageUpload({ text, bgColor, imageSrc, onUpload, onRequestRemove, className, size }) {
   const [uploadPromise, setUploadPromise] = useState(null);
   const uploadImageRef = useRef(null);
 
@@ -46,19 +43,18 @@ function ImageUpload({
           uploadImageRef.current.click();
         }}
       >
-        <Avatar
-          imageSrc={imageSrc}
-          text={text}
-          bgColor={bgColor}
-          size={size}
-          isDefaultImage
-        />
-        <div className={`img-upload__process ${uploadPromise === null ? ' img-upload__process--stopped' : ''}`}>
-          {uploadPromise === null && (
-            size === 'large'
-              ? <div className="very-small text-gray"><strong>Upload</strong></div>
-              : <RawIcon fa="fa-solid fa-plus" color="white" />
-          )}
+        <Avatar imageSrc={imageSrc} text={text} bgColor={bgColor} size={size} isDefaultImage />
+        <div
+          className={`img-upload__process ${uploadPromise === null ? ' img-upload__process--stopped' : ''}`}
+        >
+          {uploadPromise === null &&
+            (size === 'large' ? (
+              <div className="very-small text-gray">
+                <strong>Upload</strong>
+              </div>
+            ) : (
+              <RawIcon fa="fa-solid fa-plus" color="white" />
+            ))}
           {uploadPromise !== null && <Spinner size="small" />}
         </div>
       </button>
@@ -71,7 +67,13 @@ function ImageUpload({
           <div className="very-small text-danger">{uploadPromise ? 'Cancel' : 'Remove'}</div>
         </button>
       )}
-      <input onChange={uploadImage} style={{ display: 'none' }} ref={uploadImageRef} type="file" accept="image/*" />
+      <input
+        onChange={uploadImage}
+        style={{ display: 'none' }}
+        ref={uploadImageRef}
+        type="file"
+        accept="image/*"
+      />
     </div>
   );
 }

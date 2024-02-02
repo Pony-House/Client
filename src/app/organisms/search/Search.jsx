@@ -60,18 +60,17 @@ function mapRoomIds(roomIds) {
     if (room.isSpaceRoom()) type = 'space';
     else if (directs.has(roomId)) type = 'direct';
 
-    return ({
+    return {
       type,
       name: room.name,
       parents,
       roomId,
       room,
-    });
+    };
   });
 }
 
 function Search() {
-
   const appearanceSettings = getAppearance();
   const [result, setResult] = useState(null);
   const [asyncSearch] = useState(new AsyncSearch());
@@ -171,14 +170,18 @@ function Search() {
 
   const noti = initMatrix.notifications;
   const renderRoomSelector = (item) => {
-
     let imageSrc = null;
     let imageAnimSrc = null;
     let iconSrc = null;
 
     if (item.type === 'direct') {
-      imageSrc = item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
-      imageAnimSrc = !appearanceSettings.enableAnimParams ? item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl) : getAnimatedImageUrl(item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
+      imageSrc =
+        item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
+      imageAnimSrc = !appearanceSettings.enableAnimParams
+        ? item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)
+        : getAnimatedImageUrl(
+            item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'),
+          ) || null;
     } else {
       iconSrc = joinRuleToIconSrc(item.room.getJoinRule(), item.type === 'space');
     }
@@ -199,7 +202,6 @@ function Search() {
         onClick={() => openItem(item.roomId, item.type)}
       />
     );
-
   };
 
   return (
@@ -212,17 +214,29 @@ function Search() {
       title="Search"
     >
       <div className="search-dialog">
-        <form className="search-dialog__input" onSubmit={(e) => { e.preventDefault(); openFirstResult(); }}>
+        <form
+          className="search-dialog__input"
+          onSubmit={(e) => {
+            e.preventDefault();
+            openFirstResult();
+          }}
+        >
           <RawIcon fa="fa-solid fa-magnifying-glass" size="small" />
           <div>
             <Input
-              className='w-100'
+              className="w-100"
               onChange={handleOnChange}
               forwardRef={searchRef}
               placeholder="Search"
             />
           </div>
-          <IconButton size="small" fa="fa-solid fa-xmark" type="reset" onClick={handleCross} tabIndex={-1} />
+          <IconButton
+            size="small"
+            fa="fa-solid fa-xmark"
+            type="reset"
+            onClick={handleCross}
+            tabIndex={-1}
+          />
         </form>
         <div className="search-dialog__content-wrapper">
           <ScrollView autoHide>
@@ -232,7 +246,9 @@ function Search() {
           </ScrollView>
         </div>
         <div className="search-dialog__footer">
-          <div className="very-small text-gray">Type # for rooms, @ for DMs and * for spaces. Hotkey: Ctrl + k</div>
+          <div className="very-small text-gray">
+            Type # for rooms, @ for DMs and * for spaces. Hotkey: Ctrl + k
+          </div>
         </div>
       </div>
     </Dialog>

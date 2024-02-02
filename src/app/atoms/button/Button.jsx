@@ -5,30 +5,27 @@ import RawIcon from '../system-icons/RawIcon';
 import { blurOnBubbling } from './script';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
-const Button = React.forwardRef(({
-  id, className, variant, iconSrc, faSrc,
-  type, onClick, children, disabled, size
-}, ref) => {
+const Button = React.forwardRef(
+  ({ id, className, variant, iconSrc, faSrc, type, onClick, children, disabled, size }, ref) => {
+    const iconClass = iconSrc === null ? '' : `btn-${variant}--icon`;
 
-  const iconClass = (iconSrc === null) ? '' : `btn-${variant}--icon`;
-
-  return (
-    <button
-      ref={ref}
-      id={id === '' ? undefined : id}
-      className={`btn ${className ? `${className} ` : ''}btn-${variant} btn-${size} ${iconClass} noselect`}
-      onMouseUp={(e) => blurOnBubbling(e, `.btn-${variant}`)}
-      onClick={onClick}
-      type={type}
-      disabled={disabled}
-    >
-      {iconSrc !== null && <RawIcon size="small" className='me-2' src={iconSrc} />}
-      {faSrc !== null && <RawIcon size="small" className='me-2' fa={faSrc} />}
-      {children}
-    </button>
-  );
-
-});
+    return (
+      <button
+        ref={ref}
+        id={id === '' ? undefined : id}
+        className={`btn ${className ? `${className} ` : ''}btn-${variant} btn-${size} ${iconClass} noselect`}
+        onMouseUp={(e) => blurOnBubbling(e, `.btn-${variant}`)}
+        onClick={onClick}
+        type={type}
+        disabled={disabled}
+      >
+        {iconSrc !== null && <RawIcon size="small" className="me-2" src={iconSrc} />}
+        {faSrc !== null && <RawIcon size="small" className="me-2" fa={faSrc} />}
+        {children}
+      </button>
+    );
+  },
+);
 
 Button.defaultProps = {
   id: '',

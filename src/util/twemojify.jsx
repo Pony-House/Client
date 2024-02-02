@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 
-import * as linkify from "linkifyjs";
+import * as linkify from 'linkifyjs';
 import linkifyHtml from 'linkify-html';
 import Linkify from 'linkify-react';
 
@@ -47,21 +47,20 @@ linkify.registerCustomProtocol('lbry');
 const tinywords = [];
 const tinywordsDB = {};
 for (const item in keywords) {
-
   if (typeof keywords[item].name === 'string') {
     tinywords.push(keywords[item].name);
     tinywordsDB[keywords[item].name] = { href: keywords[item].href, title: keywords[item].title };
-  }
-
-  else if (Array.isArray(keywords[item].name) && keywords[item].name.length > 0) {
+  } else if (Array.isArray(keywords[item].name) && keywords[item].name.length > 0) {
     for (const item2 in keywords[item].name) {
       if (typeof keywords[item].name[item2] === 'string') {
         tinywords.push(keywords[item].name[item2]);
-        tinywordsDB[keywords[item].name[item2]] = { href: keywords[item].href, title: keywords[item].title };
-      };
+        tinywordsDB[keywords[item].name[item2]] = {
+          href: keywords[item].href,
+          title: keywords[item].title,
+        };
+      }
     }
   }
-
 }
 
 linkifyRegisterKeywords(tinywords);
@@ -74,7 +73,7 @@ global.String.prototype.toUnicode = function () {
   let result = '';
   for (let i = 0; i < this.length; i++) {
     // Assumption: all characters are < 0xffff
-    result += `\\u${(`000${this[i].charCodeAt(0).toString(16)}`).substring(-4)}`;
+    result += `\\u${`000${this[i].charCodeAt(0).toString(16)}`.substring(-4)}`;
   }
   return result;
 };
@@ -105,60 +104,58 @@ const mathOptions = {
 };
 
 const tinyRender = {
+  html:
+    (type) =>
+    ({ attributes, content }) => {
+      if (tinyLinkifyFixer(type, content)) {
+        let tinyAttr = '';
+        for (const attr in attributes) {
+          tinyAttr += ` ${attr}${attributes[attr].length > 0 ? `=${attributes[attr]}` : ''}`;
+        }
 
-  html: type => ({ attributes, content }) => {
+        if (type === 'keyword') {
+          tinyAttr += ' iskeyword="true"';
+        } else {
+          tinyAttr += ' iskeyword="false"';
+        }
 
-    if (tinyLinkifyFixer(type, content)) {
-
-      let tinyAttr = '';
-      for (const attr in attributes) {
-        tinyAttr += ` ${attr}${attributes[attr].length > 0 ? `=${attributes[attr]}` : ''}`;
+        const db = tinywordsDB[content.toLowerCase()];
+        return `<a${tinyAttr} title="${db?.title}">${content}</a>`;
       }
 
-      if (type === 'keyword') {
-        tinyAttr += ' iskeyword="true"';
-      } else {
-        tinyAttr += ' iskeyword="false"';
+      return content;
+    },
+
+  react:
+    (type) =>
+    ({ attributes, content }) => {
+      if (tinyLinkifyFixer(type, content)) {
+        const { href, ...props } = attributes;
+        const db = tinywordsDB[content.toLowerCase()];
+        const result = (
+          <a
+            href={href}
+            onClick={(e) => {
+              e.preventDefault();
+              openTinyURL($(e.target).attr('href'), $(e.target).attr('href'));
+              return false;
+            }}
+            {...props}
+            iskeyword={type === 'keyword' ? 'true' : 'false'}
+            className="lk-href"
+          >
+            {content}
+          </a>
+        );
+
+        return db?.title ? <Tooltip content={<small>{db.title}</small>}>{result}</Tooltip> : result;
       }
 
-      const db = tinywordsDB[content.toLowerCase()];
-      return `<a${tinyAttr} title="${db?.title}">${content}</a>`;
-
-    }
-
-    return content;
-
-  },
-
-  react: type => ({ attributes, content }) => {
-
-    if (tinyLinkifyFixer(type, content)) {
-
-      const { href, ...props } = attributes;
-      const db = tinywordsDB[content.toLowerCase()];
-      const result = <a
-        href={href}
-        onClick={(e) => {
-          e.preventDefault();
-          openTinyURL($(e.target).attr('href'), $(e.target).attr('href')); return false;
-        }} {...props}
-        iskeyword={type === 'keyword' ? 'true' : 'false'}
-        className='lk-href'>
-        {content}
-      </a>;
-
-      return db?.title ? <Tooltip content={<small>{db.title}</small>} >{result}</Tooltip> : result;
-
-    }
-
-    return <span>{content}</span>;
-
-  }
-
+      return <span>{content}</span>;
+    },
 };
 
 tinyRender.list = {
-
   react: {
     url: tinyRender.react('url'),
     mail: tinyRender.react('mail'),
@@ -171,8 +168,7 @@ tinyRender.list = {
     mail: tinyRender.html('mail'),
     email: tinyRender.html('email'),
     keyword: tinyRender.html('keyword'),
-  }
-
+  },
 };
 
 /**
@@ -184,7 +180,6 @@ tinyRender.list = {
  * @returns React component
  */
 const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) => {
-
   // Not String
   if (typeof text !== 'string') return text;
 
@@ -205,61 +200,64 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
 
   // Linkify Options
   const linkifyOptions = {
-
     defaultProtocol: 'https',
 
     formatHref: {
       keyword: (keyword) => {
         const tinyword = keyword.toLowerCase();
-        if (tinywordsDB[tinyword] && typeof tinywordsDB[tinyword].href === 'string') return tinywordsDB[tinyword].href;
+        if (tinywordsDB[tinyword] && typeof tinywordsDB[tinyword].href === 'string')
+          return tinywordsDB[tinyword].href;
       },
     },
 
     rel: 'noreferrer noopener',
     target: '_blank',
-
   };
 
   // React Mode
   if (isReact) {
-
     // Insert Linkify
     if (linkifyEnabled) {
-
       // Render Data
       linkifyOptions.render = tinyRender.list.react;
-      return <span className='linkify-base'><Linkify options={linkifyOptions}>{parse(msgContent, maths ? mathOptions : null)}</Linkify></span>;
-
+      return (
+        <span className="linkify-base">
+          <Linkify options={linkifyOptions}>
+            {parse(msgContent, maths ? mathOptions : null)}
+          </Linkify>
+        </span>
+      );
     }
 
     // Complete
-    return <span className='linkify-base'>{parse(msgContent, maths ? mathOptions : null)}</span>;
-
+    return <span className="linkify-base">{parse(msgContent, maths ? mathOptions : null)}</span>;
   }
 
   // jQuery Mode
 
   // Insert Linkify
   if (linkifyEnabled) {
-
     // Render Data
     linkifyOptions.render = tinyRender.list.html;
     linkifyOptions.className = 'lk-href';
 
     // Insert Render
     msgContent = linkifyHtml(msgContent, linkifyOptions);
-
   }
 
   // Final Result
   msgContent = $('<span>', { class: 'linkify-base' }).html(msgContent);
   const tinyUrls = msgContent.find('.lk-href');
-  tinyUrls.on('click', event => { const e = event.originalEvent; e.preventDefault(); openTinyURL($(e.target).attr('href'), $(e.target).attr('href')); return false; });
+  tinyUrls.on('click', (event) => {
+    const e = event.originalEvent;
+    e.preventDefault();
+    openTinyURL($(e.target).attr('href'), $(e.target).attr('href'));
+    return false;
+  });
   tinyUrls.each(() => $(this).attr('title') && $(this).tooltip());
 
   // Complete
   return msgContent;
-
 };
 
 // Functions
@@ -269,14 +267,13 @@ export function twemojify(text, opts, linkifyEnabled = false, sanitize = true) {
 
 export function twemojifyReact(text, opts, linkifyEnabled = false, sanitize = true, maths = false) {
   return twemojifyAction(text, opts, linkifyEnabled, sanitize, maths, true);
-};
+}
 
 const unicodeEmojiFix = (text) => {
-
   let code = text.toLowerCase();
 
   // Fix for "copyright" and "trademark" emojis
-  if (code.substring(0, 2) === "00") {
+  if (code.substring(0, 2) === '00') {
     code = code.substring(2);
 
     // Fix for keycap emojis
@@ -285,13 +282,12 @@ const unicodeEmojiFix = (text) => {
   }
 
   // Fix for "Eye in Speech Bubble" emoji
-  if (code.includes("1f441")) {
+  if (code.includes('1f441')) {
     const regex = /-fe0f/gi;
     code = code.replace(regex, '');
   }
 
   return code;
-
 };
 
 export function twemojifyIcon(text, format = 'png', size = 72) {

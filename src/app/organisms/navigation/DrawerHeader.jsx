@@ -6,8 +6,13 @@ import { twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import {
-  openPublicRooms, openCreateRoom, openSpaceManage, openJoinAlias,
-  openSpaceAddExisting, openInviteUser, openReusableContextMenu,
+  openPublicRooms,
+  openCreateRoom,
+  openSpaceManage,
+  openJoinAlias,
+  openSpaceAddExisting,
+  openInviteUser,
+  openReusableContextMenu,
 } from '../../../client/action/navigation';
 import { getEventCords } from '../../../util/common';
 
@@ -36,7 +41,10 @@ export function HomeSpaceOptions({ spaceId, afterOptionSelect }) {
       <MenuItem
         className="text-start"
         iconSrc={SpacePlusIC}
-        onClick={() => { afterOptionSelect(); openCreateRoom(true, spaceId); }}
+        onClick={() => {
+          afterOptionSelect();
+          openCreateRoom(true, spaceId);
+        }}
         disabled={!canManage}
       >
         Create new space
@@ -44,7 +52,10 @@ export function HomeSpaceOptions({ spaceId, afterOptionSelect }) {
       <MenuItem
         className="text-start"
         iconSrc={HashPlusIC}
-        onClick={() => { afterOptionSelect(); openCreateRoom(false, spaceId); }}
+        onClick={() => {
+          afterOptionSelect();
+          openCreateRoom(false, spaceId);
+        }}
         disabled={!canManage}
       >
         Create new room
@@ -53,7 +64,10 @@ export function HomeSpaceOptions({ spaceId, afterOptionSelect }) {
         <MenuItem
           className="text-start"
           iconSrc={HashGlobeIC}
-          onClick={() => { afterOptionSelect(); openPublicRooms(); }}
+          onClick={() => {
+            afterOptionSelect();
+            openPublicRooms();
+          }}
         >
           Explore public rooms
         </MenuItem>
@@ -62,7 +76,10 @@ export function HomeSpaceOptions({ spaceId, afterOptionSelect }) {
         <MenuItem
           className="text-start"
           faSrc="fa-solid fa-plus"
-          onClick={() => { afterOptionSelect(); openJoinAlias(); }}
+          onClick={() => {
+            afterOptionSelect();
+            openJoinAlias();
+          }}
         >
           Join with address
         </MenuItem>
@@ -71,7 +88,10 @@ export function HomeSpaceOptions({ spaceId, afterOptionSelect }) {
         <MenuItem
           className="text-start"
           faSrc="fa-solid fa-plus"
-          onClick={() => { afterOptionSelect(); openSpaceAddExisting(spaceId); }}
+          onClick={() => {
+            afterOptionSelect();
+            openSpaceAddExisting(spaceId);
+          }}
           disabled={!canManage}
         >
           Add existing
@@ -80,7 +100,10 @@ export function HomeSpaceOptions({ spaceId, afterOptionSelect }) {
       {spaceId && (
         <MenuItem
           className="text-start"
-          onClick={() => { afterOptionSelect(); openSpaceManage(spaceId); }}
+          onClick={() => {
+            afterOptionSelect();
+            openSpaceManage(spaceId);
+          }}
           iconSrc={HashSearchIC}
         >
           Manage rooms
@@ -98,58 +121,65 @@ HomeSpaceOptions.propTypes = {
 };
 
 function DrawerHeader({ selectedTab, spaceId, room, banner }) {
-
   const tabName = selectedTab !== cons.tabs.DIRECTS ? 'Home' : 'Direct messages';
 
   const isDMTab = selectedTab === cons.tabs.DIRECTS;
 
-  const spaceName = isDMTab ? null : (room?.name || null);
+  const spaceName = isDMTab ? null : room?.name || null;
 
   const openSpaceOptions = (e) => {
     e.preventDefault();
-    openReusableContextMenu(
-      'bottom',
-      getEventCords(e, '.header'),
-      (closeMenu) => <SpaceOptions roomId={spaceId} afterOptionSelect={closeMenu} />,
-    );
+    openReusableContextMenu('bottom', getEventCords(e, '.header'), (closeMenu) => (
+      <SpaceOptions roomId={spaceId} afterOptionSelect={closeMenu} />
+    ));
   };
 
   const openHomeSpaceOptions = (e) => {
     e.preventDefault();
-    openReusableContextMenu(
-      'right',
-      getEventCords(e, '.ic-btn'),
-      (closeMenu) => <HomeSpaceOptions spaceId={spaceId} afterOptionSelect={closeMenu} />,
-    );
+    openReusableContextMenu('right', getEventCords(e, '.ic-btn'), (closeMenu) => (
+      <HomeSpaceOptions spaceId={spaceId} afterOptionSelect={closeMenu} />
+    ));
   };
 
   return (
     <Header banner={banner}>
-
-      <ul className='navbar-nav mr-auto w-100 space-menu-1'>
-
+      <ul className="navbar-nav mr-auto w-100 space-menu-1">
         {spaceName ? (
           <button
             className="nav-link btn btn-bg border-0 p-1 text-truncate d-inline-block space-title"
             onClick={openSpaceOptions}
             type="button"
           >
-            <strong className='me-2'>{twemojifyReact(spaceName)}</strong>
+            <strong className="me-2">{twemojifyReact(spaceName)}</strong>
             <RawIcon size="small" fa="fa-solid fa-chevron-down" />
           </button>
         ) : (
-          <strong className='p-1'>{tabName}</strong>
+          <strong className="p-1">{tabName}</strong>
         )}
-
       </ul>
 
-      <ul className='navbar-nav ms-auto mt-0 mt-md-1 small space-menu-2'>
-
-        {isDMTab && <IconButton className='nav-link' onClick={() => openInviteUser()} tooltipPlacement='bottom' tooltip="Start DM" fa="fa-solid fa-plus" size="small" />}
-        {!isDMTab && <IconButton className='nav-link' onClick={openHomeSpaceOptions} tooltipPlacement='bottom' tooltip="Add rooms/spaces" fa="fa-solid fa-plus" size="small" />}
-
-      </ul >
-
+      <ul className="navbar-nav ms-auto mt-0 mt-md-1 small space-menu-2">
+        {isDMTab && (
+          <IconButton
+            className="nav-link"
+            onClick={() => openInviteUser()}
+            tooltipPlacement="bottom"
+            tooltip="Start DM"
+            fa="fa-solid fa-plus"
+            size="small"
+          />
+        )}
+        {!isDMTab && (
+          <IconButton
+            className="nav-link"
+            onClick={openHomeSpaceOptions}
+            tooltipPlacement="bottom"
+            tooltip="Add rooms/spaces"
+            fa="fa-solid fa-plus"
+            size="small"
+          />
+        )}
+      </ul>
     </Header>
   );
 }

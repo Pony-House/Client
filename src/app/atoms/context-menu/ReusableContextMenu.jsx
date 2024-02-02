@@ -16,34 +16,32 @@ function ReusableContextMenu() {
   };
 
   useEffect(() => {
-
     const opener = $(openerRef.current);
 
     if (data) {
-
       const { cords } = data;
 
       opener.css({
         transform: `translate(${cords.x}px, ${cords.y}px)`,
         width: `${cords.width}px`,
-        height: `${cords.height}px`
+        height: `${cords.height}px`,
       });
 
       opener.trigger('click');
-
     }
 
     const handleContextMenuOpen = (placement, cords, render, afterClose) => {
-
       if (key) {
         closeMenu();
         return;
       }
 
       setData({
-        placement, cords, render, afterClose,
+        placement,
+        cords,
+        render,
+        afterClose,
       });
-
     };
 
     navigation.on(cons.events.navigation.REUSABLE_CONTEXT_MENU_OPENED, handleContextMenuOpen);
@@ -53,7 +51,6 @@ function ReusableContextMenu() {
         handleContextMenuOpen,
       );
     };
-
   }, [data]);
 
   const handleAfterToggle = (isVisible) => {

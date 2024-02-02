@@ -1,5 +1,5 @@
-import { convertIpfsGateway } from "./ipfs";
+import { convertIpfsGateway } from './ipfs';
 
 export default function convertProtocols(tinyUrl, vanillaUrl) {
-    return convertIpfsGateway(tinyUrl, vanillaUrl);
-};
+  return convertIpfsGateway(tinyUrl, vanillaUrl);
+}

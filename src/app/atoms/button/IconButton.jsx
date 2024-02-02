@@ -5,55 +5,66 @@ import RawIcon from '../system-icons/RawIcon';
 import Tooltip from '../tooltip/Tooltip';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
-const IconButton = React.forwardRef(({
-  variant, size, type, fa,
-  tooltip, tooltipPlacement, src,
-  onClick, tabIndex, disabled, isImage,
-  className, customColor,
-  style, children, id
-}, ref) => {
-
-  let textColor = variant;
-  if (typeof customColor === 'string') {
-    if (customColor !== 'null') {
-      textColor = customColor;
-    } else {
-      textColor = '';
+const IconButton = React.forwardRef(
+  (
+    {
+      variant,
+      size,
+      type,
+      fa,
+      tooltip,
+      tooltipPlacement,
+      src,
+      onClick,
+      tabIndex,
+      disabled,
+      isImage,
+      className,
+      customColor,
+      style,
+      children,
+      id,
+    },
+    ref,
+  ) => {
+    let textColor = variant;
+    if (typeof customColor === 'string') {
+      if (customColor !== 'null') {
+        textColor = customColor;
+      } else {
+        textColor = '';
+      }
     }
-  }
 
-  if (textColor) {
-    textColor = `btn-text-${textColor}`;
-  }
+    if (textColor) {
+      textColor = `btn-text-${textColor}`;
+    }
 
-  const btn = (
-    <button
-      id={id}
-      style={style}
-      ref={ref}
-      className={`btn ic-btn ic-btn-${variant} btn-link btn-bg ${textColor} ${className}`}
-      onClick={onClick}
-      type={type}
-      tabIndex={tabIndex}
-      disabled={disabled}
-    >
-      <RawIcon fa={fa} size={size} src={src} isImage={isImage} />
-      {children}
-    </button>
-  );
+    const btn = (
+      <button
+        id={id}
+        style={style}
+        ref={ref}
+        className={`btn ic-btn ic-btn-${variant} btn-link btn-bg ${textColor} ${className}`}
+        onClick={onClick}
+        type={type}
+        tabIndex={tabIndex}
+        disabled={disabled}
+      >
+        <RawIcon fa={fa} size={size} src={src} isImage={isImage} />
+        {children}
+      </button>
+    );
 
-  if (typeof tooltip === 'undefined') return btn;
+    if (typeof tooltip === 'undefined') return btn;
 
-  return (
-    <Tooltip
-      placement={tooltipPlacement}
-      content={<small>{tooltip}</small>}
-    >
-      {btn}
-    </Tooltip>
-  );
-
-});
+    return (
+      <Tooltip placement={tooltipPlacement} content={<small>{tooltip}</small>}>
+        {btn}
+      </Tooltip>
+    );
+  },
+);
 
 IconButton.defaultProps = {
   id: null,

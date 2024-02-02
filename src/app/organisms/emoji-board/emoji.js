@@ -4,11 +4,11 @@ const defaultEmojis = [];
 installEmojis(defaultEmojis);
 const emojis = [];
 
-const addEmojiToList = data => {
+const addEmojiToList = (data) => {
   emojis.push(data);
 };
 
-const removeEmojiFromList = data => {
+const removeEmojiFromList = (data) => {
   const index = emojis.indexOf(data);
   if (index > -1) {
     emojis.splice(index, 1);
@@ -22,8 +22,8 @@ const resetEmojisList = () => {
 };
 
 const addDefaultEmojisToList = (favEmojis = []) => {
-  defaultEmojis.map(emoji => {
-    emoji.isFav = (favEmojis.findIndex(u => u.unicode === emoji.unicode) > -1);
+  defaultEmojis.map((emoji) => {
+    emoji.isFav = favEmojis.findIndex((u) => u.unicode === emoji.unicode) > -1;
     emojis.push(emoji);
     return emoji;
   });
@@ -31,11 +31,11 @@ const addDefaultEmojisToList = (favEmojis = []) => {
 
 const stickers = [];
 
-const addStickerToList = data => {
+const addStickerToList = (data) => {
   stickers.push(data);
 };
 
-const removeStickerFromList = data => {
+const removeStickerFromList = (data) => {
   const index = stickers.indexOf(data);
   if (index > -1) {
     stickers.splice(index, 1);
@@ -49,7 +49,14 @@ const resetStickersList = () => {
 };
 
 export {
-  emojis, stickers, defaultEmojis,
-  addEmojiToList, removeEmojiFromList, resetEmojisList, addDefaultEmojisToList,
-  addStickerToList, removeStickerFromList, resetStickersList,
+  emojis,
+  stickers,
+  defaultEmojis,
+  addEmojiToList,
+  removeEmojiFromList,
+  resetEmojisList,
+  addDefaultEmojisToList,
+  addStickerToList,
+  removeStickerFromList,
+  resetStickersList,
 };
