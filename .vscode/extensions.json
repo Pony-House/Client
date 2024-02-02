@@ -1,3 +1,13 @@
 {
-  "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "mrmlnc.vscode-json5"]
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "mrmlnc.vscode-json5",
+    "bilelmoussaoui.flatpak-vscode",
+    "ionic.ionic",
+    "xabikos.javascriptsnippets",
+    "naumovs.color-highlight",
+    "bierner.markdown-preview-github-styles",
+    "sasa.vscode-sass-format"
+  ]
 }
