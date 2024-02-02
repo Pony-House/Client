@@ -4,22 +4,14 @@
   "description": "The open source house, your house, the house for all matrix ponies.",
   "dir": "auto",
   "lang": "en-US",
-  "display_override": [
-    "window-control-overlay",
-    "minimal-ui"
-  ],
+  "display_override": ["window-control-overlay", "minimal-ui"],
   "display": "standalone",
   "orientation": "portrait",
   "start_url": "/",
   "scope": "/",
   "background_color": "#212121",
   "theme_color": "#212121",
-  "categories": [
-    "matrix",
-    "matrix-client",
-    "social",
-    "chat"
-  ],
+  "categories": ["matrix", "matrix-client", "social", "chat"],
   "screenshots": [
     {
       "src": "/img/manifest/screenshot1.jpg",
