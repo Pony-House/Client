@@ -96,7 +96,7 @@ class ThreadsList {
 }
 
 export default ThreadsList;
-export function openThreadsMessageModal(/* room */) { }
+export function openThreadsMessageModal(/* room */) {}
 
 if (__ENV_APP__.MODE === 'development') {
   global.matrixThreads = {
