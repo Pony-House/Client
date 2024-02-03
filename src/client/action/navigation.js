@@ -5,24 +5,16 @@ import cons from '../state/cons';
 import urlParams from '../../util/libs/urlParams';
 
 export function selectTab(tabId, isSpace) {
-
-  if (typeof tabId === 'string' && tabId.length > 0) urlParams.set('tab', tabId);
-  else urlParams.delete('tab');
-
   if (isSpace) {
     setSelectSpace(tabId);
   } else {
     setSelectSpace(null);
   }
-
-  urlParams.delete('room_id');
-  urlParams.delete('event_id');
-  urlParams.delete('thread_id');
-
   $('.space-drawer-menu-item').removeClass('active');
   appDispatcher.dispatch({
     type: cons.actions.navigation.SELECT_TAB,
     tabId,
+    isSpace,
   });
 }
 
@@ -36,11 +28,6 @@ export function selectRoomMode(roomType) {
 }
 
 export function selectSpace(roomId) {
-  if (typeof roomId === 'string' && roomId.length > 0) urlParams.set('space_id', roomId);
-  else urlParams.delete('space_id');
-  urlParams.delete('room_id');
-  urlParams.delete('event_id');
-  urlParams.delete('thread_id');
   $('.space-drawer-menu-item').removeClass('active');
   setSelectSpace(roomId);
   appDispatcher.dispatch({
@@ -50,18 +37,6 @@ export function selectSpace(roomId) {
 }
 
 export function selectRoom(roomId, eventId, threadId, forceScroll = false) {
-
-  // Room Id
-  if (typeof roomId === 'string' && roomId.length > 0) urlParams.set('room_id', roomId);
-  else urlParams.delete('room_id');
-
-  // Event Id
-  if (typeof eventId === 'string' && eventId.length > 0) urlParams.set('event_id', eventId);
-  else urlParams.delete('event_id');
-
-  // Thread Id
-  if (typeof threadId === 'string' && threadId.length > 0) urlParams.set('thread_id', threadId);
-  else urlParams.delete('thread_id');
 
   $('.space-drawer-menu-item').removeClass('active');
   setSelectRoom(roomId);

@@ -2,6 +2,7 @@ import EventEmitter from 'events';
 import appDispatcher from '../dispatcher';
 import cons from './cons';
 import tinyAPI from '../../util/mods';
+import urlParams from '@src/util/libs/urlParams';
 
 class Navigation extends EventEmitter {
   constructor() {
@@ -132,6 +133,19 @@ class Navigation extends EventEmitter {
       threadId,
       forceScroll,
     );
+
+    // Room Id
+    if (typeof roomId === 'string' && roomId.length > 0) urlParams.set('room_id', roomId);
+    else urlParams.delete('room_id');
+
+    // Event Id
+    if (typeof eventId === 'string' && eventId.length > 0) urlParams.set('event_id', eventId);
+    else urlParams.delete('event_id');
+
+    // Thread Id
+    if (typeof threadId === 'string' && threadId.length > 0) urlParams.set('thread_id', threadId);
+    else urlParams.delete('thread_id');
+
   }
 
   _selectTabWithRoom(roomId) {
@@ -239,6 +253,12 @@ class Navigation extends EventEmitter {
 
     tinyAPI.emit('spaceSelected', this.selectedSpaceId);
     this.emit(cons.events.navigation.SPACE_SELECTED, this.selectedSpaceId);
+
+    if (typeof roomId === 'string' && roomId.length > 0) urlParams.set('space_id', roomId);
+    else urlParams.delete('space_id');
+    urlParams.delete('room_id');
+    urlParams.delete('event_id');
+    urlParams.delete('thread_id');
   }
 
   _selectRoomWithSpace(spaceId) {
@@ -332,6 +352,13 @@ class Navigation extends EventEmitter {
   navigate(action) {
     const actions = {
       [cons.actions.navigation.SELECT_TAB]: () => {
+
+        if (action.isSpace) {
+          urlParams.delete('room_id');
+          urlParams.delete('event_id');
+          urlParams.delete('thread_id');
+        }
+
         const roomId =
           action.tabId !== cons.tabs.HOME && action.tabId !== cons.tabs.DIRECTS
             ? action.tabId
@@ -341,6 +368,10 @@ class Navigation extends EventEmitter {
         this._selectSpace(roomId, true);
         this._selectTab(action.tabId);
         setTimeout(() => tinyAPI.emit('selectTabAfter', { roomId, tabId: action.tabId }), 100);
+
+        if (typeof action.tabId === 'string' && action.tabId.length > 0) urlParams.set('tab', action.tabId);
+        else urlParams.delete('tab');
+
       },
 
       [cons.actions.navigation.UPDATE_EMOJI_LIST]: () => {
