@@ -12,8 +12,8 @@ const __dirname = path.dirname(__filename);
 
 // Twemoji
 const twemoji = {};
-twemoji.srcRep = path.join(__dirname, '../repositories/twemoji');
-twemoji.srcDir = path.join(__dirname, '../repositories/twemoji/assets');
+twemoji.srcRep = path.join(__dirname, '../vendor/twemoji');
+twemoji.srcDir = path.join(__dirname, '../vendor/twemoji/assets');
 twemoji.destDir = path.join(__dirname, '../public/img/twemoji');
 
 // Git Build
@@ -67,7 +67,7 @@ try {
     console.log(`[deps] Component installation has started!`);
 
     // Twemoji
-    console.log(`[twemoji] Installing twemoji repository into the repositories folder...`);
+    console.log(`[twemoji] Installing twemoji repository into the vendor folder...`);
     download('direct:https://github.com/twitter/twemoji/archive/refs/tags/v14.0.2.zip', twemoji.srcRep, (err2) => {
         if (err2) {
             console.error(err2);

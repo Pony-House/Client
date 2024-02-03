@@ -28,7 +28,7 @@ function JoinAliasContent({ term, requestClose }) {
   const openRoom = (roomId) => {
     const room = mx.getRoom(roomId);
     if (!room) return;
-    if (room.isSpaceRoom()) selectTab(roomId);
+    if (room.isSpaceRoom()) selectTab(roomId, true);
     else {
       selectRoomMode('room');
       selectRoom(roomId);

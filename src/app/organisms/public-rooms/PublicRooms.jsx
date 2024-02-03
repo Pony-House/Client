@@ -204,7 +204,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
 
   function handleViewRoom(roomId) {
     const room = initMatrix.matrixClient.getRoom(roomId);
-    if (room.isSpaceRoom()) selectTab(roomId);
+    if (room.isSpaceRoom()) selectTab(roomId, true);
     else {
       selectRoomMode('room');
       selectRoom(roomId);

@@ -19,10 +19,11 @@
     "noEmit": true,
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
-    }
+      "@src/*": ["src/*"],
+      "@mods/*": ["mods/*"],
+    },
   },
-  "exclude": ["node_modules", "dist", "repositories"],
+  "exclude": ["node_modules", "dist", "vendor", "release", ".flatpak"],
   "include": ["src", "mods", "electron"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "./tsconfig.node.json" }],
 }

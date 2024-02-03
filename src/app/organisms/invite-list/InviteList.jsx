@@ -35,7 +35,7 @@ function InviteList({ isOpen, onRequestClose }) {
     const room = initMatrix.matrixClient.getRoom(roomId);
     const isRejected = room === null || room?.getMyMembership() !== 'join';
     if (!isRejected) {
-      if (room.isSpaceRoom()) selectTab(roomId);
+      if (room.isSpaceRoom()) selectTab(roomId, true);
       else {
         selectRoomMode('room');
         selectRoom(roomId);

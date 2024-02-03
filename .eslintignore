@@ -1,3 +1,8 @@
 experiment
 node_modules
+dist
+dist-electron
+vendor
+release
+.flatpak
 *.md

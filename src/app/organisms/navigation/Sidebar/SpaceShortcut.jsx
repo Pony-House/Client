@@ -99,7 +99,7 @@ function DraggableSpaceShortcut({ isActive, spaceId, index, moveShortcut, onDrop
       ref={shortcutRef}
       active={isActive}
       tooltip={room.name}
-      onClick={() => selectTab(spaceId)}
+      onClick={() => selectTab(spaceId, true)}
       onContextMenu={(e) => openSpaceOptions(e, spaceId)}
       avatar={
         <Avatar
@@ -112,8 +112,8 @@ function DraggableSpaceShortcut({ isActive, spaceId, index, moveShortcut, onDrop
             !appearanceSettings.enableAnimParams
               ? room.getAvatarUrl(initMatrix.matrixClient.baseUrl)
               : getAnimatedImageUrl(
-                  room.getAvatarUrl(initMatrix.matrixClient.baseUrl, 42, 42, 'crop'),
-                ) || null
+                room.getAvatarUrl(initMatrix.matrixClient.baseUrl, 42, 42, 'crop'),
+              ) || null
           }
           imageSrc={room.getAvatarUrl(initMatrix.matrixClient.baseUrl, 42, 42, 'crop') || null}
           isDefaultImage
