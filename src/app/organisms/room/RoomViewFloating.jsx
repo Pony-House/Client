@@ -8,6 +8,7 @@ import { markAsRead } from '../../../client/action/notifications';
 import Button from '../../atoms/button/Button';
 
 import { getUsersActionJsx } from './common';
+import urlParams from '../../../util/libs/urlParams';
 
 function useJumpToEvent(roomTimeline) {
   const [eventId, setEventId] = useState(null);
@@ -84,6 +85,7 @@ function RoomViewFloating({ roomId, roomTimeline, refRoomInput, refcmdInput }) {
 
   const handleScrollToBottom = () => {
     roomTimeline.emit(cons.events.roomTimeline.SCROLL_TO_LIVE);
+    urlParams.delete('event_id');
     setIsAtBottom(true);
   };
 

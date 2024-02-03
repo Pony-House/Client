@@ -90,6 +90,8 @@ const toggleAppearanceAction = (dataFolder, setToggle) => (data) => {
   setToggle(data === true);
 };
 
+matrixAppearance.setMaxListeners(Infinity);
+
 export { toggleAppearanceAction };
 export default matrixAppearance;
 

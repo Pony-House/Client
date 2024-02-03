@@ -20,6 +20,7 @@ import { messageIsClassicCrdt } from '../../util/libs/crdt';
 import { objType } from '../../util/tools';
 import moment from '../../util/libs/momentjs';
 import { updateRoomInfo } from '../action/navigation';
+import urlParams from '../../util/libs/urlParams';
 // import { tinyFixScrollChat } from "../../app/molecules/media/mediaFix";
 
 const delayYdocUpdate = 100;
@@ -176,9 +177,9 @@ class RoomTimeline extends EventEmitter {
     this.room = !this.isGuest
       ? this.matrixClient.getRoom(roomId)
       : new Room(roomId, this.matrixClient, this.guestId, {
-          lazyLoadMembers: true,
-          timelineSupport: true,
-        });
+        lazyLoadMembers: true,
+        timelineSupport: true,
+      });
 
     // Nothing! Tiny cancel time.
     if (this.room === null) {
@@ -670,6 +671,9 @@ class RoomTimeline extends EventEmitter {
 
       // timeoutForceChatbox = setTimeout(() => $('body').removeClass('fo-cb-top'), 500);
 
+      if (typeof eventId === 'string' && eventId.length > 0) urlParams.set('event_id', eventId);
+      else urlParams.delete('event_id');
+
       return true;
     } catch {
       // timeoutForceChatbox = setTimeout(() => $('body').removeClass('fo-cb-top'), 500);
@@ -720,6 +724,7 @@ class RoomTimeline extends EventEmitter {
       this.isOngoingPagination = false;
 
       updateRoomInfo();
+      urlParams.delete('event_id');
       return true;
     } catch {
       // Error
