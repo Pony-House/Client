@@ -29,9 +29,9 @@ import copyText from '../profile-viewer/copyText';
 
 // import RoomViewPin from './RoomViewPin';
 import { openPinMessageModal } from '../../../util/libs/pinMessage';
-import { openThreadsMessageModal } from '../../../util/libs/thread';
+// import { openThreadsMessageModal } from '../../../util/libs/thread';
 
-function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions }) {
+function RoomViewHeader({ roomId, roomAlias, roomItem, disableActions /* threadId */ }) {
   const [, forceUpdate] = useForceUpdate();
   const mx = initMatrix.matrixClient;
   const isDM = initMatrix.roomList && initMatrix.roomList.directs.has(roomId);

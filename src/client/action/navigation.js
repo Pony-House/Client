@@ -1,16 +1,7 @@
-import { tinyCrypto } from '../../util/web3';
-import { setSelectRoom, setSelectSpace } from '../../util/selectedRoom';
 import appDispatcher from '../dispatcher';
 import cons from '../state/cons';
-import urlParams from '../../util/libs/urlParams';
 
 export function selectTab(tabId, isSpace) {
-  if (isSpace) {
-    setSelectSpace(tabId);
-  } else {
-    setSelectSpace(null);
-  }
-  $('.space-drawer-menu-item').removeClass('active');
   appDispatcher.dispatch({
     type: cons.actions.navigation.SELECT_TAB,
     tabId,
@@ -19,8 +10,6 @@ export function selectTab(tabId, isSpace) {
 }
 
 export function selectRoomMode(roomType) {
-  if (typeof roomType === 'string' && roomType.length > 0) urlParams.set('room_mode', roomType);
-  else urlParams.delete('room_mode');
   appDispatcher.dispatch({
     type: cons.actions.navigation.SELECT_ROOM_MODE,
     roomType,
@@ -28,8 +17,6 @@ export function selectRoomMode(roomType) {
 }
 
 export function selectSpace(roomId) {
-  $('.space-drawer-menu-item').removeClass('active');
-  setSelectSpace(roomId);
   appDispatcher.dispatch({
     type: cons.actions.navigation.SELECT_SPACE,
     roomId,
@@ -37,8 +24,6 @@ export function selectSpace(roomId) {
 }
 
 export function selectRoom(roomId, eventId, threadId, forceScroll = false) {
-  $('.space-drawer-menu-item').removeClass('active');
-  setSelectRoom(roomId);
   appDispatcher.dispatch({
     type: cons.actions.navigation.SELECT_ROOM,
     roomId,
@@ -143,13 +128,6 @@ export function openProfileViewer(userId, roomId) {
 }
 
 export function openSettings(tabText) {
-  if (
-    tinyCrypto &&
-    tinyCrypto.call &&
-    typeof tinyCrypto.call.requestAccounts === 'function' &&
-    tinyCrypto.isUnlocked()
-  )
-    tinyCrypto.call.requestAccounts();
   appDispatcher.dispatch({
     type: cons.actions.navigation.OPEN_SETTINGS,
     tabText,

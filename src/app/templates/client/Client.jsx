@@ -58,6 +58,7 @@ function Client() {
   // Prepare params data
   const tab = urlParams.get('tab');
   const spaceId = urlParams.get('space_id');
+  const isSpace = urlParams.get('is_space');
 
   const roomType = urlParams.get('room_mode');
 
@@ -130,7 +131,7 @@ function Client() {
       changeLoading(false);
 
       // Load Params
-      if (typeof tab === 'string' && tab.length > 0) selectTab(tab);
+      if (typeof tab === 'string' && tab.length > 0) selectTab(tab, isSpace);
       if (typeof spaceId === 'string' && spaceId.length > 0) selectSpace(spaceId);
       if (typeof roomType === 'string' && roomType === 'room' || roomType === 'navigation') selectRoomMode(roomType);
 
