@@ -29,6 +29,8 @@ import { startUserAfk, stopUserAfk } from '../../../util/userStatusEffects';
 import Mods from './Mods';
 import appLoadMsg from '../../../../mods/appLoadMsg';
 import LoadingPage from './Loading';
+import urlParams from '../../../util/libs/urlParams';
+import { selectRoom, selectRoomMode, selectSpace, selectTab } from '../../../client/action/navigation';
 
 let versionChecked = false;
 
@@ -52,6 +54,16 @@ function Client() {
     if (roomType === 'navigation') navWrapper.addClass('navigation-mode');
     resizeWindowChecker();
   }
+
+  // Prepare params data
+  const tab = urlParams.get('tab');
+  const spaceId = urlParams.get('space_id');
+
+  const roomType = urlParams.get('room_mode');
+
+  const roomId = urlParams.get('room_id');
+  const eventId = urlParams.get('event_id');
+  const threadId = urlParams.get('thread_id');
 
   useEffect(() => {
     startUserAfk();
@@ -111,10 +123,21 @@ function Client() {
     }, 15000);
 
     initMatrix.once('init_loading_finished', () => {
+
       clearInterval(iId);
       initHotkeys();
       initRoomListListener(initMatrix.roomList);
       changeLoading(false);
+
+      // Load Params
+      if (typeof tab === 'string' && tab.length > 0) selectTab(tab);
+      if (typeof spaceId === 'string' && spaceId.length > 0) selectSpace(spaceId);
+      if (typeof roomType === 'string' && roomType === 'room' || roomType === 'navigation') selectRoomMode(roomType);
+
+      setTimeout(() => {
+        if (typeof roomId === 'string' && roomId.length > 0) selectRoom(roomId, typeof eventId === 'string' && eventId.length > 0 ? eventId : null, typeof threadId === 'string' && threadId.length > 0 ? threadId : null);
+      }, 100);
+
     });
 
     initMatrix.init();
