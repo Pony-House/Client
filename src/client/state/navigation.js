@@ -145,7 +145,6 @@ class Navigation extends EventEmitter {
     // Thread Id
     if (typeof threadId === 'string' && threadId.length > 0) urlParams.set('thread_id', threadId);
     else urlParams.delete('thread_id');
-
   }
 
   _selectTabWithRoom(roomId) {
@@ -349,7 +348,6 @@ class Navigation extends EventEmitter {
   navigate(action) {
     const actions = {
       [cons.actions.navigation.SELECT_TAB]: () => {
-
         const roomId =
           action.tabId !== cons.tabs.HOME && action.tabId !== cons.tabs.DIRECTS
             ? action.tabId
@@ -360,9 +358,9 @@ class Navigation extends EventEmitter {
         this._selectTab(action.tabId);
         setTimeout(() => tinyAPI.emit('selectTabAfter', { roomId, tabId: action.tabId }), 100);
 
-        if (typeof action.tabId === 'string' && action.tabId.length > 0) urlParams.set('tab', action.tabId);
+        if (typeof action.tabId === 'string' && action.tabId.length > 0)
+          urlParams.set('tab', action.tabId);
         else urlParams.delete('tab');
-
       },
 
       [cons.actions.navigation.UPDATE_EMOJI_LIST]: () => {

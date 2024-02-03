@@ -37,7 +37,6 @@ export function selectSpace(roomId) {
 }
 
 export function selectRoom(roomId, eventId, threadId, forceScroll = false) {
-
   $('.space-drawer-menu-item').removeClass('active');
   setSelectRoom(roomId);
   appDispatcher.dispatch({
@@ -47,7 +46,6 @@ export function selectRoom(roomId, eventId, threadId, forceScroll = false) {
     threadId,
     forceScroll,
   });
-
 }
 
 // Open navigation on compact screen sizes

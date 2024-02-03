@@ -99,8 +99,8 @@ function SpaceManageItem({
     imageAnimSrc = !appearanceSettings.enableAnimParams
       ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)
       : getAnimatedImageUrl(
-        room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'),
-      ) || null;
+          room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'),
+        ) || null;
     if (imageAnimSrc === null)
       imageAnimSrc = !appearanceSettings.enableAnimParams
         ? room.getAvatarUrl(mx.baseUrl)

@@ -180,8 +180,8 @@ function Search() {
       imageAnimSrc = !appearanceSettings.enableAnimParams
         ? item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)
         : getAnimatedImageUrl(
-          item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'),
-        ) || null;
+            item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'),
+          ) || null;
     } else {
       iconSrc = joinRuleToIconSrc(item.room.getJoinRule(), item.type === 'space');
     }

@@ -177,9 +177,9 @@ class RoomTimeline extends EventEmitter {
     this.room = !this.isGuest
       ? this.matrixClient.getRoom(roomId)
       : new Room(roomId, this.matrixClient, this.guestId, {
-        lazyLoadMembers: true,
-        timelineSupport: true,
-      });
+          lazyLoadMembers: true,
+          timelineSupport: true,
+        });
 
     // Nothing! Tiny cancel time.
     if (this.room === null) {
