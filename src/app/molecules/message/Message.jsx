@@ -315,19 +315,19 @@ const createMessageData = (
       const insertMsg = () =>
         !isJquery
           ? twemojifyReact(
-              sanitizeCustomHtml(initMatrix.matrixClient, body),
-              undefined,
-              true,
-              false,
-              true,
-            )
+            sanitizeCustomHtml(initMatrix.matrixClient, body),
+            undefined,
+            true,
+            false,
+            true,
+          )
           : twemojify(
-              sanitizeCustomHtml(initMatrix.matrixClient, body),
-              undefined,
-              true,
-              false,
-              true,
-            );
+            sanitizeCustomHtml(initMatrix.matrixClient, body),
+            undefined,
+            true,
+            false,
+            true,
+          );
 
       const msgOptions = tinyAPI.emit(
         'messageBody',
@@ -1536,7 +1536,7 @@ function Message({
               {embeds.length > 0 ? (
                 <div ref={itemEmbed} className="message-embed message-url-embed">
                   {embeds.map((embed) => {
-                    if (embed.data) return <Embed embed={embed.data} />;
+                    if (embed.data) return <Embed key={`msg_embed_${embed.eventId}`} embed={embed.data} />;
                   })}
                 </div>
               ) : null}
