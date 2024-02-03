@@ -52,7 +52,7 @@ export function loadEmojiData(selectedRoomId) {
     tinyBoardData.sticker.data = stickerPacks;
   } else {
     const room = mx.getRoom(selectedRoomId);
-    const parentIds = initMatrix.roomList.getAllParentSpaces(room.roomId);
+    const parentIds = initMatrix.roomList.getAllParentSpaces(room ? room.roomId : null);
     const parentRooms = [...parentIds].map((id) => mx.getRoom(id));
     if (room) {
       const emojiPacks = getRelevantPacks(room.client, [room, ...parentRooms]).filter(
