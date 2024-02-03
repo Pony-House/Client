@@ -256,9 +256,6 @@ class Navigation extends EventEmitter {
 
     if (typeof roomId === 'string' && roomId.length > 0) urlParams.set('space_id', roomId);
     else urlParams.delete('space_id');
-    urlParams.delete('room_id');
-    urlParams.delete('event_id');
-    urlParams.delete('thread_id');
   }
 
   _selectRoomWithSpace(spaceId) {
@@ -352,12 +349,6 @@ class Navigation extends EventEmitter {
   navigate(action) {
     const actions = {
       [cons.actions.navigation.SELECT_TAB]: () => {
-
-        if (action.isSpace) {
-          urlParams.delete('room_id');
-          urlParams.delete('event_id');
-          urlParams.delete('thread_id');
-        }
 
         const roomId =
           action.tabId !== cons.tabs.HOME && action.tabId !== cons.tabs.DIRECTS
