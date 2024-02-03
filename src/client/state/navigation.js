@@ -350,7 +350,6 @@ class Navigation extends EventEmitter {
   navigate(action) {
     const actions = {
       [cons.actions.navigation.SELECT_TAB]: () => {
-
         $('.space-drawer-menu-item').removeClass('active');
 
         if (action.isSpace) {
@@ -374,7 +373,6 @@ class Navigation extends EventEmitter {
         if (typeof action.tabId === 'string' && action.tabId.length > 0)
           urlParams.set('tab', action.tabId);
         else urlParams.delete('tab');
-
       },
 
       [cons.actions.navigation.UPDATE_EMOJI_LIST]: () => {
@@ -398,8 +396,8 @@ class Navigation extends EventEmitter {
       },
 
       [cons.actions.navigation.SELECT_ROOM_MODE]: () => {
-
-        if (typeof roomType === 'string' && action.roomType.length > 0) urlParams.set('room_mode', action.roomType);
+        if (typeof roomType === 'string' && action.roomType.length > 0)
+          urlParams.set('room_mode', action.roomType);
         else urlParams.delete('room_mode');
 
         tinyAPI.emit('selectedRoomMode', action.roomType);
@@ -416,7 +414,6 @@ class Navigation extends EventEmitter {
       },
 
       [cons.actions.navigation.SELECT_ROOM]: () => {
-
         $('.space-drawer-menu-item').removeClass('active');
         setSelectRoom(action.roomId);
 
@@ -513,7 +510,6 @@ class Navigation extends EventEmitter {
       },
 
       [cons.actions.navigation.OPEN_SETTINGS]: () => {
-
         if (
           tinyCrypto &&
           tinyCrypto.call &&
@@ -524,7 +520,6 @@ class Navigation extends EventEmitter {
 
         tinyAPI.emit('settingsOpened', action.tabText);
         this.emit(cons.events.navigation.SETTINGS_OPENED, action.tabText);
-
       },
 
       [cons.actions.navigation.OPEN_NAVIGATION]: () => {

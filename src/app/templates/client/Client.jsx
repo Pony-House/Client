@@ -30,7 +30,12 @@ import Mods from './Mods';
 import appLoadMsg from '../../../../mods/appLoadMsg';
 import LoadingPage from './Loading';
 import urlParams from '../../../util/libs/urlParams';
-import { selectRoom, selectRoomMode, selectSpace, selectTab } from '../../../client/action/navigation';
+import {
+  selectRoom,
+  selectRoomMode,
+  selectSpace,
+  selectTab,
+} from '../../../client/action/navigation';
 
 let versionChecked = false;
 
@@ -124,7 +129,6 @@ function Client() {
     }, 15000);
 
     initMatrix.once('init_loading_finished', () => {
-
       clearInterval(iId);
       initHotkeys();
       initRoomListListener(initMatrix.roomList);
@@ -133,12 +137,17 @@ function Client() {
       // Load Params
       if (typeof tab === 'string' && tab.length > 0) selectTab(tab, isSpace);
       if (typeof spaceId === 'string' && spaceId.length > 0) selectSpace(spaceId);
-      if (typeof roomType === 'string' && roomType === 'room' || roomType === 'navigation') selectRoomMode(roomType);
+      if ((typeof roomType === 'string' && roomType === 'room') || roomType === 'navigation')
+        selectRoomMode(roomType);
 
       setTimeout(() => {
-        if (typeof roomId === 'string' && roomId.length > 0) selectRoom(roomId, typeof eventId === 'string' && eventId.length > 0 ? eventId : null, typeof threadId === 'string' && threadId.length > 0 ? threadId : null);
+        if (typeof roomId === 'string' && roomId.length > 0)
+          selectRoom(
+            roomId,
+            typeof eventId === 'string' && eventId.length > 0 ? eventId : null,
+            typeof threadId === 'string' && threadId.length > 0 ? threadId : null,
+          );
       }, 100);
-
     });
 
     initMatrix.init();
