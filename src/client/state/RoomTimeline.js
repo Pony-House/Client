@@ -11,6 +11,8 @@ import {
   RoomEvent,
   RoomMemberEvent,
 } from 'matrix-js-sdk';
+
+import { setLoadingPage } from '@src/app/templates/client/Loading';
 // import initMatrix, { fetchFn as fetch } from '../initMatrix';
 import initMatrix from '../initMatrix';
 import cons from './cons';
@@ -177,9 +179,9 @@ class RoomTimeline extends EventEmitter {
     this.room = !this.isGuest
       ? this.matrixClient.getRoom(roomId)
       : new Room(roomId, this.matrixClient, this.guestId, {
-          lazyLoadMembers: true,
-          timelineSupport: true,
-        });
+        lazyLoadMembers: true,
+        timelineSupport: true,
+      });
 
     // Nothing! Tiny cancel time.
     if (this.room === null) {
@@ -315,6 +317,31 @@ class RoomTimeline extends EventEmitter {
     roomTimeline.activeTimeline = thread.liveTimeline;
     roomTimeline.threadId = threadId;
     roomTimeline.thread = thread;
+
+    setLoadingPage();
+    roomTimeline.matrixClient.getThreadTimeline(roomTimeline.thread.timelineSet, threadId).then(timeline => {
+
+      const contents = { old: [], new: [] };
+      for (const item in timeline.events) {
+        contents.new.push(timeline.events[item].getContent());
+      }
+
+      for (const item in roomTimeline.activeTimeline.events) {
+        contents.old.push(roomTimeline.activeTimeline.events[item].getContent());
+      }
+
+      if (objectHash(contents.old) !== objectHash(contents.new)) {
+        roomTimeline.liveTimeline = timeline;
+        roomTimeline.loadLiveTimeline();
+      }
+
+      setLoadingPage(false);
+
+    }).catch(err => {
+      console.error(err);
+      setLoadingPage(false);
+      alert(err.message);
+    });
 
     return roomTimeline;
   }

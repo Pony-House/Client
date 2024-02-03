@@ -61,13 +61,16 @@ function Room() {
       $('.space-drawer-menu-item').removeClass('active');
 
       if (mx.getRoom(roomId)) {
+
         const threadTimeline = threadId ? RoomTimeline.newFromThread(threadId, roomId) : null;
         const roomTimeline = threadTimeline ?? new RoomTimeline(roomId);
+
         sendRoomInfo({
           roomTimeline,
           eventId: eventId ?? null,
           forceScroll,
         });
+
       } else {
         // TODO: add ability to join room if roomId is invalid
         sendRoomInfo({

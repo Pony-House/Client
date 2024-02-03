@@ -282,7 +282,7 @@ function Web3Item({ item, networkId }) {
 
         <li id={`chain_collapse_${blockchainId}`} className="list-group-item collapse">
           <div className="mb-3">
-            <label for={`chain_name_id_${blockchainId}`} className="form-label small">
+            <label htmlFor={`chain_name_id_${blockchainId}`} className="form-label small">
               Chain Name
             </label>
             <input
@@ -295,7 +295,7 @@ function Web3Item({ item, networkId }) {
           </div>
 
           <div className="mb-3">
-            <label for={`chain_${blockchainId}`} className="form-label small">
+            <label htmlFor={`chain_${blockchainId}`} className="form-label small">
               Object Id
             </label>
             <input
@@ -311,7 +311,7 @@ function Web3Item({ item, networkId }) {
           </div>
 
           <div className="mb-3">
-            <label for={`chain_block_id_${blockchainId}`} className="form-label small">
+            <label htmlFor={`chain_block_id_${blockchainId}`} className="form-label small">
               Blockchain Id
             </label>
             <input
@@ -327,7 +327,7 @@ function Web3Item({ item, networkId }) {
           </div>
 
           <div className="mb-3">
-            <label for={`chain_block_id_number_${blockchainId}`} className="form-label small">
+            <label htmlFor={`chain_block_id_number_${blockchainId}`} className="form-label small">
               Blockchain Id (Number)
             </label>
             <input
@@ -343,7 +343,7 @@ function Web3Item({ item, networkId }) {
           </div>
 
           <div className="mb-3">
-            <label for={`chain_factory_${blockchainId}`} className="form-label small">
+            <label htmlFor={`chain_factory_${blockchainId}`} className="form-label small">
               Factory Smart Contract
             </label>
             <input
@@ -358,7 +358,7 @@ function Web3Item({ item, networkId }) {
           </div>
 
           <div className="mb-3">
-            <label for={`chain_explorer_id_${blockchainId}`} className="form-label small">
+            <label htmlFor={`chain_explorer_id_${blockchainId}`} className="form-label small">
               Explorer Url
             </label>
             <input
@@ -371,7 +371,7 @@ function Web3Item({ item, networkId }) {
           </div>
 
           <div className="mb-3">
-            <label for={`chain_explorer_api_id_${blockchainId}`} className="form-label small">
+            <label htmlFor={`chain_explorer_api_id_${blockchainId}`} className="form-label small">
               Explorer API Url
             </label>
             <input
@@ -386,7 +386,7 @@ function Web3Item({ item, networkId }) {
           </div>
 
           <div className="mb-3">
-            <label for={`chain_rpc_id_${blockchainId}`} className="form-label small">
+            <label htmlFor={`chain_rpc_id_${blockchainId}`} className="form-label small">
               RPC Url
             </label>
             <input
@@ -399,7 +399,7 @@ function Web3Item({ item, networkId }) {
           </div>
 
           <div className="mb-3">
-            <label for={`chain_name_${blockchainId}`} className="form-label small">
+            <label htmlFor={`chain_name_${blockchainId}`} className="form-label small">
               Name
             </label>
             <input
@@ -412,7 +412,7 @@ function Web3Item({ item, networkId }) {
           </div>
 
           <div className="mb-3">
-            <label for={`chain_symbol_${blockchainId}`} className="form-label small">
+            <label htmlFor={`chain_symbol_${blockchainId}`} className="form-label small">
               Symbol
             </label>
             <input
@@ -425,7 +425,7 @@ function Web3Item({ item, networkId }) {
           </div>
 
           <div className="mb-3">
-            <label for={`chain_decimals_${blockchainId}`} className="form-label small">
+            <label htmlFor={`chain_decimals_${blockchainId}`} className="form-label small">
               Decimals
             </label>
             <input

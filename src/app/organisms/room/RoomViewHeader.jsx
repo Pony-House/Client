@@ -27,9 +27,8 @@ import RoomOptions from '../../molecules/room-options/RoomOptions';
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 import copyText from '../profile-viewer/copyText';
 
-// import RoomViewPin from './RoomViewPin';
 import { openPinMessageModal } from '../../../util/libs/pinMessage';
-// import { openThreadsMessageModal } from '../../../util/libs/thread';
+import { openThreadsMessageModal } from '../../../util/libs/thread';
 
 function RoomViewHeader({ roomId, roomAlias, roomItem, disableActions /* threadId */ }) {
   const [, forceUpdate] = useForceUpdate();
@@ -113,8 +112,6 @@ function RoomViewHeader({ roomId, roomAlias, roomItem, disableActions /* threadI
     }
   };
 
-  // <li className="nav-item"><IconButton className="nav-link border-0 d-none d-sm-block" onClick={() => openThreadsMessageModal(room)} tooltipPlacement="bottom" tooltip="Threads" fa="bi bi-layers" /></li>
-
   return (
     <Header>
       <ul className="navbar-nav mr-auto">
@@ -196,6 +193,16 @@ function RoomViewHeader({ roomId, roomAlias, roomItem, disableActions /* threadI
                   tooltipPlacement="bottom"
                   tooltip="Search"
                   fa="fa-solid fa-magnifying-glass"
+                />
+              </li>
+
+              <li className="nav-item">
+                <IconButton
+                  className="nav-link border-0 d-none d-sm-block"
+                  onClick={() => openThreadsMessageModal(room)}
+                  tooltipPlacement="bottom"
+                  tooltip="Threads"
+                  fa="bi bi-layers"
                 />
               </li>
 
