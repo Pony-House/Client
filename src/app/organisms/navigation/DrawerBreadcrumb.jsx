@@ -94,30 +94,34 @@ function DrawerBreadcrumb({ spaceId }) {
                 ? getNotiExcept(id, index === spacePath.length - 1 ? null : spacePath[index + 1])
                 : getHomeNotiExcept(index === spacePath.length - 1 ? null : spacePath[index + 1]);
 
+            const room = mx.getRoom(id);
+
             return (
-              <React.Fragment key={id}>
-                <li
-                  className={`emoji-size-fix breadcrumb-item ${index === spacePath.length - 1 ? 'active' : ''}`}
-                >
-                  <a
-                    href="#"
-                    onClick={(event) => {
-                      if (id === cons.tabs.HOME) selectTab(id);
-                      else selectSpace(id);
-                      event.preventDefault();
-                    }}
+              room && (
+                <React.Fragment key={id}>
+                  <li
+                    className={`emoji-size-fix breadcrumb-item ${index === spacePath.length - 1 ? 'active' : ''}`}
                   >
-                    {id === cons.tabs.HOME ? 'Home' : twemojifyReact(mx.getRoom(id).name)}
-                    {noti !== null && (
-                      <NotificationBadge
-                        className="ms-1"
-                        alert={noti.highlight !== 0}
-                        content={noti.total > 0 ? abbreviateNumber(noti.total) : null}
-                      />
-                    )}
-                  </a>
-                </li>
-              </React.Fragment>
+                    <a
+                      href="#"
+                      onClick={(event) => {
+                        if (id === cons.tabs.HOME) selectTab(id);
+                        else selectSpace(id);
+                        event.preventDefault();
+                      }}
+                    >
+                      {id === cons.tabs.HOME ? 'Home' : twemojifyReact(room.name)}
+                      {noti !== null && (
+                        <NotificationBadge
+                          className="ms-1"
+                          alert={noti.highlight !== 0}
+                          content={noti.total > 0 ? abbreviateNumber(noti.total) : null}
+                        />
+                      )}
+                    </a>
+                  </li>
+                </React.Fragment>
+              )
             );
           })}
         </ol>

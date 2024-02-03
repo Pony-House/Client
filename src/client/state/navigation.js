@@ -288,11 +288,14 @@ class Navigation extends EventEmitter {
         });
       });
     } else {
-      roomList.getSpaceChildren(spaceId).forEach((id) => {
-        if (matrixClient.getRoom(id)?.isSpaceRoom() === false) {
-          children.push(id);
-        }
-      });
+      const spaceChildren = roomList.getSpaceChildren(spaceId);
+      if (spaceChildren) {
+        spaceChildren.forEach((id) => {
+          if (matrixClient.getRoom(id)?.isSpaceRoom() === false) {
+            children.push(id);
+          }
+        });
+      }
     }
 
     if (!children) {
