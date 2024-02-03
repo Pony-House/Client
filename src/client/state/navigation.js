@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import appDispatcher from '../dispatcher';
 import cons from './cons';
 import tinyAPI from '../../util/mods';
-import urlParams from '@src/util/libs/urlParams';
+import urlParams from '../../util/libs/urlParams';
 
 class Navigation extends EventEmitter {
   constructor() {
