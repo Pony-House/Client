@@ -56,20 +56,41 @@ function Room() {
   };
 
   useEffect(() => {
+    const setRoomSelected = (roomId, threadId, eventId, forceScroll) => {
+
+      const threadTimeline = threadId ? RoomTimeline.newFromThread(threadId, roomId) : null;
+      const roomTimeline = threadTimeline ?? new RoomTimeline(roomId);
+
+      sendRoomInfo({
+        roomTimeline,
+        eventId: eventId ?? null,
+        forceScroll,
+      });
+
+    };
     const handleRoomSelected = (roomId, prevRoomId, eventId, threadId, forceScroll) => {
       roomInfo.roomTimeline?.removeInternalListeners();
       $('.space-drawer-menu-item').removeClass('active');
 
       if (mx.getRoom(roomId)) {
 
-        const threadTimeline = threadId ? RoomTimeline.newFromThread(threadId, roomId) : null;
-        const roomTimeline = threadTimeline ?? new RoomTimeline(roomId);
+        if (threadId && roomInfo.roomTimeline) {
+          const thread = threadId ? roomInfo.roomTimeline.room.getThread(threadId) : null;
+          if (thread) {
+            roomInfo.roomTimeline.matrixClient.getThreadTimeline(thread.timelineSet, threadId).then(() => setRoomSelected(roomId, threadId, eventId, forceScroll)).catch(err => {
 
-        sendRoomInfo({
-          roomTimeline,
-          eventId: eventId ?? null,
-          forceScroll,
-        });
+              console.error(err);
+              alert(err.message);
+              setRoomSelected(roomId, threadId, eventId, forceScroll);
+
+            });
+          } else {
+            setRoomSelected(roomId, threadId, eventId, forceScroll);
+          }
+        } else {
+          setRoomSelected(roomId, threadId, eventId, forceScroll);
+        }
+
 
       } else {
         // TODO: add ability to join room if roomId is invalid

@@ -318,31 +318,6 @@ class RoomTimeline extends EventEmitter {
     roomTimeline.threadId = threadId;
     roomTimeline.thread = thread;
 
-    setLoadingPage();
-    roomTimeline.matrixClient.getThreadTimeline(roomTimeline.thread.timelineSet, threadId).then(timeline => {
-
-      const contents = { old: [], new: [] };
-      for (const item in timeline.events) {
-        contents.new.push(timeline.events[item].getContent());
-      }
-
-      for (const item in roomTimeline.activeTimeline.events) {
-        contents.old.push(roomTimeline.activeTimeline.events[item].getContent());
-      }
-
-      if (objectHash(contents.old) !== objectHash(contents.new)) {
-        roomTimeline.liveTimeline = timeline;
-        roomTimeline.loadLiveTimeline();
-      }
-
-      setLoadingPage(false);
-
-    }).catch(err => {
-      console.error(err);
-      setLoadingPage(false);
-      alert(err.message);
-    });
-
     return roomTimeline;
   }
 
