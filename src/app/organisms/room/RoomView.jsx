@@ -14,7 +14,7 @@ import RoomViewCmdBar from './RoomViewCmdBar';
 
 const viewEvent = new EventEmitter();
 
-function RoomView({ roomTimeline, eventId, isUserList, roomItem, isGuest }) {
+function RoomView({ roomTimeline, eventId, isUserList, roomItem, isGuest, isLoading }) {
   const refcmdInput = useRef(null);
   const refRoomInput = useRef(null);
   const roomViewRef = useRef(null);
@@ -49,6 +49,7 @@ function RoomView({ roomTimeline, eventId, isUserList, roomItem, isGuest }) {
       <div className="room-view__content-wrapper">
         <div className="room-view__scrollable">
           <RoomViewContent
+            isLoading={isLoading}
             refRoomInput={refRoomInput}
             isUserList={isUserList}
             eventId={eventId}

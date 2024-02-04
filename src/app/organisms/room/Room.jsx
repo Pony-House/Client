@@ -35,6 +35,7 @@ function Room() {
 
   const [isDrawer, setIsDrawer] = useState(settings.isPeopleDrawer);
   const [isUserList, setIsUserList] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const sendRoomInfo = (newData) => {
     setRoomInfo(newData);
@@ -79,10 +80,15 @@ function Room() {
         if (threadId && (objType(threadData, 'object') && threadData.force) && roomInfo.roomTimeline) {
           const thread = threadId ? roomInfo.roomTimeline.room.getThread(threadId) : null;
           if (thread) {
-            roomInfo.roomTimeline.matrixClient.getThreadTimeline(thread.timelineSet, threadId).then(() => setRoomSelected(roomId, threadId, eventId, forceScroll)).catch(err => {
+            setIsLoading(true);
+            roomInfo.roomTimeline.matrixClient.getThreadTimeline(thread.timelineSet, threadId).then(() => {
+              setIsLoading(false);
+              setRoomSelected(roomId, threadId, eventId, forceScroll);
+            }).catch(err => {
 
               console.error(err);
               alert(err.message);
+              setIsLoading(false);
               setRoomSelected(roomId, threadId, eventId, forceScroll);
 
             });
@@ -142,7 +148,7 @@ function Room() {
       <div className="room">
         <div className="room__content">
           <RoomSettings roomId={roomTimeline.roomId} />
-          <RoomView isUserList={isUserList} roomTimeline={roomTimeline} eventId={eventId} />
+          <RoomView isUserList={isUserList} roomTimeline={roomTimeline} eventId={eventId} isLoading={isLoading} />
         </div>
         {peopleDrawer}
       </div>

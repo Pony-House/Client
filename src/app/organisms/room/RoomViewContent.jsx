@@ -462,6 +462,7 @@ function RoomViewContent({
   disableActions,
   usernameHover,
   refRoomInput,
+  isLoading,
 }) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
   const [throttle] = useState(new Throttle());
@@ -816,7 +817,7 @@ function RoomViewContent({
         <div className="timeline__wrapper mb-2">
           <table className="table table-borderless table-hover align-middle m-0" id="chatbox">
             <tbody>
-              {roomTimeline.initialized
+              {!isLoading && roomTimeline.initialized
                 ? renderTimeline(isUserList)
                 : loadingMsgPlaceholders('loading', 3)}
             </tbody>
