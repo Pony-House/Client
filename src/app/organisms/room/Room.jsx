@@ -13,6 +13,7 @@ import RoomView from './RoomView';
 import RoomSettings from './RoomSettings';
 import PeopleDrawer from './PeopleDrawer';
 import tinyAPI from '../../../util/mods';
+import { objType } from '../../../util/tools';
 
 let resetRoomInfo;
 global.resetRoomInfo = () => (typeof resetRoomInfo === 'function' ? resetRoomInfo() : null);
@@ -68,13 +69,14 @@ function Room() {
       });
 
     };
-    const handleRoomSelected = (roomId, prevRoomId, eventId, threadId, forceScroll) => {
+    const handleRoomSelected = (roomId, prevRoomId, eventId, threadData, forceScroll) => {
       roomInfo.roomTimeline?.removeInternalListeners();
       $('.space-drawer-menu-item').removeClass('active');
 
       if (mx.getRoom(roomId)) {
 
-        if (threadId && roomInfo.roomTimeline) {
+        const threadId = typeof threadData === 'string' ? threadData : objType(threadData, 'object') ? threadData.threadId : null;
+        if (threadId && (objType(threadData, 'object') && threadData.force) && roomInfo.roomTimeline) {
           const thread = threadId ? roomInfo.roomTimeline.room.getThread(threadId) : null;
           if (thread) {
             roomInfo.roomTimeline.matrixClient.getThreadTimeline(thread.timelineSet, threadId).then(() => setRoomSelected(roomId, threadId, eventId, forceScroll)).catch(err => {

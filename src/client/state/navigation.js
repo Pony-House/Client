@@ -5,6 +5,7 @@ import tinyAPI from '../../util/mods';
 import urlParams from '../../util/libs/urlParams';
 import { setSelectRoom, setSelectSpace } from '../../util/selectedRoom';
 import { tinyCrypto } from '../../util/web3';
+import { objType } from '../../util/tools';
 
 class Navigation extends EventEmitter {
   constructor() {
@@ -98,9 +99,10 @@ class Navigation extends EventEmitter {
   }
 
   _selectRoom(roomId, eventId, threadId, forceScroll) {
+    const tinyThread = typeof threadId === 'string' ? threadId : objType(threadId, 'object') ? threadId.threadId : null;
     const prevSelectedRoomId = this.selectedRoomId;
     this.selectedRoomId = roomId;
-    this.selectedThreadId = threadId ?? null;
+    this.selectedThreadId = tinyThread ?? null;
     if (prevSelectedRoomId !== roomId) this._mapRoomToSpace(roomId);
     this.removeRecentRoom(prevSelectedRoomId);
     this.addRecentRoom(prevSelectedRoomId);
@@ -123,7 +125,7 @@ class Navigation extends EventEmitter {
       this.selectedRoomId,
       prevSelectedRoomId,
       eventId,
-      threadId,
+      tinyThread,
       forceScroll,
     );
 
@@ -422,17 +424,19 @@ class Navigation extends EventEmitter {
 
         tinyAPI.emit('selectedRoom', action.roomId, action.forceScroll);
         if (action.roomId) this._selectTabWithRoom(action.roomId, action.forceScroll);
+        const tinyThread = typeof action.threadId === 'string' ? action.threadId : objType(action.threadId, 'object') ? action.threadId.threadId : null;
+
         this._selectRoom(action.roomId, action.eventId, action.threadId, action.forceScroll);
         setTimeout(
           () =>
-            tinyAPI.emit('selectedRoomAfter', action.roomId, action.threadId, action.forceScroll),
+            tinyAPI.emit('selectedRoomAfter', action.roomId, tinyThread, action.forceScroll),
           100,
         );
         this.emit(
           cons.events.navigation.SELECTED_ROOM,
           action.roomId,
           action.eventId,
-          action.threadId,
+          tinyThread,
           action.forceScroll,
         );
       },

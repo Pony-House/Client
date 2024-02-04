@@ -202,7 +202,7 @@ export function openThreadsMessageModal(room) {
                   const roomTimeline = getRoomInfo().roomTimeline;
                   const isLoaded = await roomTimeline.loadEventTimeline(eventId);
                   if (!isLoaded) roomTimeline.loadLiveTimeline();
-                  selectRoom(roomId, undefined, eventId);
+                  selectRoom(roomId, undefined, { threadId: eventId, force: true });
 
                   setLoadingPage(false);
 
