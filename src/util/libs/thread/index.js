@@ -22,12 +22,29 @@ class ThreadsList {
   constructor(roomId) {
     this.roomId = typeof roomId === 'string' ? roomId : null;
     this.nextBatch = null;
+    this.page = null;
+    this.prevs = null;
   }
 
   // Set Room Id
   setRoomId(roomId) {
     this.mx = initMatrix.matrixClient;
     this.roomId = typeof roomId === 'string' ? roomId : null;
+    this.nextBatch = null;
+    this.page = null;
+    this.prevs = null;
+  }
+
+  getNextBatch() {
+    return this.nextBatch;
+  }
+
+  getPage() {
+    return this.page;
+  }
+
+  getPrevs() {
+    return this.prevs;
   }
 
   /**
@@ -59,6 +76,19 @@ class ThreadsList {
         .then((res) => res.json())
         .then((data) => {
           const events = [];
+
+          if (typeof tinyThis.page === 'string') {
+            tinyThis.prevs = tinyThis.page;
+          } else {
+            tinyThis.prevs = null;
+          }
+
+          if (typeof config.from === 'string') {
+            tinyThis.page = config.from;
+          } else {
+            tinyThis.page = null;
+          }
+
           if (config.insertBatch)
             tinyThis.nextBatch = typeof data.next_batch === 'string' ? data.next_batch : null;
 
@@ -127,7 +157,10 @@ export function openThreadsMessageModal(room) {
       const isCustomHTML = true;
       let modal = null;
 
-      console.log(events);
+      const nextBatch = threadsList.getNextBatch();
+      const prevs = threadsList.getPrevs();
+      const page = threadsList.getPage();
+
       for (const item in events) {
         try {
           if (objType(events[item], 'object')) {
@@ -246,9 +279,25 @@ export function openThreadsMessageModal(room) {
 
         id: 'room-pinned-messages',
         dialog: 'modal-lg modal-dialog-scrollable modal-dialog-centered',
-        body: $('<table>', {
-          class: `table${body.length < 1 ? ' table-borderless' : ''} table-hover align-middle m-0`,
-        }).append($('<tbody>').append(body)),
+        body: [
+          $('<table>', {
+            class: `table${body.length < 1 ? ' table-borderless' : ''} table-hover align-middle m-0`,
+          }).append($('<tbody>').append(body)),
+          $('<center>').append(
+            $('<button>', { class: 'btn btn-secondary mx-3 mt-3' })
+              .prop('disabled', typeof prevs !== 'string' && typeof page !== 'string')
+              .on('click', () => {
+                threadsList.get({ from: typeof prevs === 'string' ? prevs : null });
+              })
+              .text('Prev'),
+            $('<button>', { class: 'btn btn-secondary mx-3 mt-3' })
+              .prop('disabled', typeof nextBatch !== 'string')
+              .on('click', () => {
+                threadsList.get({ from: nextBatch });
+              })
+              .text('Next'),
+          ),
+        ],
       });
 
       // Complete
