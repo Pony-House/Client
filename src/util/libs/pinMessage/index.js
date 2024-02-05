@@ -324,9 +324,15 @@ export function openPinMessageModal(room) {
 
         id: 'room-pinned-messages',
         dialog: 'modal-lg modal-dialog-scrollable modal-dialog-centered',
-        body: $('<table>', {
-          class: `table${body.length < 1 ? ' table-borderless' : ''} table-hover align-middle m-0`,
-        }).append($('<tbody>').append(body)),
+        body: [
+          $('<table>', {
+            class: `table table-borderless table-hover align-middle m-0`,
+          }).append($('<tbody>').append(body)),
+
+          $('<center>', { class: 'mt-3 small' }).text(
+            `${events.length}/${PIN_LIMIT} pinned ${events > 1 ? 'messages' : 'message'}`,
+          ),
+        ],
       });
 
       // Complete

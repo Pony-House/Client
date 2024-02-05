@@ -281,7 +281,7 @@ export function openThreadsMessageModal(room) {
         dialog: 'modal-lg modal-dialog-scrollable modal-dialog-centered',
         body: [
           $('<table>', {
-            class: `table${body.length < 1 ? ' table-borderless' : ''} table-hover align-middle m-0`,
+            class: `table table-borderless table-hover align-middle m-0`,
           }).append($('<tbody>').append(body)),
           $('<center>').append(
             $('<button>', { class: 'btn btn-secondary mx-3 mt-3' })
