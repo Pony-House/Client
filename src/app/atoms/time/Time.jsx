@@ -1,8 +1,8 @@
 import React, { useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
+import moment, { momentFormat } from '@src/util/libs/momentjs';
 
 import { isInSameDay } from '../../../util/common';
-import moment, { momentFormat } from '../../../util/libs/momentjs';
 import matrixAppearance from '../../../util/libs/appearance';
 
 const timeBase = (timestamp, fullTime) => {

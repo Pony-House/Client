@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react';
+import moment, { momentFormat } from '@src/util/libs/momentjs';
 import PropTypes from 'prop-types';
 
 import { twemojifyReact, twemojify } from '../../../util/twemojify';
@@ -15,7 +16,6 @@ import matrixAppearance, {
   getAppearance,
   getAnimatedImageUrl,
 } from '../../../util/libs/appearance';
-import moment, { momentFormat } from '../../../util/libs/momentjs';
 
 const timezoneAutoUpdate = { text: null, html: null, value: null };
 setInterval(() => {

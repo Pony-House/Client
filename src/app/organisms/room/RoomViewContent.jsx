@@ -7,6 +7,7 @@ import React, {
   useReducer,
 } from 'react';
 import PropTypes from 'prop-types';
+import moment, { momentFormat } from '@src/util/libs/momentjs';
 
 import { twemojifyReact } from '../../../util/twemojify';
 
@@ -31,7 +32,6 @@ import TimelineScroll from './TimelineScroll';
 import EventLimit from './EventLimit';
 import { getCurrentState } from '../../../util/matrixUtil';
 import tinyAPI from '../../../util/mods';
-import moment, { momentFormat } from '../../../util/libs/momentjs';
 import { rule3 } from '../../../util/tools';
 import { mediaFix } from '../../molecules/media/mediaFix';
 import matrixAppearance from '../../../util/libs/appearance';

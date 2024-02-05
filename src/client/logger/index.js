@@ -1,9 +1,9 @@
 import clone from 'clone';
+import moment from '@src/util/libs/momentjs';
 
 import { logger as mxLogger } from 'matrix-js-sdk/lib/logger';
 import { consoleRemoveData, consoleNewData, consoleUpdate } from '../action/navigation';
 import tinyAPI from '../../util/mods';
-import moment from '../../util/libs/momentjs';
 
 const logCache = {
   data: [],

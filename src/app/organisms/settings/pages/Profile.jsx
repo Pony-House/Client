@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import moment from '@src/util/libs/momentjs';
 
 import initMatrix from '../../../../client/initMatrix';
 import { getEventCords } from '../../../../util/common';
@@ -14,7 +15,6 @@ import { toast } from '../../../../util/tools';
 import { getStatusCSS } from '../../../../util/onlineStatus';
 import { confirmDialog } from '../../../molecules/confirm-dialog/ConfirmDialog';
 import defaultAvatar from '../../../atoms/avatar/defaultAvatar';
-import moment from '../../../../util/libs/momentjs';
 
 function ProfileSection() {
   const userProfile =

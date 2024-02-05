@@ -164,7 +164,7 @@ export function openThreadsMessageModal(room) {
             body.push(
               $('<tr>', {
                 eventid: eventId,
-                class: 'message message--body-only user-you-message chatbox-portable',
+                class: 'message message--body-only user-you-message chatbox-portable border-bg',
               }).append(
                 // Avatar
                 $('<td>', {
@@ -246,9 +246,9 @@ export function openThreadsMessageModal(room) {
 
         id: 'room-pinned-messages',
         dialog: 'modal-lg modal-dialog-scrollable modal-dialog-centered',
-        body: $('<table>', { class: 'table table-borderless table-hover align-middle m-0' }).append(
-          $('<tbody>').append(body),
-        ),
+        body: $('<table>', {
+          class: `table${body.length < 1 ? ' table-borderless' : ''} table-hover align-middle m-0`,
+        }).append($('<tbody>').append(body)),
       });
 
       // Complete

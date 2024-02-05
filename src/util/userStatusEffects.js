@@ -1,11 +1,11 @@
 import { App } from '@capacitor/app';
 import clone from 'clone';
+import moment from '@src/util/libs/momentjs';
 
 import initMatrix from '../client/initMatrix';
 import { emitUpdateProfile } from '../client/action/navigation';
 import tinyAPI from './mods';
 import { countObj, objType } from './tools';
-import moment from './libs/momentjs';
 import { matrixDevices } from '../app/hooks/useDeviceList';
 
 // Cache Data

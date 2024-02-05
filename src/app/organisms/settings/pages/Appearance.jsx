@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Capacitor } from '@capacitor/core';
+import { calendarFormat } from '@src/util/libs/momentjs';
 
 import settings from '../../../../client/state/settings';
 import Toggle from '../../../atoms/button/Toggle';
@@ -18,7 +19,6 @@ import {
   toggleAppearanceAction,
   setAppearance,
 } from '../../../../util/libs/appearance';
-import { calendarFormat } from '../../../../util/libs/momentjs';
 
 function AppearanceSection() {
   const [, updateState] = useState({});

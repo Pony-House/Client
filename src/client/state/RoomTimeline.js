@@ -2,6 +2,7 @@ import * as Y from 'yjs';
 import EventEmitter from 'events';
 import clone from 'clone';
 import objectHash from 'object-hash';
+import moment from '@src/util/libs/momentjs';
 
 import {
   Direction,
@@ -12,7 +13,7 @@ import {
   RoomMemberEvent,
 } from 'matrix-js-sdk';
 
-import { setLoadingPage } from '@src/app/templates/client/Loading';
+// import { setLoadingPage } from '@src/app/templates/client/Loading';
 // import initMatrix, { fetchFn as fetch } from '../initMatrix';
 import initMatrix from '../initMatrix';
 import cons from './cons';
@@ -20,7 +21,7 @@ import cons from './cons';
 import settings from './settings';
 import { messageIsClassicCrdt } from '../../util/libs/crdt';
 import { objType } from '../../util/tools';
-import moment from '../../util/libs/momentjs';
+
 import { updateRoomInfo } from '../action/navigation';
 import urlParams from '../../util/libs/urlParams';
 // import { tinyFixScrollChat } from "../../app/molecules/media/mediaFix";

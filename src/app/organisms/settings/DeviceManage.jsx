@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment, { momentFormat } from '@src/util/libs/momentjs';
 
 import initMatrix from '../../../client/initMatrix';
 import { isCrossVerified } from '../../../util/matrixUtil';
@@ -18,8 +19,6 @@ import { useStore } from '../../hooks/useStore';
 import { useDeviceList } from '../../hooks/useDeviceList';
 import { useCrossSigningStatus } from '../../hooks/useCrossSigningStatus';
 import { accessSecretStorage } from './SecretStorageAccess';
-
-import moment, { momentFormat } from '../../../util/libs/momentjs';
 
 const promptDeviceName = async (deviceName) =>
   new Promise((resolve) => {

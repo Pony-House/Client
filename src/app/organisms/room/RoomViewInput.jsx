@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-autosize-textarea';
 import { Capacitor } from '@capacitor/core';
+import moment from '@src/util/libs/momentjs';
 
 import { ReactEditor } from 'slate-react';
 import { Editor, Transforms } from 'slate';
@@ -18,7 +19,6 @@ import { colorMXID } from '../../../util/colorMXID';
 import { shiftNuller } from '../../../util/shortcut';
 import audioRecorder from '../../../util/audioRec';
 import { momentCountdown, resizeWindowChecker, toast } from '../../../util/tools';
-import moment from '../../../util/libs/momentjs';
 
 import Text from '../../atoms/text/Text';
 import RawIcon from '../../atoms/system-icons/RawIcon';
