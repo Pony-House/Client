@@ -1,7 +1,7 @@
 import React from 'react';
+import appLoadMsg from '@mods/appLoadMsg';
 import { twemojifyReact } from '../../../../util/twemojify';
 import { textValueToNumber } from '../../../../util/tools';
-import appLoadMsg from '../../../../../mods/appLoadMsg';
 
 export default function LibMessages({ where, defaultMessage, user, date }) {
   let textIndex = textValueToNumber(`${user}_${date}`, appLoadMsg.en[where].length);

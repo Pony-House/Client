@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import appLoadMsg from '@mods/appLoadMsg';
 
 import { initHotkeys } from '../../../client/event/hotkeys';
 import { initRoomListListener } from '../../../client/event/roomList';
@@ -27,7 +28,6 @@ import {
 } from '../../../util/tools';
 import { startUserAfk, stopUserAfk } from '../../../util/userStatusEffects';
 import Mods from './Mods';
-import appLoadMsg from '../../../../mods/appLoadMsg';
 import LoadingPage from './Loading';
 import urlParams from '../../../util/libs/urlParams';
 import {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 import clone from 'clone';
-import jReact from '../../../../mods/lib/jReact';
+import jReact from '@mods/lib/jReact';
 
 import IconButton from '../../atoms/button/IconButton';
 import { twemojifyReact } from '../../../util/twemojify';

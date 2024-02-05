@@ -2,6 +2,7 @@ import React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import clone from 'clone';
 import { Buffer } from 'buffer';
+import { startCustomThemes } from '@mods';
 
 import { startWeb3 } from './util/web3';
 import startQuery from './util/libs/jquery';
@@ -10,7 +11,6 @@ import { startSettings } from './client/state/settings';
 import { getPWADisplayMode } from './util/PWA.js';
 
 import App from './app/pages/App';
-import { startCustomThemes } from '../mods';
 import { getOsSettings } from './util/libs/osSettings';
 import ChatRoom from './app/embed/ChatRoom';
 import urlParams from './util/libs/urlParams';

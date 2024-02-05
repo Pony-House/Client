@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import jReact from '@mods/lib/jReact';
 
 import * as Media from '../media/Media';
 import initMatrix from '../../../client/initMatrix';
 import { twemojifyReact } from '../../../util/twemojify';
-import jReact from '../../../../mods/lib/jReact';
 
 import openTinyURL from '../../../util/message/urlProtection';
 import defaultAvatar from '../../atoms/avatar/defaultAvatar';

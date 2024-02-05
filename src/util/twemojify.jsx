@@ -8,10 +8,11 @@ import linkifyRegisterKeywords from 'linkify-plugin-keyword';
 
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
+import keywords from '@mods/keywords';
+
 import Tooltip from '../app/atoms/tooltip/Tooltip';
 import { sanitizeText } from './sanitize';
 
-import keywords from '../../mods/keywords';
 import openTinyURL from './message/urlProtection';
 import { tinyLinkifyFixer } from './clear-urls/clearUrls';
 
