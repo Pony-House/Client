@@ -59,7 +59,6 @@ function Room() {
 
   useEffect(() => {
     const setRoomSelected = (roomId, threadId, eventId, forceScroll) => {
-
       const threadTimeline = threadId ? RoomTimeline.newFromThread(threadId, roomId) : null;
       const roomTimeline = threadTimeline ?? new RoomTimeline(roomId);
 
@@ -68,38 +67,45 @@ function Room() {
         eventId: eventId ?? null,
         forceScroll,
       });
-
     };
     const handleRoomSelected = (roomId, prevRoomId, eventId, threadData, forceScroll) => {
       roomInfo.roomTimeline?.removeInternalListeners();
       $('.space-drawer-menu-item').removeClass('active');
 
       if (mx.getRoom(roomId)) {
-
-        const threadId = typeof threadData === 'string' ? threadData : objType(threadData, 'object') ? threadData.threadId : null;
-        if (threadId && (objType(threadData, 'object') && threadData.force) && roomInfo.roomTimeline) {
+        const threadId =
+          typeof threadData === 'string'
+            ? threadData
+            : objType(threadData, 'object')
+              ? threadData.threadId
+              : null;
+        if (
+          threadId &&
+          objType(threadData, 'object') &&
+          threadData.force &&
+          roomInfo.roomTimeline
+        ) {
           const thread = threadId ? roomInfo.roomTimeline.room.getThread(threadId) : null;
           if (thread) {
             setIsLoading(true);
-            roomInfo.roomTimeline.matrixClient.getThreadTimeline(thread.timelineSet, threadId).then(() => {
-              setIsLoading(false);
-              setRoomSelected(roomId, threadId, eventId, forceScroll);
-            }).catch(err => {
-
-              console.error(err);
-              alert(err.message);
-              setIsLoading(false);
-              setRoomSelected(roomId, threadId, eventId, forceScroll);
-
-            });
+            roomInfo.roomTimeline.matrixClient
+              .getThreadTimeline(thread.timelineSet, threadId)
+              .then(() => {
+                setIsLoading(false);
+                setRoomSelected(roomId, threadId, eventId, forceScroll);
+              })
+              .catch((err) => {
+                console.error(err);
+                alert(err.message);
+                setIsLoading(false);
+                setRoomSelected(roomId, threadId, eventId, forceScroll);
+              });
           } else {
             setRoomSelected(roomId, threadId, eventId, forceScroll);
           }
         } else {
           setRoomSelected(roomId, threadId, eventId, forceScroll);
         }
-
-
       } else {
         // TODO: add ability to join room if roomId is invalid
         sendRoomInfo({
@@ -148,7 +154,12 @@ function Room() {
       <div className="room">
         <div className="room__content">
           <RoomSettings roomId={roomTimeline.roomId} />
-          <RoomView isUserList={isUserList} roomTimeline={roomTimeline} eventId={eventId} isLoading={isLoading} />
+          <RoomView
+            isUserList={isUserList}
+            roomTimeline={roomTimeline}
+            eventId={eventId}
+            isLoading={isLoading}
+          />
         </div>
         {peopleDrawer}
       </div>

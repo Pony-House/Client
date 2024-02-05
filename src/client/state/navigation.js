@@ -99,7 +99,12 @@ class Navigation extends EventEmitter {
   }
 
   _selectRoom(roomId, eventId, threadId, forceScroll) {
-    const tinyThread = typeof threadId === 'string' ? threadId : objType(threadId, 'object') ? threadId.threadId : null;
+    const tinyThread =
+      typeof threadId === 'string'
+        ? threadId
+        : objType(threadId, 'object')
+          ? threadId.threadId
+          : null;
     const prevSelectedRoomId = this.selectedRoomId;
     this.selectedRoomId = roomId;
     this.selectedThreadId = tinyThread ?? null;
@@ -424,12 +429,16 @@ class Navigation extends EventEmitter {
 
         tinyAPI.emit('selectedRoom', action.roomId, action.forceScroll);
         if (action.roomId) this._selectTabWithRoom(action.roomId, action.forceScroll);
-        const tinyThread = typeof action.threadId === 'string' ? action.threadId : objType(action.threadId, 'object') ? action.threadId.threadId : null;
+        const tinyThread =
+          typeof action.threadId === 'string'
+            ? action.threadId
+            : objType(action.threadId, 'object')
+              ? action.threadId.threadId
+              : null;
 
         this._selectRoom(action.roomId, action.eventId, action.threadId, action.forceScroll);
         setTimeout(
-          () =>
-            tinyAPI.emit('selectedRoomAfter', action.roomId, tinyThread, action.forceScroll),
+          () => tinyAPI.emit('selectedRoomAfter', action.roomId, tinyThread, action.forceScroll),
           100,
         );
         this.emit(

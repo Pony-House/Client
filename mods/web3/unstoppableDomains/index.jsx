@@ -1,4 +1,4 @@
-import tinyAPI from '../../../src/util/mods';
+import tinyAPI from '@src/util/mods';
 import renderUd from './tab';
 
 export default function startMod() {

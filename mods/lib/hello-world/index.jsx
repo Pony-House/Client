@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import moment from '../../../src/util/libs/momentjs';
+import moment from '@src/util/libs/momentjs';
 
 import jReact from '../jReact';
 

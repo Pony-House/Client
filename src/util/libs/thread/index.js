@@ -18,7 +18,6 @@ const ImageBrokenSVG = './img/svg/image-broken.svg';
 
 // The class
 class ThreadsList {
-
   // Constructor
   constructor(roomId) {
     this.roomId = typeof roomId === 'string' ? roomId : null;
@@ -119,148 +118,146 @@ export default threadsList;
 export function openThreadsMessageModal(room) {
   threadsList.setRoomId(room.roomId);
   setLoadingPage();
-  threadsList.get().then((events) => {
+  threadsList
+    .get()
+    .then((events) => {
+      // Prepare
+      const body = [];
+      const mx = initMatrix.matrixClient;
+      const isCustomHTML = true;
+      let modal = null;
 
-    // Prepare
-    const body = [];
-    const mx = initMatrix.matrixClient;
-    const isCustomHTML = true;
-    let modal = null;
+      console.log(events);
+      for (const item in events) {
+        try {
+          if (objType(events[item], 'object')) {
+            // is Redacted
+            const eventId = events[item].eventId;
 
-    console.log(events);
-    for (const item in events) {
-      try {
-        if (objType(events[item], 'object')) {
+            // Prepare Data
+            const userId = events[item].senderId;
+            const userColor = colorMXID(userId);
+            const user = mx.getUser(userId);
 
-          // is Redacted
-          const eventId = events[item].eventId;
+            const roomId = room.roomId;
+            const tinyUsername = twemojify(user.userId);
 
-          // Prepare Data
-          const userId = events[item].senderId;
-          const userColor = colorMXID(userId);
-          const user = mx.getUser(userId);
+            const imageSrc = user ? mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop') : null;
 
-          const roomId = room.roomId;
-          const tinyUsername = twemojify(user.userId);
+            const content = events[item].content;
+            const msgBody =
+              typeof content.formatted_body === 'string' ? content.formatted_body : content.body;
 
-          const imageSrc = user ? mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop') : null;
+            let msgData = createMessageData(content, msgBody, isCustomHTML, false, true);
 
-          const content = events[item].content;
-          const msgBody =
-            typeof content.formatted_body === 'string' ? content.formatted_body : content.body;
+            const emojiOnly = false;
 
-          let msgData = createMessageData(content, msgBody, isCustomHTML, false, true);
+            if (!isCustomHTML) {
+              // If this is a plaintext message, wrap it in a <p> element (automatically applying
+              // white-space: pre-wrap) in order to preserve newlines
+              msgData = $('<p>', { class: 'm-0' }).append(msgData);
+            } else {
+              msgData = $('<span>', { class: 'custom-html' }).append(msgData);
+            }
 
-          const emojiOnly = false;
-
-          if (!isCustomHTML) {
-            // If this is a plaintext message, wrap it in a <p> element (automatically applying
-            // white-space: pre-wrap) in order to preserve newlines
-            msgData = $('<p>', { class: 'm-0' }).append(msgData);
-          } else {
-            msgData = $('<span>', { class: 'custom-html' }).append(msgData);
-          }
-
-          // Insert Body
-          body.push(
-            $('<tr>', {
-              eventid: eventId,
-              class: 'message message--body-only user-you-message chatbox-portable',
-            }).append(
-              // Avatar
-              $('<td>', {
-                class:
-                  'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container',
+            // Insert Body
+            body.push(
+              $('<tr>', {
+                eventid: eventId,
+                class: 'message message--body-only user-you-message chatbox-portable',
               }).append(
-                $('<button>')
-                  .on('click', () => openProfileViewer(userId, roomId))
-                  .append(
-                    $('<img>', {
-                      class: 'avatar-react',
-                      draggable: false,
-                      src: imageSrc !== null ? imageSrc : defaultAvatar(userColor),
-                      alt: 'avatar',
-                    })
-                      .on('load', (event) => {
-                        const e = event.originalEvent;
-                        e.target.style.backgroundColor = 'transparent';
+                // Avatar
+                $('<td>', {
+                  class:
+                    'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container',
+                }).append(
+                  $('<button>')
+                    .on('click', () => openProfileViewer(userId, roomId))
+                    .append(
+                      $('<img>', {
+                        class: 'avatar-react',
+                        draggable: false,
+                        src: imageSrc !== null ? imageSrc : defaultAvatar(userColor),
+                        alt: 'avatar',
                       })
-                      .on('error', (event) => {
-                        const e = event.originalEvent;
-                        e.target.src = ImageBrokenSVG;
-                      }),
+                        .on('load', (event) => {
+                          const e = event.originalEvent;
+                          e.target.style.backgroundColor = 'transparent';
+                        })
+                        .on('error', (event) => {
+                          const e = event.originalEvent;
+                          e.target.src = ImageBrokenSVG;
+                        }),
+                    ),
+                ),
+
+                // Message
+                $('<td>', { class: 'p-0 pe-3 py-1 message-open-click' })
+                  .on('click', async () => {
+                    setLoadingPage();
+                    if (modal) modal.hide();
+
+                    // Go to timeline
+                    const roomTimeline = getRoomInfo().roomTimeline;
+                    const isLoaded = await roomTimeline.loadEventTimeline(eventId);
+                    if (!isLoaded) roomTimeline.loadLiveTimeline();
+                    selectRoom(roomId, undefined, { threadId: eventId, force: true });
+
+                    setLoadingPage(false);
+                  })
+                  .append(
+                    $('<div>', { class: 'mb-1' }).append(
+                      $('<span>', { class: 'username-base emoji-size-fix' })
+                        .css('color', userColor)
+                        .append($('<span>', { class: 'user-id' }).append(tinyUsername)),
+
+                      $('<span>', { class: 'ms-2 very-small text-gray' }).append(
+                        jqueryTime(events[item].age),
+                      ),
+                    ),
+                    $('<div>', {
+                      class: `text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''}`,
+                    }).append(msgData),
                   ),
               ),
-
-              // Message
-              $('<td>', { class: 'p-0 pe-3 py-1 message-open-click' })
-                .on('click', async () => {
-                  setLoadingPage();
-                  if (modal) modal.hide();
-
-                  // Go to timeline
-                  const roomTimeline = getRoomInfo().roomTimeline;
-                  const isLoaded = await roomTimeline.loadEventTimeline(eventId);
-                  if (!isLoaded) roomTimeline.loadLiveTimeline();
-                  selectRoom(roomId, undefined, { threadId: eventId, force: true });
-
-                  setLoadingPage(false);
-
-                })
-                .append(
-                  $('<div>', { class: 'mb-1' }).append(
-                    $('<span>', { class: 'username-base emoji-size-fix' })
-                      .css('color', userColor)
-                      .append($('<span>', { class: 'user-id' }).append(tinyUsername)),
-
-                    $('<span>', { class: 'ms-2 very-small text-gray' }).append(
-                      jqueryTime(events[item].age),
-                    ),
-                  ),
-                  $('<div>', {
-                    class: `text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''}`,
-                  }).append(msgData),
-                ),
-            ),
-          );
-
+            );
+          }
+        } catch (err) {
+          console.error(err);
         }
-      } catch (err) {
-        console.error(err);
       }
-    }
 
-    // Empty List
-    if (body.length < 1) {
-      body.push(
-        $('<tr>', {
-          class: 'message message--body-only user-you-message chatbox-portable',
-        }).append(
-          $('<td>', { class: 'p-0 pe-3 py-1 text-center text-bg-force small', colspan: 2 }).text(
-            "This room doesn't have any threads... yet.",
+      // Empty List
+      if (body.length < 1) {
+        body.push(
+          $('<tr>', {
+            class: 'message message--body-only user-you-message chatbox-portable',
+          }).append(
+            $('<td>', { class: 'p-0 pe-3 py-1 text-center text-bg-force small', colspan: 2 }).text(
+              "This room doesn't have any threads... yet.",
+            ),
           ),
+        );
+      }
+
+      // Send Modal
+      modal = btModal({
+        title: 'Threads',
+
+        id: 'room-pinned-messages',
+        dialog: 'modal-lg modal-dialog-scrollable modal-dialog-centered',
+        body: $('<table>', { class: 'table table-borderless table-hover align-middle m-0' }).append(
+          $('<tbody>').append(body),
         ),
-      );
-    }
+      });
 
-    // Send Modal
-    modal = btModal({
-      title: 'Threads',
-
-      id: 'room-pinned-messages',
-      dialog: 'modal-lg modal-dialog-scrollable modal-dialog-centered',
-      body: $('<table>', { class: 'table table-borderless table-hover align-middle m-0' }).append(
-        $('<tbody>').append(body),
-      ),
+      // Complete
+      setLoadingPage(false);
+    })
+    .catch((err) => {
+      console.error(err);
+      alert(err.message);
     });
-
-    // Complete
-    setLoadingPage(false);
-
-  }).catch(err => {
-    console.error(err);
-    alert(err.message);
-  });
 }
 
 if (__ENV_APP__.MODE === 'development') {
