@@ -44,6 +44,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
   // Rec Ref
   const recAudioRef = useRef(null);
   const [embedHeight, setEmbedHeight] = useState(null);
+  const [closeUpButton, setCloseUpButton] = useState(null);
 
   // File
   const [attachment, setAttachment] = useState(null);
@@ -970,15 +971,22 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
             <IconButton
               id="room-file-upload"
               className="me-2"
-              onDblClick={handleUploadClick}
+              onDblClick={() => {
+                if (closeUpButton) closeUpButton();
+                setCloseUpButton(null);
+                handleUploadClick();
+              }}
               onClick={(evt) =>
-                openReusableContextMenu('top', getEventCords(evt), (closeMenu) => (
-                  <RoomUpload
-                    roomId={roomId}
-                    handleUploadClick={handleUploadClick}
-                    afterOptionSelect={closeMenu}
-                  />
-                ))
+                openReusableContextMenu('top', getEventCords(evt, '.btn-link'), (closeMenu) => {
+                  setCloseUpButton(closeMenu);
+                  return (
+                    <RoomUpload
+                      roomId={roomId}
+                      handleUploadClick={handleUploadClick}
+                      afterOptionSelect={closeMenu}
+                    />
+                  );
+                })
               }
               fa="fa-solid fa-circle-plus"
             />

@@ -69,6 +69,7 @@ module.exports = {
     'no-restricted-exports': 0,
     'no-nested-ternary': 0,
     'no-bitwise': 0,
+    'no-unused-vars': 0,
 
     'jsx-a11y/control-has-associated-label': 0,
     'jsx-a11y/no-noninteractive-element-interactions': 0,
