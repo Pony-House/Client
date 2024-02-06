@@ -27,6 +27,7 @@ function AppearanceSection() {
   const [showUserDMstatus, setShowUserStatus] = useState(appearanceSettings.showUserDMstatus);
   const [pinDMmessages, setPinDMmessages] = useState(appearanceSettings.pinDMmessages);
   const [sendMessageEnter, setSendMessageEnter] = useState(appearanceSettings.sendMessageEnter);
+  const [forceThreadButton, setForceThreadButton] = useState(appearanceSettings.forceThreadButton);
 
   const [isEmbedEnabled, setEmbedEnabled] = useState(appearanceSettings.isEmbedEnabled);
   const [isUNhoverEnabled, setUNhoverEnabled] = useState(appearanceSettings.isUNhoverEnabled);
@@ -334,6 +335,24 @@ function AppearanceSection() {
               }
             />
           ) : null}
+
+          <SettingTile
+            title="Force thread button visibility in encrypted rooms"
+            options={
+              <Toggle
+                className="d-inline-flex"
+                isActive={forceThreadButton}
+                onToggle={toggleAppearanceAction('forceThreadButton', setForceThreadButton)}
+              />
+            }
+            content={
+              <div className="very-small text-gray">
+                {
+                  "The create thread button will be forced to be visible in encrypted rooms. But if you don't have permission, the button will remain invisible."
+                }
+              </div>
+            }
+          />
         </ul>
       </div>
 

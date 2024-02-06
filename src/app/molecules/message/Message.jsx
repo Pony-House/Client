@@ -57,7 +57,10 @@ import getUrlPreview from '../../../util/libs/getUrlPreview';
 
 import Embed from './Embed';
 import tinyAPI from '../../../util/mods';
-import { getAnimatedImageUrl, getAppearance } from '../../../util/libs/appearance';
+import matrixAppearance, {
+  getAnimatedImageUrl,
+  getAppearance,
+} from '../../../util/libs/appearance';
 import UserOptions from '../user-options/UserOptions';
 import { getDataList } from '../../../util/selectedRoom';
 import { tinyLinkifyFixer } from '../../../util/clear-urls/clearUrls';
@@ -315,19 +318,19 @@ const createMessageData = (
       const insertMsg = () =>
         !isJquery
           ? twemojifyReact(
-              sanitizeCustomHtml(initMatrix.matrixClient, body),
-              undefined,
-              true,
-              false,
-              true,
-            )
+            sanitizeCustomHtml(initMatrix.matrixClient, body),
+            undefined,
+            true,
+            false,
+            true,
+          )
           : twemojify(
-              sanitizeCustomHtml(initMatrix.matrixClient, body),
-              undefined,
-              true,
-              false,
-              true,
-            );
+            sanitizeCustomHtml(initMatrix.matrixClient, body),
+            undefined,
+            true,
+            false,
+            true,
+          );
 
       const msgOptions = tinyAPI.emit(
         'messageBody',
@@ -859,6 +862,9 @@ const MessageOptions = React.memo(
     body,
     customHTML,
   }) => {
+    const [isForceThreadVisible, setIsForceThreadVisible] = useState(
+      matrixAppearance.get('forceThreadButton'),
+    );
     const { roomId, room } = roomTimeline;
     const mx = initMatrix.matrixClient;
     const senderId = mEvent.getSender();
@@ -889,6 +895,15 @@ const MessageOptions = React.memo(
       selectRoom(roomId, eventId, eventId);
     };
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      const newForceThread = (value) => setIsForceThreadVisible(value);
+      matrixAppearance.on('forceThreadButton', newForceThread);
+      return () => {
+        matrixAppearance.off('forceThreadButton', newForceThread);
+      };
+    });
+
     return (
       <div className="message__options">
         {canSendReaction && (
@@ -901,7 +916,7 @@ const MessageOptions = React.memo(
         )}
         <IconButton onClick={() => reply()} fa="fa-solid fa-reply" size="normal" tooltip="Reply" />
 
-        {canCreateThread && (
+        {canCreateThread && (isForceThreadVisible || !roomTimeline.isEncrypted()) && (
           <IconButton
             onClick={() => createThread()}
             fa="bi bi-layers"

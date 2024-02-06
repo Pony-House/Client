@@ -100,6 +100,7 @@ module.exports = {
       },
     ],
 
+    'react/jsx-curly-brace-presence': 0,
     'react/function-component-definition': 0,
     'react/button-has-type': 0,
     'react/forbid-prop-types': 0,

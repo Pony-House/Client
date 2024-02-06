@@ -34,6 +34,11 @@ class MatrixAppearance extends EventEmitter {
           ? this.content.isAnimateAvatarsEnabled
           : true;
 
+      this.content.forceThreadButton =
+        typeof this.content.forceThreadButton === 'boolean'
+          ? this.content.forceThreadButton
+          : false;
+
       this.content.showUserDMstatus =
         typeof this.content.showUserDMstatus === 'boolean' ? this.content.showUserDMstatus : true;
       this.content.pinDMmessages =
