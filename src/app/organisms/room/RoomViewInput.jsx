@@ -25,7 +25,7 @@ import RawIcon from '../../atoms/system-icons/RawIcon';
 import IconButton from '../../atoms/button/IconButton';
 import ScrollView from '../../atoms/scroll/ScrollView';
 import { MessageReply } from '../../molecules/message/Message';
-import { flattenNodes } from '../../molecules/markdown-input/MarkdownInput';
+// import { flattenNodes } from '../../molecules/markdown-input/MarkdownInput';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
@@ -81,10 +81,10 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     };
   }, [roomsInput, viewEvent]);
 
-  function getEditorContent() {
+  /* function getEditorContent() {
     const content = editor.current.children;
     return flattenNodes(content);
-  }
+  } */
 
   function clearEditor() {
     if (editor.current)
@@ -905,7 +905,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
         <Text className="room-input__alert">
           {tombstoneEvent
             ? tombstoneEvent.getContent()?.body ??
-              'This room has been replaced and is no longer active.'
+            'This room has been replaced and is no longer active.'
             : 'You do not have permission to post to this room'}
         </Text>
       );
@@ -917,21 +917,14 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     return (
       <>
         <div
-          className={`room-input__option-container${
-            attachment === null ? '' : ' room-attachment__option'
-          }`}
+          className={`room-input__option-container${attachment === null ? '' : ' room-attachment__option'
+            }`}
         >
           <input
             onChange={uploadFileChange}
             style={{ display: 'none' }}
             ref={uploadInputRef}
             type="file"
-          />
-          <IconButton
-            id="room-file-upload"
-            onClick={handleUploadClick}
-            tooltip={attachment === null ? 'Upload' : 'Cancel'}
-            fa="fa-solid fa-circle-plus"
           />
 
           <IconButton
@@ -946,7 +939,16 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
         </div>
 
         <div ref={inputBaseRef} className="room-input__input-container">
+
+          <IconButton
+            id="room-file-upload"
+            onClick={handleUploadClick}
+            tooltip={attachment === null ? 'Upload' : 'Cancel'}
+            fa="fa-solid fa-circle-plus"
+          />
+
           {roomTimeline.isEncrypted() && <RawIcon size="extra-small" fa="bi bi-shield-lock-fill" />}
+
           <ScrollView autoHide>
             <Text className="room-input__textarea-wrapper">
               <TextareaAutosize
@@ -960,78 +962,78 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
               />
             </Text>
           </ScrollView>
-        </div>
 
-        <div
-          ref={rightOptionsRef}
-          id="chat-textarea-actions"
-          className="room-input__option-container"
-        >
-          <IconButton
-            id="sticker-opener"
-            onClick={(e) => {
-              const cords = getEventCords(e);
-              cords.x -= document.dir === 'rtl' ? -80 : 280;
-              cords.y -= 460;
-
-              cords.y += 220;
-
-              openEmojiBoard(roomId, cords, 'sticker', (data) => {
-                handleSendSticker({
-                  body: data.unicode.substring(1, data.unicode.length - 1),
-                  httpUrl: mx.mxcUrlToHttp(data.mxc),
-                  mxc: data.mxc,
-                });
-
-                shiftNuller(() => e.target.click());
-              });
-            }}
-            tooltip="Sticker"
-            fa="fa-solid fa-note-sticky"
-          />
-
-          <IconButton
-            id="emoji-opener"
-            onClick={(e) => {
-              const cords = getEventCords(e);
-              cords.x -= document.dir === 'rtl' ? -80 : 280;
-              cords.y -= 460;
-
-              if (window.matchMedia('screen and (max-width: 479px)').matches) {
-                cords.x -= 50;
-              }
-
-              const tabNewSpace = $('.room-view__sticky').height(true) - 84;
-              cords.y += 220;
-
-              if (tabNewSpace > 0) {
-                cords.y -= tabNewSpace - 60;
-              }
-
-              openEmojiBoard(roomId, cords, 'emoji', (emoji) => {
-                addEmoji(emoji);
-                shiftNuller(() => e.target.click());
-              });
-            }}
-            tooltip="Emoji"
-            fa="fa-solid fa-face-smile"
-          />
-
-          <IconButton
-            id="audio-sender"
-            ref={recAudioRef}
-            tooltip="Send Audio"
-            fa="fa-solid fa-microphone"
+          <div
+            ref={rightOptionsRef}
+            id="chat-textarea-actions"
+            className="room-input__option-container"
           >
-            <time className="very-small ps-2 d-none" />
-          </IconButton>
+            <IconButton
+              id="sticker-opener"
+              onClick={(e) => {
+                const cords = getEventCords(e);
+                cords.x -= document.dir === 'rtl' ? -80 : 280;
+                cords.y -= 460;
 
-          <IconButton
-            id="send-room-message"
-            onClick={sendMessage}
-            tooltip="Send"
-            fa="fa-solid fa-paper-plane"
-          />
+                cords.y += 220;
+
+                openEmojiBoard(roomId, cords, 'sticker', (data) => {
+                  handleSendSticker({
+                    body: data.unicode.substring(1, data.unicode.length - 1),
+                    httpUrl: mx.mxcUrlToHttp(data.mxc),
+                    mxc: data.mxc,
+                  });
+
+                  shiftNuller(() => e.target.click());
+                });
+              }}
+              tooltip="Sticker"
+              fa="fa-solid fa-note-sticky"
+            />
+
+            <IconButton
+              id="emoji-opener"
+              onClick={(e) => {
+                const cords = getEventCords(e);
+                cords.x -= document.dir === 'rtl' ? -80 : 280;
+                cords.y -= 460;
+
+                if (window.matchMedia('screen and (max-width: 479px)').matches) {
+                  cords.x -= 50;
+                }
+
+                const tabNewSpace = $('.room-view__sticky').height(true) - 84;
+                cords.y += 220;
+
+                if (tabNewSpace > 0) {
+                  cords.y -= tabNewSpace - 60;
+                }
+
+                openEmojiBoard(roomId, cords, 'emoji', (emoji) => {
+                  addEmoji(emoji);
+                  shiftNuller(() => e.target.click());
+                });
+              }}
+              tooltip="Emoji"
+              fa="fa-solid fa-face-smile"
+            />
+
+            <IconButton
+              id="audio-sender"
+              ref={recAudioRef}
+              tooltip="Send Audio"
+              fa="fa-solid fa-microphone"
+            >
+              <time className="very-small ps-2 d-none" />
+            </IconButton>
+
+            <IconButton
+              id="send-room-message"
+              onClick={sendMessage}
+              tooltip="Send"
+              fa="fa-solid fa-paper-plane"
+            />
+          </div>
         </div>
       </>
     );
@@ -1045,9 +1047,8 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     return (
       <div className="room-attachment">
         <div
-          className={`room-attachment__preview${
-            fileType !== 'image' ? ' room-attachment__icon' : ''
-          }`}
+          className={`room-attachment__preview${fileType !== 'image' ? ' room-attachment__icon' : ''
+            }`}
         >
           {fileType === 'image' && (
             <img alt={attachment.name} src={URL.createObjectURL(attachment)} />

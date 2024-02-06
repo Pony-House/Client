@@ -2,6 +2,10 @@
 @use './partials/screen';
 @use './partials/dir';
 
+.timeline__wrapper {
+  margin-bottom: 26px;
+}
+
 .room-view {
   @extend .cp-fx__column;
   height: 100%;
@@ -49,8 +53,7 @@
   }
 
   &__sticky {
-    min-height: 85px;
+    min-height: 69px;
     position: relative;
-    border-top: 1px solid var(--bg-surface-border);
   }
 }

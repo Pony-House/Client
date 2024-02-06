@@ -1,9 +1,10 @@
 @use './partials/dir';
 
 .room-input {
-  padding: var(--sp-extra-tight) calc(var(--sp-normal) - 2px);
+  padding-left: calc(var(--sp-normal) - 2px);
+  padding-right: calc(var(--sp-normal) - 2px);
   display: flex;
-  min-height: 56px;
+  min-height: 40px;
 
   &__alert {
     margin: auto;
