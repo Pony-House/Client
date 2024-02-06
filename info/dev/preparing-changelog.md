@@ -36,3 +36,5 @@
 - Markdown codes fix. (code from variance client)
 - Tiny discord style font.
 - Clock real time setting update.
+- New threads button.
+- Textbox to type messages. (layout update)
