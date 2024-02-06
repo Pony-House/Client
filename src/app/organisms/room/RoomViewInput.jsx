@@ -11,7 +11,7 @@ import { Editor, Transforms } from 'slate';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import settings from '../../../client/state/settings';
-import { openEmojiBoard } from '../../../client/action/navigation';
+import { openEmojiBoard, openReusableContextMenu } from '../../../client/action/navigation';
 import navigation from '../../../client/state/navigation';
 import { bytesToSize, getEventCords } from '../../../util/common';
 import { getUsername, getCurrentState } from '../../../util/matrixUtil';
@@ -32,6 +32,7 @@ import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 import commands from '../../../commands';
 import { getAppearance } from '../../../util/libs/appearance';
 import { mediaFix } from '../../molecules/media/mediaFix';
+import RoomUpload from '../../molecules/room-upload-button/RoomUpload';
 
 // Variables
 const CMD_REGEX = /(^\/|:|@)(\S*)$/;
@@ -969,8 +970,16 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
             <IconButton
               id="room-file-upload"
               className="me-2"
-              onClick={handleUploadClick}
-              tooltip="Upload"
+              onDblClick={handleUploadClick}
+              onClick={(evt) =>
+                openReusableContextMenu('top', getEventCords(evt), (closeMenu) => (
+                  <RoomUpload
+                    roomId={roomId}
+                    handleUploadClick={handleUploadClick}
+                    afterOptionSelect={closeMenu}
+                  />
+                ))
+              }
               fa="fa-solid fa-circle-plus"
             />
           ) : null}

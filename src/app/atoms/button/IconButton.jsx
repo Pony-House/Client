@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import RawIcon from '../system-icons/RawIcon';
@@ -16,6 +16,7 @@ const IconButton = React.forwardRef(
       tooltipPlacement,
       src,
       onClick,
+      onDblClick,
       tabIndex,
       disabled,
       isImage,
@@ -27,6 +28,7 @@ const IconButton = React.forwardRef(
     },
     ref,
   ) => {
+    const button = useRef(null);
     let textColor = variant;
     if (typeof customColor === 'string') {
       if (customColor !== 'null') {
@@ -40,11 +42,21 @@ const IconButton = React.forwardRef(
       textColor = `btn-text-${textColor}`;
     }
 
+    useEffect(() => {
+      if (typeof onDblClick === 'function') {
+        const buttonClick = $(button.current);
+        buttonClick.on('dblclick', onDblClick);
+        return () => {
+          buttonClick.off('dblclick', onDblClick);
+        };
+      }
+    });
+
     const btn = (
       <button
         id={id}
         style={style}
-        ref={ref}
+        ref={typeof onDblClick !== 'function' ? ref : button}
         className={`btn ic-btn ic-btn-${variant} btn-link btn-bg ${textColor} ${className}`}
         onClick={onClick}
         type={type}
@@ -74,6 +86,7 @@ IconButton.defaultProps = {
   type: 'button',
   tooltipPlacement: 'top',
   onClick: null,
+  onDblClick: null,
   fa: null,
   tabIndex: 0,
   disabled: false,
@@ -93,6 +106,7 @@ IconButton.propTypes = {
   tooltipPlacement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
   src: PropTypes.string,
   onClick: PropTypes.func,
+  onDblClick: PropTypes.func,
   tabIndex: PropTypes.number,
   disabled: PropTypes.bool,
   isImage: PropTypes.bool,
