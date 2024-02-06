@@ -40,14 +40,16 @@ export function i18Await() {
 // Refresh Lang
 export function refreshLang() {
   langs.loading = true;
-  global.i18 = {
-    refreshLang,
-    get: i18Get,
-    isLoading: i18IsLoading,
-    getData: i18GetData,
-    getRoot: i18GetRoot,
-    wait: i18Await,
-  };
+  if (__ENV_APP__.MODE === 'development') {
+    global.i18 = {
+      refreshLang,
+      get: i18Get,
+      isLoading: i18IsLoading,
+      getData: i18GetData,
+      getRoot: i18GetRoot,
+      wait: i18Await,
+    };
+  }
   return new Promise((resolve, reject) => {
     // Fix Default
     try {

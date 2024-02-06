@@ -105,7 +105,9 @@ matrixAppearance.setMaxListeners(Infinity);
 export { toggleAppearanceAction };
 export default matrixAppearance;
 
-global.appearanceApi = {
-  getCfg: getAppearance,
-  setCfg: setAppearance,
-};
+if (__ENV_APP__.MODE === 'development') {
+  global.appearanceApi = {
+    getCfg: getAppearance,
+    setCfg: setAppearance,
+  };
+}

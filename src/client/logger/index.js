@@ -80,33 +80,35 @@ function playLogData() {
   }
 }
 
-global.logger = {
-  logDatatoString,
-  isLogString,
+if (__ENV_APP__.MODE === 'development') {
+  global.logger = {
+    logDatatoString,
+    isLogString,
 
-  getData: () => clone(logCache.data),
+    getData: () => clone(logCache.data),
 
-  debug() {
-    logCache.add.apply(this, createLogArgs('debug', arguments));
-  },
-  log() {
-    logCache.add.apply(this, createLogArgs('log', arguments));
-  },
-  info() {
-    logCache.add.apply(this, createLogArgs('info', arguments));
-  },
-  warn() {
-    logCache.add.apply(this, createLogArgs('warn', arguments));
-  },
-  error() {
-    logCache.add.apply(this, createLogArgs('error', arguments));
-  },
-  trace() {
-    logCache.add.apply(this, createLogArgs('trace', arguments));
-  },
+    debug() {
+      logCache.add.apply(this, createLogArgs('debug', arguments));
+    },
+    log() {
+      logCache.add.apply(this, createLogArgs('log', arguments));
+    },
+    info() {
+      logCache.add.apply(this, createLogArgs('info', arguments));
+    },
+    warn() {
+      logCache.add.apply(this, createLogArgs('warn', arguments));
+    },
+    error() {
+      logCache.add.apply(this, createLogArgs('error', arguments));
+    },
+    trace() {
+      logCache.add.apply(this, createLogArgs('trace', arguments));
+    },
 
-  play: playLogData,
-};
+    play: playLogData,
+  };
+}
 
 export default {
   logDatatoString,
