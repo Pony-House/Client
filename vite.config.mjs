@@ -244,6 +244,7 @@ export default defineConfig(({ command, mode }) => {
         },
 
         vite: {
+          define: result.define,
           resolve: result.resolve,
           build: {
             sourcemap,
@@ -266,6 +267,7 @@ export default defineConfig(({ command, mode }) => {
         },
 
         vite: {
+          define: result.define,
           resolve: result.resolve,
           build: {
             sourcemap: sourcemap ? 'inline' : undefined, // #332

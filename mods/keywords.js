@@ -49,14 +49,13 @@ keywords.push({
   href: `https://ubuntu.com/`,
 });
 
-// ELECTRON GLITCH ON __ENV_APP__
-// if (__ENV_APP__.IPFS) {
-keywords.push({
-  title: `IPFS - Inter Planetary File System`,
-  name: `ipfs`,
-  href: `https://ipfs.tech/`,
-});
-// }
+if (__ENV_APP__.IPFS) {
+  keywords.push({
+    title: `IPFS - Inter Planetary File System`,
+    name: `ipfs`,
+    href: `https://ipfs.tech/`,
+  });
+}
 
 // Games
 keywords.push({
@@ -182,190 +181,187 @@ keywords.push({
   href: `https://equestria.social/`,
 });
 
-// ELECTRON GLITCH ON __ENV_APP__
-// if (__ENV_APP__.WEB3) {
+if (__ENV_APP__.WEB3) {
+  // Crypto Social
+  keywords.push({
+    title: `Lenster - ${defaultNames.lensWeb3}`,
+    name: `lenster`,
+    href: `https://lenster.xyz/`,
+  });
 
-// Crypto Social
-keywords.push({
-  title: `Lenster - ${defaultNames.lensWeb3}`,
-  name: `lenster`,
-  href: `https://lenster.xyz/`,
-});
+  keywords.push({
+    title: `Lens Protocol`,
+    name: `lens`,
+    href: `https://www.lens.xyz/`,
+  });
 
-keywords.push({
-  title: `Lens Protocol`,
-  name: `lens`,
-  href: `https://www.lens.xyz/`,
-});
+  keywords.push({
+    title: `Odysee`,
+    name: `odysee`,
+    href: `https://odysee.com/`,
+  });
 
-keywords.push({
-  title: `Odysee`,
-  name: `odysee`,
-  href: `https://odysee.com/`,
-});
+  // Crypto
+  keywords.push({
+    title: `Binance - ${defaultNames.cryptoExchange}`,
+    name: `binance`,
+    href: `https://binance.com/`,
+  });
 
-// Crypto
-keywords.push({
-  title: `Binance - ${defaultNames.cryptoExchange}`,
-  name: `binance`,
-  href: `https://binance.com/`,
-});
+  keywords.push({
+    title: `Coinbase - ${defaultNames.cryptoExchange}`,
+    name: `coinbase`,
+    href: `https://coinbase.com/`,
+  });
 
-keywords.push({
-  title: `Coinbase - ${defaultNames.cryptoExchange}`,
-  name: `coinbase`,
-  href: `https://coinbase.com/`,
-});
+  keywords.push({
+    title: `Unstoppable Domains - ${defaultNames.web3Registrar}`,
+    name: `unstoppable domains`,
+    href: `https://unstoppabledomains.com/`,
+  });
 
-keywords.push({
-  title: `Unstoppable Domains - ${defaultNames.web3Registrar}`,
-  name: `unstoppable domains`,
-  href: `https://unstoppabledomains.com/`,
-});
+  keywords.push({
+    title: `CoinMarketCap`,
+    name: [`crypto prices`, `marketcap`, `market cap`, `market capital`],
+    href: `https://coinmarketcap.com/`,
+  });
 
-keywords.push({
-  title: `CoinMarketCap`,
-  name: [`crypto prices`, `marketcap`, `market cap`, `market capital`],
-  href: `https://coinmarketcap.com/`,
-});
+  keywords.push({
+    title: `OpenSea - ${defaultNames.nftMarketplace}`,
+    name: `opensea`,
+    href: `https://opensea.io/`,
+  });
 
-keywords.push({
-  title: `OpenSea - ${defaultNames.nftMarketplace}`,
-  name: `opensea`,
-  href: `https://opensea.io/`,
-});
+  keywords.push({
+    title: `Rarible - ${defaultNames.nftMarketplace}`,
+    name: `rarible`,
+    href: `https://rarible.com/`,
+  });
 
-keywords.push({
-  title: `Rarible - ${defaultNames.nftMarketplace}`,
-  name: `rarible`,
-  href: `https://rarible.com/`,
-});
+  // DEX
+  keywords.push({
+    title: `Uniswap Ecosystem - ${defaultNames.defi}`,
+    name: `uniswap`,
+    href: `https://uniswap.org/`,
+  });
 
-// DEX
-keywords.push({
-  title: `Uniswap Ecosystem - ${defaultNames.defi}`,
-  name: `uniswap`,
-  href: `https://uniswap.org/`,
-});
+  keywords.push({
+    title: `QuickSwap - ${defaultNames.defi}`,
+    name: `quickswap`,
+    href: `https://quickswap.exchange/`,
+  });
 
-keywords.push({
-  title: `QuickSwap - ${defaultNames.defi}`,
-  name: `quickswap`,
-  href: `https://quickswap.exchange/`,
-});
+  keywords.push({
+    title: `PancakeSwap - ${defaultNames.defi}`,
+    name: [`pancakeswap`, `pancake swap`],
+    href: `https://pancakeswap.finance/`,
+  });
 
-keywords.push({
-  title: `PancakeSwap - ${defaultNames.defi}`,
-  name: [`pancakeswap`, `pancake swap`],
-  href: `https://pancakeswap.finance/`,
-});
+  // Blockchain
+  keywords.push({
+    title: `Polygon - ${defaultNames.blockchain}`,
+    name: [`polygon`, `matic`],
+    href: `https://polygon.technology/`,
+  });
 
-// Blockchain
-keywords.push({
-  title: `Polygon - ${defaultNames.blockchain}`,
-  name: [`polygon`, `matic`],
-  href: `https://polygon.technology/`,
-});
+  keywords.push({
+    title: `Ethereum - ${defaultNames.blockchain}`,
+    name: [`ethereum`, `eth`],
+    href: `https://ethereum.org/`,
+  });
 
-keywords.push({
-  title: `Ethereum - ${defaultNames.blockchain}`,
-  name: [`ethereum`, `eth`],
-  href: `https://ethereum.org/`,
-});
+  keywords.push({
+    title: `Optimism - ${defaultNames.blockchain}`,
+    name: [`optimism`, `$op`],
+    href: `https://www.optimism.io/`,
+  });
 
-keywords.push({
-  title: `Optimism - ${defaultNames.blockchain}`,
-  name: [`optimism`, `$op`],
-  href: `https://www.optimism.io/`,
-});
+  keywords.push({
+    title: `Arbitrum - ${defaultNames.blockchain}`,
+    name: [`arbitrum`, `$arb`],
+    href: `https://arbitrum.io/`,
+  });
 
-keywords.push({
-  title: `Arbitrum - ${defaultNames.blockchain}`,
-  name: [`arbitrum`, `$arb`],
-  href: `https://arbitrum.io/`,
-});
+  keywords.push({
+    title: `Arweave - ${defaultNames.blockchain}`,
+    name: [`arweave`, `$arb`],
+    href: `https://arbitrum.io/`,
+  });
 
-keywords.push({
-  title: `Arweave - ${defaultNames.blockchain}`,
-  name: [`arweave`, `$arb`],
-  href: `https://arbitrum.io/`,
-});
+  keywords.push({
+    title: `LBRY - ${defaultNames.blockchain}`,
+    name: [`lbry`],
+    href: `https://lbry.com/`,
+  });
 
-keywords.push({
-  title: `LBRY - ${defaultNames.blockchain}`,
-  name: [`lbry`],
-  href: `https://lbry.com/`,
-});
+  keywords.push({
+    title: `Dogecoin - ${defaultNames.cryptocurrency}`,
+    name: [`dogecoin`, `doge`],
+    href: `https://dogecoin.com/`,
+  });
 
-keywords.push({
-  title: `Dogecoin - ${defaultNames.cryptocurrency}`,
-  name: [`dogecoin`, `doge`],
-  href: `https://dogecoin.com/`,
-});
+  keywords.push({
+    title: `Bitcoin - ${defaultNames.cryptocurrency}`,
+    name: [`bitcoin`, `btc`],
+    href: `https://bitcoin.org/`,
+  });
 
-keywords.push({
-  title: `Bitcoin - ${defaultNames.cryptocurrency}`,
-  name: [`bitcoin`, `btc`],
-  href: `https://bitcoin.org/`,
-});
+  keywords.push({
+    title: `Monero - ${defaultNames.cryptocurrency}`,
+    name: [`monero`, `xmr`],
+    href: `https://www.getmonero.org/`,
+  });
 
-keywords.push({
-  title: `Monero - ${defaultNames.cryptocurrency}`,
-  name: [`monero`, `xmr`],
-  href: `https://www.getmonero.org/`,
-});
+  // Tokens USD
+  keywords.push({
+    title: `Circle - ${defaultNames.cryptoCompany}`,
+    name: `circle`,
+    href: `https://www.circle.com/`,
+  });
 
-// Tokens USD
-keywords.push({
-  title: `Circle - ${defaultNames.cryptoCompany}`,
-  name: `circle`,
-  href: `https://www.circle.com/`,
-});
+  keywords.push({
+    title: `USD Coin - ${defaultNames.cryptoToken}`,
+    name: [`usdc`, `usd coin`],
+    href: `https://www.circle.com/en/usdc`,
+  });
 
-keywords.push({
-  title: `USD Coin - ${defaultNames.cryptoToken}`,
-  name: [`usdc`, `usd coin`],
-  href: `https://www.circle.com/en/usdc`,
-});
+  keywords.push({
+    title: `Dollar Tether - ${defaultNames.cryptoToken}`,
+    name: [`usdt`, `tether`],
+    href: `https://tether.to/`,
+  });
 
-keywords.push({
-  title: `Dollar Tether - ${defaultNames.cryptoToken}`,
-  name: [`usdt`, `tether`],
-  href: `https://tether.to/`,
-});
+  // Crypto Token
+  keywords.push({
+    title: `Shiba - ${defaultNames.cryptoToken}`,
+    name: [`shiba token`, `$shib`],
+    href: `https://www.shibatoken.com/`,
+  });
 
-// Crypto Token
-keywords.push({
-  title: `Shiba - ${defaultNames.cryptoToken}`,
-  name: [`shiba token`, `$shib`],
-  href: `https://www.shibatoken.com/`,
-});
+  // Crypto Wallet
+  keywords.push({
+    title: `Metamask Wallet - ${defaultNames.cryptoSelfCustody}`,
+    name: `metamask`,
+    href: `https://metamask.io/`,
+  });
 
-// Crypto Wallet
-keywords.push({
-  title: `Metamask Wallet - ${defaultNames.cryptoSelfCustody}`,
-  name: `metamask`,
-  href: `https://metamask.io/`,
-});
+  keywords.push({
+    title: `Rabby Wallet - ${defaultNames.cryptoSelfCustody}`,
+    name: `rabby`,
+    href: `https://rabby.io/`,
+  });
 
-keywords.push({
-  title: `Rabby Wallet - ${defaultNames.cryptoSelfCustody}`,
-  name: `rabby`,
-  href: `https://rabby.io/`,
-});
+  keywords.push({
+    title: `Frame Wallet - ${defaultNames.cryptoSelfCustody}`,
+    name: `frame wallet`,
+    href: `https://frame.sh/`,
+  });
 
-keywords.push({
-  title: `Frame Wallet - ${defaultNames.cryptoSelfCustody}`,
-  name: `frame wallet`,
-  href: `https://frame.sh/`,
-});
-
-keywords.push({
-  title: `Trust Wallet - ${defaultNames.cryptoSelfCustody}`,
-  name: `trust wallet`,
-  href: `https://trustwallet.com/`,
-});
-
-// }
+  keywords.push({
+    title: `Trust Wallet - ${defaultNames.cryptoSelfCustody}`,
+    name: `trust wallet`,
+    href: `https://trustwallet.com/`,
+  });
+}
 
 export default keywords;

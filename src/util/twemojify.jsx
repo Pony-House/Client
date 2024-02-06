@@ -26,23 +26,21 @@ linkify.registerCustomProtocol('irc');
 
 linkify.registerCustomProtocol('ftp');
 
-// ELECTRON GLITCH ON __ENV_APP__
-// if (__ENV_APP__.IPFS) {
-linkify.registerCustomProtocol('ipfs');
-// }
+if (__ENV_APP__.IPFS) {
+  linkify.registerCustomProtocol('ipfs');
+}
 
-// ELECTRON GLITCH ON __ENV_APP__
-// if (__ENV_APP__.WEB3) {
-linkify.registerCustomProtocol('bitcoin');
-linkify.registerCustomProtocol('dogecoin');
-linkify.registerCustomProtocol('monero');
+if (__ENV_APP__.WEB3) {
+  linkify.registerCustomProtocol('bitcoin');
+  linkify.registerCustomProtocol('dogecoin');
+  linkify.registerCustomProtocol('monero');
 
-linkify.registerCustomProtocol('ethereum');
-linkify.registerCustomProtocol('web3');
+  linkify.registerCustomProtocol('ethereum');
+  linkify.registerCustomProtocol('web3');
 
-linkify.registerCustomProtocol('ar');
-linkify.registerCustomProtocol('lbry');
-// }
+  linkify.registerCustomProtocol('ar');
+  linkify.registerCustomProtocol('lbry');
+}
 
 // Register Keywords
 const tinywords = [];
