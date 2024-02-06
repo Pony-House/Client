@@ -30,3 +30,7 @@ const momentFormat = {
 // Export Module
 export default moment;
 export { momentFormat, calendarFormat };
+
+if (__ENV_APP__.MODE === 'development') {
+  global.moment = moment;
+}

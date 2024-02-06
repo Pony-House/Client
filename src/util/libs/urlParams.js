@@ -114,3 +114,7 @@ class MatrixUrlParams extends EventEmitter {
 // Functions and class
 const urlParams = new MatrixUrlParams();
 export default urlParams;
+
+if (__ENV_APP__.MODE === 'development') {
+  global.urlParams = urlParams;
+}

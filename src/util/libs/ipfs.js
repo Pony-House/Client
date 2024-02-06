@@ -147,8 +147,10 @@ export function convertIpfsGateway(tinyUrl, vanillaUrl, type = 'base32') {
   return url;
 }
 
-global.ipfsApi = {
-  convertGateway: convertIpfsGateway,
-  getCfg: getIpfsCfg,
-  setCfg: setIpfsCfg,
-};
+if (__ENV_APP__.MODE === 'development') {
+  global.ipfsApi = {
+    convertGateway: convertIpfsGateway,
+    getCfg: getIpfsCfg,
+    setCfg: setIpfsCfg,
+  };
+}

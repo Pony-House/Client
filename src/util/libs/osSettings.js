@@ -32,7 +32,9 @@ const toggleOsSettingsAction = (dataFolder, setToggle) => (data) => {
 };
 export { toggleOsSettingsAction };
 
-global.OsSettingsApi = {
-  getCfg: getOsSettings,
-  setCfg: setOsSettings,
-};
+if (__ENV_APP__.MODE === 'development') {
+  global.OsSettingsApi = {
+    getCfg: getOsSettings,
+    setCfg: setOsSettings,
+  };
+}
