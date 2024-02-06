@@ -330,7 +330,7 @@ export function openPinMessageModal(room) {
           }).append($('<tbody>').append(body)),
 
           $('<center>', { class: 'mt-3 small' }).text(
-            `${events.length}/${PIN_LIMIT} pinned ${events > 1 ? 'messages' : 'message'}`,
+            `${events.length}/${PIN_LIMIT} pinned ${events.length > 1 ? 'messages' : 'message'}`,
           ),
         ],
       });

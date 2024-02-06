@@ -944,12 +944,14 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
             type="file"
           />
 
-          <IconButton
-            id="room-file-upload"
-            onClick={handleUploadClick}
-            tooltip={attachment === null ? 'Upload' : 'Cancel'}
-            fa="fa-solid fa-circle-plus"
-          />
+          {attachment ? (
+            <IconButton
+              id="room-file-upload"
+              onClick={handleUploadClick}
+              tooltip="Cancel"
+              fa="fa-solid fa-circle-plus"
+            />
+          ) : null}
 
           <IconButton
             className="d-none"
@@ -963,13 +965,15 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
         </div>
 
         <div ref={inputBaseRef} className="room-input__input-container">
-          <IconButton
-            id="room-file-upload"
-            className="me-2"
-            onClick={handleUploadClick}
-            tooltip={attachment === null ? 'Upload' : 'Cancel'}
-            fa="fa-solid fa-circle-plus"
-          />
+          {attachment === null ? (
+            <IconButton
+              id="room-file-upload"
+              className="me-2"
+              onClick={handleUploadClick}
+              tooltip="Upload"
+              fa="fa-solid fa-circle-plus"
+            />
+          ) : null}
 
           {roomTimeline.isEncrypted() && <RawIcon size="extra-small" fa="bi bi-shield-lock-fill" />}
 

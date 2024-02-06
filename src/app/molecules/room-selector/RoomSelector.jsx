@@ -308,7 +308,7 @@ export function ThreadSelector({ thread, isSelected, isMuted }) {
       isUnread={!isMuted && notificationCount > 0}
       content={
         <>
-          <div className="thread-selector__lines">{/* TODO */}</div>
+          <div className="thread-selector__lines" />
           <Text variant="b1" weight={isUnread ? 'medium' : 'normal'}>
             <i className="bi bi-arrow-return-right me-2 thread-selector__icon" />{' '}
             {twemojifyReact(name)}

@@ -5,7 +5,7 @@ import { colorMXID } from '@src/util/colorMXID';
 import { twemojify } from '@src/util/twemojify';
 import { getRoomInfo } from '@src/app/organisms/room/Room';
 
-// import { getDataList, addToDataFolder, getDataFolderRaw } from '@src/util/selectedRoom';
+import { getDataList, addToDataFolder, getDataFolderRaw } from '@src/util/selectedRoom';
 
 import { openProfileViewer, selectRoom } from '@src/client/action/navigation';
 import { createMessageData } from '@src/app/molecules/message/Message';
