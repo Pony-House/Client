@@ -942,6 +942,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
 
           <IconButton
             id="room-file-upload"
+            className='me-2'
             onClick={handleUploadClick}
             tooltip={attachment === null ? 'Upload' : 'Cancel'}
             fa="fa-solid fa-circle-plus"
@@ -966,7 +967,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
           <div
             ref={rightOptionsRef}
             id="chat-textarea-actions"
-            className="room-input__option-container"
+            className="ms-1 room-input__option-container"
           >
             <IconButton
               id="sticker-opener"
