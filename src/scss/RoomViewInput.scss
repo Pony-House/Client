@@ -1,5 +1,9 @@
 @use './partials/dir';
 
+.room-input__option-container.room-attachment__option {
+  margin-right: -44px !important;
+}
+
 .room-input {
   padding-left: calc(var(--sp-normal) - 2px);
   padding-right: calc(var(--sp-normal) - 2px);
