@@ -62,11 +62,15 @@
 }
 
 .room-attachment {
+  border-top: 1px solid var(--bg-surface-border);
+  background-color: var(--bg-surface-low);
   --side-spacing: calc(var(--sp-normal) + var(--av-small) + var(--sp-tight));
   display: flex;
   align-items: center;
-  @include dir.side(margin, var(--side-spacing), 0);
-  margin-top: var(--sp-extra-tight);
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  padding-left: 72px !important;
+  padding-right: 10px !important;
   line-height: 0;
 
   &__preview > img {

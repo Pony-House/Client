@@ -72,11 +72,18 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
   }
 
   useEffect(() => {
-    if (roomsInput) roomsInput.on(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
+    const tinyScrollTime = () => mediaFix(null, embedHeight, setEmbedHeight);
+    if (roomsInput) {
+      roomsInput.on(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
+      roomsInput.on(cons.events.roomsInput.ATTACHMENT_SET, tinyScrollTime);
+    }
     viewEvent.on('focus_msg_input', requestFocusInput);
     return () => {
-      if (roomsInput)
+      if (roomsInput) {
         roomsInput.removeListener(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
+        roomsInput.removeListener(cons.events.roomsInput.ATTACHMENT_SET, tinyScrollTime);
+      }
+
       viewEvent.removeListener('focus_msg_input', requestFocusInput);
     };
   }, [roomsInput, viewEvent]);
@@ -188,6 +195,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
 
                 // Insert attachment and complete
                 initMatrix.roomsInput.setAttachment(selectedRoomId, blob);
+                mediaFix(null, embedHeight, setEmbedHeight);
                 initMatrix.roomsInput.emit(cons.events.roomsInput.ATTACHMENT_SET, blob);
                 tinyRec.enabled = false;
               }
@@ -396,6 +404,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
   function clearAttachment(myRoomId) {
     if (roomId !== myRoomId) return;
     setAttachment(null);
+    mediaFix(null, embedHeight, setEmbedHeight);
     $(inputBaseRef.current).css('background-image', 'unset');
     $(uploadInputRef.current).val('');
   }
@@ -536,6 +545,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
         textArea.val(roomsInput.getMessage(roomId));
         setAttachment(roomsInput.getAttachment(roomId));
         setReplyTo(roomsInput.getReplyTo(roomId));
+        mediaFix(null, embedHeight, setEmbedHeight);
       }
     }
 
@@ -625,7 +635,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
 
     // Prepare Files
     if (attachment !== null) {
-      if (roomsInput) roomsInput.setAttachment(roomId, attachment);
+      if (roomsInput) { roomsInput.setAttachment(roomId, attachment); mediaFix(null, embedHeight, setEmbedHeight); }
     }
 
     // Prepare Message
@@ -785,6 +795,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
       e.preventDefault();
       if (roomsInput) roomsInput.cancelReplyTo(roomId);
       setReplyTo(null);
+      mediaFix(null, embedHeight, setEmbedHeight);
     }
 
     if (
@@ -816,8 +827,10 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
           setAttachment(image);
           if (image !== null) {
             if (roomsInput) roomsInput.setAttachment(roomId, image);
+            mediaFix(null, embedHeight, setEmbedHeight);
             return;
           }
+          mediaFix(null, embedHeight, setEmbedHeight);
         } else {
           return;
         }
@@ -905,7 +918,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
         <Text className="room-input__alert">
           {tombstoneEvent
             ? tombstoneEvent.getContent()?.body ??
-              'This room has been replaced and is no longer active.'
+            'This room has been replaced and is no longer active.'
             : 'You do not have permission to post to this room'}
         </Text>
       );
@@ -917,15 +930,21 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     return (
       <>
         <div
-          className={`room-input__option-container${
-            attachment === null ? '' : ' room-attachment__option'
-          }`}
+          className={`room-input__option-container${attachment === null ? '' : ' room-attachment__option'
+            }`}
         >
           <input
             onChange={uploadFileChange}
             style={{ display: 'none' }}
             ref={uploadInputRef}
             type="file"
+          />
+
+          <IconButton
+            id="room-file-upload"
+            onClick={handleUploadClick}
+            tooltip={attachment === null ? 'Upload' : 'Cancel'}
+            fa="fa-solid fa-circle-plus"
           />
 
           <IconButton
@@ -1048,9 +1067,8 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     return (
       <div className="room-attachment">
         <div
-          className={`room-attachment__preview${
-            fileType !== 'image' ? ' room-attachment__icon' : ''
-          }`}
+          className={`room-attachment__preview${fileType !== 'image' ? ' room-attachment__icon' : ''
+            }`}
         >
           {fileType === 'image' && (
             <img alt={attachment.name} src={URL.createObjectURL(attachment)} />
@@ -1079,6 +1097,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
           onClick={() => {
             roomsInput.cancelReplyTo(roomId);
             setReplyTo(null);
+            mediaFix(null, embedHeight, setEmbedHeight);
           }}
           fa="fa-solid fa-xmark"
           tooltip="Cancel reply"
