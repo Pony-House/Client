@@ -2,7 +2,7 @@ import initMatrix from '../client/initMatrix';
 
 const eventType = 'io.pony.house.';
 
-function getDataFolderRaw(dataFolder, where) {
+export function getDataFolderRaw(dataFolder, where) {
   const result = initMatrix.matrixClient.getAccountData(eventType + dataFolder)?.getContent() ?? {};
   if (!Array.isArray(result[where])) result[where] = [];
   return result;
