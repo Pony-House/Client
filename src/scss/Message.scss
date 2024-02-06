@@ -230,20 +230,17 @@
     width: 80px !important;
   }
 
-  p {
-    margin: 0px;
-  }
   ol {
-    margin: 0px;
     li {
       height: auto;
       padding-left: 4px;
-      p {
-        display: inline-block;
-        position: relative;
-        top: -21px;
-      }
     }
+  }
+
+  p,
+  ol,
+  ul {
+    margin: 0px;
   }
 
   ol,
