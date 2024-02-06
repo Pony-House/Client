@@ -61,16 +61,21 @@
   }
 }
 
+.room-reply,
 .room-attachment {
   border-top: 1px solid var(--bg-surface-border);
   background-color: var(--bg-surface-low);
-  --side-spacing: calc(var(--sp-normal) + var(--av-small) + var(--sp-tight));
-  display: flex;
-  align-items: center;
+}
+
+.room-attachment {
   padding-top: 10px !important;
   padding-bottom: 10px !important;
   padding-left: 72px !important;
   padding-right: 10px !important;
+  --side-spacing: calc(var(--sp-normal) + var(--av-small) + var(--sp-tight));
+  display: flex;
+  align-items: center;
+
   line-height: 0;
 
   &__preview > img {
@@ -108,10 +113,9 @@
 }
 
 .room-reply {
+  padding: 7px;
   display: flex;
   align-items: center;
-  background-color: var(--bg-surface-low);
-  border-bottom: 1px solid var(--bg-surface-border);
 
   & .ic-btn-surface {
     @include dir.side(margin, 17px, 13px);

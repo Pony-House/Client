@@ -168,9 +168,9 @@ MessageTime.propTypes = {
 function MessageReply({ name, color, body }) {
   tinyFixScrollChat();
   return (
-    <div className="pb-2 emoji-size-fix small text-reply">
+    <div className="emoji-size-fix small text-reply">
       <RawIcon color={color} size="normal" fa="fa-solid fa-reply" />{' '}
-      <span className="username-title emoji-size-fix" style={{ color }}>
+      <span className="ms-2 username-title emoji-size-fix" style={{ color }}>
         {twemojifyReact(name)}
       </span>{' '}
       {body.length > 200 ? twemojifyReact(`${body.substring(0, 200)}......`) : twemojifyReact(body)}
