@@ -138,7 +138,7 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "esm": "^3.2.25",
     "fs-extra": "^11.1.1",
-    "prettier": "3.2.4",
+    "prettier": "3.2.5",
     "sass": "1.70.0",
     "typescript": "5.3.3",
     "vite": "5.0.12",
