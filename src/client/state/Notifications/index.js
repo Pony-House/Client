@@ -1,5 +1,6 @@
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { NotificationCountType } from 'matrix-js-sdk';
 
 import EventEmitter from 'events';
 import renderAvatar from '../../../app/atoms/avatar/render';
@@ -252,7 +253,8 @@ class Notifications extends EventEmitter {
         typeof window.getElectronShowStatus !== 'function' ||
         window.getElectronShowStatus()) &&
       !$('body').hasClass('modal-open') &&
-      navigation.selectedRoomId === room.roomId &&
+      ((!mEvent.thread && navigation.selectedRoomId === room.roomId) ||
+        navigation.selectedThreadId === mEvent.thread.id) &&
       document.visibilityState === 'visible' &&
       !$('body').hasClass('windowHidden')
     )
@@ -268,10 +270,13 @@ class Notifications extends EventEmitter {
     // Show Notification
     if (settings.showNotifications) {
       let title;
+      const threadTitle = !mEvent.thread
+        ? ''
+        : mEvent.thread.rootEvent?.getContent()?.body ?? 'Unknown thread';
       if (!mEvent.sender || room.name === mEvent.sender.name) {
-        title = room.name;
+        title = `${room.name}${threadTitle.length > 0 ? ` - ${threadTitle}` : ''}`;
       } else if (mEvent.sender) {
-        title = `${mEvent.sender.name} (${room.name})`;
+        title = `${mEvent.sender.name} (${room.name})${room.name}${threadTitle.length > 0 ? ` - (${threadTitle})` : ''} `;
       }
 
       updateName(room);
@@ -347,7 +352,7 @@ class Notifications extends EventEmitter {
           }
 
           noti.on('click', () => {
-            selectRoom(room.roomId, mEvent.getId(), null, true);
+            selectRoom(room.roomId, mEvent.getId(), !mEvent.thread ? null : mEvent.thread.id, true);
             window.focusAppWindow();
           });
         } else {
@@ -355,7 +360,8 @@ class Notifications extends EventEmitter {
             noti.onshow = () => this._playNotiSound();
           }
 
-          noti.onclick = () => selectRoom(room.roomId, mEvent.getId(), null, true);
+          noti.onclick = () =>
+            selectRoom(room.roomId, mEvent.getId(), !mEvent.thread ? null : mEvent.thread.id, true);
         }
 
         // Set Event
@@ -417,21 +423,30 @@ class Notifications extends EventEmitter {
       if (room.isSpaceRoom()) return;
       if (!isNotifEvent(mEvent)) return;
 
-      const liveEvents = room.getLiveTimeline().getEvents();
+      const liveEvents = !mEvent.thread
+        ? room.getLiveTimeline().getEvents()
+        : mEvent.thread.timeline;
 
       const lastTimelineEvent = liveEvents[liveEvents.length - 1];
       if (lastTimelineEvent.getId() !== mEvent.getId()) return;
       if (mEvent.getSender() === this.matrixClient.getUserId()) return;
 
-      const total = room.getUnreadNotificationCount('total');
-      const highlight = room.getUnreadNotificationCount('highlight');
+      const total = !mEvent.thread
+        ? room.getUnreadNotificationCount('total')
+        : room.getThreadUnreadNotificationCount(mEvent.thread.id, NotificationCountType.Total);
+
+      const highlight = !mEvent.thread
+        ? room.getUnreadNotificationCount('highlight')
+        : room.getThreadUnreadNotificationCount(mEvent.thread.id, NotificationCountType.Highlight);
+
+      const notiId = mEvent.thread ? room.roomId : null;
 
       if (this.getNotiType(room.roomId) === cons.notifs.MUTE) {
-        this.deleteNoti(room.roomId, total ?? 0, highlight ?? 0);
+        if (notiId) this.deleteNoti(notiId, total ?? 0, highlight ?? 0);
         return;
       }
 
-      this._setNoti(room.roomId, total ?? 0, highlight ?? 0);
+      if (notiId) this._setNoti(notiId, total ?? 0, highlight ?? 0);
 
       if (this.matrixClient.getSyncState() === 'SYNCING') {
         this._displayPopupNoti(mEvent, room);

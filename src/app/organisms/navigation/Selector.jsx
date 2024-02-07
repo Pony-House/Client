@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import initMatrix from '../../../client/initMatrix';
@@ -17,7 +17,12 @@ import SpaceOptions from '../../molecules/space-options/SpaceOptions';
 
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
-import { getDataList } from '../../../util/selectedRoom';
+import {
+  getDataList,
+  removeFromDataFolder,
+  addToDataFolder,
+  getDataFolderRaw,
+} from '../../../util/selectedRoom';
 
 // Selector Function
 function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, notSpace }) {
@@ -92,6 +97,7 @@ function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, 
 
   // Force Update
   const [, forceUpdate] = useForceUpdate();
+  const [threadsList, setThreadsList] = useState(getDataFolderRaw('thread', 'actives'));
 
   // Effects
   useEffect(() => {
