@@ -447,6 +447,7 @@ class Notifications extends EventEmitter {
       }
 
       if (notiId) this._setNoti(notiId, total ?? 0, highlight ?? 0);
+      this.emit(cons.events.notifications.THREAD_NOTIFICATION, mEvent.thread);
 
       if (this.matrixClient.getSyncState() === 'SYNCING') {
         this._displayPopupNoti(mEvent, room);

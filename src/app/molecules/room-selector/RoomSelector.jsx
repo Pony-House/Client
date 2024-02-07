@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { NotificationCountType } from 'matrix-js-sdk';
+import { getRoomInfo } from '@src/app/organisms/room/Room';
+import cons from '@src/client/state/cons';
 
 import { twemojifyReact } from '../../../util/twemojify';
 import { colorMXID } from '../../../util/colorMXID';
@@ -283,15 +285,16 @@ RoomSelector.propTypes = {
 export default RoomSelector;
 export function ThreadSelector({ thread, isSelected, isMuted }) {
   const { rootEvent } = thread;
+  const { notifications } = initMatrix;
 
-  const notificationCount = thread.room.getThreadUnreadNotificationCount(
-    thread.id,
-    NotificationCountType.Total,
+  const [notificationCount, setNotiCount] = useState(
+    thread.room.getThreadUnreadNotificationCount(thread.id, NotificationCountType.Total),
   );
-  const highlightNotificationCount = thread.room.getThreadUnreadNotificationCount(
-    thread.id,
-    NotificationCountType.Highlight,
+
+  const [highlightNotificationCount, setHighNotiCount] = useState(
+    thread.room.getThreadUnreadNotificationCount(thread.id, NotificationCountType.Highlight),
   );
+
   const isUnread = !isMuted && notificationCount > 0;
   const isAlert = highlightNotificationCount > 0;
 
@@ -300,6 +303,26 @@ export function ThreadSelector({ thread, isSelected, isMuted }) {
   const onClick = () => {
     selectRoom(thread.roomId, undefined, thread.id);
   };
+
+  useEffect(() => {
+    const roomTimeline = getRoomInfo()?.roomTimeline;
+    const threadUpdate = (tth) => {
+      if (tth.id === thread.id) {
+        setNotiCount(
+          thread.room.getThreadUnreadNotificationCount(thread.id, NotificationCountType.Total),
+        );
+
+        setHighNotiCount(
+          thread.room.getThreadUnreadNotificationCount(thread.id, NotificationCountType.Highlight),
+        );
+      }
+    };
+
+    notifications.on(cons.events.notifications.THREAD_NOTIFICATION, threadUpdate);
+    return () => {
+      notifications.off(cons.events.notifications.THREAD_NOTIFICATION, threadUpdate);
+    };
+  });
 
   return (
     <RoomSelectorWrapper

@@ -162,6 +162,7 @@ const cons = {
       NOTI_CHANGED: 'NOTI_CHANGED',
       FULL_READ: 'FULL_READ',
       MUTE_TOGGLED: 'MUTE_TOGGLED',
+      THREAD_NOTIFICATION: 'THREAD_NOTIFICATION',
     },
 
     roomTimeline: {
