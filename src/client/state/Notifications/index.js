@@ -276,7 +276,7 @@ class Notifications extends EventEmitter {
       if (!mEvent.sender || room.name === mEvent.sender.name) {
         title = `${room.name}${threadTitle.length > 0 ? ` - ${threadTitle}` : ''}`;
       } else if (mEvent.sender) {
-        title = `${mEvent.sender.name} (${room.name})${room.name}${threadTitle.length > 0 ? ` - (${threadTitle})` : ''} `;
+        title = `${mEvent.sender.name} (${room.name})${threadTitle.length > 0 ? ` - (${threadTitle})` : ''} `;
       }
 
       updateName(room);
