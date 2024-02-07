@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { NotificationCountType } from 'matrix-js-sdk';
-import { getRoomInfo } from '@src/app/organisms/room/Room';
 import cons from '@src/client/state/cons';
 
 import { twemojifyReact } from '../../../util/twemojify';
@@ -305,7 +304,6 @@ export function ThreadSelector({ thread, isSelected, isMuted }) {
   };
 
   useEffect(() => {
-    const roomTimeline = getRoomInfo()?.roomTimeline;
     const threadUpdate = (tth) => {
       if (tth.id === thread.id) {
         setNotiCount(
@@ -329,20 +327,23 @@ export function ThreadSelector({ thread, isSelected, isMuted }) {
       isSelected={isSelected}
       isMuted={isMuted}
       isUnread={!isMuted && notificationCount > 0}
+      className="text-truncate"
       content={
-        <>
-          <div className="thread-selector__lines" />
-          <Text variant="b1" weight={isUnread ? 'medium' : 'normal'}>
+        <div className="text-truncate content">
+          <p
+            className={`my-0 ms-1 me-5 small text-bg-force text-truncate username-base${isUnread ? ' username-unread' : ''}`}
+          >
             <i className="bi bi-arrow-return-right me-2 thread-selector__icon" />{' '}
             {twemojifyReact(name)}
-          </Text>
+          </p>
           {isUnread && (
             <NotificationBadge
+              className="float-end"
               alert={isAlert}
               content={notificationCount > 0 ? notificationCount : null}
             />
           )}
-        </>
+        </div>
       }
       options={<div />}
       onClick={onClick}

@@ -53,21 +53,6 @@
   }
 }
 
-.thread-selector__lines {
-  width: auto;
-  height: auto;
-}
-
-.thread-selector__icon {
-  display: inline-block;
-  position: relative;
-  top: 3px;
-}
-
-.room-header__thread-name {
-  color: var(--tc-primary-low);
-}
-
 .room-selector__content {
   @extend .cp-fx__item-one;
   @extend .cp-fx__row--s-c;
