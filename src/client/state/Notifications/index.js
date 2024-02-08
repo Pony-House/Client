@@ -86,9 +86,9 @@ class Notifications extends EventEmitter {
       if (this.getNotiType(room.roomId) === cons.notifs.MUTE) return;
       if (this.doesRoomHaveUnread(room) === false) return;
 
-      const total = room.getUnreadNotificationCount('total');
-      const highlight = room.getUnreadNotificationCount('highlight');
-      this._setNoti(room.roomId, total ?? 0, highlight ?? 0);
+      const total = room.getRoomUnreadNotificationCount(NotificationCountType.Total);
+      const highlight = room.getRoomUnreadNotificationCount(NotificationCountType.Highlight);
+      this._setNoti(room.roomId, null, total ?? 0, highlight ?? 0);
     };
     [...this.roomList.rooms].forEach(addNoti);
     [...this.roomList.directs].forEach(addNoti);
@@ -115,7 +115,7 @@ class Notifications extends EventEmitter {
     return true;
   }
 
-  getNotiType(roomId) {
+  getNotiType(roomId, threadId) {
     const mx = this.matrixClient;
     let pushRule;
 
@@ -129,7 +129,7 @@ class Notifications extends EventEmitter {
       const overrideRules = mx.getAccountData('m.push_rules')?.getContent()?.global?.override;
       if (overrideRules === undefined) return cons.notifs.DEFAULT;
 
-      const isMuted = findMutedRule(overrideRules, roomId);
+      const isMuted = findMutedRule(overrideRules, roomId, threadId);
 
       return isMuted ? cons.notifs.MUTE : cons.notifs.DEFAULT;
     }
@@ -138,37 +138,43 @@ class Notifications extends EventEmitter {
     return cons.notifs.MENTIONS_AND_KEYWORDS;
   }
 
-  getNoti(roomId) {
-    return this.roomIdToNoti.get(roomId) || { total: 0, highlight: 0, from: null };
+  getNoti(roomId, threadId) {
+    return (
+      this.roomIdToNoti.get(!threadId ? roomId : `${roomId}:${threadId}`) || {
+        total: 0,
+        highlight: 0,
+        from: null,
+      }
+    );
   }
 
-  getTotalNoti(roomId) {
-    const { total } = this.getNoti(roomId);
+  getTotalNoti(roomId, threadId) {
+    const { total } = this.getNoti(roomId, threadId);
     return total;
   }
 
-  getHighlightNoti(roomId) {
-    const { highlight } = this.getNoti(roomId);
+  getHighlightNoti(roomId, threadId) {
+    const { highlight } = this.getNoti(roomId, threadId);
     return highlight;
   }
 
-  getFromNoti(roomId) {
-    const { from } = this.getNoti(roomId);
+  getFromNoti(roomId, threadId) {
+    const { from } = this.getNoti(roomId, threadId);
     return from;
   }
 
-  hasNoti(roomId) {
-    return this.roomIdToNoti.has(roomId);
+  hasNoti(roomId, threadId) {
+    return this.roomIdToNoti.has(!threadId ? roomId : `${roomId}:${threadId}`);
   }
 
-  deleteNoti(roomId) {
+  deleteNoti(roomId, threadId) {
     if (this.hasNoti(roomId)) {
-      const noti = this.getNoti(roomId);
-      this._deleteNoti(roomId, noti.total, noti.highlight);
+      const noti = this.getNoti(roomId, threadId);
+      this._deleteNoti(roomId, threadId, noti.total, noti.highlight);
     }
   }
 
-  _setNoti(roomId, total, highlight) {
+  _setNoti(roomId, threadId, total, highlight) {
     const addNoti = (id, t, h, fromId) => {
       const prevTotal = this.roomIdToNoti.get(id)?.total ?? null;
       const noti = this.getNoti(id);
@@ -189,7 +195,7 @@ class Notifications extends EventEmitter {
     const addH = highlight - noti.highlight;
     if (addT < 0 || addH < 0) return;
 
-    addNoti(roomId, addT, addH);
+    addNoti(!threadId ? roomId : `${roomId}:${threadId}`, addT, addH);
     const allParentSpaces = this.roomList.getAllParentSpaces(roomId);
     allParentSpaces.forEach((spaceId) => {
       addNoti(spaceId, addT, addH, roomId);
@@ -198,7 +204,7 @@ class Notifications extends EventEmitter {
     // this._updateFavicon();
   }
 
-  _deleteNoti(roomId, total, highlight) {
+  _deleteNoti(roomId, threadId, total, highlight) {
     const removeNoti = (id, t, h, fromId) => {
       if (this.roomIdToNoti.has(id) === false) return;
 
@@ -226,7 +232,7 @@ class Notifications extends EventEmitter {
       }
     };
 
-    removeNoti(roomId, total, highlight);
+    removeNoti(!threadId ? roomId : `${roomId}:${threadId}`, total, highlight);
     const allParentSpaces = this.roomList.getAllParentSpaces(roomId);
     allParentSpaces.forEach((spaceId) => {
       removeNoti(spaceId, total, highlight, roomId);
@@ -432,21 +438,26 @@ class Notifications extends EventEmitter {
       if (mEvent.getSender() === this.matrixClient.getUserId()) return;
 
       const total = !mEvent.thread
-        ? room.getUnreadNotificationCount('total')
+        ? room.getRoomUnreadNotificationCount(NotificationCountType.Total)
         : room.getThreadUnreadNotificationCount(mEvent.thread.id, NotificationCountType.Total);
 
       const highlight = !mEvent.thread
-        ? room.getUnreadNotificationCount('highlight')
+        ? room.getRoomUnreadNotificationCount(NotificationCountType.Highlight)
         : room.getThreadUnreadNotificationCount(mEvent.thread.id, NotificationCountType.Highlight);
 
-      const notiId = mEvent.thread ? room.roomId : null;
-
-      if (this.getNotiType(room.roomId) === cons.notifs.MUTE) {
-        if (notiId) this.deleteNoti(notiId, total ?? 0, highlight ?? 0);
+      if (
+        this.getNotiType(room.roomId, mEvent.thread ? mEvent.thread.id : null) === cons.notifs.MUTE
+      ) {
+        this.deleteNoti(room.roomId, total ?? 0, highlight ?? 0);
         return;
       }
 
-      if (notiId) this._setNoti(notiId, total ?? 0, highlight ?? 0);
+      this._setNoti(
+        room.roomId,
+        mEvent.thread ? mEvent.thread.id : null,
+        total ?? 0,
+        highlight ?? 0,
+      );
       this.emit(cons.events.notifications.THREAD_NOTIFICATION, mEvent.thread);
 
       if (this.matrixClient.getSyncState() === 'SYNCING') {
@@ -485,9 +496,9 @@ class Notifications extends EventEmitter {
           this.emit(cons.events.notifications.MUTE_TOGGLED, rule.rule_id, false);
           const room = this.matrixClient.getRoom(rule.rule_id);
           if (!this.doesRoomHaveUnread(room)) return;
-          const total = room.getUnreadNotificationCount('total');
-          const highlight = room.getUnreadNotificationCount('highlight');
-          this._setNoti(room.roomId, total ?? 0, highlight ?? 0);
+          const total = room.getRoomUnreadNotificationCount(NotificationCountType.Total);
+          const highlight = room.getRoomUnreadNotificationCount(NotificationCountType.Highlight);
+          this._setNoti(room.roomId, null, total ?? 0, highlight ?? 0);
         });
       }
     });
