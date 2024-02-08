@@ -329,17 +329,9 @@ class RoomsInput extends EventEmitter {
     }
 
     if (typeof threadId !== 'string') {
-      this.matrixClient.sendEvent(roomId, 'm.sticker', {
-        body,
-        url,
-        info,
-      });
+      this.matrixClient.sendStickerMessage(roomId, url, info, body);
     } else {
-      this.matrixClient.sendEvent(roomId, threadId, 'm.sticker', {
-        body,
-        url,
-        info,
-      });
+      this.matrixClient.sendStickerMessage(roomId, threadId, url, info, body);
     }
 
     this.emit(cons.events.roomsInput.MESSAGE_SENT, roomId, threadId);
