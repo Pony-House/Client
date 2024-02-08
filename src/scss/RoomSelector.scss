@@ -51,6 +51,11 @@
   &--selected:active {
     background-color: var(--bg-surface);
   }
+
+  .thread-selector__icon {
+    top: 2px;
+    position: relative;
+  }
 }
 
 .room-selector__content {

@@ -2,7 +2,7 @@
     removeFromDataFolder('thread', 'actives', '');
     getDataList('thread', 'actives', '');
 
-    markAsRead(roomId);
+    Load de threads diretamente ainda está bugado.
 
     =============================================
 
