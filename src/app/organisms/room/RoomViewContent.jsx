@@ -348,7 +348,7 @@ function useHandleScroll(
 
       roomTimeline.emit(cons.events.roomTimeline.AT_BOTTOM, isAtBottom);
       if (isAtBottom && readUptoEvtStore.getItem()) {
-        requestAnimationFrame(() => markAsRead(roomTimeline.roomId));
+        requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
       }
     });
 
@@ -359,7 +359,7 @@ function useHandleScroll(
     const timelineScroll = timelineScrollRef.current;
     const limit = eventLimitRef.current;
     if (readUptoEvtStore.getItem()) {
-      requestAnimationFrame(() => markAsRead(roomTimeline.roomId));
+      requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
     }
 
     if (roomTimeline.isServingLiveTimeline()) {
@@ -384,7 +384,7 @@ function useEventArrive(roomTimeline, readUptoEvtStore, timelineScrollRef, event
     const limit = eventLimitRef.current;
     const trySendReadReceipt = (event) => {
       if (myUserId === event.getSender()) {
-        requestAnimationFrame(() => markAsRead(roomTimeline.roomId));
+        requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
         return;
       }
 
@@ -394,7 +394,7 @@ function useEventArrive(roomTimeline, readUptoEvtStore, timelineScrollRef, event
 
       if (isUnread === false) {
         if (document.visibilityState === 'visible' && timelineScroll.bottom < 16) {
-          requestAnimationFrame(() => markAsRead(roomTimeline.roomId));
+          requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
         } else {
           readUptoEvtStore.setItem(roomTimeline.findEventByIdInTimelineSet(readUpToId));
         }
@@ -405,7 +405,7 @@ function useEventArrive(roomTimeline, readUptoEvtStore, timelineScrollRef, event
       const unreadMsgIsLast =
         timeline[timeline.length - 2] && timeline[timeline.length - 2].getId() === readUpToId;
       if (unreadMsgIsLast) {
-        requestAnimationFrame(() => markAsRead(roomTimeline.roomId));
+        requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
       }
     };
 
@@ -523,7 +523,7 @@ function RoomViewContent({
       if (timelineScroll.bottom < 16 && !roomTimeline.canPaginateForward()) {
         const readUpToId = roomTimeline.getReadUpToEventId();
         if (readUptoEvtStore.getItem()?.getId() === readUpToId || readUpToId === null) {
-          requestAnimationFrame(() => markAsRead(roomTimeline.roomId));
+          requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
         }
       }
 
@@ -715,7 +715,7 @@ function RoomViewContent({
           readUptoEvent.getTs() < mEvent.getTs();
         if (unreadDivider) {
           isNewEvent = true;
-          tl.push(<Divider key={`new-${mEvent.getId()}`} variant="bg" text="New messages" />);
+          tl.push(<Divider key={`new-${mEvent.getId()}`} thread={mEvent.thread} variant="bg" text="New messages" />);
           itemCountIndex += 1;
           if (jumpToItemIndex === -1) jumpToItemIndex = itemCountIndex;
         }
@@ -724,6 +724,7 @@ function RoomViewContent({
       if (dayDivider) {
         tl.push(
           <Divider
+            thread={mEvent.thread}
             variant="bg"
             key={`divider-${mEvent.getId()}`}
             text={`${moment(mEvent.getDate()).format('MMMM DD, YYYY')}`}

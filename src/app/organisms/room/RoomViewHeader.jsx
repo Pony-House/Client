@@ -30,7 +30,7 @@ import copyText from '../profile-viewer/copyText';
 import { openPinMessageModal } from '../../../util/libs/pinMessage';
 import { openThreadsMessageModal } from '../../../util/libs/thread';
 
-function RoomViewHeader({ roomId, roomAlias, roomItem, disableActions /* threadId */ }) {
+function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions }) {
   const [, forceUpdate] = useForceUpdate();
   const mx = initMatrix.matrixClient;
   const isDM = initMatrix.roomList && initMatrix.roomList.directs.has(roomId);
@@ -93,7 +93,7 @@ function RoomViewHeader({ roomId, roomAlias, roomItem, disableActions /* threadI
 
   const openRoomOptions = (e) => {
     openReusableContextMenu('bottom', getEventCords(e, '.ic-btn'), (closeMenu) => (
-      <RoomOptions roomId={roomId} afterOptionSelect={closeMenu} />
+      <RoomOptions roomId={roomId} threadId={threadId} afterOptionSelect={closeMenu} />
     ));
   };
 

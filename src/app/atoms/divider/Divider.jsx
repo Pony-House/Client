@@ -4,7 +4,7 @@ import { markAsRead } from '../../../client/action/notifications';
 
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
-function Divider({ text, variant, className, clickRemove, roomId }) {
+function Divider({ text, variant, className, clickRemove, roomId, thread }) {
   const [isVisible, setIsVisible] = useState(true);
 
   return (
@@ -18,7 +18,7 @@ function Divider({ text, variant, className, clickRemove, roomId }) {
                 onClick={() => {
                   if (clickRemove) {
                     setIsVisible(false);
-                    markAsRead(roomId);
+                    markAsRead(roomId, thread ? thread.id : null);
                   }
                 }}
               >

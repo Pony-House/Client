@@ -18,7 +18,7 @@ function useJumpToEvent(roomTimeline) {
   };
 
   const cancelJumpToEvent = () => {
-    markAsRead(roomTimeline.roomId);
+    markAsRead(roomTimeline.roomId, roomTimeline.threadId);
     setEventId(null);
   };
 

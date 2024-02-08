@@ -60,7 +60,7 @@ function listenKeyboard(event) {
         return;
       }
       if (navigation.selectedRoomId) {
-        markAsRead(navigation.selectedRoomId);
+        markAsRead(navigation.selectedRoomId, navigation.selectedThreadId);
         return;
       }
     }

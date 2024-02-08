@@ -14,13 +14,13 @@ import RoomNotification from '../room-notification/RoomNotification';
 import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
 import { openPinMessageModal } from '../../../util/libs/pinMessage';
 
-function RoomOptions({ roomId, afterOptionSelect }) {
+function RoomOptions({ roomId, threadId, afterOptionSelect }) {
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
   const canInvite = room?.canInvite(mx.getUserId());
 
   const handleMarkAsRead = () => {
-    markAsRead(roomId);
+    markAsRead(roomId, threadId);
     afterOptionSelect();
   };
 
@@ -48,35 +48,40 @@ function RoomOptions({ roomId, afterOptionSelect }) {
       <MenuItem className="text-start" faSrc="fa-solid fa-check-double" onClick={handleMarkAsRead}>
         Mark as read
       </MenuItem>
-      <MenuItem
-        className="text-start"
-        faSrc="fa-solid fa-user-plus"
-        onClick={handleInviteClick}
-        disabled={!canInvite}
-      >
-        Invite
-      </MenuItem>
-      {mx.isRoomEncrypted(roomId) === false ? (
+      {!threadId ? <>
+
         <MenuItem
-          className="text-start d-sm-none"
-          faSrc="bi bi-pin-angle-fill"
-          onClick={() => {
-            afterOptionSelect();
-            openPinMessageModal(room);
-          }}
+          className="text-start"
+          faSrc="fa-solid fa-user-plus"
+          onClick={handleInviteClick}
+          disabled={!canInvite}
         >
-          Pinned Messages
+          Invite
         </MenuItem>
-      ) : null}
-      <MenuItem
-        className="text-start btn-text-danger"
-        faSrc="fa-solid fa-arrow-right-from-bracket"
-        onClick={handleLeaveClick}
-      >
-        Leave
-      </MenuItem>
-      <MenuHeader>Notification</MenuHeader>
-      <RoomNotification roomId={roomId} />
+        {mx.isRoomEncrypted(roomId) === false ? (
+          <MenuItem
+            className="text-start d-sm-none"
+            faSrc="bi bi-pin-angle-fill"
+            onClick={() => {
+              afterOptionSelect();
+              openPinMessageModal(room);
+            }}
+          >
+            Pinned Messages
+          </MenuItem>
+        ) : null}
+        <MenuItem
+          className="text-start btn-text-danger"
+          faSrc="fa-solid fa-arrow-right-from-bracket"
+          onClick={handleLeaveClick}
+        >
+          Leave
+        </MenuItem>
+
+        <MenuHeader>Notification</MenuHeader>
+        <RoomNotification roomId={roomId} threadId={threadId} />
+
+      </> : null}
     </div>
   );
 }

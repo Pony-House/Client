@@ -1,3 +1,11 @@
+    addToDataFolder('thread', 'actives', '', data);
+    removeFromDataFolder('thread', 'actives', '');
+    getDataList('thread', 'actives', '');
+
+    markAsRead(roomId);
+
+    =============================================
+
     --> Menu mobile de ícones precisa parar de ser table usar flex.
 
     --> Colocar o leitor de lista de threads.
