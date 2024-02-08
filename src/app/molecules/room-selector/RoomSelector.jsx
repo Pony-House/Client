@@ -282,7 +282,7 @@ RoomSelector.propTypes = {
 };
 
 export default RoomSelector;
-export function ThreadSelector({ thread, isSelected, isMuted }) {
+export function ThreadSelector({ thread, isSelected, isMuted, options, onContextMenu }) {
   const { rootEvent } = thread;
   const { notifications } = initMatrix;
 
@@ -345,8 +345,17 @@ export function ThreadSelector({ thread, isSelected, isMuted }) {
           )}
         </div>
       }
-      options={<div />}
+      options={options}
       onClick={onClick}
+      onContextMenu={onContextMenu}
     />
   );
 }
+
+ThreadSelector.propTypes = {
+  roomId: PropTypes.string.isRequired,
+  isSelected: PropTypes.bool,
+  isMuted: PropTypes.bool,
+  options: PropTypes.node,
+  onContextMenu: PropTypes.func,
+};

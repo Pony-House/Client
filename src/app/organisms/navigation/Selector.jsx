@@ -23,6 +23,7 @@ import {
   addToDataFolder,
   getDataFolderRaw,
 } from '../../../util/selectedRoom';
+import { getRoomInfo } from '../room/Room';
 
 // Selector Function
 function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, notSpace }) {
@@ -115,7 +116,7 @@ function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, 
     return null;
   }
 
-  const openOptions = (e) => {
+  const openOptions = (e, threadId) => {
     // Get Cords
     const cords = getEventCords(e, '.room-selector');
 
@@ -130,7 +131,9 @@ function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, 
       cords,
       room.isSpaceRoom()
         ? (closeMenu) => <SpaceOptions roomId={roomId} afterOptionSelect={closeMenu} />
-        : (closeMenu) => <RoomOptions roomId={roomId} afterOptionSelect={closeMenu} />,
+        : (closeMenu) => (
+            <RoomOptions threadId={threadId} roomId={roomId} afterOptionSelect={closeMenu} />
+          ),
     );
   };
 
@@ -158,14 +161,14 @@ function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, 
         notificationCount={abbreviateNumber(noti.getTotalNoti(roomId))}
         isAlert={noti.getHighlightNoti(roomId) !== 0}
         onClick={onClick}
-        onContextMenu={openOptions}
+        onContextMenu={(evt) => openOptions(evt)}
         options={
           <IconButton
             size="extra-small"
             tooltip="Options"
             tooltipPlacement="left"
             fa="bi bi-three-dots-vertical"
-            onClick={openOptions}
+            onClick={(evt) => openOptions(evt)}
           />
         }
       />
@@ -175,6 +178,16 @@ function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, 
           thread={thread}
           isMuted={isMuted}
           isSelected={navigation.selectedThreadId === thread.id}
+          onContextMenu={(evt) => openOptions(evt, thread.id)}
+          options={
+            <IconButton
+              size="extra-small"
+              tooltip="Options"
+              tooltipPlacement="left"
+              fa="bi bi-three-dots-vertical"
+              onClick={(evt) => openOptions(evt, thread.id)}
+            />
+          }
         />
       ))}
     </>

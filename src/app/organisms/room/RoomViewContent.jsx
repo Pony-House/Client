@@ -715,7 +715,14 @@ function RoomViewContent({
           readUptoEvent.getTs() < mEvent.getTs();
         if (unreadDivider) {
           isNewEvent = true;
-          tl.push(<Divider key={`new-${mEvent.getId()}`} thread={mEvent.thread} variant="bg" text="New messages" />);
+          tl.push(
+            <Divider
+              key={`new-${mEvent.getId()}`}
+              thread={mEvent.thread}
+              variant="bg"
+              text="New messages"
+            />,
+          );
           itemCountIndex += 1;
           if (jumpToItemIndex === -1) jumpToItemIndex = itemCountIndex;
         }
