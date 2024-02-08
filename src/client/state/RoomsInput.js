@@ -305,10 +305,10 @@ class RoomsInput extends EventEmitter {
     }
 
     if (this.isSending(roomId)) this.roomIdToInput.delete(roomId);
-    this.emit(cons.events.roomsInput.MESSAGE_SENT, roomId);
+    this.emit(cons.events.roomsInput.MESSAGE_SENT, roomId, threadId);
   }
 
-  async sendSticker(roomId, data) {
+  async sendSticker(roomId, threadId, data) {
     const { mxc: url, body, httpUrl } = data;
     const info = {};
 
@@ -328,12 +328,21 @@ class RoomsInput extends EventEmitter {
       // send sticker without info
     }
 
-    this.matrixClient.sendEvent(roomId, 'm.sticker', {
-      body,
-      url,
-      info,
-    });
-    this.emit(cons.events.roomsInput.MESSAGE_SENT, roomId);
+    if (typeof threadId !== 'string') {
+      this.matrixClient.sendEvent(roomId, 'm.sticker', {
+        body,
+        url,
+        info,
+      });
+    } else {
+      this.matrixClient.sendEvent(roomId, threadId, 'm.sticker', {
+        body,
+        url,
+        info,
+      });
+    }
+
+    this.emit(cons.events.roomsInput.MESSAGE_SENT, roomId, threadId);
   }
 
   async sendFile(roomId, file) {

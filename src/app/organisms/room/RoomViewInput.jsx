@@ -714,7 +714,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
 
   // Sticker
   const handleSendSticker = async (data) => {
-    if (roomsInput) await roomsInput.sendSticker(roomId, data);
+    if (roomsInput) await roomsInput.sendSticker(roomId, threadId, data);
     mediaFix(null, embedHeight, setEmbedHeight);
   };
 
