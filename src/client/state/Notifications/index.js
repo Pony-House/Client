@@ -260,7 +260,7 @@ class Notifications extends EventEmitter {
         window.getElectronShowStatus()) &&
       !$('body').hasClass('modal-open') &&
       ((!mEvent.thread && navigation.selectedRoomId === room.roomId) ||
-        navigation.selectedThreadId === mEvent.thread.id) &&
+        (mEvent.thread && navigation.selectedThreadId === mEvent.thread.id)) &&
       document.visibilityState === 'visible' &&
       !$('body').hasClass('windowHidden')
     )
