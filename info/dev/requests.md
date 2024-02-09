@@ -6,6 +6,10 @@
 
     =============================================
 
+    Trocar o titulo da página de bolinha de notificação para números
+
+    =============================================
+
     --> Menu mobile de ícones precisa parar de ser table usar flex.
 
     --> Colocar o leitor de lista de threads.
