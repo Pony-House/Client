@@ -290,7 +290,7 @@ class RoomsInput extends EventEmitter {
   }
 
   async sendInput(roomId, threadId, options) {
-    const input = this.getInput(roomId);
+    const input = this.getInput(roomId, threadId);
     input.isSending = true;
     this.roomIdToInput.set(!threadId ? roomId : `${roomId}:${threadId}`, input);
     if (input.attachment) {
