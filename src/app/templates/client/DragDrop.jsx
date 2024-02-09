@@ -53,13 +53,14 @@ function DragDrop({ children, navWrapperRef }) {
     if (!dropAllowed()) return;
 
     const roomId = navigation.selectedRoomId;
+    const threadId = navigation.selectedThreadId;
     if (!roomId) return;
 
     const { files } = e.dataTransfer;
     if (!files?.length) return;
 
     const file = files[0];
-    initMatrix.roomsInput.setAttachment(roomId, file);
+    initMatrix.roomsInput.setAttachment(roomId, threadId, file);
     initMatrix.roomsInput.emit(cons.events.roomsInput.ATTACHMENT_SET, file);
     if (dropZone.current) $(dropZone.current).removeClass('drag-enabled');
   }

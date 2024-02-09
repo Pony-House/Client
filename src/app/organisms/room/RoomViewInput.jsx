@@ -181,6 +181,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
               if (blob) {
                 // Get Room ID
                 const selectedRoomId = navigation.selectedRoomId;
+                const selectedThreadId = navigation.selectedThreadId;
                 if (!selectedRoomId) return;
 
                 // Get Type
@@ -196,7 +197,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
                 blob.name = `voice_message_${moment().format('MM/DD/YYYY_HH:mm:ss')}.${fileExt}`;
 
                 // Insert attachment and complete
-                initMatrix.roomsInput.setAttachment(selectedRoomId, blob);
+                initMatrix.roomsInput.setAttachment(selectedRoomId, selectedThreadId, blob);
                 mediaFix(null, embedHeight, setEmbedHeight);
                 initMatrix.roomsInput.emit(cons.events.roomsInput.ATTACHMENT_SET, blob);
                 tinyRec.enabled = false;
@@ -390,8 +391,9 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     };
   }, []);
 
-  function uploadingProgress(myRoomId, { loaded, total }) {
+  function uploadingProgress(myRoomId, myThreadId, { loaded, total }) {
     if (myRoomId !== roomId) return;
+    if (threadId && threadId !== myThreadId) return;
     const progressPer = Math.round((loaded * 100) / total);
 
     $(uploadProgressRef.current).text(
@@ -403,8 +405,9 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     );
   }
 
-  function clearAttachment(myRoomId) {
+  function clearAttachment(myRoomId, myThreadId) {
     if (roomId !== myRoomId) return;
+    if (threadId && threadId !== myThreadId) return;
     setAttachment(null);
     mediaFix(null, embedHeight, setEmbedHeight);
     $(inputBaseRef.current).css('background-image', 'unset');
@@ -516,7 +519,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     mediaFix(null, embedHeight, setEmbedHeight);
 
     if (roomsInput)
-      roomsInput.setReplyTo(roomId, {
+      roomsInput.setReplyTo(roomId, threadId, {
         userId,
         eventId,
         body,
@@ -544,9 +547,9 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     if (textArea.length > 0) {
       isTyping = false;
       if (roomsInput) {
-        textArea.val(roomsInput.getMessage(roomId));
-        setAttachment(roomsInput.getAttachment(roomId));
-        setReplyTo(roomsInput.getReplyTo(roomId));
+        textArea.val(roomsInput.getMessage(roomId, threadId));
+        setAttachment(roomsInput.getAttachment(roomId, threadId));
+        setReplyTo(roomsInput.getReplyTo(roomId, threadId));
         mediaFix(null, embedHeight, setEmbedHeight);
       }
     }
@@ -608,12 +611,12 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
       $(inputBaseRef.current).css('background-image', 'unset');
 
       if (msg.trim() === '') {
-        if (roomsInput) roomsInput.setMessage(roomId, '');
+        if (roomsInput) roomsInput.setMessage(roomId, threadId, '');
         return;
       }
-      if (roomsInput) roomsInput.setMessage(roomId, msg);
+      if (roomsInput) roomsInput.setMessage(roomId, threadId, msg);
     };
-  }, [roomId]);
+  }, [roomId, threadId]);
 
   // Send Body
   const sendBody = async (body, options) => {
@@ -627,18 +630,18 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     if (typeof opt.autoMarkdown !== 'boolean') opt.autoMarkdown = true;
 
     // Is Seding?
-    if (roomsInput && roomsInput.isSending(roomId)) return;
+    if (roomsInput && roomsInput.isSending(roomId, threadId)) return;
 
     // Cancel Typing Warn
     if (!checkTypingPerm()) sendIsTyping(false);
 
     // Set Message
-    if (roomsInput) roomsInput.setMessage(roomId, body);
+    if (roomsInput) roomsInput.setMessage(roomId, threadId, body);
 
     // Prepare Files
     if (attachment !== null) {
       if (roomsInput) {
-        roomsInput.setAttachment(roomId, attachment);
+        roomsInput.setAttachment(roomId, threadId, attachment);
         mediaFix(null, embedHeight, setEmbedHeight);
       }
     }
@@ -659,7 +662,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
 
     // Get Room ID
     clearEditor();
-    if (roomsInput) textArea.val(roomsInput.getMessage(roomId)).css('height', 'unset');
+    if (roomsInput) textArea.val(roomsInput.getMessage(roomId, threadId)).css('height', 'unset');
 
     // Reply Fix
     if (replyTo !== null) setReplyTo(null);
@@ -798,7 +801,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     const appearanceSettings = getAppearance();
     if (e.key === 'Escape') {
       e.preventDefault();
-      if (roomsInput) roomsInput.cancelReplyTo(roomId);
+      if (roomsInput) roomsInput.cancelReplyTo(roomId, threadId);
       setReplyTo(null);
       mediaFix(null, embedHeight, setEmbedHeight);
     }
@@ -831,7 +834,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
         if (attachment === null) {
           setAttachment(image);
           if (image !== null) {
-            if (roomsInput) roomsInput.setAttachment(roomId, image);
+            if (roomsInput) roomsInput.setAttachment(roomId, threadId, image);
             mediaFix(null, embedHeight, setEmbedHeight);
             return;
           }
@@ -889,14 +892,14 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
   const handleUploadClick = () => {
     if (attachment === null) uploadInputRef.current.click();
     else if (roomsInput) {
-      roomsInput.cancelAttachment(roomId);
+      roomsInput.cancelAttachment(roomId, threadId);
     }
   };
 
   function uploadFileChange(e) {
     const file = e.target.files.item(0);
     setAttachment(file);
-    if (roomsInput && file !== null) roomsInput.setAttachment(roomId, file);
+    if (roomsInput && file !== null) roomsInput.setAttachment(roomId, threadId, file);
     mediaFix(null, embedHeight, setEmbedHeight);
   }
 
@@ -923,7 +926,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
         <Text className="room-input__alert">
           {tombstoneEvent
             ? tombstoneEvent.getContent()?.body ??
-              'This room has been replaced and is no longer active.'
+            'This room has been replaced and is no longer active.'
             : 'You do not have permission to post to this room'}
         </Text>
       );
@@ -935,9 +938,8 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     return (
       <>
         <div
-          className={`room-input__option-container${
-            attachment === null ? '' : ' room-attachment__option'
-          }`}
+          className={`room-input__option-container${attachment === null ? '' : ' room-attachment__option'
+            }`}
         >
           <input
             onChange={uploadFileChange}
@@ -1092,9 +1094,8 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     return (
       <div className="room-attachment">
         <div
-          className={`room-attachment__preview${
-            fileType !== 'image' ? ' room-attachment__icon' : ''
-          }`}
+          className={`room-attachment__preview${fileType !== 'image' ? ' room-attachment__icon' : ''
+            }`}
         >
           {fileType === 'image' && (
             <img alt={attachment.name} src={URL.createObjectURL(attachment)} />
@@ -1121,7 +1122,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
       <div className="room-reply">
         <IconButton
           onClick={() => {
-            roomsInput.cancelReplyTo(roomId);
+            roomsInput.cancelReplyTo(roomId, threadId);
             setReplyTo(null);
             mediaFix(null, embedHeight, setEmbedHeight);
           }}
