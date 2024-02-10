@@ -255,6 +255,7 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
 
                     e.preventDefault();
                   }}
+                  customData={member.customData}
                   avatarSrc={member.avatarSrc}
                   name={member.name}
                   color={colorMXID(member.userId)}
@@ -282,6 +283,7 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
                 }
                 avatarSrc={member.avatarSrc}
                 name={member.name}
+                customData={member.customData}
                 color={colorMXID(member.userId)}
                 peopleRole={member.peopleRole}
               />
