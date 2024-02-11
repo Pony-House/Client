@@ -105,53 +105,53 @@ const mathOptions = {
 const tinyRender = {
   html:
     (type) =>
-    ({ attributes, content }) => {
-      if (tinyLinkifyFixer(type, content)) {
-        let tinyAttr = '';
-        for (const attr in attributes) {
-          tinyAttr += ` ${attr}${attributes[attr].length > 0 ? `=${attributes[attr]}` : ''}`;
+      ({ attributes, content }) => {
+        if (tinyLinkifyFixer(type, content)) {
+          let tinyAttr = '';
+          for (const attr in attributes) {
+            tinyAttr += ` ${attr}${attributes[attr].length > 0 ? `=${attributes[attr]}` : ''}`;
+          }
+
+          if (type === 'keyword') {
+            tinyAttr += ' iskeyword="true"';
+          } else {
+            tinyAttr += ' iskeyword="false"';
+          }
+
+          const db = tinywordsDB[content.toLowerCase()];
+          return `<a${tinyAttr} title="${db?.title}">${content}</a>`;
         }
 
-        if (type === 'keyword') {
-          tinyAttr += ' iskeyword="true"';
-        } else {
-          tinyAttr += ' iskeyword="false"';
-        }
-
-        const db = tinywordsDB[content.toLowerCase()];
-        return `<a${tinyAttr} title="${db?.title}">${content}</a>`;
-      }
-
-      return content;
-    },
+        return content;
+      },
 
   react:
     (type) =>
-    ({ attributes, content }) => {
-      if (tinyLinkifyFixer(type, content)) {
-        const { href, ...props } = attributes;
-        const db = tinywordsDB[content.toLowerCase()];
-        const result = (
-          <a
-            href={href}
-            onClick={(e) => {
-              e.preventDefault();
-              openTinyURL($(e.target).attr('href'), $(e.target).attr('href'));
-              return false;
-            }}
-            {...props}
-            iskeyword={type === 'keyword' ? 'true' : 'false'}
-            className="lk-href"
-          >
-            {content}
-          </a>
-        );
+      ({ attributes, content }) => {
+        if (tinyLinkifyFixer(type, content)) {
+          const { href, ...props } = attributes;
+          const db = tinywordsDB[content.toLowerCase()];
+          const result = (
+            <a
+              href={href}
+              onClick={(e) => {
+                e.preventDefault();
+                openTinyURL($(e.target).attr('href'), $(e.target).attr('href'));
+                return false;
+              }}
+              {...props}
+              iskeyword={type === 'keyword' ? 'true' : 'false'}
+              className="lk-href"
+            >
+              {content}
+            </a>
+          );
 
-        return db?.title ? <Tooltip content={<small>{db.title}</small>}>{result}</Tooltip> : result;
-      }
+          return db?.title ? <Tooltip content={<small>{db.title}</small>}>{result}</Tooltip> : result;
+        }
 
-      return <span>{content}</span>;
-    },
+        return <span>{content}</span>;
+      },
 };
 
 tinyRender.list = {
@@ -222,14 +222,14 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
       return (
         <span className="linkify-base">
           <Linkify options={linkifyOptions}>
-            {parse(msgContent, maths ? mathOptions : null)}
+            {parse(msgContent, maths ? mathOptions : undefined)}
           </Linkify>
         </span>
       );
     }
 
     // Complete
-    return <span className="linkify-base">{parse(msgContent, maths ? mathOptions : null)}</span>;
+    return <span className="linkify-base">{parse(msgContent, maths ? mathOptions : undefined)}</span>;
   }
 
   // jQuery Mode
