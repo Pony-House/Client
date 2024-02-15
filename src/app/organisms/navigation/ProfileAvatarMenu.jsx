@@ -291,7 +291,7 @@ function ProfileAvatarMenu() {
               className={`action-button${microphoneMuted ? ' muted' : ''}`}
               onClick={() => voiceChat.setMicrophoneMute(!microphoneMuted)}
             />
-            {microphoneMuted ? <i class="fa-solid fa-slash tiny-block" /> : null}
+            {microphoneMuted ? <i className="fa-solid fa-slash tiny-block" /> : null}
           </td>
 
           <td className="p-0 pe-1 py-1 text-end">
@@ -302,7 +302,7 @@ function ProfileAvatarMenu() {
               className={`action-button-2${audioMuted ? ' muted' : ''}`}
               onClick={() => voiceChat.setAudioMute(!audioMuted)}
             />
-            {audioMuted ? <i class="fa-solid fa-slash tiny-block-2" /> : null}
+            {audioMuted ? <i className="fa-solid fa-slash tiny-block-2" /> : null}
           </td>
 
           <td className="p-0 pe-1 py-1 text-end">
@@ -321,10 +321,10 @@ function ProfileAvatarMenu() {
 }
 
 /*
-<i class="fa-solid fa-microphone"></i>
-<i class="bi bi-headphones"></i>
-<i class="bi bi-webcam-fill"></i>
-<i class="fa-solid fa-desktop"></i>
-<i class="bi bi-telephone-x-fill"></i>
+<i className="fa-solid fa-microphone"></i>
+<i className="bi bi-headphones"></i>
+<i className="bi bi-webcam-fill"></i>
+<i className="fa-solid fa-desktop"></i>
+<i className="bi bi-telephone-x-fill"></i>
 */
 export default ProfileAvatarMenu;

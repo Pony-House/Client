@@ -59,7 +59,7 @@ export default PonyHousePersonalSettings;
 
 <div className="card noselect mb-3">
 <ul className="list-group list-group-flush">
-    <li className="list-group-item very-small text-gray">{`${__ENV_APP__.INFO.name} Settings (Personal)`}<i class="ms-2 bi bi-person-circle" /></li>
+    <li className="list-group-item very-small text-gray">{`${__ENV_APP__.INFO.name} Settings (Personal)`}<i className="ms-2 bi bi-person-circle" /></li>
     <PonyHousePersonalSettings roomId={roomId} room={room} />
 </ul>
 </div>
