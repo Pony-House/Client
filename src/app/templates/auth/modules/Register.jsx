@@ -16,7 +16,13 @@ import Recaptcha from './Recaptcha';
 import Terms from './Terms';
 import EmailVerify from './EmailVerify';
 
-import { EMAIL_REGEX, BAD_EMAIL_ERROR, PASSWORD_STRENGHT_REGEX, BAD_PASSWORD_ERROR, CONFIRM_PASSWORD_ERROR } from './regex';
+import {
+  EMAIL_REGEX,
+  BAD_EMAIL_ERROR,
+  PASSWORD_STRENGHT_REGEX,
+  BAD_PASSWORD_ERROR,
+  CONFIRM_PASSWORD_ERROR,
+} from './regex';
 import { isValidInput } from './validator';
 
 const LOCALPART_SIGNUP_REGEX = /^[a-z0-9_\-.=/]+$/;
