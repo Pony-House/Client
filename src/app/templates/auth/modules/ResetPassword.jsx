@@ -25,7 +25,7 @@ let tempClient;
 let clientSecret;
 function ResetPassword({ baseUrl, serverName }) {
   const [process] = useState({});
-  const [step, setStep] = useState('waiting'); // send
+  const [step, setStep] = useState('send');
 
   const [submitData, setSubmitData] = useState(null);
 
