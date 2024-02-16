@@ -14,14 +14,13 @@ import LoadingScreen from './LoadingScreen';
 
 let tempClient;
 let clientSecret;
-function ResetPassword({ baseUrl, registerInfo }) {
+function ResetPassword({ baseUrl }) {
 
     const [process] = useState({});
     const [step, setStep] = useState('send');
     const [submitData, setSubmitData] = useState(null);
     const [passVisible, setPassVisible] = useState(false);
     const [cPassVisible, setCPassVisible] = useState(false);
-    const { session } = registerInfo;
     const formRef = useRef(null);
 
     const refreshWindow = () => window.location.reload();
