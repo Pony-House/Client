@@ -179,15 +179,17 @@ function ResetPassword({ baseUrl, serverName }) {
           </Button>
           <Button
             onClick={() => {
-              setLoadingPage();
+              setLoadingPage('Resending password reset request');
 
               tempClient
                 .requestPasswordEmailToken(email, clientSecret, 1)
                 .then((data) => {
                   setLoadingPage(false);
+                  alert('The password email was successfully resent.');
                   setSubmitData(data);
                 })
                 .catch((err) => {
+                  setLoadingPage(false);
                   console.error(err);
                   alert(err.message);
                 });
