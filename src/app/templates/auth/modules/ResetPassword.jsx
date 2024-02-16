@@ -34,9 +34,10 @@ function ResetPassword({ baseUrl, registerInfo }) {
     const changePassword = (values, actions) => {
 
         tempClient.setPassword({
-            session,
+            type: 'm.login.email.identity',
             threepidCreds: { sid: submitData.sid, client_secret: clientSecret },
             threepid_creds: { sid: submitData.sid, client_secret: clientSecret },
+            session,
         }, values.password, false).then(() => refreshWindow()).catch((error) => {
             actions.setErrors({
                 other: error.message,
