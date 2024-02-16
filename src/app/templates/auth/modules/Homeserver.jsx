@@ -12,7 +12,7 @@ import Spinner from '../../../atoms/spinner/Spinner';
 import ContextMenu, { MenuItem, MenuHeader } from '../../../atoms/context-menu/ContextMenu';
 
 let searchingHs = null;
-function Homeserver({ onChange }) {
+function Homeserver({ onChange, className }) {
   const [hs, setHs] = useState(null);
   const [debounce] = useState(new Debounce());
   const [process, setProcess] = useState({
@@ -39,7 +39,7 @@ function Homeserver({ onChange }) {
           if (loginFlow === undefined || registerFlow === undefined) throw new Error();
 
           if (searchingHs !== servername) return;
-          onChange({ baseUrl, login: loginFlow, register: registerFlow });
+          onChange({ serverName: servername, baseUrl, login: loginFlow, register: registerFlow });
           setProcess({ isLoading: false });
         })
         .catch(() => {
@@ -99,7 +99,7 @@ function Homeserver({ onChange }) {
 
   return (
     <>
-      <div className="homeserver-form">
+      <div className={`homeserver-form${typeof className === 'string' ? ` ${className}` : ''}`}>
         <div className="w-100">
           <Input
             placeholder="Type the homeserver address here"
@@ -151,6 +151,7 @@ function Homeserver({ onChange }) {
 }
 Homeserver.propTypes = {
   onChange: PropTypes.func.isRequired,
+  className: PropTypes.string,
 };
 
 export default Homeserver;

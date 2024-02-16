@@ -14,7 +14,7 @@ import LoadingScreen from './LoadingScreen';
 
 let tempClient;
 let clientSecret;
-function ResetPassword({ baseUrl }) {
+function ResetPassword({ baseUrl, serverName }) {
 
     const [process] = useState({});
     const [step, setStep] = useState('send');
@@ -96,6 +96,8 @@ function ResetPassword({ baseUrl }) {
             {step === 'send' ? <>
 
                 {process.type === 'processing' && <LoadingScreen message={process.message} />}
+                <h5>Enter your email to reset password</h5>
+                <p className='small'><strong>{serverName}</strong> will send you a verification link to let you reset your password.</p>
 
                 <Formik initialValues={initialValues} onSubmit={submitEmail} validate={validator}>
                     {({ values, errors, handleChange, handleSubmit, isSubmitting }) => (
@@ -124,7 +126,7 @@ function ResetPassword({ baseUrl }) {
 
                                 <div className="auth-form__btns">
                                     <Button variant="primary" type="submit" disabled={isSubmitting}>
-                                        Send recover email
+                                        Send email
                                     </Button>
                                 </div>
                             </form>
@@ -135,6 +137,7 @@ function ResetPassword({ baseUrl }) {
             </> : null}
 
             {step === 'waiting' ? <center>
+                <h5>Confirm your password reset request</h5>
                 <p className='small'>{'Now please follow the instructions that were sent to you to continue your password reset. When you\'re ready, click the button below.'}</p>
                 <Button onClick={() => setStep('set_password')} variant="primary" type="submit" className='mb-3'>
                     Next

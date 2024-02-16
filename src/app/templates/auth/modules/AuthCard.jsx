@@ -19,7 +19,7 @@ function AuthCard() {
   return (
     <>
       <div className="mb-4">
-        <Homeserver onChange={handleHsChange} />
+        <Homeserver className={type === 'reset-password' ? 'd-none' : null} onChange={handleHsChange} />
       </div>
 
       {hsConfig !== null &&
@@ -32,8 +32,7 @@ function AuthCard() {
             baseUrl={hsConfig.baseUrl}
           />
         ) : <ResetPassword
-          registerInfo={hsConfig.register}
-          loginFlow={hsConfig.login.flows}
+          serverName={hsConfig.serverName}
           baseUrl={hsConfig.baseUrl}
         />)}
 
