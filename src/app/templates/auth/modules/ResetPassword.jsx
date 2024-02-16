@@ -36,7 +36,7 @@ function ResetPassword({ baseUrl }) {
             type: 'm.login.email.identity',
             threepidCreds: { sid: submitData.sid, client_secret: clientSecret },
             threepid_creds: { sid: submitData.sid, client_secret: clientSecret },
-        }, values.password, false).then(() => refreshWindow()).catch((error) => {
+        }, values.password, false).then(() => setStep('reset_complete')).catch((error) => {
             actions.setErrors({
                 other: error.message,
             });
@@ -218,6 +218,13 @@ function ResetPassword({ baseUrl }) {
                 </Formik>
 
             </> : null}
+
+            {step === 'reset_complete' ? <center>
+                <p className='small'>{'Your password has been changed successfully! Now you can try to log in again.'}</p>
+                <Button onClick={() => refreshWindow()} variant="primary" type="submit" className='mb-3'>
+                    Refresh page
+                </Button>
+            </center> : null}
 
         </>
     );
