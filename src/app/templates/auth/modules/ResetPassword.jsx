@@ -37,7 +37,6 @@ function ResetPassword({ baseUrl, registerInfo }) {
             type: 'm.login.email.identity',
             threepidCreds: { sid: submitData.sid, client_secret: clientSecret },
             threepid_creds: { sid: submitData.sid, client_secret: clientSecret },
-            session,
         }, values.password, false).then(() => refreshWindow()).catch((error) => {
             actions.setErrors({
                 other: error.message,
