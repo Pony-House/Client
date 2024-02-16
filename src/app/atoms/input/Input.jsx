@@ -21,12 +21,11 @@ function Input({
   disabled,
   autoFocus,
   className,
-  className2,
 }) {
   return (
     <>
       {label !== '' && (
-        <label className="small text-gray" for={id}>
+        <label className="small text-gray" htmlFor={id}>
           {label}
         </label>
       )}
@@ -74,7 +73,6 @@ function Input({
 }
 
 Input.defaultProps = {
-  className2: '',
   className: null,
   id: null,
   name: '',
@@ -96,7 +94,6 @@ Input.defaultProps = {
 
 Input.propTypes = {
   className: PropTypes.string,
-  className2: PropTypes.string,
   id: PropTypes.string,
   name: PropTypes.string,
   label: PropTypes.string,
