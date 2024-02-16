@@ -120,7 +120,7 @@ function ResetPassword({ baseUrl, serverName }) {
 
                                 {errors.email && (
                                     <Text className="auth-form__error" variant="b3">
-                                        {errors.email}i
+                                        {errors.email}
                                     </Text>
                                 )}
 
