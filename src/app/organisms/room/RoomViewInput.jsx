@@ -8,6 +8,7 @@ import moment from '@src/util/libs/momentjs';
 import { ReactEditor } from 'slate-react';
 import { Editor, Transforms } from 'slate';
 
+import threadsList from '@src/util/libs/thread';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import settings from '../../../client/state/settings';
@@ -663,6 +664,9 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     // Get Room ID
     clearEditor();
     if (roomsInput) textArea.val(roomsInput.getMessage(roomId, threadId)).css('height', 'unset');
+
+    // Follow Thread
+    if (threadId) threadsList.addActive(roomId, threadId);
 
     // Reply Fix
     if (replyTo !== null) setReplyTo(null);

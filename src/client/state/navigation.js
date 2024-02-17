@@ -652,6 +652,7 @@ class Navigation extends EventEmitter {
 }
 
 const navigation = new Navigation();
+navigation.setMaxListeners(Infinity);
 appDispatcher.register(navigation.navigate.bind(navigation));
 
 export default navigation;

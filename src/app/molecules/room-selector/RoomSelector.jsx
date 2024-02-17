@@ -353,7 +353,6 @@ export function ThreadSelector({ thread, isSelected, isMuted, options, onContext
 }
 
 ThreadSelector.propTypes = {
-  roomId: PropTypes.string.isRequired,
   isSelected: PropTypes.bool,
   isMuted: PropTypes.bool,
   options: PropTypes.node,

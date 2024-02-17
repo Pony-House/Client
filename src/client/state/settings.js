@@ -394,6 +394,7 @@ class Settings extends EventEmitter {
 }
 
 const settings = new Settings();
+settings.setMaxListeners(Infinity);
 export function startSettings() {
   settings.startData();
   settings.applyTheme();

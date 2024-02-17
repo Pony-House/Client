@@ -23,6 +23,7 @@ class MatrixDevices extends EventEmitter {
 }
 
 const matrixDevices = new MatrixDevices();
+matrixDevices.setMaxListeners(Infinity);
 const sendPing = () => {
   const mx = initMatrix.matrixClient;
   if (mx && typeof mx.getAccountData === 'function') {

@@ -134,6 +134,12 @@ class InitMatrix extends EventEmitter {
           this.accountData = new AccountData(this.roomList);
           this.roomsInput = new RoomsInput(this.matrixClient, this.roomList);
           this.notifications = new Notifications(this.roomList);
+
+          this.accountData.setMaxListeners(Infinity);
+          this.roomList.setMaxListeners(Infinity);
+          this.roomsInput.setMaxListeners(Infinity);
+          this.notifications.setMaxListeners(Infinity);
+
           this.emit('init_loading_finished');
           this.notifications._initNoti();
         } else {
@@ -189,5 +195,6 @@ class InitMatrix extends EventEmitter {
 }
 
 const initMatrix = new InitMatrix();
+initMatrix.setMaxListeners(Infinity);
 
 export default initMatrix;

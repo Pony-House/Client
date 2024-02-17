@@ -7,6 +7,7 @@ import { EventEmitter } from 'events';
 // Emitter
 class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
+myEmitter.setMaxListeners(Infinity);
 
 // Class
 class MatrixVoiceChat {

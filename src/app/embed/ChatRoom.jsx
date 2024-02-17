@@ -197,19 +197,19 @@ function ChatRoom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
                     setIsLoading(0);
                   });
                 } else {
-                  setTimeline(
-                    new RoomTimeline(
-                      aliasData.room_id,
-                      roomId,
-                      true,
-                      mx.getUserId(),
-                      (typeof refreshTime === 'string' && refreshTime.length > 0) ||
-                      (typeof refreshTime === 'number' && refreshTime > 0)
-                        ? Number(refreshTime)
-                        : null,
-                    ),
+                  const newTimeline = new RoomTimeline(
+                    aliasData.room_id,
+                    roomId,
+                    true,
+                    mx.getUserId(),
+                    (typeof refreshTime === 'string' && refreshTime.length > 0) ||
+                    (typeof refreshTime === 'number' && refreshTime > 0)
+                      ? Number(refreshTime)
+                      : null,
                   );
 
+                  newTimeline.setMaxListeners(Infinity);
+                  setTimeline(newTimeline);
                   setIsLoading(0);
                 }
               } else {

@@ -1,7 +1,3 @@
-    addToDataFolder('thread', 'actives', '', data);
-    removeFromDataFolder('thread', 'actives', '');
-    getDataList('thread', 'actives', '');
-
     Load de threads diretamente ainda está bugado.
 
     =============================================

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import { objType } from '@src/util/tools';
+import threadsList from '@src/util/libs/thread';
 import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
@@ -15,6 +17,8 @@ import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
 import { openPinMessageModal } from '../../../util/libs/pinMessage';
 
 function RoomOptions({ roomId, threadId, afterOptionSelect }) {
+  const [isFollowing, setIsFollowing] = useState(threadsList.getActive(roomId, threadId));
+
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
   const canInvite = room?.canInvite(mx.getUserId());
@@ -40,6 +44,11 @@ function RoomOptions({ roomId, threadId, afterOptionSelect }) {
     roomActions.leave(roomId);
   };
 
+  const followedThread =
+    objType(isFollowing, 'object') &&
+    typeof isFollowing.enabled === 'boolean' &&
+    isFollowing.enabled;
+
   return (
     <div className="noselect emoji-size-fix w-100" style={{ maxWidth: '256px' }}>
       <MenuHeader>
@@ -48,6 +57,23 @@ function RoomOptions({ roomId, threadId, afterOptionSelect }) {
       <MenuItem className="text-start" faSrc="fa-solid fa-check-double" onClick={handleMarkAsRead}>
         Mark as read
       </MenuItem>
+      {threadId ? (
+        <MenuItem
+          className="text-start"
+          faSrc={followedThread ? 'fa-solid fa-minus' : 'fa-solid fa-plus'}
+          onClick={() => {
+            if (followedThread) {
+              threadsList.removeActive(roomId, threadId);
+              setIsFollowing(null);
+            } else {
+              const newData = threadsList.addActive(roomId, threadId);
+              setIsFollowing(newData);
+            }
+          }}
+        >
+          {followedThread ? 'Unfollow thread' : 'Follow thread'}
+        </MenuItem>
+      ) : null}
       {!threadId ? (
         <>
           <MenuItem

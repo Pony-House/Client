@@ -1,9 +1,16 @@
 import moment from 'moment-timezone';
+import EventEmitter from 'events';
 
 import { setLoadingPage } from '@src/app/templates/client/Loading';
 import { colorMXID } from '@src/util/colorMXID';
 import { twemojify } from '@src/util/twemojify';
 import { getRoomInfo } from '@src/app/organisms/room/Room';
+import {
+  addToDataFolder,
+  getDataFolderRaw,
+  getDataList,
+  removeFromDataFolder,
+} from '@src/util/selectedRoom';
 
 import { openProfileViewer, selectRoom } from '@src/client/action/navigation';
 import { createMessageData } from '@src/app/molecules/message/Message';
@@ -17,9 +24,10 @@ import initMatrix, { fetchFn } from '../../../client/initMatrix';
 const ImageBrokenSVG = './img/svg/image-broken.svg';
 
 // The class
-class ThreadsList {
+class ThreadsList extends EventEmitter {
   // Constructor
   constructor(roomId) {
+    super();
     this.roomId = typeof roomId === 'string' ? roomId : null;
     this.nextBatch = null;
     this.page = null;
@@ -45,6 +53,30 @@ class ThreadsList {
 
   getPrevs() {
     return this.prevs;
+  }
+
+  removeActive(roomId, threadId) {
+    removeFromDataFolder('thread', 'actives', `${roomId}:${threadId}`);
+    this.emit('removedActiveThread', { roomId, threadId });
+    this.emit('updatedActiveThreads', { roomId, threadId });
+  }
+
+  addActive(roomId, threadId) {
+    const newData = { enabled: true };
+    addToDataFolder('thread', 'actives', `${roomId}:${threadId}`, newData);
+    this.emit('addedActiveThread', { roomId, threadId });
+    this.emit('updatedActiveThreads', { roomId, threadId });
+    return newData;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  getActives() {
+    return getDataFolderRaw('thread', 'actives');
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  getActive(roomId, threadId) {
+    return getDataList('thread', 'actives', `${roomId}:${threadId}`);
   }
 
   /**
@@ -142,6 +174,7 @@ class ThreadsList {
 
 // Prepare module
 const threadsList = new ThreadsList();
+threadsList.setMaxListeners(Infinity);
 export default threadsList;
 
 // Get thread list

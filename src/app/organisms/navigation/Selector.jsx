@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
+import threadsList from '@src/util/libs/thread';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
@@ -17,13 +18,7 @@ import SpaceOptions from '../../molecules/space-options/SpaceOptions';
 
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
-import {
-  getDataList,
-  removeFromDataFolder,
-  addToDataFolder,
-  getDataFolderRaw,
-} from '../../../util/selectedRoom';
-import { getRoomInfo } from '../room/Room';
+import { getDataList } from '../../../util/selectedRoom';
 
 // Selector Function
 function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, notSpace }) {
@@ -98,7 +93,8 @@ function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, 
 
   // Force Update
   const [, forceUpdate] = useForceUpdate();
-  const [threadsList, setThreadsList] = useState(getDataFolderRaw('thread', 'actives'));
+  const threads = threadsList.getActives();
+  console.log('threadsList', threads);
 
   // Effects
   useEffect(() => {

@@ -312,6 +312,7 @@ class RoomTimeline extends EventEmitter {
 
   static newFromThread(threadId, roomId) {
     const roomTimeline = new RoomTimeline(roomId);
+    roomTimeline.setMaxListeners(Infinity);
     const thread = roomTimeline.room.getThread(threadId);
     if (!thread) return null;
 

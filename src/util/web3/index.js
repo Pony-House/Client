@@ -233,6 +233,7 @@ const startWeb3 = () => {
     // Emitter
     class MyEmitter extends EventEmitter {}
     const myEmitter = new MyEmitter();
+    myEmitter.setMaxListeners(Infinity);
 
     tinyCrypto.on = (where, callback) => myEmitter.on(where, callback);
 

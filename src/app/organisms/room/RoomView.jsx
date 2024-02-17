@@ -13,6 +13,7 @@ import RoomViewInput from './RoomViewInput';
 import RoomViewCmdBar from './RoomViewCmdBar';
 
 const viewEvent = new EventEmitter();
+viewEvent.setMaxListeners(Infinity);
 
 function RoomView({ roomTimeline, eventId, isUserList, roomItem, isGuest, isLoading }) {
   const refcmdInput = useRef(null);
