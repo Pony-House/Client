@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import threadsList from '@src/util/libs/thread';
+import { objType } from '@src/util/tools';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
@@ -93,16 +94,18 @@ function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, 
 
   // Force Update
   const [, forceUpdate] = useForceUpdate();
-  const threads = threadsList.getActives();
-  console.log('threadsList', threads);
+  const [lastThreads, setLastThreads] = useState(threadsList.getActives());
 
   // Effects
   useEffect(() => {
+    const threadsListUpdate = () => setLastThreads(threadsList.getActives());
     const unSub1 = drawerPostie.subscribe('selector-change', roomId, forceUpdate);
     const unSub2 = drawerPostie.subscribe('unread-change', roomId, forceUpdate);
+    threadsList.on('updatedActiveThreads', threadsListUpdate);
     return () => {
       unSub1();
       unSub2();
+      threadsList.off('updatedActiveThreads', threadsListUpdate);
     };
   }, []);
 
@@ -133,9 +136,23 @@ function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, 
     );
   };
 
-  const openThreads = room
-    .getThreads()
-    .filter((thread) => thread.id === navigation.selectedThreadId);
+  const getThreads = room.getThreads();
+  const openThreads = getThreads.filter(
+    (thread) =>
+      thread.id === navigation.selectedThreadId ||
+      (objType(lastThreads, 'object') &&
+        Array.isArray(lastThreads.actives) &&
+        lastThreads.actives.find(
+          (ac1) =>
+            Array.isArray(ac1) &&
+            ac1.find(
+              (ac2) =>
+                objType(ac2, 'object') &&
+                typeof ac2.id === 'string' &&
+                ac2.id.replace(`${roomId}:`, '') === thread.id,
+            ),
+        )),
+  );
 
   return (
     <>
