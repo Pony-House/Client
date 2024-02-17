@@ -67,6 +67,11 @@ class MatrixAppearance extends EventEmitter {
         typeof this.content.hideUnpinMessageEvents === 'boolean'
           ? this.content.hideUnpinMessageEvents
           : false;
+
+      this.content.showRoomIdInSpacesManager =
+        typeof this.content.showRoomIdInSpacesManager === 'boolean'
+          ? this.content.showRoomIdInSpacesManager
+          : false;
     }
   }
 

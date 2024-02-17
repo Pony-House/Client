@@ -32,6 +32,10 @@ function AppearanceSection() {
   const [isEmbedEnabled, setEmbedEnabled] = useState(appearanceSettings.isEmbedEnabled);
   const [isUNhoverEnabled, setUNhoverEnabled] = useState(appearanceSettings.isUNhoverEnabled);
 
+  const [showRoomIdInSpacesManager, setShowRoomIdInSpacesManager] = useState(
+    appearanceSettings.showRoomIdInSpacesManager,
+  );
+
   const [isAnimateAvatarsEnabled, setAnimateAvatarsEnabled] = useState(
     appearanceSettings.isAnimateAvatarsEnabled,
   );
@@ -482,6 +486,29 @@ function AppearanceSection() {
               <div className="very-small text-gray">
                 Turn on animated avatars that are displayed when you mouse over it.
               </div>
+            }
+          />
+        </ul>
+      </div>
+
+      <div className="card noselect mt-3">
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item very-small text-gray">Spaces</li>
+
+          <SettingTile
+            title="Show room id in space manager"
+            options={
+              <Toggle
+                className="d-inline-flex"
+                isActive={showRoomIdInSpacesManager}
+                onToggle={toggleAppearanceAction(
+                  'showRoomIdInSpacesManager',
+                  setShowRoomIdInSpacesManager,
+                )}
+              />
+            }
+            content={
+              <div className="very-small text-gray">{`Show room id next to the room name in the space's room manager.`}</div>
             }
           />
         </ul>

@@ -305,9 +305,7 @@ function CreateRoom() {
       title={
         <Text variant="s1" weight="medium" primary>
           {parentId ? twemojifyReact(room.name) : 'Home'}
-          <span style={{ color: 'var(--tc-surface-low)' }}>
-            {` — create ${isSpace ? 'space' : 'room'}`}
-          </span>
+          <span className="text-bg-low">{` — create ${isSpace ? 'space' : 'room'}`}</span>
         </Text>
       }
       onRequestClose={onRequestClose}

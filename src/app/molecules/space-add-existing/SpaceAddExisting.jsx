@@ -102,11 +102,11 @@ function SpaceAddExistingContent({ roomId }) {
       setSearchIds(searchedIds);
     }, 200)();
   };
-  const handleSearchClear = (ev) => {
+  /* const handleSearchClear = (ev) => {
     const btn = ev.currentTarget;
     btn.parentElement.searchInput.value = '';
     setSearchIds(null);
-  };
+  }; */
 
   const appearanceSettings = getAppearance();
 
@@ -227,7 +227,7 @@ function SpaceAddExisting() {
       title={
         <Text variant="s1" weight="medium" primary>
           {roomId && twemojifyReact(room.name)}
-          <span style={{ color: 'var(--tc-surface-low)' }}> — add existing rooms</span>
+          <span className="text-bg-low"> — add existing rooms</span>
         </Text>
       }
       onRequestClose={requestClose}

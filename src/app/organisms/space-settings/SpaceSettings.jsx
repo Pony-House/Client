@@ -229,7 +229,7 @@ function SpaceSettings() {
         window.matchMedia('screen and (max-width: 768px)').matches ? (
           <>
             {isOpen && twemojifyReact(room.name)}
-            <span style={{ color: 'var(--tc-surface-low)' }}> — space settings</span>
+            <span className="text-bg-low"> — space settings</span>
           </>
         ) : null
       }

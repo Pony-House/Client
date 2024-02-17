@@ -151,6 +151,9 @@ function SpaceManageItem({
   const roomNameJSX = (
     <Text className="emoji-size-fix">
       {twemojifyReact(name)}
+      {appearanceSettings.showRoomIdInSpacesManager ? (
+        <span className="ms-2 text-bg-low">{roomInfo.canonical_alias || roomId}</span>
+      ) : null}
       <span
         className="very-small text-gray"
         span
@@ -472,7 +475,7 @@ function SpaceManage() {
         title={
           <>
             {roomId && twemojifyReact(room.name)}
-            <span style={{ color: 'var(--tc-surface-low)' }}> — manage rooms</span>
+            <span className="text-bg-low"> — manage rooms</span>
           </>
         }
         onRequestClose={requestClose}

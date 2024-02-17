@@ -203,7 +203,7 @@ function RoomSettings({ roomId }) {
           >
             <strong className="me-2">
               {`${room.name}`}
-              <span style={{ color: 'var(--tc-surface-low)' }}> — room settings</span>
+              <span className="text-bg-low"> — room settings</span>
             </strong>
             <RawIcon size="small" fa="fa-solid fa-chevron-up" />
           </button>

@@ -1,0 +1,2 @@
+- Recover password form added.
+- New appearance setting (show room id in the space manager)
