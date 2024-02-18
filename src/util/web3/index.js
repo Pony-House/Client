@@ -25,9 +25,8 @@ unix: ${unix || moment().unix()}`;
 // Sign user account
 export function signUserWeb3Account(unix) {
   return new Promise((resolve, reject) => {
-    if (tinyCrypto.call && typeof tinyCrypto.call.sign === 'function') {
-      tinyCrypto.call
-        .sign(web3SignTemplate(initMatrix.matrixClient.getUserId(), unix))
+    if (typeof tinyCrypto.sign === 'function') {
+      tinyCrypto.sign(web3SignTemplate(initMatrix.matrixClient.getUserId(), unix))
         .then(resolve)
         .catch(reject);
     } else {
@@ -190,9 +189,6 @@ tinyCrypto.config = Object.freeze({
   networks: getWeb3Cfg()?.networks ?? {},
 });
 
-tinyCrypto.call = {};
-tinyCrypto.get = {};
-
 tinyCrypto.errors = Object.freeze({
   noWallet: () => new Error('No wallet connected detected.'),
   noProvider: () => new Error('No provider connected detected.'),
@@ -243,13 +239,13 @@ const startWeb3 = (tcall) => {
     };
 
     // Network Changed
-    tinyCrypto.call.networkChanged = (network) => {
+    tinyCrypto.networkChanged = (network) => {
       tinyCrypto.chainId = network.chainId;
       myEmitter.emit('networkChanged', network);
     };
 
     // Check Connection
-    tinyCrypto.call.checkConnection = () =>
+    tinyCrypto.checkConnection = () =>
       new Promise((resolve, reject) => {
         if (tinyCrypto.providerConnected) {
           web3
@@ -271,59 +267,12 @@ const startWeb3 = (tcall) => {
         }
       });
 
-    // Execute Contract
-    tinyCrypto.call.executeContract = (contract, abi, data, gasLimit = 100000) =>
-      new Promise((resolve, reject) => {
-        if (tinyCrypto.connected) {
-          // Loading
-          tinyCrypto.call
-            .checkConnection()
-            .then((cryptoData) => {
-
-              if (tinyCrypto.validateMatrixAddress()) {
-                web3.eth
-                  .getTransactionCount(cryptoData.address)
-                  .then((nonce) => {
-                    web3.eth
-                      .getGasPrice()
-                      .then((currentGasPrice) => {
-                        // construct the transaction data
-                        const tx = {
-                          nonce,
-                          gasLimit: ethers.toBeHex(gasLimit),
-
-                          // eslint-disable-next-line radix
-                          gasPrice: ethers.toBeHex(parseInt(currentGasPrice)),
-
-                          from: cryptoData.address,
-                          to: contract,
-                          value: ethers.ZeroHash,
-                          data: web3.eth.abi.encodeFunctionCall(abi, data),
-                        };
-
-                        // Complete
-                        web3.broadcastTransaction(tx).then(resolve).catch(reject);
-                      })
-                      .catch(reject);
-                  })
-                  .catch(reject);
-              } else {
-                reject(new Error('INVALID MATRIX ETHEREUM ADDRESS!'));
-              }
-            })
-            .catch(reject);
-        } else {
-          reject(tinyCrypto.errors.noWallet());
-        }
-      });
-
     // Send Payment
-    tinyCrypto.call.sendTransaction = (amount, address, contract = null, gasLimit = 100000) =>
+    tinyCrypto.sendTransaction = (amount, address, contract = null) =>
       new Promise((resolve, reject) => {
         if (tinyCrypto.connected) {
           // Result
-          tinyCrypto.call
-            .checkConnection()
+          tinyCrypto.checkConnection()
             .then((cryptoData) => {
 
               if (tinyCrypto.validateMatrixAddress()) {
@@ -347,45 +296,35 @@ const startWeb3 = (tcall) => {
                   }
 
                   // Transaction
-                  tinyCrypto.call
-                    .executeContract(
-                      tinyContract.value,
+                  const token = new ethers.Contract(tinyContract.value, [{
+                    type: 'function',
+                    name: 'transfer',
+                    stateMutability: 'nonpayable',
+                    payable: false,
+                    constant: false,
+                    outputs: [{ type: 'uint8' }],
+                    inputs: [
                       {
-                        type: 'function',
-                        name: 'transfer',
-                        stateMutability: 'nonpayable',
-                        payable: false,
-                        constant: false,
-                        outputs: [{ type: 'uint8' }],
-                        inputs: [
-                          {
-                            name: '_to',
-                            type: 'address',
-                          },
-                          {
-                            name: '_value',
-                            type: 'uint256',
-                          },
-                        ],
+                        name: '_to',
+                        type: 'address',
                       },
-                      [
-                        tinyAddress,
-                        ethers.parseUnits(
-                          String(amount),
-                          tinyCrypto.decimals[tinyContract.decimals],
-                        ),
-                      ],
-                      gasLimit,
-                    )
-                    .then(resolve)
-                    .catch(reject);
+                      {
+                        name: '_value',
+                        type: 'uint256',
+                      },
+                    ],
+                  }], cryptoData.signer);
+
+                  const tokenAmount = ethers.parseUnits(String(amount), tinyCrypto.decimals[tinyContract.decimals]);
+                  token.transfer(tinyAddress, tokenAmount).then(resolve).catch(reject);
+
                 }
 
                 // Normal Mode
                 else {
                   cryptoData.signer.sendTransaction({
                     to: tinyAddress,
-                    value: ethers.parseUnits(String(amount)),
+                    value: ethers.parseUnits(String(amount), 'ether'),
                   }).then(resolve).catch(reject);
                 }
               } else {
@@ -399,7 +338,7 @@ const startWeb3 = (tcall) => {
       });
 
     // Sign
-    tinyCrypto.call.sign = (msg = '') =>
+    tinyCrypto.sign = (msg = '') =>
       new Promise((resolve, reject) => {
         if (tinyCrypto.connected) {
           web3
@@ -414,12 +353,6 @@ const startWeb3 = (tcall) => {
 
     // Recover Signature
     tinyCrypto.recover = (msg, sig) => ethers.recoverAddress(ethers.hashMessage(msg), sig);
-
-    // Data
-    tinyCrypto.get.provider = () => web3;
-    tinyCrypto.get.address = () => tinyCrypto.address;
-    tinyCrypto.get.call = () => tinyCrypto.call;
-    tinyCrypto.get.config = () => window.clone(tinyCrypto.config);
 
     // Insert Provider
     // eslint-disable-next-line no-undef
@@ -474,12 +407,12 @@ const startWeb3 = (tcall) => {
 
     // Change Account Detector
     if (window.ethereum) {
-      window.ethereum.on('accountsChanged', () => tinyCrypto.call.checkConnection());
+      window.ethereum.on('accountsChanged', () => tinyCrypto.checkConnection());
     }
 
     // Network Change
     web3.on('network', (network) => {
-      tinyCrypto.call.networkChanged(network);
+      tinyCrypto.networkChanged(network);
     });
 
     // Ready Provider and check the connection
@@ -488,8 +421,7 @@ const startWeb3 = (tcall) => {
       alert(err.message);
     };
 
-    tinyCrypto.call
-      .checkConnection(true)
+    tinyCrypto.checkConnection(true)
       .then(() => {
         web3
           .getNetwork()
@@ -522,10 +454,6 @@ const startWeb3 = (tcall) => {
       });
     tinyCrypto.setUser = () => null;
   }
-
-  // Freeze
-  tinyCrypto.call = Object.freeze(tinyCrypto.call);
-  tinyCrypto.get = Object.freeze(tinyCrypto.get);
 
   // Functions
   tinyCrypto.getCfg = getWeb3Cfg;

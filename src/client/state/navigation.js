@@ -528,11 +528,10 @@ class Navigation extends EventEmitter {
       [cons.actions.navigation.OPEN_SETTINGS]: () => {
         if (
           tinyCrypto &&
-          tinyCrypto.call &&
-          typeof tinyCrypto.call.checkConnection === 'function' &&
+          typeof tinyCrypto.checkConnection === 'function' &&
           tinyCrypto.isUnlocked()
         )
-          tinyCrypto.call.checkConnection();
+          tinyCrypto.checkConnection();
 
         tinyAPI.emit('settingsOpened', action.tabText);
         this.emit(cons.events.navigation.SETTINGS_OPENED, action.tabText);
