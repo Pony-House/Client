@@ -24,7 +24,7 @@ import { objType } from '../../util/tools';
 
 import { updateRoomInfo } from '../action/navigation';
 import urlParams from '../../util/libs/urlParams';
-// import { tinyFixScrollChat } from "../../app/molecules/media/mediaFix";
+import { tinyFixScrollChat } from '../../app/molecules/media/mediaFix';
 
 const delayYdocUpdate = 100;
 const hashTryLimit = 10;
@@ -1239,6 +1239,7 @@ class RoomTimeline extends EventEmitter {
 
       this.addToTimeline(event);
       this.emit(cons.events.roomTimeline.EVENT, event);
+      tinyFixScrollChat();
     };
 
     this._listenDecryptEvent = (event) => {
@@ -1255,6 +1256,7 @@ class RoomTimeline extends EventEmitter {
 
       this.addToTimeline(event);
       this.emit(cons.events.roomTimeline.EVENT, event);
+      tinyFixScrollChat();
     };
 
     this._listenRedaction = (mEvent, room) => {
@@ -1263,6 +1265,7 @@ class RoomTimeline extends EventEmitter {
       this.editedTimeline.delete(mEvent.event.redacts);
       this.reactionTimeline.delete(mEvent.event.redacts);
       this.emit(cons.events.roomTimeline.EVENT_REDACTED, rEvent, mEvent);
+      tinyFixScrollChat();
     };
 
     this._listenTypingEvent = (event, member) => {
@@ -1288,6 +1291,7 @@ class RoomTimeline extends EventEmitter {
       if (lastEventRecipt['m.read']) {
         this.emit(cons.events.roomTimeline.LIVE_RECEIPT);
       }
+      tinyFixScrollChat();
     };
 
     // Insert events

@@ -3,13 +3,14 @@ import EventEmitter from 'events';
 import { tinyCrypto } from '.';
 
 // Create a client using keys returned from getKeys
-const ENCODING = "binary";
+const ENCODING = 'binary';
 const mode = 'dev';
 
-export const getEnv = (env) => env === "dev" || env === "production" || env === "local" ? env : null;
+export const getEnv = (env) =>
+  env === 'dev' || env === 'production' || env === 'local' ? env : null;
 
 export const buildLocalStorageKey = (walletAddress) =>
-  walletAddress ? `xmtp:${getEnv(mode)}:keys:${walletAddress}` : "";
+  walletAddress ? `xmtp:${getEnv(mode)}:keys:${walletAddress}` : '';
 
 export const loadKeys = (walletAddress) => {
   const val = localStorage.getItem(buildLocalStorageKey(walletAddress));
@@ -17,10 +18,7 @@ export const loadKeys = (walletAddress) => {
 };
 
 export const storeKeys = (walletAddress, keys) => {
-  localStorage.setItem(
-    buildLocalStorageKey(walletAddress),
-    Buffer.from(keys).toString(ENCODING),
-  );
+  localStorage.setItem(buildLocalStorageKey(walletAddress), Buffer.from(keys).toString(ENCODING));
 };
 
 export const wipeKeys = (walletAddress) => {
@@ -36,9 +34,7 @@ class Xmtp extends EventEmitter {
 
   async start() {
     if (__ENV_APP__.WEB3 && tinyCrypto.connected && !this.ready) {
-
       try {
-
         const signer = await tinyCrypto.getWeb3().getSigner();
         let address = await signer.getAddress();
         if (typeof address === 'string' && mode === 'dev') address = `${address}_dev`;
@@ -62,14 +58,12 @@ class Xmtp extends EventEmitter {
         });
 
         this.ready = true;
-
       } catch (err) {
         this.ready = false;
         console.error(err);
       }
 
       return this.ready;
-
     }
     return false;
   }

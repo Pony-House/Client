@@ -26,7 +26,8 @@ unix: ${unix || moment().unix()}`;
 export function signUserWeb3Account(unix) {
   return new Promise((resolve, reject) => {
     if (typeof tinyCrypto.sign === 'function') {
-      tinyCrypto.sign(web3SignTemplate(initMatrix.matrixClient.getUserId(), unix))
+      tinyCrypto
+        .sign(web3SignTemplate(initMatrix.matrixClient.getUserId(), unix))
         .then(resolve)
         .catch(reject);
     } else {
@@ -222,7 +223,7 @@ const startWeb3 = (/* tcall */) => {
     tinyCrypto.isUnlocked = () => window.ethereum && window.ethereum._isUnlocked;
 
     // Emitter
-    class MyEmitter extends EventEmitter { }
+    class MyEmitter extends EventEmitter {}
     const myEmitter = new MyEmitter();
     myEmitter.setMaxListeners(Infinity);
 
@@ -254,12 +255,16 @@ const startWeb3 = (/* tcall */) => {
               web3
                 .getSigner()
                 .then((signer) => {
-                  signer.getAddress().then((address) => {
-                    tinyCrypto.address = address.toLowerCase();
-                    myEmitter.emit('checkConnection', { address: tinyCrypto.address, signer });
-                    resolve({ address: tinyCrypto.address, signer });
-                  }).catch(reject);
-                }).catch(reject);
+                  signer
+                    .getAddress()
+                    .then((address) => {
+                      tinyCrypto.address = address.toLowerCase();
+                      myEmitter.emit('checkConnection', { address: tinyCrypto.address, signer });
+                      resolve({ address: tinyCrypto.address, signer });
+                    })
+                    .catch(reject);
+                })
+                .catch(reject);
             })
             .catch(reject);
         } else {
@@ -272,9 +277,9 @@ const startWeb3 = (/* tcall */) => {
       new Promise((resolve, reject) => {
         if (tinyCrypto.connected) {
           // Result
-          tinyCrypto.checkConnection()
+          tinyCrypto
+            .checkConnection()
             .then((cryptoData) => {
-
               if (tinyCrypto.validateMatrixAddress()) {
                 // Address
                 const tinyAddress = address.toLowerCase();
@@ -296,36 +301,47 @@ const startWeb3 = (/* tcall */) => {
                   }
 
                   // Transaction
-                  const token = new ethers.Contract(tinyContract.value, [{
-                    type: 'function',
-                    name: 'transfer',
-                    stateMutability: 'nonpayable',
-                    payable: false,
-                    constant: false,
-                    outputs: [{ type: 'uint8' }],
-                    inputs: [
+                  const token = new ethers.Contract(
+                    tinyContract.value,
+                    [
                       {
-                        name: '_to',
-                        type: 'address',
-                      },
-                      {
-                        name: '_value',
-                        type: 'uint256',
+                        type: 'function',
+                        name: 'transfer',
+                        stateMutability: 'nonpayable',
+                        payable: false,
+                        constant: false,
+                        outputs: [{ type: 'uint8' }],
+                        inputs: [
+                          {
+                            name: '_to',
+                            type: 'address',
+                          },
+                          {
+                            name: '_value',
+                            type: 'uint256',
+                          },
+                        ],
                       },
                     ],
-                  }], cryptoData.signer);
+                    cryptoData.signer,
+                  );
 
-                  const tokenAmount = ethers.parseUnits(String(amount), tinyCrypto.decimals[tinyContract.decimals]);
+                  const tokenAmount = ethers.parseUnits(
+                    String(amount),
+                    tinyCrypto.decimals[tinyContract.decimals],
+                  );
                   token.transfer(tinyAddress, tokenAmount).then(resolve).catch(reject);
-
                 }
 
                 // Normal Mode
                 else {
-                  cryptoData.signer.sendTransaction({
-                    to: tinyAddress,
-                    value: ethers.parseUnits(String(amount), 'ether'),
-                  }).then(resolve).catch(reject);
+                  cryptoData.signer
+                    .sendTransaction({
+                      to: tinyAddress,
+                      value: ethers.parseUnits(String(amount), 'ether'),
+                    })
+                    .then(resolve)
+                    .catch(reject);
                 }
               } else {
                 reject(new Error('INVALID MATRIX ETHEREUM ADDRESS!'));
@@ -421,7 +437,8 @@ const startWeb3 = (/* tcall */) => {
       alert(err.message);
     };
 
-    tinyCrypto.checkConnection(true)
+    tinyCrypto
+      .checkConnection(true)
       .then(() => {
         web3
           .getNetwork()
