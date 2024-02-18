@@ -243,14 +243,9 @@ const startWeb3 = (tcall) => {
     };
 
     // Network Changed
-    tinyCrypto.call.networkChanged = (networkId) => {
-      tinyCrypto.networkId = networkId;
-
-      if (localStorage) {
-        localStorage.setItem('web3_network_id', networkId);
-      }
-
-      myEmitter.emit('networkChanged', networkId);
+    tinyCrypto.call.networkChanged = (network) => {
+      tinyCrypto.chainId = network.chainId;
+      myEmitter.emit('networkChanged', network);
     };
 
     // Check Connection
@@ -487,31 +482,32 @@ const startWeb3 = (tcall) => {
     // Change Account Detector
     if (window.ethereum) {
       window.ethereum.on('accountsChanged', () => tinyCrypto.call.checkConnection());
-
-      // Network Change
-      window.ethereum.on('networkChanged', (networkId) => {
-        tinyCrypto.call.networkChanged(networkId);
-      });
-    } else {
-      web3.on('accountsChanged', () => tinyCrypto.call.checkConnection());
-
-      // Network Change
-      web3.on('network', (networkId) => {
-        tinyCrypto.call.networkChanged(networkId);
-      });
     }
 
+    // Network Change
+    web3.on('network', (network) => {
+      tinyCrypto.call.networkChanged(network);
+    });
+
     // Ready Provider and check the connection
+    const tinyConnectionError = (err) => {
+      console.error(err);
+      alert(err.message);
+    };
+
     tinyCrypto.call
       .checkConnection(true)
       .then(() => {
-        tinyCrypto.connected = true;
-        myEmitter.emit('readyProvider');
+        web3
+          .getNetwork()
+          .then((network) => {
+            tinyCrypto.chainId = network.chainId;
+            tinyCrypto.connected = true;
+            myEmitter.emit('readyProvider');
+          })
+          .catch(tinyConnectionError);
       })
-      .catch((err) => {
-        console.error(err);
-        alert(err.message);
-      });
+      .catch(tinyConnectionError);
   }
 
   // Nothing
