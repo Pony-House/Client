@@ -27,8 +27,7 @@ const getUdDomain = (address) =>
 
       if (ud.polygon.reverseNameOf) {
         ud.polygon
-          .reverseNameOf(address)
-          .call()
+          .reverseNameOf.staticCall(address)
           .then((domain) => {
             ud.reverseName[address] = { value: domain, timeout: 60 };
             resolve(ud.reverseName[address].value);
@@ -58,12 +57,10 @@ const getUdDomains = (address, domain) =>
 
       if (ud.polygon.getMany) {
         ud.polygon
-          .namehash(domain.split('.'))
-          .call()
+          .namehash.staticCall(domain.split('.'))
           .then((tokenId) => {
             ud.polygon
-              .getMany(getWallets, tokenId)
-              .call()
+              .getMany.staticCall(getWallets, tokenId)
               .then((domains) => {
                 ud.addressList[address] = { domains, timeout: 60 };
                 resolve(ud.addressList[address].domains);

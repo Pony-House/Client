@@ -9,7 +9,7 @@ function AboutSection() {
     ['Matrix JS SDK', __ENV_APP__.DEPS['matrix-js-sdk']],
     ['Moment Timezone', __ENV_APP__.DEPS['moment-timezone']],
     ['Photo Swipe', __ENV_APP__.DEPS.photoswipe],
-    ['Web3.js', __ENV_APP__.DEPS.web3],
+    ['Ethers', __ENV_APP__.DEPS.ethers],
     ['Yjs', __ENV_APP__.DEPS.yjs],
     ['Bootstrap UI', __ENV_APP__.DEPS.bootstrap],
     ['Bootstrap Icons', __ENV_APP__.DEPS['bootstrap-icons']],

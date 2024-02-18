@@ -1,3 +1,4 @@
+import { Contract } from 'ethers';
 import { objType } from '@src/util/tools';
 import { tinyCrypto } from '@src/util/web3';
 
@@ -699,14 +700,17 @@ const udPolygonAbi = [
 
 let udManager = null;
 export default function getUdManager() {
-  const eth = tinyCrypto.userProviders.polygon.eth;
   if (
     !udManager &&
     objType(tinyCrypto.userProviders, 'object') &&
     tinyCrypto.userProviders.polygon
   ) {
-    udManager = new eth.Contract(udPolygonAbi, '0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f');
+    udManager = new Contract(
+      '0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f',
+      udPolygonAbi,
+      tinyCrypto.userProviders.polygon,
+    );
   }
 
-  return udManager ? udManager.methods : {};
+  return udManager || {};
 }

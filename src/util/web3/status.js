@@ -25,6 +25,5 @@ export default function startStatus() {
   if (tinyCrypto.existEthereum()) {
     tinyCrypto.on('readyProvider', checkConnection);
     tinyCrypto.on('checkConnection', checkConnection);
-    tinyCrypto.on('accountsChanged', checkConnection);
   }
 }

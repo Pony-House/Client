@@ -1,3 +1,4 @@
+import { Contract } from 'ethers';
 import { objType } from '../../../tools';
 import { tinyCrypto } from '../..';
 
@@ -159,14 +160,17 @@ const ensAbi = [
 
 let ensManager = null;
 export default function getEnsManager() {
-  const eth = tinyCrypto.userProviders.ethereum.eth;
   if (
     !ensManager &&
     objType(tinyCrypto.userProviders, 'object') &&
     tinyCrypto.userProviders.ethereum
   ) {
-    ensManager = new eth.Contract(ensAbi, '0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb');
+    ensManager = new Contract(
+      '0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb',
+      ensAbi,
+      tinyCrypto.userProviders.ethereum,
+    );
   }
 
-  return ensManager ? ensManager.methods : {};
+  return ensManager || {};
 }

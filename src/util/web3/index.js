@@ -1,8 +1,10 @@
 import { EventEmitter } from 'events';
 import clone from 'clone';
-import Web3 from 'web3';
+
+import { ethers } from 'ethers';
 import provider from 'eth-provider';
 import Web3WsProvider from 'web3-providers-ws';
+
 import moment from '@src/util/libs/momentjs';
 import modWeb3Cfg from '@mods/web3';
 
@@ -11,6 +13,8 @@ import startStatus from './status';
 import initMatrix from '../../client/initMatrix';
 
 const tinyCrypto = {};
+let web3;
+tinyCrypto.getWeb3 = () => web3;
 
 // Signature Template
 const web3SignTemplate = (userId, unix, title = 'Matrix Client - Ethereum Account') => `${title}
@@ -217,7 +221,7 @@ tinyCrypto.decimals = Object.freeze({
 });
 
 // Module
-const startWeb3 = () => {
+const startWeb3 = (tcall) => {
   // Check if Web3 has been injected by the browser (Mist/MetaMask).
   if (
     __ENV_APP__.WEB3 &&
@@ -231,7 +235,7 @@ const startWeb3 = () => {
     tinyCrypto.existWalletApp = () => tinyCrypto.existEthereum() && tinyCrypto.isUnlocked();
 
     // Emitter
-    class MyEmitter extends EventEmitter {}
+    class MyEmitter extends EventEmitter { }
     const myEmitter = new MyEmitter();
     myEmitter.setMaxListeners(Infinity);
 
@@ -247,47 +251,6 @@ const startWeb3 = () => {
       return userWeb3.valid && tinyCrypto.address === userWeb3.address;
     };
 
-    // Calls
-
-    // Account Change
-    tinyCrypto.call.accountsChanged = (accounts) =>
-      new Promise((resolve, reject) => {
-        tinyCrypto.get
-          .signerAddress()
-          .then((address) => {
-            tinyCrypto.address = address;
-            if (tinyCrypto.address) {
-              if (localStorage) {
-                localStorage.setItem('web3_address', tinyCrypto.address);
-              }
-
-              tinyCrypto.accounts = accounts;
-              myEmitter.emit('accountsChanged', accounts);
-              resolve(accounts);
-            }
-          })
-          .catch(reject);
-      });
-
-    // Get Signer Address
-    tinyCrypto.get.signerAddress = (index = 0) =>
-      new Promise((resolve, reject) => {
-        tinyCrypto.call
-          .requestAccounts()
-          .then((accounts) => {
-            if (
-              Array.isArray(accounts) &&
-              accounts.length > 0 &&
-              typeof accounts[index] === 'string'
-            ) {
-              resolve(accounts[index]);
-            } else {
-              resolve(null);
-            }
-          })
-          .catch(reject);
-      });
-
     // Network Changed
     tinyCrypto.call.networkChanged = (networkId) => {
       tinyCrypto.networkId = networkId;
@@ -299,83 +262,22 @@ const startWeb3 = () => {
       myEmitter.emit('networkChanged', networkId);
     };
 
-    // Request Account
-    tinyCrypto.call.requestAccounts = () =>
-      new Promise((resolve, reject) => {
-        tinyCrypto.provider.eth
-          .requestAccounts()
-          .then((accounts) => {
-            // Address
-            if (Array.isArray(accounts) && accounts.length > 0) {
-              for (const item in accounts) {
-                accounts[item] = accounts[item].toLowerCase();
-              }
-            }
-
-            tinyCrypto.accounts = accounts;
-            tinyCrypto.connected = true;
-
-            myEmitter.emit('requestAccounts', accounts);
-            resolve(accounts);
-          })
-          .catch((err) => {
-            tinyCrypto.connected = false;
-            reject(err);
-          });
-      });
-
     // Check Connection
     tinyCrypto.call.checkConnection = () =>
       new Promise((resolve, reject) => {
         if (tinyCrypto.providerConnected) {
-          tinyCrypto.provider.eth.getAccounts().then((accounts) => {
-            // Address
-            if (Array.isArray(accounts) && accounts.length > 0) {
-              for (const item in accounts) {
-                accounts[item] = accounts[item].toLowerCase();
-              }
-            }
+          web3
+            .getSigner()
+            .then((signer) => signer.getAddress())
+            .then((address) => {
+              tinyCrypto.address = address.toLowerCase();
 
-            tinyCrypto.accounts = accounts;
-
-            // Check Address
-            if (tinyCrypto.existAccounts()) {
-              tinyCrypto.get
-                .signerAddress()
-                .then((address) => {
-                  tinyCrypto.address = address;
-
-                  myEmitter.emit('checkConnection', { address, accounts });
-                  resolve(address);
-                })
-                .catch(reject);
-            } else {
-              resolve(false);
-            }
-          });
+              myEmitter.emit('checkConnection', { address });
+              resolve(address);
+            })
+            .catch(reject);
         } else {
           reject(tinyCrypto.errors.noProvider());
-        }
-      });
-
-    // Wait Address
-    tinyCrypto.call.waitAddress = () =>
-      new Promise((resolve, reject) => {
-        try {
-          if (tinyCrypto.address) {
-            resolve(tinyCrypto.address);
-          } else {
-            setTimeout(() => {
-              tinyCrypto.call
-                .waitAddress()
-                .then((data) => {
-                  resolve(data);
-                })
-                .catch(reject);
-            }, 500);
-          }
-        } catch (err) {
-          reject(err);
         }
       });
 
@@ -384,34 +286,35 @@ const startWeb3 = () => {
       new Promise((resolve, reject) => {
         if (tinyCrypto.connected) {
           // Loading
-          tinyCrypto.get
-            .signerAddress()
+          web3
+            .getSigner()
+            .then((signer) => signer.getAddress())
             .then((address) => {
-              tinyCrypto.address = address;
+              tinyCrypto.address = address.toLowerCase();
 
               if (tinyCrypto.validateMatrixAddress()) {
-                tinyCrypto.provider.eth
+                web3.eth
                   .getTransactionCount(address)
                   .then((nonce) => {
-                    tinyCrypto.provider.eth
+                    web3.eth
                       .getGasPrice()
                       .then((currentGasPrice) => {
                         // construct the transaction data
                         const tx = {
                           nonce,
-                          gasLimit: tinyCrypto.provider.utils.toHex(gasLimit),
+                          gasLimit: ethers.toBeHex(gasLimit),
 
                           // eslint-disable-next-line radix
-                          gasPrice: tinyCrypto.provider.utils.toHex(parseInt(currentGasPrice)),
+                          gasPrice: ethers.toBeHex(parseInt(currentGasPrice)),
 
                           from: address,
                           to: contract,
                           value: tinyCrypto.constants.HexZero,
-                          data: tinyCrypto.provider.eth.abi.encodeFunctionCall(abi, data),
+                          data: web3.eth.abi.encodeFunctionCall(abi, data),
                         };
 
                         // Complete
-                        tinyCrypto.provider.eth.sendTransaction(tx).then(resolve).catch(reject);
+                        web3.broadcastTransaction(tx).then(resolve).catch(reject);
                       })
                       .catch(reject);
                   })
@@ -426,33 +329,16 @@ const startWeb3 = () => {
         }
       });
 
-    // Read Contract
-    tinyCrypto.call.readContract = (contract, functionName, data, abi) =>
-      new Promise((resolve, reject) => {
-        if (!tinyCrypto.contracts[contract] && abi) {
-          tinyCrypto.contracts[contract] = new tinyCrypto.provider.eth.Contract(abi, contract);
-        }
-
-        if (tinyCrypto.contracts[contract]) {
-          tinyCrypto.contracts[contract].methods[functionName]
-            .apply(tinyCrypto.contracts[contract], data)
-            .call()
-            .then(resolve)
-            .catch(reject);
-        } else {
-          resolve(null);
-        }
-      });
-
     // Send Payment
     tinyCrypto.call.sendTransaction = (amount, address, contract = null, gasLimit = 100000) =>
       new Promise((resolve, reject) => {
         if (tinyCrypto.connected) {
           // Result
-          tinyCrypto.get
-            .signerAddress()
+          web3
+            .getSigner()
+            .then((signer) => signer.getAddress())
             .then((mainWallet) => {
-              tinyCrypto.address = mainWallet;
+              tinyCrypto.address = mainWallet.toLowerCase();
 
               if (tinyCrypto.validateMatrixAddress()) {
                 // Address
@@ -498,7 +384,7 @@ const startWeb3 = () => {
                       },
                       [
                         tinyAddress,
-                        tinyCrypto.provider.utils.toWei(
+                        ethers.parseUnits(
                           String(amount),
                           tinyCrypto.decimals[tinyContract.decimals],
                         ),
@@ -511,11 +397,11 @@ const startWeb3 = () => {
 
                 // Normal Mode
                 else {
-                  tinyCrypto.provider.eth
+                  web3.eth
                     .sendTransaction({
                       from: mainWallet,
                       to: tinyAddress,
-                      value: tinyCrypto.provider.utils.toWei(String(amount)),
+                      value: ethers.parseUnits(String(amount)),
                     })
                     .then(resolve)
                     .catch(reject);
@@ -531,21 +417,13 @@ const startWeb3 = () => {
       });
 
     // Sign
-    tinyCrypto.call.sign = (msg = '', password = '') =>
+    tinyCrypto.call.sign = (msg = '') =>
       new Promise((resolve, reject) => {
         if (tinyCrypto.connected) {
-          tinyCrypto.get
-            .signerAddress()
-            .then((address) => {
-              tinyCrypto.address = address;
-              if (address) {
-                tinyCrypto.provider.eth.personal
-                  .sign(tinyCrypto.provider.utils.utf8ToHex(msg), address, password)
-                  .then(resolve);
-              } else {
-                resolve(null);
-              }
-            })
+          web3
+            .getSigner()
+            .then((signer) => signer.signMessage(msg))
+            .then(resolve)
             .catch(reject);
         } else {
           reject(tinyCrypto.errors.noWallet());
@@ -553,17 +431,17 @@ const startWeb3 = () => {
       });
 
     // Recover Signature
-    tinyCrypto.recover = (msg, sign) => tinyCrypto.provider.eth.accounts.recover(msg, sign);
+    tinyCrypto.recover = (msg, sig) => ethers.recoverAddress(ethers.hashMessage(msg), sig);
 
     // Data
-    tinyCrypto.get.provider = () => tinyCrypto.provider;
+    tinyCrypto.get.provider = () => web3;
     tinyCrypto.get.address = () => tinyCrypto.address;
     tinyCrypto.get.call = () => tinyCrypto.call;
     tinyCrypto.get.config = () => window.clone(tinyCrypto.config);
 
     // Exist Accounts
     tinyCrypto.existAccounts = () =>
-      Array.isArray(tinyCrypto.accounts) && tinyCrypto.accounts.length > 0;
+      typeof tinyCrypto.address === 'string' && tinyCrypto.address.length > 0;
 
     // Insert Provider
     // eslint-disable-next-line no-undef
@@ -571,27 +449,28 @@ const startWeb3 = () => {
       tinyCrypto.changeNetwork = (chainId) =>
         window.ethereum.request({
           method: 'wallet_switchEthereumChain',
-          params: [{ chainId: tinyCrypto.provider.utils.toHex(chainId) }],
+          params: [{ chainId: ethers.toBeHex(chainId) }],
         });
 
       if (window.ethereum.isMetaMask) {
         tinyCrypto.protocol = 'metamask';
-        tinyCrypto.provider = new Web3(window.ethereum);
+        web3 = new ethers.BrowserProvider(window.ethereum);
       } else if (window.ethereum.isFrame) {
         tinyCrypto.protocol = 'frame';
-        tinyCrypto.provider = new Web3(provider('frame'));
+        web3 = new ethers.BrowserProvider(provider('frame'));
       }
     }
 
     // Electron Mode
     else if (__ENV_APP__.ELECTRON_MODE) {
       tinyCrypto.changeNetwork = (chainId) =>
-        tinyCrypto.provider.eth.switchEthereumChain({
-          chainId: tinyCrypto.provider.utils.toHex(chainId),
+        web3.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: ethers.toBeHex(chainId) }],
         });
 
       tinyCrypto.protocol = 'frame';
-      tinyCrypto.provider = new Web3(
+      web3 = new ethers.JsonRpcProvider(
         new Web3WsProvider('ws://127.0.0.1:1248', {
           headers: { Origin: __ENV_APP__.INFO.name },
 
@@ -612,56 +491,22 @@ const startWeb3 = () => {
       tinyCrypto.isUnlocked = () => true;
     }
 
-    // Extend
-    tinyCrypto.provider.extend({
-      property: 'eth',
-      methods: [
-        {
-          name: 'switchEthereumChain',
-          call: 'wallet_switchEthereumChain',
-          params: 1,
-          inputFormatter: [{ chainId: tinyCrypto.provider.utils.numberToHex }],
-        },
-      ],
-    });
-
-    /*
-    tinyCrypto.provider.extend({
-      property: 'eth',
-      methods: [{
-        name: 'addEthereumChain',
-        call: 'wallet_switchEthereumChain',
-        params: 1,
-        inputFormatter: [{
-          chainName: tinyCrypto.provider.utils.toString,
-          chainId: tinyCrypto.provider.utils.numberToHex,
-          nativeCurrency: { name: tinyCrypto.provider.utils.toString, decimals: tinyCrypto.provider.utils.toNumber, symbol: tinyCrypto.provider.utils.toString },
-          rpcUrls: [tinyCrypto.provider.utils.toString]
-        }],
-      }]
-    });
-    */
-
     // Provider Connected
     tinyCrypto.providerConnected = true;
 
     // Change Account Detector
     if (window.ethereum) {
-      window.ethereum.on('accountsChanged', (accounts) => {
-        tinyCrypto.call.accountsChanged(accounts);
-      });
+      window.ethereum.on('accountsChanged', () => tinyCrypto.call.checkConnection());
 
       // Network Change
       window.ethereum.on('networkChanged', (networkId) => {
         tinyCrypto.call.networkChanged(networkId);
       });
     } else {
-      tinyCrypto.provider.on('accountsChanged', (accounts) => {
-        tinyCrypto.call.accountsChanged(accounts);
-      });
+      web3.on('accountsChanged', () => tinyCrypto.call.checkConnection());
 
       // Network Change
-      tinyCrypto.provider.on('networkChanged', (networkId) => {
+      web3.on('network', (networkId) => {
         tinyCrypto.call.networkChanged(networkId);
       });
     }
@@ -729,7 +574,9 @@ const startWeb3 = () => {
           Array.isArray(tinyCrypto.networks[item].rpcUrls) &&
           typeof tinyCrypto.networks[item].rpcUrls[0] === 'string'
         ) {
-          tinyCrypto.userProviders[item] = new Web3(tinyCrypto.networks[item].rpcUrls[0]);
+          tinyCrypto.userProviders[item] = new ethers.JsonRpcProvider(
+            tinyCrypto.networks[item].rpcUrls[0],
+          );
         }
       }
     }
@@ -743,3 +590,8 @@ const startWeb3 = () => {
 
 // Export Module
 export { startWeb3, tinyCrypto, web3SignTemplate };
+
+if (__ENV_APP__.MODE === 'development') {
+  global.tinyCrypto = tinyCrypto;
+  global.ethers = ethers;
+}

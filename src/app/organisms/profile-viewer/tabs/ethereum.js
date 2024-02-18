@@ -1,3 +1,4 @@
+import { ethers } from 'ethers';
 import moment from '@src/util/libs/momentjs';
 import { getWeb3Cfg, tinyCrypto } from '../../../../util/web3';
 import { btModal, objType, toast } from '../../../../util/tools';
@@ -80,13 +81,10 @@ const getUserBalance = (chain, address) =>
 
     // Nope
     else if (objType(tinyCrypto.userProviders, 'object') && tinyCrypto.userProviders.ethereum) {
-      // Provider
-      const eth = tinyCrypto.userProviders[chain].eth;
-
-      eth
+      tinyCrypto.userProviders[chain]
         .getBalance(address)
         .then((n) => {
-          let balance = tinyCrypto.userProviders[chain].utils.fromWei(n, 'ether');
+          let balance = ethers.formatEther(n);
           if (balance.endsWith('.')) balance = `${balance}00`;
 
           chainBalance[chain][address] = { value: balance, timeout: 60, date: moment() };
