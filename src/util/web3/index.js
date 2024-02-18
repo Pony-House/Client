@@ -257,14 +257,13 @@ const startWeb3 = (tcall) => {
             .then(() => {
               web3
                 .getSigner()
-                .then((signer) => signer.getAddress())
-                .then((address) => {
-                  tinyCrypto.address = address.toLowerCase();
-
-                  myEmitter.emit('checkConnection', { address });
-                  resolve(address);
-                })
-                .catch(reject);
+                .then((signer) => {
+                  signer.getAddress().then((address) => {
+                    tinyCrypto.address = address.toLowerCase();
+                    myEmitter.emit('checkConnection', { address: tinyCrypto.address, signer });
+                    resolve({ address: tinyCrypto.address, signer });
+                  }).catch(reject);
+                }).catch(reject);
             })
             .catch(reject);
         } else {
@@ -279,12 +278,11 @@ const startWeb3 = (tcall) => {
           // Loading
           tinyCrypto.call
             .checkConnection()
-            .then((address) => {
-              tinyCrypto.address = address.toLowerCase();
+            .then((cryptoData) => {
 
               if (tinyCrypto.validateMatrixAddress()) {
                 web3.eth
-                  .getTransactionCount(address)
+                  .getTransactionCount(cryptoData.address)
                   .then((nonce) => {
                     web3.eth
                       .getGasPrice()
@@ -297,7 +295,7 @@ const startWeb3 = (tcall) => {
                           // eslint-disable-next-line radix
                           gasPrice: ethers.toBeHex(parseInt(currentGasPrice)),
 
-                          from: address,
+                          from: cryptoData.address,
                           to: contract,
                           value: ethers.ZeroHash,
                           data: web3.eth.abi.encodeFunctionCall(abi, data),
@@ -326,8 +324,7 @@ const startWeb3 = (tcall) => {
           // Result
           tinyCrypto.call
             .checkConnection()
-            .then((mainWallet) => {
-              tinyCrypto.address = mainWallet.toLowerCase();
+            .then((cryptoData) => {
 
               if (tinyCrypto.validateMatrixAddress()) {
                 // Address
@@ -386,14 +383,10 @@ const startWeb3 = (tcall) => {
 
                 // Normal Mode
                 else {
-                  web3.eth
-                    .sendTransaction({
-                      from: mainWallet,
-                      to: tinyAddress,
-                      value: ethers.parseUnits(String(amount)),
-                    })
-                    .then(resolve)
-                    .catch(reject);
+                  cryptoData.signer.sendTransaction({
+                    to: tinyAddress,
+                    value: ethers.parseUnits(String(amount)),
+                  }).then(resolve).catch(reject);
                 }
               } else {
                 reject(new Error('INVALID MATRIX ETHEREUM ADDRESS!'));
