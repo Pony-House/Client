@@ -428,6 +428,7 @@ const startWeb3 = (tcall) => {
           .then((network) => {
             tinyCrypto.chainId = network.chainId;
             tinyCrypto.connected = true;
+            tcall();
             myEmitter.emit('readyProvider');
           })
           .catch(tinyConnectionError);
