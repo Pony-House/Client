@@ -181,9 +181,6 @@ export function deleteWeb3Cfg(folder) {
   global.localStorage.setItem('ponyHouse-web3', JSON.stringify(content));
 }
 
-// Tiny Crypto Place
-tinyCrypto.warn = {};
-
 tinyCrypto.connected = false;
 tinyCrypto.providerConnected = false;
 tinyCrypto.protocol = null;
@@ -195,7 +192,6 @@ tinyCrypto.config = Object.freeze({
 
 tinyCrypto.call = {};
 tinyCrypto.get = {};
-tinyCrypto.contracts = {};
 
 tinyCrypto.errors = Object.freeze({
   noWallet: () => new Error('No wallet connected detected.'),
@@ -228,7 +224,6 @@ const startWeb3 = (tcall) => {
     tinyCrypto.existEthereum = () =>
       typeof window.ethereum !== 'undefined' || __ENV_APP__.ELECTRON_MODE;
     tinyCrypto.isUnlocked = () => window.ethereum && window.ethereum._isUnlocked;
-    tinyCrypto.existWalletApp = () => tinyCrypto.existEthereum() && tinyCrypto.isUnlocked();
 
     // Emitter
     class MyEmitter extends EventEmitter { }
@@ -438,10 +433,6 @@ const startWeb3 = (tcall) => {
     tinyCrypto.get.call = () => tinyCrypto.call;
     tinyCrypto.get.config = () => window.clone(tinyCrypto.config);
 
-    // Exist Accounts
-    tinyCrypto.existAccounts = () =>
-      typeof tinyCrypto.address === 'string' && tinyCrypto.address.length > 0;
-
     // Insert Provider
     // eslint-disable-next-line no-undef
     if (window.ethereum) {
@@ -529,7 +520,6 @@ const startWeb3 = (tcall) => {
     tinyCrypto.validateMatrixAddress = () => false;
     tinyCrypto.existEthereum = () => false;
     tinyCrypto.isUnlocked = () => false;
-    tinyCrypto.existWalletApp = () => false;
     tinyCrypto.validateMatrixAccount = () => false;
     tinyCrypto.getUser = () => ({ sign: null, id: null });
     tinyCrypto.recover = () => '';
