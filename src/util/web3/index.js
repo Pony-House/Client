@@ -193,10 +193,6 @@ tinyCrypto.config = Object.freeze({
   networks: getWeb3Cfg()?.networks ?? {},
 });
 
-tinyCrypto.constants = Object.freeze({
-  HexZero: '0x0000000000000000000000000000000000000000000000000000000000000000',
-});
-
 tinyCrypto.call = {};
 tinyCrypto.get = {};
 tinyCrypto.contracts = {};
@@ -235,7 +231,7 @@ const startWeb3 = (tcall) => {
     tinyCrypto.existWalletApp = () => tinyCrypto.existEthereum() && tinyCrypto.isUnlocked();
 
     // Emitter
-    class MyEmitter extends EventEmitter {}
+    class MyEmitter extends EventEmitter { }
     const myEmitter = new MyEmitter();
     myEmitter.setMaxListeners(Infinity);
 
@@ -313,7 +309,7 @@ const startWeb3 = (tcall) => {
 
                           from: address,
                           to: contract,
-                          value: tinyCrypto.constants.HexZero,
+                          value: ethers.ZeroHash,
                           data: web3.eth.abi.encodeFunctionCall(abi, data),
                         };
 
