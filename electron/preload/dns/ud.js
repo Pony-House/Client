@@ -1,7 +1,8 @@
 // https://docs.unstoppabledomains.com/resolution/guides/records-reference/#dns-records
+import { Contract } from 'ethers';
 
 // Create Polygon
-const createPolygon = (eth) => {
+const createPolygon = (provider) => {
   const udPolygonAbi = [
     {
       inputs: [{ internalType: 'string[]', name: 'labels', type: 'string[]' }],
@@ -34,22 +35,25 @@ const createPolygon = (eth) => {
     },
   ];
 
-  const contract = new eth.Contract(udPolygonAbi, '0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f');
-  return contract ? contract.methods : {};
+  const contract = new Contract(
+    '0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f',
+    udPolygonAbi,
+    provider,
+  );
+  return contract || {};
 };
 
 // Resolver
 const contracts = {};
 const resolver = (domain, resolve, ud /* ens */) => {
   // Polygon
-  if (!contracts.polygon && ud.polygon) contracts.polygon = createPolygon(ud.polygon.eth);
+  if (!contracts.polygon && ud.polygon) contracts.polygon = createPolygon(ud.polygon);
   if (contracts.polygon.getMany) {
-    contracts.polygon
-      .namehash(domain.split('.'))
-      .call()
+    contracts.polygon.namehash
+      .staticCall(domain.split('.'))
       .then((tokenId) => {
-        contracts.polygon
-          .getMany(
+        contracts.polygon.getMany
+          .staticCall(
             [
               'dns.A',
               // 'dns.A.ttl',
@@ -58,7 +62,6 @@ const resolver = (domain, resolve, ud /* ens */) => {
             ],
             tokenId,
           )
-          .call()
           .then((ipArray) => {
             // Get Polygon Ips
             const domains = [];
@@ -72,20 +75,23 @@ const resolver = (domain, resolve, ud /* ens */) => {
               }
             };
 
-            for (const item in ipArray) {
-              // Convert to Array
-              ipArray[item] = ipArray[item].trim();
-              if (typeof ipArray[item] === 'string' && ipArray[item].length > 0) {
-                try {
-                  ipArray[item] = JSON.parse(ipArray[item]);
-                  insertDomains(ipArray[item]);
-                } catch (err) {
-                  console.error(err);
+            if (Array.isArray(ipArray) && ipArray.length > 0) {
+              for (const item in ipArray) {
+                // Convert to Array
+                let tinyValue =
+                  typeof ipArray[item] === 'string' ? ipArray[item].trim() : ipArray[item];
+                if (typeof tinyValue === 'string' && tinyValue.length > 0) {
+                  try {
+                    tinyValue = JSON.parse(tinyValue);
+                    insertDomains(tinyValue);
+                  } catch (err) {
+                    console.error(err);
+                  }
                 }
-              }
 
-              // Insert time
-              insertDomains(ipArray[item]);
+                // Insert time
+                insertDomains(tinyValue);
+              }
             }
 
             // Complete

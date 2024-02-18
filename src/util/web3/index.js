@@ -235,7 +235,7 @@ const startWeb3 = (tcall) => {
     tinyCrypto.existWalletApp = () => tinyCrypto.existEthereum() && tinyCrypto.isUnlocked();
 
     // Emitter
-    class MyEmitter extends EventEmitter { }
+    class MyEmitter extends EventEmitter {}
     const myEmitter = new MyEmitter();
     myEmitter.setMaxListeners(Infinity);
 
@@ -470,7 +470,7 @@ const startWeb3 = (tcall) => {
         });
 
       tinyCrypto.protocol = 'frame';
-      web3 = new ethers.JsonRpcProvider(
+      web3 = new ethers.WebSocketProvider(
         new Web3WsProvider('ws://127.0.0.1:1248', {
           headers: { Origin: __ENV_APP__.INFO.name },
 
