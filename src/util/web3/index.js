@@ -209,7 +209,7 @@ tinyCrypto.decimals = Object.freeze({
 });
 
 // Module
-const startWeb3 = (tcall) => {
+const startWeb3 = (/* tcall */) => {
   // Check if Web3 has been injected by the browser (Mist/MetaMask).
   if (
     __ENV_APP__.WEB3 &&
@@ -428,7 +428,7 @@ const startWeb3 = (tcall) => {
           .then((network) => {
             tinyCrypto.chainId = network.chainId;
             tinyCrypto.connected = true;
-            tcall();
+            // tcall();
             myEmitter.emit('readyProvider');
           })
           .catch(tinyConnectionError);
