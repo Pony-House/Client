@@ -267,13 +267,18 @@ const startWeb3 = (tcall) => {
       new Promise((resolve, reject) => {
         if (tinyCrypto.providerConnected) {
           web3
-            .getSigner()
-            .then((signer) => signer.getAddress())
-            .then((address) => {
-              tinyCrypto.address = address.toLowerCase();
+            .send('eth_requestAccounts', [])
+            .then(() => {
+              web3
+                .getSigner()
+                .then((signer) => signer.getAddress())
+                .then((address) => {
+                  tinyCrypto.address = address.toLowerCase();
 
-              myEmitter.emit('checkConnection', { address });
-              resolve(address);
+                  myEmitter.emit('checkConnection', { address });
+                  resolve(address);
+                })
+                .catch(reject);
             })
             .catch(reject);
         } else {
@@ -286,9 +291,8 @@ const startWeb3 = (tcall) => {
       new Promise((resolve, reject) => {
         if (tinyCrypto.connected) {
           // Loading
-          web3
-            .getSigner()
-            .then((signer) => signer.getAddress())
+          tinyCrypto.call
+            .checkConnection()
             .then((address) => {
               tinyCrypto.address = address.toLowerCase();
 
@@ -334,9 +338,8 @@ const startWeb3 = (tcall) => {
       new Promise((resolve, reject) => {
         if (tinyCrypto.connected) {
           // Result
-          web3
-            .getSigner()
-            .then((signer) => signer.getAddress())
+          tinyCrypto.call
+            .checkConnection()
             .then((mainWallet) => {
               tinyCrypto.address = mainWallet.toLowerCase();
 
@@ -512,9 +515,16 @@ const startWeb3 = (tcall) => {
     }
 
     // Ready Provider and check the connection
-    tinyCrypto.call.checkConnection().then(() => {
-      myEmitter.emit('readyProvider');
-    });
+    tinyCrypto.call
+      .checkConnection(true)
+      .then(() => {
+        tinyCrypto.connected = true;
+        myEmitter.emit('readyProvider');
+      })
+      .catch((err) => {
+        console.error(err);
+        alert(err.message);
+      });
   }
 
   // Nothing
