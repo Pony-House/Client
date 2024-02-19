@@ -25,19 +25,17 @@ class EnvAPI extends EventEmitter {
         this.content = {};
       }
 
-      this.content.WEB3 =
-        typeof this.content.WEB3 === 'boolean'
-          ? this.content.WEB3
-          : typeof __ENV_APP__.WEB3 === 'boolean'
-            ? __ENV_APP__.WEB3
-            : true;
+      if (typeof __ENV_APP__.WEB3 === 'boolean' && __ENV_APP__.WEB3) {
+        this.content.WEB3 = typeof this.content.WEB3 === 'boolean' ? this.content.WEB3 : true;
+      } else {
+        this.content.WEB3 = false;
+      }
 
-      this.content.WEB3 =
-        typeof this.content.IPFS === 'boolean'
-          ? this.content.IPFS
-          : typeof __ENV_APP__.IPFS === 'boolean'
-            ? __ENV_APP__.IPFS
-            : true;
+      if (typeof __ENV_APP__.IPFS === 'boolean' && __ENV_APP__.IPFS) {
+        this.content.IPFS = typeof this.content.IPFS === 'boolean' ? this.content.IPFS : true;
+      } else {
+        this.content.IPFS = false;
+      }
     }
   }
 
