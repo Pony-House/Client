@@ -224,7 +224,7 @@ const startWeb3 = (/* tcall */) => {
     tinyCrypto.isUnlocked = () => window.ethereum && window.ethereum._isUnlocked;
 
     // Emitter
-    class MyEmitter extends EventEmitter {}
+    class MyEmitter extends EventEmitter { }
     const myEmitter = new MyEmitter();
     myEmitter.setMaxListeners(Infinity);
 
@@ -267,7 +267,7 @@ const startWeb3 = (/* tcall */) => {
                 })
                 .catch(reject);
             })
-            .catch(reject);
+            .catch(err => { console.error(err); resolve(null); });
         } else {
           reject(tinyCrypto.errors.noProvider());
         }
@@ -281,7 +281,7 @@ const startWeb3 = (/* tcall */) => {
           tinyCrypto
             .checkConnection()
             .then((cryptoData) => {
-              if (tinyCrypto.validateMatrixAddress()) {
+              if (cryptoData && tinyCrypto.validateMatrixAddress()) {
                 // Address
                 const tinyAddress = address.toLowerCase();
 
@@ -440,16 +440,18 @@ const startWeb3 = (/* tcall */) => {
 
     tinyCrypto
       .checkConnection(true)
-      .then(() => {
-        web3
-          .getNetwork()
-          .then((network) => {
-            tinyCrypto.chainId = network.chainId;
-            tinyCrypto.connected = true;
-            // tcall();
-            myEmitter.emit('readyProvider');
-          })
-          .catch(tinyConnectionError);
+      .then((data) => {
+        if (data) {
+          web3
+            .getNetwork()
+            .then((network) => {
+              tinyCrypto.chainId = network.chainId;
+              tinyCrypto.connected = true;
+              // tcall();
+              myEmitter.emit('readyProvider');
+            })
+            .catch(tinyConnectionError);
+        }
       })
       .catch(tinyConnectionError);
   }

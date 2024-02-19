@@ -7,8 +7,8 @@ export function setEthereumStatusButton(newHeader) {
 }
 export default function startStatus() {
   // Detect Meta to Update Icon
-  const checkConnection = function () {
-    if (header) {
+  const checkConnection = function (data) {
+    if (data && header) {
       if (!tinyCrypto.existEthereum()) {
         if (!__ENV_APP__.ELECTRON_MODE)
           toast("You don't have a ethereum Wallet installed in your browser!", 'Ethereum Wallet');
