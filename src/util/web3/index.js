@@ -224,7 +224,7 @@ const startWeb3 = (/* tcall */) => {
     tinyCrypto.isUnlocked = () => window.ethereum && window.ethereum._isUnlocked;
 
     // Emitter
-    class MyEmitter extends EventEmitter { }
+    class MyEmitter extends EventEmitter {}
     const myEmitter = new MyEmitter();
     myEmitter.setMaxListeners(Infinity);
 
@@ -267,7 +267,10 @@ const startWeb3 = (/* tcall */) => {
                 })
                 .catch(reject);
             })
-            .catch(err => { console.error(err); resolve(null); });
+            .catch((err) => {
+              console.error(err);
+              resolve(null);
+            });
         } else {
           reject(tinyCrypto.errors.noProvider());
         }
