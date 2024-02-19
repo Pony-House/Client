@@ -20,7 +20,7 @@ const fetchBase = (url, ops) => {
 };
 
 const fetchFn = __ENV_APP__.ELECTRON_MODE
-  ? (url, ops) => fetchFn({ href: url }, ops)
+  ? (url, ops) => fetchBase({ href: url }, ops)
   : global.fetch;
 export { fetchFn };
 
