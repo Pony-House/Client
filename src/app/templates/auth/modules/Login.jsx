@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
+import envAPI from '@src/util/libs/env';
 
 import Text from '../../../atoms/text/Text';
 import * as auth from '../../../../client/action/auth';
@@ -24,6 +25,9 @@ function Login({ loginFlow, baseUrl }) {
   const loginTypes = ['Username', 'Email'];
   const isPassword = loginFlow?.filter((flow) => flow.type === 'm.login.password')[0];
   const ssoProviders = loginFlow?.filter((flow) => flow.type === 'm.login.sso')[0];
+
+  const [WEB3, setWEB3] = useState(envAPI.get('WEB3'));
+  const [IPFS, setIPFS] = useState(envAPI.get('IPFS'));
 
   const initialValues = {
     username: '',
@@ -68,6 +72,13 @@ function Login({ loginFlow, baseUrl }) {
         });
         actions.setSubmitting(false);
       });
+  };
+
+  const editENV = (value) => {
+    const newData = !envAPI.get(value);
+    envAPI.set(value, newData);
+    if (value === 'WEB3') setWEB3(newData);
+    else setIPFS(newData);
   };
 
   return (
@@ -162,6 +173,39 @@ function Login({ loginFlow, baseUrl }) {
                     {errors.password}
                   </Text>
                 )}
+
+                {__ENV_APP__.WEB3 ? (
+                  <div class="form-check form-switch">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="web3Check"
+                      checked={WEB3}
+                      onClick={() => editENV('WEB3')}
+                    />
+                    <label class="form-check-label" for="web3Check">
+                      Enable Web3 features
+                    </label>
+                  </div>
+                ) : null}
+
+                {__ENV_APP__.IPFS ? (
+                  <div class="form-check form-switch">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="ipfsCheck"
+                      checked={IPFS}
+                      onClick={() => editENV('IPFS')}
+                    />
+                    <label class="form-check-label" for="ipfsCheck">
+                      Enable IPFS features
+                    </label>
+                  </div>
+                ) : null}
+
                 {errors.other && (
                   <Text className="auth-form__error" variant="b3">
                     {errors.other}
