@@ -40,7 +40,6 @@ class EnvAPI extends EventEmitter {
 
     // Glitch detected. Temp mode
     else {
-      console.error('global.localStorage not found. One of your data loads loaded the .env file values to prevent the system from crashing.');
       this.content = {};
 
       if (typeof __ENV_APP__.WEB3 === 'boolean' && __ENV_APP__.WEB3) {

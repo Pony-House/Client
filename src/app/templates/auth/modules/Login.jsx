@@ -174,7 +174,7 @@ function Login({ loginFlow, baseUrl }) {
                   </Text>
                 )}
 
-                {__ENV_APP__.WEB3 ? (
+                {!__ENV_APP__.ELECTRON_MODE && __ENV_APP__.WEB3 ? (
                   <div class="form-check form-switch">
                     <input
                       class="form-check-input"
@@ -190,7 +190,7 @@ function Login({ loginFlow, baseUrl }) {
                   </div>
                 ) : null}
 
-                {__ENV_APP__.IPFS ? (
+                {!__ENV_APP__.ELECTRON_MODE && __ENV_APP__.IPFS ? (
                   <div class="form-check form-switch">
                     <input
                       class="form-check-input"
