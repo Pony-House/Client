@@ -141,12 +141,14 @@ function Client() {
         selectRoomMode(roomType);
 
       setTimeout(() => {
-        if (typeof roomId === 'string' && roomId.length > 0)
+        if (typeof roomId === 'string' && roomId.length > 0) {
+          if (typeof roomType !== 'string') selectRoomMode('room');
           selectRoom(
             roomId,
             typeof eventId === 'string' && eventId.length > 0 ? eventId : null,
             typeof threadId === 'string' && threadId.length > 0 ? threadId : null,
           );
+        }
       }, 100);
     });
 

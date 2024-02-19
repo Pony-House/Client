@@ -16,7 +16,7 @@ import insertCustomStatus from '../people-selector/insertCustomStatus';
 import { objType } from '../../../util/tools';
 import { checkerFavIcon } from '../../../util/libs/favicon';
 import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
-import { selectRoom } from '../../../client/action/navigation';
+import { selectRoom, selectRoomMode } from '../../../client/action/navigation';
 
 function RoomSelectorWrapper({
   isSelected,
@@ -300,6 +300,7 @@ export function ThreadSelector({ thread, isSelected, isMuted, options, onContext
   const name = rootEvent?.getContent()?.body ?? 'Unknown thread';
 
   const onClick = () => {
+    selectRoomMode('room');
     selectRoom(thread.roomId, undefined, thread.id);
   };
 
