@@ -1,10 +1,10 @@
 import EventEmitter from 'events';
 
-// Animated Image Url
-export function getAnimatedImageUrl(url) {
-  if (typeof url === 'string') return `${url}&animated=true`;
-  return null;
-}
+/*
+  This file for some reason does not find localStorage in the electronjs version. 
+  So for this reason, the settings to enable and disable IPFS and Web3 via the login page are disabled in the destkop version.
+  If you know how to resolve this, feel free to submit a pull request.
+*/
 
 // Emitter
 class EnvAPI extends EventEmitter {
