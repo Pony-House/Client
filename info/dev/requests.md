@@ -1,6 +1,8 @@
     Cadê o @everyone, @here, @room?
     Load de threads diretamente ainda está bugado.
 
+    Fazer um sistema para facilitar rooms que são descrições de informação.
+
     =============================================
 
     Trocar o titulo da página de bolinha de notificação para números
