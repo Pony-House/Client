@@ -14,7 +14,7 @@ class EnvAPI extends EventEmitter {
   }
 
   start() {
-    if (!this.Initialized) {
+    if (!this.Initialized && global.localStorage) {
       this.Initialized = true;
 
       this.content = global.localStorage.getItem('ponyHouse-env');
@@ -33,6 +33,23 @@ class EnvAPI extends EventEmitter {
 
       if (typeof __ENV_APP__.IPFS === 'boolean' && __ENV_APP__.IPFS) {
         this.content.IPFS = typeof this.content.IPFS === 'boolean' ? this.content.IPFS : true;
+      } else {
+        this.content.IPFS = false;
+      }
+    }
+
+    // Glitch detected. Temp mode
+    else {
+      this.content = {};
+
+      if (typeof __ENV_APP__.WEB3 === 'boolean' && __ENV_APP__.WEB3) {
+        this.content.WEB3 = true;
+      } else {
+        this.content.WEB3 = false;
+      }
+
+      if (typeof __ENV_APP__.IPFS === 'boolean' && __ENV_APP__.IPFS) {
+        this.content.IPFS = true;
       } else {
         this.content.IPFS = false;
       }
