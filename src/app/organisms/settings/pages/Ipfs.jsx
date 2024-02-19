@@ -73,7 +73,7 @@ function IpfsSection() {
             }
             content={
               <div className="very-small text-gray">
-                Enable ipfs protocol compatibility. (This will not disable IPFS urls format)
+                Enable ipfs protocol compatibility. (This will not disable IPFS urls format). To disable the feature completely, you need to disable the feature before logging into your account.
               </div>
             }
           />

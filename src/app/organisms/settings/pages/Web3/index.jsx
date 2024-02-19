@@ -72,7 +72,7 @@ function Web3Section() {
               <div className="very-small text-gray">
                 All Pony House web3 features require this setting enabled. If you disable this
                 option, everything related to web3 will be limited to native Pony House features
-                only.
+                only. To disable the feature completely, you need to disable the feature before logging into your account.
               </div>
             }
           />
