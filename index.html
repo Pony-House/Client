@@ -51,7 +51,9 @@
 
   <script type="module">
     import * as qrcode from 'qrcode';
+    import { Buffer } from 'buffer';
     global.qrcode = qrcode;
+    global.Buffer = Buffer;
   </script>
 
   <script src="./js/jquery.min.js"></script>

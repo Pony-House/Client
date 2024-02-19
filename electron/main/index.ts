@@ -26,6 +26,11 @@ process.env.VITE_PUBLIC = process.env.VITE_DEV_SERVER_URL
   ? path.join(process.env.DIST_ELECTRON, '../public')
   : process.env.DIST;
 
+const openDevTools =
+  Array.isArray(process.argv) &&
+  typeof process.argv[1] === 'string' &&
+  process.argv[1] === '--devtools';
+
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration();
 
@@ -135,10 +140,12 @@ async function createWindow() {
       // electron-vite-vue#298
       win.loadURL(tinyUrl);
       // Open devTool if the app is not packaged
-      win.webContents.openDevTools();
+      if (!openDevTools) win.webContents.openDevTools();
     } else {
       win.loadFile(indexHtml);
     }
+
+    if (openDevTools) win.webContents.openDevTools();
 
     // Show Page
     win.once('ready-to-show', () => {

@@ -1,3 +1,4 @@
+    Cadê o @everyone, @here, @room?
     Load de threads diretamente ainda está bugado.
 
     =============================================

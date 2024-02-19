@@ -16,9 +16,10 @@ import ChatRoom from './app/embed/ChatRoom';
 import urlParams from './util/libs/urlParams';
 import web3Talk from './util/web3/xmtp';
 
+global.Buffer = Buffer;
+// global.Buffer = global.Buffer || Buffer;
 function startApp(appProtocol) {
   global.getEnvApp = () => clone(__ENV_APP__);
-  global.Buffer = Buffer;
 
   const pageType = urlParams.get('type');
   const pageId = urlParams.get('id');

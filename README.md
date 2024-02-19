@@ -32,6 +32,8 @@ To host Pony House on your own, download the app from [GitHub release](https://g
 You can serve the application with a webserver of your choice by simply copying `dist/` directory to the webroot. 
 To set default Homeserver on login and register page, place a customized [`.env`](.env) in webroot of your choice.
 
+If you want to use devtools in production mode in the destkop version before the application is opened, type `--devtools` after the file path.
+
 ## Custom App Style
 Would you like to customize your login page to your website? Then you can check out some values available in the `config/custom-css.scss` file.
 
