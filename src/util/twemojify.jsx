@@ -15,6 +15,7 @@ import { sanitizeText } from './sanitize';
 
 import openTinyURL from './message/urlProtection';
 import { tinyLinkifyFixer } from './clear-urls/clearUrls';
+import envAPI from './libs/env';
 
 // Register Protocols
 linkify.registerCustomProtocol('matrix');
@@ -26,11 +27,11 @@ linkify.registerCustomProtocol('irc');
 
 linkify.registerCustomProtocol('ftp');
 
-if (__ENV_APP__.IPFS) {
+if (envAPI.get('IPFS')) {
   linkify.registerCustomProtocol('ipfs');
 }
 
-if (__ENV_APP__.WEB3) {
+if (envAPI.get('WEB3')) {
   linkify.registerCustomProtocol('bitcoin');
   linkify.registerCustomProtocol('dogecoin');
   linkify.registerCustomProtocol('monero');

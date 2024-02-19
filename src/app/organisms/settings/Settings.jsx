@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import envAPI from '@src/util/libs/env';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -130,10 +131,10 @@ if (__ENV_APP__.ELECTRON_MODE) {
   });
 }
 
-if (__ENV_APP__.WEB3 || __ENV_APP__.IPFS) {
+if (envAPI.get('WEB3') || envAPI.get('IPFS')) {
   tabItems.push({ type: 'divider' });
 
-  if (__ENV_APP__.IPFS) {
+  if (envAPI.get('IPFS')) {
     tabItems.push({
       text: tabText.IPFS,
       faSrc: 'fa-solid fa-cube',
@@ -142,7 +143,7 @@ if (__ENV_APP__.WEB3 || __ENV_APP__.IPFS) {
     });
   }
 
-  if (__ENV_APP__.WEB3) {
+  if (envAPI.get('WEB3')) {
     tabItems.push({
       text: tabText.WEB3,
       faSrc: 'fa-brands fa-ethereum',

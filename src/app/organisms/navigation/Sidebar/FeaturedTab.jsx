@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import envAPI from '@src/util/libs/env';
 
 import initMatrix from '../../../../client/initMatrix';
 import cons from '../../../../client/state/cons';
@@ -141,7 +142,7 @@ export default function FeaturedTab() {
         }
       />
 
-      {__ENV_APP__.WEB3 && userWeb3.address ? (
+      {envAPI.get('WEB3') && userWeb3.address ? (
         <SidebarAvatar
           ref={ethereumButton}
           tooltip={`Ethereum${!userWeb3.valid ? ' (INVALID ACCOUNT)' : ''}`}

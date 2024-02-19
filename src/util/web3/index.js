@@ -11,6 +11,7 @@ import modWeb3Cfg from '@mods/web3';
 import { objType } from '../tools';
 import startStatus from './status';
 import initMatrix from '../../client/initMatrix';
+import envAPI from '../libs/env';
 
 const tinyCrypto = {};
 let web3;
@@ -165,7 +166,7 @@ export function getWeb3Cfg(folder, getDefault = true) {
     return null;
   }
 
-  if (!__ENV_APP__.WEB3) content.web3Enabled = false;
+  if (!envAPI.get('WEB3')) content.web3Enabled = false;
   return content;
 }
 
@@ -213,7 +214,7 @@ tinyCrypto.decimals = Object.freeze({
 const startWeb3 = (/* tcall */) => {
   // Check if Web3 has been injected by the browser (Mist/MetaMask).
   if (
-    __ENV_APP__.WEB3 &&
+    envAPI.get('WEB3') &&
     ((typeof ethereum !== 'undefined' && (window.ethereum.isMetaMask || window.ethereum.isFrame)) ||
       __ENV_APP__.ELECTRON_MODE)
   ) {

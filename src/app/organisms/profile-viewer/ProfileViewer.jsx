@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import clone from 'clone';
+import envAPI from '@src/util/libs/env';
 
 import { twemojifyReact } from '../../../util/twemojify';
 import { getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
@@ -525,7 +526,7 @@ function ProfileViewer() {
         const content = updateUserStatusIcon(status, tinyUser);
         const existPresence = content && content.presenceStatusMsg;
         const ethereumValid =
-          __ENV_APP__.WEB3 &&
+          envAPI.get('WEB3') &&
           existPresence &&
           content.presenceStatusMsg.ethereum &&
           content.presenceStatusMsg.ethereum.valid;

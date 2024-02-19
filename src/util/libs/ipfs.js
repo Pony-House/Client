@@ -1,4 +1,5 @@
 import CIDTool from 'cid-tool';
+import envAPI from './env';
 
 export function getIpfsCfg(folder, getDefault = true, domainsParse = false) {
   let content = global.localStorage.getItem('ponyHouse-ipfs');
@@ -73,7 +74,7 @@ export function getIpfsCfg(folder, getDefault = true, domainsParse = false) {
     return null;
   }
 
-  if (!__ENV_APP__.IPFS) content.ipfsEnabled = false;
+  if (!envAPI.get('IPFS')) content.ipfsEnabled = false;
   return content;
 }
 

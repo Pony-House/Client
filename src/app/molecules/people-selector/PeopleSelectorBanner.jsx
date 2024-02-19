@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import PropTypes from 'prop-types';
+import envAPI from '@src/util/libs/env';
 
 import { twemojifyReact, twemojify } from '../../../util/twemojify';
 
@@ -68,7 +69,7 @@ function PeopleSelectorBanner({ name, color, user }) {
 
     if (content && objType(content.presenceStatusMsg, 'object')) {
       const presence = content.presenceStatusMsg;
-      const ethereumValid = __ENV_APP__.WEB3 && presence.ethereum && presence.ethereum.valid;
+      const ethereumValid = envAPI.get('WEB3') && presence.ethereum && presence.ethereum.valid;
 
       // Ethereum
       if (ethereumValid) {

@@ -1,3 +1,5 @@
+import envAPI from '@src/util/libs/env';
+
 const defaultNames = {
   philomena: 'Philomena Booru',
   linuxOS: 'Linux OS',
@@ -49,7 +51,7 @@ keywords.push({
   href: `https://ubuntu.com/`,
 });
 
-if (__ENV_APP__.IPFS) {
+if (envAPI.get('IPFS')) {
   keywords.push({
     title: `IPFS - Inter Planetary File System`,
     name: `ipfs`,
@@ -181,7 +183,7 @@ keywords.push({
   href: `https://equestria.social/`,
 });
 
-if (__ENV_APP__.WEB3) {
+if (envAPI.get('WEB3')) {
   // Crypto Social
   keywords.push({
     title: `Lenster - ${defaultNames.lensWeb3}`,

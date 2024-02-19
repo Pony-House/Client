@@ -1,6 +1,7 @@
 import { Client } from '@xmtp/xmtp-js';
 import EventEmitter from 'events';
 import { tinyCrypto } from '.';
+import envAPI from '../libs/env';
 
 // Create a client using keys returned from getKeys
 const ENCODING = 'binary';
@@ -33,7 +34,7 @@ class Xmtp extends EventEmitter {
   }
 
   async start() {
-    if (__ENV_APP__.WEB3 && tinyCrypto.connected && !this.ready) {
+    if (envAPI.get('WEB3') && tinyCrypto.connected && !this.ready) {
       try {
         const signer = await tinyCrypto.getWeb3().getSigner();
         let address = await signer.getAddress();
