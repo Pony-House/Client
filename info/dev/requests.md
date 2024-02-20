@@ -1,3 +1,6 @@
+    GLITCH:
+    // clientOps.fetchFn = fetchBase;
+
     Cadê o @everyone, @here, @room?
 
     Fazer um sistema para facilitar rooms que são descrições de informação.

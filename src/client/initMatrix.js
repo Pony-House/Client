@@ -97,7 +97,7 @@ class InitMatrix extends EventEmitter {
     };
 
     if (__ENV_APP__.ELECTRON_MODE) {
-      clientOps.fetchFn = fetchBase;
+      // clientOps.fetchFn = fetchBase;
     }
 
     this.matrixClient = sdk.createClient(clientOps);
