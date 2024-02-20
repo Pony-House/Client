@@ -1,12 +1,14 @@
-/* eslint-disable react/prop-types */
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
+import generateApiKey from 'generate-api-key';
 
 import { MatrixEventEvent, RoomEvent, THREAD_RELATION_TYPE } from 'matrix-js-sdk';
 
 import clone from 'clone';
 import hljs from 'highlight.js';
 import * as linkify from 'linkifyjs';
+import cons from '@src/client/state/cons';
 
 import Text from '../../atoms/text/Text';
 import { hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
@@ -770,7 +772,6 @@ function MessageReactionGroup({ roomTimeline, mEvent }) {
     .sort((a, b) => reactions[a].index - reactions[b].index)
     .slice(0, reactionLimit);
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
 
   return (
@@ -895,7 +896,6 @@ const MessageOptions = React.memo(
       selectRoom(roomId, eventId, eventId);
     };
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       const newForceThread = (value) => setIsForceThreadVisible(value);
       matrixAppearance.on('forceThreadButton', newForceThread);
@@ -1065,8 +1065,12 @@ const MessageThreadSummary = React.memo(({ thread }) => {
     selectRoom(thread.roomId, undefined, thread.rootEvent?.getId());
   }
 
-  thread.on(RoomEvent.Timeline, () => {
-    setLastReply(thread.lastReply());
+  useEffect(() => {
+    const threadTimelineUpdate = () => setLastReply(thread.lastReply());
+    thread.on(RoomEvent.Timeline, threadTimelineUpdate);
+    return () => {
+      thread.off(RoomEvent.Timeline, threadTimelineUpdate);
+    };
   });
 
   return (
@@ -1260,6 +1264,7 @@ function Message({
   refRoomInput,
 }) {
   // Get Room Data
+  const { notifications } = initMatrix;
   const appearanceSettings = getAppearance();
   $(timelineSVRef?.current).trigger('scroll');
   const mx = initMatrix.matrixClient;
@@ -1267,6 +1272,7 @@ function Message({
   const threadId = mEvent.getThread()?.id;
   const { editedTimeline, reactionTimeline } = roomTimeline ?? {};
 
+  const [existThread, updateExistThread] = useState(typeof threadId === 'string');
   const [embeds, setEmbeds] = useState([]);
   const [embedHeight, setEmbedHeight] = useState(null);
   const itemEmbed = useRef(null);
@@ -1368,7 +1374,6 @@ function Message({
     }
   }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const bodyUrls = [];
     if (typeof body === 'string' && body.length > 0) {
@@ -1466,8 +1471,21 @@ function Message({
     };
   }, []);
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
+
+  useEffect(() => {
+    const threadUpdate = (tth) => {
+      const thread = mEvent.getThread();
+      if (thread && tth.id === thread.id) {
+        if (!existThread) updateExistThread(true);
+      }
+    };
+
+    notifications.on(cons.events.notifications.THREAD_NOTIFICATION, threadUpdate);
+    return () => {
+      notifications.off(cons.events.notifications.THREAD_NOTIFICATION, threadUpdate);
+    };
+  });
 
   // Normal Message
   if (msgType !== 'm.bad.encrypted') {
@@ -1553,7 +1571,12 @@ function Message({
                 <div ref={itemEmbed} className="message-embed message-url-embed">
                   {embeds.map((embed) => {
                     if (embed.data)
-                      return <Embed key={`msg_embed_${embed.eventId}`} embed={embed.data} />;
+                      return (
+                        <Embed
+                          key={`msg_embed_${embed.eventId}_${generateApiKey()}`}
+                          embed={embed.data}
+                        />
+                      );
                   })}
                 </div>
               ) : null}
