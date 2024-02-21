@@ -65,6 +65,21 @@
   }
 }
 
+@media (max-width: 576px) {
+  .room-view {
+    .room-input {
+      padding: 0px;
+      .room-input__input-container {
+        margin: 0px;
+        border-radius: 0px;
+      }
+    }
+    .room-view-navbar .container-fluid {
+      padding: 0px;
+    }
+  }
+}
+
 .room-reply,
 .room-attachment {
   border-top: 1px solid var(--bg-surface-border);

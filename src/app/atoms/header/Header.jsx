@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 function Header({ children, title, banner }) {
   return (
     <nav
-      className={`${banner ? 'banner-mode' : ''} navbar navbar-expand navbar-nav p-0 w-100 d-block noselect border-bottom border-bg emoji-size-fix`}
+      className={`${banner ? 'banner-mode ' : ''}navbar navbar-expand navbar-nav p-0 w-100 d-block noselect border-bottom border-bg emoji-size-fix room-view-navbar`}
       style={{ backgroundImage: banner ? `url("${banner}")` : '' }}
     >
       <div className="container-fluid w-100">
