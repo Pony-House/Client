@@ -25,7 +25,7 @@ const fetchFn = __ENV_APP__.ELECTRON_MODE
 export { fetchFn };
 
 const startCustomDNS = () => {
-  if (__ENV_APP__.ELECTRON_MODE) {
+  /* if (__ENV_APP__.ELECTRON_MODE) {
     if (typeof global.startCustomDNS === 'function') {
       global.startCustomDNS({
         port:
@@ -42,7 +42,7 @@ const startCustomDNS = () => {
         ens: __ENV_APP__.CUSTOM_DNS.BLOCKCHAIN.ens,
       });
     }
-  }
+  } */
 };
 
 class InitMatrix extends EventEmitter {
@@ -96,9 +96,9 @@ class InitMatrix extends EventEmitter {
       verificationMethods: ['m.sas.v1'],
     };
 
-    if (__ENV_APP__.ELECTRON_MODE) {
-      // clientOps.fetchFn = fetchBase;
-    }
+    // if (__ENV_APP__.ELECTRON_MODE) {
+    // clientOps.fetchFn = fetchBase;
+    // }
 
     this.matrixClient = sdk.createClient(clientOps);
 

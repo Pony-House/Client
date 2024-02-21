@@ -1,1 +1,1 @@
-- Thread creator update fixed
+- Custom dns - disabled (temp)
