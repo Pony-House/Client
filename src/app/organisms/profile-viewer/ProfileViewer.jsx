@@ -755,7 +755,7 @@ function ProfileViewer() {
               <hr />
 
               <label
-                for="tiny-note"
+                htmlFor="tiny-note"
                 className="form-label text-gray text-uppercase fw-bold very-small mb-2"
               >
                 Note

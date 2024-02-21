@@ -1,4 +1,3 @@
-/* eslint-disable no-async-promise-executor */
 import FileSaver from 'file-saver';
 import PhotoSwipeLightbox from 'photoswipe';
 import { getFileContentType } from './fileMime';

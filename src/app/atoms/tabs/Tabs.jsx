@@ -73,7 +73,7 @@ function Tabs({ items, defaultSelected, onSelect, className, isFullscreen, id, r
               (item, index) =>
                 item.type !== 'divider' && (
                   <TabItem
-                    key={item.text}
+                    key={`tabs_${item.text}`}
                     selected={selectedItem.text === item.text}
                     iconSrc={item.iconSrc}
                     faSrc={item.faSrc}

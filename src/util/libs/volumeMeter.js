@@ -66,7 +66,6 @@ VolumeMeter.prototype.setVolume = function (value) {
 
 VolumeMeter.prototype.stop = function () {
   const that = this;
-  // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
     try {
       that.source.disconnect();

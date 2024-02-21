@@ -1,5 +1,3 @@
-/* eslint-disable no-async-promise-executor */
-/* eslint-disable no-await-in-loop */
 import clone from 'clone';
 
 import initMatrix from '../../../client/initMatrix';

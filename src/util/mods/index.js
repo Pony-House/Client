@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop */
 import { objType } from '../tools';
 
 const tinyAPI = {};

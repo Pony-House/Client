@@ -184,7 +184,7 @@ function Login({ loginFlow, baseUrl }) {
                       checked={WEB3}
                       onClick={() => editENV('WEB3')}
                     />
-                    <label class="form-check-label" for="web3Check">
+                    <label class="form-check-label" htmlFor="web3Check">
                       Enable Web3 features
                     </label>
                   </div>
@@ -200,7 +200,7 @@ function Login({ loginFlow, baseUrl }) {
                       checked={IPFS}
                       onClick={() => editENV('IPFS')}
                     />
-                    <label class="form-check-label" for="ipfsCheck">
+                    <label class="form-check-label" htmlFor="ipfsCheck">
                       Enable IPFS features
                     </label>
                   </div>
@@ -243,12 +243,12 @@ export default Login;
 
         <div className="form-outline mb-4 small">
             <input type="email" id="tinyemail" className="form-control form-control-bg form-control-lg" />
-            <label className="form-label text-bg-low" for="tinyemail">Email address</label>
+            <label className="form-label text-bg-low" htmlFor="tinyemail">Email address</label>
         </div>
 
         <div className="form-outline mb-4 small">
             <input type="password" id="tinypassword" className="form-control form-control-bg form-control-lg" />
-            <label className="form-label text-bg-low" for="tinypassword">Password</label>
+            <label className="form-label text-bg-low" htmlFor="tinypassword">Password</label>
         </div>
 
         <div className="pt-1 mb-4 small">

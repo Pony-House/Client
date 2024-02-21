@@ -33,12 +33,12 @@
                         <textarea className='form-control form-control-bg mb-3' onClick={(e) => { $(e.target).select(); }} value={signMessage} readOnly />
 
                         <div className="mb-3">
-                            <label for="web3-btc-sign-value" className="form-label">Sign value</label>
+                            <label htmlFor="web3-btc-sign-value" className="form-label">Sign value</label>
                             <input ref={btcSignValueRef} type="text" className="form-control form-control-bg" id="web3-btc-sign-value" />
                         </div>
 
                         <div className="mb-3">
-                            <label for="web3-btc-sign-address" className="form-label">Wallet address</label>
+                            <label htmlFor="web3-btc-sign-address" className="form-label">Wallet address</label>
                             <input ref={btcSignAddressRef} type="text" className="form-control form-control-bg" id="web3-btc-sign-address" />
                         </div>
 

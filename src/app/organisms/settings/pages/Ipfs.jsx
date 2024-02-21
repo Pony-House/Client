@@ -109,7 +109,7 @@ function IpfsSection() {
 
           <li className="list-group-item border-0">
             <div className="mb-3">
-              <label for="publicGateway" className="form-label small">
+              <label htmlFor="publicGateway" className="form-label small">
                 Public Gateway
               </label>
               <input
@@ -125,7 +125,7 @@ function IpfsSection() {
             </div>
 
             <div className="mb-3">
-              <label for="subdomainPublicGateway" className="form-label small">
+              <label htmlFor="subdomainPublicGateway" className="form-label small">
                 Public Subdomain Gateway
               </label>
               <input
@@ -141,7 +141,7 @@ function IpfsSection() {
             </div>
 
             <div className="mb-3">
-              <label for="localGateway" className="form-label small">
+              <label htmlFor="localGateway" className="form-label small">
                 Local Gateway
               </label>
               <input
@@ -163,7 +163,7 @@ function IpfsSection() {
 
           <li className="list-group-item border-0">
             <div className="mb-3">
-              <label for="apiIpfs" className="form-label small">
+              <label htmlFor="apiIpfs" className="form-label small">
                 API Url
               </label>
               <input

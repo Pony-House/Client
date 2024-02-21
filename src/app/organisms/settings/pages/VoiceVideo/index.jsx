@@ -59,7 +59,6 @@ const validatorVolume = (value) => {
   return 100;
 };
 
-// eslint-disable-next-line no-async-promise-executor
 const stopMicroTest = (testingValue = false, audioMonitor = null) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -80,7 +79,6 @@ const stopMicroTest = (testingValue = false, audioMonitor = null) =>
     }
   });
 
-// eslint-disable-next-line no-async-promise-executor
 const stopWebcamTest = () =>
   new Promise(async (resolve, reject) => {
     try {
@@ -373,7 +371,9 @@ function VoiceVideoSection() {
                   <option>Choose...</option>
                   {devicesItem && Array.isArray(devicesItem.audio) && devicesItem.audio.length > 0
                     ? devicesItem.audio.map((item) => (
-                        <option value={item.deviceId}>{item.label}</option>
+                        <option key={`input_audio_${item.deviceId}`} value={item.deviceId}>
+                          {item.label}
+                        </option>
                       ))
                     : null}
                 </select>
@@ -387,7 +387,9 @@ function VoiceVideoSection() {
                   Array.isArray(devicesItem.speaker) &&
                   devicesItem.speaker.length > 0
                     ? devicesItem.speaker.map((item) => (
-                        <option value={item.deviceId}>{item.label}</option>
+                        <option key={`input_speak_${item.deviceId}`} value={item.deviceId}>
+                          {item.label}
+                        </option>
                       ))
                     : null}
                 </select>
