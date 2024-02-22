@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
-import generateApiKey from 'generate-api-key';
+import { generateApiKey } from 'generate-api-key';
 
 import { MatrixEventEvent, RoomEvent, THREAD_RELATION_TYPE } from 'matrix-js-sdk';
 
@@ -320,19 +320,19 @@ const createMessageData = (
       const insertMsg = () =>
         !isJquery
           ? twemojifyReact(
-              sanitizeCustomHtml(initMatrix.matrixClient, body),
-              undefined,
-              true,
-              false,
-              true,
-            )
+            sanitizeCustomHtml(initMatrix.matrixClient, body),
+            undefined,
+            true,
+            false,
+            true,
+          )
           : twemojify(
-              sanitizeCustomHtml(initMatrix.matrixClient, body),
-              undefined,
-              true,
-              false,
-              true,
-            );
+            sanitizeCustomHtml(initMatrix.matrixClient, body),
+            undefined,
+            true,
+            false,
+            true,
+          );
 
       const msgOptions = tinyAPI.emit(
         'messageBody',

@@ -15,9 +15,10 @@ export default async function tinyDB(filename, ipcMain, newWin) {
         if (!tinyCache.using || rechecking) {
           tinyCache.using = true;
           try {
-            db[type](value1, value2, (data) => {
+            db[type](value1, value2, (err, data) => {
               tinyCache.using = false;
-              resolve2(data);
+              if (!err) resolve2(data);
+              else reject(err);
             });
           } catch (err) {
             reject(err);
@@ -74,20 +75,20 @@ export default async function tinyDB(filename, ipcMain, newWin) {
 
     ping();
 
-    ipcMain.on('requestDB', (event, type, value, value2) => {
+    ipcMain.on('requestDB', (event, type, id, value, value2) => {
       if (typeof result[type] === 'function') {
         result[type](value, value2)
-          .then((data) => newWin.webContents.send('requestDB', { result: data }))
-          .catch((err) => newWin.webContents.send('requestDB', { err }));
+          .then((data) => newWin.webContents.send('requestDB', { result: data, id }))
+          .catch((err) => newWin.webContents.send('requestDB', { err, id }));
       } else {
         newWin.webContents.send('requestDB', null);
       }
     });
 
-    ipcMain.on('requestDBPing', () => {
+    ipcMain.on('requestDBPing', (event, id) => {
       ping()
-        .then((data) => newWin.webContents.send('requestDB', { result: data }))
-        .catch((err) => newWin.webContents.send('requestDB', { err }));
+        .then((data) => newWin.webContents.send('requestDB', { result: data, id }))
+        .catch((err) => newWin.webContents.send('requestDB', { err, id }));
     });
 
     resolve(result);
