@@ -34,6 +34,7 @@ contextBridge.exposeInMainWorld('tinyDB', {
 /*
     clearData
     clearCacheData
+    startClient
 */
 
 ipcRenderer.on('requestDB', (event, result) => {

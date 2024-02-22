@@ -102,6 +102,9 @@ class InitMatrix extends EventEmitter {
 
     this.matrixClient = sdk.createClient(clientOps);
 
+    if (global.tinyDB && typeof global.tinyDB.startClient === 'function')
+      await global.tinyDB.startClient();
+
     await indexedDBStore.startup();
 
     await this.matrixClient.initCrypto();
