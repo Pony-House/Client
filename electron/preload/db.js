@@ -1,21 +1,31 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { generateApiKey } from 'generate-api-key';
+import clone from 'clone';
 
-contextBridge.exposeInMainWorld('electronDB', {
-    run: (value1, value2) => {
+const dbCache = {};
+
+contextBridge.exposeInMainWorld('tinyDB', {
+    run: (value1, value2) => new Promise((resolve, reject) => {
         const id = generateApiKey();
+        dbCache[id] = { resolve, reject };
         ipcRenderer.send('requestDB', 'run', id, value1, value2);
-    },
-    all: (value1, value2) => {
+    }),
+    all: (value1, value2) => new Promise((resolve, reject) => {
         const id = generateApiKey();
+        dbCache[id] = { resolve, reject };
         ipcRenderer.send('requestDB', 'all', id, value1, value2);
-    },
-    runPing: () => {
+    }),
+    runPing: () => new Promise((resolve, reject) => {
         const id = generateApiKey();
+        dbCache[id] = { resolve, reject };
         ipcRenderer.send('requestDBPing', id);
-    },
+    }),
 });
 
 ipcRenderer.on('requestDB', (event, result) => {
-    console.log(result);
+    if (dbCache[result.id]) {
+        if (typeof result.err !== 'undefined') dbCache[result.id].reject(result.err);
+        else dbCache[result.id].resolve(result.result);
+        delete dbCache[result.id];
+    }
 });
