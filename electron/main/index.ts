@@ -75,7 +75,6 @@ async function createWindow() {
     // await loadExtension('frame');
 
     // Get Data
-    await tinyDB(path.join(tempFolder, 'database.db'));
     const initFile = path.join(tempFolder, 'init.json');
     let data = null;
     try {
@@ -112,6 +111,7 @@ async function createWindow() {
       },
     });
 
+    await tinyDB(path.join(tempFolder, `database${tinyUrl ? '_dev' : ''}.db`), ipcMain, win);
     if (process.platform === 'win32') {
       win.setAppDetails({
         appId: 'pony-house-matrix',

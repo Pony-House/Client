@@ -1,7 +1,7 @@
 import moment from 'moment-timezone';
 import sqlite3 from 'sqlite3';
 
-export default async function tinyDB(filename) {
+export default async function tinyDB(filename, ipcMain, newWin) {
   return new Promise((resolve) => {
     const db = new sqlite3.Database(filename);
 
@@ -70,6 +70,10 @@ export default async function tinyDB(filename) {
           },
         ),
       );
+
+    ipcMain.on('requestDB', () => {
+      newWin.webContents.send('requestDB', true);
+    });
 
     resolve(result);
   });
