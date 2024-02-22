@@ -320,19 +320,19 @@ const createMessageData = (
       const insertMsg = () =>
         !isJquery
           ? twemojifyReact(
-            sanitizeCustomHtml(initMatrix.matrixClient, body),
-            undefined,
-            true,
-            false,
-            true,
-          )
+              sanitizeCustomHtml(initMatrix.matrixClient, body),
+              undefined,
+              true,
+              false,
+              true,
+            )
           : twemojify(
-            sanitizeCustomHtml(initMatrix.matrixClient, body),
-            undefined,
-            true,
-            false,
-            true,
-          );
+              sanitizeCustomHtml(initMatrix.matrixClient, body),
+              undefined,
+              true,
+              false,
+              true,
+            );
 
       const msgOptions = tinyAPI.emit(
         'messageBody',
