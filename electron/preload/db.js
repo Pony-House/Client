@@ -27,7 +27,7 @@ contextBridge.exposeInMainWorld('tinyDB', {
 
 ipcRenderer.on('requestDB', (event, result) => {
   if (dbCache[result.id]) {
-    if (typeof result.err !== 'undefined') dbCache[result.id].reject(result.err);
+    if (typeof result.err !== 'undefined') dbCache[result.id].reject(clone(result.err));
     else dbCache[result.id].resolve(clone(result.result));
     delete dbCache[result.id];
   }
