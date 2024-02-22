@@ -1,1 +1,2 @@
 - Custom dns - disabled (temp)
+- Electron db added.
