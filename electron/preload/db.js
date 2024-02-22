@@ -17,6 +17,12 @@ contextBridge.exposeInMainWorld('tinyDB', {
       dbCache[id] = { resolve, reject };
       ipcRenderer.send('requestDB', 'all', id, value1, value2);
     }),
+  get: (value1, value2) =>
+    new Promise((resolve, reject) => {
+      const id = generateApiKey();
+      dbCache[id] = { resolve, reject };
+      ipcRenderer.send('requestDB', 'get', id, value1, value2);
+    }),
   runPing: () =>
     new Promise((resolve, reject) => {
       const id = generateApiKey();

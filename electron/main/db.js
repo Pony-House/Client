@@ -48,6 +48,7 @@ export default async function tinyDB(filename, ipcMain, newWin) {
     const result = {
       run: (value1, value2) => tinyCache.run('run', value1, value2),
       all: (value1, value2) => tinyCache.run('all', value1, value2),
+      get: (value1, value2) => tinyCache.run('get', value1, value2),
     };
 
     const ping = () =>
