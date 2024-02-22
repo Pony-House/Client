@@ -16,9 +16,19 @@ if (!fs.existsSync(tempFolder)) {
   fs.mkdirSync(tempFolder);
 }
 
+const appDataFolder = path.join(app.getPath('appData'), './pony-house-matrix');
+if (!fs.existsSync(appDataFolder)) {
+  fs.mkdirSync(appDataFolder);
+}
+
+const appDataPrivate = path.join(app.getPath('appData'), './pony-house-matrix/tinyMatrixData');
+if (!fs.existsSync(appDataPrivate)) {
+  fs.mkdirSync(appDataPrivate);
+}
+
 const tempFolderNoti = path.join(tempFolder, './notification');
 if (!fs.existsSync(tempFolderNoti)) {
   fs.mkdirSync(tempFolderNoti);
 }
 
-export { createDirName, tempFolder, tempFolderNoti };
+export { createDirName, tempFolder, tempFolderNoti, appDataFolder, appDataPrivate };

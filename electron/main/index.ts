@@ -8,7 +8,7 @@ import { update } from './update';
 import startNotifications from './notification';
 import startEvents from './events';
 import startResizeEvents from './events/resize';
-import { tempFolder } from './tempFolders';
+import { appDataPrivate } from './tempFolders';
 import tinyDB from './db';
 
 // The built directory structure
@@ -75,7 +75,7 @@ async function createWindow() {
     // await loadExtension('frame');
 
     // Get Data
-    const initFile = path.join(tempFolder, 'init.json');
+    const initFile = path.join(appDataPrivate, 'init.json');
     let data = null;
     try {
       data = JSON.parse(fs.readFileSync(initFile, 'utf8'));
@@ -111,7 +111,7 @@ async function createWindow() {
       },
     });
 
-    await tinyDB(path.join(tempFolder, `database${tinyUrl ? '_dev' : ''}.db`), ipcMain, win);
+    await tinyDB(path.join(appDataPrivate, `database${tinyUrl ? '_dev' : ''}.db`), ipcMain, win);
     if (process.platform === 'win32') {
       win.setAppDetails({
         appId: 'pony-house-matrix',
