@@ -49,34 +49,45 @@ export default async function tinyDB(filename, ipcMain, newWin) {
       all: (value1, value2) => tinyCache.run('all', value1, value2),
     };
 
-    result
-      .run(
-        `
-            CREATE TABLE IF NOT EXISTS ping (
-                id VARCHAR(10),
-                unix BIGINT,
-                PRIMARY KEY (id)
-            );
-        `,
-      )
-      .then(() =>
-        result.run(
+    const ping = () =>
+      result
+        .run(
           `
-            INSERT OR REPLACE INTO ping (id, unix) VALUES($id, $unix);
-        `,
-          {
-            $id: 'start',
-            $unix: moment().unix(),
-          },
-        ),
-      );
+          CREATE TABLE IF NOT EXISTS ping (
+              id VARCHAR(10),
+              unix BIGINT,
+              PRIMARY KEY (id)
+          );
+      `,
+        )
+        .then(() =>
+          result.run(
+            `
+          INSERT OR REPLACE INTO ping (id, unix) VALUES($id, $unix);
+      `,
+            {
+              $id: 'start',
+              $unix: moment().unix(),
+            },
+          ),
+        );
 
-    ipcMain.on('requestDB', (type, value, value2) => {
+    ping();
+
+    ipcMain.on('requestDB', (event, type, value, value2) => {
       if (typeof result[type] === 'function') {
-        result[type](value, value2).then(data => newWin.webContents.send('requestDB', { result: data })).catch(err => newWin.webContents.send('requestDB', { err }));
+        result[type](value, value2)
+          .then((data) => newWin.webContents.send('requestDB', { result: data }))
+          .catch((err) => newWin.webContents.send('requestDB', { err }));
       } else {
         newWin.webContents.send('requestDB', null);
       }
+    });
+
+    ipcMain.on('requestDBPing', () => {
+      ping()
+        .then((data) => newWin.webContents.send('requestDB', { result: data }))
+        .catch((err) => newWin.webContents.send('requestDB', { err }));
     });
 
     resolve(result);
