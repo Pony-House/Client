@@ -189,12 +189,39 @@ class RoomTimeline extends EventEmitter {
       throw new Error(`Created a RoomTimeline for a room that doesn't exist: ${roomId}`);
     }
 
+    // Insert live timeline
+    this.liveTimeline = this.room.getLiveTimeline();
+    this.activeTimeline = this.liveTimeline;
+
+    // More data
+    this.isOngoingPagination = false;
+    this.ongoingDecryptionCount = 0;
+    this.initialized = false;
+
+    // Ydoc data
+    this._ydoc = {
+      initialized: false,
+      data: null,
+      last_update: null,
+
+      matrix_update: [],
+      cache: [],
+      send_events: [],
+      sending_event: false,
+      error_hash: null,
+      error_hash_count: 0,
+
+      cache_timeout: null,
+
+      update_time: { timeout: null, cache: [] },
+      init_cache: [],
+    };
+
     // Is Guest
     if (this.isGuest) {
+      const tinyThis = this;
       // Load Guest timeline
       this.loadGuestTimeline = () => {
-        const tinyThis = this;
-
         this.room.refreshLiveTimeline().then(() => {
           // Insert guest timeline
           tinyThis.liveTimeline = tinyThis.room.getLiveTimeline();
@@ -236,39 +263,10 @@ class RoomTimeline extends EventEmitter {
       };
 
       // First load
-      const tinyThis = this;
       tinyThis._reset().then(() => {
         tinyThis.loadGuestTimeline();
       });
     }
-
-    // Insert live timeline
-    this.liveTimeline = this.room.getLiveTimeline();
-    this.activeTimeline = this.liveTimeline;
-
-    // More data
-    this.isOngoingPagination = false;
-    this.ongoingDecryptionCount = 0;
-    this.initialized = false;
-
-    // Ydoc data
-    this._ydoc = {
-      initialized: false,
-      data: null,
-      last_update: null,
-
-      matrix_update: [],
-      cache: [],
-      send_events: [],
-      sending_event: false,
-      error_hash: null,
-      error_hash_count: 0,
-
-      cache_timeout: null,
-
-      update_time: { timeout: null, cache: [] },
-      init_cache: [],
-    };
 
     // Load Members
     setTimeout(() => this.room.loadMembersIfNeeded());

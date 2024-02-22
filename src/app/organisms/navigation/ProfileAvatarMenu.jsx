@@ -27,7 +27,7 @@ import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearanc
 // Account Status
 const accountStatus = { status: null, data: null };
 export function getAccountStatus(where) {
-  if (typeof where === 'string') {
+  if (typeof where === 'string' && accountStatus.data) {
     if (where !== 'status') {
       return clone(accountStatus.status);
     }
