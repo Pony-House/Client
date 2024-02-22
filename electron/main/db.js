@@ -71,8 +71,12 @@ export default async function tinyDB(filename, ipcMain, newWin) {
         ),
       );
 
-    ipcMain.on('requestDB', () => {
-      newWin.webContents.send('requestDB', true);
+    ipcMain.on('requestDB', (type, value, value2) => {
+      if (typeof result[type] === 'function') {
+        result[type](value, value2).then(data => newWin.webContents.send('requestDB', { result: data })).catch(err => newWin.webContents.send('requestDB', { err }));
+      } else {
+        newWin.webContents.send('requestDB', null);
+      }
     });
 
     resolve(result);
