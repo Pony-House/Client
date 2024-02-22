@@ -9,6 +9,7 @@ import startNotifications from './notification';
 import startEvents from './events';
 import startResizeEvents from './events/resize';
 import { tempFolder } from './tempFolders';
+import tinyDB from './db';
 
 // The built directory structure
 //
@@ -74,6 +75,7 @@ async function createWindow() {
     // await loadExtension('frame');
 
     // Get Data
+    await tinyDB(path.join(tempFolder, 'database.db'));
     const initFile = path.join(tempFolder, 'init.json');
     let data = null;
     try {
