@@ -8,11 +8,10 @@ import { MatrixEventEvent, RoomEvent, THREAD_RELATION_TYPE } from 'matrix-js-sdk
 import clone from 'clone';
 import hljs from 'highlight.js';
 import * as linkify from 'linkifyjs';
-import { Capacitor } from '@capacitor/core';
 import cons from '@src/client/state/cons';
 
 import Text from '../../atoms/text/Text';
-import { hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
+import { hljsFixer, isMobile, resizeWindowChecker, toast } from '../../../util/tools';
 import { twemojify, twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 
@@ -977,8 +976,7 @@ const MessageOptions = React.memo(
                   faSrc={`bi bi-pin-angle${!isPinnedMessage(room, eventid) ? '-fill' : ''}`}
                   onClick={() => {
                     setPinMessage(room, eventid, !isPinnedMessage(room, eventid));
-                    if (!Capacitor.isNativePlatform())
-                      $(refRoomInput.current).find('#message-textarea').focus();
+                    if (!isMobile()) $(refRoomInput.current).find('#message-textarea').focus();
                     hideMenu();
                   }}
                 >

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Capacitor } from '@capacitor/core';
 import { calendarFormat } from '@src/util/libs/momentjs';
 
 import settings from '../../../../client/state/settings';
@@ -13,7 +12,7 @@ import {
   toggleMembershipEvents,
   toggleNickAvatarEvents,
 } from '../../../../client/action/settings';
-import { tinyAppZoomValidator } from '../../../../util/tools';
+import { isMobile, tinyAppZoomValidator } from '../../../../util/tools';
 import {
   getAppearance,
   toggleAppearanceAction,
@@ -322,7 +321,7 @@ function AppearanceSection() {
             }
           />
 
-          {Capacitor.isNativePlatform() ? (
+          {isMobile() ? (
             <SettingTile
               title="Send message on enter"
               options={

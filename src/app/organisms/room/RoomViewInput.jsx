@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-autosize-textarea';
-import { Capacitor } from '@capacitor/core';
 import moment from '@src/util/libs/momentjs';
 
 import { ReactEditor } from 'slate-react';
@@ -18,7 +17,7 @@ import { getUsername, getCurrentState } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
 import { shiftNuller } from '../../../util/shortcut';
 import audioRecorder from '../../../util/audioRec';
-import { momentCountdown, resizeWindowChecker, toast } from '../../../util/tools';
+import { isMobile, momentCountdown, resizeWindowChecker, toast } from '../../../util/tools';
 
 import Text from '../../atoms/text/Text';
 import RawIcon from '../../atoms/system-icons/RawIcon';
@@ -810,10 +809,9 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     }
 
     if (
-      (!Capacitor.isNativePlatform() || appearanceSettings.sendMessageEnter) &&
+      (!isMobile() || appearanceSettings.sendMessageEnter) &&
       e.key === 'Enter' &&
-      e.shiftKey === false &&
-      !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      e.shiftKey === false
     ) {
       e.preventDefault();
       sendMessage();
@@ -935,7 +933,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
       );
     }
 
-    setTimeout(() => !Capacitor.isNativePlatform() && $('#message-textarea').focus(), 100);
+    setTimeout(() => !isMobile() && $('#message-textarea').focus(), 100);
 
     // Complete
     return (

@@ -507,6 +507,13 @@ export function tinyConfirm(text = '', title = 'App Alert') {
   });
 }
 
+export function isMobile() {
+  return (
+    Capacitor.isNativePlatform() ||
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  );
+}
+
 // eslint-disable-next-line no-extend-native
 Date.prototype.isValid = function () {
   // If the date object is invalid it

@@ -1,4 +1,4 @@
-import { Capacitor } from '@capacitor/core';
+import { isMobile } from '@src/util/tools';
 import { compareVersions } from 'compare-versions';
 
 const cons = {
@@ -11,7 +11,7 @@ const cons = {
     BASE_URL: 'cinny_hs_base_url',
   },
 
-  DEVICE_DISPLAY_NAME: `${__ENV_APP__.INFO.name} (${__ENV_APP__.ELECTRON_MODE ? 'Desktop' : Capacitor.isNativePlatform() ? 'Mobile' : 'Browser'})`,
+  DEVICE_DISPLAY_NAME: `${__ENV_APP__.INFO.name} (${__ENV_APP__.ELECTRON_MODE ? 'Desktop' : isMobile() ? 'Mobile' : 'Browser'})`,
   IN_CINNY_SPACES: 'in.cinny.spaces',
 
   tabs: {
