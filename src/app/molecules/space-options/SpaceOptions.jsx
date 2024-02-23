@@ -56,19 +56,7 @@ function SpaceOptions({ roomId, afterOptionSelect }) {
     afterOptionSelect();
   };
   const handleSettingsClick = () => {
-    const profileSetting = initMatrix.matrixClient.getAccountData('pony.house.profile');
-    if (
-      profileSetting &&
-      profileSetting.event &&
-      profileSetting.event.type === 'pony.house.profile' &&
-      profileSetting.event.content &&
-      profileSetting.event.content.roomId === roomId
-    ) {
-      openSpaceSettings(roomId, null, true);
-    } else {
-      openSpaceSettings(roomId);
-    }
-
+    openSpaceSettings(roomId);
     afterOptionSelect();
   };
   const handleManageRoom = () => {

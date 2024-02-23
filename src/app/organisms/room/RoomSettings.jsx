@@ -171,8 +171,6 @@ function RoomSettings({ roomId }) {
     setSelectedTab(tabItem);
   };
 
-  const isProfile = false;
-
   useEffect(() => {
     let mounted = true;
     const settingsToggle = (isVisible, tab) => {
@@ -221,7 +219,7 @@ function RoomSettings({ roomId }) {
         </ul>
       </Header>
 
-      <RoomProfile profileMode={isProfile} roomId={roomId} />
+      <RoomProfile roomId={roomId} />
       <Tabs
         className="px-3"
         items={tabItems}

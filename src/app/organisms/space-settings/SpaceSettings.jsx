@@ -67,7 +67,7 @@ const tabItems = [
 ];
 
 // Config
-function GeneralSettings({ roomId, profileMode }) {
+function GeneralSettings({ roomId }) {
   // Prepare Settings
   const isPinned = initMatrix.accountData.spaceShortcut.has(roomId);
   const isCategorized = initMatrix.accountData.categorizedSpaces.has(roomId);
@@ -86,7 +86,7 @@ function GeneralSettings({ roomId, profileMode }) {
             <li className="list-group-item very-small text-gray">Space ID</li>
 
             <li className="list-group-item border-0">
-              <RoomProfile profileMode={profileMode} roomId={roomId} isSpace />
+              <RoomProfile roomId={roomId} isSpace />
             </li>
           </ul>
         </div>
@@ -164,15 +164,13 @@ function GeneralSettings({ roomId, profileMode }) {
 
 GeneralSettings.propTypes = {
   roomId: PropTypes.string.isRequired,
-  profileMode: PropTypes.bool,
 };
 
-function useWindowToggle(setSelectedTab, setProfileMode) {
+function useWindowToggle(setSelectedTab) {
   const [tinyWindow, setWindow] = useState(null);
 
   useEffect(() => {
-    const openSpaceSettings = (roomId, tab, isProfile) => {
-      setProfileMode(isProfile);
+    const openSpaceSettings = (roomId, tab) => {
       setWindow({ roomId, tabText });
 
       if (tab) {
@@ -195,9 +193,8 @@ function useWindowToggle(setSelectedTab, setProfileMode) {
 }
 
 function SpaceSettings() {
-  const [profileMode, setProfileMode] = useState(false);
   const [selectedTab, setSelectedTab] = useState(tabItems[0]);
-  const [tinyWindow, requestClose] = useWindowToggle(setSelectedTab, setProfileMode);
+  const [tinyWindow, requestClose] = useWindowToggle(setSelectedTab);
   const isOpen = tinyWindow !== null;
   const roomId = tinyWindow?.roomId;
 
@@ -254,23 +251,15 @@ function SpaceSettings() {
             </div>
 
             <div id="settings-content" className="py-3">
-              {selectedTab.text === tabText.GENERAL && (
-                <GeneralSettings roomId={roomId} profileMode={profileMode} />
-              )}
-              {selectedTab.text === tabText.MEMBERS && (
-                <RoomMembers roomId={roomId} profileMode={profileMode} />
-              )}
-              {selectedTab.text === tabText.EMOJIS && (
-                <RoomEmojis roomId={roomId} profileMode={profileMode} />
-              )}
-              {selectedTab.text === tabText.PERMISSIONS && (
-                <RoomPermissions roomId={roomId} profileMode={profileMode} />
-              )}
+              {selectedTab.text === tabText.GENERAL && <GeneralSettings roomId={roomId} />}
+              {selectedTab.text === tabText.MEMBERS && <RoomMembers roomId={roomId} />}
+              {selectedTab.text === tabText.EMOJIS && <RoomEmojis roomId={roomId} />}
+              {selectedTab.text === tabText.PERMISSIONS && <RoomPermissions roomId={roomId} />}
             </div>
           </div>
         ) : (
           <>
-            <RoomProfile profileMode={profileMode} roomId={roomId} isSpace />
+            <RoomProfile roomId={roomId} isSpace />
             <Tabs
               className="border-bottom border-bg"
               items={tabItems}
@@ -278,18 +267,10 @@ function SpaceSettings() {
               onSelect={handleTabChange}
             />
             <div className="pt-3">
-              {selectedTab.text === tabText.GENERAL && (
-                <GeneralSettings roomId={roomId} profileMode={profileMode} />
-              )}
-              {selectedTab.text === tabText.MEMBERS && (
-                <RoomMembers roomId={roomId} profileMode={profileMode} />
-              )}
-              {selectedTab.text === tabText.EMOJIS && (
-                <RoomEmojis roomId={roomId} profileMode={profileMode} />
-              )}
-              {selectedTab.text === tabText.PERMISSIONS && (
-                <RoomPermissions roomId={roomId} profileMode={profileMode} />
-              )}
+              {selectedTab.text === tabText.GENERAL && <GeneralSettings roomId={roomId} />}
+              {selectedTab.text === tabText.MEMBERS && <RoomMembers roomId={roomId} />}
+              {selectedTab.text === tabText.EMOJIS && <RoomEmojis roomId={roomId} />}
+              {selectedTab.text === tabText.PERMISSIONS && <RoomPermissions roomId={roomId} />}
             </div>
           </>
         ))}

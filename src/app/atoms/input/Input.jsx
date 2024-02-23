@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import TextareaAutosize from 'react-autosize-textarea';
+import { isMobile } from '@src/util/tools';
 
 function Input({
   id,
@@ -22,6 +23,7 @@ function Input({
   autoFocus,
   className,
 }) {
+  const isAutoFocus = !isMobile() ? autoFocus : false;
   return (
     <>
       {label !== '' && (
@@ -47,7 +49,7 @@ function Input({
           onResize={onResize}
           onKeyDown={onKeyDown}
           disabled={disabled}
-          autoFocus={autoFocus}
+          autoFocus={isAutoFocus}
         />
       ) : (
         <input
@@ -65,7 +67,7 @@ function Input({
           onKeyDown={onKeyDown}
           disabled={disabled}
           // eslint-disable-next-line jsx-a11y/no-autofocus
-          autoFocus={autoFocus}
+          autoFocus={isAutoFocus}
         />
       )}
     </>

@@ -19,7 +19,7 @@ import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
 import { getCurrentState } from '../../../util/matrixUtil';
 
-function RoomProfile({ roomId, profileMode, isSpace }) {
+function RoomProfile({ roomId, isSpace }) {
   // First Data
   const isMountStore = useStore();
   const [isEditing, setIsEditing] = useState(false);
@@ -292,13 +292,6 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
     </form>
   );
 
-  // Room Name
-  let profileName = '';
-  if (profileMode) {
-    const user = mx.getUser(mx.getUserId());
-    profileName = user.displayName;
-  }
-
   // Render Panel
   const renderNameAndTopic = () => (
     <div
@@ -306,17 +299,7 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
       style={{ marginBottom: avatarSrc && canChangeAvatar ? '24px' : '0' }}
     >
       <div>
-        <h4 className="d-inline-block m-0 my-1">
-          {twemojifyReact(roomName)}
-          {profileMode ? (
-            <small className="ms-3 very-small text-success">
-              <i className="bi bi-patch-check-fill me-1" />
-              {`(${profileName}'s Profile)`}
-            </small>
-          ) : (
-            ''
-          )}
-        </h4>
+        <h4 className="d-inline-block m-0 my-1">{twemojifyReact(roomName)}</h4>
 
         {nameCinny.category.length > 0 && (
           <div className="d-inline-block m-0 my-1">
@@ -393,7 +376,6 @@ function RoomProfile({ roomId, profileMode, isSpace }) {
 
 RoomProfile.propTypes = {
   roomId: PropTypes.string.isRequired,
-  profileMode: PropTypes.bool,
   isSpace: PropTypes.bool,
 };
 

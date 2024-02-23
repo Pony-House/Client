@@ -251,7 +251,7 @@ function useRoomStateUpdate(roomId) {
   }, [roomId]);
 }
 
-function RoomPermissions({ roomId, profileMode }) {
+function RoomPermissions({ roomId }) {
   useRoomStateUpdate(roomId);
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
@@ -353,7 +353,6 @@ function RoomPermissions({ roomId, profileMode }) {
 
 RoomPermissions.propTypes = {
   roomId: PropTypes.string.isRequired,
-  profileMode: PropTypes.bool,
 };
 
 export default RoomPermissions;

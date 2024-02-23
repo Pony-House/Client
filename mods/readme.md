@@ -240,7 +240,6 @@ Use the msgOptions.custom object to customize the final result of your message. 
 
     roomId
     tabText
-    isProfile
 
 ### spaceManageOpened (Not ready for production)
 

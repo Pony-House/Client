@@ -74,7 +74,7 @@ function useRoomPacks(room) {
   };
 }
 
-function RoomEmojis({ roomId, profileMode }) {
+function RoomEmojis({ roomId }) {
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
 
@@ -143,7 +143,6 @@ function RoomEmojis({ roomId, profileMode }) {
 
 RoomEmojis.propTypes = {
   roomId: PropTypes.string.isRequired,
-  profileMode: PropTypes.bool,
 };
 
 export default RoomEmojis;

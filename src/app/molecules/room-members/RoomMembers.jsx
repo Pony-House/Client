@@ -104,7 +104,7 @@ function useSearchMembers(members) {
   return [searchMembers, handleSearch];
 }
 
-function RoomMembers({ roomId, profileMode }) {
+function RoomMembers({ roomId }) {
   const [itemCount, setItemCount] = useState(PER_PAGE_MEMBER);
   const [membership, setMembership] = useState('join');
   const [members] = useMemberOfMembership(roomId, membership);
@@ -186,7 +186,6 @@ function RoomMembers({ roomId, profileMode }) {
 
 RoomMembers.propTypes = {
   roomId: PropTypes.string.isRequired,
-  profileMode: PropTypes.bool,
 };
 
 export default RoomMembers;

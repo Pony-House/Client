@@ -451,13 +451,8 @@ class Navigation extends EventEmitter {
       },
 
       [cons.actions.navigation.OPEN_SPACE_SETTINGS]: () => {
-        tinyAPI.emit('spaceSettingsOpened', action.roomId, action.tabText, action.isProfile);
-        this.emit(
-          cons.events.navigation.SPACE_SETTINGS_OPENED,
-          action.roomId,
-          action.tabText,
-          action.isProfile,
-        );
+        tinyAPI.emit('spaceSettingsOpened', action.roomId, action.tabText);
+        this.emit(cons.events.navigation.SPACE_SETTINGS_OPENED, action.roomId, action.tabText);
       },
 
       [cons.actions.navigation.OPEN_SPACE_MANAGE]: () => {
