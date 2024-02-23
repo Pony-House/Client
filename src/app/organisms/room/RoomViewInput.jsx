@@ -935,7 +935,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
       );
     }
 
-    setTimeout(() => $('#message-textarea').focus(), 100);
+    setTimeout(() => !Capacitor.isNativePlatform() && $('#message-textarea').focus(), 100);
 
     // Complete
     return (
