@@ -1,2 +1,3 @@
 - Custom dns - disabled (temp)
 - Electron db added.
+- New mobile fixes.
