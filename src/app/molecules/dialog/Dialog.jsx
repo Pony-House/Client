@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+
+import mobileEvents from '@src/util/libs/modal';
 
 import Modal from 'react-bootstrap/Modal';
 import { twemojifyReact } from '../../../util/twemojify';
@@ -12,9 +14,17 @@ function Dialog({
   onAfterClose,
   onRequestClose,
   children,
-  invisibleScroll,
   bodyClass,
 }) {
+  useEffect(() => {
+    const closeByMobile = () => typeof onRequestClose === 'function' && onRequestClose();
+
+    mobileEvents.on('backButton', closeByMobile);
+    return () => {
+      mobileEvents.off('backButton', closeByMobile);
+    };
+  });
+
   return (
     <Modal
       show={isOpen}
@@ -43,7 +53,6 @@ Dialog.defaultProps = {
   onAfterOpen: null,
   onAfterClose: null,
   onRequestClose: null,
-  invisibleScroll: false,
 };
 
 Dialog.propTypes = {
@@ -55,7 +64,6 @@ Dialog.propTypes = {
   onAfterClose: PropTypes.func,
   onRequestClose: PropTypes.func,
   children: PropTypes.node.isRequired,
-  invisibleScroll: PropTypes.bool,
 };
 
 export default Dialog;

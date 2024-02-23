@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-bootstrap/Modal';
+
+import mobileEvents from '@src/util/libs/modal';
 
 import { twemojifyReact } from '../../../util/twemojify';
 
@@ -65,6 +67,15 @@ function PopupWindow({
         cTitle
       );
   }
+
+  useEffect(() => {
+    const closeByMobile = () => typeof onRequestClose === 'function' && onRequestClose();
+
+    mobileEvents.on('backButton', closeByMobile);
+    return () => {
+      mobileEvents.off('backButton', closeByMobile);
+    };
+  });
 
   return (
     <Modal

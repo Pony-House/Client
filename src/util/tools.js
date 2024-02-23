@@ -4,6 +4,7 @@ import moment from '@src/util/libs/momentjs';
 
 import tinyAPI from './mods';
 import { twemojify } from './twemojify';
+import mobileEvents from './libs/modal';
 
 let resizePlace = null;
 let resizeTimeout = null;
@@ -273,6 +274,13 @@ export function btModal(data) {
       data.hidden();
     }
   });
+
+  const closeByMobile = () => {
+    if (modalControl && typeof modalControl.hide === 'function') modalControl.hide();
+    mobileEvents.off('backButton', closeByMobile);
+  };
+
+  mobileEvents.on('backButton', closeByMobile);
 
   $('body > .modal, body > .modal-backdrop').addClass('modal-temp-hide').fadeOut();
   modalControl.show();
