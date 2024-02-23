@@ -1,3 +1,8 @@
+    Mobile Notification
+    Mobile Background mode
+    Mobile Send file
+    Mobile Rec audio
+
     Cadê o @everyone, @here, @room?
 
     Fazer um sistema para facilitar rooms que são descrições de informação.

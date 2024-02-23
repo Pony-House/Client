@@ -319,16 +319,15 @@ class Notifications extends EventEmitter {
 
       // Android Mode
       if (Capacitor.isNativePlatform()) {
-        /* 
-        const noti = await LocalNotifications.schedule({notifications: [
+        /* const noti = await LocalNotifications.schedule({notifications: [
           {
+            title,
             body: body.plain,
             sound: './sound/notification.ogg',
             smallIcon: icon,
             largeIcon: icon,
           }
-        ]});
-        */
+        ]}); */
       }
 
       // Browser and Desktop

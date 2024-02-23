@@ -36,3 +36,7 @@ function LoadingPage() {
 
 export { setLoadingPage };
 export default LoadingPage;
+
+if (__ENV_APP__.MODE === 'development') {
+  global.setLoadingPage = setLoadingPage;
+}
