@@ -241,6 +241,69 @@ class Notifications extends EventEmitter {
     // this._updateFavicon();
   }
 
+  async sendNotification(data) {
+    // Android Mode
+    if (Capacitor.isNativePlatform()) {
+      /* const noti = await LocalNotifications.schedule({notifications: [
+        {
+          data.title,
+          body: data.body,
+          sound: './sound/notification.ogg',
+          smallIcon: data.icon,
+          largeIcon: data.icon,
+        }
+      ]}); */
+    }
+
+    // Browser and Desktop
+    else {
+      // Prepare Data
+      const notiData = {
+        title: data.title,
+        body: data.body,
+        icon: data.icon,
+        tag: data.tag,
+      };
+
+      // Silent Mode
+      let noti;
+      if (__ENV_APP__.ELECTRON_MODE) {
+        notiData.silent = true;
+        noti = await window.desktopNotification(notiData);
+      } else {
+        notiData.silent = settings.isNotificationSounds;
+        noti = new window.Notification(data.title, notiData);
+      }
+
+      // Play Notification
+      if (__ENV_APP__.ELECTRON_MODE) {
+        if (settings.isNotificationSounds) {
+          noti.on('show', () => this._playNotiSound());
+        }
+
+        if (typeof data.onClick === 'function') noti.on('click', data.onClick);
+        else if (data.onClick && typeof data.onClick.desktop === 'function')
+          noti.on('click', data.onClick.desktop);
+      } else {
+        if (settings.isNotificationSounds) {
+          noti.onshow = () => this._playNotiSound();
+        }
+
+        if (typeof data.onClick === 'function') noti.onclick = data.onClick;
+        else if (data.onClick && typeof data.onClick.browser === 'function')
+          noti.onclick = data.onClick.browser;
+      }
+
+      // Complete
+      if (typeof data.onComplete === 'function') await data.onComplete(noti);
+
+      // Send Notification
+      if (__ENV_APP__.ELECTRON_MODE) {
+        noti.show();
+      }
+    }
+  }
+
   async _displayPopupNoti(mEvent, room) {
     // Favicon
     checkerFavIcon();
@@ -317,71 +380,33 @@ class Notifications extends EventEmitter {
         body = plain(content.body, state);
       }
 
-      // Android Mode
-      if (Capacitor.isNativePlatform()) {
-        /* const noti = await LocalNotifications.schedule({notifications: [
-          {
-            title,
-            body: body.plain,
-            sound: './sound/notification.ogg',
-            smallIcon: icon,
-            largeIcon: icon,
-          }
-        ]}); */
-      }
+      const tinyThis = this;
+      await this.sendNotification({
+        tag: mEvent.getId(),
+        title,
+        body: body.plain,
+        icon,
 
-      // Browser and Desktop
-      else {
-        // Prepare Data
-        const notiData = {
-          title,
-          body: body.plain,
-          icon,
-          tag: mEvent.getId(),
-        };
-
-        // Silent Mode
-        let noti;
-        if (__ENV_APP__.ELECTRON_MODE) {
-          notiData.silent = true;
-          noti = await window.desktopNotification(notiData);
-        } else {
-          notiData.silent = settings.isNotificationSounds;
-          noti = new window.Notification(title, notiData);
-        }
-
-        // Play Notification
-        if (__ENV_APP__.ELECTRON_MODE) {
-          if (settings.isNotificationSounds) {
-            noti.on('show', () => this._playNotiSound());
-          }
-
-          noti.on('click', () => {
+        onClick: {
+          desktop: () => {
             selectRoom(room.roomId, mEvent.getId(), !mEvent.thread ? null : mEvent.thread.id, true);
             window.focusAppWindow();
-          });
-        } else {
-          if (settings.isNotificationSounds) {
-            noti.onshow = () => this._playNotiSound();
+          },
+
+          browser: () =>
+            selectRoom(room.roomId, mEvent.getId(), !mEvent.thread ? null : mEvent.thread.id, true),
+        },
+
+        onComplete: (noti) => {
+          // Set Event
+          tinyThis.eventIdToPopupNoti.set(mEvent.getId(), noti);
+          if (tinyThis.roomIdToPopupNotis.has(room.roomId)) {
+            tinyThis.roomIdToPopupNotis.get(room.roomId).push(noti);
+          } else {
+            tinyThis.roomIdToPopupNotis.set(room.roomId, [noti]);
           }
-
-          noti.onclick = () =>
-            selectRoom(room.roomId, mEvent.getId(), !mEvent.thread ? null : mEvent.thread.id, true);
-        }
-
-        // Set Event
-        this.eventIdToPopupNoti.set(mEvent.getId(), noti);
-        if (this.roomIdToPopupNotis.has(room.roomId)) {
-          this.roomIdToPopupNotis.get(room.roomId).push(noti);
-        } else {
-          this.roomIdToPopupNotis.set(room.roomId, [noti]);
-        }
-
-        // Send Notification
-        if (__ENV_APP__.ELECTRON_MODE) {
-          noti.show();
-        }
-      }
+        },
+      });
     }
 
     // Notification Sound Play
