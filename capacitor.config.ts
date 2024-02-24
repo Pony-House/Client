@@ -1,4 +1,10 @@
 import { CapacitorConfig } from '@capacitor/cli';
+import path from 'node:path';
+import { fileURLToPath } from 'url';
+
+// Insert utils
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const config: CapacitorConfig = {
   appId: 'pony.house.matrix',
@@ -10,16 +16,15 @@ const config: CapacitorConfig = {
   },
 
   plugins: {
-    // LocalNotifications: {
-    // smallIcon: "ic_stat_icon_config_sample",
-    // iconColor: "#488AFF",
-    // sound: "beep.wav",
-    // },
+    LocalNotifications: {
+      smallIcon: 'icon',
+      iconColor: '#48ffda',
+      sound: path.join(__dirname, './public/sound/notification.ogg'),
+    },
   },
   android: {
     buildOptions: {
-      keystorePath:
-        '/media/jasmindreasond/tiny-cookie-hd/git-repositories/Matrix/Pony-House/cinny/android/tinykey.jks',
+      keystorePath: path.join(__dirname, './android/tinykey.jks'),
       keystoreAlias: 'JasminDreasond',
     },
   },
