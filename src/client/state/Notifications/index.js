@@ -4,6 +4,8 @@ import { NotificationCountType } from 'matrix-js-sdk';
 import EventEmitter from 'events';
 
 import mobileEvents from '@src/util/libs/mobile';
+import { cyrb128 } from '@src/util/tools';
+
 import renderAvatar from '../../../app/atoms/avatar/render';
 import { cssColorMXID } from '../../../util/colorMXID';
 import { selectRoom } from '../../action/navigation';
@@ -235,24 +237,28 @@ class Notifications extends EventEmitter {
     try {
       // Android Mode
       if (Capacitor.isNativePlatform()) {
-
         const notiData = {
           // schedule: { at: new Date(Date.now() + 1000 * 5) },
           // sound: './sound/notification.ogg',
           // smallIcon: data.icon,
           // largeIcon: data.icon,
-          id: data.tag,
+          sound: null,
+          attachments: null,
+          actionTypeId: '',
+          id: cyrb128(data.tag)[0],
+          extra: null,
         };
 
         if (typeof data.title === 'string') notiData.title = data.title;
 
         if (typeof data.body === 'string') {
-          notiData.body = data.body.length < 100 ? data.body : `${data.body.substring(0, 100)}...`;
+          notiData.body = data.body.length < 100 ? data.body : `${data.body.substring(0, 100)} ...`;
           notiData.largeBody = data.body;
         }
 
-        await LocalNotifications.schedule({ notifications: [notiData] });
-
+        await LocalNotifications.schedule({
+          notifications: [notiData],
+        });
       }
 
       // Browser and Desktop
