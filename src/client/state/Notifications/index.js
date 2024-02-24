@@ -1,8 +1,9 @@
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { NotificationCountType } from 'matrix-js-sdk';
-
 import EventEmitter from 'events';
+
+import mobileEvents from '@src/util/libs/mobile';
 import renderAvatar from '../../../app/atoms/avatar/render';
 import { cssColorMXID } from '../../../util/colorMXID';
 import { selectRoom } from '../../action/navigation';
@@ -60,18 +61,7 @@ class Notifications extends EventEmitter {
 
     // Ask for permission by default after loading
     if (Capacitor.isNativePlatform()) {
-      LocalNotifications.checkPermissions().then(async (permStatus) => {
-        if (permStatus.display === 'prompt') {
-          permStatus = await LocalNotifications.requestPermissions();
-        }
-
-        if (permStatus.display !== 'granted') {
-          throw new Error('User denied mobile permissions!');
-        }
-
-        // return LocalNotifications.registerActionTypes({types: {}});
-        return true;
-      });
+      mobileEvents.checkNotificationPerm();
     } else {
       window.Notification?.requestPermission();
     }
@@ -243,20 +233,29 @@ class Notifications extends EventEmitter {
 
   async sendNotification(data) {
     // Android Mode
+    // console.log('yay 1');
     if (Capacitor.isNativePlatform()) {
-      /* const noti = await LocalNotifications.schedule({notifications: [
-        {
-          data.title,
-          body: data.body,
-          sound: './sound/notification.ogg',
-          smallIcon: data.icon,
-          largeIcon: data.icon,
-        }
-      ]}); */
+      // console.log('yay');
+      const noti = await LocalNotifications.schedule({
+        notifications: [
+          {
+            schedule: { at: new Date(Date.now() + 1000 * 5) },
+            title: data.title,
+            body: data.body,
+            sound: './sound/notification.ogg',
+            smallIcon: data.icon,
+            largeIcon: data.icon,
+            id: data.tag,
+          },
+        ],
+      });
+      // console.log(noti);
+      // console.log(await LocalNotifications.getPending());
     }
 
     // Browser and Desktop
     else {
+      // console.log('yay 2');
       // Prepare Data
       const notiData = {
         title: data.title,

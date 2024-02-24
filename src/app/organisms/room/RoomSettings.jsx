@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import mobileEvents from '@src/util/libs/modal';
+import mobileEvents from '@src/util/libs/mobile';
 
 import { blurOnBubbling } from '../../atoms/button/script';
 

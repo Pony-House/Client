@@ -2,6 +2,8 @@ import { StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 
 import EventEmitter from 'events';
+import mobileEvents from '@src/util/libs/mobile';
+
 import appDispatcher from '../dispatcher';
 
 import cons from './cons';
@@ -374,7 +376,10 @@ class Settings extends EventEmitter {
         this.emit(cons.events.settings.NICKAVATAR_EVENTS_TOGGLED, this.hideNickAvatarEvents);
       },
       [cons.actions.settings.TOGGLE_NOTIFICATIONS]: async () => {
-        if (window.Notification?.permission !== 'granted') {
+        if (
+          (!Capacitor.isNativePlatform() && window.Notification?.permission !== 'granted') ||
+          (Capacitor.isNativePlatform() && mobileEvents.allowNotifications.display !== 'granted')
+        ) {
           this._showNotifications = false;
         } else {
           this._showNotifications = !this._showNotifications;

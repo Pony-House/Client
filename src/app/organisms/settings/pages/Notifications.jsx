@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Capacitor } from '@capacitor/core';
+import mobileEvents from '@src/util/libs/mobile';
 
 import settings from '../../../../client/state/settings';
 import { usePermission } from '../../../hooks/usePermission';
@@ -14,13 +16,14 @@ import { toggleNotifications, toggleNotificationSounds } from '../../../../clien
 function NotificationsSection() {
   const [permission, setPermission] = usePermission(
     'notifications',
-    window.Notification?.permission,
+    (!Capacitor.isNativePlatform() && window.Notification?.permission) ||
+      (Capacitor.isNativePlatform() && mobileEvents.allowNotifications.display),
   );
 
   const [, updateState] = useState({});
 
   const renderOptions = () => {
-    if (window.Notification === undefined) {
+    if (!Capacitor.isNativePlatform() && window.Notification === undefined) {
       return (
         <div className="settings-notifications__not-supported">Not supported in this browser.</div>
       );
@@ -33,7 +36,11 @@ function NotificationsSection() {
           isActive={settings._showNotifications}
           onToggle={() => {
             toggleNotifications();
-            setPermission(window.Notification?.permission);
+            if (!Capacitor.isNativePlatform()) {
+              setPermission(window.Notification?.permission);
+            } else {
+              setPermission(mobileEvents.allowNotifications.display);
+            }
             updateState({});
           }}
         />

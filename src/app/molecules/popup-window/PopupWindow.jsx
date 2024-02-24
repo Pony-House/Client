@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-bootstrap/Modal';
 
-import mobileEvents from '@src/util/libs/modal';
+import mobileEvents from '@src/util/libs/mobile';
 
 import { twemojifyReact } from '../../../util/twemojify';
 

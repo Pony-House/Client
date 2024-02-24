@@ -4,7 +4,7 @@ import moment from '@src/util/libs/momentjs';
 
 import tinyAPI from './mods';
 import { twemojify } from './twemojify';
-import mobileEvents from './libs/modal';
+import mobileEvents from './libs/mobile';
 
 let resizePlace = null;
 let resizeTimeout = null;
