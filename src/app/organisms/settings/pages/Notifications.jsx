@@ -36,12 +36,14 @@ function NotificationsSection() {
           isActive={settings._showNotifications}
           onToggle={() => {
             toggleNotifications();
-            if (!Capacitor.isNativePlatform()) {
-              setPermission(window.Notification?.permission);
-            } else {
-              setPermission(mobileEvents.allowNotifications.display);
-            }
-            updateState({});
+            setTimeout(() => {
+              if (!Capacitor.isNativePlatform()) {
+                setPermission(window.Notification?.permission);
+              } else {
+                setPermission(mobileEvents.allowNotifications.display);
+              }
+              updateState({});
+            }, 200);
           }}
         />
       );
