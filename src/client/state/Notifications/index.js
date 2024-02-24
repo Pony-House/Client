@@ -261,7 +261,7 @@ class Notifications extends EventEmitter {
         tag: data.tag,
       };
 
-      if (typeof data.icon === 'string') notiData.icon = data.icon;
+      if (data.icon) notiData.icon = data.icon;
       if (typeof data.body === 'string') notiData.body = data.body;
       if (typeof data.title === 'string') notiData.title = data.title;
 
