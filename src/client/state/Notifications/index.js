@@ -234,30 +234,36 @@ class Notifications extends EventEmitter {
   async sendNotification(data) {
     // Android Mode
     if (Capacitor.isNativePlatform()) {
-      /* await LocalNotifications.schedule({
-        notifications: [
-          {
-            schedule: { at: new Date(Date.now() + 1000 * 5) },
-            title: data.title,
-            body: data.body,
-            // sound: './sound/notification.ogg',
-            // smallIcon: data.icon,
-            // largeIcon: data.icon,
-            id: data.tag,
-          },
-        ],
-      }); */
+
+      const notiData = {
+        // schedule: { at: new Date(Date.now() + 1000 * 5) },
+        // sound: './sound/notification.ogg',
+        // smallIcon: data.icon,
+        // largeIcon: data.icon,
+        id: data.tag,
+      };
+
+      if (typeof data.title === 'string') notiData.title = data.title;
+
+      if (typeof data.body === 'string') {
+        notiData.body = data.body.length < 100 ? data.body : `${data.body.substring(0, 100)}...`;
+        notiData.largeBody = data.body;
+      }
+
+      await LocalNotifications.schedule({ notifications: [notiData] });
+
     }
 
     // Browser and Desktop
     else {
       // Prepare Data
       const notiData = {
-        title: data.title,
-        body: data.body,
-        icon: data.icon,
         tag: data.tag,
       };
+
+      if (typeof data.icon === 'string') notiData.icon = data.icon;
+      if (typeof data.body === 'string') notiData.body = data.body;
+      if (typeof data.title === 'string') notiData.title = data.title;
 
       // Silent Mode
       let noti;
