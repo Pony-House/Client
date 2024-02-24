@@ -232,75 +232,79 @@ class Notifications extends EventEmitter {
   }
 
   async sendNotification(data) {
-    // Android Mode
-    if (Capacitor.isNativePlatform()) {
+    try {
+      // Android Mode
+      if (Capacitor.isNativePlatform()) {
 
-      const notiData = {
-        // schedule: { at: new Date(Date.now() + 1000 * 5) },
-        // sound: './sound/notification.ogg',
-        // smallIcon: data.icon,
-        // largeIcon: data.icon,
-        id: data.tag,
-      };
+        const notiData = {
+          // schedule: { at: new Date(Date.now() + 1000 * 5) },
+          // sound: './sound/notification.ogg',
+          // smallIcon: data.icon,
+          // largeIcon: data.icon,
+          id: data.tag,
+        };
 
-      if (typeof data.title === 'string') notiData.title = data.title;
+        if (typeof data.title === 'string') notiData.title = data.title;
 
-      if (typeof data.body === 'string') {
-        notiData.body = data.body.length < 100 ? data.body : `${data.body.substring(0, 100)}...`;
-        notiData.largeBody = data.body;
-      }
-
-      await LocalNotifications.schedule({ notifications: [notiData] });
-
-    }
-
-    // Browser and Desktop
-    else {
-      // Prepare Data
-      const notiData = {
-        tag: data.tag,
-      };
-
-      if (data.icon) notiData.icon = data.icon;
-      if (typeof data.body === 'string') notiData.body = data.body;
-      if (typeof data.title === 'string') notiData.title = data.title;
-
-      // Silent Mode
-      let noti;
-      if (__ENV_APP__.ELECTRON_MODE) {
-        notiData.silent = true;
-        noti = await window.desktopNotification(notiData);
-      } else {
-        notiData.silent = settings.isNotificationSounds;
-        noti = new window.Notification(data.title, notiData);
-      }
-
-      // Play Notification
-      if (__ENV_APP__.ELECTRON_MODE) {
-        if (settings.isNotificationSounds) {
-          noti.on('show', () => this._playNotiSound());
+        if (typeof data.body === 'string') {
+          notiData.body = data.body.length < 100 ? data.body : `${data.body.substring(0, 100)}...`;
+          notiData.largeBody = data.body;
         }
 
-        if (typeof data.onClick === 'function') noti.on('click', data.onClick);
-        else if (data.onClick && typeof data.onClick.desktop === 'function')
-          noti.on('click', data.onClick.desktop);
-      } else {
-        if (settings.isNotificationSounds) {
-          noti.onshow = () => this._playNotiSound();
+        await LocalNotifications.schedule({ notifications: [notiData] });
+
+      }
+
+      // Browser and Desktop
+      else {
+        // Prepare Data
+        const notiData = {
+          tag: data.tag,
+        };
+
+        if (data.icon) notiData.icon = data.icon;
+        if (typeof data.body === 'string') notiData.body = data.body;
+        if (typeof data.title === 'string') notiData.title = data.title;
+
+        // Silent Mode
+        let noti;
+        if (__ENV_APP__.ELECTRON_MODE) {
+          notiData.silent = true;
+          noti = await window.desktopNotification(notiData);
+        } else {
+          notiData.silent = settings.isNotificationSounds;
+          noti = new window.Notification(data.title, notiData);
         }
 
-        if (typeof data.onClick === 'function') noti.onclick = data.onClick;
-        else if (data.onClick && typeof data.onClick.browser === 'function')
-          noti.onclick = data.onClick.browser;
-      }
+        // Play Notification
+        if (__ENV_APP__.ELECTRON_MODE) {
+          if (settings.isNotificationSounds) {
+            noti.on('show', () => this._playNotiSound());
+          }
 
-      // Complete
-      if (typeof data.onComplete === 'function') await data.onComplete(noti);
+          if (typeof data.onClick === 'function') noti.on('click', data.onClick);
+          else if (data.onClick && typeof data.onClick.desktop === 'function')
+            noti.on('click', data.onClick.desktop);
+        } else {
+          if (settings.isNotificationSounds) {
+            noti.onshow = () => this._playNotiSound();
+          }
 
-      // Send Notification
-      if (__ENV_APP__.ELECTRON_MODE) {
-        noti.show();
+          if (typeof data.onClick === 'function') noti.onclick = data.onClick;
+          else if (data.onClick && typeof data.onClick.browser === 'function')
+            noti.onclick = data.onClick.browser;
+        }
+
+        // Complete
+        if (typeof data.onComplete === 'function') await data.onComplete(noti);
+
+        // Send Notification
+        if (__ENV_APP__.ELECTRON_MODE) {
+          noti.show();
+        }
       }
+    } catch (err) {
+      console.error(err);
     }
   }
 
