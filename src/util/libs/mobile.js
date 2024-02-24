@@ -34,7 +34,7 @@ class MobileEvents extends EventEmitter {
 
             // return LocalNotifications.registerActionTypes({types: {}});
             tinyThis.checkingNotificationPerm = false;
-            resolve(true);
+            resolve(tinyThis.allowNotifications);
           })
           .catch((err) => {
             tinyThis.checkingNotificationPerm = false;

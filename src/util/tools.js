@@ -522,6 +522,32 @@ export function isMobile() {
   );
 }
 
+export function notificationStatus() {
+  if (!Capacitor.isNativePlatform() && window.Notification?.permission) {
+    return window.Notification?.permission;
+  }
+  if (Capacitor.isNativePlatform() && mobileEvents.allowNotifications.display) {
+    return mobileEvents.allowNotifications.display;
+  }
+
+  return null;
+}
+
+export function noNotification() {
+  return !Capacitor.isNativePlatform() && window.Notification === undefined;
+}
+
+export function requestNotification() {
+  if (!Capacitor.isNativePlatform()) {
+    return window.Notification.requestPermission();
+  }
+  if (Capacitor.isNativePlatform()) {
+    return mobileEvents.checkNotificationPerm();
+  }
+
+  return null;
+}
+
 // eslint-disable-next-line no-extend-native
 Date.prototype.isValid = function () {
   // If the date object is invalid it

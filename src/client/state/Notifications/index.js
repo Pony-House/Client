@@ -379,6 +379,7 @@ class Notifications extends EventEmitter {
         body = plain(content.body, state);
       }
 
+      // console.log('prepare-noti', 5);
       const tinyThis = this;
       await this.sendNotification({
         tag: mEvent.getId(),
@@ -406,6 +407,7 @@ class Notifications extends EventEmitter {
           }
         },
       });
+      // console.log('prepare-noti', 6);
     }
 
     // Notification Sound Play

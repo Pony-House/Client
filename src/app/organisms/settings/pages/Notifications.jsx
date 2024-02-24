@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Capacitor } from '@capacitor/core';
 import mobileEvents from '@src/util/libs/mobile';
+import { noNotification, notificationStatus } from '@src/util/tools';
 
 import settings from '../../../../client/state/settings';
 import { usePermission } from '../../../hooks/usePermission';
@@ -14,16 +15,12 @@ import IgnoreUserList from '../../../molecules/global-notification/IgnoreUserLis
 import { toggleNotifications, toggleNotificationSounds } from '../../../../client/action/settings';
 
 function NotificationsSection() {
-  const [permission, setPermission] = usePermission(
-    'notifications',
-    (!Capacitor.isNativePlatform() && window.Notification?.permission) ||
-      (Capacitor.isNativePlatform() && mobileEvents.allowNotifications.display),
-  );
+  const [permission, setPermission] = usePermission('notifications', notificationStatus());
 
   const [, updateState] = useState({});
 
   const renderOptions = () => {
-    if (!Capacitor.isNativePlatform() && window.Notification === undefined) {
+    if (noNotification()) {
       return (
         <div className="settings-notifications__not-supported">Not supported in this browser.</div>
       );
