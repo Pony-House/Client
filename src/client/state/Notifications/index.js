@@ -233,10 +233,8 @@ class Notifications extends EventEmitter {
 
   async sendNotification(data) {
     // Android Mode
-    // console.log('yay 1');
     if (Capacitor.isNativePlatform()) {
-      // console.log('yay');
-      const noti = await LocalNotifications.schedule({
+      /* await LocalNotifications.schedule({
         notifications: [
           {
             schedule: { at: new Date(Date.now() + 1000 * 5) },
@@ -248,14 +246,11 @@ class Notifications extends EventEmitter {
             id: data.tag,
           },
         ],
-      });
-      // console.log(noti);
-      // console.log(await LocalNotifications.getPending());
+      }); */
     }
 
     // Browser and Desktop
     else {
-      // console.log('yay 2');
       // Prepare Data
       const notiData = {
         title: data.title,
@@ -379,7 +374,6 @@ class Notifications extends EventEmitter {
         body = plain(content.body, state);
       }
 
-      // console.log('prepare-noti', 5);
       const tinyThis = this;
       await this.sendNotification({
         tag: mEvent.getId(),
@@ -407,7 +401,6 @@ class Notifications extends EventEmitter {
           }
         },
       });
-      // console.log('prepare-noti', 6);
     }
 
     // Notification Sound Play
