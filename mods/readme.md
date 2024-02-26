@@ -126,6 +126,8 @@ Display the matrix-sdk logs.
 
 ## Events
 
+<hr/>
+
 `src/app/organisms/room/RoomViewContent.jsx`
 
 ### emptyTimeline
@@ -134,11 +136,15 @@ Display the matrix-sdk logs.
 
 Empty Timeline loaded
 
+<hr/>
+
 `src/app/organisms/room/Room.jsx`
 
 ### setRoomInfo
 
     roomInfo
+
+<hr/>
 
 `src/client/logger/index.js`
 
@@ -156,6 +162,8 @@ console object = level, message
 
     console cache
 
+<hr/>
+
 `src/app/molecules/message/Message.jsx`
 
 ### messageBody
@@ -168,11 +176,15 @@ The value "content" contains the data of the received message. The value "insert
 
 Use the msgOptions.custom object to customize the final result of your message. You can optionally combine this together with "insertMsg".
 
+<hr/>
+
 `src/app/organisms/welcome/Welcome.jsx`
 
 ### startWelcomePage
 
     welcomeObject
+
+<hr/>
 
 `src/app/organisms/room/PeopleDrawer.jsx`
 
@@ -180,6 +192,12 @@ Use the msgOptions.custom object to customize the final result of your message. 
 
     segments
     isUserList
+
+### roomSearchedMembers
+
+    mList
+
+<hr/>
 
 `src/client/state/navigation.js`
 
@@ -347,6 +365,8 @@ Use the msgOptions.custom object to customize the final result of your message. 
 
     content
 
+<hr/>
+
 `src/client/state/AccountData.js`
 
 ### spaceShortcutUpdate (Not ready for production)
@@ -361,6 +381,8 @@ Use the msgOptions.custom object to customize the final result of your message. 
 
     roomId
 
+<hr/>
+
 `src/util/AsyncSearch.js`
 
 ### searchResultSent (Not ready for production)
@@ -369,11 +391,15 @@ Use the msgOptions.custom object to customize the final result of your message. 
     term
     config
 
+<hr/>
+
 `src/app/organisms/navigation/ProfileAvatarMenu.jsx`
 
 ### userStatusUpdate
 
     statusData (object)
+
+<hr/>
 
 `src/util/twemojify.jsx`
 
@@ -381,6 +407,8 @@ Use the msgOptions.custom object to customize the final result of your message. 
 
     hostname (string)
     protocol (string)
+
+<hr/>
 
 `src/util/userStatusEffects.js`
 
@@ -398,6 +426,8 @@ The update will only be emitted when there is a change in the user's afk status.
 
     counter(number)
 
+<hr/>
+
 `src/app/organisms/navigation/Drawer.jsx`
 
 When a connection status occurs in the system, a warning will be emitted.
@@ -405,6 +435,8 @@ When a connection status occurs in the system, a warning will be emitted.
 ### systemState
 
     systemStatus (object with status value)
+
+<hr/>
 
 `src/app/organisms/profile-viewer/ProfileViewer.jsx`
 
@@ -427,6 +459,8 @@ tinyPlace is a jQuery script. Use this to insert the html for your profile tab.
 
     Example:
     menuItem('Tiny Example', 'example_id')
+
+<hr/>
 
 `others`
 

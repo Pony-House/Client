@@ -182,6 +182,7 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
   }
 
   const mList = searchedMembers !== null ? searchedMembers.data : memberList.slice(0, itemCount);
+  tinyAPI.emit('roomSearchedMembers', mList);
 
   return (
     <div className={`people-drawer${!isUserList ? ' people-drawer-banner' : ''}`}>

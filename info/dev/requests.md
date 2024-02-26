@@ -1,4 +1,3 @@
-    Mobile Notification
     Mobile Background mode
     Mobile Send file
     Mobile Rec audio
