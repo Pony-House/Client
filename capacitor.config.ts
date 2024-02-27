@@ -1,11 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 import path from 'node:path';
-import { fileURLToPath } from 'url';
 
 // Insert utils
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const config: CapacitorConfig = {
   appId: 'pony.house.matrix',
   appName: 'pony-house-matrix',
