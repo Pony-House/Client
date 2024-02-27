@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
-const FileInput = React.forwardRef(({ handleFileChange, style, accept, required, hidden }, ref) => {
+const FileInput = React.forwardRef(({ onChange, style, accept, required, hidden }, ref) => {
   // if (!Capacitor.isNativePlatform()) {
   return (
     <input
       ref={ref}
-      onChange={handleFileChange}
+      onChange={onChange}
       style={hidden ? { display: 'none' } : style}
       type="file"
       accept={accept}
@@ -21,7 +21,7 @@ const FileInput = React.forwardRef(({ handleFileChange, style, accept, required,
 FileInput.defaultProps = {
   style: null,
   accept: null,
-  handleFileChange: null,
+  onChange: null,
   required: false,
   hidden: false,
 };
@@ -30,7 +30,7 @@ FileInput.propTypes = {
   style: PropTypes.string,
   required: PropTypes.bool,
   hidden: PropTypes.bool,
-  handleFileChange: PropTypes.func,
+  onChange: PropTypes.func,
 };
 
 export default FileInput;
