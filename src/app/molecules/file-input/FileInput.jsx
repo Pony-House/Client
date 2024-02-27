@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Capacitor } from '@capacitor/core';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 const FileInput = React.forwardRef(({ handleFileChange, style, accept, required, hidden }, ref) => {
   if (!Capacitor.isNativePlatform()) {
