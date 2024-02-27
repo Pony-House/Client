@@ -11,6 +11,7 @@ import Input from '../../atoms/input/Input';
 import Spinner from '../../atoms/spinner/Spinner';
 
 import { useStore } from '../../hooks/useStore';
+import FileInput from '../file-input/FileInput';
 
 function ImportE2ERoomKeys() {
   const isMountStore = useStore();
@@ -102,7 +103,7 @@ function ImportE2ERoomKeys() {
 
   return (
     <div className="import-e2e-room-keys">
-      <input ref={inputRef} onChange={handleFileChange} style={{ display: 'none' }} type="file" />
+      <FileInput ref={inputRef} onChange={handleFileChange} hidden />
 
       <form
         className="import-e2e-room-keys__form"

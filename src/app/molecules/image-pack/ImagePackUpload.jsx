@@ -10,6 +10,7 @@ import Input from '../../atoms/input/Input';
 import IconButton from '../../atoms/button/IconButton';
 import { updateEmojiList } from '../../../client/action/navigation';
 import { getSelectRoom } from '../../../util/selectedRoom';
+import FileInput from '../file-input/FileInput';
 
 function ImagePackUpload({ onUpload, roomId }) {
   const mx = initMatrix.matrixClient;
@@ -57,12 +58,11 @@ function ImagePackUpload({ onUpload, roomId }) {
 
   return (
     <form onSubmit={handleSubmit} className="image-pack-upload">
-      <input
+      <FileInput
         ref={inputRef}
         onChange={handleFileChange}
-        style={{ display: 'none' }}
-        type="file"
         accept=".png, .gif, .webp"
+        hidden
         required
       />
       {imgFile ? (

@@ -6,6 +6,8 @@ import moment from '@src/util/libs/momentjs';
 import { ReactEditor } from 'slate-react';
 import { Editor, Transforms } from 'slate';
 
+import FileInput from '@src/app/molecules/file-input/FileInput';
+
 import threadsList from '@src/util/libs/thread';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -945,12 +947,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
             attachment === null ? '' : ' room-attachment__option'
           }`}
         >
-          <input
-            onChange={uploadFileChange}
-            style={{ display: 'none' }}
-            ref={uploadInputRef}
-            type="file"
-          />
+          <FileInput onChange={uploadFileChange} ref={uploadInputRef} hidden />
 
           {attachment ? (
             <IconButton

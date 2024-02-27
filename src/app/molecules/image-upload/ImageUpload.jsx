@@ -6,6 +6,7 @@ import initMatrix from '../../../client/initMatrix';
 import Avatar from '../../atoms/avatar/Avatar';
 import Spinner from '../../atoms/spinner/Spinner';
 import RawIcon from '../../atoms/system-icons/RawIcon';
+import FileInput from '../file-input/FileInput';
 
 function ImageUpload({ text, bgColor, imageSrc, onUpload, onRequestRemove, className, size }) {
   const [uploadPromise, setUploadPromise] = useState(null);
@@ -67,13 +68,7 @@ function ImageUpload({ text, bgColor, imageSrc, onUpload, onRequestRemove, class
           <div className="very-small text-danger">{uploadPromise ? 'Cancel' : 'Remove'}</div>
         </button>
       )}
-      <input
-        onChange={uploadImage}
-        style={{ display: 'none' }}
-        ref={uploadImageRef}
-        type="file"
-        accept="image/*"
-      />
+      <FileInput onChange={uploadImage} ref={uploadImageRef} accept="image/*" hidden />
     </div>
   );
 }

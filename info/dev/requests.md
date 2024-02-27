@@ -1,6 +1,8 @@
     Mobile Background mode
-    Mobile Send file
     Mobile Rec audio
+
+    Mobile Send file
+    initMatrix.matrixClient.uploadContent
 
     Cadê o @everyone, @here, @room?
 
