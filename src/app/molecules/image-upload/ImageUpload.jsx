@@ -6,7 +6,7 @@ import initMatrix from '../../../client/initMatrix';
 import Avatar from '../../atoms/avatar/Avatar';
 import Spinner from '../../atoms/spinner/Spinner';
 import RawIcon from '../../atoms/system-icons/RawIcon';
-import FileInput from '../file-input/FileInput';
+import FileInput, { fileInputClick, fileInputValue } from '../file-input/FileInput';
 
 function ImageUpload({ text, bgColor, imageSrc, onUpload, onRequestRemove, className, size }) {
   const [uploadPromise, setUploadPromise] = useState(null);
@@ -25,13 +25,13 @@ function ImageUpload({ text, bgColor, imageSrc, onUpload, onRequestRemove, class
     } catch {
       setUploadPromise(null);
     }
-    uploadImageRef.current.value = null;
+    fileInputValue(uploadImageRef, null);
   }
 
   function cancelUpload() {
     initMatrix.matrixClient.cancelUpload(uploadPromise);
     setUploadPromise(null);
-    uploadImageRef.current.value = null;
+    fileInputValue(uploadImageRef, null);
   }
 
   return (
@@ -41,7 +41,7 @@ function ImageUpload({ text, bgColor, imageSrc, onUpload, onRequestRemove, class
         className={`img-upload${imageSrc === null ? ' default-image' : ''}`}
         onClick={() => {
           if (uploadPromise !== null) return;
-          uploadImageRef.current.click();
+          fileInputClick(uploadImageRef);
         }}
       >
         <Avatar imageSrc={imageSrc} text={text} bgColor={bgColor} size={size} isDefaultImage />

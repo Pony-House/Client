@@ -3,7 +3,7 @@ import objectHash from 'object-hash';
 import FileSaver from 'file-saver';
 import clone from 'clone';
 
-import FileInput from '@src/app/molecules/file-input/FileInput';
+import FileInput, { fileInputClick, fileInputValue } from '@src/app/molecules/file-input/FileInput';
 import SettingTile from '../../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../../atoms/button/Toggle';
 import { toggleActionLocal } from '../../Api';
@@ -247,7 +247,7 @@ function Web3Section() {
                   setUploadPromise(null);
                 }
 
-                web3ConfigUploadRef.current.value = null;
+                fileInputValue(web3ConfigUploadRef, null);
               }}
               ref={web3ConfigUploadRef}
               hidden
@@ -256,9 +256,7 @@ function Web3Section() {
             <button
               type="button"
               className="btn btn-sm btn-secondary my-1 my-sm-0"
-              onClick={() => {
-                web3ConfigUploadRef.current.click();
-              }}
+              onClick={() => fileInputClick(web3ConfigUploadRef)}
             >
               Import
             </button>

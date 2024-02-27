@@ -10,7 +10,7 @@ import Input from '../../atoms/input/Input';
 import IconButton from '../../atoms/button/IconButton';
 import { updateEmojiList } from '../../../client/action/navigation';
 import { getSelectRoom } from '../../../util/selectedRoom';
-import FileInput from '../file-input/FileInput';
+import FileInput, { fileInputClick, fileInputValue } from '../file-input/FileInput';
 
 function ImagePackUpload({ onUpload, roomId }) {
   const mx = initMatrix.matrixClient;
@@ -52,7 +52,7 @@ function ImagePackUpload({ onUpload, roomId }) {
   };
   const handleRemove = () => {
     setImgFile(null);
-    inputRef.current.value = null;
+    fileInputValue(inputRef, null);
     shortcodeRef.current.value = '';
   };
 
@@ -71,7 +71,7 @@ function ImagePackUpload({ onUpload, roomId }) {
           <Text>{imgFile.name}</Text>
         </div>
       ) : (
-        <Button onClick={() => inputRef.current.click()}>Import image</Button>
+        <Button onClick={() => fileInputClick(inputRef)}>Import image</Button>
       )}
       <div>
         <Input forwardRef={shortcodeRef} name="shortcodeInput" placeholder="shortcode" required />

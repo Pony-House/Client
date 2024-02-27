@@ -11,7 +11,7 @@ import Input from '../../atoms/input/Input';
 import Spinner from '../../atoms/spinner/Spinner';
 
 import { useStore } from '../../hooks/useStore';
-import FileInput from '../file-input/FileInput';
+import FileInput, { fileInputClick, fileInputValue } from '../file-input/FileInput';
 
 function ImportE2ERoomKeys() {
   const isMountStore = useStore();
@@ -50,7 +50,7 @@ function ImportE2ERoomKeys() {
           msg: 'Successfully imported all keys.',
           type: cons.status.SUCCESS,
         });
-        inputRef.current.value = null;
+        fileInputValue(inputRef, null);
         passwordRef.current.value = null;
       }
     } catch (e) {
@@ -84,7 +84,7 @@ function ImportE2ERoomKeys() {
   };
   const removeImportKeysFile = () => {
     if (status.isOngoing) return;
-    inputRef.current.value = null;
+    fileInputValue(inputRef, null);
     passwordRef.current.value = null;
     setKeyFile(null);
     setStatus({
@@ -123,7 +123,7 @@ function ImportE2ERoomKeys() {
           </div>
         )}
         {keyFile === null && (
-          <Button className="me-3" onClick={() => inputRef.current.click()}>
+          <Button className="me-3" onClick={() => fileInputClick(inputRef)}>
             Import keys
           </Button>
         )}

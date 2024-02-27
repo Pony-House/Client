@@ -6,7 +6,7 @@ import moment from '@src/util/libs/momentjs';
 import { ReactEditor } from 'slate-react';
 import { Editor, Transforms } from 'slate';
 
-import FileInput from '@src/app/molecules/file-input/FileInput';
+import FileInput, { fileInputClick, fileInputValue } from '@src/app/molecules/file-input/FileInput';
 
 import threadsList from '@src/util/libs/thread';
 import initMatrix from '../../../client/initMatrix';
@@ -412,7 +412,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     setAttachment(null);
     mediaFix(null, embedHeight, setEmbedHeight);
     $(inputBaseRef.current).css('background-image', 'unset');
-    $(uploadInputRef.current).val('');
+    fileInputValue(uploadInputRef, '');
   }
 
   function rightOptionsA11Y(A11Y) {
@@ -893,7 +893,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
   }
 
   const handleUploadClick = () => {
-    if (attachment === null) uploadInputRef.current.click();
+    if (attachment === null) fileInputClick(uploadInputRef);
     else if (roomsInput) {
       roomsInput.cancelAttachment(roomId, threadId);
     }
