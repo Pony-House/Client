@@ -4,18 +4,18 @@ import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 const FileInput = React.forwardRef(({ handleFileChange, style, accept, required, hidden }, ref) => {
-  if (!Capacitor.isNativePlatform()) {
-    return (
-      <input
-        ref={ref}
-        onChange={handleFileChange}
-        style={hidden ? { display: 'none' } : style}
-        type="file"
-        accept={accept}
-        required={required}
-      />
-    );
-  }
+  // if (!Capacitor.isNativePlatform()) {
+  return (
+    <input
+      ref={ref}
+      onChange={handleFileChange}
+      style={hidden ? { display: 'none' } : style}
+      type="file"
+      accept={accept}
+      required={required}
+    />
+  );
+  // }
 });
 
 FileInput.defaultProps = {
