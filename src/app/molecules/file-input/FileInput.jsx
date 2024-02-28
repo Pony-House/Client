@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
+// Build HTML
 const FileInput = React.forwardRef(
   ({ onChange, accept, required, webkitdirectory, directory, capture, multiple }, ref) => {
     if (!Capacitor.isNativePlatform()) {
@@ -39,13 +40,29 @@ const FileInput = React.forwardRef(
   },
 );
 
-const fileInputClick = (inputRef) => {
+// Click open file
+const fileInputClick = async (inputRef) => {
   if (!Capacitor.isNativePlatform()) {
     if (inputRef.current) inputRef.current.click();
   } else if (inputRef.current) {
+
+    let perm = await Filesystem.checkPermissions();
+    if (perm === 'prompt') perm = await Filesystem.requestPermissions();
+    if (perm !== 'granted') {
+      throw new Error('User denied mobile permissions!');
+    }
+
+    const webkitdirectory = inputRef.current.hasAttribute('webkitdirectory');
+    const directory = inputRef.current.hasAttribute('directory');
+    const multiple = inputRef.current.hasAttribute('multiple');
+
+    const capture = inputRef.current.getAttribute('capture');
+    const accept = inputRef.current.getAttribute('accept');
+
   }
 };
 
+// Get file value
 const fileInputValue = (inputRef, value) => {
   if (typeof value !== 'undefined') {
     if (!Capacitor.isNativePlatform()) {
@@ -60,6 +77,7 @@ const fileInputValue = (inputRef, value) => {
   }
 };
 
+// Validators
 FileInput.defaultProps = {
   accept: null,
   onChange: null,
@@ -79,5 +97,6 @@ FileInput.propTypes = {
   multiple: PropTypes.bool,
 };
 
+// Export
 export default FileInput;
 export { fileInputClick, fileInputValue };
