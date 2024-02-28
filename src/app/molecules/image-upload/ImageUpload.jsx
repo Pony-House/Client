@@ -68,7 +68,7 @@ function ImageUpload({ text, bgColor, imageSrc, onUpload, onRequestRemove, class
           <div className="very-small text-danger">{uploadPromise ? 'Cancel' : 'Remove'}</div>
         </button>
       )}
-      <FileInput onChange={uploadImage} ref={uploadImageRef} accept="image/*" hidden />
+      <FileInput onChange={uploadImage} ref={uploadImageRef} accept="image/*" />
     </div>
   );
 }

@@ -947,7 +947,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
             attachment === null ? '' : ' room-attachment__option'
           }`}
         >
-          <FileInput onChange={uploadFileChange} ref={uploadInputRef} hidden />
+          <FileInput onChange={uploadFileChange} ref={uploadInputRef} />
 
           {attachment ? (
             <IconButton

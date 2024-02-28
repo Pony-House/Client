@@ -103,7 +103,7 @@ function ImportE2ERoomKeys() {
 
   return (
     <div className="import-e2e-room-keys">
-      <FileInput ref={inputRef} onChange={handleFileChange} hidden />
+      <FileInput ref={inputRef} onChange={handleFileChange} />
 
       <form
         className="import-e2e-room-keys__form"

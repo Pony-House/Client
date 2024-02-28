@@ -58,13 +58,7 @@ function ImagePackUpload({ onUpload, roomId }) {
 
   return (
     <form onSubmit={handleSubmit} className="image-pack-upload">
-      <FileInput
-        ref={inputRef}
-        onChange={handleFileChange}
-        accept=".png, .gif, .webp"
-        hidden
-        required
-      />
+      <FileInput ref={inputRef} onChange={handleFileChange} accept=".png, .gif, .webp" required />
       {imgFile ? (
         <div className="image-pack-upload__file">
           <IconButton onClick={handleRemove} fa="fa-solid fa-circle-plus" tooltip="Remove file" />

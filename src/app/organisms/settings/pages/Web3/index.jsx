@@ -250,7 +250,6 @@ function Web3Section() {
                 fileInputValue(web3ConfigUploadRef, null);
               }}
               ref={web3ConfigUploadRef}
-              hidden
               accept="application/JSON"
             />
             <button
