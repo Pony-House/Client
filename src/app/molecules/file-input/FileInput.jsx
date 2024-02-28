@@ -13,6 +13,9 @@ const FileInput = React.forwardRef(
         const fileInput = ref ? $(ref.current) : $(inputRef.current);
         const tinyChange = (event) => {
           if (!Capacitor.isNativePlatform()) onChange(event.originalEvent);
+          else {
+            console.log(event);
+          }
         };
 
         fileInput.on('change', tinyChange);
