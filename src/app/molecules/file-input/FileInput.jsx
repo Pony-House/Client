@@ -11,7 +11,9 @@ const FileInput = React.forwardRef(({ onChange, accept, required }, ref) => {
         onChange={onChange}
         style={{ display: 'none' }}
         type="file"
-        accept={accept}
+        accept={
+          Array.isArray(accept) ? accept.join(', ') : typeof accept === 'string' ? accept : null
+        }
         required={required}
       />
     );
@@ -46,7 +48,7 @@ FileInput.defaultProps = {
   required: false,
 };
 FileInput.propTypes = {
-  accept: PropTypes.string,
+  accept: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   required: PropTypes.bool,
   onChange: PropTypes.func,
 };
