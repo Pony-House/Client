@@ -245,6 +245,11 @@
   resolved "https://registry.yarnpkg.com/@capacitor/browser/-/browser-5.2.0.tgz#cf3c79ad2602d7fdebb0333170b128e7e8c62779"
   integrity sha512-pWFrsNPOG6DlDWGl+bJqTWLvoJ2vvV27LKaSZ/A7S4td4bK3umwZmgGlp8ispjpYiurjliT25Ae8I+ywMV8X9w==
 
+"@capacitor/camera@5.0.9":
+  version "5.0.9"
+  resolved "https://registry.yarnpkg.com/@capacitor/camera/-/camera-5.0.9.tgz#f7a7823cee5e1d4202857a8f56794e1ac5cb4116"
+  integrity sha512-ibuctDzQWVABnJCtIuiFdVYvLbiQNln9gKMZGNN0bZ6oSqoxzDlN7etueJwyFaaRZZlVrXc/sMWuhOkeVJEHcQ==
+
 "@capacitor/cli@5.7.0":
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-5.7.0.tgz#14b9ec3e6aee0f06856ed3f5e722c63d027233dd"
@@ -294,6 +299,11 @@
   version "5.0.7"
   resolved "https://registry.yarnpkg.com/@capacitor/local-notifications/-/local-notifications-5.0.7.tgz#e03ecc8add8a8394a1bd257ad29b410b5ac72077"
   integrity sha512-Q16sAv9B55qrXRBgjsom3UAXQ9J5I9HxOToYtQ6jvM3237DphotvVSNriX2AGeXLi5nHkmNv2ZsFu17wTrRcpA==
+
+"@capacitor/screen-reader@5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@capacitor/screen-reader/-/screen-reader-5.0.8.tgz#ae166b901da8ff5323615e85ec0ff7bff96e241a"
+  integrity sha512-3sg8Yj9bUT1yD6whZz5fAn6iQSOyEiUMldSjJCbd7TitGZQzVMc7/zKlFnRWDr+8FKCnvW8Z1LxNn4hpT1XWog==
 
 "@capacitor/status-bar@5.0.7":
   version "5.0.7"
