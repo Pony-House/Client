@@ -24,7 +24,18 @@ const FileInput = React.forwardRef(
       );
     }
 
-    return <input style={{ display: 'none' }} type="text" accept={accept} required={required} />;
+    return (
+      <input
+        style={{ display: 'none' }}
+        type="text"
+        accept={accept}
+        required={required}
+        webkitdirectory={webkitdirectory}
+        directory={directory}
+        capture={capture}
+        multiple={multiple}
+      />
+    );
   },
 );
 
