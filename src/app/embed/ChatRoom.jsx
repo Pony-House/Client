@@ -193,7 +193,9 @@ function ChatRoom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
                   const via = aliasData?.servers.slice(0, 3) || [];
 
                   join(roomId, false, via).then((tinyRoom) => {
-                    setTimeline(new RoomTimeline(tinyRoom));
+                    const newTimeline = new RoomTimeline(tinyRoom);
+                    newTimeline.setMaxListeners(Infinity);
+                    setTimeline(newTimeline);
                     setIsLoading(0);
                   });
                 } else {
