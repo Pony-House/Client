@@ -74,6 +74,8 @@ const fileInputClick = async (inputRef) => {
 
     const capture = inputRef.current.getAttribute('capture');
     const accept = inputRef.current.getAttribute('accept');
+
+    // inputRef.current.value = '';
   }
 };
 
