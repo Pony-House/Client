@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import objectHash from 'object-hash';
 import FileSaver from 'file-saver';
 import clone from 'clone';
+import { Capacitor } from '@capacitor/core';
 
 import FileInput, { fileInputClick, fileInputValue } from '@src/app/molecules/file-input/FileInput';
 import SettingTile from '../../../../molecules/setting-tile/SettingTile';
@@ -53,13 +54,12 @@ function Web3Section() {
     }
   });
 
-  const tinyChange = async (e) => {
-    const file = e.target.files.item(0);
+  const tinyChange = async (target, files) => {
+    const file = files(0);
     if (file === null) return;
     try {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const obj = JSON.parse(event.target.result);
+      const fileReader = (result) => {
+        const obj = JSON.parse(result);
         if (objType(obj, 'object')) {
           setWeb3Cfg('networks', obj);
           setUploadPromise(null);
@@ -67,7 +67,14 @@ function Web3Section() {
         }
       };
 
-      reader.readAsText(file);
+      const reader = new FileReader();
+      reader.onload = (event) => fileReader(event.target.result);
+
+      if (!Capacitor.isNativePlatform()) {
+        reader.readAsText(file);
+      } else {
+        fileReader(file.atob());
+      }
     } catch (err) {
       console.error(err);
       alert(err.message);

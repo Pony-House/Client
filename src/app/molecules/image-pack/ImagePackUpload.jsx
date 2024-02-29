@@ -43,8 +43,8 @@ function ImagePackUpload({ onUpload, roomId }) {
     }
   };
 
-  const handleFileChange = (evt) => {
-    const img = evt.target.files[0];
+  const handleFileChange = (target, files) => {
+    const img = files(0);
     if (!img) return;
     setImgFile(img);
     shortcodeRef.current.value = img.name.slice(0, img.name.indexOf('.'));
@@ -61,7 +61,7 @@ function ImagePackUpload({ onUpload, roomId }) {
       <FileInput
         ref={inputRef}
         onChange={handleFileChange}
-        accept={['.png', '.gif', '.webp']}
+        accept={['image/png', 'image/gif', 'image/jpg', 'image/jpeg', 'image/webp']}
         required
       />
       {imgFile ? (

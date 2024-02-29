@@ -4,7 +4,7 @@ import { Capacitor } from '@capacitor/core';
 import { Filesystem } from '@capacitor/filesystem';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 
-import { objType } from '@src/util/tools';
+import { base64ToArrayBuffer, objType } from '@src/util/tools';
 
 // Build HTML
 const FileInput = React.forwardRef(
@@ -16,7 +16,16 @@ const FileInput = React.forwardRef(
       if (typeof onChange === 'function') {
         const fileInput = ref ? $(ref.current) : $(inputRef.current);
         const tinyChange = (event) => {
-          if (!Capacitor.isNativePlatform()) onChange(event.originalEvent);
+          if (!Capacitor.isNativePlatform())
+            onChange(event.originalEvent.target, (index = 0) => {
+              if (typeof index === 'number') {
+                return event.originalEvent.target.files.item(index);
+              }
+
+              if (typeof index === 'boolean' && index) {
+                return event.originalEvent.target.files.length;
+              }
+            });
         };
 
         // Events
@@ -93,6 +102,24 @@ const fileInputClick = async (inputRef, onChange) => {
     });
 
     if (objType(result, 'object') && Array.isArray(result.files)) {
+      onChange(inputRef.current, (index = 0) => {
+        const sendResult = (i) => {
+          result.files[i].type = result.files[i].mimeType;
+          result.files[i].lastModified = result.files[i].modifiedAt;
+          result.files[i].lastModifiedDate = new Date(result.files[i].modifiedAt);
+          result.files[i].arrayBuffer = () => base64ToArrayBuffer(result.files[i].data);
+          result.files[i].atob = () => atob(result.files[i].data);
+          return result.files[i];
+        };
+
+        if (typeof index === 'number') {
+          return sendResult(index);
+        }
+
+        if (typeof index === 'boolean' && index) {
+          return result.files.length;
+        }
+      });
     }
   }
 };

@@ -12,8 +12,8 @@ function ImageUpload({ text, bgColor, imageSrc, onUpload, onRequestRemove, class
   const [uploadPromise, setUploadPromise] = useState(null);
   const uploadImageRef = useRef(null);
 
-  async function uploadImage(e) {
-    const file = e.target.files.item(0);
+  async function uploadImage(target, files) {
+    const file = files(0);
     if (file === null) return;
     try {
       const uPromise = initMatrix.matrixClient.uploadContent(file);

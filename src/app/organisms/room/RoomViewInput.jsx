@@ -892,8 +892,8 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     }
   }
 
-  function uploadFileChange(e) {
-    const file = e.target.files.item(0);
+  function uploadFileChange(target, files) {
+    const file = files(0);
     setAttachment(file);
     if (roomsInput && file !== null) roomsInput.setAttachment(roomId, threadId, file);
     mediaFix(null, embedHeight, setEmbedHeight);

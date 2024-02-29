@@ -39,6 +39,12 @@ const blobCreator = (result) => {
   return new Blob([], { type: 'text/plain' });
 };
 
+export function tinyAtob(b64txt) {
+  const buff = Buffer.from(b64txt, 'base64');
+  const txt = buff.toString('utf16le');
+  return txt;
+}
+
 // Export
 export { tinyAppZoomValidator, blobCreator };
 
@@ -546,6 +552,10 @@ export function requestNotification() {
   }
 
   return null;
+}
+
+export function base64ToArrayBuffer(base64_string) {
+  return Uint8Array.from(atob(base64_string), (c) => c.charCodeAt(0));
 }
 
 export function cyrb128(str) {

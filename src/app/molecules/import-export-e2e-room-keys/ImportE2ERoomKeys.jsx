@@ -72,8 +72,8 @@ function ImportE2ERoomKeys() {
     tryDecrypt(keyFile, password);
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files.item(0);
+  const handleFileChange = (target, files) => {
+    const file = files(0);
     passwordRef.current.value = '';
     setKeyFile(file);
     setStatus({
@@ -103,7 +103,7 @@ function ImportE2ERoomKeys() {
 
   return (
     <div className="import-e2e-room-keys">
-      <FileInput ref={inputRef} onChange={handleFileChange} />
+      <FileInput ref={inputRef} onChange={handleFileChange} accept='text/plain' />
 
       <form
         className="import-e2e-room-keys__form"
