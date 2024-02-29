@@ -1,23 +1,25 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Capacitor } from '@capacitor/core';
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Filesystem } from '@capacitor/filesystem';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
+
+import { objType } from '@src/util/tools';
 
 // Build HTML
 const FileInput = React.forwardRef(
   ({ onChange, accept, required, webkitdirectory, directory, capture, multiple }, ref) => {
     const inputRef = useRef(null);
 
+    // Effect
     useEffect(() => {
       if (typeof onChange === 'function') {
         const fileInput = ref ? $(ref.current) : $(inputRef.current);
         const tinyChange = (event) => {
           if (!Capacitor.isNativePlatform()) onChange(event.originalEvent);
-          else {
-            console.log(event);
-          }
         };
 
+        // Events
         fileInput.on('change', tinyChange);
         return () => {
           fileInput.off('change', tinyChange);
@@ -25,6 +27,7 @@ const FileInput = React.forwardRef(
       }
     });
 
+    // Normal
     if (!Capacitor.isNativePlatform()) {
       return (
         <input
@@ -44,6 +47,7 @@ const FileInput = React.forwardRef(
       );
     }
 
+    // Mobile
     return (
       <input
         ref={ref || inputRef}
@@ -61,24 +65,35 @@ const FileInput = React.forwardRef(
 );
 
 // Click open file
-const fileInputClick = async (inputRef) => {
+const fileInputClick = async (inputRef, onChange) => {
+  // Normal
   if (!Capacitor.isNativePlatform()) {
     if (inputRef.current) inputRef.current.click();
-  } else if (inputRef.current) {
+  }
+
+  // Mobile
+  else if (inputRef.current) {
     let perm = await Filesystem.checkPermissions();
-    if (perm === 'prompt') perm = await Filesystem.requestPermissions();
-    if (perm !== 'granted') {
+    if (perm && perm.publicStorage === 'prompt') perm = await Filesystem.requestPermissions();
+    if (perm && perm.publicStorage !== 'granted') {
       throw new Error('User denied mobile permissions!');
     }
 
-    const webkitdirectory = inputRef.current.hasAttribute('webkitdirectory');
-    const directory = inputRef.current.hasAttribute('directory');
+    // const webkitdirectory = inputRef.current.hasAttribute('webkitdirectory');
+    // const directory = inputRef.current.hasAttribute('directory');
     const multiple = inputRef.current.hasAttribute('multiple');
 
-    const capture = inputRef.current.getAttribute('capture');
+    // const capture = inputRef.current.getAttribute('capture');
     const accept = inputRef.current.getAttribute('accept');
 
-    // inputRef.current.value = '';
+    const result = await FilePicker.pickFiles({
+      types: typeof accept === 'string' ? accept.replace(/\, /g, ',').split(',') : null,
+      readData: true,
+      multiple,
+    });
+
+    if (objType(result, 'object') && Array.isArray(result.files)) {
+    }
   }
 };
 

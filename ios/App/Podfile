@@ -20,6 +20,7 @@ def capacitor_pods
   pod 'CapacitorScreenReader', :path => '../../node_modules/@capacitor/screen-reader'
   pod 'CapacitorStatusBar', :path => '../../node_modules/@capacitor/status-bar'
   pod 'CapacitorToast', :path => '../../node_modules/@capacitor/toast'
+  pod 'CapawesomeCapacitorFilePicker', :path => '../../node_modules/@capawesome/capacitor-file-picker'
 end
 
 target 'App' do

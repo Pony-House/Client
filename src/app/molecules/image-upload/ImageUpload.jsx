@@ -41,7 +41,7 @@ function ImageUpload({ text, bgColor, imageSrc, onUpload, onRequestRemove, class
         className={`img-upload${imageSrc === null ? ' default-image' : ''}`}
         onClick={() => {
           if (uploadPromise !== null) return;
-          fileInputClick(uploadImageRef);
+          fileInputClick(uploadImageRef, uploadImage);
         }}
       >
         <Avatar imageSrc={imageSrc} text={text} bgColor={bgColor} size={size} isDefaultImage />

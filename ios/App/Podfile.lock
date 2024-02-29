@@ -20,6 +20,8 @@ PODS:
     - Capacitor
   - CapacitorToast (5.0.7):
     - Capacitor
+  - CapawesomeCapacitorFilePicker (5.3.0):
+    - Capacitor
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
@@ -33,6 +35,7 @@ DEPENDENCIES:
   - "CapacitorScreenReader (from `../../node_modules/@capacitor/screen-reader`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
   - "CapacitorToast (from `../../node_modules/@capacitor/toast`)"
+  - "CapawesomeCapacitorFilePicker (from `../../node_modules/@capawesome/capacitor-file-picker`)"
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -57,6 +60,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/status-bar"
   CapacitorToast:
     :path: "../../node_modules/@capacitor/toast"
+  CapawesomeCapacitorFilePicker:
+    :path: "../../node_modules/@capawesome/capacitor-file-picker"
 
 SPEC CHECKSUMS:
   Capacitor: fc155ee2ee45a2093d716f13cf5aa5a865e2d85a
@@ -70,7 +75,8 @@ SPEC CHECKSUMS:
   CapacitorScreenReader: be4d7dc5c3ba3cf6fc21d30a898204b5c52f8dec
   CapacitorStatusBar: f390fbb49b82ffb754ea4b3cf71dc8b048baf3e7
   CapacitorToast: c8bb89eeb59a23c1fc298f138cc06c8ff4d90ac1
+  CapawesomeCapacitorFilePicker: 41f486cb4a89c6a7c8a4f5d683dbf96658894182
 
-PODFILE CHECKSUM: 18224e047e2dcd471147a51e468474c99408f85e
+PODFILE CHECKSUM: f6dc5f00e1302e2403cc1b4d6b16ebd504b0170b
 
 COCOAPODS: 1.12.1

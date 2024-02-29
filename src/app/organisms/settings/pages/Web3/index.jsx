@@ -53,6 +53,30 @@ function Web3Section() {
     }
   });
 
+  const tinyChange = async (e) => {
+    const file = e.target.files.item(0);
+    if (file === null) return;
+    try {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const obj = JSON.parse(event.target.result);
+        if (objType(obj, 'object')) {
+          setWeb3Cfg('networks', obj);
+          setUploadPromise(null);
+          setNetworks({ keys: [], values: [] });
+        }
+      };
+
+      reader.readAsText(file);
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+      setUploadPromise(null);
+    }
+
+    fileInputValue(web3ConfigUploadRef, null);
+  };
+
   // Complete Render
   return (
     <>
@@ -225,37 +249,11 @@ function Web3Section() {
               Export
             </button>
 
-            <FileInput
-              onChange={async (e) => {
-                const file = e.target.files.item(0);
-                if (file === null) return;
-                try {
-                  const reader = new FileReader();
-                  reader.onload = (event) => {
-                    const obj = JSON.parse(event.target.result);
-                    if (objType(obj, 'object')) {
-                      setWeb3Cfg('networks', obj);
-                      setUploadPromise(null);
-                      setNetworks({ keys: [], values: [] });
-                    }
-                  };
-
-                  reader.readAsText(file);
-                } catch (err) {
-                  console.error(err);
-                  alert(err.message);
-                  setUploadPromise(null);
-                }
-
-                fileInputValue(web3ConfigUploadRef, null);
-              }}
-              ref={web3ConfigUploadRef}
-              accept="application/JSON"
-            />
+            <FileInput onChange={tinyChange} ref={web3ConfigUploadRef} accept="application/JSON" />
             <button
               type="button"
               className="btn btn-sm btn-secondary my-1 my-sm-0"
-              onClick={() => fileInputClick(web3ConfigUploadRef)}
+              onClick={() => fileInputClick(web3ConfigUploadRef, tinyChange)}
             >
               Import
             </button>

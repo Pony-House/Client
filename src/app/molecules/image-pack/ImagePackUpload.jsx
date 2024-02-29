@@ -70,7 +70,7 @@ function ImagePackUpload({ onUpload, roomId }) {
           <Text>{imgFile.name}</Text>
         </div>
       ) : (
-        <Button onClick={() => fileInputClick(inputRef)}>Import image</Button>
+        <Button onClick={() => fileInputClick(inputRef, handleFileChange)}>Import image</Button>
       )}
       <div>
         <Input forwardRef={shortcodeRef} name="shortcodeInput" placeholder="shortcode" required />

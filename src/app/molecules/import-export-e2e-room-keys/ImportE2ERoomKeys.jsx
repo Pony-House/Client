@@ -123,7 +123,7 @@ function ImportE2ERoomKeys() {
           </div>
         )}
         {keyFile === null && (
-          <Button className="me-3" onClick={() => fileInputClick(inputRef)}>
+          <Button className="me-3" onClick={() => fileInputClick(inputRef, handleFileChange)}>
             Import keys
           </Button>
         )}
