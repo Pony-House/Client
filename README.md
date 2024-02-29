@@ -72,6 +72,15 @@ For more information see the folder `/mods`.
 > We recommend using a version manager as versions change very quickly. You will likely need to switch 
 between multiple Node.js versions based on the needs of different projects you're working on. [NVM on windows](https://github.com/coreybutler/nvm-windows#installation--upgrades) on Windows and [nvm](https://github.com/nvm-sh/nvm) on Linux/macOS are pretty good choices. Also recommended nodejs version Hydrogen LTS (v18).
 
+If you don't have nodejs, please install this:
+
+https://nodejs.org/
+
+If you don't have yarn installed on your computer, it is recommended that you install it:
+```sh
+npm install yarn -g
+```
+
 Execute the following commands to start a development server (or a Ionic environment):
 ```sh
 yarn setup # Installs all dependencies
