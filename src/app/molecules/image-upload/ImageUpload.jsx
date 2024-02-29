@@ -6,7 +6,7 @@ import initMatrix from '../../../client/initMatrix';
 import Avatar from '../../atoms/avatar/Avatar';
 import Spinner from '../../atoms/spinner/Spinner';
 import RawIcon from '../../atoms/system-icons/RawIcon';
-import FileInput, { fileInputClick, fileInputValue } from '../file-input/FileInput';
+import FileInput, { fileInputClick, fileInputValue, uploadContent } from '../file-input/FileInput';
 
 function ImageUpload({ text, bgColor, imageSrc, onUpload, onRequestRemove, className, size }) {
   const [uploadPromise, setUploadPromise] = useState(null);
@@ -16,7 +16,7 @@ function ImageUpload({ text, bgColor, imageSrc, onUpload, onRequestRemove, class
     const file = files(0);
     if (file === null) return;
     try {
-      const uPromise = initMatrix.matrixClient.uploadContent(file);
+      const uPromise = uploadContent(file);
       setUploadPromise(uPromise);
 
       const res = await uPromise;

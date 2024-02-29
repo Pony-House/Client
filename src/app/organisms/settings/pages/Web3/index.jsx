@@ -2,9 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import objectHash from 'object-hash';
 import FileSaver from 'file-saver';
 import clone from 'clone';
-import { Capacitor } from '@capacitor/core';
 
-import FileInput, { fileInputClick, fileInputValue } from '@src/app/molecules/file-input/FileInput';
+import FileInput, {
+  fileInputClick,
+  fileInputValue,
+  fileReader,
+} from '@src/app/molecules/file-input/FileInput';
 import SettingTile from '../../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../../atoms/button/Toggle';
 import { toggleActionLocal } from '../../Api';
@@ -57,29 +60,21 @@ function Web3Section() {
   const tinyChange = async (target, files) => {
     const file = files(0);
     if (file === null) return;
-    try {
-      const fileReader = (result) => {
+
+    fileReader(file)
+      .then((result) => {
         const obj = JSON.parse(result);
         if (objType(obj, 'object')) {
           setWeb3Cfg('networks', obj);
           setUploadPromise(null);
           setNetworks({ keys: [], values: [] });
         }
-      };
-
-      const reader = new FileReader();
-      reader.onload = (event) => fileReader(event.target.result);
-
-      if (!Capacitor.isNativePlatform()) {
-        reader.readAsText(file);
-      } else {
-        fileReader(file.atob());
-      }
-    } catch (err) {
-      console.error(err);
-      alert(err.message);
-      setUploadPromise(null);
-    }
+      })
+      .catch((err) => {
+        console.error(err);
+        alert(err.message);
+        setUploadPromise(null);
+      });
 
     fileInputValue(web3ConfigUploadRef, null);
   };

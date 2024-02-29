@@ -5,6 +5,7 @@ import { Filesystem } from '@capacitor/filesystem';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 import { base64ToArrayBuffer, objType } from '@src/util/tools';
+import initMatrix from '@src/client/initMatrix';
 
 // Build HTML
 const FileInput = React.forwardRef(
@@ -72,6 +73,30 @@ const FileInput = React.forwardRef(
     );
   },
 );
+
+const uploadContent = (file) => {
+  if (!Capacitor.isNativePlatform()) {
+    initMatrix.matrixClient.uploadContent(file);
+  } else {
+  }
+};
+
+const fileReader = (file, readerType = 'readAsText') =>
+  new Promise((resolve, reject) => {
+    try {
+      const reader = new FileReader();
+      reader.onload = (event) => resolve(event.target.result);
+      reader.onerror = (err) => reject(err);
+
+      if (!Capacitor.isNativePlatform()) {
+        reader[readerType](file);
+      } else {
+        fileReader(file.atob());
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
 
 // Click open file
 const fileInputClick = async (inputRef, onChange) => {
@@ -161,4 +186,4 @@ FileInput.propTypes = {
 
 // Export
 export default FileInput;
-export { fileInputClick, fileInputValue };
+export { fileInputClick, fileInputValue, uploadContent, fileReader };
