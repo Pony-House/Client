@@ -46,7 +46,6 @@ const FileInput = React.forwardRef(
       return (
         <input
           ref={ref || inputRef}
-          onChange={onChange}
           style={{ display: 'none' }}
           type="file"
           accept={
