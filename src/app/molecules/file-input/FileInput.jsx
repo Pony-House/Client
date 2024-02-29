@@ -74,11 +74,25 @@ const FileInput = React.forwardRef(
   },
 );
 
-const uploadContent = (file) => {
-  if (!Capacitor.isNativePlatform()) {
-    initMatrix.matrixClient.uploadContent(file);
-  } else {
+const uploadContent = (file, forceDefault = false) => {
+  if (!Capacitor.isNativePlatform() || forceDefault) {
+    return initMatrix.matrixClient.uploadContent(file);
   }
+  return initMatrix.matrixClient.uploadContent(file.arrayBuffer());
+};
+
+const createObjectURL = (file, forceDefault = false) => {
+  if (!Capacitor.isNativePlatform() || forceDefault) {
+    return URL.createObjectURL(file);
+  }
+  return URL.createObjectURL(file.data);
+};
+
+const convertToBase64Mobile = (file) => {
+  if (!Capacitor.isNativePlatform()) {
+    return file;
+  }
+  return file.data();
 };
 
 const fileReader = (file, readerType = 'readAsText') =>
@@ -186,4 +200,11 @@ FileInput.propTypes = {
 
 // Export
 export default FileInput;
-export { fileInputClick, fileInputValue, uploadContent, fileReader };
+export {
+  fileInputClick,
+  fileInputValue,
+  uploadContent,
+  fileReader,
+  createObjectURL,
+  convertToBase64Mobile,
+};

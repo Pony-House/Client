@@ -1,3 +1,4 @@
+import { convertToBase64Mobile, createObjectURL } from '@src/app/molecules/file-input/FileInput';
 import urlParams from './libs/urlParams';
 
 export function bytesToSize(bytes) {
@@ -167,14 +168,14 @@ export function getImageDimension(file) {
 
 export function scaleDownImage(imageFile, width, height) {
   return new Promise((resolve) => {
-    const imgURL = URL.createObjectURL(imageFile);
+    const imgURL = createObjectURL(imageFile);
     const img = new Image();
 
     img.onload = () => {
       let newWidth = img.width;
       let newHeight = img.height;
       if (newHeight <= height && newWidth <= width) {
-        resolve(imageFile);
+        resolve(convertToBase64Mobile(imageFile));
       }
 
       if (newHeight > height) {

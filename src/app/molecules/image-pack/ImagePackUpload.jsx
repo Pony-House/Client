@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import initMatrix from '../../../client/initMatrix';
 import { scaleDownImage } from '../../../util/common';
 
 import Text from '../../atoms/text/Text';
@@ -10,10 +9,9 @@ import Input from '../../atoms/input/Input';
 import IconButton from '../../atoms/button/IconButton';
 import { updateEmojiList } from '../../../client/action/navigation';
 import { getSelectRoom } from '../../../util/selectedRoom';
-import FileInput, { fileInputClick, fileInputValue } from '../file-input/FileInput';
+import FileInput, { fileInputClick, fileInputValue, uploadContent } from '../file-input/FileInput';
 
 function ImagePackUpload({ onUpload, roomId }) {
-  const mx = initMatrix.matrixClient;
   const inputRef = useRef(null);
   const shortcodeRef = useRef(null);
   const [imgFile, setImgFile] = useState(null);
@@ -29,7 +27,7 @@ function ImagePackUpload({ onUpload, roomId }) {
 
     setProgress(true);
     const image = await scaleDownImage(imgFile, 512, 512);
-    const { content_uri: url } = await mx.uploadContent(image);
+    const { content_uri: url } = await uploadContent(image, true);
 
     onUpload(shortcode, url);
     setProgress(false);
