@@ -1,3 +1,4 @@
 - Custom dns - disabled (temp)
 - Electron db added.
 - New mobile fixes.
+- File Input tiny update.
