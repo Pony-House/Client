@@ -41,32 +41,14 @@ const FileInput = React.forwardRef(
       }
     });
 
-    // Normal
-    if (!Capacitor.isNativePlatform()) {
-      return (
-        <input
-          ref={ref || inputRef}
-          style={{ display: 'none' }}
-          type="file"
-          accept={
-            Array.isArray(accept) ? accept.join(', ') : typeof accept === 'string' ? accept : null
-          }
-          required={required}
-          webkitdirectory={webkitdirectory}
-          directory={directory}
-          capture={capture}
-          multiple={multiple}
-        />
-      );
-    }
-
-    // Mobile
     return (
       <input
         ref={ref || inputRef}
         style={{ display: 'none' }}
-        type="text"
-        accept={accept}
+        type="file"
+        accept={
+          Array.isArray(accept) ? accept.join(', ') : typeof accept === 'string' ? accept : null
+        }
         required={required}
         webkitdirectory={webkitdirectory}
         directory={directory}
