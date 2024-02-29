@@ -63,13 +63,15 @@ const uploadContent = (file, forceDefault = false) => {
   if (!Capacitor.isNativePlatform() || forceDefault) {
     return initMatrix.matrixClient.uploadContent(file);
   }
-  return initMatrix.matrixClient.uploadContent(file.arrayBuffer());
+  console.log('uploadContent', Buffer.from(file.data, 'base64'));
+  return initMatrix.matrixClient.uploadContent(Buffer.from(file.data, 'base64'));
 };
 
 const createObjectURL = (file, forceDefault = false) => {
   if (!Capacitor.isNativePlatform() || forceDefault) {
     return URL.createObjectURL(file);
   }
+  console.log('createObjectURL', file.data);
   return URL.createObjectURL(file.data);
 };
 
@@ -77,7 +79,8 @@ const convertToBase64Mobile = (file) => {
   if (!Capacitor.isNativePlatform()) {
     return file;
   }
-  return file.data();
+  console.log('convertToBase64Mobile', file.data);
+  return file.data;
 };
 
 const fileReader = (file, readerType = 'readAsText') =>
@@ -90,6 +93,7 @@ const fileReader = (file, readerType = 'readAsText') =>
       if (!Capacitor.isNativePlatform()) {
         reader[readerType](file);
       } else {
+        console.log('fileReader', file.atob());
         fileReader(file.atob());
       }
     } catch (err) {
@@ -132,6 +136,7 @@ const fileInputClick = async (inputRef, onChange) => {
           result.files[i].lastModified = result.files[i].modifiedAt;
           result.files[i].lastModifiedDate = new Date(result.files[i].modifiedAt);
           result.files[i].arrayBuffer = () => base64ToArrayBuffer(result.files[i].data);
+          result.files[i].toBuffer = () => Buffer.from(result.files[i].data, 'base64');
           result.files[i].atob = () => atob(result.files[i].data);
           return result.files[i];
         };
