@@ -41,8 +41,8 @@ function ImagePackUpload({ onUpload, roomId }) {
     }
   };
 
-  const handleFileChange = (target, files) => {
-    const img = files(0);
+  const handleFileChange = (target, getFile) => {
+    const img = getFile(0);
     if (!img) return;
     setImgFile(img);
     shortcodeRef.current.value = img.name.slice(0, img.name.indexOf('.'));

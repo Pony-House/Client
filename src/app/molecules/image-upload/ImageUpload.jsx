@@ -12,8 +12,8 @@ function ImageUpload({ text, bgColor, imageSrc, onUpload, onRequestRemove, class
   const [uploadPromise, setUploadPromise] = useState(null);
   const uploadImageRef = useRef(null);
 
-  async function uploadImage(target, files) {
-    const file = files(0);
+  async function uploadImage(target, getFile) {
+    const file = getFile(0);
     if (file === null) return;
     try {
       const uPromise = uploadContent(file);

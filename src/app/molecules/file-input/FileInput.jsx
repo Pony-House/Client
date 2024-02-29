@@ -17,16 +17,20 @@ const FileInput = React.forwardRef(
       if (typeof onChange === 'function') {
         const fileInput = ref ? $(ref.current) : $(inputRef.current);
         const tinyChange = (event) => {
-          if (!Capacitor.isNativePlatform())
-            onChange(event.originalEvent.target, (index = 0) => {
+          if (!Capacitor.isNativePlatform()) {
+            const changeFunc = (index = 0) => {
               if (typeof index === 'number') {
-                return event.originalEvent.target.files.item(index);
+                if (event.originalEvent.target.files.item)
+                  return event.originalEvent.target.files.item(index);
+                return event.originalEvent.target.files[index];
               }
 
               if (typeof index === 'boolean' && index) {
                 return event.originalEvent.target.files.length;
               }
-            });
+            };
+            onChange(event.originalEvent.target, changeFunc);
+          }
         };
 
         // Events
@@ -141,7 +145,7 @@ const fileInputClick = async (inputRef, onChange) => {
     });
 
     if (objType(result, 'object') && Array.isArray(result.files)) {
-      onChange(inputRef.current, (index = 0) => {
+      const changeFunc = (index = 0) => {
         const sendResult = (i) => {
           result.files[i].type = result.files[i].mimeType;
           result.files[i].lastModified = result.files[i].modifiedAt;
@@ -158,7 +162,8 @@ const fileInputClick = async (inputRef, onChange) => {
         if (typeof index === 'boolean' && index) {
           return result.files.length;
         }
-      });
+      };
+      onChange(inputRef.current, changeFunc);
     }
   }
 };

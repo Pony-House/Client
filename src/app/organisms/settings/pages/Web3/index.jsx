@@ -57,8 +57,8 @@ function Web3Section() {
     }
   });
 
-  const tinyChange = async (target, files) => {
-    const file = files(0);
+  const tinyChange = async (target, getFile) => {
+    const file = getFile(0);
     if (file === null) return;
 
     fileReader(file)

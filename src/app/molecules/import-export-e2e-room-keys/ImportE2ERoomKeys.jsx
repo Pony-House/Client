@@ -72,8 +72,8 @@ function ImportE2ERoomKeys() {
     tryDecrypt(keyFile, password);
   };
 
-  const handleFileChange = (target, files) => {
-    const file = files(0);
+  const handleFileChange = (target, getFile) => {
+    const file = getFile(0);
     passwordRef.current.value = '';
     setKeyFile(file);
     setStatus({
