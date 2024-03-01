@@ -13,7 +13,12 @@ class MobileEvents extends EventEmitter {
     const tinyThis = this;
     if (Capacitor.isNativePlatform()) {
       App.addListener('backButton', (data) => tinyThis.emit('backButton', data));
+
       App.addListener('appStateChange', (data) => tinyThis.emit('appStateChange', data));
+      App.addListener('appStateChange', ({ isActive }) =>
+        tinyThis.emit('appStateChangeIsActive', isActive),
+      );
+
       App.addListener('appUrlOpen', (data) => tinyThis.emit('appUrlOpen', data));
       App.addListener('appRestoredResult', (data) => tinyThis.emit('appRestoredResult', data));
 
