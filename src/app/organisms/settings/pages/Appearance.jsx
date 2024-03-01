@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { calendarFormat } from '@src/util/libs/momentjs';
+import { isMobile } from '@src/util/libs/mobile';
 
 import settings from '../../../../client/state/settings';
 import Toggle from '../../../atoms/button/Toggle';
@@ -12,7 +13,7 @@ import {
   toggleMembershipEvents,
   toggleNickAvatarEvents,
 } from '../../../../client/action/settings';
-import { isMobile, tinyAppZoomValidator } from '../../../../util/tools';
+import { tinyAppZoomValidator } from '../../../../util/tools';
 import {
   getAppearance,
   toggleAppearanceAction,

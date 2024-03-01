@@ -1,4 +1,4 @@
-import { isMobile } from '@src/util/tools';
+import { isMobile } from '@src/util/libs/mobile';
 import { compareVersions } from 'compare-versions';
 
 const cons = {

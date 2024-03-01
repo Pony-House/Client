@@ -66,9 +66,49 @@ class MobileEvents extends EventEmitter {
       }
     });
   }
+
+  getNotificationPerm() {
+    if (!Capacitor.isNativePlatform()) {
+      return window.Notification?.permission;
+    }
+    return this.allowNotifications.display;
+  }
 }
 
 const mobileEvents = new MobileEvents();
 mobileEvents.setMaxListeners(Infinity);
+
+export function isMobile() {
+  return (
+    Capacitor.isNativePlatform() ||
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  );
+}
+
+export function notificationStatus() {
+  if (!Capacitor.isNativePlatform() && window.Notification?.permission) {
+    return window.Notification?.permission;
+  }
+  if (Capacitor.isNativePlatform() && mobileEvents.allowNotifications.display) {
+    return mobileEvents.allowNotifications.display;
+  }
+
+  return null;
+}
+
+export function noNotification() {
+  return !Capacitor.isNativePlatform() && window.Notification === undefined;
+}
+
+export function requestNotification() {
+  if (!Capacitor.isNativePlatform()) {
+    return window.Notification.requestPermission();
+  }
+  if (Capacitor.isNativePlatform()) {
+    return mobileEvents.checkNotificationPerm();
+  }
+
+  return null;
+}
 
 export default mobileEvents;

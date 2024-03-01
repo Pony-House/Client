@@ -9,6 +9,7 @@ import { Editor, Transforms } from 'slate';
 import FileInput, { fileInputClick, fileInputValue } from '@src/app/molecules/file-input/FileInput';
 
 import threadsList from '@src/util/libs/thread';
+import { isMobile } from '@src/util/libs/mobile';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import settings from '../../../client/state/settings';
@@ -19,7 +20,7 @@ import { getUsername, getCurrentState } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
 import { shiftNuller } from '../../../util/shortcut';
 import audioRecorder from '../../../util/audioRec';
-import { isMobile, momentCountdown, resizeWindowChecker, toast } from '../../../util/tools';
+import { momentCountdown, resizeWindowChecker, toast } from '../../../util/tools';
 
 import Text from '../../atoms/text/Text';
 import RawIcon from '../../atoms/system-icons/RawIcon';

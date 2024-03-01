@@ -2,12 +2,14 @@ import { StatusBar } from '@capacitor/status-bar';
 import { Capacitor } from '@capacitor/core';
 
 import EventEmitter from 'events';
+import { notificationStatus } from '@src/util/libs/mobile';
+
 import appDispatcher from '../dispatcher';
 
 import cons from './cons';
 import tinyAPI from '../../util/mods';
 import matrixAppearance from '../../util/libs/appearance';
-import { notificationStatus, objType } from '../../util/tools';
+import { objType } from '../../util/tools';
 
 import blackTheme from '../../scss/theme/black';
 import butterTheme from '../../scss/theme/butter';

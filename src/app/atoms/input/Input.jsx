@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import TextareaAutosize from 'react-autosize-textarea';
-import { isMobile } from '@src/util/tools';
+import { isMobile } from '@src/util/libs/mobile';
 
 function Input({
   id,

@@ -9,9 +9,10 @@ import clone from 'clone';
 import hljs from 'highlight.js';
 import * as linkify from 'linkifyjs';
 import cons from '@src/client/state/cons';
+import { isMobile } from '@src/util/libs/mobile';
 
 import Text from '../../atoms/text/Text';
-import { hljsFixer, isMobile, resizeWindowChecker, toast } from '../../../util/tools';
+import { hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
 import { twemojify, twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 

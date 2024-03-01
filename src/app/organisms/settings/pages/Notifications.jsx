@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Capacitor } from '@capacitor/core';
-import mobileEvents from '@src/util/libs/mobile';
-import { noNotification, notificationStatus } from '@src/util/tools';
+import mobileEvents, {
+  noNotification,
+  notificationStatus,
+  requestNotification,
+} from '@src/util/libs/mobile';
 
 import settings from '../../../../client/state/settings';
 import { usePermission } from '../../../hooks/usePermission';
@@ -34,11 +36,7 @@ function NotificationsSection() {
           onToggle={() => {
             toggleNotifications();
             setTimeout(() => {
-              if (!Capacitor.isNativePlatform()) {
-                setPermission(window.Notification?.permission);
-              } else {
-                setPermission(mobileEvents.allowNotifications.display);
-              }
+              setPermission(mobileEvents.getNotificationPerm());
               updateState({});
             }, 200);
           }}
@@ -47,10 +45,7 @@ function NotificationsSection() {
     }
 
     return (
-      <Button
-        variant="primary"
-        onClick={() => window.Notification.requestPermission().then(setPermission)}
-      >
+      <Button variant="primary" onClick={() => requestNotification().then(setPermission)}>
         Request permission
       </Button>
     );
