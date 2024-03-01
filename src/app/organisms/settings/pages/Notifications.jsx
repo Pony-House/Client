@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import mobileEvents, {
+  isMobile,
   noNotification,
   notificationStatus,
   requestNotification,
@@ -57,7 +58,7 @@ function NotificationsSection() {
         <ul className="list-group list-group-flush">
           <li className="list-group-item very-small text-gray">Notification & Sound</li>
           <SettingTile
-            title="Desktop notification"
+            title={`${isMobile() ? 'Mobile' : __ENV_APP__.ELECTRON_MODE ? 'Desktop' : 'Web'} notification`}
             options={renderOptions()}
             content={
               <div className="very-small text-gray">
