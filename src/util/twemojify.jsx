@@ -8,7 +8,7 @@ import linkifyRegisterKeywords from 'linkify-plugin-keyword';
 
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
-import keywords from '@mods/keywords';
+import startKeyWords from '@mods/keywords';
 
 import Tooltip from '../app/atoms/tooltip/Tooltip';
 import { sanitizeText } from './sanitize';
@@ -27,43 +27,59 @@ linkify.registerCustomProtocol('irc');
 
 linkify.registerCustomProtocol('ftp');
 
-if (envAPI.get('IPFS')) {
-  linkify.registerCustomProtocol('ipfs');
-}
+let needRegisterExtraProtocol = true;
+const registerExtraProtocols = () => {
+  if (needRegisterExtraProtocol) {
+    needRegisterExtraProtocol = false;
+    if (envAPI.get('IPFS')) {
+      linkify.registerCustomProtocol('ipfs');
+    }
 
-if (envAPI.get('WEB3')) {
-  linkify.registerCustomProtocol('bitcoin');
-  linkify.registerCustomProtocol('dogecoin');
-  linkify.registerCustomProtocol('monero');
+    if (envAPI.get('WEB3')) {
+      linkify.registerCustomProtocol('bitcoin');
+      linkify.registerCustomProtocol('dogecoin');
+      linkify.registerCustomProtocol('monero');
 
-  linkify.registerCustomProtocol('ethereum');
-  linkify.registerCustomProtocol('web3');
+      linkify.registerCustomProtocol('ethereum');
+      linkify.registerCustomProtocol('web3');
 
-  linkify.registerCustomProtocol('ar');
-  linkify.registerCustomProtocol('lbry');
-}
-
-// Register Keywords
-const tinywords = [];
-const tinywordsDB = {};
-for (const item in keywords) {
-  if (typeof keywords[item].name === 'string') {
-    tinywords.push(keywords[item].name);
-    tinywordsDB[keywords[item].name] = { href: keywords[item].href, title: keywords[item].title };
-  } else if (Array.isArray(keywords[item].name) && keywords[item].name.length > 0) {
-    for (const item2 in keywords[item].name) {
-      if (typeof keywords[item].name[item2] === 'string') {
-        tinywords.push(keywords[item].name[item2]);
-        tinywordsDB[keywords[item].name[item2]] = {
-          href: keywords[item].href,
-          title: keywords[item].title,
-        };
-      }
+      linkify.registerCustomProtocol('ar');
+      linkify.registerCustomProtocol('lbry');
     }
   }
-}
+};
 
-linkifyRegisterKeywords(tinywords);
+// Register Keywords
+const tinywordsDB = {};
+
+let keywords = [];
+const insertKeyWords = () => {
+  if (keywords.length < 1) {
+
+    const tinywords = [];
+    keywords = startKeyWords();
+
+    for (const item in keywords) {
+      if (typeof keywords[item].name === 'string') {
+        tinywords.push(keywords[item].name);
+        tinywordsDB[keywords[item].name] = { href: keywords[item].href, title: keywords[item].title };
+      } else if (Array.isArray(keywords[item].name) && keywords[item].name.length > 0) {
+        for (const item2 in keywords[item].name) {
+          if (typeof keywords[item].name[item2] === 'string') {
+            tinywords.push(keywords[item].name[item2]);
+            tinywordsDB[keywords[item].name[item2]] = {
+              href: keywords[item].href,
+              title: keywords[item].title,
+            };
+          }
+        }
+      }
+    }
+
+    linkifyRegisterKeywords(tinywords);
+
+  }
+};
 
 // Emoji Base
 export const TWEMOJI_BASE_URL = './img/twemoji/';
@@ -106,53 +122,53 @@ const mathOptions = {
 const tinyRender = {
   html:
     (type) =>
-    ({ attributes, content }) => {
-      if (tinyLinkifyFixer(type, content)) {
-        let tinyAttr = '';
-        for (const attr in attributes) {
-          tinyAttr += ` ${attr}${attributes[attr].length > 0 ? `=${attributes[attr]}` : ''}`;
+      ({ attributes, content }) => {
+        if (tinyLinkifyFixer(type, content)) {
+          let tinyAttr = '';
+          for (const attr in attributes) {
+            tinyAttr += ` ${attr}${attributes[attr].length > 0 ? `=${attributes[attr]}` : ''}`;
+          }
+
+          if (type === 'keyword') {
+            tinyAttr += ' iskeyword="true"';
+          } else {
+            tinyAttr += ' iskeyword="false"';
+          }
+
+          const db = tinywordsDB[content.toLowerCase()];
+          return `<a${tinyAttr} title="${db?.title}">${content}</a>`;
         }
 
-        if (type === 'keyword') {
-          tinyAttr += ' iskeyword="true"';
-        } else {
-          tinyAttr += ' iskeyword="false"';
-        }
-
-        const db = tinywordsDB[content.toLowerCase()];
-        return `<a${tinyAttr} title="${db?.title}">${content}</a>`;
-      }
-
-      return content;
-    },
+        return content;
+      },
 
   react:
     (type) =>
-    ({ attributes, content }) => {
-      if (tinyLinkifyFixer(type, content)) {
-        const { href, ...props } = attributes;
-        const db = tinywordsDB[content.toLowerCase()];
-        const result = (
-          <a
-            href={href}
-            onClick={(e) => {
-              e.preventDefault();
-              openTinyURL($(e.target).attr('href'), $(e.target).attr('href'));
-              return false;
-            }}
-            {...props}
-            iskeyword={type === 'keyword' ? 'true' : 'false'}
-            className="lk-href"
-          >
-            {content}
-          </a>
-        );
+      ({ attributes, content }) => {
+        if (tinyLinkifyFixer(type, content)) {
+          const { href, ...props } = attributes;
+          const db = tinywordsDB[content.toLowerCase()];
+          const result = (
+            <a
+              href={href}
+              onClick={(e) => {
+                e.preventDefault();
+                openTinyURL($(e.target).attr('href'), $(e.target).attr('href'));
+                return false;
+              }}
+              {...props}
+              iskeyword={type === 'keyword' ? 'true' : 'false'}
+              className="lk-href"
+            >
+              {content}
+            </a>
+          );
 
-        return db?.title ? <Tooltip content={<small>{db.title}</small>}>{result}</Tooltip> : result;
-      }
+          return db?.title ? <Tooltip content={<small>{db.title}</small>}>{result}</Tooltip> : result;
+        }
 
-      return <span>{content}</span>;
-    },
+        return <span>{content}</span>;
+      },
 };
 
 tinyRender.list = {
@@ -180,6 +196,8 @@ tinyRender.list = {
  * @returns React component
  */
 const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) => {
+  registerExtraProtocols();
+  insertKeyWords();
   // Not String
   if (typeof text !== 'string') return text;
 

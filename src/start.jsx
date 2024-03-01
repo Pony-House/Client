@@ -4,7 +4,6 @@ import clone from 'clone';
 import { Buffer } from 'buffer';
 import { startCustomThemes } from '@mods';
 
-import { startWeb3 } from './util/web3';
 import startQuery from './util/libs/jquery';
 
 import { startSettings } from './client/state/settings';
@@ -14,11 +13,10 @@ import App from './app/pages/App';
 import { getOsSettings } from './util/libs/osSettings';
 import ChatRoom from './app/embed/ChatRoom';
 import urlParams from './util/libs/urlParams';
-import web3Talk from './util/web3/xmtp';
 
 global.Buffer = Buffer;
 // global.Buffer = global.Buffer || Buffer;
-function startApp(appProtocol) {
+function StartApp(appProtocol) {
   global.getEnvApp = () => clone(__ENV_APP__);
 
   const pageType = urlParams.get('type');
@@ -56,8 +54,6 @@ function startApp(appProtocol) {
     return root.render('');
   }
 
-  startWeb3(() => web3Talk.start());
-
   console.log(`[app] Starting app using the protocol "${appProtocol}" mode.`);
   if (osSettings.startMinimized && typeof global.electronWindowIsVisible === 'function') {
     global.electronWindowIsVisible(false);
@@ -66,4 +62,4 @@ function startApp(appProtocol) {
   return root.render(<App />);
 }
 
-export default startApp;
+export default StartApp;

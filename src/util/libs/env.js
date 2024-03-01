@@ -1,3 +1,7 @@
+/*
+  Always place EnvAPI within any module export. NEVER DO THE OTHER WAY!
+*/
+
 import EventEmitter from 'events';
 import moment from 'moment-timezone';
 import { objType } from '../tools';
@@ -12,7 +16,7 @@ class EnvAPI extends EventEmitter {
 
   async startDB() {
     this.start();
-    if (!this.InitializedDB && global.tinyDB) {
+    if (!this.InitializedDB) {
       this.InitializedDB = true;
 
       if (typeof __ENV_APP__.WEB3 === 'boolean' && __ENV_APP__.WEB3) {
@@ -64,7 +68,7 @@ class EnvAPI extends EventEmitter {
   }
 
   async getDB(folder) {
-    if (__ENV_APP__.ELECTRON_MODE && global.tinyDB) {
+    if (__ENV_APP__.ELECTRON_MODE) {
       const data = await global.tinyDB.get(`SELECT * FROM envData WHERE id=$id;`, { $id: folder });
       if (objType(data, 'object') && typeof data.value === 'string') {
         this.content[folder] =
@@ -85,7 +89,7 @@ class EnvAPI extends EventEmitter {
 
         if (!__ENV_APP__.ELECTRON_MODE) {
           global.localStorage.setItem('ponyHouse-env', JSON.stringify(this.content));
-        } else if (global.tinyDB) {
+        } else {
           global.tinyDB.run(
             `INSERT OR REPLACE INTO envData (id, unix, value) VALUES($id, $unix, $value);`,
             {

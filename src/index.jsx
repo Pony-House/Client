@@ -7,6 +7,6 @@ import './scss/theme/black/base.scss';
 
 import './scss/default.scss';
 
-import startApp from './start';
+import StartApp from './start';
 
-startApp('vite');
+StartApp('vite');

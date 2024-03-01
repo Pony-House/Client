@@ -52,152 +52,157 @@ export const tabText = {
 };
 
 const tabItems = [];
+const buildTabItems = () => {
+  if (tabItems.length < 1) {
 
-tabItems.push({
-  text: tabText.PROFILE,
-  faSrc: 'fa-solid fa-id-card',
-  disabled: false,
-  render: () => <ProfileSection />,
-});
-
-tabItems.push({
-  text: tabText.APPEARANCE,
-  faSrc: 'fa-solid fa-sun',
-  disabled: false,
-  render: () => <AppearanceSection />,
-});
-
-tabItems.push({
-  text: tabText.VOICEVIDEO,
-  faSrc: 'bi bi-optical-audio-fill',
-  disabled: false,
-  render: () => <VoiceVideoSection />,
-});
-
-tabItems.push({
-  text: tabText.EMOJI,
-  faSrc: 'fa-solid fa-face-smile',
-  disabled: false,
-  render: () => <EmojiSection />,
-});
-
-tabItems.push({ type: 'divider' });
-
-tabItems.push({
-  text: tabText.NOTIFICATIONS,
-  faSrc: 'fa-solid fa-bell',
-  disabled: false,
-  render: () => <NotificationsSection />,
-});
-
-tabItems.push({
-  text: tabText.SECURITY,
-  faSrc: 'fa-solid fa-lock',
-  disabled: false,
-  render: () => <SecuritySection />,
-});
-
-tabItems.push({
-  text: tabText.PRIVACY,
-  faSrc: 'bi bi-eye-fill',
-  disabled: false,
-  render: () => <PrivacySection />,
-});
-
-if (__ENV_APP__.ELECTRON_MODE) {
-  tabItems.push({
-    text: tabText.OS.replace(
-      '{OS}',
-      __ENV_APP__.PLATFORM === 'win32'
-        ? 'Windows'
-        : __ENV_APP__.PLATFORM === 'linux'
-          ? 'Linux'
-          : __ENV_APP__.PLATFORM === 'darwin'
-            ? 'Mac'
-            : 'OS',
-    ),
-
-    faSrc:
-      __ENV_APP__.PLATFORM === 'win32'
-        ? 'fa-brands fa-windows'
-        : __ENV_APP__.PLATFORM === 'linux'
-          ? 'fa-brands fa-linux'
-          : __ENV_APP__.PLATFORM === 'darwin'
-            ? 'fa-brands fa-apple'
-            : 'fa-solid fa-computer',
-
-    disabled: false,
-    render: () => <OsSection />,
-  });
-}
-
-if (envAPI.get('WEB3') || envAPI.get('IPFS')) {
-  tabItems.push({ type: 'divider' });
-
-  if (envAPI.get('IPFS')) {
     tabItems.push({
-      text: tabText.IPFS,
-      faSrc: 'fa-solid fa-cube',
+      text: tabText.PROFILE,
+      faSrc: 'fa-solid fa-id-card',
       disabled: false,
-      render: () => <IpfsSection />,
+      render: () => <ProfileSection />,
     });
-  }
 
-  if (envAPI.get('WEB3')) {
     tabItems.push({
-      text: tabText.WEB3,
-      faSrc: 'fa-brands fa-ethereum',
+      text: tabText.APPEARANCE,
+      faSrc: 'fa-solid fa-sun',
       disabled: false,
-      render: () => <Web3Section />,
+      render: () => <AppearanceSection />,
     });
-  }
-}
 
-tabItems.push({ type: 'divider' });
+    tabItems.push({
+      text: tabText.VOICEVIDEO,
+      faSrc: 'bi bi-optical-audio-fill',
+      disabled: false,
+      render: () => <VoiceVideoSection />,
+    });
 
-tabItems.push({
-  text: tabText.DONATE,
-  faSrc: 'fa-solid fa-coins',
-  disabled: false,
-  render: () => <DonateSection />,
-});
+    tabItems.push({
+      text: tabText.EMOJI,
+      faSrc: 'fa-solid fa-face-smile',
+      disabled: false,
+      render: () => <EmojiSection />,
+    });
 
-tabItems.push({
-  text: tabText.ABOUT,
-  faSrc: 'fa-solid fa-circle-info',
-  disabled: false,
-  render: () => <AboutSection />,
-});
+    tabItems.push({ type: 'divider' });
 
-tabItems.push({ type: 'divider' });
+    tabItems.push({
+      text: tabText.NOTIFICATIONS,
+      faSrc: 'fa-solid fa-bell',
+      disabled: false,
+      render: () => <NotificationsSection />,
+    });
 
-tabItems.push({
-  text: tabText.EXPERIMENTAL,
-  faSrc: 'fa-solid fa-flask',
-  disabled: false,
-  render: () => <ExperimentalSection />,
-});
+    tabItems.push({
+      text: tabText.SECURITY,
+      faSrc: 'fa-solid fa-lock',
+      disabled: false,
+      render: () => <SecuritySection />,
+    });
 
-tabItems.push({ type: 'divider' });
+    tabItems.push({
+      text: tabText.PRIVACY,
+      faSrc: 'bi bi-eye-fill',
+      disabled: false,
+      render: () => <PrivacySection />,
+    });
 
-tabItems.push({
-  text: tabText.LOGOUT,
-  faSrc: 'fa-solid fa-power-off',
-  className: 'btn-text-danger logout',
-  disabled: false,
-  onClick: async () => {
-    if (
-      await confirmDialog(
-        'Logout',
-        'Are you sure that you want to logout your session?',
-        'Logout',
-        'danger',
-      )
-    ) {
-      initMatrix.logout();
+    if (__ENV_APP__.ELECTRON_MODE) {
+      tabItems.push({
+        text: tabText.OS.replace(
+          '{OS}',
+          __ENV_APP__.PLATFORM === 'win32'
+            ? 'Windows'
+            : __ENV_APP__.PLATFORM === 'linux'
+              ? 'Linux'
+              : __ENV_APP__.PLATFORM === 'darwin'
+                ? 'Mac'
+                : 'OS',
+        ),
+
+        faSrc:
+          __ENV_APP__.PLATFORM === 'win32'
+            ? 'fa-brands fa-windows'
+            : __ENV_APP__.PLATFORM === 'linux'
+              ? 'fa-brands fa-linux'
+              : __ENV_APP__.PLATFORM === 'darwin'
+                ? 'fa-brands fa-apple'
+                : 'fa-solid fa-computer',
+
+        disabled: false,
+        render: () => <OsSection />,
+      });
     }
-  },
-});
+
+    if (envAPI.get('WEB3') || envAPI.get('IPFS')) {
+      tabItems.push({ type: 'divider' });
+
+      if (envAPI.get('IPFS')) {
+        tabItems.push({
+          text: tabText.IPFS,
+          faSrc: 'fa-solid fa-cube',
+          disabled: false,
+          render: () => <IpfsSection />,
+        });
+      }
+
+      if (envAPI.get('WEB3')) {
+        tabItems.push({
+          text: tabText.WEB3,
+          faSrc: 'fa-brands fa-ethereum',
+          disabled: false,
+          render: () => <Web3Section />,
+        });
+      }
+    }
+
+    tabItems.push({ type: 'divider' });
+
+    tabItems.push({
+      text: tabText.DONATE,
+      faSrc: 'fa-solid fa-coins',
+      disabled: false,
+      render: () => <DonateSection />,
+    });
+
+    tabItems.push({
+      text: tabText.ABOUT,
+      faSrc: 'fa-solid fa-circle-info',
+      disabled: false,
+      render: () => <AboutSection />,
+    });
+
+    tabItems.push({ type: 'divider' });
+
+    tabItems.push({
+      text: tabText.EXPERIMENTAL,
+      faSrc: 'fa-solid fa-flask',
+      disabled: false,
+      render: () => <ExperimentalSection />,
+    });
+
+    tabItems.push({ type: 'divider' });
+
+    tabItems.push({
+      text: tabText.LOGOUT,
+      faSrc: 'fa-solid fa-power-off',
+      className: 'btn-text-danger logout',
+      disabled: false,
+      onClick: async () => {
+        if (
+          await confirmDialog(
+            'Logout',
+            'Are you sure that you want to logout your session?',
+            'Logout',
+            'danger',
+          )
+        ) {
+          initMatrix.logout();
+        }
+      },
+    });
+
+  }
+};
 
 function useWindowToggle(setSelectedTab) {
   const [isOpen, setIsOpen] = useState(false);
@@ -220,6 +225,7 @@ function useWindowToggle(setSelectedTab) {
 }
 
 function Settings() {
+  buildTabItems();
   const [selectedTab, setSelectedTab] = useState(tabItems[0]);
   const [isOpen, requestClose] = useWindowToggle(setSelectedTab);
 
