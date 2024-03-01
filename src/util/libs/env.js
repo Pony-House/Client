@@ -19,6 +19,13 @@ class EnvAPI extends EventEmitter {
     if (!this.InitializedDB) {
       this.InitializedDB = true;
 
+      if (
+        __ENV_APP__.ELECTRON_MODE &&
+        global.tinyDB &&
+        typeof global.tinyDB.startClient === 'function'
+      )
+        await global.tinyDB.startClient();
+
       if (typeof __ENV_APP__.WEB3 === 'boolean' && __ENV_APP__.WEB3) {
         await this.getDB('WEB3');
       }
