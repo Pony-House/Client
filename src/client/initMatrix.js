@@ -2,6 +2,7 @@ import EventEmitter from 'events';
 import * as sdk from 'matrix-js-sdk';
 import Olm from '@matrix-org/olm';
 
+import envAPI from '@src/util/libs/env';
 import { secret } from './state/auth';
 import RoomList from './state/RoomList';
 import AccountData from './state/AccountData';
@@ -105,8 +106,8 @@ class InitMatrix extends EventEmitter {
     if (global.tinyDB && typeof global.tinyDB.startClient === 'function')
       await global.tinyDB.startClient();
 
+    await envAPI.startDB();
     await indexedDBStore.startup();
-
     await this.matrixClient.initCrypto();
 
     await this.matrixClient.startClient({

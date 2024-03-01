@@ -2,7 +2,6 @@ module.exports = {
   globals: {
     '$': 'readonly',
     'ethereum': 'readonly',
-    'tinyAPI': 'readonly',
     'arguments': 'readonly',
     'getLogData': 'readonly',
     'playLogData': 'readonly',
@@ -11,6 +10,7 @@ module.exports = {
     'bootstrap': 'readonly',
     'Olm': 'readonly',
     'qrcode': 'readonly',
+    'tinyDB': 'readonly',
   },
   env: {
     browser: true,

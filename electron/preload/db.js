@@ -3,8 +3,9 @@ import { generateApiKey } from 'generate-api-key';
 import clone from 'clone';
 
 const dbCache = {};
-
-contextBridge.exposeInMainWorld('tinyDB', {
+let clientStarted = false;
+const tinyDB = {
+  // Default
   run: (value1, value2) =>
     new Promise((resolve, reject) => {
       const id = generateApiKey();
@@ -23,18 +24,41 @@ contextBridge.exposeInMainWorld('tinyDB', {
       dbCache[id] = { resolve, reject };
       ipcRenderer.send('requestDB', 'get', id, value1, value2);
     }),
+
+  // Start
+  startClient: async () => {
+    if (!clientStarted) {
+      // Confirm
+      clientStarted = true;
+
+      // ENV Data
+      await tinyDB.run(
+        `
+        CREATE TABLE IF NOT EXISTS envData (
+            id VARCHAR(20),
+            unix BIGINT,
+            value TEXT,
+            PRIMARY KEY (id)
+        );
+    `,
+      );
+    }
+  },
+
+  // Ping
   runPing: () =>
     new Promise((resolve, reject) => {
       const id = generateApiKey();
       dbCache[id] = { resolve, reject };
       ipcRenderer.send('requestDBPing', id);
     }),
-});
+};
+
+contextBridge.exposeInMainWorld('tinyDB', tinyDB);
 
 /*
     clearData
     clearCacheData
-    startClient
 */
 
 ipcRenderer.on('requestDB', (event, result) => {

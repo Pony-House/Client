@@ -1,23 +1,37 @@
 import EventEmitter from 'events';
-
-/*
-  This file for some reason does not find localStorage in the electronjs version. 
-  So for this reason, the settings to enable and disable IPFS and Web3 via the login page are disabled in the destkop version.
-  If you know how to resolve this, feel free to submit a pull request.
-*/
+import moment from 'moment-timezone';
+import { objType } from '../tools';
 
 // Emitter
 class EnvAPI extends EventEmitter {
   constructor() {
     super();
     this.Initialized = false;
+    this.InitializedDB = false;
   }
 
-  start() {
-    if (!this.Initialized && global.localStorage) {
+  async startDB() {
+    this.start();
+    if (!this.InitializedDB && global.tinyDB) {
+      this.InitializedDB = true;
+
+      if (typeof __ENV_APP__.WEB3 === 'boolean' && __ENV_APP__.WEB3) {
+        await this.getDB('WEB3');
+      }
+
+      if (typeof __ENV_APP__.IPFS === 'boolean' && __ENV_APP__.IPFS) {
+        await this.getDB('IPFS');
+      }
+    }
+  }
+
+  async start() {
+    if (!this.Initialized) {
       this.Initialized = true;
 
-      this.content = global.localStorage.getItem('ponyHouse-env');
+      this.content = !__ENV_APP__.ELECTRON_MODE
+        ? global.localStorage.getItem('ponyHouse-env')
+        : '{}';
 
       try {
         this.content = JSON.parse(this.content) ?? {};
@@ -37,23 +51,6 @@ class EnvAPI extends EventEmitter {
         this.content.IPFS = false;
       }
     }
-
-    // Glitch detected. Temp mode
-    else {
-      this.content = {};
-
-      if (typeof __ENV_APP__.WEB3 === 'boolean' && __ENV_APP__.WEB3) {
-        this.content.WEB3 = true;
-      } else {
-        this.content.WEB3 = false;
-      }
-
-      if (typeof __ENV_APP__.IPFS === 'boolean' && __ENV_APP__.IPFS) {
-        this.content.IPFS = true;
-      } else {
-        this.content.IPFS = false;
-      }
-    }
   }
 
   get(folder) {
@@ -66,12 +63,43 @@ class EnvAPI extends EventEmitter {
     return this.content;
   }
 
+  async getDB(folder) {
+    if (__ENV_APP__.ELECTRON_MODE && global.tinyDB) {
+      const data = await global.tinyDB.get(`SELECT * FROM envData WHERE id=$id;`, { $id: folder });
+      if (objType(data, 'object') && typeof data.value === 'string') {
+        this.content[folder] =
+          data.value === 'true' ? true : data.value === 'false' ? false : data.value;
+        return this.content[folder];
+      }
+      return null;
+    }
+
+    return null;
+  }
+
   set(folder, value) {
     this.start();
-    if (typeof folder === 'string') {
-      this.content[folder] = value;
-      global.localStorage.setItem('ponyHouse-env', JSON.stringify(this.content));
-      this.emit(folder, value);
+    if (typeof folder === 'string' && (typeof value === 'string' || typeof value === 'boolean')) {
+      if (folder.length <= 20) {
+        this.content[folder] = value;
+
+        if (!__ENV_APP__.ELECTRON_MODE) {
+          global.localStorage.setItem('ponyHouse-env', JSON.stringify(this.content));
+        } else if (global.tinyDB) {
+          global.tinyDB.run(
+            `INSERT OR REPLACE INTO envData (id, unix, value) VALUES($id, $unix, $value);`,
+            {
+              $id: folder,
+              $unix: moment().unix(),
+              $value: String(value),
+            },
+          );
+        }
+
+        this.emit(folder, value);
+      } else {
+        console.error('ENV value name length is greater than the limit! Limit: 20');
+      }
     }
   }
 }
