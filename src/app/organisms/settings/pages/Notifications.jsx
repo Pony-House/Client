@@ -62,7 +62,7 @@ function NotificationsSection() {
             options={renderOptions()}
             content={
               <div className="very-small text-gray">
-                Show desktop notification when new messages arrive.
+                Show notification when new messages arrive.
               </div>
             }
           />
