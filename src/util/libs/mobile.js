@@ -21,6 +21,9 @@ class MobileEvents extends EventEmitter {
 
       App.addListener('appUrlOpen', (data) => tinyThis.emit('appUrlOpen', data));
       App.addListener('appRestoredResult', (data) => tinyThis.emit('appRestoredResult', data));
+      App.addListener('pause', (data) => tinyThis.emit('pause', data));
+      App.addListener('resume', (data) => tinyThis.emit('resume', data));
+      App.addListener('backButton', (data) => tinyThis.emit('backButton', data));
 
       if (__ENV_APP__.MODE === 'development') {
         App.addListener('appStateChange', ({ isActive }) => {
