@@ -182,8 +182,8 @@ FileInput.defaultProps = {
   onChange: null,
   capture: null,
   required: false,
-  webkitdirectory: false,
-  directory: false,
+  // webkitdirectory: false,
+  // directory: false,
   multiple: false,
 };
 FileInput.propTypes = {
@@ -191,8 +191,8 @@ FileInput.propTypes = {
   onChange: PropTypes.func,
   capture: PropTypes.string,
   required: PropTypes.bool,
-  webkitdirectory: PropTypes.bool,
-  directory: PropTypes.bool,
+  // webkitdirectory: PropTypes.bool,
+  // directory: PropTypes.bool,
   multiple: PropTypes.bool,
 };
 
