@@ -89,10 +89,11 @@ export function isMobile(isNative = false) {
 }
 
 export function notificationStatus() {
-  if (!Capacitor.isNativePlatform() && window.Notification?.permission) {
+  const mobileMode = Capacitor.isNativePlatform();
+  if (!mobileMode && window.Notification?.permission) {
     return window.Notification?.permission;
   }
-  if (Capacitor.isNativePlatform() && mobileEvents.allowNotifications.display) {
+  if (mobileMode && mobileEvents.allowNotifications.display) {
     return mobileEvents.allowNotifications.display;
   }
 
@@ -104,10 +105,11 @@ export function noNotification() {
 }
 
 export function requestNotification() {
-  if (!Capacitor.isNativePlatform()) {
+  const mobileMode = Capacitor.isNativePlatform();
+  if (!mobileMode) {
     return window.Notification.requestPermission();
   }
-  if (Capacitor.isNativePlatform()) {
+  if (mobileMode) {
     return mobileEvents.checkNotificationPerm();
   }
 
