@@ -11,8 +11,26 @@ class MobileEvents extends EventEmitter {
     this.allowNotifications = { display: null };
 
     const tinyThis = this;
-    if (Capacitor.isNativePlatform())
+    if (Capacitor.isNativePlatform()) {
       App.addListener('backButton', (data) => tinyThis.emit('backButton', data));
+      App.addListener('appStateChange', (data) => tinyThis.emit('appStateChange', data));
+      App.addListener('appUrlOpen', (data) => tinyThis.emit('appUrlOpen', data));
+      App.addListener('appRestoredResult', (data) => tinyThis.emit('appRestoredResult', data));
+
+      if (__ENV_APP__.MODE === 'development') {
+        App.addListener('appStateChange', ({ isActive }) => {
+          console.log('[mobile] App state changed. Is active?', isActive);
+        });
+
+        App.addListener('appUrlOpen', (data) => {
+          console.log('[mobile] App opened with URL:', data);
+        });
+
+        App.addListener('appRestoredResult', (data) => {
+          console.log('[mobile] Restored state:', data);
+        });
+      }
+    }
   }
 
   checkNotificationPerm() {
