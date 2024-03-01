@@ -25,7 +25,7 @@ class EnvAPI extends EventEmitter {
     }
   }
 
-  async start() {
+  start() {
     if (!this.Initialized) {
       this.Initialized = true;
 
