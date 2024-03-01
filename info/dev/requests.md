@@ -1,3 +1,5 @@
+    scaleDownImage to gif
+
     Mobile Background mode
     Mobile Rec audio
 

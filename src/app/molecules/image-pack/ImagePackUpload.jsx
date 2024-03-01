@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { scaleDownImage } from '../../../util/common';
+// import { scaleDownImage } from '../../../util/common';
 
 import Text from '../../atoms/text/Text';
 import Button from '../../atoms/button/Button';
@@ -26,8 +26,9 @@ function ImagePackUpload({ onUpload, roomId }) {
     if (shortcode === '') return;
 
     setProgress(true);
-    const image = await scaleDownImage(imgFile, 512, 512);
-    const { content_uri: url } = await uploadContent(image, true);
+    // const image = await scaleDownImage(imgFile, 512, 512);
+    // const { content_uri: url } = await uploadContent(image, true);
+    const { content_uri: url } = await uploadContent(imgFile);
 
     onUpload(shortcode, url);
     setProgress(false);
