@@ -54,7 +54,6 @@ export const tabText = {
 const tabItems = [];
 const buildTabItems = () => {
   if (tabItems.length < 1) {
-
     tabItems.push({
       text: tabText.PROFILE,
       faSrc: 'fa-solid fa-id-card',
@@ -200,7 +199,6 @@ const buildTabItems = () => {
         }
       },
     });
-
   }
 };
 

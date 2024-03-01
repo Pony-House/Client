@@ -12,20 +12,19 @@ import web3Talk from '@src/util/web3/xmtp';
 import envAPI from '@src/util/libs/env';
 
 function App() {
-
   const [firstTime, setFirstTime] = useState(true);
 
   useEffect(() => {
     if (firstTime) envAPI.startDB().then(() => setFirstTime(false));
   });
 
-  if (!firstTime) { startWeb3(() => web3Talk.start()); }
-  else {
+  if (!firstTime) {
+    startWeb3(() => web3Talk.start());
+  } else {
     return null;
   }
 
   return isAuthenticated() ? <Client /> : <Auth />;
-
 }
 
 export default App;

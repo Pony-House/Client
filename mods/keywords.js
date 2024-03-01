@@ -20,7 +20,6 @@ const defaultNames = {
 const keywords = [];
 const startKeyWords = () => {
   if (keywords.length < 1) {
-
     // Booru
     keywords.push({
       title: `Derpibooru - ${defaultNames.philomena}`,
@@ -367,11 +366,9 @@ const startKeyWords = () => {
         href: `https://trustwallet.com/`,
       });
     }
-
   }
 
   return keywords;
-
 };
 
 export default startKeyWords;

@@ -55,14 +55,16 @@ const tinywordsDB = {};
 let keywords = [];
 const insertKeyWords = () => {
   if (keywords.length < 1) {
-
     const tinywords = [];
     keywords = startKeyWords();
 
     for (const item in keywords) {
       if (typeof keywords[item].name === 'string') {
         tinywords.push(keywords[item].name);
-        tinywordsDB[keywords[item].name] = { href: keywords[item].href, title: keywords[item].title };
+        tinywordsDB[keywords[item].name] = {
+          href: keywords[item].href,
+          title: keywords[item].title,
+        };
       } else if (Array.isArray(keywords[item].name) && keywords[item].name.length > 0) {
         for (const item2 in keywords[item].name) {
           if (typeof keywords[item].name[item2] === 'string') {
@@ -77,7 +79,6 @@ const insertKeyWords = () => {
     }
 
     linkifyRegisterKeywords(tinywords);
-
   }
 };
 
@@ -122,53 +123,53 @@ const mathOptions = {
 const tinyRender = {
   html:
     (type) =>
-      ({ attributes, content }) => {
-        if (tinyLinkifyFixer(type, content)) {
-          let tinyAttr = '';
-          for (const attr in attributes) {
-            tinyAttr += ` ${attr}${attributes[attr].length > 0 ? `=${attributes[attr]}` : ''}`;
-          }
-
-          if (type === 'keyword') {
-            tinyAttr += ' iskeyword="true"';
-          } else {
-            tinyAttr += ' iskeyword="false"';
-          }
-
-          const db = tinywordsDB[content.toLowerCase()];
-          return `<a${tinyAttr} title="${db?.title}">${content}</a>`;
+    ({ attributes, content }) => {
+      if (tinyLinkifyFixer(type, content)) {
+        let tinyAttr = '';
+        for (const attr in attributes) {
+          tinyAttr += ` ${attr}${attributes[attr].length > 0 ? `=${attributes[attr]}` : ''}`;
         }
 
-        return content;
-      },
+        if (type === 'keyword') {
+          tinyAttr += ' iskeyword="true"';
+        } else {
+          tinyAttr += ' iskeyword="false"';
+        }
+
+        const db = tinywordsDB[content.toLowerCase()];
+        return `<a${tinyAttr} title="${db?.title}">${content}</a>`;
+      }
+
+      return content;
+    },
 
   react:
     (type) =>
-      ({ attributes, content }) => {
-        if (tinyLinkifyFixer(type, content)) {
-          const { href, ...props } = attributes;
-          const db = tinywordsDB[content.toLowerCase()];
-          const result = (
-            <a
-              href={href}
-              onClick={(e) => {
-                e.preventDefault();
-                openTinyURL($(e.target).attr('href'), $(e.target).attr('href'));
-                return false;
-              }}
-              {...props}
-              iskeyword={type === 'keyword' ? 'true' : 'false'}
-              className="lk-href"
-            >
-              {content}
-            </a>
-          );
+    ({ attributes, content }) => {
+      if (tinyLinkifyFixer(type, content)) {
+        const { href, ...props } = attributes;
+        const db = tinywordsDB[content.toLowerCase()];
+        const result = (
+          <a
+            href={href}
+            onClick={(e) => {
+              e.preventDefault();
+              openTinyURL($(e.target).attr('href'), $(e.target).attr('href'));
+              return false;
+            }}
+            {...props}
+            iskeyword={type === 'keyword' ? 'true' : 'false'}
+            className="lk-href"
+          >
+            {content}
+          </a>
+        );
 
-          return db?.title ? <Tooltip content={<small>{db.title}</small>}>{result}</Tooltip> : result;
-        }
+        return db?.title ? <Tooltip content={<small>{db.title}</small>}>{result}</Tooltip> : result;
+      }
 
-        return <span>{content}</span>;
-      },
+      return <span>{content}</span>;
+    },
 };
 
 tinyRender.list = {
