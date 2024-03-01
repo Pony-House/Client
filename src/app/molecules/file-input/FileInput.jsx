@@ -59,12 +59,19 @@ const FileInput = React.forwardRef(
   },
 );
 
-const uploadContent = (file, forceDefault = false) => {
+const uploadContent = (file, ops, forceDefault = false) => {
   if (!Capacitor.isNativePlatform() || forceDefault) {
     return initMatrix.matrixClient.uploadContent(file);
   }
-  console.log('uploadContent', Buffer.from(file.data, 'base64'));
-  return initMatrix.matrixClient.uploadContent(Buffer.from(file.data, 'base64'));
+  return initMatrix.matrixClient.uploadContent(
+    Buffer.from(file.data, 'base64'),
+    objType(ops, 'object')
+      ? ops
+      : {
+          type: file.type,
+          name: file.name,
+        },
+  );
 };
 
 const createObjectURL = (file, forceDefault = false) => {
