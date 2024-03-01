@@ -668,11 +668,11 @@ function RoomViewContent({
 
   useEffect(() => {
     const forceUpdateTime = () => forceUpdateLimit();
-    windowEvents.on('setWindowVisible', forceUpdateTime);
-    windowEvents.on('setEvtMap', forceUpdateTime);
+    // windowEvents.on('setWindowVisible', forceUpdateTime);
+    // windowEvents.on('setEvtMap', forceUpdateTime);
     return () => {
-      windowEvents.off('setWindowVisible', forceUpdateTime);
-      windowEvents.off('setEvtMap', forceUpdateTime);
+      // windowEvents.off('setWindowVisible', forceUpdateTime);
+      // windowEvents.off('setEvtMap', forceUpdateTime);
     };
   });
 
