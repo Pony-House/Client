@@ -126,6 +126,10 @@ This client sends notification permission requests at the exact moment the page 
 
 Yep. To disable it via the client, you need to go to the settings tabs. To permanently deactivate the features, you need to modify the `.env` file so you can deploy a client without access to the features.
 
+### My browser keeps opening crypto wallet randomly
+
+It looks like you are using a browser that has a native crypto wallet. This is not an extension installed in your browser, I'm referring to something in your browser itself. (Example: Brave and Opera) And even with crypto features turned off, for some mysterious reason your browser still thinks it's a good idea to send you a ad to try force you to use the browser crypto wallet. If you want to disable this, research how to disable your browser's native crypto wallet.
+
 ### This client has web3 functionalities. Is this matrix client a crypto wallet?
 
 Nope. Pony House has access to crypto wallet APIs that are installed in your browser or on your computer. And this function can be turned off in the settings.
