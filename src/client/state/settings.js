@@ -1,8 +1,7 @@
 import { StatusBar } from '@capacitor/status-bar';
-import { Capacitor } from '@capacitor/core';
 
 import EventEmitter from 'events';
-import { notificationStatus } from '@src/util/libs/mobile';
+import { isMobile, notificationStatus } from '@src/util/libs/mobile';
 
 import appDispatcher from '../dispatcher';
 
@@ -183,7 +182,7 @@ class Settings extends EventEmitter {
   changeMobileBackground(value = 'default') {
     const data = this.themes[this.themeIndex]?.data;
     return new Promise((resolve, reject) => {
-      if (Capacitor.isNativePlatform()) {
+      if (isMobile(true)) {
         try {
           StatusBar.setBackgroundColor({ color: data.statusBar.backgroundColor[value] });
           StatusBar.setStyle({ style: data.statusBar.style });

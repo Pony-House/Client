@@ -1,10 +1,9 @@
 import { Toast } from '@capacitor/toast';
-import { Capacitor } from '@capacitor/core';
 import moment from '@src/util/libs/momentjs';
 
 import tinyAPI from './mods';
 import { twemojify } from './twemojify';
-import mobileEvents from './libs/mobile';
+import mobileEvents, { isMobile } from './libs/mobile';
 
 let resizePlace = null;
 let resizeTimeout = null;
@@ -100,7 +99,7 @@ export function hljsFixer(el, where, callback = function () {}) {
 
 export function toast(msg, title) {
   return new Promise((resolve, reject) => {
-    if (Capacitor.isNativePlatform()) {
+    if (isMobile(true)) {
       Toast.show({ text: msg }).then(resolve).catch(reject);
     } else {
       resolve(alert(msg, title));

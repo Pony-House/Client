@@ -1,15 +1,15 @@
-import { Capacitor } from '@capacitor/core';
 import { Browser } from '@capacitor/browser';
 
 import { btModal, objType } from '../tools';
 import tinyAPI from '../mods';
 import convertProtocols from '../libs/convertProtocols';
 import { setLoadingPage } from '../../app/templates/client/Loading';
+import { isMobile } from '../libs/mobile';
 
 const openUrl = (url) =>
   new Promise((resolve, reject) => {
     // Mobile
-    if (Capacitor.isNativePlatform()) {
+    if (isMobile(true)) {
       Browser.open({ url }).then(resolve).catch(reject);
     }
 

@@ -1,9 +1,8 @@
-import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { NotificationCountType } from 'matrix-js-sdk';
 import EventEmitter from 'events';
 
-import mobileEvents from '@src/util/libs/mobile';
+import mobileEvents, { isMobile } from '@src/util/libs/mobile';
 import { cyrb128 } from '@src/util/tools';
 
 import renderAvatar from '../../../app/atoms/avatar/render';
@@ -62,7 +61,7 @@ class Notifications extends EventEmitter {
     this._listenEvents();
 
     // Ask for permission by default after loading
-    if (Capacitor.isNativePlatform()) {
+    if (isMobile(true)) {
       mobileEvents.checkNotificationPerm();
     } else {
       window.Notification?.requestPermission();
@@ -236,7 +235,7 @@ class Notifications extends EventEmitter {
   async sendNotification(data) {
     try {
       // Android Mode
-      if (Capacitor.isNativePlatform()) {
+      if (isMobile(true)) {
         const notiData = {
           // schedule: { at: new Date(Date.now() + 1000 * 5) },
           // sound: './sound/notification.ogg',

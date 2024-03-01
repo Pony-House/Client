@@ -78,11 +78,14 @@ class MobileEvents extends EventEmitter {
 const mobileEvents = new MobileEvents();
 mobileEvents.setMaxListeners(Infinity);
 
-export function isMobile() {
-  return (
-    Capacitor.isNativePlatform() ||
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  );
+export function isMobile(isNative = false) {
+  if (!isNative) {
+    return (
+      Capacitor.isNativePlatform() ||
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    );
+  }
+  return Capacitor.isNativePlatform();
 }
 
 export function notificationStatus() {
