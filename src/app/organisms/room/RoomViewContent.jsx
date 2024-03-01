@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
+import windowEvents from '@src/util/libs/window';
 
 import { twemojifyReact } from '../../../util/twemojify';
 
@@ -664,6 +665,16 @@ function RoomViewContent({
       timelineSV.off('scroll', handleTimelineScrollJquery);
     };
   }, [listenKeyArrowUp]);
+
+  useEffect(() => {
+    const forceUpdateTime = () => forceUpdateLimit();
+    windowEvents.on('setWindowVisible', forceUpdateTime);
+    windowEvents.on('setEvtMap', forceUpdateTime);
+    return () => {
+      windowEvents.off('setWindowVisible', forceUpdateTime);
+      windowEvents.off('setEvtMap', forceUpdateTime);
+    };
+  });
 
   // Each time the timeline is loaded, this function is called
   const renderTimeline = () => {

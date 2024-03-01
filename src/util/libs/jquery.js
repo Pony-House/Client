@@ -1,3 +1,5 @@
+import windowEvents from './window';
+
 // Window Hidden Detector
 let hiddenWindow = 'windowHidden';
 function onPageShow(event) {
@@ -22,8 +24,15 @@ function onPageShow(event) {
   };
 
   evt = evt || window.event;
-  if (evt.type in evtMap) $('body').addClass(evtMap[evt.type]);
-  else $('body').addClass(this[hiddenWindow] ? 'windowHidden' : 'windowVisible');
+  if (evt.type in evtMap) {
+    const result = evtMap[evt.type];
+    $('body').addClass(result);
+    windowEvents.setEvtMap(result);
+  } else {
+    const result = this[hiddenWindow] ? 'windowHidden' : 'windowVisible';
+    $('body').addClass(result);
+    windowEvents.setWindowVisible(result);
+  }
 }
 
 // Start Query

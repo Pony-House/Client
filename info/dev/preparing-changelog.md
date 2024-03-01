@@ -2,3 +2,4 @@
 - Electron db added.
 - New mobile fixes.
 - File Input tiny update.
+- windowEvents - fix chatbox updater
