@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 import PropTypes from 'prop-types';
+import envAPI from '@src/util/libs/env';
 
 import Text from '../../../atoms/text/Text';
 import * as auth from '../../../../client/action/auth';
@@ -23,6 +24,9 @@ function Homeserver({ onChange, className }) {
 
   const setupHsConfig = async (servername) => {
     if (servername !== '') {
+      setProcess({ isLoading: true, message: 'Loading local database...' });
+      await envAPI.startDB();
+
       setProcess({ isLoading: true, message: 'Looking for homeserver...' });
       let baseUrl = null;
       baseUrl = await getBaseUrl(servername);
