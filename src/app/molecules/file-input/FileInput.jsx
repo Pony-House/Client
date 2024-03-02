@@ -11,26 +11,25 @@ import initMatrix from '@src/client/initMatrix';
 const FileInput = React.forwardRef(
   ({ onChange, accept, required, /* webkitdirectory, directory, */ capture, multiple }, ref) => {
     const inputRef = useRef(null);
+    const isNativeMobile = Capacitor.isNativePlatform();
 
     // Effect
     useEffect(() => {
-      if (typeof onChange === 'function') {
+      if (typeof onChange === 'function' && !isNativeMobile) {
         const fileInput = ref ? $(ref.current) : $(inputRef.current);
         const tinyChange = (event) => {
-          if (!Capacitor.isNativePlatform()) {
-            const changeFunc = (index = 0) => {
-              if (typeof index === 'number') {
-                if (event.originalEvent.target.files.item)
-                  return event.originalEvent.target.files.item(index);
-                return event.originalEvent.target.files[index];
-              }
+          const changeFunc = (index = 0) => {
+            if (typeof index === 'number') {
+              if (event.originalEvent.target.files.item)
+                return event.originalEvent.target.files.item(index);
+              return event.originalEvent.target.files[index];
+            }
 
-              if (typeof index === 'boolean' && index) {
-                return event.originalEvent.target.files.length;
-              }
-            };
-            onChange(event.originalEvent.target, changeFunc);
-          }
+            if (typeof index === 'boolean' && index) {
+              return event.originalEvent.target.files.length;
+            }
+          };
+          onChange(event.originalEvent.target, changeFunc);
         };
 
         // Events
@@ -45,7 +44,7 @@ const FileInput = React.forwardRef(
       <input
         ref={ref || inputRef}
         style={{ display: 'none' }}
-        type="file"
+        type={!isNativeMobile ? 'file' : 'text'}
         accept={
           Array.isArray(accept) ? accept.join(', ') : typeof accept === 'string' ? accept : null
         }
@@ -145,6 +144,7 @@ const fileInputClick = async (inputRef, onChange) => {
           result.files[i].arrayBuffer = () => base64ToArrayBuffer(result.files[i].data);
           result.files[i].toBuffer = () => Buffer.from(result.files[i].data, 'base64');
           result.files[i].atob = () => atob(result.files[i].data);
+          inputRef.current.value = result.files[i].path;
           return result.files[i];
         };
 
