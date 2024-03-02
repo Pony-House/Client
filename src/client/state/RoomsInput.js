@@ -2,6 +2,10 @@ import EventEmitter from 'events';
 import encrypt from 'browser-encrypt-attachment';
 import { encode } from 'blurhash';
 import { EventTimeline } from 'matrix-js-sdk';
+
+import { isMobile } from '@src/util/libs/mobile';
+import { fileReader, uploadContent } from '@src/app/molecules/file-input/FileInput';
+
 import { getShortcodeToEmoji } from '../../app/organisms/emoji-board/custom-emoji';
 import { getBlobSafeMimeType } from '../../util/mimetypes';
 import { sanitizeText } from '../../util/sanitize';
@@ -38,30 +42,26 @@ function loadVideo(videoFile) {
     video.playsInline = true;
     video.muted = true;
 
-    const reader = new FileReader();
-
-    reader.onload = (ev) => {
+    const loadComplete = (result) => {
       // Wait until we have enough data to thumbnail the first frame.
       video.onloadeddata = async () => {
         resolve(video);
         video.pause();
       };
-      video.onerror = (e) => {
-        reject(e);
+      video.onerror = (err) => {
+        reject(err);
       };
 
-      video.src = ev.target.result;
+      video.src = result;
       video.load();
       video.play();
     };
-    reader.onerror = (e) => {
-      reject(e);
-    };
+
     if (videoFile.type === 'video/quicktime') {
       const quicktimeVideoFile = new File([videoFile], videoFile.name, { type: 'video/mp4' });
-      reader.readAsDataURL(quicktimeVideoFile);
+      fileReader(quicktimeVideoFile, 'readAsDataURL').then(loadComplete).catch(reject);
     } else {
-      reader.readAsDataURL(videoFile);
+      fileReader(videoFile, 'readAsDataURL').then(loadComplete).catch(reject);
     }
   });
 }
@@ -348,7 +348,9 @@ class RoomsInput extends EventEmitter {
     let uploadData = null;
 
     if (fileType === 'image') {
-      const img = await loadImage(URL.createObjectURL(file));
+      const img = await loadImage(
+        !isMobile(true) ? URL.createObjectURL(file) : `data:${file.type};base64, ${file.data}`,
+      );
 
       info.w = img.width;
       info.h = img.height;
@@ -434,7 +436,7 @@ class RoomsInput extends EventEmitter {
       encryptBlob = new Blob([encryptedResult.data]);
     }
 
-    const uploadingPromise = this.matrixClient.uploadContent(isEncryptedRoom ? encryptBlob : file, {
+    const uploadingPromise = uploadContent(isEncryptedRoom ? encryptBlob : file, {
       // don't send filename if room is encrypted.
       includeFilename: !isEncryptedRoom,
       progressHandler,

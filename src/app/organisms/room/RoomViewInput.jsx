@@ -6,7 +6,11 @@ import moment from '@src/util/libs/momentjs';
 import { ReactEditor } from 'slate-react';
 import { Editor, Transforms } from 'slate';
 
-import FileInput, { fileInputClick, fileInputValue } from '@src/app/molecules/file-input/FileInput';
+import FileInput, {
+  createObjectURL,
+  fileInputClick,
+  fileInputValue,
+} from '@src/app/molecules/file-input/FileInput';
 
 import threadsList from '@src/util/libs/thread';
 import { isMobile } from '@src/util/libs/mobile';
@@ -1101,7 +1105,14 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
           }`}
         >
           {fileType === 'image' && (
-            <img alt={attachment.name} src={URL.createObjectURL(attachment)} />
+            <img
+              alt={attachment.name}
+              src={
+                !isMobile(true)
+                  ? createObjectURL(attachment)
+                  : `data:${attachment.type};base64, ${attachment.data}`
+              }
+            />
           )}
           {fileType === 'video' && <RawIcon fa="fa-solid fa-film" />}
           {fileType === 'audio' && <RawIcon fa="fa-solid fa-volume-high" />}

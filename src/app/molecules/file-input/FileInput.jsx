@@ -62,22 +62,25 @@ const uploadContent = (file, ops, forceDefault = false) => {
   if (!Capacitor.isNativePlatform() || forceDefault) {
     return initMatrix.matrixClient.uploadContent(file);
   }
-  return initMatrix.matrixClient.uploadContent(
-    Buffer.from(file.data, 'base64'),
-    objType(ops, 'object')
-      ? ops
-      : {
-          type: file.type,
-          name: file.name,
-        },
-  );
+
+  const tinyOps = {
+    type: file.type,
+    name: file.name,
+  };
+
+  if (objType(ops, 'object')) {
+    for (const item in ops) {
+      tinyOps[item] = ops[item];
+    }
+  }
+
+  return initMatrix.matrixClient.uploadContent(Buffer.from(file.data, 'base64'), tinyOps);
 };
 
 const createObjectURL = (file, forceDefault = false) => {
   if (!Capacitor.isNativePlatform() || forceDefault) {
     return URL.createObjectURL(file);
   }
-  console.log('createObjectURL', file.data);
   return URL.createObjectURL(file.data);
 };
 
@@ -85,7 +88,6 @@ const convertToBase64Mobile = (file) => {
   if (!Capacitor.isNativePlatform()) {
     return file;
   }
-  console.log('convertToBase64Mobile', file.data);
   return file.data;
 };
 
@@ -99,8 +101,14 @@ const fileReader = (file, readerType = 'readAsText') =>
       if (!Capacitor.isNativePlatform()) {
         reader[readerType](file);
       } else {
-        console.log('fileReader', file.atob());
-        fileReader(file.atob());
+        if (readerType === 'readAsText') {
+          resolve(file.atob());
+        }
+
+        // TEMP
+        if (readerType === 'readAsDataURL') {
+          resolve(file.atob());
+        }
       }
     } catch (err) {
       reject(err);
