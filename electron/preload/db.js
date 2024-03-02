@@ -42,6 +42,25 @@ const tinyDB = {
         );
     `,
       );
+
+      // History
+      await tinyDB.run(
+        `
+        CREATE TABLE IF NOT EXISTS room_events (
+            id TEXT,
+            event_id TEXT,
+            room_id TEXT,
+            thread_id TEXT,
+            type TEXT,
+            sender TEXT,
+            origin_server_ts BIGINT,
+            is_redaction BOOLEAN,
+            unsigned JSON,
+            content JSON,
+            PRIMARY KEY (id)
+        );
+    `,
+      );
     }
   },
 
