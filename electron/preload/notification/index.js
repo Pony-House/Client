@@ -95,6 +95,7 @@ export default function startNotifications(arg) {
     if (arg?.tag) {
       if (!notifications[arg.tag]) {
         notifications[arg.tag] = { validated: false, resolve, reject, event: new MyEmitter() };
+        notifications[arg.tag].event.setMaxListeners(Infinity);
         ipcRenderer.send('tiny-notification-create', arg);
       } else {
         reject(new Error('This tag exist.'));

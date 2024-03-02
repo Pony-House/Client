@@ -1,4 +1,6 @@
     scaleDownImage to gif
+
+    Mobile:
     if (readerType === 'readAsDataURL')
     uploadContent(isEncryptedRoom
 

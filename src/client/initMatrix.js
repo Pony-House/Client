@@ -109,6 +109,7 @@ class InitMatrix extends EventEmitter {
     await envAPI.startDB();
     await indexedDBStore.startup();
     await this.matrixClient.initCrypto();
+    this.matrixClient.setMaxListeners(Infinity);
 
     await this.matrixClient.startClient({
       lazyLoadMembers: true,
