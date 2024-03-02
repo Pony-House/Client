@@ -1,6 +1,12 @@
 import moment from 'moment-timezone';
 import sqlite3 from 'sqlite3';
 
+const buildError = (err) => ({
+  code: err.code,
+  message: err.message,
+  stack: err.stack,
+});
+
 export default async function tinyDB(filename, ipcMain, newWin) {
   return new Promise((resolve) => {
     const db = new sqlite3.Database(filename);
@@ -18,13 +24,17 @@ export default async function tinyDB(filename, ipcMain, newWin) {
             db[type](value1, value2, (err, data) => {
               tinyCache.using = false;
               if (!err) resolve2(data);
-              else reject(err);
+              else {
+                console.error(err);
+                reject(buildError(err));
+              }
             });
           } catch (err) {
-            reject(err);
+            console.error(err);
+            reject(buildError(err));
           }
         } else {
-          tinyCache.push({ value1, value2, resolve: resolve2, reject, type });
+          tinyCache.send.push({ value1, value2, resolve: resolve2, reject, type });
           tinyCache.recheck();
         }
       });
@@ -34,7 +44,7 @@ export default async function tinyDB(filename, ipcMain, newWin) {
         if (!tinyCache.using) {
           // Data
           tinyCache.using = true;
-          const newData = tinyCache.shift();
+          const newData = tinyCache.send.shift();
           tinyCache
             .run(newData.type, newData.value1, newData.value2, true)
             .then(newData.resolve)

@@ -83,8 +83,13 @@ contextBridge.exposeInMainWorld('tinyDB', tinyDB);
 
 ipcRenderer.on('requestDB', (event, result) => {
   if (dbCache[result.id]) {
-    if (typeof result.err !== 'undefined') dbCache[result.id].reject(clone(result.err));
-    else dbCache[result.id].resolve(clone(result.result));
+    if (typeof result.err !== 'undefined') {
+      const err = clone(result.err);
+      const error = new Error(err.message);
+      error.code = err.code;
+      error.stack = err.stack;
+      dbCache[result.id].reject(error);
+    } else dbCache[result.id].resolve(clone(result.result));
     delete dbCache[result.id];
   }
 });
