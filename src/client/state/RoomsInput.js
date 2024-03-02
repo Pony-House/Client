@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import encrypt from 'browser-encrypt-attachment';
+import encrypt from 'matrix-encrypt-attachment';
 import { encode } from 'blurhash';
 import { EventTimeline } from 'matrix-js-sdk';
 

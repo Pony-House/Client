@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import encrypt from 'browser-encrypt-attachment';
+import encrypt from 'matrix-encrypt-attachment';
 
 import { BlurhashCanvas } from 'react-blurhash';
 import imageViewer from '../../../util/imageViewer';
