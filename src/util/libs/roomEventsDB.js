@@ -1,9 +1,10 @@
 import initMatrix from '@src/client/initMatrix';
 import { objType } from '../tools';
+import envAPI from './env';
 
 export function canUseRoomEventsDB() {
   return (
-    __ENV_APP__.ELECTRON_MODE && __ENV_APP__.SAVE_ROOM_DB && typeof global.tinyDB !== 'undefined'
+    __ENV_APP__.ELECTRON_MODE && envAPI.get('SAVE_ROOM_DB') && typeof global.tinyDB !== 'undefined'
   );
 }
 

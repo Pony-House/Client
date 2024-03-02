@@ -30,6 +30,10 @@ class EnvAPI extends EventEmitter {
         if (typeof __ENV_APP__.IPFS === 'boolean' && __ENV_APP__.IPFS) {
           await this.getDB('IPFS');
         }
+
+        if (typeof __ENV_APP__.SAVE_ROOM_DB === 'boolean' && __ENV_APP__.SAVE_ROOM_DB) {
+          await this.getDB('SAVE_ROOM_DB');
+        }
       }
     }
   }
@@ -58,6 +62,12 @@ class EnvAPI extends EventEmitter {
         this.content.IPFS = typeof this.content.IPFS === 'boolean' ? this.content.IPFS : true;
       } else {
         this.content.IPFS = false;
+      }
+
+      if (typeof __ENV_APP__.SAVE_ROOM_DB === 'boolean' && __ENV_APP__.SAVE_ROOM_DB) {
+        this.content.SAVE_ROOM_DB = typeof this.content.SAVE_ROOM_DB === 'boolean' ? this.content.SAVE_ROOM_DB : true;
+      } else {
+        this.content.SAVE_ROOM_DB = false;
       }
     }
   }

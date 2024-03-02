@@ -28,6 +28,7 @@ function Login({ loginFlow, baseUrl }) {
 
   const [WEB3, setWEB3] = useState(envAPI.get('WEB3'));
   const [IPFS, setIPFS] = useState(envAPI.get('IPFS'));
+  const [SAVE_ROOM_DB, setSAVEROOMDB] = useState(envAPI.get('SAVE_ROOM_DB'));
 
   const initialValues = {
     username: '',
@@ -78,7 +79,8 @@ function Login({ loginFlow, baseUrl }) {
     const newData = !envAPI.get(value);
     envAPI.set(value, newData);
     if (value === 'WEB3') setWEB3(newData);
-    else setIPFS(newData);
+    else if (value === 'IPFS') setIPFS(newData);
+    else if (value === 'SAVE_ROOM_DB') setSAVEROOMDB(newData);
   };
 
   return (
@@ -202,6 +204,22 @@ function Login({ loginFlow, baseUrl }) {
                     />
                     <label class="form-check-label" htmlFor="ipfsCheck">
                       Enable IPFS features
+                    </label>
+                  </div>
+                ) : null}
+
+                {__ENV_APP__.ELECTRON_MODE && __ENV_APP__.SAVE_ROOM_DB ? (
+                  <div class="form-check form-switch">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="saveRoomDbCheck"
+                      checked={SAVE_ROOM_DB}
+                      onClick={() => editENV('SAVE_ROOM_DB')}
+                    />
+                    <label class="form-check-label" htmlFor="saveRoomDbCheck">
+                      Enable room local DB features
                     </label>
                   </div>
                 ) : null}
