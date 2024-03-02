@@ -5,6 +5,25 @@ export function canUseRoomEventsDB() {
     return __ENV_APP__.ELECTRON_MODE && typeof global.tinyDB !== 'undefined';
 }
 
+export function loadRoomEventsDB() {
+    return new Promise((resolve, reject) => {
+        if (canUseRoomEventsDB()) {
+
+            const selector = {};
+
+            global.tinyDB.all(`SELECT * FROM room_events WHERE 
+            room_id=$room_id
+            room_id=$room_id
+            thread_id=$thread_id
+            thread_root_id=$thread_root_id;
+            `, selector).then(resolve).catch(reject);
+
+        } else {
+            reject(new Error('RoomEventsDB is disabled.'));
+        }
+    });
+}
+
 export function insertIntoRoomEventsDB(event, needsDecrypt = false) {
     return new Promise((resolve, reject) => {
         if (canUseRoomEventsDB()) {
@@ -17,6 +36,7 @@ export function insertIntoRoomEventsDB(event, needsDecrypt = false) {
                     $event_id: event.getId(),
                     $room_id: event.getRoomId(),
                     $thread_id: thread && typeof thread.id === 'string' ? thread.id : null,
+                    $thread_root_id: thread && thread.rootEvent ? thread.rootEvent.getId() : null,
                     $type: event.getType(),
                     $sender: event.getSender(),
                     $origin_server_ts: event.getTs(),
@@ -31,6 +51,7 @@ export function insertIntoRoomEventsDB(event, needsDecrypt = false) {
                     event_id,
                     room_id,
                     thread_id,
+                    thread_root_id,
                     type,
                     sender,
                     origin_server_ts,
@@ -42,6 +63,7 @@ export function insertIntoRoomEventsDB(event, needsDecrypt = false) {
                     $event_id,
                     $room_id,
                     $thread_id,
+                    $thread_root_id,
                     $type,
                     $sender,
                     $origin_server_ts,

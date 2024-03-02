@@ -51,6 +51,7 @@ const tinyDB = {
             event_id TEXT,
             room_id TEXT,
             thread_id TEXT,
+            thread_root_id TEXT,
             type TEXT,
             sender TEXT,
             origin_server_ts BIGINT,
