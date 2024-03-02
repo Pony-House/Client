@@ -4,7 +4,7 @@ import { Capacitor } from '@capacitor/core';
 import { Filesystem } from '@capacitor/filesystem';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 
-import { base64ToArrayBuffer, objType } from '@src/util/tools';
+import { objType } from '@src/util/tools';
 import initMatrix from '@src/client/initMatrix';
 
 // Build HTML
@@ -149,8 +149,7 @@ const fileInputClick = async (inputRef, onChange) => {
           result.files[i].type = result.files[i].mimeType;
           result.files[i].lastModified = result.files[i].modifiedAt;
           result.files[i].lastModifiedDate = new Date(result.files[i].modifiedAt);
-          result.files[i].arrayBuffer = () => base64ToArrayBuffer(result.files[i].data);
-          result.files[i].toBuffer = () => Buffer.from(result.files[i].data, 'base64');
+          result.files[i].arrayBuffer = () => Buffer.from(result.files[i].data, 'base64');
           result.files[i].atob = () => atob(result.files[i].data);
           inputRef.current.value = result.files[i].path;
           return result.files[i];
