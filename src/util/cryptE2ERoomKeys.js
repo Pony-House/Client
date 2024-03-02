@@ -15,6 +15,7 @@ const subtleCrypto = window.crypto.subtle || window.crypto.webkitSubtle;
 function friendlyError(msg, friendlyText) {
   const e = new Error(msg);
   e.friendlyText = friendlyText;
+  console.error(e);
   return e;
 }
 
