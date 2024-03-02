@@ -2,7 +2,9 @@ import initMatrix from '@src/client/initMatrix';
 import { objType } from '../tools';
 
 export function canUseRoomEventsDB() {
-  return __ENV_APP__.ELECTRON_MODE && typeof global.tinyDB !== 'undefined';
+  return (
+    __ENV_APP__.ELECTRON_MODE && __ENV_APP__.SAVE_ROOM_DB && typeof global.tinyDB !== 'undefined'
+  );
 }
 
 export function loadRoomEventsDB() {
