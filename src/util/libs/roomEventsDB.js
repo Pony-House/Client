@@ -2,6 +2,7 @@ import clone from 'clone';
 import initMatrix from '@src/client/initMatrix';
 import { objType } from '../tools';
 import envAPI from './env';
+import moment from 'moment-timezone';
 
 // Anti Lag
 const delayCache = {
@@ -88,7 +89,7 @@ export function loadRoomEventsDB(data) {
 
         let orderType = 'DESC';
         if (typeof data.orderBy === 'string') selector.$order_by = data.orderBy;
-        if (typeof data.orderType === 'string' && orderType === 'ASC') orderType = data.orderType;
+        if (typeof data.orderType === 'string' && data.orderType === 'ASC') orderType = data.orderType;
 
         // Detect Mode
         const isPagination =
@@ -112,6 +113,9 @@ export function loadRoomEventsDB(data) {
         ${isPagination ? 'OFFSET $skip' : ''}
         `;
 
+        console.log(query);
+        console.log(selector);
+
         global.tinyDB
           .all(query, selector)
           .then((result) => {
@@ -122,6 +126,7 @@ export function loadRoomEventsDB(data) {
               newData.eventId = result[item].event_id;
               newData.isRedaction = !!result[item].is_redaction;
               newData.originServerTs = result[item].origin_server_ts;
+              newData.momentTs = moment(result[item].origin_server_ts);
               newData.roomId = result[item].room_id;
               newData.sender = result[item].sender;
               newData.threadId = result[item].thread_id;
