@@ -3,6 +3,7 @@ import EventEmitter from 'events';
 import clone from 'clone';
 import objectHash from 'object-hash';
 import moment from '@src/util/libs/momentjs';
+import { insertIntoRoomEventsDB } from '@src/util/libs/roomEventsDB';
 
 import {
   Direction,
@@ -569,6 +570,7 @@ class RoomTimeline extends EventEmitter {
 
   // Add to timeline
   addToTimeline(mEvent) {
+    insertIntoRoomEventsDB(mEvent).catch(console.error);
     const evType = mEvent.getType();
     if (evType !== 'pony.house.crdt' && !messageIsClassicCrdt(mEvent)) {
       // Filter Room Member Event and Matrix CRDT Events

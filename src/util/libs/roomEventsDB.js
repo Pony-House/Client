@@ -89,7 +89,8 @@ export function loadRoomEventsDB(data) {
 
         let orderType = 'DESC';
         if (typeof data.orderBy === 'string') selector.$order_by = data.orderBy;
-        if (typeof data.orderType === 'string' && data.orderType === 'ASC') orderType = data.orderType;
+        if (typeof data.orderType === 'string' && data.orderType === 'ASC')
+          orderType = data.orderType;
 
         // Detect Mode
         const isPagination =
