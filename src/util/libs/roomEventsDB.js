@@ -31,25 +31,58 @@ export function canUseRoomEventsDB() {
   );
 }
 
-export function loadRoomEventsDB() {
+export function loadRoomEventsDB(data) {
   return new Promise((resolve, reject) => {
-    if (canUseRoomEventsDB()) {
-      const selector = {};
+    if (objType(data, 'object')) {
+      if (canUseRoomEventsDB()) {
+        const selector = {};
 
-      global.tinyDB
-        .all(
-          `SELECT * FROM room_events WHERE 
-            room_id=$room_id
-            room_id=$room_id
-            thread_id=$thread_id
-            thread_root_id=$thread_root_id;
-            `,
-          selector,
-        )
-        .then(resolve)
-        .catch(reject);
+        // Get Values
+        if (typeof data.roomId === 'string') selector.$room_id = data.roomId;
+        if (typeof data.threadId === 'string') selector.$thread_id = data.threadId;
+        if (typeof data.threadRootId === 'string') selector.$thread_root_id = data.threadRootId;
+
+        if (typeof data.orderBy === 'string') selector.$order_by = data.orderBy;
+
+        // Detect Mode
+        const isPagination = (
+          typeof data.page === 'number' &&
+          typeof data.perPage === 'number' &&
+          data.perPage > 0 &&
+          data.page > 0
+        );
+
+        // Pagination Mode
+        if (isPagination) {
+          selector.$skip = Number(data.page - 1) * data.perPage;
+          selector.$per_page = data.perPage;
+        }
+
+        // Limit Mode
+        else if (typeof data.limit === 'number') selector.$limit = data.limit;
+
+        global.tinyDB
+          .all(
+            `SELECT * FROM room_events WHERE 
+          ${typeof data.roomId === 'string' ? 'room_id=$room_id' : ''}
+          ${typeof data.threadId === 'string' ? 'thread_id=$thread_id' : ''}
+          ${typeof data.threadRootId === 'string' ? 'thread_root_id=$thread_root_id' : ''}
+
+          ${typeof data.orderBy === 'string' ? 'ORDER BY $order_by' : ''}
+
+          ${isPagination ? 'OFFSET $skip ROWS FETCH NEXT $per_page ROWS ONLY' : `
+            ${typeof data.limit === 'number' ? 'LIMIT $limit' : ''}
+          `}
+          `,
+            selector,
+          )
+          .then(resolve)
+          .catch(reject);
+      } else {
+        reject(new Error('RoomEventsDB is disabled.'));
+      }
     } else {
-      reject(new Error('RoomEventsDB is disabled.'));
+      reject(new Error('Invalid object type.'));
     }
   });
 }
@@ -130,6 +163,7 @@ export function insertIntoRoomEventsDB(event, needsDecrypt = false) {
 if (__ENV_APP__.MODE === 'development') {
   global.roomEventsDB = {
     canUse: canUseRoomEventsDB,
+    loadData: loadRoomEventsDB,
     insertInto: insertIntoRoomEventsDB,
   };
 }

@@ -5,6 +5,7 @@ const buildError = (err) => ({
   code: err.code,
   message: err.message,
   stack: err.stack,
+  errno: err.errno,
 });
 
 export default async function tinyDB(filename, ipcMain, newWin) {

@@ -88,6 +88,7 @@ ipcRenderer.on('requestDB', (event, result) => {
       const error = new Error(err.message);
       error.code = err.code;
       error.stack = err.stack;
+      error.errno = err.errno;
       dbCache[result.id].reject(error);
     } else dbCache[result.id].resolve(clone(result.result));
     delete dbCache[result.id];
