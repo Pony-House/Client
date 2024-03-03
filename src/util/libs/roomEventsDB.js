@@ -1,8 +1,8 @@
 import clone from 'clone';
+import moment from 'moment-timezone';
 import initMatrix from '@src/client/initMatrix';
 import { objType } from '../tools';
 import envAPI from './env';
-import moment from 'moment-timezone';
 
 // Anti Lag
 const delayCache = {
@@ -112,9 +112,6 @@ export function loadRoomEventsDB(data) {
         ${typeof data.limit === 'number' ? 'LIMIT $limit' : ''}
         ${isPagination ? 'OFFSET $skip' : ''}
         `;
-
-        console.log(query);
-        console.log(selector);
 
         global.tinyDB
           .all(query, selector)
