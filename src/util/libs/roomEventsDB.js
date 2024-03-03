@@ -65,12 +65,11 @@ export function loadRoomEventsDB(data) {
         if (typeof data.orderBy === 'string') selector.$order_by = data.orderBy;
 
         // Detect Mode
-        const isPagination = (
+        const isPagination =
           typeof data.page === 'number' &&
           typeof data.perPage === 'number' &&
           data.perPage > 0 &&
-          data.page > 0
-        );
+          data.page > 0;
 
         // Pagination Mode
         if (isPagination) {
@@ -85,18 +84,20 @@ export function loadRoomEventsDB(data) {
           .all(
             `SELECT * FROM room_events${whereData ? ` WHERE ${whereData}` : ''}
           ${typeof data.orderBy === 'string' ? 'ORDER BY $order_by' : ''}
-          ${isPagination ? 'OFFSET $skip ROWS FETCH NEXT $per_page ROWS ONLY' : `
+          ${
+            isPagination
+              ? 'OFFSET $skip ROWS FETCH NEXT $per_page ROWS ONLY'
+              : `
             ${typeof data.limit === 'number' ? 'LIMIT $limit' : ''}
-          `}
+          `
+          }
           `,
             selector,
           )
           .then((result) => {
-
             const finalData = [];
 
             for (const item in result) {
-
               const newData = {};
               newData.eventId = result[item].event_id;
               newData.isRedaction = !!result[item].is_redaction;
@@ -113,7 +114,6 @@ export function loadRoomEventsDB(data) {
                 newData.content = {};
               }
 
-
               try {
                 newData.unsigned = JSON.parse(result[item].unsigned);
               } catch {
@@ -121,13 +121,9 @@ export function loadRoomEventsDB(data) {
               }
 
               finalData.push(newData);
-
             }
 
-            resolve({
-              data: finalData
-            });
-
+            resolve(finalData);
           })
           .catch(reject);
       } else {
