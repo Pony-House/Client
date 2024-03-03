@@ -38,9 +38,29 @@ export function loadRoomEventsDB(data) {
         const selector = {};
 
         // Get Values
-        if (typeof data.roomId === 'string') selector.$room_id = data.roomId;
-        if (typeof data.threadId === 'string') selector.$thread_id = data.threadId;
-        if (typeof data.threadRootId === 'string') selector.$thread_root_id = data.threadRootId;
+        let whereData = '';
+        if (typeof data.roomId === 'string') {
+          selector.$room_id = data.roomId;
+          whereData += 'room_id=$room_id';
+        }
+
+        if (typeof data.threadId === 'string') {
+          selector.$thread_id = data.threadId;
+          if (whereData) whereData += ' AND ';
+          whereData += 'thread_id=$thread_id';
+        }
+
+        if (typeof data.threadRootId === 'string') {
+          selector.$thread_root_id = data.threadRootId;
+          if (whereData) whereData += ' AND ';
+          whereData += 'thread_root_id=$thread_root_id';
+        }
+
+        if (typeof data.isRedaction === 'boolean') {
+          selector.$is_redaction = data.isRedaction;
+          if (whereData) whereData += ' AND ';
+          whereData += 'is_redaction=$is_redaction';
+        }
 
         if (typeof data.orderBy === 'string') selector.$order_by = data.orderBy;
 
@@ -63,20 +83,52 @@ export function loadRoomEventsDB(data) {
 
         global.tinyDB
           .all(
-            `SELECT * FROM room_events WHERE 
-          ${typeof data.roomId === 'string' ? 'room_id=$room_id' : ''}
-          ${typeof data.threadId === 'string' ? 'thread_id=$thread_id' : ''}
-          ${typeof data.threadRootId === 'string' ? 'thread_root_id=$thread_root_id' : ''}
-
+            `SELECT * FROM room_events${whereData ? ` WHERE ${whereData}` : ''}
           ${typeof data.orderBy === 'string' ? 'ORDER BY $order_by' : ''}
-
           ${isPagination ? 'OFFSET $skip ROWS FETCH NEXT $per_page ROWS ONLY' : `
             ${typeof data.limit === 'number' ? 'LIMIT $limit' : ''}
           `}
           `,
             selector,
           )
-          .then(resolve)
+          .then((result) => {
+
+            const finalData = [];
+
+            for (const item in result) {
+
+              const newData = {};
+              newData.eventId = result[item].event_id;
+              newData.isRedaction = !!result[item].is_redaction;
+              newData.originServerTs = result[item].origin_server_ts;
+              newData.roomId = result[item].room_id;
+              newData.sender = result[item].sender;
+              newData.threadId = result[item].thread_id;
+              newData.threadRootId = result[item].thread_root_id;
+              newData.type = result[item].type;
+
+              try {
+                newData.content = JSON.parse(result[item].content);
+              } catch {
+                newData.content = {};
+              }
+
+
+              try {
+                newData.unsigned = JSON.parse(result[item].unsigned);
+              } catch {
+                newData.unsigned = {};
+              }
+
+              finalData.push(newData);
+
+            }
+
+            resolve({
+              data: finalData
+            });
+
+          })
           .catch(reject);
       } else {
         reject(new Error('RoomEventsDB is disabled.'));
