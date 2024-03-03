@@ -86,38 +86,34 @@ export function loadRoomEventsDB(data) {
           whereData += 'origin_server_ts < $before';
         }
 
+        let orderType = 'DESC';
         if (typeof data.orderBy === 'string') selector.$order_by = data.orderBy;
+        if (typeof data.orderType === 'string' && orderType === 'ASC') orderType = data.orderType;
 
         // Detect Mode
         const isPagination =
           typeof data.page === 'number' &&
-          typeof data.perPage === 'number' &&
-          data.perPage > 0 &&
-          data.page > 0;
+          data.page > 0 &&
+          typeof data.limit === 'number' &&
+          data.limit > 0;
 
         // Pagination Mode
         if (isPagination) {
-          selector.$skip = Number(data.page - 1) * data.perPage;
-          selector.$per_page = data.perPage;
+          selector.$skip = Number(data.page - 1) * data.limit;
+          if (typeof selector.$order_by !== 'string') selector.$order_by = 'origin_server_ts';
         }
 
         // Limit Mode
-        else if (typeof data.limit === 'number') selector.$limit = data.limit;
+        if (typeof data.limit === 'number') selector.$limit = data.limit;
+
+        const query = `SELECT * FROM room_events${whereData ? ` WHERE ${whereData}` : ''}
+        ${typeof selector.$order_by === 'string' ? `ORDER BY $order_by ${orderType}` : ''}
+        ${typeof data.limit === 'number' ? 'LIMIT $limit' : ''}
+        ${isPagination ? 'OFFSET $skip' : ''}
+        `;
 
         global.tinyDB
-          .all(
-            `SELECT * FROM room_events${whereData ? ` WHERE ${whereData}` : ''}
-          ${typeof data.orderBy === 'string' ? 'ORDER BY $order_by' : ''}
-          ${
-            isPagination
-              ? 'OFFSET $skip ROWS FETCH NEXT $per_page ROWS ONLY'
-              : `
-            ${typeof data.limit === 'number' ? 'LIMIT $limit' : ''}
-          `
-          }
-          `,
-            selector,
-          )
+          .all(query, selector)
           .then((result) => {
             const finalData = [];
 
