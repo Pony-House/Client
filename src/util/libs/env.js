@@ -65,7 +65,8 @@ class EnvAPI extends EventEmitter {
       }
 
       if (typeof __ENV_APP__.SAVE_ROOM_DB === 'boolean' && __ENV_APP__.SAVE_ROOM_DB) {
-        this.content.SAVE_ROOM_DB = typeof this.content.SAVE_ROOM_DB === 'boolean' ? this.content.SAVE_ROOM_DB : true;
+        this.content.SAVE_ROOM_DB =
+          typeof this.content.SAVE_ROOM_DB === 'boolean' ? this.content.SAVE_ROOM_DB : true;
       } else {
         this.content.SAVE_ROOM_DB = false;
       }
