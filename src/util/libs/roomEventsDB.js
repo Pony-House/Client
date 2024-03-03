@@ -50,6 +50,18 @@ export function loadRoomEventsDB(data) {
           whereData += 'thread_id=$thread_id';
         }
 
+        if (typeof data.sender === 'string') {
+          selector.$sender = data.sender;
+          if (whereData) whereData += ' AND ';
+          whereData += 'sender=$sender';
+        }
+
+        if (typeof data.type === 'string') {
+          selector.$type = data.type;
+          if (whereData) whereData += ' AND ';
+          whereData += 'type=$type';
+        }
+
         if (typeof data.threadRootId === 'string') {
           selector.$thread_root_id = data.threadRootId;
           if (whereData) whereData += ' AND ';
@@ -60,6 +72,18 @@ export function loadRoomEventsDB(data) {
           selector.$is_redaction = data.isRedaction;
           if (whereData) whereData += ' AND ';
           whereData += 'is_redaction=$is_redaction';
+        }
+
+        if (typeof data.after === 'number') {
+          selector.$after = data.after;
+          if (whereData) whereData += ' AND ';
+          whereData += 'origin_server_ts > $after';
+        }
+
+        if (typeof data.before === 'number') {
+          selector.$before = data.before;
+          if (whereData) whereData += ' AND ';
+          whereData += 'origin_server_ts < $before';
         }
 
         if (typeof data.orderBy === 'string') selector.$order_by = data.orderBy;
