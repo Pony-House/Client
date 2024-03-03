@@ -88,7 +88,6 @@ export function loadRoomEventsDB(data) {
         }
 
         let orderType = 'DESC';
-        if (typeof data.orderBy === 'string') selector.$order_by = data.orderBy;
         if (typeof data.orderType === 'string' && data.orderType === 'ASC')
           orderType = data.orderType;
 
@@ -102,14 +101,13 @@ export function loadRoomEventsDB(data) {
         // Pagination Mode
         if (isPagination) {
           selector.$skip = Number(data.page - 1) * data.limit;
-          if (typeof selector.$order_by !== 'string') selector.$order_by = 'origin_server_ts';
         }
 
         // Limit Mode
         if (typeof data.limit === 'number') selector.$limit = data.limit;
 
         const query = `SELECT * FROM room_events${whereData ? ` WHERE ${whereData}` : ''}
-        ${typeof selector.$order_by === 'string' ? `ORDER BY $order_by ${orderType}` : ''}
+        ORDER BY origin_server_ts ${orderType}
         ${typeof data.limit === 'number' ? 'LIMIT $limit' : ''}
         ${isPagination ? 'OFFSET $skip' : ''}
         `;
@@ -143,7 +141,7 @@ export function loadRoomEventsDB(data) {
                 newData.unsigned = {};
               }
 
-              finalData.push(newData);
+              finalData.unshift(newData);
             }
 
             resolve(finalData);
