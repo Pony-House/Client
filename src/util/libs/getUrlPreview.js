@@ -11,6 +11,7 @@ const urlConvert = {
 
 const localStoragePlace = 'pony-house-url-preview';
 const urlPreviewStore = {
+  using: false,
   getRaw: () => {
     try {
       const rawStorage = global.localStorage.getItem(localStoragePlace);
@@ -111,8 +112,10 @@ export default function getUrlPreview(newUrl, ts = 0) {
   return new Promise((resolve, reject) => {
     const mx = initMatrix.matrixClient;
     if (typeof newUrl === 'string' && linkify.test(newUrl)) {
+      // Protocol
       const url = convertProtocols(newUrl, newUrl);
 
+      // Check URL
       if (
         tinyCache[url.href] &&
         (objType(tinyCache[url.href].data, 'object') || tinyCache[url.href].data === null)
@@ -127,20 +130,41 @@ export default function getUrlPreview(newUrl, ts = 0) {
           }
         }
 
+        // Check Storage
         const storeCache = urlPreviewStore.get(tinyUrl);
+
+        // New
         if (!storeCache) {
-          mx.getUrlPreview(tinyUrl, ts)
-            .then((embed) => {
-              tinyCache[url.href] = { data: embed, timeout: 1440 };
-              urlPreviewStore.set(url.href, tinyCache[url.href]);
-              resolve(embed);
-            })
-            .catch((err) => {
-              tinyCache[url.href] = { data: null, timeout: 60 };
-              urlPreviewStore.delete(url.href);
-              reject(err);
-            });
-        } else {
+
+          // Start cache manager
+          const lookForCache = () => {
+            if (!urlPreviewStore.using) {
+              urlPreviewStore.using = true;
+              mx.getUrlPreview(tinyUrl, ts)
+                .then((embed) => {
+                  tinyCache[url.href] = { data: embed, timeout: 1440 };
+                  urlPreviewStore.set(url.href, tinyCache[url.href]);
+                  urlPreviewStore.using = false;
+                  resolve(embed);
+                })
+                .catch((err) => {
+                  tinyCache[url.href] = { data: null, timeout: 60 };
+                  urlPreviewStore.delete(url.href);
+                  urlPreviewStore.using = false;
+                  reject(err);
+                });
+            } else {
+              setTimeout(() => lookForCache(), 500);
+            }
+          };
+
+          // Start now
+          lookForCache();
+
+        }
+
+        // Use cache
+        else {
           resolve(storeCache.data);
         }
       }
