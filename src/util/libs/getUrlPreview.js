@@ -135,7 +135,6 @@ export default function getUrlPreview(newUrl, ts = 0) {
 
         // New
         if (!storeCache) {
-
           // Start cache manager
           const lookForCache = () => {
             if (!urlPreviewStore.using) {
@@ -160,7 +159,6 @@ export default function getUrlPreview(newUrl, ts = 0) {
 
           // Start now
           lookForCache();
-
         }
 
         // Use cache
