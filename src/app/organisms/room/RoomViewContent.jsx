@@ -37,6 +37,7 @@ import { rule3 } from '../../../util/tools';
 import { mediaFix } from '../../molecules/media/mediaFix';
 import matrixAppearance from '../../../util/libs/appearance';
 
+let forceDelay = false;
 let loadingPage = false;
 const PAG_LIMIT = 50;
 const MAX_MSG_DIFF_MINUTES = 5;
@@ -667,9 +668,20 @@ function RoomViewContent({
   }, [listenKeyArrowUp]);
 
   useEffect(() => {
-    const forceUpdateTime = () => forceUpdateLimit();
+    const forceUpdateTime = () => {
+      if (!forceDelay) {
+        forceDelay = true;
+        forceUpdateLimit();
+      }
+    };
+
+    const timeoutTime = setInterval(() => {
+      if (forceDelay) forceDelay = false;
+    }, 100);
+
     windowEvents.on('setWindowVisible', forceUpdateTime);
     return () => {
+      clearInterval(timeoutTime);
       windowEvents.off('setWindowVisible', forceUpdateTime);
     };
   });
