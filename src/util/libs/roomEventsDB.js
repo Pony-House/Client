@@ -223,9 +223,7 @@ export function insertIntoRoomEventsDB(event, needsDecrypt = false) {
       } else {
         insertEvent().then(resolve).catch(reject);
       }
-      return;
     }
-    reject(new Error('RoomEventsDB is disabled.'));
   });
 }
 
