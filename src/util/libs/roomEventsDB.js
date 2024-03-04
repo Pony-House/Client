@@ -8,7 +8,7 @@ import envAPI from './env';
 const delayCache = {
   count: 0,
   waiting: false,
-  wait: (timeout = 2000) =>
+  wait: (timeout = 500) =>
     new Promise((resolve) => {
       const waiting = clone(delayCache.waiting);
       delayCache.waiting = true;
