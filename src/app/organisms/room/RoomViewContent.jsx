@@ -669,7 +669,7 @@ function RoomViewContent({
 
   useEffect(() => {
     const forceUpdateTime = () => {
-      if (!forceDelay) {
+      if (roomTimeline && roomTimeline.canPaginateForward() && !forceDelay) {
         forceDelay = true;
         forceUpdateLimit();
       }
