@@ -677,7 +677,7 @@ function RoomViewContent({
 
     const timeoutTime = setInterval(() => {
       if (forceDelay) forceDelay = false;
-    }, 1000);
+    }, 200);
 
     windowEvents.on('setWindowVisible', forceUpdateTime);
     return () => {
