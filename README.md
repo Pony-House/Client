@@ -92,6 +92,11 @@ To build the web app:
 yarn build # Compiles the app into the dist/ directory
 ```
 
+If the first option fails, please try this one:
+```sh
+yarn build:8gb # Compiles the app into the dist/ directory
+```
+
 ### Electron (Desktop)
 > While you're using the app's dev mode, it's normal for the app to show that it's disconnected for a few seconds before fully loading the page. Notifications may not mute OS sound in application dev mode. The same thing can happen for notification click events to fail only in dev mode.
 

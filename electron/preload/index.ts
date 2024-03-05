@@ -5,7 +5,8 @@ import { contextBridge, ipcRenderer } from 'electron';
 import startNotifications from './notification';
 import './idle/seconds';
 import './idle/status';
-import './db';
+// import './db';
+import './jsonDB';
 import startAutoLaunch from './auto-launch';
 import insertMatrixAgent, { startCustomDNS } from './dns';
 
