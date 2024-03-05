@@ -23,7 +23,7 @@ const saveJSON = () => {
   if (!savingJSON) {
     savingJSON = true;
     fs.writeFile(
-      path.join(folders.appDataPrivate, 'data.json'),
+      path.join(folders.appDataPrivate, `data${folders.extraPath}.json`),
       JSON.stringify(data),
       'utf8',
       (err) => {
