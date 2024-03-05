@@ -3,7 +3,6 @@
 */
 
 import EventEmitter from 'events';
-import { objType } from '../tools';
 
 // Emitter
 class EnvAPI extends EventEmitter {
@@ -23,15 +22,18 @@ class EnvAPI extends EventEmitter {
           await global.tinyJsonDB.startClient();
 
         if (typeof __ENV_APP__.WEB3 === 'boolean' && __ENV_APP__.WEB3) {
-          await this.getDB('WEB3');
+          const WEB3 = await this.getDB('WEB3');
+          if (typeof WEB3 === 'boolean') this.content.WEB3 = WEB3;
         }
 
         if (typeof __ENV_APP__.IPFS === 'boolean' && __ENV_APP__.IPFS) {
-          await this.getDB('IPFS');
+          const IPFS = await this.getDB('IPFS');
+          if (typeof IPFS === 'boolean') this.content.IPFS = IPFS;
         }
 
         if (typeof __ENV_APP__.SAVE_ROOM_DB === 'boolean' && __ENV_APP__.SAVE_ROOM_DB) {
-          await this.getDB('SAVE_ROOM_DB');
+          const SAVE_ROOM_DB = await this.getDB('SAVE_ROOM_DB');
+          if (typeof SAVE_ROOM_DB === 'boolean') this.content.SAVE_ROOM_DB = SAVE_ROOM_DB;
         }
       }
     }
@@ -82,15 +84,11 @@ class EnvAPI extends EventEmitter {
     return this.content;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async getDB(folder) {
     if (__ENV_APP__.ELECTRON_MODE) {
-      const data = await global.tinyJsonDB.get('envData', folder);
-      if (objType(data, 'object') && typeof data.value === 'string') {
-        this.content[folder] =
-          data.value === 'true' ? true : data.value === 'false' ? false : data.value;
-        return this.content[folder];
-      }
-      return null;
+      const newValue = await global.tinyJsonDB.get('envData', folder);
+      return newValue;
     }
 
     return null;

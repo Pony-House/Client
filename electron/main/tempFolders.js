@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { app } from 'electron';
+import { app, ipcMain } from 'electron';
 import { fileURLToPath } from 'url';
 
 // Insert utils
@@ -29,6 +29,17 @@ if (!fs.existsSync(appDataPrivate)) {
 const tempFolderNoti = path.join(tempFolder, './notification');
 if (!fs.existsSync(tempFolderNoti)) {
   fs.mkdirSync(tempFolderNoti);
+}
+
+export function startTempFolders(win) {
+  ipcMain.on('getAppFolders', () => {
+    win.webContents.send('getAppFolders', {
+      tempNotifications: tempFolderNoti,
+      appDataPrivate,
+      appData: appDataFolder,
+      temp: tempFolder,
+    });
+  });
 }
 
 export { createDirName, tempFolder, tempFolderNoti, appDataFolder, appDataPrivate };

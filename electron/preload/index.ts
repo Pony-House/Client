@@ -6,6 +6,7 @@ import startNotifications from './notification';
 import './idle/seconds';
 import './idle/status';
 // import './db';
+import './jsonDB';
 import startAutoLaunch from './auto-launch';
 import insertMatrixAgent, { startCustomDNS } from './dns';
 

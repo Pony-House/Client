@@ -3,12 +3,14 @@ import { app, BrowserWindow, shell, ipcMain, Tray, Menu } from 'electron';
 import fs from 'node:fs';
 import { release } from 'node:os';
 import path from 'node:path';
+
+import { objType } from '@src/util/tools';
 import { update } from './update';
 
 import startNotifications from './notification';
 import startEvents from './events';
 import startResizeEvents from './events/resize';
-import { appDataPrivate } from './tempFolders';
+import { appDataPrivate, startTempFolders } from './tempFolders';
 // import tinyDB from './db';
 
 // The built directory structure
@@ -79,6 +81,7 @@ async function createWindow() {
     let data = null;
     try {
       data = JSON.parse(fs.readFileSync(initFile, 'utf8'));
+      if (!objType(data, 'object')) data = {};
     } catch (e) {
       data = {};
     }
@@ -111,6 +114,7 @@ async function createWindow() {
       },
     });
 
+    startTempFolders(win);
     // await tinyDB(path.join(appDataPrivate, `database${tinyUrl ? '_dev' : ''}.db`), ipcMain, win);
     if (process.platform === 'win32') {
       win.setAppDetails({
