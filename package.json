@@ -10,7 +10,8 @@
   "scripts": {
     "start": "vite dev",
     "setup": "yarn && node -r esm ./build/index.js ",
-    "build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
+    "build": "vite build",
+    "build:8gb": "cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
     "lint": "yarn check:eslint && yarn check:prettier",
     "check:eslint": "eslint src/* && eslint electron/* && eslint mods/* --no-error-on-unmatched-pattern",
     "check:prettier": "prettier --check src/* && prettier --check electron/* && prettier --check mods/*",
