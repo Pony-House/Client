@@ -50,7 +50,7 @@ const tinyJsonDB = {
       folders = await getAppFolders();
 
       // Get Data
-      const initFile = path.join(folders.appDataPrivate, 'data.json');
+      const initFile = path.join(folders.appDataPrivate, `data${folders.extraPath}.json`);
       try {
         data = JSON.parse(fs.readFileSync(initFile, 'utf8'));
         if (!objType(data, 'object')) data = {};

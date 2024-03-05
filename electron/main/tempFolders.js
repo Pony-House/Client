@@ -31,9 +31,10 @@ if (!fs.existsSync(tempFolderNoti)) {
   fs.mkdirSync(tempFolderNoti);
 }
 
-export function startTempFolders(win) {
+export function startTempFolders(win, extraPath) {
   ipcMain.on('getAppFolders', () => {
     win.webContents.send('getAppFolders', {
+      extraPath,
       tempNotifications: tempFolderNoti,
       appDataPrivate,
       appData: appDataFolder,
