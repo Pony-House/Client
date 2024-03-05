@@ -8,7 +8,6 @@ setInterval(() => {
 }, 1000);
 
 export function insertEvent(callback) {
-  console.log(tinyCache.count);
   tinyCache.count++;
   setTimeout(() => callback(), 10 * tinyCache.count);
 }

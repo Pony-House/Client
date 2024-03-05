@@ -535,7 +535,7 @@ class Notifications extends EventEmitter {
     };
 
     this.matrixClient.on('Room.timeline', (mEvent, room) =>
-      insertEvent(this._listenRoomTimeline(mEvent, room)),
+      insertEvent(() => this._listenRoomTimeline(mEvent, room)),
     );
 
     this.matrixClient.on('accountData', (mEvent, oldMEvent) => {
