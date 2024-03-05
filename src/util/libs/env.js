@@ -3,7 +3,6 @@
 */
 
 import EventEmitter from 'events';
-import moment from 'moment-timezone';
 import { objType } from '../tools';
 
 // Emitter
@@ -85,7 +84,7 @@ class EnvAPI extends EventEmitter {
 
   async getDB(folder) {
     if (__ENV_APP__.ELECTRON_MODE) {
-      const data = await global.tinyJsonDB.get(`SELECT * FROM envData WHERE id=$id;`, { $id: folder });
+      const data = await global.tinyJsonDB.get('envData', folder);
       if (objType(data, 'object') && typeof data.value === 'string') {
         this.content[folder] =
           data.value === 'true' ? true : data.value === 'false' ? false : data.value;
@@ -106,14 +105,7 @@ class EnvAPI extends EventEmitter {
         if (!__ENV_APP__.ELECTRON_MODE) {
           global.localStorage.setItem('ponyHouse-env', JSON.stringify(this.content));
         } else {
-          global.tinyJsonDB.run(
-            `INSERT OR REPLACE INTO envData (id, unix, value) VALUES($id, $unix, $value);`,
-            {
-              $id: folder,
-              $unix: moment().unix(),
-              $value: String(value),
-            },
-          );
+          global.tinyJsonDB.update('envData', folder, value);
         }
 
         this.emit(folder, value);
