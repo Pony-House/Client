@@ -1,8 +1,8 @@
 import clone from 'clone';
 import moment from 'moment-timezone';
 import initMatrix from '@src/client/initMatrix';
-import { objType } from '../tools';
-import envAPI from './env';
+import { objType } from '../../tools';
+import envAPI from '../env';
 
 // Anti Lag
 const delayCache = {
