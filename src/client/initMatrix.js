@@ -103,8 +103,8 @@ class InitMatrix extends EventEmitter {
 
     this.matrixClient = sdk.createClient(clientOps);
 
-    if (global.tinyDB && typeof global.tinyDB.startClient === 'function')
-      await global.tinyDB.startClient();
+    if (global.tinyJsonDB && typeof global.tinyJsonDB.startClient === 'function')
+      await global.tinyJsonDB.startClient();
 
     await envAPI.startDB();
     await indexedDBStore.startup();
@@ -186,8 +186,8 @@ class InitMatrix extends EventEmitter {
       // ignore if failed to logout
     }
     await this.matrixClient.clearStores();
-    if (global.tinyDB && typeof global.tinyDB.clearData === 'function')
-      await global.tinyDB.clearData();
+    if (global.tinyJsonDB && typeof global.tinyJsonDB.clearData === 'function')
+      await global.tinyJsonDB.clearData();
     window.localStorage.clear();
     window.location.reload();
   }
@@ -196,8 +196,8 @@ class InitMatrix extends EventEmitter {
     startCustomDNS();
     this.matrixClient.stopClient();
     this.matrixClient.store.deleteAllData().then(() => {
-      if (global.tinyDB && typeof global.tinyDB.clearCacheData === 'function') {
-        global.tinyDB.clearCacheData().then(() => {
+      if (global.tinyJsonDB && typeof global.tinyJsonDB.clearCacheData === 'function') {
+        global.tinyJsonDB.clearCacheData().then(() => {
           window.location.reload();
         });
       } else {

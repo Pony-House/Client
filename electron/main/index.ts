@@ -9,7 +9,7 @@ import startNotifications from './notification';
 import startEvents from './events';
 import startResizeEvents from './events/resize';
 import { appDataPrivate } from './tempFolders';
-import tinyDB from './db';
+// import tinyDB from './db';
 
 // The built directory structure
 //
@@ -111,7 +111,7 @@ async function createWindow() {
       },
     });
 
-    await tinyDB(path.join(appDataPrivate, `database${tinyUrl ? '_dev' : ''}.db`), ipcMain, win);
+    // await tinyDB(path.join(appDataPrivate, `database${tinyUrl ? '_dev' : ''}.db`), ipcMain, win);
     if (process.platform === 'win32') {
       win.setAppDetails({
         appId: 'pony-house-matrix',

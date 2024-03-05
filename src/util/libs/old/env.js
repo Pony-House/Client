@@ -20,8 +20,8 @@ class EnvAPI extends EventEmitter {
       this.InitializedDB = true;
 
       if (__ENV_APP__.ELECTRON_MODE) {
-        if (global.tinyJsonDB && typeof global.tinyJsonDB.startClient === 'function')
-          await global.tinyJsonDB.startClient();
+        if (global.tinyDB && typeof global.tinyDB.startClient === 'function')
+          await global.tinyDB.startClient();
 
         if (typeof __ENV_APP__.WEB3 === 'boolean' && __ENV_APP__.WEB3) {
           await this.getDB('WEB3');
@@ -85,7 +85,7 @@ class EnvAPI extends EventEmitter {
 
   async getDB(folder) {
     if (__ENV_APP__.ELECTRON_MODE) {
-      const data = await global.tinyJsonDB.get(`SELECT * FROM envData WHERE id=$id;`, { $id: folder });
+      const data = await global.tinyDB.get(`SELECT * FROM envData WHERE id=$id;`, { $id: folder });
       if (objType(data, 'object') && typeof data.value === 'string') {
         this.content[folder] =
           data.value === 'true' ? true : data.value === 'false' ? false : data.value;
@@ -106,7 +106,7 @@ class EnvAPI extends EventEmitter {
         if (!__ENV_APP__.ELECTRON_MODE) {
           global.localStorage.setItem('ponyHouse-env', JSON.stringify(this.content));
         } else {
-          global.tinyJsonDB.run(
+          global.tinyDB.run(
             `INSERT OR REPLACE INTO envData (id, unix, value) VALUES($id, $unix, $value);`,
             {
               $id: folder,
