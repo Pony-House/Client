@@ -19,7 +19,7 @@ import { getAccountStatus } from '../../../app/organisms/navigation/ProfileAvata
 import { messageIsClassicCrdt } from '../../../util/libs/crdt';
 import { checkerFavIcon } from '../../../util/libs/favicon';
 import { getPrivacyRefuseRoom } from '../../../app/organisms/navigation/Sidebar/InviteSidebar';
-import { insertEvent } from '../eventsDelay';
+// import { insertEvent } from '../eventsDelay';
 
 const soundFiles = {
   notification: new Audio('./sound/notification.ogg'),
@@ -534,9 +534,12 @@ class Notifications extends EventEmitter {
       }
     };
 
+    this.matrixClient.on('Room.timeline', (mEvent, room) => this._listenRoomTimeline(mEvent, room));
+    /* 
     this.matrixClient.on('Room.timeline', (mEvent, room) =>
       insertEvent(() => this._listenRoomTimeline(mEvent, room)),
     );
+    */
 
     this.matrixClient.on('accountData', (mEvent, oldMEvent) => {
       if (mEvent.getType() === 'm.push_rules') {

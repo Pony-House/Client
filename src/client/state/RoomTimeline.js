@@ -26,7 +26,7 @@ import { objType } from '../../util/tools';
 import { updateRoomInfo } from '../action/navigation';
 import urlParams from '../../util/libs/urlParams';
 import { tinyFixScrollChat } from '../../app/molecules/media/mediaFix';
-import { insertEvent } from './eventsDelay';
+// import { insertEvent } from './eventsDelay';
 
 const delayYdocUpdate = 100;
 const hashTryLimit = 10;
@@ -1265,8 +1265,13 @@ class RoomTimeline extends EventEmitter {
     };
 
     this._preListenRoomTimeline = (event, room, toStartOfTimeline, removed, data) =>
+      this._listenRoomTimeline(event, room, data);
+    this._preListenDecryptEvent = (event) => this._listenDecryptEvent(event);
+    /*
+        this._preListenRoomTimeline = (event, room, toStartOfTimeline, removed, data) =>
       insertEvent(() => this._listenRoomTimeline(event, room, data));
     this._preListenDecryptEvent = (event) => insertEvent(() => this._listenDecryptEvent(event));
+    */
 
     this._listenRedaction = (mEvent, room) => {
       if (room.roomId !== this.roomId) return;
