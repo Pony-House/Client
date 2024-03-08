@@ -68,6 +68,24 @@ class InitMatrix extends EventEmitter {
     return secret.userId;
   }
 
+  async getAccount3pid() {
+    if (this.matrixClient) {
+      const res = await fetch(
+        `${this.matrixClient.baseUrl}/_matrix/client/v3/account/3pid?access_token=${this.matrixClient.getAccessToken()}`,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+
+      const data = await res.json();
+      return data;
+    }
+
+    return null;
+  }
+
   async startClient(isGuest = false) {
     startCustomDNS();
 
