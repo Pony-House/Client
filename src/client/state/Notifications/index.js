@@ -4,6 +4,7 @@ import EventEmitter from 'events';
 
 import mobileEvents, { isMobile } from '@src/util/libs/mobile';
 import { cyrb128 } from '@src/util/tools';
+import tinyAPI from '@src/util/mods';
 // import { insertIntoRoomEventsDB } from '@src/util/libs/roomEventsDB';
 
 import renderAvatar from '../../../app/atoms/avatar/render';
@@ -315,9 +316,18 @@ class Notifications extends EventEmitter {
     }
   }
 
-  async _displayPopupNoti(mEvent, room) {
+  async _displayPopupNoti(mEvent, room, stopNotification = false) {
     // Favicon
     checkerFavIcon();
+
+    // Encrypted
+    if (mEvent.isEncrypted()) {
+      await mEvent.attemptDecryption(this.matrixClient.getCrypto());
+    }
+
+    // Tiny API
+    tinyAPI.emit('roomTimeline', mEvent, room);
+    if (stopNotification) return;
 
     // Data Prepare
     const userStatus = getAccountStatus('status');
@@ -351,11 +361,6 @@ class Notifications extends EventEmitter {
     if (userStatus === 'dnd' || userStatus === '🔴') {
       // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
       return;
-    }
-
-    // Encrypted
-    if (mEvent.isEncrypted()) {
-      await mEvent.attemptDecryption(this.matrixClient.getCrypto());
     }
 
     // insertIntoRoomEventsDB(mEvent).catch(console.error);
@@ -473,62 +478,74 @@ class Notifications extends EventEmitter {
     this._listenRoomTimeline = (mEvent, room) => {
       if (mEvent.isRedaction()) this._deletePopupNoti(mEvent.event.redacts);
 
+      let stopNotification = false;
       if (messageIsClassicCrdt(mEvent)) {
         // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
-        return;
+        stopNotification = true;
       }
 
-      if (room.isSpaceRoom()) {
+      if (!stopNotification && room.isSpaceRoom()) {
         // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
-        return;
+        stopNotification = true;
       }
 
-      if (!isNotifEvent(mEvent)) {
+      if (!stopNotification && !isNotifEvent(mEvent)) {
         // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
-        return;
+        stopNotification = true;
       }
 
-      const liveEvents = !mEvent.thread
-        ? room.getLiveTimeline().getEvents()
-        : mEvent.thread.timeline;
+      if (!stopNotification) {
+        const liveEvents = !mEvent.thread
+          ? room.getLiveTimeline().getEvents()
+          : mEvent.thread.timeline;
 
-      const lastTimelineEvent = liveEvents[liveEvents.length - 1];
-      if (lastTimelineEvent.getId() !== mEvent.getId()) {
-        // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
-        return;
+        const lastTimelineEvent = liveEvents[liveEvents.length - 1];
+        if (lastTimelineEvent.getId() !== mEvent.getId()) {
+          // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
+          stopNotification = true;
+        }
+
+        if (!stopNotification && mEvent.getSender() === this.matrixClient.getUserId()) {
+          // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
+          stopNotification = true;
+        }
+
+        if (!stopNotification) {
+          const total = !mEvent.thread
+            ? room.getRoomUnreadNotificationCount(NotificationCountType.Total)
+            : room.getThreadUnreadNotificationCount(mEvent.thread.id, NotificationCountType.Total);
+
+          const highlight = !mEvent.thread
+            ? room.getRoomUnreadNotificationCount(NotificationCountType.Highlight)
+            : room.getThreadUnreadNotificationCount(
+                mEvent.thread.id,
+                NotificationCountType.Highlight,
+              );
+
+          if (
+            this.getNotiType(room.roomId, mEvent.thread ? mEvent.thread.id : null) ===
+            cons.notifs.MUTE
+          ) {
+            this.deleteNoti(room.roomId, total ?? 0, highlight ?? 0);
+            // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
+            stopNotification = true;
+          }
+
+          if (!stopNotification) {
+            this._setNoti(
+              room.roomId,
+              mEvent.thread ? mEvent.thread.id : null,
+              total ?? 0,
+              highlight ?? 0,
+            );
+            if (mEvent.thread)
+              this.emit(cons.events.notifications.THREAD_NOTIFICATION, mEvent.thread);
+          }
+        }
       }
-
-      if (mEvent.getSender() === this.matrixClient.getUserId()) {
-        // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
-        return;
-      }
-
-      const total = !mEvent.thread
-        ? room.getRoomUnreadNotificationCount(NotificationCountType.Total)
-        : room.getThreadUnreadNotificationCount(mEvent.thread.id, NotificationCountType.Total);
-
-      const highlight = !mEvent.thread
-        ? room.getRoomUnreadNotificationCount(NotificationCountType.Highlight)
-        : room.getThreadUnreadNotificationCount(mEvent.thread.id, NotificationCountType.Highlight);
-
-      if (
-        this.getNotiType(room.roomId, mEvent.thread ? mEvent.thread.id : null) === cons.notifs.MUTE
-      ) {
-        this.deleteNoti(room.roomId, total ?? 0, highlight ?? 0);
-        // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
-        return;
-      }
-
-      this._setNoti(
-        room.roomId,
-        mEvent.thread ? mEvent.thread.id : null,
-        total ?? 0,
-        highlight ?? 0,
-      );
-      if (mEvent.thread) this.emit(cons.events.notifications.THREAD_NOTIFICATION, mEvent.thread);
 
       if (this.matrixClient.getSyncState() === 'SYNCING') {
-        this._displayPopupNoti(mEvent, room);
+        this._displayPopupNoti(mEvent, room, stopNotification);
       } else {
         // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
       }

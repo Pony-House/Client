@@ -128,6 +128,17 @@ Display the matrix-sdk logs.
 
 <hr/>
 
+`src/client/state/Notifications/index.js`
+
+### roomTimeline
+
+    mEvent
+    room
+
+All `Room.Timeline` events will appear here already decrypted.
+
+<hr/>
+
 `src/app/organisms/room/RoomViewContent.jsx`
 
 ### emptyTimeline
