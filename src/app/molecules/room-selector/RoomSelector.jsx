@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { NotificationCountType } from 'matrix-js-sdk';
 import cons from '@src/client/state/cons';
+import { abbreviateNumber } from '@src/util/common';
 
 import { twemojifyReact } from '../../../util/twemojify';
 import { colorMXID } from '../../../util/colorMXID';
@@ -337,7 +337,7 @@ export function ThreadSelector({ room, thread, isSelected, isMuted, options, onC
             <NotificationBadge
               className="float-end"
               alert={isAlert}
-              content={notificationCount > 0 ? notificationCount : null}
+              content={notificationCount > 0 ? abbreviateNumber(notificationCount) : null}
             />
           )}
         </div>
