@@ -316,7 +316,7 @@ class Notifications extends EventEmitter {
     }
   }
 
-  async _displayPopupNoti(mEvent, room, stopNotification = false, total = 0, highlight = 0) {
+  async _displayPopupNoti(mEvent, room, stopNotification = false) {
     // Favicon
     checkerFavIcon();
 
@@ -327,7 +327,8 @@ class Notifications extends EventEmitter {
 
     // Tiny API
     tinyAPI.emit('roomTimeline', mEvent, room);
-    if (stopNotification || (total < 1 && highlight < 1)) return;
+    if (stopNotification || !this.hasNoti(room.roomId, mEvent.thread ? mEvent.thread.id : null))
+      return;
 
     // Data Prepare
     const userStatus = getAccountStatus('status');
