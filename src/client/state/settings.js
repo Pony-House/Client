@@ -1,4 +1,4 @@
-import { StatusBar } from '@capacitor/status-bar';
+// import { StatusBar } from '@capacitor/status-bar';
 
 import EventEmitter from 'events';
 import { isMobile, notificationStatus } from '@src/util/libs/mobile';
@@ -184,8 +184,8 @@ class Settings extends EventEmitter {
     return new Promise((resolve, reject) => {
       if (isMobile(true)) {
         try {
-          StatusBar.setBackgroundColor({ color: data.statusBar.backgroundColor[value] });
-          StatusBar.setStyle({ style: data.statusBar.style });
+          // StatusBar.setBackgroundColor({ color: data.statusBar.backgroundColor[value] });
+          // StatusBar.setStyle({ style: data.statusBar.style });
         } catch (err) {
           reject(err);
           return;

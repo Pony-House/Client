@@ -1,7 +1,0 @@
-{
-  "name": "pony-house-matrix",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "custom"
-}

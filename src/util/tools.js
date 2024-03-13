@@ -1,4 +1,4 @@
-import { Toast } from '@capacitor/toast';
+// import { Toast } from '@capacitor/toast';
 import moment from '@src/util/libs/momentjs';
 
 import tinyAPI from './mods';
@@ -99,11 +99,11 @@ export function hljsFixer(el, where, callback = function () {}) {
 
 export function toast(msg, title) {
   return new Promise((resolve, reject) => {
-    if (isMobile(true)) {
+    /* if (isMobile(true)) {
       Toast.show({ text: msg }).then(resolve).catch(reject);
-    } else {
-      resolve(alert(msg, title));
-    }
+    } else { */
+    resolve(alert(msg, title));
+    // }
   });
 }
 

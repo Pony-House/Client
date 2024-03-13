@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Capacitor } from '@capacitor/core';
-import { Filesystem } from '@capacitor/filesystem';
-import { FilePicker } from '@capawesome/capacitor-file-picker';
+// import { Capacitor } from '@capacitor/core';
+// import { Filesystem } from '@capacitor/filesystem';
+// import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 import { objType } from '@src/util/tools';
 import initMatrix from '@src/client/initMatrix';
@@ -11,7 +11,8 @@ import initMatrix from '@src/client/initMatrix';
 const FileInput = React.forwardRef(
   ({ onChange, accept, required, /* webkitdirectory, directory, */ capture, multiple }, ref) => {
     const inputRef = useRef(null);
-    const isNativeMobile = Capacitor.isNativePlatform();
+    // const isNativeMobile = Capacitor.isNativePlatform();
+    const isNativeMobile = false;
 
     // Effect
     useEffect(() => {
@@ -59,7 +60,7 @@ const FileInput = React.forwardRef(
 );
 
 const uploadContent = (file, ops, forceDefault = false) => {
-  if (!Capacitor.isNativePlatform() || forceDefault) {
+  if (/* !Capacitor.isNativePlatform() || */ forceDefault) {
     return initMatrix.matrixClient.uploadContent(file);
   }
 
@@ -78,17 +79,17 @@ const uploadContent = (file, ops, forceDefault = false) => {
 };
 
 const createObjectURL = (file, forceDefault = false) => {
-  if (!Capacitor.isNativePlatform() || forceDefault) {
-    return URL.createObjectURL(file);
-  }
-  return URL.createObjectURL(file.data);
+  // if (!Capacitor.isNativePlatform() || forceDefault) {
+  return URL.createObjectURL(file);
+  // }
+  // return URL.createObjectURL(file.data);
 };
 
 const convertToBase64Mobile = (file) => {
-  if (!Capacitor.isNativePlatform()) {
-    return file;
-  }
-  return file.data;
+  // if (!Capacitor.isNativePlatform()) {
+  return file;
+  // }
+  // return file.data;
 };
 
 const fileReader = (file, readerType = 'readAsText') =>
@@ -98,9 +99,9 @@ const fileReader = (file, readerType = 'readAsText') =>
       reader.onload = (event) => resolve(event.target.result);
       reader.onerror = (err) => reject(err);
 
-      if (!Capacitor.isNativePlatform()) {
-        reader[readerType](file);
-      } else {
+      // if (!Capacitor.isNativePlatform()) {
+      reader[readerType](file);
+      /* } else {
         if (readerType === 'readAsText') {
           resolve(file.atob());
         }
@@ -109,7 +110,7 @@ const fileReader = (file, readerType = 'readAsText') =>
         if (readerType === 'readAsDataURL') {
           resolve(file.atob());
         }
-      }
+      } */
     } catch (err) {
       reject(err);
     }
@@ -118,12 +119,12 @@ const fileReader = (file, readerType = 'readAsText') =>
 // Click open file
 const fileInputClick = async (inputRef, onChange) => {
   // Normal
-  if (!Capacitor.isNativePlatform()) {
-    if (inputRef.current) inputRef.current.click();
-  }
+  // if (!Capacitor.isNativePlatform()) {
+  if (inputRef.current) inputRef.current.click();
+  // }
 
   // Mobile
-  else if (inputRef.current) {
+  /* else if (inputRef.current) {
     let perm = await Filesystem.checkPermissions();
     if (perm && perm.publicStorage === 'prompt') perm = await Filesystem.requestPermissions();
     if (perm && perm.publicStorage !== 'granted') {
@@ -165,21 +166,21 @@ const fileInputClick = async (inputRef, onChange) => {
       };
       onChange(inputRef.current, changeFunc);
     }
-  }
+  } */
 };
 
 // Get file value
 const fileInputValue = (inputRef, value) => {
   if (typeof value !== 'undefined') {
-    if (!Capacitor.isNativePlatform()) {
-      if (inputRef.current) inputRef.current.value = value;
-    }
+    // if (!Capacitor.isNativePlatform()) {
+    if (inputRef.current) inputRef.current.value = value;
+    // }
   } else {
-    if (!Capacitor.isNativePlatform()) {
-      if (inputRef.current) return inputRef.current.value;
-      return null;
-    }
+    // if (!Capacitor.isNativePlatform()) {
+    if (inputRef.current) return inputRef.current.value;
     return null;
+    // }
+    // return null;
   }
 };
 

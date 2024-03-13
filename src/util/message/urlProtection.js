@@ -1,22 +1,22 @@
-import { Browser } from '@capacitor/browser';
+// import { Browser } from '@capacitor/browser';
 
 import { btModal, objType } from '../tools';
 import tinyAPI from '../mods';
 import convertProtocols from '../libs/convertProtocols';
 import { setLoadingPage } from '../../app/templates/client/Loading';
-import { isMobile } from '../libs/mobile';
+// import { isMobile } from '../libs/mobile';
 
 const openUrl = (url) =>
   new Promise((resolve, reject) => {
     // Mobile
-    if (isMobile(true)) {
+    /* if (isMobile(true)) {
       Browser.open({ url }).then(resolve).catch(reject);
-    }
+    } */
 
     // Browser
-    else {
-      resolve(global.open(url, '_blank'));
-    }
+    // else {
+    resolve(global.open(url, '_blank'));
+    // }
   });
 
 export default async (url, vanillaUrl) => {

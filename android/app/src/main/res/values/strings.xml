@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Pony House</string>
-    <string name="title_activity_main">Pony House</string>
-    <string name="package_name">pony.house.matrix</string>
-    <string name="custom_url_scheme">pony.house.matrix</string>
-</resources>
