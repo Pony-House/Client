@@ -9,7 +9,7 @@
   directories: {
     output: 'release/${version}',
   },
-  files: ['dist-electron', 'dist'],
+  files: ['dist-electron', 'dist', 'index.js'],
   linux: {
     icon: 'build/icon.png',
     target: ['AppImage', 'deb'],

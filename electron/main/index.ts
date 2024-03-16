@@ -5,7 +5,7 @@ import { release } from 'node:os';
 import path from 'node:path';
 
 import { objType } from '@src/util/tools';
-import { update } from './update';
+// import { update } from './update';
 
 import startNotifications from './notification';
 import startEvents from './events';
@@ -184,7 +184,7 @@ async function createWindow() {
     });
 
     // Apply electron-updater
-    update(win);
+    // update(win);
 
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the

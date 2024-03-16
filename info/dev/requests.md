@@ -1,3 +1,5 @@
+    Precisa ser criado um sistema onde o index.js é modificado a cada tipo de execução para atender um determinado tipo de script.
+
     scaleDownImage to gif
 
     Mobile:
