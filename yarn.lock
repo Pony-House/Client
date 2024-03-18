@@ -3066,10 +3066,10 @@
   resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.13.tgz#ff34942667a4e19a9f4a0996a76814daac364cf3"
   integrity sha512-lm2GW5PkosIzccsaZIz7tp8cPADSIlIHWDFTR1N0SzfinhhYgeIQjFMz4rYzanCScr3DqQLeomUDArp6MWKm+g==
 
-"@xmtp/proto@3.34.0":
-  version "3.34.0"
-  resolved "https://registry.yarnpkg.com/@xmtp/proto/-/proto-3.34.0.tgz#3ca8859a3918f2d251d3cbb425804bb9f239eb69"
-  integrity sha512-UJ0doz01peGEi5+fJ6th6JsUXFLMHaVk9L9avrv7L7FhfmAzM/V5iqHao8YpIKyMrJ7BelsGrbDcTfe28SsxFg==
+"@xmtp/proto@3.45.0":
+  version "3.45.0"
+  resolved "https://registry.yarnpkg.com/@xmtp/proto/-/proto-3.45.0.tgz#2aaca656a6da85a05ae75f72340ce1ef5e4fb2ec"
+  integrity sha512-6d/UE/vqi1erpL+z/HSGvFOnJt+y7RE23g6SUUUB7tx75VAi5A0/uLwzPr/eyVkiHZGqlbktq8Rzco+HgTyTAw==
   dependencies:
     long "^5.2.0"
     protobufjs "^7.0.0"
@@ -3081,18 +3081,18 @@
   resolved "https://registry.yarnpkg.com/@xmtp/user-preferences-bindings-wasm/-/user-preferences-bindings-wasm-0.3.6.tgz#4ca58dca940574483caa8cbd4d9c609577b1e0f1"
   integrity sha512-ANi6ikrO6YBaK978sMuEEnpREvFQQnMVaNdlviaLzmc07u4Of4s/VLNnavl4qTb4F4cvwSiBWou0wSYIE5SWYg==
 
-"@xmtp/xmtp-js@11.4.1":
-  version "11.4.1"
-  resolved "https://registry.yarnpkg.com/@xmtp/xmtp-js/-/xmtp-js-11.4.1.tgz#a4e104425d52107d55bd219eb786ec755a77f987"
-  integrity sha512-VrbII6QKFRvh6b8ftPBS0F1n5L5aPqCDT5y1DR3eNuKq0JPwBYZpIuSoAdIX775IEn5x3K+V63dhrvY/XiChvg==
+"@xmtp/xmtp-js@11.5.0":
+  version "11.5.0"
+  resolved "https://registry.yarnpkg.com/@xmtp/xmtp-js/-/xmtp-js-11.5.0.tgz#1b4bf40f8e2cd92bf10ee8a0c547b8683b851394"
+  integrity sha512-ZsB/EO1ts0mx000lgWsxe3S1+9/k1I+RjlIRasC1JmkzxNmf/y8bfMgKL3GdN800G3l17XzoyfTGj+JwgY9HwA==
   dependencies:
     "@noble/secp256k1" "1.7.1"
-    "@xmtp/proto" "3.34.0"
+    "@xmtp/proto" "3.45.0"
     "@xmtp/user-preferences-bindings-wasm" "^0.3.6"
-    async-mutex "^0.4.1"
+    async-mutex "^0.5.0"
     elliptic "^6.5.4"
     long "^5.2.3"
-    viem "^2.7.8"
+    viem "2.7.15"
 
 abitype@1.0.0:
   version "1.0.0"
@@ -3490,10 +3490,10 @@ async-limiter@~1.0.0:
   resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.1.tgz#dd379e94f0db8310b08291f9d64c3209766617fd"
   integrity sha512-csOlWGAcRFJaI6m+F2WKdnMKr4HhdhFVBk0H/QbJFMCr+uO2kwohwXQPxw/9OCxp05r5ghVBFSyioixx3gfkNQ==
 
-async-mutex@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/async-mutex/-/async-mutex-0.4.1.tgz#bccf55b96f2baf8df90ed798cb5544a1f6ee4c2c"
-  integrity sha512-WfoBo4E/TbCX1G95XTjbWTE3X2XLG0m1Xbv2cwOtuPdyH9CZvnaA5nCt1ucjaKEgW2A5IF71hxrRhr83Je5xjA==
+async-mutex@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/async-mutex/-/async-mutex-0.5.0.tgz#353c69a0b9e75250971a64ac203b0ebfddd75482"
+  integrity sha512-1A94B18jkJ3DYq284ohPxoXbfTA5HsQ7/Mf4DEhcyLx3Bz27Rh59iScbB6EPiP+B+joue6YCxcMXSbFC1tZKwA==
   dependencies:
     tslib "^2.4.0"
 
@@ -11552,10 +11552,10 @@ verror@^1.10.0, verror@^1.4.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-viem@^2.7.8:
-  version "2.7.22"
-  resolved "https://registry.yarnpkg.com/viem/-/viem-2.7.22.tgz#b6991b73f348d8e3a151f4acea08fddfdc449805"
-  integrity sha512-R/d9AkWXkhiNF4Gk4/A389LSO5PGDdHUBFDKIUkhrdLTDpOhKzbNln6qDry3kYUcmH7lErx3C2eA6rajnc0s9A==
+viem@2.7.15:
+  version "2.7.15"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-2.7.15.tgz#0dfdcb75be196c85839950b0ccb88be0b377609c"
+  integrity sha512-I2RMQpg1/MC7fXVjHxeXRPU9k/WEOvZajK/KZSr7DChS0AaZ7uovsQWppwBn2wvZWguTCIRAHqzMwIEGku95yQ==
   dependencies:
     "@adraffy/ens-normalize" "1.10.0"
     "@noble/curves" "1.2.0"
