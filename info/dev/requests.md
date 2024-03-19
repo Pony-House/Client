@@ -13,6 +13,8 @@
 
     Fazer um sistema para facilitar rooms que são descrições de informação.
 
+    Adicionar suporte a link para ir diretamente a mensagens.
+
     =============================================
 
     Trocar o titulo da página de bolinha de notificação para números
