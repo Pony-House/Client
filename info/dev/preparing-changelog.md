@@ -1,2 +1,3 @@
 - Notifications issue fixed.
 - Capacitor files removed.
+- GlobalNotifications page updated.
