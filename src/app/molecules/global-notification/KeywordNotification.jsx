@@ -16,6 +16,8 @@ import { notifType, typeToLabel, getActionType, getTypeActions } from './GlobalN
 
 const DISPLAY_NAME = '.m.rule.contains_display_name';
 const ROOM_PING = '.m.rule.roomnotif';
+const ROOM_PING2 = '.m.rule.roomnotif2';
+const ROOM_PING3 = '.m.rule.roomnotif3';
 const USERNAME = '.m.rule.contains_user_name';
 const KEYWORD = 'keyword';
 
@@ -28,6 +30,8 @@ function useKeywordNotif() {
   const rulesToType = {
     [DISPLAY_NAME]: notifType.NOISY,
     [ROOM_PING]: notifType.NOISY,
+    [ROOM_PING2]: notifType.NOISY,
+    [ROOM_PING3]: notifType.NOISY,
     [USERNAME]: notifType.NOISY,
   };
 
@@ -39,7 +43,7 @@ function useKeywordNotif() {
     const or = evtContent.global.override;
     const ct = evtContent.global.content;
 
-    if (rule === DISPLAY_NAME || rule === ROOM_PING) {
+    if (rule === DISPLAY_NAME || rule === ROOM_PING || rule === ROOM_PING2 || rule === ROOM_PING3) {
       let orRule = or.find((r) => r?.rule_id === rule);
       if (!orRule) {
         orRule = {
@@ -55,10 +59,18 @@ function useKeywordNotif() {
         orRule.conditions = [{ kind: 'contains_display_name' }];
         orRule.actions = getTypeActions(type, true);
       } else {
-        orRule.conditions = [
-          { kind: 'event_match', key: 'content.body', pattern: '@room' },
-          { kind: 'sender_notification_permission', key: 'room' },
-        ];
+        orRule.conditions = [];
+        if (rule === ROOM_PING)
+          orRule.conditions.push({ kind: 'event_match', key: 'content.body', pattern: '@room' });
+        if (rule === ROOM_PING2)
+          orRule.conditions.push({
+            kind: 'event_match',
+            key: 'content.body',
+            pattern: '@everyone',
+          });
+        if (rule === ROOM_PING3)
+          orRule.conditions.push({ kind: 'event_match', key: 'content.body', pattern: '@here' });
+        orRule.conditions.push({ kind: 'sender_notification_permission', key: 'room' });
         orRule.actions = getTypeActions(type, true);
       }
     } else if (rule === USERNAME) {
@@ -104,11 +116,15 @@ function useKeywordNotif() {
 
   const dsRule = override.find((rule) => rule.rule_id === DISPLAY_NAME);
   const roomRule = override.find((rule) => rule.rule_id === ROOM_PING);
+  const roomRule2 = override.find((rule) => rule.rule_id === ROOM_PING2);
+  const roomRule3 = override.find((rule) => rule.rule_id === ROOM_PING3);
   const usernameRule = content.find((rule) => rule.rule_id === USERNAME);
   const keywordRule = content.find((rule) => rule.rule_id !== USERNAME);
 
   if (dsRule) rulesToType[DISPLAY_NAME] = getActionType(dsRule);
   if (roomRule) rulesToType[ROOM_PING] = getActionType(roomRule);
+  if (roomRule2) rulesToType[ROOM_PING2] = getActionType(roomRule2);
+  if (roomRule3) rulesToType[ROOM_PING3] = getActionType(roomRule3);
   if (usernameRule) rulesToType[USERNAME] = getActionType(usernameRule);
   if (keywordRule) rulesToType[KEYWORD] = getActionType(keywordRule);
 
@@ -190,6 +206,34 @@ function GlobalNotification() {
           content={
             <div className="very-small text-gray">
               Default notification settings for all messages containing @room.
+            </div>
+          }
+        />
+
+        <SettingTile
+          title="Message containing @everyone"
+          options={
+            <Button onClick={(evt) => onSelect(evt, ROOM_PING2)} faSrc="fa-solid fa-check">
+              {typeToLabel[rulesToType[ROOM_PING2]]}
+            </Button>
+          }
+          content={
+            <div className="very-small text-gray">
+              Default notification settings for all messages containing @everyone.
+            </div>
+          }
+        />
+
+        <SettingTile
+          title="Message containing @here"
+          options={
+            <Button onClick={(evt) => onSelect(evt, ROOM_PING3)} faSrc="fa-solid fa-check">
+              {typeToLabel[rulesToType[ROOM_PING3]]}
+            </Button>
+          }
+          content={
+            <div className="very-small text-gray">
+              Default notification settings for all messages containing @here.
             </div>
           }
         />
