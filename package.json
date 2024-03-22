@@ -7,10 +7,16 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "start": "vite dev",
     "setup": "yarn && node -r esm ./build/index.js ",
-    "build": "vite build",
-    "build:8gb": "cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
+    "start": "node -r esm ./build/start/vite.js && vite dev",
+    "build": "node -r esm ./build/start/vite.js && vite build",
+    "build:8gb": "node -r esm ./build/start/vite.js && cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
+    "electron:start": "node -r esm ./build/start/vite.js && cross-env ELECTRON_MODE=true vite dev",
+    "electron:build": "node -r esm ./build/start/vite.js && cross-env ELECTRON_MODE=true vite build && electron-builder",
+    "expo:start": "node -r esm ./build/start/expo.js && cross-env EXPO_MODE=true expo start",
+    "android": "node -r esm ./build/start/expo.js && cross-env EXPO_MODE=true expo start --android",
+    "ios": "node -r esm ./build/start/expo.js && cross-env EXPO_MODE=true expo start --ios",
+    "web": "node -r esm ./build/start/expo.js && cross-env EXPO_MODE=true expo start --web",
     "lint": "yarn check:eslint && yarn check:prettier",
     "check:eslint": "eslint src/* && eslint electron/* && eslint mods/* --no-error-on-unmatched-pattern",
     "check:prettier": "prettier --check src/* && prettier --check electron/* && prettier --check mods/*",
@@ -20,13 +26,7 @@
     "fix:mods:prettier": "prettier --write mods/*",
     "public:check:eslint": "eslint public/*",
     "public:check:prettier": "prettier --check public/*",
-    "public:fix:prettier": "prettier --write public/*",
-    "electron:start": "cross-env ELECTRON_MODE=true vite dev",
-    "electron:build": "cross-env ELECTRON_MODE=true vite build && electron-builder",
-    "expo:start": "cross-env EXPO_MODE=true expo start",
-    "android": "cross-env EXPO_MODE=true expo start --android",
-    "ios": "cross-env EXPO_MODE=true expo start --ios",
-    "web": "cross-env EXPO_MODE=true expo start --web"
+    "public:fix:prettier": "prettier --write public/*"
   },
   "workspaces": [
     "src/*"
