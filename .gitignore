@@ -9,6 +9,7 @@ vendor
 
 mods/test
 
+/index.js
 .DS_Store
 
 .expo/
