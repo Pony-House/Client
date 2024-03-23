@@ -12,6 +12,7 @@
     Fazer um sistema para facilitar rooms que são descrições de informação.
 
     Adicionar suporte a link para ir diretamente a mensagens.
+    /?room_id=&thread_id=&event_id=
 
     =============================================
 
