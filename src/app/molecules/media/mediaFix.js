@@ -16,6 +16,12 @@ export function fixScrollChat() {
 
       const diffHeight = newHeight - oldHeight;
       if (diffHeight > 0) scrollBar.animate({ scrollTop: scrollBar.scrollTop() + diffHeight }, 0);
+
+      // Fix the bottom scroll
+      if (scrollBar[0].scrollHeight - scrollBar.scrollTop() - 30 <= scrollBar.outerHeight()) {
+        scrollBar.animate({ scrollTop: scrollBar.scrollTop() + 3 }, 0);
+      }
+      // if (scrollBar[0].scrollHeight - scrollBar.scrollTop() === scrollBar.outerHeight())
     },
   };
 }
