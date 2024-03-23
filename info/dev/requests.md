@@ -18,8 +18,6 @@
 
     =============================================
 
-    --> Menu mobile de ícones precisa parar de ser table usar flex.
-
     --> Fazer opção para uma room de informações ser realmente de informação.
 
     =======================================================
