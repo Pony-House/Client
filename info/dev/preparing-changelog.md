@@ -1,5 +1,0 @@
-- Notifications issue fixed.
-- Capacitor files removed.
-- GlobalNotifications page updated.
-- @everyone and @here added to notifications settings.
-- Scroll tiny fix.
