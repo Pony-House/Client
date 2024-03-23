@@ -13,8 +13,6 @@
 
     Adicionar suporte a link para ir diretamente a mensagens.
 
-    Corrigir scroll quando a página está perto demais.
-
     =============================================
 
     Trocar o titulo da página de bolinha de notificação para números
