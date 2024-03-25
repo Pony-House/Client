@@ -144,7 +144,7 @@
     "vite": "5.2.6",
     "vite-plugin-electron": "^0.28.4",
     "vite-plugin-electron-renderer": "^0.14.5",
-    "vite-plugin-static-copy": "1.0.1"
+    "vite-plugin-static-copy": "1.0.2"
   },
   "private": true
 }

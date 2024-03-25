@@ -11674,10 +11674,10 @@ vite-plugin-electron@^0.28.4:
   resolved "https://registry.yarnpkg.com/vite-plugin-electron/-/vite-plugin-electron-0.28.4.tgz#ce06f8626b76890b7e6883a26763dee1d87d1b3f"
   integrity sha512-OcWQQZk1ygkG4g/nj6cQ0zMu5q9yPcxEtDNcY8xagWqjQ3PxZbWuf1VyElZSo16GqPa71vBzoz+XAukia/TgNQ==
 
-vite-plugin-static-copy@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/vite-plugin-static-copy/-/vite-plugin-static-copy-1.0.1.tgz#c8aa9871d920b0de9c8583caae5510669546cf8e"
-  integrity sha512-3eGL4mdZoPJMDBT68pv/XKIHR4MgVolStIxxv1gIBP4R8TpHn9C9EnaU0hesqlseJ4ycLGUxckFTu/jpuJXQlA==
+vite-plugin-static-copy@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/vite-plugin-static-copy/-/vite-plugin-static-copy-1.0.2.tgz#8b7a6f9300552d68bcebef77f50caa99347bef0b"
+  integrity sha512-AfmEF+a/mfjsUsrgjbCkhzUCeIUF4EKQXXt3Ie1cour9MBpy6f6GphbdW2td28oYfOrwCyRzFCksgLkpk58q6Q==
   dependencies:
     chokidar "^3.5.3"
     fast-glob "^3.2.11"
