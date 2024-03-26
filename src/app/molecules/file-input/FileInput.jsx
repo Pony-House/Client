@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // import { Filesystem } from '@capacitor/filesystem';
 // import { FilePicker } from '@capawesome/capacitor-file-picker';
 
-import { objType } from '@src/util/tools';
+// import { objType } from '@src/util/tools';
 import initMatrix from '@src/client/initMatrix';
 
 // Build HTML
@@ -59,8 +59,8 @@ const FileInput = React.forwardRef(
   },
 );
 
-const uploadContent = (file, ops, forceDefault = false) => {
-  if (/* !Capacitor.isNativePlatform() || */ forceDefault) {
+/* const uploadContent = (file, ops, forceDefault = false) => {
+  if (!Capacitor.isNativePlatform() || forceDefault) {
     return initMatrix.matrixClient.uploadContent(file);
   }
 
@@ -76,21 +76,25 @@ const uploadContent = (file, ops, forceDefault = false) => {
   }
 
   return initMatrix.matrixClient.uploadContent(Buffer.from(file.data, 'base64'), tinyOps);
-};
+}; */
+const uploadContent = (file) => initMatrix.matrixClient.uploadContent(file);
 
-const createObjectURL = (file, forceDefault = false) => {
-  // if (!Capacitor.isNativePlatform() || forceDefault) {
+/* const createObjectURL = (file, forceDefault = false) => {
+  if (!Capacitor.isNativePlatform() || forceDefault) {
   return URL.createObjectURL(file);
-  // }
-  // return URL.createObjectURL(file.data);
-};
+  }
+  return URL.createObjectURL(file.data);
+}; */
+const createObjectURL = (file) => URL.createObjectURL(file);
 
-const convertToBase64Mobile = (file) => {
-  // if (!Capacitor.isNativePlatform()) {
+/* const convertToBase64Mobile = (file) => {
+  if (!Capacitor.isNativePlatform()) {
   return file;
-  // }
-  // return file.data;
-};
+  }
+  return file.data;
+}; */
+
+const convertToBase64Mobile = (file) => file;
 
 const fileReader = (file, readerType = 'readAsText') =>
   new Promise((resolve, reject) => {
@@ -117,7 +121,7 @@ const fileReader = (file, readerType = 'readAsText') =>
   });
 
 // Click open file
-const fileInputClick = async (inputRef, onChange) => {
+const fileInputClick = async (inputRef /* , onChange */) => {
   // Normal
   // if (!Capacitor.isNativePlatform()) {
   if (inputRef.current) inputRef.current.click();

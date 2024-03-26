@@ -387,6 +387,7 @@ class RoomsInput extends EventEmitter {
           info.thumbnail_url = thumbnailUploadData.url;
         }
       } catch (e) {
+        console.error(e);
         this.emit(cons.events.roomsInput.FILE_UPLOAD_CANCELED, roomId, threadId);
         return;
       }
@@ -405,6 +406,7 @@ class RoomsInput extends EventEmitter {
       });
       this.emit(cons.events.roomsInput.FILE_UPLOADED, roomId, threadId);
     } catch (e) {
+      console.error(e);
       this.emit(cons.events.roomsInput.FILE_UPLOAD_CANCELED, roomId, threadId);
       return;
     }

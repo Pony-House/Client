@@ -28,9 +28,6 @@
     "public:check:prettier": "prettier --check public/*",
     "public:fix:prettier": "prettier --write public/*"
   },
-  "workspaces": [
-    "src/*"
-  ],
   "keywords": [
     "react",
     "javascript",

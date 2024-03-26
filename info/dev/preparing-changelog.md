@@ -1,1 +1,2 @@
 - Typing warning timeout updated.
+- File upload issue fixed.
