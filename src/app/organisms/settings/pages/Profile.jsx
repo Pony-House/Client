@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import moment from '@src/util/libs/momentjs';
+import { readImageUrl } from '@src/util/libs/mediaCache';
 
 import initMatrix from '../../../../client/initMatrix';
 import { getEventCords } from '../../../../util/common';
@@ -281,7 +282,7 @@ function ProfileSection() {
                 <img
                   id="change-custom-status-img"
                   className="img-fluid"
-                  src={customStatusIcon}
+                  src={readImageUrl(customStatusIcon)}
                   alt="custom-status"
                   onClick={(e) => {
                     if (!$(e.target).hasClass('disabled')) {

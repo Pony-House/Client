@@ -11,6 +11,7 @@ import FileInput, {
   fileInputClick,
   fileInputValue,
 } from '@src/app/molecules/file-input/FileInput';
+import { readImageUrl } from '@src/util/libs/mediaCache';
 
 import threadsList from '@src/util/libs/thread';
 import { isMobile } from '@src/util/libs/mobile';
@@ -1107,11 +1108,11 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
           {fileType === 'image' && (
             <img
               alt={attachment.name}
-              src={
+              src={readImageUrl(
                 !isMobile(true)
                   ? createObjectURL(attachment)
-                  : `data:${attachment.type};base64, ${attachment.data}`
-              }
+                  : `data:${attachment.type};base64, ${attachment.data}`,
+              )}
             />
           )}
           {fileType === 'video' && <RawIcon fa="fa-solid fa-film" />}

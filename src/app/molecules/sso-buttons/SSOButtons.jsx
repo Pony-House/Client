@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { readImageUrl } from '@src/util/libs/mediaCache';
 
 import { createTemporaryClient, startSsoLogin } from '../../../client/action/auth';
 
@@ -27,7 +28,7 @@ function SSOButtons({ type, identityProviders, baseUrl }) {
             >
               <img
                 className="sso-btn__img rounded-circle"
-                src={tempClient.mxcUrlToHttp(idp.icon)}
+                src={readImageUrl(tempClient.mxcUrlToHttp(idp.icon))}
                 alt={idp.name}
               />
             </button>

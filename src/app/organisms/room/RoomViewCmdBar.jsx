@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
+import { readImageUrl } from '@src/util/libs/mediaCache';
 
 import { twemojifyReact, TWEMOJI_BASE_URL } from '../../../util/twemojify';
 
@@ -73,7 +74,7 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
       return (
         <img
           className="emoji"
-          src={mx.mxcUrlToHttp(emoji.mxc)}
+          src={readImageUrl(mx.mxcUrlToHttp(emoji.mxc))}
           data-mx-emoticon=""
           alt={`:${emoji.shortcode}:`}
         />

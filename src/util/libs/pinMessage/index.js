@@ -15,6 +15,7 @@ import { createMessageData, messageDataEffects } from '../../../app/molecules/me
 import { jqueryTime } from '../../../app/atoms/time/Time';
 
 import { getEventById } from './cache';
+import { readImageUrl } from '../mediaCache';
 
 // Info
 const ImageBrokenSVG = './img/svg/image-broken.svg';
@@ -249,7 +250,8 @@ export function openPinMessageModal(room) {
                         $('<img>', {
                           class: 'avatar-react',
                           draggable: false,
-                          src: imageSrc !== null ? imageSrc : defaultAvatar(userColor),
+                          src:
+                            imageSrc !== null ? readImageUrl(imageSrc) : defaultAvatar(userColor),
                           alt: 'avatar',
                         })
                           .on('load', (event) => {

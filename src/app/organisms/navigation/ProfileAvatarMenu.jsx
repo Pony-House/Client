@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import clone from 'clone';
 import jReact from '@mods/lib/jReact';
+import { readImageUrl } from '@src/util/libs/mediaCache';
 
 import IconButton from '../../atoms/button/IconButton';
 import { twemojifyReact } from '../../../util/twemojify';
@@ -112,7 +113,7 @@ function ProfileAvatarMenu() {
           ) {
             htmlStatus.push(
               $('<img>', {
-                src: content.presenceStatusMsg.msgIcon,
+                src: readImageUrl(content.presenceStatusMsg.msgIcon),
                 alt: 'icon',
                 class: 'emoji me-1',
               }),

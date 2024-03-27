@@ -10,6 +10,7 @@ import hljs from 'highlight.js';
 import * as linkify from 'linkifyjs';
 import cons from '@src/client/state/cons';
 import { isMobile } from '@src/util/libs/mobile';
+import { readImageUrl } from '@src/util/libs/mediaCache';
 
 import Text from '../../atoms/text/Text';
 import { hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
@@ -684,7 +685,7 @@ function MessageReaction({ reaction, shortcode, count, users, isActive, onClick 
             className="react-emoji"
             draggable="false"
             alt={shortcode ?? reaction}
-            src={customEmojiUrl}
+            src={readImageUrl(customEmojiUrl)}
           />
         ) : (
           twemojifyReact(reaction, { className: 'react-emoji' })

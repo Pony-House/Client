@@ -2,6 +2,7 @@ import React, { useEffect, useReducer, useRef, useState } from 'react';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import PropTypes from 'prop-types';
 import envAPI from '@src/util/libs/env';
+import { readImageUrl } from '@src/util/libs/mediaCache';
 
 import { twemojifyReact, twemojify } from '../../../util/twemojify';
 
@@ -165,14 +166,14 @@ function PeopleSelectorBanner({ name, color, user }) {
       // Message Icon
       if (typeof presence.msgIcon === 'string' && presence.msgIcon.length > 0) {
         customStatusImg = $('<img>', {
-          src: presence.msgIconThumb,
+          src: readImageUrl(presence.msgIconThumb),
           alt: 'icon',
           class: 'emoji me-1',
         });
         htmlStatus.push(customStatusImg);
 
-        customStatusImg.data('pony-house-cs-normal', presence.msgIconThumb);
-        customStatusImg.data('pony-house-cs-hover', presence.msgIcon);
+        customStatusImg.data('pony-house-cs-normal', readImageUrl(presence.msgIconThumb));
+        customStatusImg.data('pony-house-cs-hover', readImageUrl(presence.msgIcon));
       }
 
       if (typeof presence.msg === 'string' && presence.msg.length > 0) {

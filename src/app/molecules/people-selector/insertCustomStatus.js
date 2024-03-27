@@ -1,3 +1,4 @@
+import { readImageUrl } from '@src/util/libs/mediaCache';
 import { twemojify } from '../../../util/twemojify';
 
 export default function insertCustomStatus(customStatusRef, content, testMode = false) {
@@ -22,14 +23,20 @@ export default function insertCustomStatus(customStatusRef, content, testMode = 
         content.presenceStatusMsg.msgIcon.length > 0
       ) {
         customStatusImg = $('<img>', {
-          src: content.presenceStatusMsg.msgIconThumb,
+          src: readImageUrl(content.presenceStatusMsg.msgIconThumb),
           alt: 'icon',
           class: 'emoji me-1',
         });
         htmlStatus.push(customStatusImg);
 
-        customStatusImg.data('pony-house-cs-normal', content.presenceStatusMsg.msgIconThumb);
-        customStatusImg.data('pony-house-cs-hover', content.presenceStatusMsg.msgIcon);
+        customStatusImg.data(
+          'pony-house-cs-normal',
+          readImageUrl(content.presenceStatusMsg.msgIconThumb),
+        );
+        customStatusImg.data(
+          'pony-house-cs-hover',
+          readImageUrl(content.presenceStatusMsg.msgIcon),
+        );
       }
 
       if (

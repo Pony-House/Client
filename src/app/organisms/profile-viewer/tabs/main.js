@@ -1,4 +1,5 @@
 import moment, { momentFormat } from '@src/util/libs/momentjs';
+import { readImageUrl } from '@src/util/libs/mediaCache';
 import { twemojify } from '../../../../util/twemojify';
 import { copyToClipboard } from '../../../../util/common';
 import { toast } from '../../../../util/tools';
@@ -180,7 +181,11 @@ export default function renderAbout(
       content.presenceStatusMsg.msgIcon.length > 0
     ) {
       htmlStatus.push(
-        $('<img>', { src: content.presenceStatusMsg.msgIcon, alt: 'icon', class: 'emoji me-1' }),
+        $('<img>', {
+          src: readImageUrl(content.presenceStatusMsg.msgIcon),
+          alt: 'icon',
+          class: 'emoji me-1',
+        }),
       );
     }
 

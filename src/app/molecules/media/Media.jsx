@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import encrypt from 'matrix-encrypt-attachment';
+import { readAudioUrl, readImageUrl, readVideoUrl } from '@src/util/libs/mediaCache';
 
 import { BlurhashCanvas } from 'react-blurhash';
 import imageViewer from '../../../util/imageViewer';
@@ -174,7 +175,7 @@ function Image({
           img.on('click', imgAction);
         }
       }}
-      src={url || link}
+      src={readImageUrl(url || link)}
       alt={name}
     />
   );
@@ -252,7 +253,7 @@ function Sticker({ name, height, width, link, file, type }) {
         className="sticker-container"
         style={{ height: width !== null ? getNativeHeight(width, height, 170) : 'unset' }}
       >
-        {url !== null && <img src={url || link} alt={name} />}
+        {url !== null && <img src={readImageUrl(url || link)} alt={name} />}
       </div>
     </Tooltip>
   );
@@ -302,7 +303,7 @@ function Audio({ name, link, type, file }) {
         )}
         {url !== null && (
           <audio autoPlay controls>
-            <source src={url} type={getBlobSafeMimeType(type)} />
+            <source src={readAudioUrl(url)} type={getBlobSafeMimeType(type)} />
           </audio>
         )}
       </div>
@@ -384,7 +385,7 @@ function Video({
           {thumbUrl !== null && (
             <img
               style={{ display: blur ? 'none' : 'unset' }}
-              src={thumbUrl}
+              src={readImageUrl(thumbUrl)}
               onLoad={() => setBlur(false)}
               alt={name}
             />
@@ -394,7 +395,7 @@ function Video({
       ) : (
         <div className="ratio ratio-16x9 video-base">
           <video srcwidth={width} srcheight={height} autoPlay controls poster={thumbUrl}>
-            <source src={url} type={getBlobSafeMimeType(type)} />
+            <source src={readVideoUrl(url)} type={getBlobSafeMimeType(type)} />
           </video>
         </div>
       )}

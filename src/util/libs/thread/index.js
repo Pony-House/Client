@@ -20,6 +20,7 @@ import defaultAvatar from '@src/app/atoms/avatar/defaultAvatar';
 
 import { btModal, objType } from '../../tools';
 import initMatrix, { fetchFn } from '../../../client/initMatrix';
+import { readImageUrl } from '../mediaCache';
 
 const ImageBrokenSVG = './img/svg/image-broken.svg';
 
@@ -243,7 +244,7 @@ export function openThreadsMessageModal(room) {
                       $('<img>', {
                         class: 'avatar-react',
                         draggable: false,
-                        src: imageSrc !== null ? imageSrc : defaultAvatar(userColor),
+                        src: imageSrc !== null ? readImageUrl(imageSrc) : defaultAvatar(userColor),
                         alt: 'avatar',
                       })
                         .on('load', (event) => {

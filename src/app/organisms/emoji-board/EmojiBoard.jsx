@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
+import { readImageUrl } from '@src/util/libs/mediaCache';
 import { emojis } from './emoji';
 import { loadEmojiData, getEmojiData, ROW_EMOJIS_COUNT, ROW_STICKERS_COUNT } from './emojiData';
 
@@ -458,7 +459,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                 <IconButton
                   className="emoji-group-button"
                   onClick={() => openGroup(recentOffset + favOffset + pack.packIndex)}
-                  src={src}
+                  src={readImageUrl(src)}
                   key={pack.packIndex}
                   tooltip={pack.displayName ?? 'Unknown'}
                   tooltipPlacement="left"
