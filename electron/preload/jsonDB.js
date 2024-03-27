@@ -1,17 +1,10 @@
-import { contextBridge, ipcRenderer } from 'electron';
+import { contextBridge } from 'electron';
 import clone from 'clone';
 import path from 'path';
 import fs from 'fs';
 
 import { objType } from '@src/util/tools';
-
-const getAppFolders = () =>
-  new Promise((resolve) => {
-    ipcRenderer.once('getAppFolders', (event, result) => {
-      resolve(result);
-    });
-    ipcRenderer.send('getAppFolders', true);
-  });
+import { getAppFolders } from './libs/utils';
 
 let started = false;
 let folders = {};
