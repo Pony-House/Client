@@ -1,6 +1,11 @@
 const urlCache = {};
 const checkUrlCache = (url) => {
-  if (urlCache[url]) return urlCache[url];
+  if (typeof global.cacheFileElectron === 'function') {
+    if (urlCache[url]) return urlCache[url];
+    const validate = global.cacheFileElectron(url);
+    if (validate.complete) urlCache[url] = validate.value;
+    return validate.value;
+  }
   return url;
 };
 

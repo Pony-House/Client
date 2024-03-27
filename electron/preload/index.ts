@@ -7,6 +7,7 @@ import './idle/seconds';
 import './idle/status';
 // import './db';
 import './jsonDB';
+import './mediaCache';
 import startAutoLaunch from './auto-launch';
 import insertMatrixAgent, { startCustomDNS } from './dns';
 
