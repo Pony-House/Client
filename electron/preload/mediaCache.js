@@ -92,7 +92,7 @@ contextBridge.exposeInMainWorld('startMediaCacheElectron', async () => {
         }
       })
       .on('unlink', (filePath) => {
-        const index = files.indexOf(filePath);
+        const index = files.indexOf(path.basename(filePath));
         if (index > -1) files.splice(index, 1);
       })
       .on('error', (error) => {
