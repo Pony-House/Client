@@ -18,6 +18,12 @@ const getFile = async (url) => {
   }
 };
 
+const convertFileName = {
+  decode: () => {},
+
+  encode: () => {},
+};
+
 // Global get file url
 const cacheFileElectron = (url, type) => {
   let value = url;
@@ -50,8 +56,9 @@ contextBridge.exposeInMainWorld('startMediaCacheElectron', async () => {
       if (!fileName.endsWith('.download')) {
         // Check path
         if (fs.lstatSync(filePath).isFile()) {
+          const codedFile = convertFileName.decode(fileName);
           // File cache confirmed. Add this
-          if (files.indexOf(fileName) < 0) files.push(fileName);
+          if (files.indexOf(codedFile) < 0) files.push(codedFile);
         }
       }
 
@@ -64,6 +71,9 @@ contextBridge.exposeInMainWorld('startMediaCacheElectron', async () => {
         }
       }
     });
+
+    // Check complete
+    console.log('[media-cache] Data array loaded.', files);
 
     // Watch folder
     const watcher = chokidar.watch(dirs.tempMedia, {
@@ -79,7 +89,8 @@ contextBridge.exposeInMainWorld('startMediaCacheElectron', async () => {
           path.join(dirs.tempMedia, `./${fileName}`) === filePath &&
           !fileName.endsWith('.download')
         ) {
-          if (files.indexOf(fileName) < 0) files.push(fileName);
+          const codedFile = convertFileName.decode(fileName);
+          if (files.indexOf(codedFile) < 0) files.push(codedFile);
         }
       })
       .on('change', (filePath) => {
@@ -88,16 +99,17 @@ contextBridge.exposeInMainWorld('startMediaCacheElectron', async () => {
           path.join(dirs.tempMedia, `./${fileName}`) === filePath &&
           !fileName.endsWith('.download')
         ) {
-          if (files.indexOf(fileName) < 0) files.push(fileName);
+          const codedFile = convertFileName.decode(fileName);
+          if (files.indexOf(codedFile) < 0) files.push(codedFile);
         }
       })
       .on('unlink', (filePath) => {
-        const index = files.indexOf(path.basename(filePath));
+        const fileName = path.basename(filePath);
+        const codedFile = convertFileName.decode(fileName);
+        const index = files.indexOf(codedFile);
         if (index > -1) files.splice(index, 1);
       })
-      .on('error', (error) => {
-        console.error(error);
-      });
+      .on('error', (error) => console.error(error));
   }
 });
 
