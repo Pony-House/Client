@@ -121,8 +121,13 @@ class InitMatrix extends EventEmitter {
 
     this.matrixClient = sdk.createClient(clientOps);
 
-    if (global.tinyJsonDB && typeof global.tinyJsonDB.startClient === 'function')
-      await global.tinyJsonDB.startClient();
+    if (__ENV_APP__.ELECTRON_MODE) {
+      if (global.tinyJsonDB && typeof global.tinyJsonDB.startClient === 'function')
+        await global.tinyJsonDB.startClient();
+
+      if (typeof global.startMediaCacheElectron === 'function')
+        await global.startMediaCacheElectron();
+    }
 
     await envAPI.startDB();
     await indexedDBStore.startup();

@@ -31,6 +31,11 @@ if (!fs.existsSync(tempFolderNoti)) {
   fs.mkdirSync(tempFolderNoti);
 }
 
+const tempFolderMedia = path.join(tempFolder, './media');
+if (!fs.existsSync(tempFolderNoti)) {
+  fs.mkdirSync(tempFolderNoti);
+}
+
 export function startTempFolders(win, extraPath) {
   ipcMain.on('getAppFolders', () => {
     win.webContents.send('getAppFolders', {
@@ -39,6 +44,7 @@ export function startTempFolders(win, extraPath) {
       appDataPrivate,
       appData: appDataFolder,
       temp: tempFolder,
+      tempMedia: tempFolderMedia,
     });
   });
 }
