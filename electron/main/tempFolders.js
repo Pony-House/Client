@@ -32,8 +32,8 @@ if (!fs.existsSync(tempFolderNoti)) {
 }
 
 const tempFolderMedia = path.join(tempFolder, './media');
-if (!fs.existsSync(tempFolderNoti)) {
-  fs.mkdirSync(tempFolderNoti);
+if (!fs.existsSync(tempFolderMedia)) {
+  fs.mkdirSync(tempFolderMedia);
 }
 
 export function startTempFolders(win, extraPath) {

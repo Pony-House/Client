@@ -20,7 +20,6 @@ const getFile = async (url) => {
 
 const convertFileName = {
   decode: () => {},
-
   encode: () => {},
 };
 
