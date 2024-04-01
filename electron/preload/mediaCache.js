@@ -15,6 +15,7 @@ const urlCache = {};
 const getFile = async (url) => {
   if (dirs) {
     const folder = dirs.tempMedia;
+    // Escrever aqui o script que vai baixar o arquivo para fazer cache no pc. Isso precisa ser feito individualmente. E detectar quando um arquivo já está sendo baixado para não se repetir mais de uma vez.
   }
 };
 

@@ -322,7 +322,11 @@ class Notifications extends EventEmitter {
 
     // Encrypted
     if (mEvent.isEncrypted()) {
-      await mEvent.attemptDecryption(this.matrixClient.getCrypto());
+      try {
+        await mEvent.attemptDecryption(this.matrixClient.getCrypto());
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     // Tiny API
