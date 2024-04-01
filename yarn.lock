@@ -2800,10 +2800,10 @@
   resolved "https://registry.yarnpkg.com/@types/ms/-/ms-0.7.34.tgz#10964ba0dee6ac4cd462e2795b6bebd407303433"
   integrity sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==
 
-"@types/node@*", "@types/node@20.11.30", "@types/node@>=13.7.0", "@types/node@^20.9.0":
-  version "20.11.30"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.30.tgz#9c33467fc23167a347e73834f788f4b9f399d66f"
-  integrity sha512-dHM6ZxwlmuZaRmUPfv1p+KrdD1Dci04FbdEm/9wEMouFqxYoFl5aMkt0VMAUtYRQDyYvD41WJLukhq/ha3YuTw==
+"@types/node@*", "@types/node@20.12.2", "@types/node@>=13.7.0", "@types/node@^20.9.0":
+  version "20.12.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.12.2.tgz#9facdd11102f38b21b4ebedd9d7999663343d72e"
+  integrity sha512-zQ0NYO87hyN6Xrclcqp7f8ZbXNbRfoGWNcMvHTPQp9UUrwI0mI7XBz+cu7/W6/VClYo2g63B0cjull/srU7LgQ==
   dependencies:
     undici-types "~5.26.4"
 
@@ -2825,10 +2825,10 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.11.tgz#2596fb352ee96a1379c657734d4b913a613ad563"
   integrity sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng==
 
-"@types/react-dom@18.2.22":
-  version "18.2.22"
-  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.2.22.tgz#d332febf0815403de6da8a97e5fe282cbe609bae"
-  integrity sha512-fHkBXPeNtfvri6gdsMYyW+dW7RXFo6Ad09nLFK0VQWR7yGLai/Cyvyj696gbwYvBnhGtevUG9cET0pmUbMtoPQ==
+"@types/react-dom@18.2.23":
+  version "18.2.23"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.2.23.tgz#112338760f622a16d64271b408355f2f27f6302c"
+  integrity sha512-ZQ71wgGOTmDYpnav2knkjr3qXdAFu0vsk8Ci5w3pGAIdj7/kKAyn+VsQDhXsmzzzepAiI9leWMmubXz690AI/A==
   dependencies:
     "@types/react" "*"
 
@@ -5144,10 +5144,10 @@ electron-updater@6.1.8:
     semver "^7.3.8"
     tiny-typed-emitter "^2.1.0"
 
-electron@^29.1.5:
-  version "29.1.5"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-29.1.5.tgz#b745b4d201c1ac9f84d6aa034126288dde34d5a1"
-  integrity sha512-1uWGRw/ffA62lcrklxGUgVxVtOHojsg/nwsYr+/F9cVjipZJn8iPv/ABGIIexhmUqWcho8BqfTJ4osCBa29gBg==
+electron@^29.1.6:
+  version "29.1.6"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-29.1.6.tgz#3804545a7570e88717f01e02ec871c667c55e596"
+  integrity sha512-UIYfpHR9gRBFKHyejHuXUVQ7nNzZRnoPVOHlijkvqR+DSLwgJ2ZcVVt0LNduNeO8PhPkY1+6kHonL52OTC1cOw==
   dependencies:
     "@electron/get" "^2.0.0"
     "@types/node" "^20.9.0"
@@ -6767,15 +6767,15 @@ html-dom-parser@5.0.8:
     domhandler "5.0.3"
     htmlparser2 "9.1.0"
 
-html-react-parser@5.1.9:
-  version "5.1.9"
-  resolved "https://registry.yarnpkg.com/html-react-parser/-/html-react-parser-5.1.9.tgz#7a8eb3a0b243bddf68f1a77bba5e423933b64161"
-  integrity sha512-MP0MQDEGlzkJT0OwY//tKYrgIzBM1frYLxx9RF7ALdIjI+MCMumydcNovXDX4X/iDi1zfgaU28VxoNXZn7EPjQ==
+html-react-parser@5.1.10:
+  version "5.1.10"
+  resolved "https://registry.yarnpkg.com/html-react-parser/-/html-react-parser-5.1.10.tgz#e65bf68df9b505756680d2cae842f7add3da5305"
+  integrity sha512-gV22PvLij4wdEdtrZbGVC7Zy2OVWnQ0bYhX63S196ZRSx4+K0TuutCreHSXr+saUia8KeKB+2TYziVfijpH4Tw==
   dependencies:
     domhandler "5.0.3"
     html-dom-parser "5.0.8"
     react-property "2.0.2"
-    style-to-js "1.1.11"
+    style-to-js "1.1.12"
 
 htmlparser2@9.1.0:
   version "9.1.0"
@@ -6949,10 +6949,10 @@ ini@^1.3.4, ini@~1.3.0:
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.8.tgz#a29da425b48806f34767a4efce397269af28432c"
   integrity sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==
 
-inline-style-parser@0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/inline-style-parser/-/inline-style-parser-0.2.2.tgz#d498b4e6de0373458fc610ff793f6b14ebf45633"
-  integrity sha512-EcKzdTHVe8wFVOGEYXiW9WmJXPjqi1T+234YpJr98RiFYKHV3cdy1+3mkTE+KHTHxFFLH51SfaGOoUdW+v7ViQ==
+inline-style-parser@0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/inline-style-parser/-/inline-style-parser-0.2.3.tgz#e35c5fb45f3a83ed7849fe487336eb7efa25971c"
+  integrity sha512-qlD8YNDqyTKTyuITrDOffsl6Tdhv+UC4hcdAVuQsK4IMQ99nSgd1MIA/Q+jQYoh9r3hVUXhYh7urSRmXPkW04g==
 
 internal-ip@4.3.0:
   version "4.3.0"
@@ -8067,10 +8067,10 @@ matrix-events-sdk@0.0.1:
   resolved "https://registry.yarnpkg.com/matrix-events-sdk/-/matrix-events-sdk-0.0.1.tgz#c8c38911e2cb29023b0bbac8d6f32e0de2c957dd"
   integrity sha512-1QEOsXO+bhyCroIe2/A5OwaxHvBm7EsSQ46DEDn8RBIfQwN5HWBpFvyWWR4QY0KHPPnnJdI99wgRiAl7Ad5qaA==
 
-matrix-js-sdk@31.6.0:
-  version "31.6.0"
-  resolved "https://registry.yarnpkg.com/matrix-js-sdk/-/matrix-js-sdk-31.6.0.tgz#d414775c80d2c350d8bc168b2c4d364454bcb04f"
-  integrity sha512-5U/QOjR54gPa91MbHGv0vrrVUkmn7ts4J+vRI5fxF+W0B4cu/98I0hbRnxikOAltfc+iED7KclXaZLprGL6Pyg==
+matrix-js-sdk@31.6.1:
+  version "31.6.1"
+  resolved "https://registry.yarnpkg.com/matrix-js-sdk/-/matrix-js-sdk-31.6.1.tgz#13a9c5ed9d57497a57c71c575a80da22ba4d8d42"
+  integrity sha512-XDSafXV2mrOQvkyZ8i1eDwqmicjLVTkdA2iAw1QsfAZtERz4CAlp1QJULcN1X2WhBx7pMnsN8M/k98LruUqMMQ==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@matrix-org/matrix-sdk-crypto-wasm" "^4.6.0"
@@ -8167,6 +8167,14 @@ metro-cache@0.80.7:
     metro-core "0.80.7"
     rimraf "^3.0.2"
 
+metro-cache@0.80.8:
+  version "0.80.8"
+  resolved "https://registry.yarnpkg.com/metro-cache/-/metro-cache-0.80.8.tgz#bc7d38611e4f31686a99045d4f2956c0bff4dd3b"
+  integrity sha512-5svz+89wSyLo7BxdiPDlwDTgcB9kwhNMfNhiBZPNQQs1vLFXxOkILwQiV5F2EwYT9DEr6OPZ0hnJkZfRQ8lDYQ==
+  dependencies:
+    metro-core "0.80.8"
+    rimraf "^3.0.2"
+
 metro-config@0.80.7, metro-config@^0.80.3:
   version "0.80.7"
   resolved "https://registry.yarnpkg.com/metro-config/-/metro-config-0.80.7.tgz#6aa34a624efc83ff42b878bdfbfb90024bf14855"
@@ -8180,13 +8188,21 @@ metro-config@0.80.7, metro-config@^0.80.3:
     metro-core "0.80.7"
     metro-runtime "0.80.7"
 
-metro-core@0.80.7, metro-core@^0.80.3:
+metro-core@0.80.7:
   version "0.80.7"
   resolved "https://registry.yarnpkg.com/metro-core/-/metro-core-0.80.7.tgz#0bfb641588aa06eaef1683429a64e243590fd33b"
   integrity sha512-bl3D6TtIa2mSdVTbkskMPcJSdoivO0F06u8ip/oS/T6RsbjkMTN3OZBjJXclY9I0FcN14q8I5YQt1oriySY/2Q==
   dependencies:
     lodash.throttle "^4.1.1"
     metro-resolver "0.80.7"
+
+metro-core@0.80.8, metro-core@^0.80.3:
+  version "0.80.8"
+  resolved "https://registry.yarnpkg.com/metro-core/-/metro-core-0.80.8.tgz#85cf9745e767a33fe96bc5f166b71e213a482978"
+  integrity sha512-g6lud55TXeISRTleW6SHuPFZHtYrpwNqbyFIVd9j9Ofrb5IReiHp9Zl8xkAfZQp8v6ZVgyXD7c130QTsCz+vBw==
+  dependencies:
+    lodash.throttle "^4.1.1"
+    metro-resolver "0.80.8"
 
 metro-file-map@0.80.7:
   version "0.80.7"
@@ -8217,6 +8233,11 @@ metro-resolver@0.80.7:
   version "0.80.7"
   resolved "https://registry.yarnpkg.com/metro-resolver/-/metro-resolver-0.80.7.tgz#57c4bd56cfbf64b4e3dec7a5dd3f7cd063b4f1b1"
   integrity sha512-xW7M0TITuKs2rYQqbIQn297+MVWfDuGptPnfZ+RBG9afdN//Zpmg14KFMIYU4r5AH2WS+nxwL57DbZft1MyoHg==
+
+metro-resolver@0.80.8:
+  version "0.80.8"
+  resolved "https://registry.yarnpkg.com/metro-resolver/-/metro-resolver-0.80.8.tgz#bcc8f8d7f874a9c5fee9ebbde8541d6dc88783df"
+  integrity sha512-JdtoJkP27GGoZ2HJlEsxs+zO7jnDUCRrmwXJozTlIuzLHMRrxgIRRby9fTCbMhaxq+iA9c+wzm3iFb4NhPmLbQ==
 
 metro-runtime@0.80.7, metro-runtime@^0.80.3:
   version "0.80.7"
@@ -9453,7 +9474,7 @@ postcss@^5.0.10, postcss@^5.0.11, postcss@^5.0.12, postcss@^5.0.13, postcss@^5.0
     source-map "^0.5.6"
     supports-color "^3.2.3"
 
-postcss@^8.3.11, postcss@^8.4.36, postcss@~8.4.32:
+postcss@^8.3.11, postcss@^8.4.38, postcss@~8.4.32:
   version "8.4.38"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.38.tgz#b387d533baf2054288e337066d81c6bee9db9e0e"
   integrity sha512-Wglpdk03BSfXkHoQa3b/oulrotAkwrlLDRSOb9D0bN86FdRyE9lppSp33aHNPgBa0JKCoB+drFLZkQoRRYae5A==
@@ -10868,19 +10889,19 @@ structured-headers@^0.4.1:
   resolved "https://registry.yarnpkg.com/structured-headers/-/structured-headers-0.4.1.tgz#77abd9410622c6926261c09b9d16cf10592694d1"
   integrity sha512-0MP/Cxx5SzeeZ10p/bZI0S6MpgD+yxAhi1BOQ34jgnMXsCq3j1t6tQnZu+KdlL7dvJTLT3g9xN8tl10TqgFMcg==
 
-style-to-js@1.1.11:
-  version "1.1.11"
-  resolved "https://registry.yarnpkg.com/style-to-js/-/style-to-js-1.1.11.tgz#7ba66214cab556fdded4786e80de0baccfa0e942"
-  integrity sha512-yHpYzXzEkx7iDjGEmE8Eyl4K/hWIm36FXPdRsl2NHEpbigLeawLVsv6tcYp+2xNhfpCrut4w08dYqeCxWMdRxw==
+style-to-js@1.1.12:
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/style-to-js/-/style-to-js-1.1.12.tgz#112dd054231e71643514013a4475d4649bb2b581"
+  integrity sha512-tv+/FkgNYHI2fvCoBMsqPHh5xovwiw+C3X0Gfnss/Syau0Nr3IqGOJ9XiOYXoPnToHVbllKFf5qCNFJGwFg5mg==
   dependencies:
-    style-to-object "1.0.5"
+    style-to-object "1.0.6"
 
-style-to-object@1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/style-to-object/-/style-to-object-1.0.5.tgz#5e918349bc3a39eee3a804497d97fcbbf2f0d7c0"
-  integrity sha512-rDRwHtoDD3UMMrmZ6BzOW0naTjMsVZLIjsGleSKS/0Oz+cgCfAPRspaqJuE8rDzpKha/nEvnM0IF4seEAZUTKQ==
+style-to-object@1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/style-to-object/-/style-to-object-1.0.6.tgz#0c28aed8be1813d166c60d962719b2907c26547b"
+  integrity sha512-khxq+Qm3xEyZfKd/y9L3oIWQimxuc4STrQKtQn8aSDRHb8mFgpukgX1hdzfrMEW6JCjyJ8p89x+IUMVnCBI1PA==
   dependencies:
-    inline-style-parser "0.2.2"
+    inline-style-parser "0.2.3"
 
 sucrase@3.34.0:
   version "3.34.0"
@@ -11649,13 +11670,13 @@ vite-plugin-static-copy@1.0.2:
     fs-extra "^11.1.0"
     picocolors "^1.0.0"
 
-vite@5.2.6:
-  version "5.2.6"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-5.2.6.tgz#fc2ce309e0b4871e938cb0aca3b96c422c01f222"
-  integrity sha512-FPtnxFlSIKYjZ2eosBQamz4CbyrTizbZ3hnGJlh/wMtCrlp1Hah6AzBLjGI5I2urTfNnpovpHdrL6YRuBOPnCA==
+vite@5.2.7:
+  version "5.2.7"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-5.2.7.tgz#e1b8a985eb54fcb9467d7f7f009d87485016df6e"
+  integrity sha512-k14PWOKLI6pMaSzAuGtT+Cf0YmIx12z9YGon39onaJNy8DLBfBJrzg9FQEmkAM5lpHBZs9wksWAsyF/HkpEwJA==
   dependencies:
     esbuild "^0.20.1"
-    postcss "^8.4.36"
+    postcss "^8.4.38"
     rollup "^4.13.0"
   optionalDependencies:
     fsevents "~2.3.3"
