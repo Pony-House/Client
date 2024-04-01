@@ -8167,6 +8167,14 @@ metro-cache@0.80.7:
     metro-core "0.80.7"
     rimraf "^3.0.2"
 
+metro-cache@0.80.8:
+  version "0.80.8"
+  resolved "https://registry.yarnpkg.com/metro-cache/-/metro-cache-0.80.8.tgz#bc7d38611e4f31686a99045d4f2956c0bff4dd3b"
+  integrity sha512-5svz+89wSyLo7BxdiPDlwDTgcB9kwhNMfNhiBZPNQQs1vLFXxOkILwQiV5F2EwYT9DEr6OPZ0hnJkZfRQ8lDYQ==
+  dependencies:
+    metro-core "0.80.8"
+    rimraf "^3.0.2"
+
 metro-config@0.80.7, metro-config@^0.80.3:
   version "0.80.7"
   resolved "https://registry.yarnpkg.com/metro-config/-/metro-config-0.80.7.tgz#6aa34a624efc83ff42b878bdfbfb90024bf14855"
@@ -8180,13 +8188,21 @@ metro-config@0.80.7, metro-config@^0.80.3:
     metro-core "0.80.7"
     metro-runtime "0.80.7"
 
-metro-core@0.80.7, metro-core@^0.80.3:
+metro-core@0.80.7:
   version "0.80.7"
   resolved "https://registry.yarnpkg.com/metro-core/-/metro-core-0.80.7.tgz#0bfb641588aa06eaef1683429a64e243590fd33b"
   integrity sha512-bl3D6TtIa2mSdVTbkskMPcJSdoivO0F06u8ip/oS/T6RsbjkMTN3OZBjJXclY9I0FcN14q8I5YQt1oriySY/2Q==
   dependencies:
     lodash.throttle "^4.1.1"
     metro-resolver "0.80.7"
+
+metro-core@0.80.8, metro-core@^0.80.3:
+  version "0.80.8"
+  resolved "https://registry.yarnpkg.com/metro-core/-/metro-core-0.80.8.tgz#85cf9745e767a33fe96bc5f166b71e213a482978"
+  integrity sha512-g6lud55TXeISRTleW6SHuPFZHtYrpwNqbyFIVd9j9Ofrb5IReiHp9Zl8xkAfZQp8v6ZVgyXD7c130QTsCz+vBw==
+  dependencies:
+    lodash.throttle "^4.1.1"
+    metro-resolver "0.80.8"
 
 metro-file-map@0.80.7:
   version "0.80.7"
@@ -8217,6 +8233,11 @@ metro-resolver@0.80.7:
   version "0.80.7"
   resolved "https://registry.yarnpkg.com/metro-resolver/-/metro-resolver-0.80.7.tgz#57c4bd56cfbf64b4e3dec7a5dd3f7cd063b4f1b1"
   integrity sha512-xW7M0TITuKs2rYQqbIQn297+MVWfDuGptPnfZ+RBG9afdN//Zpmg14KFMIYU4r5AH2WS+nxwL57DbZft1MyoHg==
+
+metro-resolver@0.80.8:
+  version "0.80.8"
+  resolved "https://registry.yarnpkg.com/metro-resolver/-/metro-resolver-0.80.8.tgz#bcc8f8d7f874a9c5fee9ebbde8541d6dc88783df"
+  integrity sha512-JdtoJkP27GGoZ2HJlEsxs+zO7jnDUCRrmwXJozTlIuzLHMRrxgIRRby9fTCbMhaxq+iA9c+wzm3iFb4NhPmLbQ==
 
 metro-runtime@0.80.7, metro-runtime@^0.80.3:
   version "0.80.7"
