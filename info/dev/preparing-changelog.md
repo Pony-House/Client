@@ -1,0 +1,1 @@
+- modal-dialog-loading-page css size updated.
