@@ -15,8 +15,7 @@ import {
 } from 'matrix-js-sdk';
 
 // import { setLoadingPage } from '@src/app/templates/client/Loading';
-// import initMatrix, { fetchFn as fetch } from '../initMatrix';
-import initMatrix from '../initMatrix';
+import initMatrix /* , { fetchFn } */ from '../initMatrix';
 import cons from './cons';
 
 import settings from './settings';
@@ -630,7 +629,7 @@ class RoomTimeline extends EventEmitter {
   /* loadScriptFromEventId(startEventId, isFirst = true) {
     const url = `${this.matrixClient.baseUrl}/_matrix/client/r0/rooms/${encodeURIComponent(this.roomId)}/context/${encodeURIComponent(startEventId)}?limit=100&access_token=${this.matrixClient.getAccessToken()}`;
     return new Promise((resolve, reject) => {
-      fetch(url, {
+      fetchFn(url, {
         'Content-Type': 'application/json',
       }).then(res => res.json()).then(data => {
 

@@ -20,9 +20,10 @@ const fetchBase = (url, ops) => {
   return global.fetch(url.href, ops);
 };
 
-const fetchFn = __ENV_APP__.ELECTRON_MODE
+/* const fetchFn = __ENV_APP__.ELECTRON_MODE
   ? (url, ops) => fetchBase({ href: url }, ops)
-  : global.fetch;
+  : global.fetch; */
+const fetchFn = global.fetch;
 export { fetchFn };
 
 const startCustomDNS = () => {
@@ -70,7 +71,7 @@ class InitMatrix extends EventEmitter {
 
   async getAccount3pid() {
     if (this.matrixClient) {
-      const res = await fetch(
+      const res = await fetchFn(
         `${this.matrixClient.baseUrl}/_matrix/client/v3/account/3pid?access_token=${this.matrixClient.getAccessToken()}`,
         {
           headers: {
@@ -115,9 +116,9 @@ class InitMatrix extends EventEmitter {
       verificationMethods: ['m.sas.v1'],
     };
 
-    // if (__ENV_APP__.ELECTRON_MODE) {
-    // clientOps.fetchFn = fetchBase;
-    // }
+    if (__ENV_APP__.ELECTRON_MODE) {
+      clientOps.fetchFn = fetchBase;
+    }
 
     this.matrixClient = sdk.createClient(clientOps);
 
@@ -125,8 +126,8 @@ class InitMatrix extends EventEmitter {
       if (global.tinyJsonDB && typeof global.tinyJsonDB.startClient === 'function')
         await global.tinyJsonDB.startClient();
 
-      if (typeof global.startMediaCacheElectron === 'function')
-        await global.startMediaCacheElectron();
+      // if (typeof global.startMediaCacheElectron === 'function')
+      //  await global.startMediaCacheElectron();
     }
 
     await envAPI.startDB();

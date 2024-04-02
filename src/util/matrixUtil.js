@@ -1,4 +1,4 @@
-import initMatrix from '../client/initMatrix';
+import initMatrix, { fetchFn } from '../client/initMatrix';
 
 const HashIC = './img/ic/outlined/hash.svg';
 const HashGlobeIC = './img/ic/outlined/hash-globe.svg';
@@ -14,7 +14,7 @@ export async function getBaseUrl(servername) {
   if (servername.match(/^https?:\/\//) !== null) protocol = '';
   const serverDiscoveryUrl = `${protocol}${servername}${WELL_KNOWN_URI}`;
   try {
-    const result = await (await fetch(serverDiscoveryUrl, { method: 'GET' })).json();
+    const result = await (await fetchFn(serverDiscoveryUrl, { method: 'GET' })).json();
 
     const baseUrl = result?.['m.homeserver']?.base_url;
     if (baseUrl === undefined) throw new Error();

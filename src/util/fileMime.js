@@ -1,3 +1,5 @@
+import { fetchFn } from '@src/client/initMatrix';
+
 const mimeTypeCache = {};
 setInterval(() => {
   for (const item in mimeTypeCache) {
@@ -23,7 +25,7 @@ export function getFileContentType(e, where) {
       mimeTypeCache[where].width = e.target.width;
       mimeTypeCache[where].height = e.target.height;
 
-      fetch(where, { method: 'HEAD' })
+      fetchFn(where, { method: 'HEAD' })
         .then((response) => {
           mimeTypeCache[where].loaded = true;
           mimeTypeCache[where].type = response.headers.get('Content-type');

@@ -1,5 +1,6 @@
 import { isMobile } from '@src/util/libs/mobile';
 import { compareVersions } from 'compare-versions';
+import { fetchFn } from '../initMatrix';
 
 const cons = {
   version: __ENV_APP__.VERSION,
@@ -204,7 +205,7 @@ Object.freeze(cons);
 // https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repository-tags
 global.checkVersions = () =>
   new Promise((resolve, reject) => {
-    fetch(`https://api.github.com/repos/Pony-House/Client/tags`, {
+    fetchFn(`https://api.github.com/repos/Pony-House/Client/tags`, {
       method: 'GET',
       cache: 'no-cache',
       credentials: 'same-origin',

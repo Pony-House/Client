@@ -1,4 +1,5 @@
 // Checker
+import { fetchFn } from '@src/client/initMatrix';
 import clone from 'clone';
 import { objType } from '../util/tools';
 
@@ -60,7 +61,7 @@ export function refreshLang() {
     }
 
     // Get Default Data
-    fetch(`./i18/${langs.default}.json`, {
+    fetchFn(`./i18/${langs.default}.json`, {
       headers: {
         Accept: 'application/json',
       },
@@ -75,7 +76,7 @@ export function refreshLang() {
 
           // Insert Custom Lang
           if (langs.selected !== langs.default) {
-            fetch(`./i18/${langs.selected}.json`, {
+            fetchFn(`./i18/${langs.selected}.json`, {
               headers: {
                 Accept: 'application/json',
               },

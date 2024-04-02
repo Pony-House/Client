@@ -1,10 +1,10 @@
 import fs from 'fs';
 import path from 'path';
-import { app, ipcMain } from 'electron';
-import { download, CancelError } from 'electron-dl';
-import { fileURLToPath } from 'url';
+import { app, ipcMain /* , protocol, net */ } from 'electron';
+import { fileURLToPath /* , pathToFileURL */ } from 'url';
 
 // Insert utils
+
 const createDirName = (where) => {
   const __filename = fileURLToPath(where);
   const __dirname = path.dirname(__filename);
@@ -48,37 +48,42 @@ export function startTempFolders(win, extraPath) {
       tempMedia: tempFolderMedia,
     });
   });
-
-  ipcMain.on('save-download-file', (event, info) => {
-    download(win, info.url, info.properties)
-      .then((dl) =>
-        win.webContents.send('save-download-file', {
-          path: dl.getSavePath(),
-          cancel: false,
-          err: null,
-          id: info.id,
-        }),
-      )
-      .catch((err) => {
-        const errData = {
-          cancel: false,
-          id: info.id,
-        };
-
-        if (err instanceof CancelError) {
-          errData.cancel = true;
-        }
-
-        errData.err = {
-          code: err.code,
-          message: err.message,
-          stack: err.stack,
-          errno: err.errno,
-        };
-
-        win.webContents.send('save-download-file', errData);
-      });
-  });
 }
+
+/* protocol.registerSchemesAsPrivileged([
+  {
+    scheme: 'ponyhousetemp',
+    privileges: {
+      standard: true,
+      secure: true,
+      supportFetchAPI: true,
+    },
+  },
+]); */
+
+/* app.whenReady().then(() => {
+  // Temp file protocol
+  protocol.handle('ponyhousetemp', (req) => {
+    const { pathname } = new URL(req.url);
+
+    // NB, this checks for paths that escape the bundle, e.g.
+    // app://bundle/../../secret_file.txt
+    const pathToServe = path.resolve(__dirname, pathname);
+    const relativePath = path.relative(__dirname, pathToServe);
+    const isSafe = relativePath && !relativePath.startsWith('..') && !path.isAbsolute(relativePath);
+    if (!isSafe) {
+      return new Response('bad', {
+        status: 400,
+        headers: { 'content-type': 'text/html' },
+      });
+    }
+
+    const filePath = req.url.slice('ponyhousetemp://'.length);
+    const tinyUrl = pathToFileURL(path.join(tempFolderMedia, filePath)).toString();
+    return net.fetch(tinyUrl, {
+      method: 'GET',
+    });
+  });
+}); */
 
 export { createDirName, tempFolder, tempFolderNoti, appDataFolder, appDataPrivate };

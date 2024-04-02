@@ -11,6 +11,12 @@ export function readImageUrl(url) {
   return checkUrlCache(url, 'img');
 }
 
+// Custom
+export function readCustomUrl(url, type) {
+  if (!__ENV_APP__.ELECTRON_MODE) return url;
+  return checkUrlCache(url, type);
+}
+
 // Video
 export function readVideoUrl(url) {
   if (!__ENV_APP__.ELECTRON_MODE) return url;

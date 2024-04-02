@@ -13,6 +13,7 @@ import cons from './cons';
 import settings from './settings';
 import { markdown, plain, html } from '../../util/markdown';
 import { clearUrlsFromHtml, clearUrlsFromText } from '../../util/clear-urls/clearUrls';
+import { fetchFn } from '../initMatrix';
 
 const blurhashField = 'xyz.amorgan.blurhash';
 
@@ -317,7 +318,7 @@ class RoomsInput extends EventEmitter {
     img.src = httpUrl;
 
     try {
-      const res = await fetch(httpUrl);
+      const res = await fetchFn(httpUrl);
       const blob = await res.blob();
       info.w = img.width;
       info.h = img.height;

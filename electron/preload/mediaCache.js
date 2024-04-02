@@ -11,8 +11,8 @@ const files = [];
 let dirs = null;
 
 const convertFileName = {
-  decode: () => {},
-  encode: () => {},
+  decode: (url) => decodeURIComponent(url),
+  encode: (url) => encodeURIComponent(url),
 };
 
 // Get file
@@ -39,8 +39,8 @@ const getFile = async (url) => {
 };
 
 // Global get file url
-const cacheFileElectron = (url, type) => {
-  let value = url;
+const cacheFileElectron = (url, type) =>
+  /* let value = url;
 
   // Use cache
   if (urlCache[url] && !urlCache[url].downloading && !urlCache[url].error) {
@@ -54,9 +54,8 @@ const cacheFileElectron = (url, type) => {
   }
 
   // Complete
-  return value;
-};
-
+  return value; */
+  url;
 // Start module
 contextBridge.exposeInMainWorld('startMediaCacheElectron', async () => {
   if (!started) {

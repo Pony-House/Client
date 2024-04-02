@@ -1,5 +1,6 @@
 import { objType } from '@src/util/tools';
 import tinyAPI from '@src/util/mods';
+import { fetchFn } from '@src/client/initMatrix';
 
 export default function sinkingYachts() {
   // Welcome
@@ -15,7 +16,7 @@ export default function sinkingYachts() {
           (!objType(data, 'object') || !data.isScammer)
         ) {
           const newTinyData = { isScammer: false };
-          fetch(`https://phish.sinking.yachts/v2/check/${host}`, {
+          fetchFn(`https://phish.sinking.yachts/v2/check/${host}`, {
             method: 'GET',
             headers: { Accept: 'application/json' },
           })

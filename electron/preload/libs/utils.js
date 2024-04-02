@@ -1,5 +1,12 @@
 import { ipcRenderer } from 'electron';
-import { generateApiKey } from 'generate-api-key';
+
+import fs from 'fs';
+import path from 'path';
+
+import http from 'http';
+import https from 'https';
+
+// var filename = s.replace(/[^a-z0-9]/gi, '_').toLowerCase();
 
 const getAppFolders = () =>
   new Promise((resolve) => {
@@ -11,28 +18,30 @@ const getAppFolders = () =>
 
 export { getAppFolders };
 
-const saveDownloadFileCache = {};
-ipcRenderer.on('save-download-file', (event, result) => {
-  if (saveDownloadFileCache[result.id]) {
-    if (!result.err) {
-      saveDownloadFileCache[result.id].resolve(result.path);
-    } else {
-      const err = new Error(result.err.message);
-      if (typeof result.err.code !== 'undefined') err.code = result.err.code;
-      if (typeof result.err.stack !== 'undefined') err.stack = result.err.stack;
-      if (typeof result.err.errno !== 'undefined') err.errno = result.err.errno;
-
-      saveDownloadFileCache[result.id].reject(err);
-    }
-
-    delete saveDownloadFileCache[result.id];
-  }
-});
+// Save File
 const saveDownloadFile = (info) =>
   new Promise((resolve, reject) => {
-    info.id = generateApiKey();
-    saveDownloadFileCache[info.id] = { resolve, reject };
-    ipcRenderer.send('save-download-file', info);
+    const reqFunction = (response) => {
+      const filePath = path.join(info.directory, `./${info.filename}`);
+      const file = fs.createWriteStream(filePath);
+      response.pipe(file);
+
+      // after download completed close filestream
+      file.on('finish', () => {
+        file.close();
+        resolve(`ponyhousetemp://${info.filename}`);
+      });
+
+      file.on('error', reject);
+    };
+
+    if (info.url.startsWith('https://')) {
+      const req = https.get(info.url, reqFunction);
+      req.on('error', reject);
+    } else if (info.url.startsWith('http://')) {
+      const req = http.get(info.url, reqFunction);
+      req.on('error', reject);
+    }
   });
 
 export { saveDownloadFile };

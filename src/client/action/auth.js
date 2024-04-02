@@ -1,5 +1,6 @@
 import * as sdk from 'matrix-js-sdk';
 import cons from '../state/cons';
+import { fetchFn } from '../initMatrix';
 
 function updateLocalStore(accessToken, deviceId, userId, baseUrl) {
   localStorage.setItem(cons.secretKey.ACCESS_TOKEN, accessToken);
@@ -53,7 +54,7 @@ async function loginWithToken(baseUrl, token) {
 }
 
 async function verifyEmail(baseUrl, email, client_secret, send_attempt, next_link) {
-  const res = await fetch(`${baseUrl}/_matrix/client/r0/register/email/requestToken`, {
+  const res = await fetchFn(`${baseUrl}/_matrix/client/r0/register/email/requestToken`, {
     method: 'POST',
     body: JSON.stringify({
       email,
