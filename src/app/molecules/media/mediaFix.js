@@ -3,6 +3,11 @@ const roomViewQuery = '> .room-view__content #chatbox';
 const timeoutFixer = { i: 200, value: 10 };
 let height = null;
 
+let tinyFix = 0;
+setInterval(() => {
+  if (tinyFix > 0) tinyFix--;
+}, 5000);
+
 export function fixScrollChat() {
   const scrollBar = $(chatboxQuery);
   const roomView = scrollBar.find(roomViewQuery);
@@ -27,6 +32,7 @@ export function fixScrollChat() {
 }
 
 export function tinyFixScrollChat(tinyI = timeoutFixer.i) {
+  tinyFix++;
   for (let i = 0; i < tinyI; i++) {
     setTimeout(() => {
       if (typeof height === 'number') {
@@ -40,7 +46,7 @@ export function tinyFixScrollChat(tinyI = timeoutFixer.i) {
         const diffHeight = newHeight - oldHeight;
         if (diffHeight > 0) scrollBar.animate({ scrollTop: scrollBar.scrollTop() + diffHeight }, 0);
       }
-    }, timeoutFixer.value);
+    }, timeoutFixer.value * tinyFix);
   }
 }
 
@@ -56,10 +62,11 @@ export function mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded = true
       // eslint-disable-next-line no-unused-expressions
       embedHeight ? embedHeight.execute() : embedHeight2.execute();
 
+      tinyFix++;
       for (let i = 0; i < timeoutFixer.i; i++) {
         setTimeout(
           () => (embedHeight ? embedHeight.execute() : embedHeight2.execute()),
-          timeoutFixer.value,
+          timeoutFixer.value * tinyFix,
         );
       }
     }

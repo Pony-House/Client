@@ -162,7 +162,10 @@ function Image({
     <img
       className={`${classImage}${ignoreContainer ? ` ${className}` : ''}`}
       draggable="false"
-      style={{ display: blur ? 'none' : 'unset' }}
+      style={{
+        display: blur ? 'none' : 'unset',
+        height: width !== null ? getNativeHeight(width, height) : 'unset',
+      }}
       onLoad={(event) => {
         mediaFix(itemEmbed, embedHeight, setEmbedHeight);
         setBlur(false);
