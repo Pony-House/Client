@@ -220,6 +220,18 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent, refcmdInput }) {
             name: member.name,
             userId: member.userId.slice(1),
           }));
+        members.push({
+          name: '@everyone',
+          userId: 'everyone',
+        });
+        members.push({
+          name: '@room',
+          userId: 'room',
+        });
+        members.push({
+          name: '@here',
+          userId: 'here',
+        });
         asyncSearch.setup(members, { keys: ['name', 'userId'], limit: 20 });
         const endIndex = members.length > 20 ? 20 : members.length;
         setCmd({ prefix, suggestions: members.slice(0, endIndex) });
