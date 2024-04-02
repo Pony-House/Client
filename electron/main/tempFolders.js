@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { app, ipcMain } from 'electron';
+import { download, CancelError } from 'electron-dl';
 import { fileURLToPath } from 'url';
 
 // Insert utils
@@ -46,6 +47,37 @@ export function startTempFolders(win, extraPath) {
       temp: tempFolder,
       tempMedia: tempFolderMedia,
     });
+  });
+
+  ipcMain.on('save-download-file', (event, info) => {
+    download(win, info.url, info.properties)
+      .then((dl) =>
+        win.webContents.send('save-download-file', {
+          path: dl.getSavePath(),
+          cancel: false,
+          err: null,
+          id: info.id,
+        }),
+      )
+      .catch((err) => {
+        const errData = {
+          cancel: false,
+          id: info.id,
+        };
+
+        if (err instanceof CancelError) {
+          errData.cancel = true;
+        }
+
+        errData.err = {
+          code: err.code,
+          message: err.message,
+          stack: err.stack,
+          errno: err.errno,
+        };
+
+        win.webContents.send('save-download-file', errData);
+      });
   });
 }
 
