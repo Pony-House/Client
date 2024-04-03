@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import md5 from 'crypto-js/md5';
+import md5 from 'md5';
 
 class InsertObjectURL extends EventEmitter {
   // Constructor
@@ -12,8 +12,7 @@ class InsertObjectURL extends EventEmitter {
 
   async insert(file) {
     // Insert using Hash
-    // console.log(await file.text());
-    const hash = md5(file).toString();
+    const hash = md5(await file.text());
     const timeoutData = {};
     if (typeof hash === 'string') {
       // Blob Url
