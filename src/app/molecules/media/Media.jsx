@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import encrypt from 'matrix-encrypt-attachment';
 import { readCustomUrl } from '@src/util/libs/mediaCache';
 import { fetchFn } from '@src/client/initMatrix';
+import insertObjectURL from '@src/util/libs/createObjectURL';
 
 import { BlurhashCanvas } from 'react-blurhash';
 import imageViewer from '../../../util/imageViewer';
@@ -27,10 +28,10 @@ async function getUrl(link, type, decryptData) {
     const tinyLink = readCustomUrl(link);
     const response = await fetchFn(tinyLink, { method: 'GET' });
     if (decryptData !== null && !tinyLink.startsWith('ponyhousetemp://')) {
-      return URL.createObjectURL(await getDecryptedBlob(response, type, decryptData));
+      return insertObjectURL.insert(await getDecryptedBlob(response, type, decryptData));
     }
     const blob = await response.blob();
-    return URL.createObjectURL(blob);
+    return insertObjectURL.insert(blob);
   } catch (e) {
     console.error(e);
     return link;

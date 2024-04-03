@@ -1277,7 +1277,6 @@ function Message({
   const [existThread, updateExistThread] = useState(typeof threadId === 'string');
   const [embeds, setEmbeds] = useState([]);
   const [embedHeight, setEmbedHeight] = useState(null);
-  const itemEmbed = useRef(null);
 
   // Content Body
   const classList = ['message', isBodyOnly ? 'message--body-only' : 'message--full'];
@@ -1472,8 +1471,6 @@ function Message({
     };
   }, []);
 
-  useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
-
   useEffect(() => {
     const threadUpdate = (tth) => {
       const thread = mEvent.getThread();
@@ -1569,7 +1566,7 @@ function Message({
               />
 
               {embeds.length > 0 ? (
-                <div ref={itemEmbed} className="message-embed message-url-embed">
+                <div className="message-embed message-url-embed">
                   {embeds.map((embed) => {
                     if (embed.data)
                       return (

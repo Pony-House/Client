@@ -29,9 +29,9 @@ function Embed({ embed }) {
     typeof embed['og:image:type'] === 'string' && embed['og:image:type'].length > 0
       ? embed['og:image:type'].split('/')
       : null;
-  useEffect(() => {
-    // console.log(itemEmbed);
 
+  // Add Click
+  useEffect(() => {
     $(tinyUrl.current).on('click', tinyUrlAction);
     return () => {
       $(tinyUrl.current).off('click', tinyUrlAction);
