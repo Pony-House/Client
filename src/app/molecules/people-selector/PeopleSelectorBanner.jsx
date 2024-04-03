@@ -3,13 +3,14 @@ import moment, { momentFormat } from '@src/util/libs/momentjs';
 import PropTypes from 'prop-types';
 import envAPI from '@src/util/libs/env';
 import { readImageUrl } from '@src/util/libs/mediaCache';
+import defaultAvatar from '@src/app/atoms/avatar/defaultAvatar';
 
 import { twemojifyReact, twemojify } from '../../../util/twemojify';
 
 import Avatar from '../../atoms/avatar/Avatar';
 import { getUserStatus, updateUserStatusIcon, getPresence } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
-import { cssColorMXID } from '../../../util/colorMXID';
+import { colorMXID, cssColorMXID } from '../../../util/colorMXID';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 import { objType, toast } from '../../../util/tools';
 import { copyToClipboard } from '../../../util/common';
@@ -51,7 +52,9 @@ function PeopleSelectorBanner({ name, color, user }) {
   const bioRef = useRef(null);
   const noteRef = useRef(null);
 
-  const [avatarUrl, setUserAvatar] = useState(user ? user?.avatarUrl : null);
+  const [avatarUrl, setUserAvatar] = useState(
+    user ? user?.avatarUrl || defaultAvatar(colorMXID(user.userId)) : null,
+  );
 
   const mx = initMatrix.matrixClient;
 

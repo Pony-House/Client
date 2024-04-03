@@ -1,31 +1,80 @@
 import { EventEmitter } from 'events';
+import md5 from 'crypto-js/md5';
 
 class InsertObjectURL extends EventEmitter {
+  // Constructor
   constructor() {
     super();
+    this.hashes = {};
     this.urls = {};
+    this.timeout = {};
   }
 
-  insert(file, url) {
-    if (typeof url === 'string') {
-      this.urls[url] = URL.createObjectURL(file);
-      this.emit('urlAdded', { id: url, file: this.urls[url] });
-      return this.urls[url];
+  insert(file) {
+    // Insert using Hash
+    const hash = md5(file).toString();
+    const timeoutData = {};
+    if (typeof hash === 'string') {
+      // Blob Url
+      const tinyUrl = URL.createObjectURL(file);
+      this.hashes[hash] = tinyUrl;
+
+      // Hash
+      this.urls[tinyUrl] = hash;
+
+      // Timeout
+      this.timeout[hash] = timeoutData;
+
+      // Complete
+      this.emit('urlAdded', { id: hash, file: tinyUrl });
+      return tinyUrl;
     }
-    const newUrl = URL.createObjectURL(file);
-    this.emit('urlAdded', { id: null, file: newUrl });
-    return newUrl;
+
+    // Nothing
+    const tinyUrl = URL.createObjectURL(file);
+    this.emit('urlAdded', { id: null, file: tinyUrl });
+    return tinyUrl;
   }
 
   delete(url, where) {
-    if (this.urls[where]) {
-      this.emit('urlDeleted', { id: where, file: where });
-      return URL.revokeObjectURL(this.urls[where]);
+    // Look for URL
+    if (!where) {
+      const hash = this.urls[url];
+      const tinyUrl = this.hashes[hash];
+      if (hash && tinyUrl) {
+        this.emit('urlDeleted', {
+          id: tinyUrl,
+          url: tinyUrl,
+        });
+        URL.revokeObjectURL(tinyUrl);
+        delete this.hashes[hash];
+        delete this.timeout[hash];
+        delete this.urls[url];
+        return;
+      }
     }
-    this.emit('urlDeleted', { id: null, file: where });
-    return URL.revokeObjectURL(url);
+
+    // Look for Hash
+    else if (this.hashes[where]) {
+      this.emit('urlDeleted', { id: where, url: where });
+      URL.revokeObjectURL(this.hashes[where]);
+      delete this.timeout[where];
+      delete this.hashes[where];
+      return;
+    }
+
+    // Default
+    this.emit('urlDeleted', { id: null, url: where });
+    URL.revokeObjectURL(url);
   }
 }
 
+// Module
 const insertObjectURL = new InsertObjectURL();
 export default insertObjectURL;
+
+if (__ENV_APP__.MODE === 'development') {
+  global.insertObjectURL = insertObjectURL;
+}
+
+setInterval(() => {}, 1000);
