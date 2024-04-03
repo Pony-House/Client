@@ -10,10 +10,19 @@ class InsertObjectURL extends EventEmitter {
     this.timeout = {};
   }
 
+  checkAll() {
+    for (const hash in this.timeout) {
+      if (this.timeout[hash].value > 0) this.timeout[hash].value--;
+      else {
+        this.delete(this.hashes[hash]);
+      }
+    }
+  }
+
   async insert(file) {
     // Insert using Hash
     const hash = md5(await file.text());
-    const timeoutData = {};
+    const timeoutData = { value: 60 };
     if (typeof hash === 'string') {
       // Blob Url
       const tinyUrl = URL.createObjectURL(file);
@@ -38,28 +47,17 @@ class InsertObjectURL extends EventEmitter {
 
   delete(url, where) {
     // Look for URL
-    if (!where) {
-      const hash = this.urls[url];
-      const tinyUrl = this.hashes[hash];
-      if (hash && tinyUrl) {
-        this.emit('urlDeleted', {
-          id: tinyUrl,
-          url: tinyUrl,
-        });
-        URL.revokeObjectURL(tinyUrl);
-        delete this.hashes[hash];
-        delete this.timeout[hash];
-        delete this.urls[url];
-        return;
-      }
-    }
-
-    // Look for Hash
-    else if (this.hashes[where]) {
-      this.emit('urlDeleted', { id: where, url: where });
-      URL.revokeObjectURL(this.hashes[where]);
-      delete this.timeout[where];
-      delete this.hashes[where];
+    const hash = this.urls[url];
+    const tinyUrl = this.hashes[hash];
+    if (hash && tinyUrl) {
+      this.emit('urlDeleted', {
+        id: tinyUrl,
+        url: tinyUrl,
+      });
+      URL.revokeObjectURL(tinyUrl);
+      delete this.hashes[hash];
+      delete this.timeout[hash];
+      delete this.urls[tinyUrl];
       return;
     }
 
@@ -77,4 +75,6 @@ if (__ENV_APP__.MODE === 'development') {
   global.insertObjectURL = insertObjectURL;
 }
 
-setInterval(() => {}, 1000);
+setInterval(() => {
+  insertObjectURL.checkAll();
+}, 1000);
