@@ -28,10 +28,13 @@ async function getUrl(link, type, decryptData) {
     const tinyLink = readCustomUrl(link);
     const response = await fetchFn(tinyLink, { method: 'GET' });
     if (decryptData !== null && !tinyLink.startsWith('ponyhousetemp://')) {
-      return insertObjectURL.insert(await getDecryptedBlob(response, type, decryptData));
+      const blob = await getDecryptedBlob(response, type, decryptData);
+      const result = await insertObjectURL.insert(blob);
+      return result;
     }
     const blob = await response.blob();
-    return insertObjectURL.insert(blob);
+    const result = await insertObjectURL.insert(blob);
+    return result;
   } catch (e) {
     console.error(e);
     return link;

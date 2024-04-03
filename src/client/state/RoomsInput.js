@@ -350,9 +350,14 @@ class RoomsInput extends EventEmitter {
     let uploadData = null;
 
     if (fileType === 'image') {
-      const img = await loadImage(
-        !isMobile(true) ? insertObjectURL.insert(file) : `data:${file.type};base64, ${file.data}`,
-      );
+      let imgData;
+      if (!isMobile(true)) {
+        imgData = await insertObjectURL.insert(file);
+      } else {
+        imgData = `data:${file.type};base64, ${file.data}`;
+      }
+
+      const img = await loadImage(imgData);
 
       info.w = img.width;
       info.h = img.height;

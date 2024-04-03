@@ -10,8 +10,9 @@ class InsertObjectURL extends EventEmitter {
     this.timeout = {};
   }
 
-  insert(file) {
+  async insert(file) {
     // Insert using Hash
+    // console.log(await file.text());
     const hash = md5(file).toString();
     const timeoutData = {};
     if (typeof hash === 'string') {

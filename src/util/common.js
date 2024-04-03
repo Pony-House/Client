@@ -163,44 +163,47 @@ export function getImageDimension(file) {
       });
       insertObjectURL.delete(img.src);
     };
-    img.src = insertObjectURL.insert(file);
+    insertObjectURL.insert(file).then((src) => {
+      img.src = src;
+    });
   });
 }
 
 export function scaleDownImage(imageFile, width, height) {
   return new Promise((resolve) => {
-    const imgURL = createObjectURL(imageFile);
-    const img = new Image();
+    createObjectURL(imageFile).then((imgURL) => {
+      const img = new Image();
 
-    img.onload = () => {
-      let newWidth = img.width;
-      let newHeight = img.height;
-      if (newHeight <= height && newWidth <= width) {
-        resolve(convertToBase64Mobile(imageFile));
-      }
+      img.onload = () => {
+        let newWidth = img.width;
+        let newHeight = img.height;
+        if (newHeight <= height && newWidth <= width) {
+          resolve(convertToBase64Mobile(imageFile));
+        }
 
-      if (newHeight > height) {
-        newWidth = Math.floor(newWidth * (height / newHeight));
-        newHeight = height;
-      }
-      if (newWidth > width) {
-        newHeight = Math.floor(newHeight * (width / newWidth));
-        newWidth = width;
-      }
+        if (newHeight > height) {
+          newWidth = Math.floor(newWidth * (height / newHeight));
+          newHeight = height;
+        }
+        if (newWidth > width) {
+          newHeight = Math.floor(newHeight * (width / newWidth));
+          newWidth = width;
+        }
 
-      const canvas = document.createElement('canvas');
-      canvas.width = newWidth;
-      canvas.height = newHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, newWidth, newHeight);
+        const canvas = document.createElement('canvas');
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, newWidth, newHeight);
 
-      canvas.toBlob((thumbnail) => {
-        insertObjectURL.delete(imgURL);
-        resolve(thumbnail);
-      }, imageFile.type);
-    };
+        canvas.toBlob((thumbnail) => {
+          insertObjectURL.delete(imgURL);
+          resolve(thumbnail);
+        }, imageFile.type);
+      };
 
-    img.src = imgURL;
+      img.src = imgURL;
+    });
   });
 }
 

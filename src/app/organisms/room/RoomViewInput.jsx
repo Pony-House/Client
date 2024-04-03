@@ -52,6 +52,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
   const recAudioRef = useRef(null);
   const [embedHeight, setEmbedHeight] = useState(null);
   const [closeUpButton, setCloseUpButton] = useState(null);
+  const [fileSrc, setFileSrc] = useState(null);
 
   // File
   const [attachment, setAttachment] = useState(null);
@@ -1094,6 +1095,18 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
   }
 
   // Insert File
+  useEffect(() => {
+    if (!fileSrc && attachment) {
+      if (!isMobile(true)) {
+        createObjectURL(attachment).then((tinySrc) => {
+          setFileSrc(readImageUrl(tinySrc));
+        });
+      } else {
+        setFileSrc(`data:${attachment.type};base64, ${attachment.data}`);
+      }
+    }
+  });
+
   function attachFile() {
     const fileType = attachment.type.slice(0, attachment.type.indexOf('/'));
     $('#message-textarea').focus();
@@ -1105,16 +1118,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
             fileType !== 'image' ? ' room-attachment__icon' : ''
           }`}
         >
-          {fileType === 'image' && (
-            <img
-              alt={attachment.name}
-              src={readImageUrl(
-                !isMobile(true)
-                  ? createObjectURL(attachment)
-                  : `data:${attachment.type};base64, ${attachment.data}`,
-              )}
-            />
-          )}
+          {fileType === 'image' && fileSrc && <img alt={attachment.name} src={fileSrc} />}
           {fileType === 'video' && <RawIcon fa="fa-solid fa-film" />}
           {fileType === 'audio' && <RawIcon fa="fa-solid fa-volume-high" />}
           {fileType !== 'image' && fileType !== 'video' && fileType !== 'audio' && (
