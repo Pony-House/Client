@@ -38,14 +38,9 @@ class InsertObjectURL extends EventEmitter {
       this.emit('urlAdded', { id: hash, file: tinyUrl });
       return tinyUrl;
     }
-
-    // Nothing
-    const tinyUrl = URL.createObjectURL(file);
-    this.emit('urlAdded', { id: null, file: tinyUrl });
-    return tinyUrl;
   }
 
-  delete(url, where) {
+  delete(url) {
     // Look for URL
     const hash = this.urls[url];
     const tinyUrl = this.hashes[hash];
@@ -58,12 +53,7 @@ class InsertObjectURL extends EventEmitter {
       delete this.hashes[hash];
       delete this.timeout[hash];
       delete this.urls[tinyUrl];
-      return;
     }
-
-    // Default
-    this.emit('urlDeleted', { id: null, url: where });
-    URL.revokeObjectURL(url);
   }
 }
 
