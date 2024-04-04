@@ -96,7 +96,6 @@ class BlobUrlManager extends EventEmitter {
     let allowedToDelete = false;
 
     // Look for URL
-    console.log('delete', url);
     const hash = this.urls[url];
     const tinyUrl = this.hashes[hash];
     const timeoutData = this.timeout[hash];
