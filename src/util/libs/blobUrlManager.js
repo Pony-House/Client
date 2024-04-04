@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { generateApiKey } from 'generate-api-key';
 import md5 from 'md5';
 
 class BlobUrlManager extends EventEmitter {
@@ -9,6 +10,7 @@ class BlobUrlManager extends EventEmitter {
     this.urls = {};
     this.timeout = {};
     this.groups = {};
+    this.queue = {};
   }
 
   checkBlob(hash) {
@@ -33,8 +35,14 @@ class BlobUrlManager extends EventEmitter {
 
   async insert(file, ops = {}) {
     // Insert using Hash
+    const tinyKey = generateApiKey();
+    this.queue[tinyKey] = {
+      canceled: false,
+      groupId: typeof ops.group === 'string' ? ops.group : null,
+    };
+
     const hash = md5(await file.text());
-    if (typeof hash === 'string') {
+    if (typeof hash === 'string' && !this.queue[tinyKey].canceled) {
       // Validator to new one
       if (typeof this.hashes[hash] !== 'string') {
         // Timeout data
@@ -65,6 +73,7 @@ class BlobUrlManager extends EventEmitter {
 
         // Complete
         this.emit('urlAdded', { id: hash, file: tinyUrl, groupId });
+        delete this.queue[tinyKey];
         return tinyUrl;
       }
 
@@ -77,6 +86,7 @@ class BlobUrlManager extends EventEmitter {
           this.timeout[hash].groups.push(ops.group);
       }
 
+      delete this.queue[tinyKey];
       return this.hashes[hash];
     }
   }
@@ -95,6 +105,11 @@ class BlobUrlManager extends EventEmitter {
       if (typeof groupId !== 'string') {
         allowedToDelete = true;
       } else if (Array.isArray(this.groups[groupId])) {
+        // Check Queue
+        for (const tinyKey in this.queue) {
+          if (this.queue[tinyKey].groupId === groupId) this.queue[tinyKey].canceled = true;
+        }
+
         // Delete group data
         const index = timeoutData.groups.indexOf(groupId);
         if (index > -1) {
@@ -127,7 +142,8 @@ class BlobUrlManager extends EventEmitter {
   }
 
   deleteGroup(groupId) {
-    if (Array.isArray(this.groups[groupId])) {
+    let executed = false;
+    while (Array.isArray(this.groups[groupId]) && this.groups[groupId].length > 0) {
       for (const item in this.groups[groupId]) {
         const hash = this.groups[groupId][item];
         if (typeof hash === 'string') {
@@ -137,9 +153,9 @@ class BlobUrlManager extends EventEmitter {
           }
         }
       }
-      return true;
+      executed = true;
     }
-    return false;
+    return executed;
   }
 }
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import clone from 'clone';
+import blobUrlManager from '@src/util/libs/blobUrlManager';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -69,7 +70,17 @@ function Room() {
         forceScroll,
       });
     };
-    const handleRoomSelected = (roomId, prevRoomId, eventId, threadData, forceScroll) => {
+    const handleRoomSelected = (
+      roomId,
+      prevRoomId,
+      eventId,
+      threadData,
+      prevThreadId,
+      forceScroll,
+    ) => {
+      blobUrlManager.deleteGroup(
+        `roomMedia:${prevRoomId}${typeof prevThreadId === 'string' ? `:${prevThreadId}` : ''}`,
+      );
       roomInfo.roomTimeline?.removeInternalListeners();
       $('.space-drawer-menu-item').removeClass('active');
 

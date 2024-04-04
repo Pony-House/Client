@@ -131,6 +131,7 @@ class Navigation extends EventEmitter {
       prevSelectedRoomId,
       eventId,
       tinyThread,
+      this.selectedThreadId,
       forceScroll,
     );
 
@@ -140,6 +141,7 @@ class Navigation extends EventEmitter {
       prevSelectedRoomId,
       eventId,
       threadId,
+      this.selectedThreadId,
       forceScroll,
     );
 

@@ -45,7 +45,10 @@ function Home({ spaceId }) {
   }
 
   useEffect(() => {
-    const selectorChanged = (selectedRoomId, prevSelectedRoomId) => {
+    const selectorChanged = (
+      selectedRoomId,
+      prevSelectedRoomId /* , eventId, selectedthreadId, prevThreadId */,
+    ) => {
       if (!drawerPostie.hasTopic('selector-change')) return;
       const addresses = [];
       if (drawerPostie.hasSubscriber('selector-change', selectedRoomId))

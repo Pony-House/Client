@@ -38,7 +38,10 @@ function Directs({ size }) {
   }, [directIds]);
 
   useEffect(() => {
-    const selectorChanged = (selectedRoomId, prevSelectedRoomId) => {
+    const selectorChanged = (
+      selectedRoomId,
+      prevSelectedRoomId /* , eventId, selectedThreadId, prevThreadId */,
+    ) => {
       if (!drawerPostie.hasTopic('selector-change')) return;
       const addresses = [];
       if (drawerPostie.hasSubscriber('selector-change', selectedRoomId))

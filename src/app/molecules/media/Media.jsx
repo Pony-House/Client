@@ -23,11 +23,12 @@ async function getDecryptedBlob(response, type, decryptData) {
   return blob;
 }
 
-async function getUrl(link, type, decryptData, roomId, threadId) {
+async function getUrl(link, type, decryptData, roomId /* , threadId */) {
   try {
     const blobSettings = {
       freeze: true,
-      group: `roomMedia:${roomId}${typeof threadId === 'string' ? `:${threadId}` : ''}`,
+      // group: `roomMedia:${roomId}${typeof threadId === 'string' ? `:${threadId}` : ''}`,
+      group: `roomMedia:${roomId}`,
     };
     const tinyLink = readCustomUrl(link);
     const response = await fetchFn(tinyLink, { method: 'GET' });

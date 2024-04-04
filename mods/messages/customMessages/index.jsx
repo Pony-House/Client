@@ -9,7 +9,9 @@ export default function startMod() {
   tinyAPI.on('messageBody', (data, content, info) => {
     if (content['uk.half-shot.matrix-hookshot.feeds.item']) {
       const feedData = content['uk.half-shot.matrix-hookshot.feeds.item'];
-      data.custom = <HookshotFeeds feedData={feedData} roomId={info.roomId} />;
+      data.custom = (
+        <HookshotFeeds feedData={feedData} roomId={info.roomId} threadId={info.threadId} />
+      );
     }
   });
 }
