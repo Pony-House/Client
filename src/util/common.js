@@ -1,6 +1,6 @@
 import { convertToBase64Mobile, createObjectURL } from '@src/app/molecules/file-input/FileInput';
 import urlParams from './libs/urlParams';
-import blobUrlManager from './libs/createObjectURL';
+import blobUrlManager from './libs/blobUrlManager';
 
 export function bytesToSize(bytes) {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];

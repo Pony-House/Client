@@ -3,7 +3,7 @@ import encrypt from 'matrix-encrypt-attachment';
 import { encode } from 'blurhash';
 import { EventTimeline } from 'matrix-js-sdk';
 
-import blobUrlManager from '@src/util/libs/createObjectURL';
+import blobUrlManager from '@src/util/libs/blobUrlManager';
 import { isMobile } from '@src/util/libs/mobile';
 import { fileReader, uploadContent } from '@src/app/molecules/file-input/FileInput';
 

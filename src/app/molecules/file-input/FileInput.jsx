@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 // import { objType } from '@src/util/tools';
 import initMatrix from '@src/client/initMatrix';
-import blobUrlManager from '@src/util/libs/createObjectURL';
+import blobUrlManager from '@src/util/libs/blobUrlManager';
 
 // Build HTML
 const FileInput = React.forwardRef(

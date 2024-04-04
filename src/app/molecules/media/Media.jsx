@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import encrypt from 'matrix-encrypt-attachment';
 import { readCustomUrl } from '@src/util/libs/mediaCache';
 import { fetchFn } from '@src/client/initMatrix';
-import blobUrlManager from '@src/util/libs/createObjectURL';
+import blobUrlManager from '@src/util/libs/blobUrlManager';
 
 import { BlurhashCanvas } from 'react-blurhash';
 import imageViewer from '../../../util/imageViewer';
