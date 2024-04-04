@@ -27,7 +27,7 @@ class BlobUrlManager extends EventEmitter {
     const hash = md5(await file.text());
     if (typeof hash === 'string') {
       // Validator to new one
-      if (!this.hashes[hash]) {
+      if (typeof this.hashes[hash] !== 'string') {
         // Timeout data
         const timeoutData = {
           value: 60,
@@ -71,19 +71,19 @@ class BlobUrlManager extends EventEmitter {
   }
 
   delete(url, groupId) {
+    // Allowed to delete
+    let allowedToDelete = false;
+
     // Look for URL
     console.log('delete', url);
     const hash = this.urls[url];
     const tinyUrl = this.hashes[hash];
     const timeoutData = this.timeout[hash];
-    if (hash && tinyUrl && timeoutData) {
-      // Allowed to delete
-      let allowedToDelete = false;
-
+    if (typeof hash === 'string' && typeof tinyUrl === 'string' && timeoutData) {
       // No group
       if (typeof groupId !== 'string') {
         allowedToDelete = true;
-      } else {
+      } else if (Array.isArray(this.groups[groupId])) {
         // Delete group data
         const index = timeoutData.groups.indexOf(groupId);
         if (index > -1) {
@@ -111,6 +111,23 @@ class BlobUrlManager extends EventEmitter {
         delete this.urls[tinyUrl];
       }
     }
+    return allowedToDelete;
+  }
+
+  deleteGroup(groupId) {
+    if (Array.isArray(this.groups[groupId])) {
+      for (const item in this.groups[groupId]) {
+        const hash = this.groups[groupId][item];
+        if (typeof hash === 'string') {
+          const tinyUrl = this.hashes[hash];
+          if (typeof tinyUrl === 'string') {
+            this.delete(tinyUrl, groupId);
+          }
+        }
+      }
+      return true;
+    }
+    return false;
   }
 }
 
