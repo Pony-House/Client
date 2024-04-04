@@ -70,10 +70,6 @@ function FileHeader({ name, link, external, file, type, roomId, threadId }) {
     }
   }
 
-  useEffect(() => () => {
-    // if (url) blobUrlManager.delete(url);
-  });
-
   return (
     <div className="file-header">
       <Text className="file-name" variant="b3">
@@ -174,10 +170,6 @@ function Image({
     };
   }, []);
 
-  useEffect(() => () => {
-    // if (url) blobUrlManager.delete(url);
-  });
-
   const toggleLightbox = () => {
     if (!url) return;
     setLightbox(!lightbox);
@@ -276,10 +268,6 @@ function Sticker({ name, height, width, link, file, type, roomId, threadId }) {
     };
   }, []);
 
-  useEffect(() => () => {
-    // if (url) blobUrlManager.delete(url);
-  });
-
   useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
 
   return (
@@ -328,9 +316,6 @@ function Audio({ name, link, type, file, roomId, threadId }) {
   }
 
   useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded));
-  useEffect(() => () => {
-    // if (url) blobUrlManager.delete(url);
-  });
   return (
     <div ref={itemEmbed} className="file-container">
       <FileHeader
@@ -415,11 +400,6 @@ function Video({
     setIsLoading(true);
     loadVideo();
   };
-
-  useEffect(() => () => {
-    // if (url) blobUrlManager.delete(url);
-    // if (thumbUrl) blobUrlManager.delete(thumbUrl);
-  });
 
   return (
     <div ref={itemEmbed} className={`file-container${url !== null ? ' file-open' : ''}`}>
