@@ -11,15 +11,24 @@ class BlobUrlManager extends EventEmitter {
     this.groups = {};
   }
 
-  checkAll() {
-    for (const hash in this.timeout) {
-      if (!this.timeout[hash].freeze) {
-        if (this.timeout[hash].value > 0) this.timeout[hash].value--;
-        else {
-          this.delete(this.hashes[hash]);
-        }
+  checkBlob(hash) {
+    if (!this.timeout[hash].freeze) {
+      if (this.timeout[hash].value > 0) this.timeout[hash].value--;
+      else {
+        return this.delete(this.hashes[hash]);
       }
     }
+
+    return false;
+  }
+
+  checkAllBlobs() {
+    let checked = false;
+    for (const hash in this.timeout) {
+      const tinyCheck = this.checkBlob(hash);
+      if (tinyCheck) checked = true;
+    }
+    return checked;
   }
 
   async insert(file, ops = {}) {
@@ -140,5 +149,5 @@ if (__ENV_APP__.MODE === 'development') {
 }
 
 setInterval(() => {
-  blobUrlManager.checkAll();
+  blobUrlManager.checkAllBlobs();
 }, 1000);
