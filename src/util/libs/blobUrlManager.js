@@ -47,7 +47,7 @@ class BlobUrlManager extends EventEmitter {
       if (typeof this.hashes[hash] !== 'string') {
         // Timeout data
         const timeoutData = {
-          value: 60,
+          value: 600,
           freeze: typeof ops.freeze === 'boolean' ? ops.freeze : false,
           groups: [],
         };
