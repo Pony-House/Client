@@ -1155,6 +1155,7 @@ function genMediaContent(mE) {
     case 'm.file':
       return (
         <Media.File
+          roomId={mE.getRoomId()}
           name={mContent.body}
           link={mx.mxcUrlToHttp(mediaMXC)}
           type={mContent.info?.mimetype}
@@ -1166,6 +1167,7 @@ function genMediaContent(mE) {
     case 'm.image':
       return (
         <Media.Image
+          roomId={mE.getRoomId()}
           name={mContent.body}
           width={typeof mContent.info?.w === 'number' ? mContent.info?.w : null}
           height={typeof mContent.info?.h === 'number' ? mContent.info?.h : null}
@@ -1180,6 +1182,7 @@ function genMediaContent(mE) {
     case 'm.sticker':
       return (
         <Media.Sticker
+          roomId={mE.getRoomId()}
           name={mContent.body}
           width={
             typeof mContent.info?.w === 'number' && !Number.isNaN(mContent.info?.w)
@@ -1201,6 +1204,7 @@ function genMediaContent(mE) {
     case 'm.audio':
       return (
         <Media.Audio
+          roomId={mE.getRoomId()}
           name={mContent.body}
           link={mx.mxcUrlToHttp(mediaMXC)}
           type={mContent.info?.mimetype}
@@ -1215,6 +1219,7 @@ function genMediaContent(mE) {
       }
       return (
         <Media.Video
+          roomId={mE.getRoomId()}
           name={mContent.body}
           link={mx.mxcUrlToHttp(mediaMXC)}
           thumbnail={thumbnailMXC === null ? null : mx.mxcUrlToHttp(thumbnailMXC)}
@@ -1571,6 +1576,7 @@ function Message({
                     if (embed.data)
                       return (
                         <Embed
+                          roomId={roomId}
                           key={`msg_embed_${embed.eventId}_${generateApiKey()}`}
                           embed={embed.data}
                         />

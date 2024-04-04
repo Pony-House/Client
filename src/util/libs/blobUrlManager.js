@@ -45,7 +45,9 @@ class BlobUrlManager extends EventEmitter {
         };
 
         // Create Group
+        let groupId = null;
         if (typeof ops.group === 'string') {
+          groupId = ops.group;
           if (!Array.isArray(this.groups[ops.group])) this.groups[ops.group] = [];
           this.groups[ops.group].push(hash);
           timeoutData.groups.push(ops.group);
@@ -62,7 +64,7 @@ class BlobUrlManager extends EventEmitter {
         this.timeout[hash] = timeoutData;
 
         // Complete
-        this.emit('urlAdded', { id: hash, file: tinyUrl });
+        this.emit('urlAdded', { id: hash, file: tinyUrl, groupId });
         return tinyUrl;
       }
 
@@ -113,6 +115,7 @@ class BlobUrlManager extends EventEmitter {
         this.emit('urlDeleted', {
           id: tinyUrl,
           url: tinyUrl,
+          groupId: typeof groupId === 'string' ? groupId : null,
         });
         URL.revokeObjectURL(tinyUrl);
         delete this.hashes[hash];

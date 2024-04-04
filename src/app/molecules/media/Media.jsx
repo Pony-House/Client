@@ -23,17 +23,21 @@ async function getDecryptedBlob(response, type, decryptData) {
   return blob;
 }
 
-async function getUrl(link, type, decryptData) {
+async function getUrl(link, type, decryptData, roomId, threadId) {
   try {
+    const blobSettings = {
+      freeze: true,
+      group: `roomMedia:${roomId}${typeof threadId === 'string' ? `:${threadId}` : ''}`,
+    };
     const tinyLink = readCustomUrl(link);
     const response = await fetchFn(tinyLink, { method: 'GET' });
     if (decryptData !== null && !tinyLink.startsWith('ponyhousetemp://')) {
       const blob = await getDecryptedBlob(response, type, decryptData);
-      const result = await blobUrlManager.insert(blob, { freeze: true });
+      const result = await blobUrlManager.insert(blob, blobSettings);
       return result;
     }
     const blob = await response.blob();
-    const result = await blobUrlManager.insert(blob, { freeze: true });
+    const result = await blobUrlManager.insert(blob, blobSettings);
     return result;
   } catch (e) {
     console.error(e);
@@ -50,11 +54,11 @@ function getNativeHeight(width, height, maxWidth = 296) {
   return '';
 }
 
-function FileHeader({ name, link, external, file, type }) {
+function FileHeader({ name, link, external, file, type, roomId, threadId }) {
   const [url, setUrl] = useState(null);
 
   async function getFile() {
-    const myUrl = await getUrl(link, type, file);
+    const myUrl = await getUrl(link, type, file, roomId, threadId);
     setUrl(myUrl);
   }
 
@@ -111,10 +115,17 @@ FileHeader.propTypes = {
   type: PropTypes.string.isRequired,
 };
 
-function File({ name, link, file, type }) {
+function File({ name, link, file, type, roomId, threadId }) {
   return (
     <div className="file-container">
-      <FileHeader name={name} link={link} file={file} type={type} />
+      <FileHeader
+        roomId={roomId}
+        threadId={threadId}
+        name={name}
+        link={link}
+        file={file}
+        type={type}
+      />
     </div>
   );
 }
@@ -131,6 +142,8 @@ File.propTypes = {
 
 function Image({
   name,
+  roomId,
+  threadId,
   width,
   height,
   link,
@@ -151,7 +164,7 @@ function Image({
   useEffect(() => {
     let unmounted = false;
     async function fetchUrl() {
-      const myUrl = await getUrl(link, type, file);
+      const myUrl = await getUrl(link, type, file, roomId, threadId);
       if (unmounted) return;
       setUrl(myUrl);
     }
@@ -244,7 +257,7 @@ Image.propTypes = {
   blurhash: PropTypes.string,
 };
 
-function Sticker({ name, height, width, link, file, type }) {
+function Sticker({ name, height, width, link, file, type, roomId, threadId }) {
   const [url, setUrl] = useState(null);
 
   const itemEmbed = useRef(null);
@@ -253,7 +266,7 @@ function Sticker({ name, height, width, link, file, type }) {
   useEffect(() => {
     let unmounted = false;
     async function fetchUrl() {
-      const myUrl = await getUrl(link, type, file);
+      const myUrl = await getUrl(link, type, file, roomId, threadId);
       if (unmounted) return;
       setUrl(myUrl);
     }
@@ -295,7 +308,7 @@ Sticker.propTypes = {
   type: PropTypes.string,
 };
 
-function Audio({ name, link, type, file }) {
+function Audio({ name, link, type, file, roomId, threadId }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [url, setUrl] = useState(null);
@@ -304,7 +317,7 @@ function Audio({ name, link, type, file }) {
   const [embedHeight, setEmbedHeight] = useState(null);
 
   async function loadAudio() {
-    const myUrl = await getUrl(link, type, file);
+    const myUrl = await getUrl(link, type, file, roomId, threadId);
     setUrl(myUrl);
     setIsLoading(false);
     setIsLoaded(true);
@@ -320,7 +333,14 @@ function Audio({ name, link, type, file }) {
   });
   return (
     <div ref={itemEmbed} className="file-container">
-      <FileHeader name={name} link={file !== null ? url : url || link} type={type} external />
+      <FileHeader
+        threadId={threadId}
+        roomId={roomId}
+        name={name}
+        link={file !== null ? url : url || link}
+        type={type}
+        external
+      />
       <div className="audio-container">
         {url === null && isLoading && <Spinner size="small" />}
         {url === null && !isLoading && (
@@ -348,6 +368,8 @@ Audio.propTypes = {
 
 function Video({
   name,
+  roomId,
+  threadId,
   link,
   thumbnail,
   thumbnailFile,
@@ -370,7 +392,7 @@ function Video({
   useEffect(() => {
     let unmounted = false;
     async function fetchUrl() {
-      const myThumbUrl = await getUrl(thumbnail, thumbnailType, thumbnailFile);
+      const myThumbUrl = await getUrl(thumbnail, thumbnailType, thumbnailFile, roomId, threadId);
       if (unmounted) return;
       setThumbUrl(myThumbUrl);
     }
@@ -383,7 +405,7 @@ function Video({
 
   useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded));
   const loadVideo = async () => {
-    const myUrl = await getUrl(link, type, file);
+    const myUrl = await getUrl(link, type, file, roomId, threadId);
     setUrl(myUrl);
     setIsLoading(false);
     setIsLoaded(true);
@@ -401,7 +423,14 @@ function Video({
 
   return (
     <div ref={itemEmbed} className={`file-container${url !== null ? ' file-open' : ''}`}>
-      <FileHeader name={name} link={file !== null ? url : url || link} type={type} external />
+      <FileHeader
+        threadId={threadId}
+        roomId={roomId}
+        name={name}
+        link={file !== null ? url : url || link}
+        type={type}
+        external
+      />
       {url === null ? (
         <div className="video-container">
           {!isLoading && (

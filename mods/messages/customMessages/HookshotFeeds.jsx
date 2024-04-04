@@ -8,7 +8,7 @@ import openTinyURL from '@src/util/message/urlProtection';
 import * as Media from '@src/app/molecules/media/Media';
 import { mediaFix } from '@src/app/molecules/media/mediaFix';
 
-function HookshotFeeds({ feedData }) {
+function HookshotFeeds({ feedData, roomId }) {
   const embedRef = useRef(null);
   const embedButton = useRef(null);
   const [embed, setEmbed] = useState(null);
@@ -44,6 +44,7 @@ function HookshotFeeds({ feedData }) {
     <div ref={embedRef} className="card hookshot-feeds">
       {embed && typeof embed['og:image'] === 'string' && embed['og:image'].length > 0 ? (
         <Media.Image
+          roomId={roomId}
           name="banner"
           className="card-img-top"
           width={Number(embed['og:image:width'])}
