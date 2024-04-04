@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import encrypt from 'matrix-encrypt-attachment';
 import { readCustomUrl } from '@src/util/libs/mediaCache';
 import { fetchFn } from '@src/client/initMatrix';
-import insertObjectURL from '@src/util/libs/createObjectURL';
+import blobUrlManager from '@src/util/libs/createObjectURL';
 
 import { BlurhashCanvas } from 'react-blurhash';
 import imageViewer from '../../../util/imageViewer';
@@ -29,11 +29,11 @@ async function getUrl(link, type, decryptData) {
     const response = await fetchFn(tinyLink, { method: 'GET' });
     if (decryptData !== null && !tinyLink.startsWith('ponyhousetemp://')) {
       const blob = await getDecryptedBlob(response, type, decryptData);
-      const result = await insertObjectURL.insert(blob, { freeze: true });
+      const result = await blobUrlManager.insert(blob, { freeze: true });
       return result;
     }
     const blob = await response.blob();
-    const result = await insertObjectURL.insert(blob, { freeze: true });
+    const result = await blobUrlManager.insert(blob, { freeze: true });
     return result;
   } catch (e) {
     console.error(e);
@@ -67,7 +67,7 @@ function FileHeader({ name, link, external, file, type }) {
   }
 
   useEffect(() => () => {
-    // if (url) insertObjectURL.delete(url);
+    // if (url) blobUrlManager.delete(url);
   });
 
   return (
@@ -162,7 +162,7 @@ function Image({
   }, []);
 
   useEffect(() => () => {
-    // if (url) insertObjectURL.delete(url);
+    // if (url) blobUrlManager.delete(url);
   });
 
   const toggleLightbox = () => {
@@ -264,7 +264,7 @@ function Sticker({ name, height, width, link, file, type }) {
   }, []);
 
   useEffect(() => () => {
-    // if (url) insertObjectURL.delete(url);
+    // if (url) blobUrlManager.delete(url);
   });
 
   useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
@@ -316,7 +316,7 @@ function Audio({ name, link, type, file }) {
 
   useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded));
   useEffect(() => () => {
-    // if (url) insertObjectURL.delete(url);
+    // if (url) blobUrlManager.delete(url);
   });
   return (
     <div ref={itemEmbed} className="file-container">
@@ -395,8 +395,8 @@ function Video({
   };
 
   useEffect(() => () => {
-    // if (url) insertObjectURL.delete(url);
-    // if (thumbUrl) insertObjectURL.delete(thumbUrl);
+    // if (url) blobUrlManager.delete(url);
+    // if (thumbUrl) blobUrlManager.delete(thumbUrl);
   });
 
   return (

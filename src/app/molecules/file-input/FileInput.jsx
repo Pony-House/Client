@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 // import { objType } from '@src/util/tools';
 import initMatrix from '@src/client/initMatrix';
-import insertObjectURL from '@src/util/libs/createObjectURL';
+import blobUrlManager from '@src/util/libs/createObjectURL';
 
 // Build HTML
 const FileInput = React.forwardRef(
@@ -82,11 +82,11 @@ const uploadContent = (file) => initMatrix.matrixClient.uploadContent(file);
 
 /* const createObjectURL = (file, forceDefault = false) => {
   if (!Capacitor.isNativePlatform() || forceDefault) {
-  return insertObjectURL.insert(file);
+  return blobUrlManager.insert(file);
   }
-  return insertObjectURL.insert(file.data);
+  return blobUrlManager.insert(file.data);
 }; */
-const createObjectURL = (file) => insertObjectURL.insert(file);
+const createObjectURL = (file) => blobUrlManager.insert(file);
 
 /* const convertToBase64Mobile = (file) => {
   if (!Capacitor.isNativePlatform()) {

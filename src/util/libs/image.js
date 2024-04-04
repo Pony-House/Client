@@ -12,7 +12,7 @@ export function openOnGallery(imgUrl, fileName /* urlRevoke = false */) {
     }).then((/* pswp */) => {
       /* pswp.on('close', () => {
                 pswp.destroy();
-                if (urlRevoke) insertObjectURL.delete();
+                if (urlRevoke) blobUrlManager.delete();
             }); */
     });
   };

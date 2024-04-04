@@ -1,6 +1,6 @@
 import { convertToBase64Mobile, createObjectURL } from '@src/app/molecules/file-input/FileInput';
 import urlParams from './libs/urlParams';
-import insertObjectURL from './libs/createObjectURL';
+import blobUrlManager from './libs/createObjectURL';
 
 export function bytesToSize(bytes) {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -161,9 +161,9 @@ export function getImageDimension(file) {
         w: img.width,
         h: img.height,
       });
-      insertObjectURL.delete(img.src);
+      blobUrlManager.delete(img.src);
     };
-    insertObjectURL.insert(file).then((src) => {
+    blobUrlManager.insert(file).then((src) => {
       img.src = src;
     });
   });
@@ -197,7 +197,7 @@ export function scaleDownImage(imageFile, width, height) {
         ctx.drawImage(img, 0, 0, newWidth, newHeight);
 
         canvas.toBlob((thumbnail) => {
-          insertObjectURL.delete(imgURL);
+          blobUrlManager.delete(imgURL);
           resolve(thumbnail);
         }, imageFile.type);
       };

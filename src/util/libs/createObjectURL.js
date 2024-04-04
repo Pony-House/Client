@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import md5 from 'md5';
 
-class InsertObjectURL extends EventEmitter {
+class BlobUrlManager extends EventEmitter {
   // Constructor
   constructor() {
     super();
@@ -115,13 +115,13 @@ class InsertObjectURL extends EventEmitter {
 }
 
 // Module
-const insertObjectURL = new InsertObjectURL();
-export default insertObjectURL;
+const blobUrlManager = new BlobUrlManager();
+export default blobUrlManager;
 
 if (__ENV_APP__.MODE === 'development') {
-  global.insertObjectURL = insertObjectURL;
+  global.blobUrlManager = blobUrlManager;
 }
 
 setInterval(() => {
-  insertObjectURL.checkAll();
+  blobUrlManager.checkAll();
 }, 1000);

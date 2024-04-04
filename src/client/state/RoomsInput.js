@@ -3,7 +3,7 @@ import encrypt from 'matrix-encrypt-attachment';
 import { encode } from 'blurhash';
 import { EventTimeline } from 'matrix-js-sdk';
 
-import insertObjectURL from '@src/util/libs/createObjectURL';
+import blobUrlManager from '@src/util/libs/createObjectURL';
 import { isMobile } from '@src/util/libs/mobile';
 import { fileReader, uploadContent } from '@src/app/molecules/file-input/FileInput';
 
@@ -352,7 +352,7 @@ class RoomsInput extends EventEmitter {
     if (fileType === 'image') {
       let imgData;
       if (!isMobile(true)) {
-        imgData = await insertObjectURL.insert(file);
+        imgData = await blobUrlManager.insert(file);
       } else {
         imgData = `data:${file.type};base64, ${file.data}`;
       }
