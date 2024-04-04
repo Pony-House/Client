@@ -9,11 +9,7 @@
     "outDir": "dist",
     "skipLibCheck": true,
     "useDefineForClassFields": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -23,30 +19,15 @@
     "noEmit": true,
     "baseUrl": "./",
     "paths": {
-      "@src/*": [
-        "src/*"
-      ],
-      "@mods/*": [
-        "mods/*"
-      ]
+      "@src/*": ["src/*"],
+      "@mods/*": ["mods/*"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "vendor",
-    "release",
-    ".flatpak"
-  ],
-  "include": [
-    "src",
-    "mods",
-    "electron"
-  ],
+  "exclude": ["node_modules", "dist", "vendor", "release", ".flatpak"],
+  "include": ["src", "mods", "electron"],
   "references": [
     {
       "path": "./tsconfig.node.json"
     }
-  ],
-  "extends": "expo/tsconfig.base"
+  ]
 }
