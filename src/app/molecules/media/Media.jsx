@@ -29,11 +29,11 @@ async function getUrl(link, type, decryptData) {
     const response = await fetchFn(tinyLink, { method: 'GET' });
     if (decryptData !== null && !tinyLink.startsWith('ponyhousetemp://')) {
       const blob = await getDecryptedBlob(response, type, decryptData);
-      const result = await insertObjectURL.insert(blob);
+      const result = await insertObjectURL.insert(blob, { freeze: true });
       return result;
     }
     const blob = await response.blob();
-    const result = await insertObjectURL.insert(blob);
+    const result = await insertObjectURL.insert(blob, { freeze: true });
     return result;
   } catch (e) {
     console.error(e);
@@ -65,6 +65,10 @@ function FileHeader({ name, link, external, file, type }) {
       e.target.click();
     }
   }
+
+  useEffect(() => () => {
+    if (url) insertObjectURL.delete(url);
+  });
 
   return (
     <div className="file-header">
@@ -153,6 +157,7 @@ function Image({
     }
     fetchUrl();
     return () => {
+      if (url) insertObjectURL.delete(url);
       unmounted = true;
     };
   }, []);
@@ -251,6 +256,7 @@ function Sticker({ name, height, width, link, file, type }) {
     }
     fetchUrl();
     return () => {
+      if (url) insertObjectURL.delete(url);
       unmounted = true;
     };
   }, []);
@@ -302,7 +308,12 @@ function Audio({ name, link, type, file }) {
     loadAudio();
   }
 
-  useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded));
+  useEffect(() => {
+    mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded);
+    return () => {
+      if (url) insertObjectURL.delete(url);
+    };
+  });
   return (
     <div ref={itemEmbed} className="file-container">
       <FileHeader name={name} link={file !== null ? url : url || link} type={type} external />
@@ -362,6 +373,7 @@ function Video({
 
     if (thumbnail !== null) fetchUrl();
     return () => {
+      if (thumbUrl) insertObjectURL.delete(thumbUrl);
       unmounted = true;
     };
   }, []);
@@ -378,6 +390,10 @@ function Video({
     setIsLoading(true);
     loadVideo();
   };
+
+  useEffect(() => () => {
+    if (url) insertObjectURL.delete(url);
+  });
 
   return (
     <div ref={itemEmbed} className={`file-container${url !== null ? ' file-open' : ''}`}>
