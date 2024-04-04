@@ -67,7 +67,7 @@ function FileHeader({ name, link, external, file, type }) {
   }
 
   useEffect(() => () => {
-    if (url) insertObjectURL.delete(url);
+    // if (url) insertObjectURL.delete(url);
   });
 
   return (
@@ -157,10 +157,13 @@ function Image({
     }
     fetchUrl();
     return () => {
-      if (url) insertObjectURL.delete(url);
       unmounted = true;
     };
   }, []);
+
+  useEffect(() => () => {
+    // if (url) insertObjectURL.delete(url);
+  });
 
   const toggleLightbox = () => {
     if (!url) return;
@@ -256,10 +259,13 @@ function Sticker({ name, height, width, link, file, type }) {
     }
     fetchUrl();
     return () => {
-      if (url) insertObjectURL.delete(url);
       unmounted = true;
     };
   }, []);
+
+  useEffect(() => () => {
+    // if (url) insertObjectURL.delete(url);
+  });
 
   useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
 
@@ -308,11 +314,9 @@ function Audio({ name, link, type, file }) {
     loadAudio();
   }
 
-  useEffect(() => {
-    mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded);
-    return () => {
-      if (url) insertObjectURL.delete(url);
-    };
+  useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded));
+  useEffect(() => () => {
+    // if (url) insertObjectURL.delete(url);
   });
   return (
     <div ref={itemEmbed} className="file-container">
@@ -373,7 +377,6 @@ function Video({
 
     if (thumbnail !== null) fetchUrl();
     return () => {
-      if (thumbUrl) insertObjectURL.delete(thumbUrl);
       unmounted = true;
     };
   }, []);
@@ -392,7 +395,8 @@ function Video({
   };
 
   useEffect(() => () => {
-    if (url) insertObjectURL.delete(url);
+    // if (url) insertObjectURL.delete(url);
+    // if (thumbUrl) insertObjectURL.delete(thumbUrl);
   });
 
   return (
