@@ -80,13 +80,13 @@ const FileInput = React.forwardRef(
 }; */
 const uploadContent = (file) => initMatrix.matrixClient.uploadContent(file);
 
-/* const createObjectURL = (file, forceDefault = false) => {
+/* const createObjectURL = (file, groupId, forceDefault = false) => {
   if (!Capacitor.isNativePlatform() || forceDefault) {
-  return blobUrlManager.insert(file);
+  return blobUrlManager.insert(file, groupId);
   }
-  return blobUrlManager.insert(file.data);
+  return blobUrlManager.insert(file.data, groupId);
 }; */
-const createObjectURL = (file) => blobUrlManager.insert(file);
+const createObjectURL = (file, groupId) => blobUrlManager.insert(file, groupId);
 
 /* const convertToBase64Mobile = (file) => {
   if (!Capacitor.isNativePlatform()) {

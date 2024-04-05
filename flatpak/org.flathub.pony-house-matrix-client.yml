@@ -27,12 +27,12 @@ modules:
         npm_config_offline: 'true'
     build-commands:
       # Install npm dependencies
-      - npm install --offline
+      - yarn setup
       # Build the app; in this example the `dist` script
       # in package.json runs electron-builder
       - |
         . ../flatpak-node/electron-builder-arch-args.sh
-        npm run dist -- $ELECTRON_BUILDER_ARCH_ARGS  --linux --dir
+        yarn electron:build -- $ELECTRON_BUILDER_ARCH_ARGS  --linux --dir
       # Bundle app and dependencies
       - cp -a dist/linux*unpacked /app/main
       # Install app wrapper

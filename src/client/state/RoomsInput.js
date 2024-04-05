@@ -362,6 +362,7 @@ class RoomsInput extends EventEmitter {
       info.w = img.width;
       info.h = img.height;
       info[blurhashField] = encodeBlurhash(img);
+      blobUrlManager.delete(imgData);
 
       content.msgtype = 'm.image';
       content.body = file.name || 'Image';
