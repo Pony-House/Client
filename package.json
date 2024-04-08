@@ -113,7 +113,7 @@
     "@rollup/plugin-inject": "5.0.5",
     "@rollup/plugin-wasm": "6.2.2",
     "@types/node": "20.12.5",
-    "@types/react": "18.2.73",
+    "@types/react": "18.2.74",
     "@types/react-dom": "18.2.24",
     "@typescript-eslint/eslint-plugin": "7.6.0",
     "@typescript-eslint/parser": "7.6.0",
