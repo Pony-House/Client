@@ -130,7 +130,8 @@
     white-space: initial !important;
   }
 
-  & span[data-mx-pill] {
+  & span[data-mx-pill],
+  & .everyone-mention {
     background-color: hsla(0, 0%, 64%, 0.15);
     padding: 0 2px;
     border-radius: 4px;

@@ -9,6 +9,7 @@ import linkifyRegisterKeywords from 'linkify-plugin-keyword';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 import startKeyWords from '@mods/keywords';
+import { everyoneTags } from '@src/app/molecules/global-notification/KeywordNotification';
 
 import Tooltip from '../app/atoms/tooltip/Tooltip';
 import { sanitizeText } from './sanitize';
@@ -216,6 +217,14 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
 
   // Emoji Parse
   msgContent = twemoji.parse(msgContent, options);
+  for (const item in everyoneTags) {
+    const tinyRegex = new RegExp(`\\${everyoneTags[item]}`, 'gi');
+    console.log(tinyRegex);
+    msgContent = msgContent.replace(
+      tinyRegex,
+      `<span class="everyone-mention" data-mx-ping>${everyoneTags[item]}</span>`,
+    );
+  }
 
   // Linkify Options
   const linkifyOptions = {
