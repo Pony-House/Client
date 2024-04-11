@@ -1266,6 +1266,7 @@ function Message({
   isBodyOnly,
   roomTimeline,
   focus,
+  focusTime,
   fullTime,
   isEdit,
   setEdit,
@@ -1292,10 +1293,11 @@ function Message({
   const [existThread, updateExistThread] = useState(typeof threadId === 'string');
   const [embeds, setEmbeds] = useState([]);
   const [embedHeight, setEmbedHeight] = useState(null);
+  const [isFocus, setIsFocus] = useState(null);
+  const messageElement = useRef(null);
 
   // Content Body
   const classList = ['message', isBodyOnly ? 'message--body-only' : 'message--full'];
-  if (focus) classList.push('message-focus');
   const content = mEvent.getContent();
   const eventId = mEvent.getId();
   const msgType = content?.msgtype;
@@ -1500,11 +1502,30 @@ function Message({
     };
   });
 
+  useEffect(() => {
+    let removeFocusTimeout = null;
+    const msgElement = $(messageElement.current);
+    if (isFocus === null) setIsFocus(focus);
+    if (isFocus) {
+      msgElement.addClass('message-focus');
+      if (typeof focusTime === 'number') {
+        removeFocusTimeout = setTimeout(() => {
+          msgElement.removeClass('message-focus');
+        }, 1000 * focusTime);
+      }
+    }
+    return () => {
+      if (removeFocusTimeout) clearTimeout(removeFocusTimeout);
+      msgElement.removeClass('message-focus');
+    };
+  });
+
   // Normal Message
   if (msgType !== 'm.bad.encrypted') {
     // Return Data
     return (
       <tr
+        ref={messageElement}
         roomid={roomId}
         senderid={senderId}
         eventid={eventId}
@@ -1636,6 +1657,7 @@ function Message({
   isCustomHTML = true;
   return (
     <tr
+      ref={messageElement}
       roomid={roomId}
       senderid={senderId}
       eventid={eventId}
@@ -1733,6 +1755,7 @@ function Message({
 
 // Message Default Data
 Message.defaultProps = {
+  focusTime: 10,
   classNameMessage: null,
   className: null,
   isBodyOnly: false,
@@ -1747,6 +1770,7 @@ Message.defaultProps = {
 };
 
 Message.propTypes = {
+  focusTime: PropTypes.number,
   classNameMessage: PropTypes.string,
   className: PropTypes.string,
   mEvent: PropTypes.shape({}).isRequired,
