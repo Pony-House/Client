@@ -20,6 +20,12 @@
 #search-chatbox {
   word-break: break-word;
 
+  .message {
+    -webkit-transition: background-color 200ms linear;
+    -ms-transition: background-color 200ms linear;
+    transition: background-color 200ms linear;
+  }
+
   .reaction-message {
     display: none;
   }
