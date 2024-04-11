@@ -350,12 +350,13 @@ class RoomsInput extends EventEmitter {
     let uploadData = null;
 
     if (fileType === 'image') {
-      let imgData;
-      if (!isMobile(true)) {
+      // let imgData;
+      /* if (!isMobile(true)) {
         imgData = await blobUrlManager.insert(file);
       } else {
         imgData = `data:${file.type};base64, ${file.data}`;
-      }
+      } */
+      const imgData = await blobUrlManager.insert(file);
 
       const img = await loadImage(imgData);
 
