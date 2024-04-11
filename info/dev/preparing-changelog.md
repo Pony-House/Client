@@ -2,3 +2,4 @@
 - RoomViewCmdBar - everyone added.
 - mention - everyone insert a background color now
 - mention color animation
+- mobile send files fixed.
