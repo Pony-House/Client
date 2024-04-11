@@ -102,8 +102,9 @@ function transformSpanTag(tagName, attribs) {
   };
 }
 
+export const profileUrlRegex = /^https?:\/\/matrix.to\/#\/(@.+:.+)/;
 function transformATag(tagName, attribs) {
-  const userLink = decodeURIComponent(attribs.href).match(/^https?:\/\/matrix.to\/#\/(@.+:.+)/);
+  const userLink = decodeURIComponent(attribs.href).match(profileUrlRegex);
   if (userLink !== null) {
     // convert user link to pill
     const userId = userLink[1];

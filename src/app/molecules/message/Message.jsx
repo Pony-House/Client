@@ -70,6 +70,7 @@ import { getDataList } from '../../../util/selectedRoom';
 import { tinyLinkifyFixer } from '../../../util/clear-urls/clearUrls';
 import { canPinMessage, isPinnedMessage, setPinMessage } from '../../../util/libs/pinMessage';
 import { mediaFix, tinyFixScrollChat } from '../media/mediaFix';
+import { everyoneTags } from '../global-notification/KeywordNotification';
 
 function PlaceholderMessage() {
   return (
@@ -1502,21 +1503,30 @@ function Message({
     };
   });
 
+  let isMentioned = false;
+  const bodyLower = body.toLowerCase();
+  for (const item in everyoneTags) {
+    if (bodyLower.includes(everyoneTags[item])) {
+      isMentioned = true;
+    }
+  }
+
   useEffect(() => {
     let removeFocusTimeout = null;
     const msgElement = $(messageElement.current);
     if (isFocus === null) setIsFocus(focus);
-    if (isFocus) {
+    if (isFocus || isMentioned) {
       msgElement.addClass('message-focus');
+      if (isMentioned) msgElement.addClass('message-mention');
       if (typeof focusTime === 'number') {
         removeFocusTimeout = setTimeout(() => {
-          msgElement.removeClass('message-focus');
+          if (!isMentioned) msgElement.removeClass('message-focus');
         }, 1000 * focusTime);
       }
     }
     return () => {
       if (removeFocusTimeout) clearTimeout(removeFocusTimeout);
-      msgElement.removeClass('message-focus');
+      if (!isMentioned) msgElement.removeClass('message-focus');
     };
   });
 

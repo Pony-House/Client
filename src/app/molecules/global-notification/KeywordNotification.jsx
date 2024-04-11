@@ -21,6 +21,8 @@ const ROOM_PING3 = '.m.rule.roomnotif3';
 const USERNAME = '.m.rule.contains_user_name';
 const KEYWORD = 'keyword';
 
+export const everyoneTags = ['@everyone', '@here', '@room'];
+
 function useKeywordNotif() {
   const mx = initMatrix.matrixClient;
   const pushRules = useAccountData('m.push_rules')?.getContent();
