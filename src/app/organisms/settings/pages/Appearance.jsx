@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { calendarFormat } from '@src/util/libs/momentjs';
 import { isMobile } from '@src/util/libs/mobile';
+import Button from '@src/app/atoms/button/Button';
 
 import settings from '../../../../client/state/settings';
 import Toggle from '../../../atoms/button/Toggle';
@@ -13,8 +14,8 @@ import {
   toggleMembershipEvents,
   toggleNickAvatarEvents,
 } from '../../../../client/action/settings';
-import { tinyAppZoomValidator } from '../../../../util/tools';
-import {
+import { tinyAppZoomValidator, tinyConfirm } from '../../../../util/tools';
+import matrixAppearance, {
   getAppearance,
   toggleAppearanceAction,
   setAppearance,
@@ -93,6 +94,49 @@ function AppearanceSection() {
       updateState({});
     }, 100);
   };
+
+  /*
+  <div className="card noselect mb-3">
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item very-small text-gray">Import/Export settings</li>
+
+          <SettingTile
+            title="Manage your settings file"
+            content={
+              <>
+                <div className="very-small text-gray">
+                  {
+                    "Export or import your client's appearance settings to your account cloud."
+                  }
+                </div>
+
+                <Button className="mt-2 me-1" variant="primary" type="button" onClick={async () => {
+                  const isConfirmed = await tinyConfirm('Are you sure? All your old settings saved in your account will be replaced by the current ones.', 'Export appearance settings');
+                  if (isConfirmed) {
+                    matrixAppearance.saveCloud();
+                    alert(`Your settings have been successfully uploaded to the cloud.`);
+                  }
+                }}>
+                  Export
+                </Button>
+
+                <Button className="mt-2 ms-1" variant="primary" type="button" onClick={async () => {
+                  const isConfirmed = await tinyConfirm('Are you sure? All your old account settings will be lost.', 'Import appearance settings');
+                  if (isConfirmed) {
+                    matrixAppearance.loadCloud();
+                    alert(`Your settings have been successfully loaded from the cloud.`);
+                    updateState({});
+                  }
+                }}>
+                  Import
+                </Button>
+
+              </>
+            }
+          />
+        </ul>
+      </div>
+    */
   return (
     <div>
       <div className="card noselect mb-3">

@@ -163,6 +163,9 @@ export default defineConfig(({ command, mode }) => {
     },
 
     server: {
+      hmr: {
+        overlay: true,
+      },
       watch: {
         ignored: [
           "**/vendor/**",
