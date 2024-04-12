@@ -4,8 +4,7 @@ import fs from 'node:fs';
 import { release } from 'node:os';
 import path from 'node:path';
 
-import { objType } from '@src/util/tools';
-// import { update } from './update';
+import { objType } from './util/tools';
 
 import startNotifications from './notification';
 import startEvents from './events';
@@ -182,9 +181,6 @@ async function createWindow() {
       if (url.startsWith('https:')) shell.openExternal(url);
       return { action: 'deny' };
     });
-
-    // Apply electron-updater
-    // update(win);
 
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the

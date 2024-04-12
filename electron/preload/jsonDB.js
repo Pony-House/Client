@@ -3,7 +3,7 @@ import clone from 'clone';
 import path from 'path';
 import fs from 'fs';
 
-import { objType } from '@src/util/tools';
+import { objType } from './util/tools';
 import { getAppFolders } from './libs/utils';
 
 let started = false;

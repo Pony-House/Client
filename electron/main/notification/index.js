@@ -3,7 +3,7 @@ import path from 'path';
 import { Notification } from 'electron';
 
 import deleteAllFilesInDir from '../../fs/deleteAllFilesInDir';
-import { objType } from '../../../src/util/tools';
+import { objType } from '../util/tools';
 import { tempFolderNoti } from '../tempFolders';
 
 deleteAllFilesInDir(tempFolderNoti);
