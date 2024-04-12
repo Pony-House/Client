@@ -158,6 +158,15 @@ class BlobUrlManager extends EventEmitter {
   }
 }
 
+export function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = (err) => reject(err);
+    reader.readAsDataURL(blob);
+  });
+}
+
 // Module
 const blobUrlManager = new BlobUrlManager();
 export default blobUrlManager;

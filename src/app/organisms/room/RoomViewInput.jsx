@@ -11,8 +11,8 @@ import FileInput, {
   fileInputClick,
   fileInputValue,
 } from '@src/app/molecules/file-input/FileInput';
-import { readImageUrl } from '@src/util/libs/mediaCache';
 
+import { blobToBase64 } from '@src/util/libs/blobUrlManager';
 import threadsList from '@src/util/libs/thread';
 import { isMobile } from '@src/util/libs/mobile';
 import initMatrix from '../../../client/initMatrix';
@@ -1098,14 +1098,14 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
   useEffect(() => {
     if (!fileSrc && attachment) {
       /* if (!isMobile(true)) {
-        createObjectURL(attachment).then((tinySrc) => {
-          setFileSrc(readImageUrl(tinySrc));
+        blobToBase64(attachment).then((tinySrc) => {
+          setFileSrc(`data:${attachment.type};base64, ${tinySrc}`);
         });
       } else {
         setFileSrc(`data:${attachment.type};base64, ${attachment.data}`);
       } */
-      createObjectURL(attachment).then((tinySrc) => {
-        setFileSrc(readImageUrl(tinySrc));
+      blobToBase64(attachment).then((tinySrc) => {
+        setFileSrc(tinySrc);
       });
     }
   });
