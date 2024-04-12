@@ -6,7 +6,7 @@ import { objType } from '../tools';
 // Module Config
 moment.locale('en');
 
-const calendarFormat = [
+export const calendarFormat = [
   { text: 'MM/DD/YYYY' },
   { text: 'DD/MM/YYYY' },
   { text: 'YYYY/MM/DD' },
@@ -15,7 +15,7 @@ const calendarFormat = [
   { text: 'DD/YYYY/MM' },
 ];
 
-const momentFormat = {
+export const momentFormat = {
   calendar: () => {
     const tinyFormat = calendarFormat[Number(getAppearance().calendarFormat)];
     if (objType(tinyFormat, 'object') && typeof tinyFormat.text === 'string')
@@ -29,7 +29,6 @@ const momentFormat = {
 
 // Export Module
 export default moment;
-export { momentFormat, calendarFormat };
 
 if (__ENV_APP__.MODE === 'development') {
   global.moment = moment;

@@ -6,6 +6,7 @@ import { EventTimeline } from 'matrix-js-sdk';
 import blobUrlManager from '@src/util/libs/blobUrlManager';
 // import { isMobile } from '@src/util/libs/mobile';
 import { fileReader, uploadContent } from '@src/app/molecules/file-input/FileInput';
+import { getAppearance } from '@src/util/libs/appearance';
 
 import { getShortcodeToEmoji } from '../../app/organisms/emoji-board/custom-emoji';
 import { getBlobSafeMimeType } from '../../util/mimetypes';
@@ -318,15 +319,34 @@ class RoomsInput extends EventEmitter {
     input.isSending = true;
     this.roomIdToInput.set(!threadId ? roomId : `${roomId}:${threadId}`, input);
 
-    if (input.attachment) {
-      await this.sendFile(roomId, threadId, input.attachment.file);
-      if (!this.isSending(roomId, threadId)) return;
+    const sendFileBefore = getAppearance('sendFileBefore');
+
+    // File Before
+    if (sendFileBefore) {
+      if (input.attachment) {
+        await this.sendFile(roomId, threadId, input.attachment.file);
+        if (!this.isSending(roomId, threadId)) return;
+      }
+
+      if (input.message) {
+        const content = this.getContent(roomId, threadId, options, input.message, input.replyTo);
+        if (threadId) this.matrixClient.sendMessage(roomId, threadId, content, undefined);
+        else this.matrixClient.sendMessage(roomId, content);
+      }
     }
 
-    if (input.message) {
-      const content = this.getContent(roomId, threadId, options, input.message, input.replyTo);
-      if (threadId) this.matrixClient.sendMessage(roomId, threadId, content, undefined);
-      else this.matrixClient.sendMessage(roomId, content);
+    // File After
+    else {
+      if (input.message) {
+        const content = this.getContent(roomId, threadId, options, input.message, input.replyTo);
+        if (threadId) await this.matrixClient.sendMessage(roomId, threadId, content, undefined);
+        else await this.matrixClient.sendMessage(roomId, content);
+        if (!this.isSending(roomId, threadId)) return;
+      }
+
+      if (input.attachment) {
+        await this.sendFile(roomId, threadId, input.attachment.file);
+      }
     }
 
     if (this.isSending(roomId, threadId))

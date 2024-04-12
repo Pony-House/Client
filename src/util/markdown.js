@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
-import SimpleMarkdown from '@khanacademy/simple-markdown';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
+import SimpleMarkdown from '@khanacademy/simple-markdown';
 import { idRegex, parseIdUri } from './common';
 import rainbowText from './libs/rainbowText';
 import { tinyFixScrollChat } from '../app/molecules/media/mediaFix';
@@ -96,48 +96,50 @@ export const DiscordFormattingPatterns = {
   StyledTimestamp: /<t:(?<timestamp>-?\d{1,13}):(?<style>[DFRTdft])>/,
 };
 
-const timestampFormats = {
-  t: momentFormat.clock,
-  T: momentFormat.clock2,
+const timestampFormats = {};
 
-  d: momentFormat.calendar,
-  D: `MMMM DD, YYYY`,
+export const startTimestamp = () => {
+  timestampFormats.t = momentFormat.clock;
+  timestampFormats.T = momentFormat.clock2;
 
-  f: () => `MMMM DD, YYYY ${momentFormat.clock()}`,
-  F: () => `dddd MMMM DD, YYYY ${momentFormat.clock()}`,
+  timestampFormats.d = momentFormat.calendar;
+  timestampFormats.D = `MMMM DD, YYYY`;
 
-  validated: [],
+  timestampFormats.f = () => `MMMM DD, YYYY ${momentFormat.clock()}`;
+  timestampFormats.F = () => `dddd MMMM DD, YYYY ${momentFormat.clock()}`;
+};
 
-  html: (item, fromNow = false) => {
-    timestampFormats.validated.push(item);
+timestampFormats.validated = [];
 
-    return {
-      order: defaultRules.inlineCode.order + 0.1,
-      match: inlineRegex(new RegExp(`^{t:(?<timestamp>-?\\d{1,13})(:${item})?}`, 'g')),
+timestampFormats.html = (item, fromNow = false) => {
+  timestampFormats.validated.push(item);
 
-      parse: (capture, parse, state) => ({
-        content: parse(capture[1], state),
-      }),
+  return {
+    order: defaultRules.inlineCode.order + 0.1,
+    match: inlineRegex(new RegExp(`^{t:(?<timestamp>-?\\d{1,13})(:${item})?}`, 'g')),
 
-      plain: (node, output, state) =>
-        `{t:${!node.state ? output(node.content, state) : String(Number(node.content) / 1000)}:${item}}`,
-      html: (node, output, state) => {
-        const timestamp = Number(output(node.content, node.state || state)) * 1000;
+    parse: (capture, parse, state) => ({
+      content: parse(capture[1], state),
+    }),
 
-        return htmlTag(
-          'span',
-          !fromNow
-            ? moment(timestamp).format(
-                typeof timestampFormats[item] === 'function'
-                  ? timestampFormats[item]()
-                  : timestampFormats[item],
-              )
-            : moment(timestamp).fromNow(),
-          { 'data-mx-timestamp': String(timestamp), 'timestamp-type': item },
-        );
-      },
-    };
-  },
+    plain: (node, output, state) =>
+      `{t:${!node.state ? output(node.content, state) : String(Number(node.content) / 1000)}:${item}}`,
+    html: (node, output, state) => {
+      const timestamp = Number(output(node.content, node.state || state)) * 1000;
+
+      return htmlTag(
+        'span',
+        !fromNow
+          ? moment(timestamp).format(
+              typeof timestampFormats[item] === 'function'
+                ? timestampFormats[item]()
+                : timestampFormats[item],
+            )
+          : moment(timestamp).fromNow(),
+        { 'data-mx-timestamp': String(timestamp), 'timestamp-type': item },
+      );
+    },
+  };
 };
 
 setInterval(() => {

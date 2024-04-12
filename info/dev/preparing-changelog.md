@@ -1,5 +1,6 @@
 - modal-dialog-loading-page css size updated.
 - RoomViewCmdBar - everyone added.
-- mention - everyone insert a background color now
-- mention color animation
-- mobile send files fixed.
+- Mention - everyone insert a background color now
+- Mention color animation
+- Mobile send files fixed.
+- New Settings - send file before.

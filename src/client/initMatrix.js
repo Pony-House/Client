@@ -3,6 +3,7 @@ import * as sdk from 'matrix-js-sdk';
 import Olm from '@matrix-org/olm';
 
 import envAPI from '@src/util/libs/env';
+import { startTimestamp } from '@src/util/markdown';
 import { secret } from './state/auth';
 import RoomList from './state/RoomList';
 import AccountData from './state/AccountData';
@@ -89,6 +90,7 @@ class InitMatrix extends EventEmitter {
 
   async startClient(isGuest = false) {
     startCustomDNS();
+    startTimestamp();
 
     const indexedDBStore = new sdk.IndexedDBStore({
       indexedDB: global.indexedDB,
