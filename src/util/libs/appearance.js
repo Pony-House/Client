@@ -1,4 +1,6 @@
+import initMatrix from '@src/client/initMatrix';
 import EventEmitter from 'events';
+import clone from 'clone';
 
 // Animated Image Url
 export function getAnimatedImageUrl(url) {
@@ -33,6 +35,9 @@ class MatrixAppearance extends EventEmitter {
         typeof this.content.isAnimateAvatarsEnabled === 'boolean'
           ? this.content.isAnimateAvatarsEnabled
           : true;
+
+      this.content.sendFileBefore =
+        typeof this.content.sendFileBefore === 'boolean' ? this.content.sendFileBefore : true;
 
       this.content.forceThreadButton =
         typeof this.content.forceThreadButton === 'boolean'
@@ -72,6 +77,18 @@ class MatrixAppearance extends EventEmitter {
         typeof this.content.showRoomIdInSpacesManager === 'boolean'
           ? this.content.showRoomIdInSpacesManager
           : false;
+    }
+  }
+
+  saveCloud() {
+    initMatrix.matrixClient.setAccountData('pony.house.appearance', clone(this.content));
+  }
+
+  loadCloud() {
+    const cloudData =
+      initMatrix.matrixClient.getAccountData('pony.house.appearance')?.getContent() ?? {};
+    for (const configName in cloudData) {
+      this.set(configName, cloudData[configName]);
     }
   }
 

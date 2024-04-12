@@ -28,6 +28,7 @@ function AppearanceSection() {
   const [pinDMmessages, setPinDMmessages] = useState(appearanceSettings.pinDMmessages);
   const [sendMessageEnter, setSendMessageEnter] = useState(appearanceSettings.sendMessageEnter);
   const [forceThreadButton, setForceThreadButton] = useState(appearanceSettings.forceThreadButton);
+  const [sendFileBefore, setSendFileBefore] = useState(appearanceSettings.sendFileBefore);
 
   const [isEmbedEnabled, setEmbedEnabled] = useState(appearanceSettings.isEmbedEnabled);
   const [isUNhoverEnabled, setUNhoverEnabled] = useState(appearanceSettings.isUNhoverEnabled);
@@ -292,6 +293,23 @@ function AppearanceSection() {
             content={
               <div className="very-small text-gray">
                 Hide nick and avatar change messages from room timeline.
+              </div>
+            }
+          />
+
+          <SettingTile
+            title="Send file before"
+            options={
+              <Toggle
+                className="d-inline-flex"
+                isActive={sendFileBefore}
+                onToggle={toggleAppearanceAction('sendFileBefore', setSendFileBefore)}
+              />
+            }
+            content={
+              <div className="very-small text-gray">
+                When sending a file that contains a message, the file will be sent first before your
+                message.
               </div>
             }
           />
