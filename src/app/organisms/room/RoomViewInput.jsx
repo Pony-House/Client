@@ -6,11 +6,7 @@ import moment from '@src/util/libs/momentjs';
 import { ReactEditor } from 'slate-react';
 import { Editor, Transforms } from 'slate';
 
-import FileInput, {
-  createObjectURL,
-  fileInputClick,
-  fileInputValue,
-} from '@src/app/molecules/file-input/FileInput';
+import FileInput, { fileInputClick, fileInputValue } from '@src/app/molecules/file-input/FileInput';
 
 import { blobToBase64 } from '@src/util/libs/blobUrlManager';
 import threadsList from '@src/util/libs/thread';
@@ -1107,6 +1103,8 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
       blobToBase64(attachment).then((tinySrc) => {
         setFileSrc(tinySrc);
       });
+    } else if (fileSrc && !attachment) {
+      setFileSrc(null);
     }
   });
 
