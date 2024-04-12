@@ -254,13 +254,7 @@ export default defineConfig(({ command, mode }) => {
             sourcemap,
             minify: isBuild,
             outDir: 'dist-electron/main',
-            rollupOptions: {
-              plugins: rollupOptions.plugins,
-              external: [
-                "electron-updater",
-                "moment-timezone"
-              ],
-            },
+            rollupOptions,
           },
         },
 
