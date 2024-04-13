@@ -84,7 +84,7 @@ const insertKeyWords = () => {
 };
 
 // Emoji Base
-export const TWEMOJI_BASE_URL = './img/twemoji/';
+export const TWEMOJI_BASE_URL = './twemoji/assets/';
 
 // String Protocols
 global.String.prototype.toUnicode = function () {
