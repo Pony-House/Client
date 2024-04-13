@@ -150,6 +150,7 @@ function Image({
   className,
   classImage,
   ignoreContainer,
+  maxWidth,
 }) {
   const [url, setUrl] = useState(null);
   const [blur, setBlur] = useState(true);
@@ -176,7 +177,7 @@ function Image({
     setLightbox(!lightbox);
   };
 
-  const imgHeight = width !== null ? getNativeHeight(width, height) : 200;
+  const imgHeight = width !== null ? getNativeHeight(width, height, maxWidth) : 200;
 
   const imgData = url !== null && (
     <div
@@ -236,6 +237,7 @@ function Image({
   return imgData;
 }
 Image.defaultProps = {
+  maxWidth: 296,
   ignoreContainer: false,
   file: null,
   width: null,
@@ -246,6 +248,7 @@ Image.defaultProps = {
   blurhash: '',
 };
 Image.propTypes = {
+  maxWidth: PropTypes.number,
   ignoreContainer: PropTypes.bool,
   name: PropTypes.string.isRequired,
   width: PropTypes.number,

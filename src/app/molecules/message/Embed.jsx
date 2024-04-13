@@ -119,6 +119,7 @@ function Embed({ embed, roomId, threadId }) {
         {isThumb && typeof imgUrl === 'string' ? (
           <span className="float-end">
             <Media.Image
+              maxWidth={413}
               roomId={roomId}
               threadId={threadId}
               name="embed-img"
@@ -182,6 +183,7 @@ function Embed({ embed, roomId, threadId }) {
 
           {!isVideo && !isThumb && typeof imgUrl === 'string' && imgUrl.length > 0 ? (
             <Media.Image
+              maxWidth={413}
               roomId={roomId}
               threadId={threadId}
               name="embed-img"
