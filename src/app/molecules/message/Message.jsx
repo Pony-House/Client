@@ -1396,100 +1396,87 @@ function Message({
   }
 
   useEffect(() => {
-    const bodyUrls = [];
-    if (typeof body === 'string' && body.length > 0) {
-      try {
-        const newBodyUrls = linkify.find(
-          body
-            .replace(
-              /\> \<\@([\S\s]+?)\> ([\S\s]+?)\n\n|\> \<\@([\S\s]+?)\> ([\S\s]+?)\\n\\n/gm,
-              '',
-            )
-            .replace(
-              /^((?:(?:[ ]{4}|\t).*(\R|$))+)|`{3}([\w]*)\n([\S\s]+?)`{3}|`{3}([\S\s]+?)`{3}|`{2}([\S\s]+?)`{2}|`([\S\s]+?)|\[([\S\s]+?)\]|\{([\S\s]+?)\}|\<([\S\s]+?)\>|\(([\S\s]+?)\)/gm,
-              '',
-            ),
-        );
+    if (embeds.length < 1) {
+      const bodyUrls = [];
+      if (typeof body === 'string' && body.length > 0) {
+        try {
+          const newBodyUrls = linkify.find(
+            body
+              .replace(
+                /\> \<\@([\S\s]+?)\> ([\S\s]+?)\n\n|\> \<\@([\S\s]+?)\> ([\S\s]+?)\\n\\n/gm,
+                '',
+              )
+              .replace(
+                /^((?:(?:[ ]{4}|\t).*(\R|$))+)|`{3}([\w]*)\n([\S\s]+?)`{3}|`{3}([\S\s]+?)`{3}|`{2}([\S\s]+?)`{2}|`([\S\s]+?)|\[([\S\s]+?)\]|\{([\S\s]+?)\}|\<([\S\s]+?)\>|\(([\S\s]+?)\)/gm,
+                '',
+              ),
+          );
 
-        if (Array.isArray(newBodyUrls)) {
-          for (const item in newBodyUrls) {
-            if (tinyLinkifyFixer(newBodyUrls[item].type, newBodyUrls[item].value)) {
-              bodyUrls.push(newBodyUrls[item]);
-            }
-          }
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    // Room jQuery base
-    const messageFinder = `[roomid='${roomId}'][senderid='${senderId}'][eventid='${eventId}'][msgtype='${msgType}']`;
-
-    // Read Message
-    if (msgType === 'm.text') {
-      // Check Urls on the message
-      const appAppearance = getAppearance();
-      if (appAppearance.isEmbedEnabled === true && bodyUrls.length > 0) {
-        // Create embed base
-        const newEmbeds = clone(embeds);
-        const searchEmbeds = async () => {
-          let limit = 5;
-          for (const item in bodyUrls) {
-            if (
-              bodyUrls[item].href &&
-              limit > 0 &&
-              newEmbeds.findIndex(
-                (tb) =>
-                  tb.url &&
-                  tb.url.href === bodyUrls[item].href &&
-                  tb.roomId === roomId &&
-                  tb.senderId === senderId &&
-                  tb.eventId === eventId,
-              ) < 0 &&
-              !bodyUrls[item].href.startsWith('@')
-            ) {
-              const tinyEmbed = {
-                url: bodyUrls[item],
-                roomId,
-                senderId,
-                eventId,
-              };
-
-              if (
-                bodyUrls[item].href.startsWith('http') ||
-                bodyUrls[item].href.startsWith('https')
-              ) {
-                try {
-                  tinyEmbed.data = await getUrlPreview(bodyUrls[item].href);
-                  mediaFix(null, embedHeight, setEmbedHeight);
-                } catch (err) {
-                  tinyEmbed.data = null;
-                  console.error(err);
-                }
-              } else {
-                tinyEmbed.data = null;
+          if (Array.isArray(newBodyUrls)) {
+            for (const item in newBodyUrls) {
+              if (tinyLinkifyFixer(newBodyUrls[item].type, newBodyUrls[item].value)) {
+                bodyUrls.push(newBodyUrls[item]);
               }
-
-              newEmbeds.push(tinyEmbed);
-              limit--;
             }
           }
-
-          mediaFix(null, embedHeight, setEmbedHeight);
-          setEmbeds(newEmbeds);
-        };
-
-        searchEmbeds();
+        } catch (err) {
+          console.error(err);
+        }
       }
-    }
 
-    // Complete
-    mediaFix(null, embedHeight, setEmbedHeight);
-    return () => {
-      $(messageFinder).find('.message-url-embed').remove();
-    };
-  }, []);
+      // Room jQuery base
+      const messageFinder = `[roomid='${roomId}'][senderid='${senderId}'][eventid='${eventId}'][msgtype='${msgType}']`;
+
+      // Read Message
+      if (msgType === 'm.text') {
+        // Check Urls on the message
+        const appAppearance = getAppearance();
+        if (appAppearance.isEmbedEnabled === true && bodyUrls.length > 0) {
+          // Create embed base
+          const newEmbeds = [];
+          const searchEmbeds = async () => {
+            let limit = 5;
+            for (const item in bodyUrls) {
+              if (bodyUrls[item].href && limit > 0 && !bodyUrls[item].href.startsWith('@')) {
+                const tinyEmbed = {
+                  url: bodyUrls[item],
+                  roomId,
+                  senderId,
+                  eventId,
+                };
+
+                if (
+                  bodyUrls[item].href.startsWith('http') ||
+                  bodyUrls[item].href.startsWith('https')
+                ) {
+                  try {
+                    tinyEmbed.data = await getUrlPreview(bodyUrls[item].href);
+                    mediaFix(null, embedHeight, setEmbedHeight);
+                  } catch (err) {
+                    tinyEmbed.data = null;
+                    console.error(err);
+                  }
+                } else {
+                  tinyEmbed.data = null;
+                }
+
+                newEmbeds.push(tinyEmbed);
+                limit--;
+              }
+            }
+
+            mediaFix(null, embedHeight, setEmbedHeight);
+            setEmbeds(newEmbeds);
+          };
+
+          searchEmbeds();
+        }
+      }
+
+      // Complete
+      mediaFix(null, embedHeight, setEmbedHeight);
+    }
+  });
 
   useEffect(() => {
     const threadUpdate = (tth) => {
