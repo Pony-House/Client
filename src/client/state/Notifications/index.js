@@ -369,7 +369,7 @@ class Notifications extends EventEmitter {
       return;
     }
 
-    if (mEvent.getType() !== 'm.sticker' || !getAppearance('showStickers')) {
+    if (mEvent.getType() === 'm.sticker' && !getAppearance('showStickers')) {
       return;
     }
 
