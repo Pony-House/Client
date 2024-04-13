@@ -5,6 +5,7 @@ import EventEmitter from 'events';
 import mobileEvents, { isMobile } from '@src/util/libs/mobile';
 import { cyrb128 } from '@src/util/tools';
 import tinyAPI from '@src/util/mods';
+import { getAppearance } from '@src/util/libs/appearance';
 // import { insertIntoRoomEventsDB } from '@src/util/libs/roomEventsDB';
 
 import renderAvatar from '../../../app/atoms/avatar/render';
@@ -365,6 +366,10 @@ class Notifications extends EventEmitter {
 
     if (userStatus === 'dnd' || userStatus === '🔴') {
       // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
+      return;
+    }
+
+    if (mEvent.getType() !== 'm.sticker' || !getAppearance('showStickers')) {
       return;
     }
 
