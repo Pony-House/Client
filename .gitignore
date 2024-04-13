@@ -4,7 +4,6 @@ dist
 node_modules
 devAssets
 electron/main/notification/sounds
-vendor
 
 public/img/twemoji
 mods/test
