@@ -8,11 +8,11 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "start": "vite dev",
-    "build": "vite build",
-    "build:8gb": "cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
-    "electron:start": "cross-env ELECTRON_MODE=true vite dev",
-    "electron:build": "cross-env ELECTRON_MODE=true vite build && electron-builder",
+    "start": "git submodule update --init && vite dev",
+    "build": "git submodule update --init && vite build",
+    "build:8gb": "git submodule update --init && cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",
+    "electron:start": "git submodule update --init && cross-env ELECTRON_MODE=true vite dev",
+    "electron:build": "git submodule update --init && cross-env ELECTRON_MODE=true vite build && electron-builder",
     "lint": "yarn check:eslint && yarn check:prettier",
     "check:eslint": "eslint src/* && eslint electron/* && eslint mods/* --no-error-on-unmatched-pattern",
     "check:prettier": "prettier --check src/* && prettier --check electron/* && prettier --check mods/*",
