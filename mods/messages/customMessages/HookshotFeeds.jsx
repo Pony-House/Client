@@ -52,6 +52,7 @@ function HookshotFeeds({ feedData, roomId, threadId }) {
           height={Number(embed['og:image:height'])}
           link={mx.mxcUrlToHttp(embed['og:image'], 2000, 2000)}
           type={String(embed['og:image:type'])}
+          maxWidth={548}
           ignoreContainer
         />
       ) : null}
