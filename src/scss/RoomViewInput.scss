@@ -41,6 +41,10 @@
         @include dir.side(margin, var(--sp-tight), 0);
       }
     }
+
+    button .ic-base {
+      margin-top: 4px;
+    }
   }
 
   &__textarea-wrapper {

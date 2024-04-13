@@ -119,7 +119,7 @@ function Embed({ embed, roomId, threadId }) {
         {isThumb && typeof imgUrl === 'string' ? (
           <span className="float-end">
             <Media.Image
-              maxWidth={413}
+              maxWidth={72}
               roomId={roomId}
               threadId={threadId}
               name="embed-img"
