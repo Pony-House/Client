@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 import { readImageUrl } from '@src/util/libs/mediaCache';
+import matrixAppearance from '@src/util/libs/appearance';
+
 import { emojis } from './emoji';
 import { loadEmojiData, getEmojiData, ROW_EMOJIS_COUNT, ROW_STICKERS_COUNT } from './emojiData';
 
@@ -386,9 +388,12 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
       $(searchRef.current).val('');
       handleSearchChange();
       setBoardType(dom);
+      forceUpdate();
     };
 
     mx.addListener('accountData', handleEvent);
+    matrixAppearance.on('useCustomEmojis', handleEvent2);
+    matrixAppearance.on('showStickers', handleEvent2);
     navigation.on(cons.events.navigation.UPDATED_EMOJI_LIST_DATA, handleEvent2);
     navigation.on(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
     navigation.on(cons.events.navigation.EMOJIBOARD_OPENED, onOpen);
@@ -396,6 +401,8 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     return () => {
       $(scrollEmojisRef.current).off('scroll', onScroll);
       mx.removeListener('accountData', handleEvent);
+      matrixAppearance.off('useCustomEmojis', handleEvent2);
+      matrixAppearance.off('showStickers', handleEvent2);
       navigation.removeListener(cons.events.navigation.UPDATED_EMOJI_LIST_DATA, handleEvent2);
       navigation.removeListener(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
       navigation.removeListener(cons.events.navigation.EMOJIBOARD_OPENED, onOpen);

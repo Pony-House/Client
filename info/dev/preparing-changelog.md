@@ -6,3 +6,4 @@
 - New Settings - send file before.
 - Option to hide stickers feature added.
 - Option to hide custom emojis in the emoji list added.
+- Auto update emoji list fixed.

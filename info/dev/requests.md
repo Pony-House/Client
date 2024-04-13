@@ -51,7 +51,6 @@ Made by Me
     Coisas que não atualiza sozinho:
         Alteração de friend nickname.
         O username do display da conta logada.
-        O atualizar de emojis de rooms só funciona quando muda de room.
         Lista de usuários online na room ainda não atualiza em tempo real.
         Banner do space.
         Esconder Pin messages event
