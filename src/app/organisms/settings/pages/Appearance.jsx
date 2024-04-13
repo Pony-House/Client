@@ -25,6 +25,7 @@ function AppearanceSection() {
   const [, updateState] = useState({});
   const appearanceSettings = getAppearance();
 
+  const [showStickers, setShowStickers] = useState(appearanceSettings.showStickers);
   const [showUserDMstatus, setShowUserStatus] = useState(appearanceSettings.showUserDMstatus);
   const [pinDMmessages, setPinDMmessages] = useState(appearanceSettings.pinDMmessages);
   const [sendMessageEnter, setSendMessageEnter] = useState(appearanceSettings.sendMessageEnter);
@@ -337,6 +338,23 @@ function AppearanceSection() {
             content={
               <div className="very-small text-gray">
                 Hide nick and avatar change messages from room timeline.
+              </div>
+            }
+          />
+
+          <SettingTile
+            title="Show sticker features"
+            options={
+              <Toggle
+                className="d-inline-flex"
+                isActive={showStickers}
+                onToggle={toggleAppearanceAction('showStickers', setShowStickers)}
+              />
+            }
+            content={
+              <div className="very-small text-gray">
+                This setting will manage both visible stickers on your chatbox and your ability to
+                send stickers.
               </div>
             }
           />

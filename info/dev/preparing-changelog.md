@@ -4,3 +4,4 @@
 - Mention color animation
 - Mobile send files fixed.
 - New Settings - send file before.
+- Hide stickers feature added.

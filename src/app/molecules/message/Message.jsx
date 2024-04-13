@@ -1297,6 +1297,8 @@ function Message({
   const [isFocus, setIsFocus] = useState(null);
   const messageElement = useRef(null);
 
+  const [isStickersVisible, setIsStickersVisible] = useState(matrixAppearance.get('showStickers'));
+
   // Content Body
   const classList = ['message', isBodyOnly ? 'message--body-only' : 'message--full'];
   const content = mEvent.getContent();
@@ -1530,136 +1532,152 @@ function Message({
     };
   });
 
+  useEffect(() => {
+    const updateShowStickers = (showStickers) => {
+      setIsStickersVisible(showStickers);
+    };
+    matrixAppearance.on('showStickers', updateShowStickers);
+    return () => {
+      matrixAppearance.off('showStickers', updateShowStickers);
+    };
+  });
+
   // Normal Message
   if (msgType !== 'm.bad.encrypted') {
-    // Return Data
-    return (
-      <tr
-        ref={messageElement}
-        roomid={roomId}
-        senderid={senderId}
-        eventid={eventId}
-        msgtype={msgType}
-        className={classList.join(' ')}
-      >
-        <td className="p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base">
-          {
-            // User Avatar
-            !isBodyOnly ? (
-              <MessageAvatar
-                roomId={roomId}
-                avatarSrc={avatarSrc}
-                avatarAnimSrc={avatarAnimSrc}
-                userId={senderId}
-                username={username}
-                contextMenu={(e) => {
-                  openReusableContextMenu('bottom', getEventCords(e, '.ic-btn'), (closeMenu) => (
-                    <UserOptions userId={senderId} afterOptionSelect={closeMenu} />
-                  ));
+    if (mEvent.getType() !== 'm.sticker' || isStickersVisible) {
+      // Return Data
+      return (
+        <tr
+          ref={messageElement}
+          roomid={roomId}
+          senderid={senderId}
+          eventid={eventId}
+          msgtype={msgType}
+          className={classList.join(' ')}
+        >
+          <td className="p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base">
+            {
+              // User Avatar
+              !isBodyOnly ? (
+                <MessageAvatar
+                  roomId={roomId}
+                  avatarSrc={avatarSrc}
+                  avatarAnimSrc={avatarAnimSrc}
+                  userId={senderId}
+                  username={username}
+                  contextMenu={(e) => {
+                    openReusableContextMenu('bottom', getEventCords(e, '.ic-btn'), (closeMenu) => (
+                      <UserOptions userId={senderId} afterOptionSelect={closeMenu} />
+                    ));
 
-                  e.preventDefault();
-                }}
+                    e.preventDefault();
+                  }}
+                />
+              ) : (
+                <MessageTime className="hc-time" timestamp={mEvent.getTs()} fullTime={fullTime} />
+              )
+            }
+          </td>
+
+          <td className="p-0 pe-3 py-1" colSpan={!children ? '2' : ''}>
+            {!isGuest && !disableActions && roomTimeline && !isEdit && (
+              <MessageOptions
+                refRoomInput={refRoomInput}
+                customHTML={customHTML}
+                body={body}
+                roomid={roomId}
+                senderid={senderId}
+                eventid={eventId}
+                msgtype={msgType}
+                roomTimeline={roomTimeline}
+                mEvent={mEvent}
+                edit={edit}
+                reply={reply}
               />
-            ) : (
-              <MessageTime className="hc-time" timestamp={mEvent.getTs()} fullTime={fullTime} />
-            )
-          }
-        </td>
+            )}
 
-        <td className="p-0 pe-3 py-1" colSpan={!children ? '2' : ''}>
-          {!isGuest && !disableActions && roomTimeline && !isEdit && (
-            <MessageOptions
-              refRoomInput={refRoomInput}
-              customHTML={customHTML}
-              body={body}
-              roomid={roomId}
-              senderid={senderId}
-              eventid={eventId}
-              msgtype={msgType}
-              roomTimeline={roomTimeline}
-              mEvent={mEvent}
-              edit={edit}
-              reply={reply}
-            />
-          )}
+            {!isBodyOnly && (
+              <div className="mb-1">
+                <MessageHeader
+                  usernameHover={usernameHover}
+                  userId={senderId}
+                  username={username}
+                />
 
-          {!isBodyOnly && (
-            <div className="mb-1">
-              <MessageHeader usernameHover={usernameHover} userId={senderId} username={username} />
+                <MessageTime className="ms-2" timestamp={mEvent.getTs()} fullTime={fullTime} />
+              </div>
+            )}
 
-              <MessageTime className="ms-2" timestamp={mEvent.getTs()} fullTime={fullTime} />
-            </div>
-          )}
+            {roomTimeline && isReply && (
+              <MessageReplyWrapper roomTimeline={roomTimeline} eventId={mEvent.replyEventId} />
+            )}
 
-          {roomTimeline && isReply && (
-            <MessageReplyWrapper roomTimeline={roomTimeline} eventId={mEvent.replyEventId} />
-          )}
+            {!isEdit && (
+              <>
+                <MessageBody
+                  roomId={roomId}
+                  senderId={senderId}
+                  eventId={eventId}
+                  threadId={threadId}
+                  className={classNameMessage}
+                  senderName={username}
+                  isCustomHTML={isCustomHTML}
+                  body={isMedia(mEvent) ? genMediaContent(mEvent) : customHTML ?? body}
+                  content={content}
+                  msgType={msgType}
+                  isEdited={isEdited}
+                  messageStatus={messageStatus}
+                />
 
-          {!isEdit && (
-            <>
-              <MessageBody
+                {embeds.length > 0 ? (
+                  <div className="message-embed message-url-embed">
+                    {embeds.map((embed) => {
+                      if (embed.data)
+                        return (
+                          <Embed
+                            roomId={roomId}
+                            threadId={threadId}
+                            key={`msg_embed_${embed.eventId}_${generateApiKey()}`}
+                            embed={embed.data}
+                          />
+                        );
+                    })}
+                  </div>
+                ) : null}
+              </>
+            )}
+
+            {isEdit && (
+              <MessageEdit
                 roomId={roomId}
-                senderId={senderId}
-                eventId={eventId}
-                threadId={threadId}
-                className={classNameMessage}
-                senderName={username}
-                isCustomHTML={isCustomHTML}
-                body={isMedia(mEvent) ? genMediaContent(mEvent) : customHTML ?? body}
-                content={content}
-                msgType={msgType}
-                isEdited={isEdited}
-                messageStatus={messageStatus}
-              />
-
-              {embeds.length > 0 ? (
-                <div className="message-embed message-url-embed">
-                  {embeds.map((embed) => {
-                    if (embed.data)
-                      return (
-                        <Embed
-                          roomId={roomId}
-                          threadId={threadId}
-                          key={`msg_embed_${embed.eventId}_${generateApiKey()}`}
-                          embed={embed.data}
-                        />
-                      );
-                  })}
-                </div>
-              ) : null}
-            </>
-          )}
-
-          {isEdit && (
-            <MessageEdit
-              roomId={roomId}
-              eventId={mEvent.getId()}
-              refRoomInput={refRoomInput}
-              body={
-                customHTML
-                  ? html(customHTML, { kind: 'edit', onlyPlain: true }).plain
-                  : plain(body, { kind: 'edit', onlyPlain: true }).plain
-              }
-              onSave={(newBody, oldBody) => {
-                if (newBody !== oldBody) {
-                  initMatrix.roomsInput.sendEditedMessage(roomId, threadId, mEvent, newBody);
+                eventId={mEvent.getId()}
+                refRoomInput={refRoomInput}
+                body={
+                  customHTML
+                    ? html(customHTML, { kind: 'edit', onlyPlain: true }).plain
+                    : plain(body, { kind: 'edit', onlyPlain: true }).plain
                 }
-                cancelEdit();
-              }}
-              onCancel={cancelEdit}
-            />
-          )}
+                onSave={(newBody, oldBody) => {
+                  if (newBody !== oldBody) {
+                    initMatrix.roomsInput.sendEditedMessage(roomId, threadId, mEvent, newBody);
+                  }
+                  cancelEdit();
+                }}
+                onCancel={cancelEdit}
+              />
+            )}
 
-          {haveReactions && <MessageReactionGroup roomTimeline={roomTimeline} mEvent={mEvent} />}
+            {haveReactions && <MessageReactionGroup roomTimeline={roomTimeline} mEvent={mEvent} />}
 
-          {roomTimeline && shouldShowThreadSummary(mEvent, roomTimeline) && (
-            <MessageThreadSummary thread={mEvent.thread} />
-          )}
-        </td>
+            {roomTimeline && shouldShowThreadSummary(mEvent, roomTimeline) && (
+              <MessageThreadSummary thread={mEvent.thread} />
+            )}
+          </td>
 
-        {children && <td className="p-0 pe-3 py-1">{children}</td>}
-      </tr>
-    );
+          {children && <td className="p-0 pe-3 py-1">{children}</td>}
+        </tr>
+      );
+    }
   }
 
   // Bad Message

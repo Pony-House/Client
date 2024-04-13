@@ -15,8 +15,6 @@
     Adicionar suporte a link para ir diretamente a mensagens.
     /?room_id=&thread_id=&event_id=
 
-    Opção opciolnal de desativar stickers
-
     =============================================
 
     Trocar o titulo da página de bolinha de notificação para números

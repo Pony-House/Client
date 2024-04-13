@@ -33,7 +33,7 @@ import { MessageReply } from '../../molecules/message/Message';
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
 import commands from '../../../commands';
-import { getAppearance } from '../../../util/libs/appearance';
+import matrixAppearance, { getAppearance } from '../../../util/libs/appearance';
 import { mediaFix } from '../../molecules/media/mediaFix';
 import RoomUpload from '../../molecules/room-upload-button/RoomUpload';
 
@@ -46,6 +46,7 @@ let cmdCursorPos = null;
 function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput }) {
   // Rec Ref
   const recAudioRef = useRef(null);
+  const [isStickersVisible, setIsStickersVisible] = useState(matrixAppearance.get('showStickers'));
   const [embedHeight, setEmbedHeight] = useState(null);
   const [closeUpButton, setCloseUpButton] = useState(null);
   const [fileSrc, setFileSrc] = useState(null);
@@ -922,6 +923,16 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     };
   });
 
+  useEffect(() => {
+    const updateShowStickers = (showStickers) => {
+      setIsStickersVisible(showStickers);
+    };
+    matrixAppearance.on('showStickers', updateShowStickers);
+    return () => {
+      matrixAppearance.off('showStickers', updateShowStickers);
+    };
+  });
+
   // Render Inputs
   function renderInputs() {
     // Check Perm
@@ -1019,28 +1030,30 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
             id="chat-textarea-actions"
             className="ms-1 room-input__option-container"
           >
-            <IconButton
-              id="sticker-opener"
-              onClick={(e) => {
-                const cords = getEventCords(e);
-                cords.x -= document.dir === 'rtl' ? -80 : 280;
-                cords.y -= 460;
+            {isStickersVisible ? (
+              <IconButton
+                id="sticker-opener"
+                onClick={(e) => {
+                  const cords = getEventCords(e);
+                  cords.x -= document.dir === 'rtl' ? -80 : 280;
+                  cords.y -= 460;
 
-                cords.y += 220;
+                  cords.y += 220;
 
-                openEmojiBoard(roomId, cords, 'sticker', (data) => {
-                  handleSendSticker({
-                    body: data.unicode.substring(1, data.unicode.length - 1),
-                    httpUrl: mx.mxcUrlToHttp(data.mxc),
-                    mxc: data.mxc,
+                  openEmojiBoard(roomId, cords, 'sticker', (data) => {
+                    handleSendSticker({
+                      body: data.unicode.substring(1, data.unicode.length - 1),
+                      httpUrl: mx.mxcUrlToHttp(data.mxc),
+                      mxc: data.mxc,
+                    });
+
+                    shiftNuller(() => e.target.click());
                   });
-
-                  shiftNuller(() => e.target.click());
-                });
-              }}
-              tooltip="Sticker"
-              fa="fa-solid fa-note-sticky"
-            />
+                }}
+                tooltip="Sticker"
+                fa="fa-solid fa-note-sticky"
+              />
+            ) : null}
 
             <IconButton
               id="emoji-opener"
