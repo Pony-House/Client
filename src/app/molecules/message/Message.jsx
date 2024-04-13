@@ -1311,6 +1311,7 @@ function Message({
   else classList.push('user-other-message');
 
   let { body } = content;
+  const [bodyData, setBodyData] = useState(body);
 
   // User Data
   const fNickname = getDataList('user_cache', 'friend_nickname', senderId);
@@ -1341,7 +1342,6 @@ function Message({
   const edit = useCallback(() => {
     if (eventId && setEdit) setEdit(eventId);
     mediaFix(null, embedHeight, setEmbedHeight);
-    setEmbeds([]);
   }, [setEdit, eventId]);
 
   // Reply Data
@@ -1398,10 +1398,10 @@ function Message({
   useEffect(() => {
     if (embeds.length < 1) {
       const bodyUrls = [];
-      if (typeof body === 'string' && body.length > 0) {
+      if (typeof bodyData === 'string' && bodyData.length > 0) {
         try {
           const newBodyUrls = linkify.find(
-            body
+            bodyData
               .replace(
                 /\> \<\@([\S\s]+?)\> ([\S\s]+?)\n\n|\> \<\@([\S\s]+?)\> ([\S\s]+?)\\n\\n/gm,
                 '',
@@ -1646,6 +1646,8 @@ function Message({
                 }
                 onSave={(newBody, oldBody) => {
                   if (newBody !== oldBody) {
+                    setBodyData(newBody);
+                    setEmbeds([]);
                     initMatrix.roomsInput.sendEditedMessage(roomId, threadId, mEvent, newBody);
                   }
                   cancelEdit();
@@ -1750,6 +1752,8 @@ function Message({
             }
             onSave={(newBody, oldBody) => {
               if (newBody !== oldBody) {
+                setBodyData(newBody);
+                setEmbeds([]);
                 initMatrix.roomsInput.sendEditedMessage(roomId, threadId, mEvent, newBody);
               }
               cancelEdit();
