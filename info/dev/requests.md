@@ -1,5 +1,6 @@
 Alguns embeds glitch.
 Ajeitar a posição de ícones na parte de digitar mensagem.
+ENS Ethereum
 
 /src/app/organisms/navigation/Directs.jsx
 /src/app/organisms/navigation/Home.jsx
