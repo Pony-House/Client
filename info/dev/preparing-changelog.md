@@ -4,4 +4,5 @@
 - Mention color animation
 - Mobile send files fixed.
 - New Settings - send file before.
-- Hide stickers feature added.
+- Option to hide stickers feature added.
+- Option to hide custom emojis in the emoji list added.

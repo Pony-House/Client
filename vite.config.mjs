@@ -138,6 +138,7 @@ export default defineConfig(({ command, mode }) => {
     SAVE_ROOM_DB: !!(env.SAVE_ROOM_DB === true || env.SAVE_ROOM_DB === 'true'),
     DISCORD_STYLE: !!(env.DISCORD_STYLE === true || env.DISCORD_STYLE === 'true'),
     SHOW_STICKERS: !!(env.SHOW_STICKERS === true || env.SHOW_STICKERS === 'true'),
+    USE_CUSTOM_EMOJIS: !!(env.USE_CUSTOM_EMOJIS === true || env.USE_CUSTOM_EMOJIS === 'true'),
     USE_ANIM_PARAMS: !!(env.USE_ANIM_PARAMS === true || env.USE_ANIM_PARAMS === 'true'),
 
     LOGIN: {

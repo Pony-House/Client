@@ -11,6 +11,7 @@ import {
   addStickerToList,
   resetStickersList,
 } from './emoji';
+import { getAppearance } from '@src/util/libs/appearance';
 
 const ROW_EMOJIS_COUNT = 7;
 const ROW_STICKERS_COUNT = 3;
@@ -31,9 +32,14 @@ export function loadEmojiData(selectedRoomId) {
   resetEmojisList();
   resetStickersList();
 
+  const useCustomEmojis = getAppearance('useCustomEmojis');
+  const showStickers = getAppearance('showStickers');
+
   const mx = initMatrix.matrixClient;
   if (!selectedRoomId) {
-    const emojiPacks = getRelevantPacks(mx).filter((pack) => pack.getEmojis().length !== 0);
+    const emojiPacks = useCustomEmojis
+      ? getRelevantPacks(mx).filter((pack) => pack.getEmojis().length !== 0)
+      : [];
 
     // Set an index for each pack so that we know where to jump when the user uses the nav
     for (let i = 0; i < emojiPacks.length; i += 1) {
@@ -42,7 +48,9 @@ export function loadEmojiData(selectedRoomId) {
 
     tinyBoardData.emoji.data = emojiPacks;
 
-    const stickerPacks = getRelevantPacks(mx).filter((pack) => pack.getStickers().length !== 0);
+    const stickerPacks = showStickers
+      ? getRelevantPacks(mx).filter((pack) => pack.getStickers().length !== 0)
+      : [];
 
     // Set an index for each pack so that we know where to jump when the user uses the nav
     for (let i = 0; i < stickerPacks.length; i += 1) {
@@ -55,9 +63,11 @@ export function loadEmojiData(selectedRoomId) {
     const parentIds = initMatrix.roomList.getAllParentSpaces(room ? room.roomId : null);
     const parentRooms = [...parentIds].map((id) => mx.getRoom(id));
     if (room) {
-      const emojiPacks = getRelevantPacks(room.client, [room, ...parentRooms]).filter(
-        (pack) => pack.getEmojis().length !== 0,
-      );
+      const emojiPacks = useCustomEmojis
+        ? getRelevantPacks(room.client, [room, ...parentRooms]).filter(
+            (pack) => pack.getEmojis().length !== 0,
+          )
+        : [];
 
       // Set an index for each pack so that we know where to jump when the user uses the nav
       for (let i = 0; i < emojiPacks.length; i += 1) {
@@ -66,9 +76,11 @@ export function loadEmojiData(selectedRoomId) {
 
       tinyBoardData.emoji.data = emojiPacks;
 
-      const stickerPacks = getRelevantPacks(room.client, [room, ...parentRooms]).filter(
-        (pack) => pack.getStickers().length !== 0,
-      );
+      const stickerPacks = showStickers
+        ? getRelevantPacks(room.client, [room, ...parentRooms]).filter(
+            (pack) => pack.getStickers().length !== 0,
+          )
+        : [];
 
       // Set an index for each pack so that we know where to jump when the user uses the nav
       for (let i = 0; i < stickerPacks.length; i += 1) {

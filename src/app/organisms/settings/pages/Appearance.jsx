@@ -25,6 +25,7 @@ function AppearanceSection() {
   const [, updateState] = useState({});
   const appearanceSettings = getAppearance();
 
+  const [useCustomEmojis, setUseCustomEmojis] = useState(appearanceSettings.useCustomEmojis);
   const [showStickers, setShowStickers] = useState(appearanceSettings.showStickers);
   const [showUserDMstatus, setShowUserStatus] = useState(appearanceSettings.showUserDMstatus);
   const [pinDMmessages, setPinDMmessages] = useState(appearanceSettings.pinDMmessages);
@@ -341,6 +342,12 @@ function AppearanceSection() {
               </div>
             }
           />
+        </ul>
+      </div>
+
+      <div className="card noselect my-3">
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item very-small text-gray">Message customization</li>
 
           <SettingTile
             title="Show sticker features"
@@ -355,6 +362,23 @@ function AppearanceSection() {
               <div className="very-small text-gray">
                 This setting will manage both visible stickers on your chatbox and your ability to
                 send stickers.
+              </div>
+            }
+          />
+
+          <SettingTile
+            title="Show custom emojis"
+            options={
+              <Toggle
+                className="d-inline-flex"
+                isActive={useCustomEmojis}
+                onToggle={toggleAppearanceAction('useCustomEmojis', setUseCustomEmojis)}
+              />
+            }
+            content={
+              <div className="very-small text-gray">
+                Allow custom emojis to be visible in your emoji list. This will not make your
+                settings for adding or removing custom emojis disappear.
               </div>
             }
           />
