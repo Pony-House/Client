@@ -27,7 +27,7 @@ modules:
         npm_config_offline: 'true'
     build-commands:
       # Install npm dependencies
-      - yarn setup
+      - yarn
       # Build the app; in this example the `dist` script
       # in package.json runs electron-builder
       - |

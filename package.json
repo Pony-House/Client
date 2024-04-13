@@ -8,7 +8,6 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "setup": "yarn && node -r esm ./build/index.js ",
     "start": "vite dev",
     "build": "vite build",
     "build:8gb": "cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build",

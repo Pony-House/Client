@@ -6,6 +6,7 @@ devAssets
 electron/main/notification/sounds
 vendor
 
+public/img/twemoji
 mods/test
 
 /index.js

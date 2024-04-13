@@ -42,7 +42,7 @@ jobs:
         with:
           node-version: 20
 
-      - run: yarn setup
+      - run: yarn
       - run: yarn build
 
       - name: Setup Pages

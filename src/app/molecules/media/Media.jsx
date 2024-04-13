@@ -176,7 +176,7 @@ function Image({
     setLightbox(!lightbox);
   };
 
-  const imgHeight = width !== null ? getNativeHeight(width, height) : 'unset';
+  const imgHeight = width !== null ? getNativeHeight(width, height) : 200;
 
   const imgData = url !== null && (
     <div

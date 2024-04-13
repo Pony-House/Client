@@ -26,6 +26,7 @@ if (!fs.existsSync(soundsFolder)) {
 
 fs.copyFileSync(path.join(__dirname, './public/sound/notification.ogg'), path.join(soundsFolder, './notification.ogg'));
 fs.copyFileSync(path.join(__dirname, './public/sound/invite.ogg'), path.join(soundsFolder, './invite.ogg'));
+fse.copySync(path.join(__dirname, './vendor/twemoji/assets'), path.join(__dirname, './public/img/twemoji'), { overwrite: true });
 
 const copyFiles = {
   targets: [
