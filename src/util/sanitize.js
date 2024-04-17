@@ -1,4 +1,6 @@
 import sanitizeHtml from 'sanitize-html';
+import clone from 'clone';
+import { isUserImageMuted } from './libs/muteEmojiSticker';
 
 const MAX_TAG_NESTING = 100;
 let mx = null;
@@ -77,10 +79,18 @@ const permittedTagToAttributes = {
   ],
   div: ['data-mx-maths'],
   a: ['name', 'target', 'href', 'rel'],
-  img: ['width', 'height', 'alt', 'title', 'src', 'data-mx-emoticon'],
   ol: ['start'],
   code: ['class'],
 };
+
+const permittedImageTagToAttributes = [
+  'width',
+  'height',
+  'alt',
+  'title',
+  'src',
+  'data-mx-emoticon',
+];
 
 function transformFontTag(tagName, attribs) {
   return {
@@ -158,11 +168,14 @@ function transformImgTag(tagName, attribs) {
 }
 
 // Filter Custom HTML
-export function sanitizeCustomHtml(matrixClient, body) {
+export function sanitizeCustomHtml(matrixClient, body, senderId) {
   mx = matrixClient;
+  const allowedAttributes = clone(permittedTagToAttributes);
+  if (!senderId || !isUserImageMuted(senderId))
+    allowedAttributes.img = permittedImageTagToAttributes;
   return sanitizeHtml(body, {
+    allowedAttributes,
     allowedTags: permittedHtmlTags,
-    allowedAttributes: permittedTagToAttributes,
     disallowedTagsMode: 'discard',
     allowedSchemes: urlSchemes,
     allowedSchemesByTag: {

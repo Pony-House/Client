@@ -330,14 +330,14 @@ const createMessageData = (
       const insertMsg = () =>
         !isJquery
           ? twemojifyReact(
-              sanitizeCustomHtml(initMatrix.matrixClient, body),
+              sanitizeCustomHtml(initMatrix.matrixClient, body, senderId),
               undefined,
               true,
               false,
               true,
             )
           : twemojify(
-              sanitizeCustomHtml(initMatrix.matrixClient, body),
+              sanitizeCustomHtml(initMatrix.matrixClient, body, senderId),
               undefined,
               true,
               false,

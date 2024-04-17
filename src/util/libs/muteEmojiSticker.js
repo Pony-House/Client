@@ -1,7 +1,7 @@
 import { addToDataFolder, getDataList } from '../selectedRoom';
 
-// Emoji
-export function isUserEmojiMuted(userId) {
+// Emoji (Inactive)
+export function isUserEmojiAnimationMuted(userId) {
   const value = getDataList('user_cache', 'muteEmojiAnimation', userId);
   return typeof value === 'boolean' ? value : false;
 }
@@ -10,6 +10,21 @@ export function muteUserEmojiAnimation(userId, value) {
   addToDataFolder(
     'user_cache',
     'muteEmojiAnimation',
+    userId,
+    typeof value === 'boolean' ? value : null,
+    200,
+  );
+}
+
+export function isUserEmojiMuted(userId) {
+  const value = getDataList('user_cache', 'muteEmoji', userId);
+  return typeof value === 'boolean' ? value : false;
+}
+
+export function muteUserEmoji(userId, value) {
+  addToDataFolder(
+    'user_cache',
+    'muteEmoji',
     userId,
     typeof value === 'boolean' ? value : null,
     200,
@@ -47,7 +62,7 @@ export function muteUserSticker(userId, value) {
   );
 }
 
-// Image
+// Image and custom emojis
 export function isUserImageMuted(userId) {
   const value = getDataList('user_cache', 'muteImage', userId);
   return typeof value === 'boolean' ? value : false;
