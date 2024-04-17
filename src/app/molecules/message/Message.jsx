@@ -10,6 +10,13 @@ import * as linkify from 'linkifyjs';
 import cons from '@src/client/state/cons';
 import { isMobile } from '@src/util/libs/mobile';
 import { readImageUrl } from '@src/util/libs/mediaCache';
+import {
+  isUserEmbedMuted,
+  isUserImageMuted,
+  isUserStickerAnimationMuted,
+  isUserStickerMuted,
+  isUserVideoMuted,
+} from '@src/util/libs/muteEmojiSticker';
 
 import Text from '../../atoms/text/Text';
 import { hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
@@ -1120,7 +1127,7 @@ const MessageThreadSummary = React.memo(({ thread }) => {
 });
 
 // Media Generator
-function genMediaContent(mE) {
+function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
   // Client
   const mx = initMatrix.matrixClient;
   const mContent = mE.getContent();
@@ -1154,6 +1161,7 @@ function genMediaContent(mE) {
   }
 
   const blurhash = mContent?.info?.['xyz.amorgan.blurhash'];
+  const senderId = mE.getSender();
 
   switch (msgType) {
     // File
@@ -1171,7 +1179,7 @@ function genMediaContent(mE) {
 
     // Image
     case 'm.image':
-      return (
+      return !isUserImageMuted(senderId) || seeHiddenData ? (
         <Media.Image
           roomId={mE.getRoomId()}
           threadId={mE.getThread()?.id}
@@ -1183,11 +1191,24 @@ function genMediaContent(mE) {
           type={mContent.info?.mimetype}
           blurhash={blurhash}
         />
+      ) : (
+        <a
+          href="#"
+          className="text-warning"
+          onClick={(e) => {
+            e.preventDefault();
+            setSeeHiddenData(true);
+          }}
+        >
+          <i className="fa-solid fa-eye-slash me-1" />
+          Hidden Image. Click here to view.
+        </a>
       );
 
     // Sticker
     case 'm.sticker':
-      return (
+      const enableAnimParams = getAppearance('enableAnimParams');
+      return !isUserStickerMuted(senderId) || seeHiddenData ? (
         <Media.Sticker
           roomId={mE.getRoomId()}
           threadId={mE.getThread()?.id}
@@ -1202,10 +1223,28 @@ function genMediaContent(mE) {
               ? mContent.info?.h
               : null
           }
-          link={mx.mxcUrlToHttp(mediaMXC)}
+          link={
+            !isUserStickerAnimationMuted(senderId)
+              ? !enableAnimParams
+                ? mx.mxcUrlToHttp(mediaMXC)
+                : getAnimatedImageUrl(mx.mxcUrlToHttp(mediaMXC, 170, 170, 'crop'))
+              : mx.mxcUrlToHttp(mediaMXC, 170, 170, 'crop')
+          }
           file={isEncryptedFile ? mContent.file : null}
           type={mContent.info?.mimetype}
         />
+      ) : (
+        <a
+          href="#"
+          className="text-warning"
+          onClick={(e) => {
+            e.preventDefault();
+            setSeeHiddenData(true);
+          }}
+        >
+          <i className="fa-solid fa-eye-slash me-1" />
+          Hidden Sticker. Click here to view.
+        </a>
       );
 
     // Audio
@@ -1226,7 +1265,7 @@ function genMediaContent(mE) {
       if (typeof thumbnailMXC === 'undefined') {
         thumbnailMXC = mContent.info?.thumbnail_file?.url || null;
       }
-      return (
+      return !isUserVideoMuted(senderId) || seeHiddenData ? (
         <Media.Video
           roomId={mE.getRoomId()}
           threadId={mE.getThread()?.id}
@@ -1241,6 +1280,18 @@ function genMediaContent(mE) {
           type={mContent.info?.mimetype}
           blurhash={blurhash}
         />
+      ) : (
+        <a
+          href="#"
+          className="text-warning"
+          onClick={(e) => {
+            e.preventDefault();
+            setSeeHiddenData(true);
+          }}
+        >
+          <i className="fa-solid fa-eye-slash me-1" />
+          Hidden Video. Click here to view.
+        </a>
       );
 
     // Bad Event Again?
@@ -1290,6 +1341,7 @@ function Message({
   const threadId = mEvent.getThread()?.id;
   const { editedTimeline, reactionTimeline } = roomTimeline ?? {};
 
+  const [seeHiddenData, setSeeHiddenData] = useState(false);
   const [existThread, updateExistThread] = useState(typeof threadId === 'string');
   const [embeds, setEmbeds] = useState([]);
   const [embedHeight, setEmbedHeight] = useState(null);
@@ -1395,7 +1447,7 @@ function Message({
   }
 
   useEffect(() => {
-    if (embeds.length < 1) {
+    if (embeds.length < 1 && !isUserEmbedMuted(senderId)) {
       const bodyUrls = [];
       if (typeof bodyData === 'string' && bodyData.length > 0) {
         try {
@@ -1608,7 +1660,11 @@ function Message({
                   className={classNameMessage}
                   senderName={username}
                   isCustomHTML={isCustomHTML}
-                  body={isMedia(mEvent) ? genMediaContent(mEvent) : customHTML ?? body}
+                  body={
+                    isMedia(mEvent)
+                      ? genMediaContent(mEvent, seeHiddenData, setSeeHiddenData)
+                      : customHTML ?? body
+                  }
                   content={content}
                   msgType={msgType}
                   isEdited={isEdited}

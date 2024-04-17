@@ -141,7 +141,7 @@ export default function getUrlPreview(newUrl, ts = 0) {
               urlPreviewStore.using = true;
               mx.getUrlPreview(tinyUrl, ts)
                 .then((embed) => {
-                  tinyCache[url.href] = { data: embed, timeout: 1440 };
+                  tinyCache[url.href] = { data: embed, timeout: 7200 };
                   urlPreviewStore.set(url.href, tinyCache[url.href]);
                   urlPreviewStore.using = false;
                   resolve(embed);
