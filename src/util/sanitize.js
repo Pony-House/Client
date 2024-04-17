@@ -173,6 +173,7 @@ export function sanitizeCustomHtml(matrixClient, body, senderId) {
   const allowedAttributes = clone(permittedTagToAttributes);
   if (!senderId || !isUserImageMuted(senderId))
     allowedAttributes.img = permittedImageTagToAttributes;
+  else allowedAttributes.img = ['width', 'height', 'alt', 'title'];
   return sanitizeHtml(body, {
     allowedAttributes,
     allowedTags: permittedHtmlTags,
