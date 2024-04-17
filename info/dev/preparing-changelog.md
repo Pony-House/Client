@@ -1,1 +1,2 @@
-- Embed cache time updated
+- Embed cache time updated.
+- Mute user message types added.
