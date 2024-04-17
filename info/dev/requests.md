@@ -75,14 +75,6 @@ Made by Me
 
     =======================================================
 
-    --> Criar filtro para desativar animação de gifs especificas. A gente vai usar a ID e dominio do arquivo para facilitar isso.
-    (Limite de 600 itens por array) (Opçao alternativa de fazer a animação ser hover)
-
-    --> Opção de desativar ou ativar animação de emojis ou stickers
-    (Também ser possível banir animação de usuários individualmente - limite de 600 itens por array) (Opçao alternativa de fazer a animação ser hover)
-
-    =======================================================
-
     --> Voice Chat
     https://matrix-org.github.io/matrix-js-sdk/stable/classes/MatrixCall.html#transferToCall
     https://github.com/matrix-org/matrix-js-sdk/blob/develop/examples/voip/browserTest.js
