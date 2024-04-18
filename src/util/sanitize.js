@@ -1,6 +1,6 @@
 import sanitizeHtml from 'sanitize-html';
 import clone from 'clone';
-import { isUserImageMuted } from './libs/muteEmojiSticker';
+import muteUserManager from './libs/muteEmojiSticker';
 
 const MAX_TAG_NESTING = 100;
 let mx = null;
@@ -171,7 +171,7 @@ function transformImgTag(tagName, attribs) {
 export function sanitizeCustomHtml(matrixClient, body, senderId) {
   mx = matrixClient;
   const allowedAttributes = clone(permittedTagToAttributes);
-  if (!senderId || !isUserImageMuted(senderId))
+  if (!senderId || !muteUserManager.isImageMuted(senderId))
     allowedAttributes.img = permittedImageTagToAttributes;
   else allowedAttributes.img = ['width', 'height', 'alt', 'title'];
   return sanitizeHtml(body, {

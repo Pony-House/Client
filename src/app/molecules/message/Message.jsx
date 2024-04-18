@@ -10,14 +10,7 @@ import * as linkify from 'linkifyjs';
 import cons from '@src/client/state/cons';
 import { isMobile } from '@src/util/libs/mobile';
 import { readImageUrl } from '@src/util/libs/mediaCache';
-import {
-  isUserEmbedMuted,
-  isUserImageMuted,
-  isUserReactionMuted,
-  isUserStickerAnimationMuted,
-  isUserStickerMuted,
-  isUserVideoMuted,
-} from '@src/util/libs/muteEmojiSticker';
+import muteUserManager from '@src/util/libs/muteEmojiSticker';
 
 import Text from '../../atoms/text/Text';
 import { hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
@@ -768,7 +761,7 @@ function MessageReactionGroup({ roomTimeline, mEvent }) {
       const isActive = senderId === mx.getUserId();
 
       if (
-        !isUserReactionMuted(senderId) &&
+        !muteUserManager.isReactionMuted(senderId) &&
         addReaction(reaction.key, shortcode, undefined, senderId, isActive, tinyIndex)
       ) {
         tinyIndex++;
@@ -1183,7 +1176,7 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
 
     // Image
     case 'm.image':
-      return !isUserImageMuted(senderId) || seeHiddenData ? (
+      return !muteUserManager.isImageMuted(senderId) || seeHiddenData ? (
         <Media.Image
           roomId={mE.getRoomId()}
           threadId={mE.getThread()?.id}
@@ -1212,7 +1205,7 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
     // Sticker
     case 'm.sticker':
       const enableAnimParams = getAppearance('enableAnimParams');
-      return !isUserStickerMuted(senderId) || seeHiddenData ? (
+      return !muteUserManager.isStickerMuted(senderId) || seeHiddenData ? (
         <Media.Sticker
           roomId={mE.getRoomId()}
           threadId={mE.getThread()?.id}
@@ -1228,7 +1221,7 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
               : null
           }
           link={
-            !isUserStickerAnimationMuted(senderId)
+            !muteUserManager.isStickerAnimationMuted(senderId)
               ? !enableAnimParams
                 ? mx.mxcUrlToHttp(mediaMXC)
                 : getAnimatedImageUrl(mx.mxcUrlToHttp(mediaMXC, 170, 170, 'crop'))
@@ -1269,7 +1262,7 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
       if (typeof thumbnailMXC === 'undefined') {
         thumbnailMXC = mContent.info?.thumbnail_file?.url || null;
       }
-      return !isUserVideoMuted(senderId) || seeHiddenData ? (
+      return !muteUserManager.isVideoMuted(senderId) || seeHiddenData ? (
         <Media.Video
           roomId={mE.getRoomId()}
           threadId={mE.getThread()?.id}
@@ -1451,7 +1444,7 @@ function Message({
   }
 
   useEffect(() => {
-    if (embeds.length < 1 && !isUserEmbedMuted(senderId)) {
+    if (embeds.length < 1 && !muteUserManager.isEmbedMuted(senderId)) {
       const bodyUrls = [];
       if (typeof bodyData === 'string' && bodyData.length > 0) {
         try {
