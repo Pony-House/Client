@@ -1,2 +1,3 @@
 - Embed cache time updated.
 - Mute user message types added.
+- MessageHeader - username button click.

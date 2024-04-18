@@ -235,6 +235,10 @@
   }
   .username-base {
     font-size: 11.4pt;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8 !important;
+    }
   }
   .welcome-msg .avatar-container > img,
   .welcome-msg .avatar-container > canvas {

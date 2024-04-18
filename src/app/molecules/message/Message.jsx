@@ -120,7 +120,7 @@ const MessageAvatar = React.memo(
 );
 
 // Message Header
-const MessageHeader = React.memo(({ userId, username, usernameHover }) => {
+const MessageHeader = React.memo(({ userId, username, usernameHover, roomId }) => {
   const appAppearance = getAppearance();
   const tinyUsername = twemojifyReact(username);
   let isUNhoverEnabled = appAppearance.isUNhoverEnabled;
@@ -137,12 +137,24 @@ const MessageHeader = React.memo(({ userId, username, usernameHover }) => {
     isUNhoverEnabled = false;
   }
 
+  const usernameClick = (e) => {
+    e.preventDefault();
+    openProfileViewer(userId, roomId);
+  };
+
   return (
-    <span className="username-base emoji-size-fix" style={{ color: colorMXID(userId) }}>
+    <span
+      onClick={usernameClick}
+      className="username-base emoji-size-fix"
+      style={{ color: colorMXID(userId) }}
+    >
       <span className={`username${isUNhoverEnabled ? '' : ' disable-username'}`}>
         {tinyUsername}
       </span>
-      <span className={`user-id${isUNhoverEnabled ? '' : ' disable-username'}`}>
+      <span
+        onClick={usernameClick}
+        className={`user-id${isUNhoverEnabled ? '' : ' disable-username'}`}
+      >
         {isUNhoverEnabled ? twemojifyReact(userId) : tinyUsername}
       </span>
     </span>
@@ -152,6 +164,7 @@ const MessageHeader = React.memo(({ userId, username, usernameHover }) => {
 MessageHeader.propTypes = {
   usernameHover: PropTypes.string,
   userId: PropTypes.string.isRequired,
+  roomId: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
 };
 
@@ -1656,6 +1669,7 @@ function Message({
                   usernameHover={usernameHover}
                   userId={senderId}
                   username={username}
+                  roomId={roomId}
                 />
 
                 <MessageTime className="ms-2" timestamp={mEvent.getTs()} fullTime={fullTime} />
@@ -1785,7 +1799,12 @@ function Message({
 
         {!isBodyOnly && (
           <div className="mb-1">
-            <MessageHeader usernameHover={usernameHover} userId={senderId} username={username} />
+            <MessageHeader
+              usernameHover={usernameHover}
+              userId={senderId}
+              username={username}
+              roomId={roomId}
+            />
 
             <MessageTime className="ms-2" timestamp={mEvent.getTs()} fullTime={fullTime} />
           </div>
