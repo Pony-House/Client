@@ -5,13 +5,6 @@ ENS Ethereum
 
     scaleDownImage to gif
 
-    Mobile:
-    if (readerType === 'readAsDataURL')
-    uploadContent(isEncryptedRoom
-
-    Mobile Background mode
-    Mobile Rec audio
-
     Fazer um sistema para facilitar rooms que são descrições de informação.
 
     Adicionar suporte a link para ir diretamente a mensagens.
@@ -81,3 +74,12 @@ Made by Me
 
     Web3 XMTP Chat
     https://xmtp.org/docs/build/get-started
+
+    =======================================================
+
+    Mobile:
+    if (readerType === 'readAsDataURL')
+    uploadContent(isEncryptedRoom
+
+    Mobile Background mode
+    Mobile Rec audio
