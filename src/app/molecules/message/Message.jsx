@@ -1229,11 +1229,9 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
               : null
           }
           link={
-            !muteUserManager.isStickerAnimationMuted(senderId)
-              ? !enableAnimParams
-                ? mx.mxcUrlToHttp(mediaMXC)
-                : getAnimatedImageUrl(mx.mxcUrlToHttp(mediaMXC, 170, 170, 'crop'))
-              : mx.mxcUrlToHttp(mediaMXC, 170, 170, 'crop')
+            !enableAnimParams
+              ? mx.mxcUrlToHttp(mediaMXC)
+              : getAnimatedImageUrl(mx.mxcUrlToHttp(mediaMXC, 170, 170, 'crop'))
           }
           file={isEncryptedFile ? mContent.file : null}
           type={mContent.info?.mimetype}
@@ -1532,6 +1530,8 @@ function Message({
 
       // Complete
       mediaFix(null, embedHeight, setEmbedHeight);
+    } else if (embeds.length > 0 && muteUserManager.isEmbedMuted(senderId)) {
+      setEmbeds([]);
     }
   });
 

@@ -31,7 +31,7 @@ class MuteUserManager extends EventEmitter {
     this.emit('mute', { type: 'muteEmoji', value: tinyValue, userId });
   }
 
-  // Sticker
+  // Sticker Animation (Inactive)
   isStickerAnimationMuted(userId) {
     const value = getDataList('user_cache', 'muteStickerAnimation', userId);
     return typeof value === 'boolean' ? value : false;
@@ -44,6 +44,7 @@ class MuteUserManager extends EventEmitter {
     this.emit('mute', { type: 'muteStickerAnimation', value: tinyValue, userId });
   }
 
+  // Sticker
   isStickerMuted(userId) {
     const value = getDataList('user_cache', 'muteSticker', userId);
     return typeof value === 'boolean' ? value : false;

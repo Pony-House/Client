@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import muteUserManager from '@src/util/libs/muteEmojiSticker';
 import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
-import { MenuHeader, MenuItem } from '../../atoms/context-menu/ContextMenu';
+import { MenuBorder, MenuHeader, MenuItem } from '../../atoms/context-menu/ContextMenu';
 import { tinyPrompt } from '../../../util/tools';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 
@@ -53,20 +54,119 @@ function UserOptions({ userId, afterOptionSelect }) {
       </MenuItem>
 
       {userId !== mx.getUserId() ? (
-        <MenuItem
-          className="text-start"
-          faSrc="fa-solid fa-envelope-circle-check"
-          onClick={() => {
-            afterOptionSelect();
-            if (isWhitelist) {
-              addToDataFolder('user_cache', 'whitelist', userId, false);
-            } else {
-              addToDataFolder('user_cache', 'whitelist', userId, true);
+        <>
+          <MenuItem
+            className="text-start"
+            faSrc="fa-solid fa-envelope-circle-check"
+            onClick={() => {
+              afterOptionSelect();
+              if (isWhitelist) {
+                addToDataFolder('user_cache', 'whitelist', userId, false);
+              } else {
+                addToDataFolder('user_cache', 'whitelist', userId, true);
+              }
+            }}
+          >
+            {!isWhitelist ? 'Add to Invite Whitelist' : 'Remove from Invite Whitelist'}
+          </MenuItem>
+
+          <MenuHeader>Filter user</MenuHeader>
+
+          <MenuItem
+            className="text-start"
+            faSrc={
+              !muteUserManager.isStickerMuted(userId) ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'
             }
-          }}
-        >
-          {!isWhitelist ? 'Add Invite Whitelist' : 'Remove Invite Whitelist'}
-        </MenuItem>
+            onClick={() => {
+              afterOptionSelect();
+              if (muteUserManager.isStickerMuted(userId)) {
+                muteUserManager.muteSticker(userId, false);
+              } else {
+                muteUserManager.muteSticker(userId, true);
+              }
+            }}
+          >
+            {!muteUserManager.isStickerMuted(userId) ? 'Ignore user stickers' : 'See user stickers'}
+          </MenuItem>
+
+          <MenuBorder />
+
+          <MenuItem
+            className="text-start"
+            faSrc={
+              !muteUserManager.isImageMuted(userId) ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'
+            }
+            onClick={() => {
+              afterOptionSelect();
+              if (muteUserManager.isImageMuted(userId)) {
+                muteUserManager.muteImage(userId, false);
+              } else {
+                muteUserManager.muteImage(userId, true);
+              }
+            }}
+          >
+            {!muteUserManager.isImageMuted(userId)
+              ? 'Ignore user images and custom emojis'
+              : 'See user images and custom emojis'}
+          </MenuItem>
+
+          <MenuItem
+            className="text-start"
+            faSrc={
+              !muteUserManager.isEmbedMuted(userId) ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'
+            }
+            onClick={() => {
+              afterOptionSelect();
+              if (muteUserManager.isEmbedMuted(userId)) {
+                muteUserManager.muteEmbed(userId, false);
+              } else {
+                muteUserManager.muteEmbed(userId, true);
+              }
+            }}
+          >
+            {!muteUserManager.isEmbedMuted(userId) ? 'Ignore user embeds' : 'See user embeds'}
+          </MenuItem>
+
+          <MenuBorder />
+
+          <MenuItem
+            className="text-start"
+            faSrc={
+              !muteUserManager.isReactionMuted(userId) ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'
+            }
+            onClick={() => {
+              afterOptionSelect();
+              if (muteUserManager.isReactionMuted(userId)) {
+                muteUserManager.muteReaction(userId, false);
+              } else {
+                muteUserManager.muteReaction(userId, true);
+              }
+            }}
+          >
+            {!muteUserManager.isReactionMuted(userId)
+              ? 'Ignore user reactions'
+              : 'See user reactions'}
+          </MenuItem>
+
+          <MenuBorder />
+
+          <MenuItem
+            className="text-start"
+            faSrc={
+              !muteUserManager.isVideoMuted(userId) ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'
+            }
+            onClick={() => {
+              afterOptionSelect();
+              if (muteUserManager.isVideoMuted(userId)) {
+                muteUserManager.muteVideo(userId, false);
+              } else {
+                muteUserManager.muteVideo(userId, true);
+              }
+            }}
+          >
+            {!muteUserManager.isVideoMuted(userId) ? 'Ignore user videos' : 'See user videos'}
+          </MenuItem>
+        </>
       ) : null}
     </div>
   );
