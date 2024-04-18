@@ -1,6 +1,8 @@
 import initMatrix from '@src/client/initMatrix';
 import EventEmitter from 'events';
 import clone from 'clone';
+import moment, { calendarFormat, localeIs12Hours } from './momentjs';
+import { objType } from '../tools';
 
 // Animated Image Url
 export function getAnimatedImageUrl(url) {
@@ -19,6 +21,7 @@ class MatrixAppearance extends EventEmitter {
     if (!this.Initialized) {
       this.Initialized = true;
 
+      // Get Content
       this.content = global.localStorage.getItem('ponyHouse-appearance');
 
       try {
@@ -27,6 +30,32 @@ class MatrixAppearance extends EventEmitter {
         this.content = {};
       }
 
+      // Calendar Format
+      let needSetCalendarFormat = true;
+      if (
+        typeof this.content.calendarFormat === 'string' ||
+        typeof this.content.calendarFormat === 'number'
+      ) {
+        const timeIndex = Number(this.content.calendarFormat);
+        if (!isNaN(timeIndex)) {
+          const tinyFormat = calendarFormat[Number(this.content.calendarFormat)];
+          if (objType(tinyFormat, 'object') && typeof tinyFormat.text === 'string') {
+            needSetCalendarFormat = false;
+          }
+        }
+      }
+
+      if (needSetCalendarFormat) {
+        const guestCalendarFormat = moment.localeData().longDateFormat('L');
+        const index = calendarFormat.findIndex((item) => item.text === guestCalendarFormat);
+        if (index > -1) {
+          const tinyFormat = calendarFormat[index];
+          if (objType(tinyFormat, 'object') && typeof tinyFormat.text === 'string')
+            this.content.calendarFormat = String(index);
+        }
+      }
+
+      // Other data
       this.content.isEmbedEnabled =
         typeof this.content.isEmbedEnabled === 'boolean' ? this.content.isEmbedEnabled : true;
       this.content.isUNhoverEnabled =
@@ -35,6 +64,9 @@ class MatrixAppearance extends EventEmitter {
         typeof this.content.isAnimateAvatarsEnabled === 'boolean'
           ? this.content.isAnimateAvatarsEnabled
           : true;
+
+      this.content.is24hours =
+        typeof this.content.is24hours === 'boolean' ? this.content.is24hours : !localeIs12Hours();
 
       this.content.showStickers =
         typeof this.content.showStickers === 'boolean'
