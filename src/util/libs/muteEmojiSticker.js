@@ -13,8 +13,10 @@ class MuteUserManager extends EventEmitter {
   }
 
   muteEmojiAnimation(userId, value) {
-    const tinyValue = typeof value === 'boolean' ? value : null;
+    const tinyValue = typeof value === 'boolean' ? value : false;
     addToDataFolder('user_cache', 'muteEmojiAnimation', userId, tinyValue, 200);
+    this.emit('muteEmojiAnimation', { value: tinyValue, userId });
+    this.emit('mute', { type: 'muteEmojiAnimation', value: tinyValue, userId });
   }
 
   isEmojiMuted(userId) {
@@ -23,8 +25,10 @@ class MuteUserManager extends EventEmitter {
   }
 
   muteEmoji(userId, value) {
-    const tinyValue = typeof value === 'boolean' ? value : null;
+    const tinyValue = typeof value === 'boolean' ? value : false;
     addToDataFolder('user_cache', 'muteEmoji', userId, tinyValue, 200);
+    this.emit('muteEmoji', { value: tinyValue, userId });
+    this.emit('mute', { type: 'muteEmoji', value: tinyValue, userId });
   }
 
   // Sticker
@@ -34,8 +38,10 @@ class MuteUserManager extends EventEmitter {
   }
 
   muteStickerAnimation(userId, value) {
-    const tinyValue = typeof value === 'boolean' ? value : null;
+    const tinyValue = typeof value === 'boolean' ? value : false;
     addToDataFolder('user_cache', 'muteStickerAnimation', userId, tinyValue, 200);
+    this.emit('muteStickerAnimation', { value: tinyValue, userId });
+    this.emit('mute', { type: 'muteStickerAnimation', value: tinyValue, userId });
   }
 
   isStickerMuted(userId) {
@@ -44,8 +50,10 @@ class MuteUserManager extends EventEmitter {
   }
 
   muteSticker(userId, value) {
-    const tinyValue = typeof value === 'boolean' ? value : null;
+    const tinyValue = typeof value === 'boolean' ? value : false;
     addToDataFolder('user_cache', 'muteSticker', userId, tinyValue, 200);
+    this.emit('muteSticker', { value: tinyValue, userId });
+    this.emit('mute', { type: 'muteSticker', value: tinyValue, userId });
   }
 
   // Image and custom emojis
@@ -55,8 +63,10 @@ class MuteUserManager extends EventEmitter {
   }
 
   muteImage(userId, value) {
-    const tinyValue = typeof value === 'boolean' ? value : null;
+    const tinyValue = typeof value === 'boolean' ? value : false;
     addToDataFolder('user_cache', 'muteImage', userId, tinyValue, 200);
+    this.emit('muteImage', { value: tinyValue, userId });
+    this.emit('mute', { type: 'muteImage', value: tinyValue, userId });
   }
 
   // Embed
@@ -66,8 +76,10 @@ class MuteUserManager extends EventEmitter {
   }
 
   muteEmbed(userId, value) {
-    const tinyValue = typeof value === 'boolean' ? value : null;
+    const tinyValue = typeof value === 'boolean' ? value : false;
     addToDataFolder('user_cache', 'muteEmbed', userId, tinyValue, 200);
+    this.emit('muteEmbed', { value: tinyValue, userId });
+    this.emit('mute', { type: 'muteEmbed', value: tinyValue, userId });
   }
 
   // Reaction
@@ -77,8 +89,10 @@ class MuteUserManager extends EventEmitter {
   }
 
   muteReaction(userId, value) {
-    const tinyValue = typeof value === 'boolean' ? value : null;
+    const tinyValue = typeof value === 'boolean' ? value : false;
     addToDataFolder('user_cache', 'muteReaction', userId, tinyValue, 200);
+    this.emit('muteReaction', { value: tinyValue, userId });
+    this.emit('mute', { type: 'muteReaction', value: tinyValue, userId });
   }
 
   // Video
@@ -88,8 +102,10 @@ class MuteUserManager extends EventEmitter {
   }
 
   muteVideo(userId, value) {
-    const tinyValue = typeof value === 'boolean' ? value : null;
+    const tinyValue = typeof value === 'boolean' ? value : false;
     addToDataFolder('user_cache', 'muteVideo', userId, tinyValue, 200);
+    this.emit('muteVideo', { value: tinyValue, userId });
+    this.emit('mute', { type: 'muteVideo', value: tinyValue, userId });
   }
 }
 
