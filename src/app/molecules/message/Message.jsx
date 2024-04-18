@@ -13,6 +13,7 @@ import { readImageUrl } from '@src/util/libs/mediaCache';
 import {
   isUserEmbedMuted,
   isUserImageMuted,
+  isUserReactionMuted,
   isUserStickerAnimationMuted,
   isUserStickerMuted,
   isUserVideoMuted,
@@ -766,7 +767,10 @@ function MessageReactionGroup({ roomTimeline, mEvent }) {
       const { shortcode } = rEvent.getContent();
       const isActive = senderId === mx.getUserId();
 
-      if (addReaction(reaction.key, shortcode, undefined, senderId, isActive, tinyIndex)) {
+      if (
+        !isUserReactionMuted(senderId) &&
+        addReaction(reaction.key, shortcode, undefined, senderId, isActive, tinyIndex)
+      ) {
         tinyIndex++;
       }
     });

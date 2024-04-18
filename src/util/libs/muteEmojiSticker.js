@@ -94,6 +94,22 @@ export function muteUserEmbed(userId, value) {
   );
 }
 
+// Reaction
+export function isUserReactionMuted(userId) {
+  const value = getDataList('user_cache', 'muteReaction', userId);
+  return typeof value === 'boolean' ? value : false;
+}
+
+export function muteUserReaction(userId, value) {
+  addToDataFolder(
+    'user_cache',
+    'muteReaction',
+    userId,
+    typeof value === 'boolean' ? value : null,
+    200,
+  );
+}
+
 // Video
 export function isUserVideoMuted(userId) {
   const value = getDataList('user_cache', 'muteVideo', userId);
