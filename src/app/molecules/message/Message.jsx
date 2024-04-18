@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useReducer } from 'react';
 import PropTypes from 'prop-types';
 
 import { MatrixEventEvent, RoomEvent, THREAD_RELATION_TYPE } from 'matrix-js-sdk';
@@ -716,6 +716,7 @@ MessageReaction.propTypes = {
 function MessageReactionGroup({ roomTimeline, mEvent }) {
   const itemEmbed = useRef(null);
   const [embedHeight, setEmbedHeight] = useState(null);
+  const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
   const { roomId, room, reactionTimeline } = roomTimeline;
   const mx = initMatrix.matrixClient;
@@ -724,6 +725,13 @@ function MessageReactionGroup({ roomTimeline, mEvent }) {
 
   const eventReactions = reactionTimeline.get(mEvent.getId());
 
+  useEffect(() => {
+    const tinyUpdate = () => forceUpdate();
+    muteUserManager.on('muteReaction', tinyUpdate);
+    return () => {
+      muteUserManager.off('muteReaction', tinyUpdate);
+    };
+  });
   const addReaction = (key, shortcode, count, senderId, isActive, index) => {
     let isNewReaction = false;
     let reaction = reactions[key];
@@ -1338,6 +1346,7 @@ function Message({
   const threadId = mEvent.getThread()?.id;
   const { editedTimeline, reactionTimeline } = roomTimeline ?? {};
 
+  const [, forceUpdate] = useReducer((count) => count + 1, 0);
   const [seeHiddenData, setSeeHiddenData] = useState(false);
   const [existThread, updateExistThread] = useState(typeof threadId === 'string');
   const [embeds, setEmbeds] = useState([]);
@@ -1574,6 +1583,16 @@ function Message({
     matrixAppearance.on('showStickers', updateShowStickers);
     return () => {
       matrixAppearance.off('showStickers', updateShowStickers);
+    };
+  });
+
+  useEffect(() => {
+    const tinyUpdate = (info) => {
+      if (info.userId === senderId) forceUpdate();
+    };
+    muteUserManager.on('mute', tinyUpdate);
+    return () => {
+      muteUserManager.off('mute', tinyUpdate);
     };
   });
 
