@@ -28,7 +28,7 @@ function UserOptions({ userId, afterOptionSelect }) {
 
           const oldNickname = muteUserManager.getUsername(userId);
           const nickname = await tinyPrompt(
-            `This information will only be visible to you. The new username will be visible after updating the page you are currently viewing.\n\nPlease type the user ${user?.userId} nickname here:`,
+            `This information will only be visible to you. Please type the user ${user?.userId} nickname here:`,
             'Friend Nickname',
             {
               placeholder: userId,
