@@ -1388,9 +1388,6 @@ function Message({
   let { body } = content;
   const [bodyData, setBodyData] = useState(body);
 
-  // User Data
-  const fNickname = getDataList('user_cache', 'friend_nickname', senderId);
-
   // make the message transparent while sending and red if it failed sending
   const [messageStatus, setMessageStatus] = useState(mEvent.status);
 
@@ -1398,12 +1395,7 @@ function Message({
     setMessageStatus(e.status);
   });
 
-  const username =
-    !isDM || typeof fNickname !== 'string' || fNickname.length === 0
-      ? mEvent.sender
-        ? getUsernameOfRoomMember(mEvent.sender)
-        : getUsername(senderId)
-      : fNickname;
+  const username = muteUserManager.getMessageName(mEvent, isDM);
   const avatarSrc = mEvent.sender?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop') ?? null;
   const avatarAnimSrc = !appearanceSettings.enableAnimParams
     ? mEvent.sender?.getAvatarUrl(mx.baseUrl)

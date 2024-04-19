@@ -26,7 +26,7 @@ function UserOptions({ userId, afterOptionSelect }) {
         onClick={async () => {
           afterOptionSelect();
 
-          const oldNickname = getDataList('user_cache', 'friend_nickname', userId);
+          const oldNickname = muteUserManager.getUsername(userId);
           const nickname = await tinyPrompt(
             `This information will only be visible to you. The new username will be visible after updating the page you are currently viewing.\n\nPlease type the user ${user?.userId} nickname here:`,
             'Friend Nickname',
@@ -46,8 +46,7 @@ function UserOptions({ userId, afterOptionSelect }) {
             },
           );
 
-          if (typeof nickname === 'string')
-            addToDataFolder('user_cache', 'friend_nickname', userId, nickname);
+          if (typeof nickname === 'string') muteUserManager.changeUsername(userId, nickname);
         }}
       >
         Change Friend Nickname

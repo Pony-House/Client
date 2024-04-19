@@ -108,6 +108,46 @@ class MuteUserManager extends EventEmitter {
     this.emit('muteVideo', { value: tinyValue, userId });
     this.emit('mute', { type: 'muteVideo', value: tinyValue, userId });
   }
+
+  // Friend Nickname
+  changeUsername(userId, value) {
+    const tinyValue = typeof value === 'string' ? value : '';
+    addToDataFolder('user_cache', 'friend_nickname', userId, tinyValue, 200);
+    this.emit('friendNickname', { value: tinyValue, userId });
+  }
+
+  getUsername(userId) {
+    const value = getDataList('user_cache', 'friend_nickname', userId);
+    return typeof value === 'string' ? value : null;
+  }
+
+  getMessageName(mEvent, isDM = false) {
+    const senderId = mEvent.getSender();
+    const fNickname = getDataList('user_cache', 'friend_nickname', senderId);
+
+    const username =
+      !isDM || typeof fNickname !== 'string' || fNickname.length === 0
+        ? mEvent.sender
+          ? getUsernameOfRoomMember(mEvent.sender)
+          : getUsername(senderId)
+        : fNickname;
+
+    return username;
+  }
+
+  getSelectorName(user) {
+    const fNickname = getDataList('user_cache', 'friend_nickname', user.userId);
+
+    if (typeof fNickname !== 'string' || fNickname.length === 0) {
+      if (typeof user.displayName === 'string' && user.displayName.length > 0) {
+        return user.displayName;
+      } else if (typeof user.userId === 'string' && user.userId.length > 0) {
+        return user.userId;
+      }
+    } else {
+      return fNickname;
+    }
+  }
 }
 
 const muteUserManager = new MuteUserManager();
