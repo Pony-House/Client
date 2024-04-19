@@ -5,3 +5,4 @@
 - Avatar code tiny update.
 - DM profile buttons now opens the user's profile.
 - friendNickname - real time update added.
+- No refresh on reconnection setting added. (Experimental Tab only)

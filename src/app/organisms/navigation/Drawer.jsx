@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import objectHash from 'object-hash';
 
+import { getAppearance } from '@src/util/libs/appearance';
+
 import tinyAPI from '../../../util/mods';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -52,9 +54,10 @@ function useSystemState() {
 
     // Detect recover from reconnect
     if (
-      oldSystemState.value === 'ERROR' ||
-      oldSystemState.value === 'RECONNECTING' ||
-      oldSystemState.value === 'STOPPED'
+      !getAppearance('noReconnectRefresh') &&
+      (oldSystemState.value === 'ERROR' ||
+        oldSystemState.value === 'RECONNECTING' ||
+        oldSystemState.value === 'STOPPED')
     ) {
       if (
         __ENV_APP__.ELECTRON_MODE &&
