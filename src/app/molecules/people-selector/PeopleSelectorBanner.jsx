@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import envAPI from '@src/util/libs/env';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import defaultAvatar from '@src/app/atoms/avatar/defaultAvatar';
+import { openProfileViewer } from '@src/client/action/navigation';
 
 import { twemojifyReact, twemojify } from '../../../util/twemojify';
 
@@ -37,7 +38,7 @@ setInterval(() => {
   }
 }, 60000);
 
-function PeopleSelectorBanner({ name, color, user }) {
+function PeopleSelectorBanner({ name, color, user, roomId }) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
   const statusRef = useRef(null);
@@ -57,12 +58,6 @@ function PeopleSelectorBanner({ name, color, user }) {
   );
 
   const mx = initMatrix.matrixClient;
-
-  // Copy Profile Username
-  const copyUsername = {
-    tag: (event) => copyText(event, 'Username successfully copied to the clipboard.'),
-    display: (event) => copyText(event, 'Display name successfully copied to the clipboard.'),
-  };
 
   const getCustomStatus = (content) => {
     // Get Status
@@ -254,20 +249,25 @@ function PeopleSelectorBanner({ name, color, user }) {
         addToDataFolder('user_cache', 'note', user.userId, $(event.target).val(), 200);
       };
 
+      // Open user profile
+      const profileViewer = () => {
+        openProfileViewer(user.userId, roomId);
+      };
+
       // Read Events
       user.on('User.avatarUrl', updateProfileStatus);
       user.on('User.currentlyActive', updateProfileStatus);
       user.on('User.lastPresenceTs', updateProfileStatus);
       user.on('User.presence', updateProfileStatus);
-      $(displayNameRef.current).find('> .button').on('click', copyUsername.display);
-      $(userNameRef.current).find('> .button').on('click', copyUsername.tag);
+      $(displayNameRef.current).find('> .button').on('click', profileViewer);
+      $(userNameRef.current).find('> .button').on('click', profileViewer);
       $(noteRef.current)
         .on('change', tinyNoteUpdate)
         .on('keypress keyup keydown', tinyNoteSpacing)
         .val(tinyNote);
       return () => {
-        $(displayNameRef.current).find('> .button').off('click', copyUsername.display);
-        $(userNameRef.current).find('> .button').off('click', copyUsername.tag);
+        $(displayNameRef.current).find('> .button').off('click', profileViewer);
+        $(userNameRef.current).find('> .button').off('click', profileViewer);
         $(noteRef.current)
           .off('change', tinyNoteUpdate)
           .off('keypress keyup keydown', tinyNoteSpacing);

@@ -2,3 +2,5 @@
 - Mute user message types added.
 - MessageHeader - username button click.
 - The application will now try on its own to detect whether the user is using 24 hours and the calendar format.
+- Avatar code tiny update.
+- DM profile buttons now opens the user's profile.
