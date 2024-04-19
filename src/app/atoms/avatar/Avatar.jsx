@@ -113,7 +113,11 @@ const Avatar = React.forwardRef(
                 ref={theRef}
                 className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
                 draggable="false"
-                src={imageSrc !== null ? imageSrc : defaultAvatar(colorCode)}
+                src={
+                  typeof imageSrc === 'string' && imageSrc.length > 0
+                    ? readImageUrl(imageSrc)
+                    : tinyDa
+                }
                 onLoad={(e) => {
                   e.target.style.backgroundColor = 'transparent';
                 }}
@@ -128,7 +132,11 @@ const Avatar = React.forwardRef(
                 <img
                   ref={freezeAvatarRef}
                   className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
-                  src={readImageUrl(imageAnimSrc)}
+                  src={
+                    typeof imageAnimSrc === 'string' && imageAnimSrc.length > 0
+                      ? readImageUrl(imageAnimSrc)
+                      : tinyDa
+                  }
                   alt={text || 'avatar'}
                 />
               </div>
