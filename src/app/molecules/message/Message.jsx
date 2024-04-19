@@ -145,6 +145,13 @@ const MessageHeader = React.memo(({ userId, username, usernameHover, roomId }) =
   return (
     <span
       onClick={usernameClick}
+      onContextMenu={(e) => {
+        openReusableContextMenu('bottom', getEventCords(e, '.ic-btn'), (closeMenu) => (
+          <UserOptions userId={userId} afterOptionSelect={closeMenu} />
+        ));
+
+        e.preventDefault();
+      }}
       className="username-base emoji-size-fix"
       style={{ color: colorMXID(userId) }}
     >
