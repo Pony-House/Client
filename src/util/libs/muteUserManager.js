@@ -1,5 +1,6 @@
 import EventEmitter from 'events';
 import { addToDataFolder, getDataList } from '../selectedRoom';
+import { getUsername, getUsernameOfRoomMember } from '../matrixUtil';
 
 class MuteUserManager extends EventEmitter {
   constructor() {
