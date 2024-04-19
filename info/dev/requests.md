@@ -46,8 +46,6 @@ Made by Me
     Coisas que não atualiza sozinho:
         Lista de usuários online na room ainda não atualiza em tempo real.
         Banner do space.
-        Esconder Pin messages event
-        Revelar Pin messages event
 
     =======================================================
 
