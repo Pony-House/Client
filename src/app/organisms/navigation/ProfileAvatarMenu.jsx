@@ -64,6 +64,13 @@ function ProfileAvatarMenu() {
     // Get User and update data
     const user2 = mx.getUser(mx.getUserId());
 
+    const setNewProfile = (avatarUrl, displayName, userId) =>
+      setProfile({
+        avatarUrl: avatarUrl || null,
+        displayName: displayName || profile.displayName,
+        userId: userId || profile.userId,
+      });
+
     // Set New User Status
     const onProfileUpdate = (event = {}) => {
       // Exist
@@ -172,12 +179,6 @@ function ProfileAvatarMenu() {
     };
 
     onProfileUpdate(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
-    const setNewProfile = (avatarUrl, displayName, userId) =>
-      setProfile({
-        avatarUrl: avatarUrl || null,
-        displayName: displayName || profile.displayName,
-        userId: userId || profile.userId,
-      });
 
     const onAvatarChange = (event, myUser) => {
       setNewProfile(myUser.avatarUrl, myUser.displayName, myUser.userId);
@@ -218,11 +219,13 @@ function ProfileAvatarMenu() {
 
     // Socket
     user2.on('User.avatarUrl', onAvatarChange);
+    user2.on('User.displayName', onAvatarChange);
     navigation.on(cons.events.navigation.PROFILE_UPDATED, onProfileUpdate);
     voiceChat.on('pony_house_muted_audio', updateAudioMute);
     voiceChat.on('pony_house_muted_microphone', updateMicrophoneMute);
     return () => {
       user2.removeListener('User.avatarUrl', onAvatarChange);
+      user2.removeListener('User.displayName', onAvatarChange);
       voiceChat.off('pony_house_muted_audio', updateAudioMute);
       voiceChat.off('pony_house_muted_microphone', updateMicrophoneMute);
       navigation.removeListener(cons.events.navigation.PROFILE_UPDATED, onProfileUpdate);
