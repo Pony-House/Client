@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import cons from '@src/client/state/cons';
 import { abbreviateNumber } from '@src/util/common';
+import muteUserManager from '@src/util/libs/muteUserManager';
 
 import { twemojifyReact } from '../../../util/twemojify';
 import { colorMXID } from '../../../util/colorMXID';
@@ -83,6 +84,7 @@ function RoomSelector({
   isProfile,
   notSpace,
   user,
+  allowCustomUsername,
 }) {
   const [userData, setPresenceStatus] = useState(null);
   const [imgAnimSrc, setImgAnimSrc] = useState(imageAnimSrc);
@@ -154,7 +156,7 @@ function RoomSelector({
           newRoomName = tinyUser.userId;
         }
 
-        setName(newRoomName);
+        if (!allowCustomUsername) setName(newRoomName);
         insertCustomStatus(customStatusRef, content);
 
         setPresenceStatus(content);
@@ -176,6 +178,16 @@ function RoomSelector({
 
   checkerFavIcon();
   const isDefault = !iconSrc || notSpace;
+
+  useEffect(() => {
+    const tinyUpdate = (info) => {
+      if (user && info.userId === user.userId && allowCustomUsername) setName(info.value);
+    };
+    muteUserManager.on('friendNickname', tinyUpdate);
+    return () => {
+      muteUserManager.off('friendNickname', tinyUpdate);
+    };
+  });
 
   return (
     <RoomSelectorWrapper
@@ -250,6 +262,7 @@ function RoomSelector({
 
 RoomSelector.defaultProps = {
   animParentsCount: 4,
+  allowCustomUsername: false,
   notSpace: false,
   isProfile: false,
   parentName: null,
@@ -262,6 +275,7 @@ RoomSelector.defaultProps = {
   onContextMenu: null,
 };
 RoomSelector.propTypes = {
+  allowCustomUsername: PropTypes.bool,
   animParentsCount: PropTypes.number,
   notSpace: PropTypes.bool,
   isProfile: PropTypes.bool,

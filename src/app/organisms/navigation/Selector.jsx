@@ -44,6 +44,7 @@ function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, 
   }
 
   // Get User room
+  let allowCustomUsername = false;
   let user;
   let roomName = room.name;
   if (isDM) {
@@ -54,6 +55,7 @@ function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, 
       if (member) {
         user = mx.getUser(member.userId);
         roomName = muteUserManager.getSelectorName(user);
+        allowCustomUsername = true;
       }
     }
   }
@@ -148,6 +150,7 @@ function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, 
   return (
     <>
       <RoomSelector
+        allowCustomUsername={allowCustomUsername}
         notSpace={notSpace}
         key={roomId}
         isProfile={isProfile}
