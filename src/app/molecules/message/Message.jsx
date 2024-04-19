@@ -1603,8 +1603,10 @@ function Message({
       if (info.userId === senderId) forceUpdate();
     };
     muteUserManager.on('mute', tinyUpdate);
+    muteUserManager.on('friendNickname', tinyUpdate);
     return () => {
       muteUserManager.off('mute', tinyUpdate);
+      muteUserManager.off('friendNickname', tinyUpdate);
     };
   });
 

@@ -44,7 +44,6 @@ Made by Me
 
     selectedRoom.room.eventNames()
     Coisas que não atualiza sozinho:
-        Alteração de friend nickname.
         O username do display da conta logada.
         Lista de usuários online na room ainda não atualiza em tempo real.
         Banner do space.
