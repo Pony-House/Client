@@ -1,6 +1,6 @@
 import sanitizeHtml from 'sanitize-html';
 import clone from 'clone';
-import muteUserManager from './libs/muteEmojiSticker';
+import muteUserManager from './libs/muteUserManager';
 
 const MAX_TAG_NESTING = 100;
 let mx = null;

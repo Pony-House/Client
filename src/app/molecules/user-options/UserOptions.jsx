@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import muteUserManager from '@src/util/libs/muteEmojiSticker';
+import muteUserManager from '@src/util/libs/muteUserManager';
 import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
