@@ -131,7 +131,7 @@ class BlobUrlManager extends EventEmitter {
           url: tinyUrl,
           groupId: typeof groupId === 'string' ? groupId : null,
         });
-        URL.revokeObjectURL(tinyUrl);
+        setTimeout(() => URL.revokeObjectURL(tinyUrl), 1);
         delete this.hashes[hash];
         delete this.timeout[hash];
         delete this.urls[tinyUrl];
