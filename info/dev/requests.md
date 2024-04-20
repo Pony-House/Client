@@ -1,3 +1,5 @@
+Tentativa de obter perfil desconhecido
+
 Tonar isso mais usável ao react events.
 src/app/organisms/space-settings/handleBannerUpload.js
 
