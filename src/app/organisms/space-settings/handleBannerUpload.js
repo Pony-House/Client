@@ -1,3 +1,4 @@
+import initMatrix from '@src/client/initMatrix';
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
 export const handleBannerUpload = async (url, roomId) => {
