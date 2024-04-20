@@ -11,6 +11,7 @@ import initMatrix from '../../../client/initMatrix';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 import { getCurrentState } from '../../../util/matrixUtil';
+import { handleBannerUpload } from './handleBannerUpload';
 
 function PonyHouseSettings({ roomId, room }) {
   const mx = initMatrix.matrixClient;
@@ -21,45 +22,6 @@ function PonyHouseSettings({ roomId, room }) {
   const toggleShowRoomIcons = async (data) => {
     await mx.sendStateEvent(roomId, 'pony.house.settings', { isActive: data }, 'roomIcons');
     setRoomIconsVisible(data);
-  };
-
-  const handleBannerUpload = async (url) => {
-    const spaceHeaderBody = $('.space-drawer-body');
-    const spaceHeader = spaceHeaderBody.find('> .navbar');
-
-    const bannerPlace = $('.space-banner .avatar__border');
-    const bannerImg = $('.space-banner img');
-
-    if (url === null) {
-      const isConfirmed = await confirmDialog(
-        'Remove space banner',
-        'Are you sure that you want to remove room banner?',
-        'Remove',
-        'warning',
-      );
-
-      if (isConfirmed) {
-        await mx.sendStateEvent(roomId, 'pony.house.settings', { url }, 'banner');
-
-        spaceHeaderBody.removeClass('drawer-with-banner');
-        spaceHeader.removeClass('banner-mode').css('background-image', '');
-
-        bannerPlace.css('background-image', '').removeClass('banner-added');
-        bannerImg.attr('src', '');
-      }
-    } else {
-      await mx.sendStateEvent(roomId, 'pony.house.settings', { url }, 'banner');
-
-      spaceHeaderBody.addClass('drawer-with-banner');
-      spaceHeader
-        .addClass('banner-mode')
-        .css('background-image', `url("${mx.mxcUrlToHttp(url, 960, 540)}")`);
-
-      bannerPlace
-        .css('background-image', `url('${mx.mxcUrlToHttp(url, 400, 227)}')`)
-        .addClass('banner-added');
-      bannerImg.attr('src', mx.mxcUrlToHttp(url, 400, 227));
-    }
   };
 
   // Pony Config
@@ -111,8 +73,8 @@ function PonyHouseSettings({ roomId, room }) {
             className="space-banner"
             text="Banner"
             imageSrc={avatarSrc}
-            onUpload={handleBannerUpload}
-            onRequestRemove={() => handleBannerUpload(null)}
+            onUpload={(url) => handleBannerUpload(url, roomId)}
+            onRequestRemove={() => handleBannerUpload(null, roomId)}
           />
         )}
       </li>
