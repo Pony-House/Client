@@ -93,7 +93,10 @@ function CreateRoomContent({ isSpace, parentId, onRequestClose }) {
         topic,
         joinRule,
         alias: roomAlias,
-        isEncrypted: isSpace || joinRule === 'public' ? false : isEncrypted,
+        isEncrypted:
+          isSpace || joinRule === 'public' || __ENV_APP__.DISABLE_ENCRYPT_SETTINGS
+            ? false
+            : isEncrypted,
         powerLevel,
         isSpace,
         parentId,
@@ -205,7 +208,7 @@ function CreateRoomContent({ isSpace, parentId, onRequestClose }) {
             )}
           </div>
         )}
-        {!isSpace && joinRule !== 'public' && (
+        {!isSpace && joinRule !== 'public' && !__ENV_APP__.DISABLE_ENCRYPT_SETTINGS && (
           <SettingTile
             title="Enable end-to-end encryption"
             options={<Toggle isActive={isEncrypted} onToggle={setIsEncrypted} />}

@@ -1,1 +1,2 @@
-- autoEncryptCreateDM Setting added.
+- auto encrypt createDM setting added to ENV.
+- Disable encrypt settings added to ENV.

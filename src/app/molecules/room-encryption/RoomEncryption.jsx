@@ -41,7 +41,9 @@ function RoomEncryption({ roomId }) {
 
   return (
     <SettingTile
-      title="Enable room encryption"
+      title={
+        !__ENV_APP__.DISABLE_ENCRYPT_SETTINGS ? 'Enable room encryption' : 'Room encryption status'
+      }
       content={
         <div className="very-small text-gray">Once enabled, encryption cannot be disabled.</div>
       }
@@ -50,7 +52,7 @@ function RoomEncryption({ roomId }) {
           className="d-inline-flex"
           isActive={isEncrypted}
           onToggle={handleEncryptionEnable}
-          disabled={isEncrypted || !canEnableEncryption}
+          disabled={isEncrypted || !canEnableEncryption || __ENV_APP__.DISABLE_ENCRYPT_SETTINGS}
         />
       }
     />

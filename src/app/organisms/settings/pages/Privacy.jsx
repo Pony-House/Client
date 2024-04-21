@@ -18,9 +18,11 @@ function PrivacySection() {
     setHideTypingWarn(content.hideTypingWarn === true);
     setRoomAutoRefuse(content.roomAutoRefuse === true);
     setAutoEncryptCreateDM(
-      typeof content.autoEncryptCreateDM === 'boolean'
-        ? content.autoEncryptCreateDM
-        : !!__ENV_APP__.AUTO_ENCRYPT_CREATE_DM,
+      !__ENV_APP__.DISABLE_ENCRYPT_SETTINGS
+        ? typeof content.autoEncryptCreateDM === 'boolean'
+          ? content.autoEncryptCreateDM
+          : !!__ENV_APP__.AUTO_ENCRYPT_CREATE_DM
+        : false,
     );
     setSendReadReceipts(
       typeof content.sendReadReceipts !== 'boolean' || content.sendReadReceipts === true,
@@ -88,29 +90,31 @@ function PrivacySection() {
           />
         </ul>
 
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">DMs</li>
+        {!__ENV_APP__.DISABLE_ENCRYPT_SETTINGS ? (
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item very-small text-gray">DMs</li>
 
-          <SettingTile
-            title="Enable auto encrypt in DM creation"
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={autoEncryptCreateDM}
-                onToggle={toggleAction(
-                  'pony.house.privacy',
-                  'autoEncryptCreateDM',
-                  setAutoEncryptCreateDM,
-                )}
-              />
-            }
-            content={
-              <div className="very-small text-gray">
-                All DM rooms you create will have encryption enabled by default.
-              </div>
-            }
-          />
-        </ul>
+            <SettingTile
+              title="Enable auto encrypt in DM creation"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={autoEncryptCreateDM}
+                  onToggle={toggleAction(
+                    'pony.house.privacy',
+                    'autoEncryptCreateDM',
+                    setAutoEncryptCreateDM,
+                  )}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  All DM rooms you create will have encryption enabled by default.
+                </div>
+              }
+            />
+          </ul>
+        ) : null}
       </div>
     </div>
   );
