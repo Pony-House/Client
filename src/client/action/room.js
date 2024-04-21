@@ -178,8 +178,9 @@ async function createDM(userIdOrIds, isEncrypted = true) {
   const privacySettings =
     initMatrix.matrixClient.getAccountData('pony.house.privacy')?.getContent() ?? {};
   const autoEncryptCreateDM =
-    typeof privacySettings.autoEncryptCreateDM !== 'boolean' ||
-    privacySettings.autoEncryptCreateDM === true;
+    typeof content.autoEncryptCreateDM === 'boolean'
+      ? content.autoEncryptCreateDM
+      : !!__ENV_APP__.AUTO_ENCRYPT_CREATE_DM;
 
   const options = {
     is_direct: true,

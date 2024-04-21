@@ -18,7 +18,9 @@ function PrivacySection() {
     setHideTypingWarn(content.hideTypingWarn === true);
     setRoomAutoRefuse(content.roomAutoRefuse === true);
     setAutoEncryptCreateDM(
-      typeof content.autoEncryptCreateDM !== 'boolean' || content.autoEncryptCreateDM === true,
+      typeof content.autoEncryptCreateDM === 'boolean'
+        ? content.autoEncryptCreateDM
+        : !!__ENV_APP__.AUTO_ENCRYPT_CREATE_DM,
     );
     setSendReadReceipts(
       typeof content.sendReadReceipts !== 'boolean' || content.sendReadReceipts === true,

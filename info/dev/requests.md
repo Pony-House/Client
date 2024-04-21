@@ -1,4 +1,9 @@
 Tentativa de obter perfil desconhecido
+Opção de odernar a lista de rooms geral por atividade.
+
+Ver qual Friend ninkcname está sendo usado.
+
+Ver em quais rooms o usuário está (Pelo perfil)
 
 Tonar isso mais usável ao react events.
 src/app/organisms/space-settings/handleBannerUpload.js
