@@ -6,6 +6,7 @@ import mobileEvents, { isMobile } from '@src/util/libs/mobile';
 import { cyrb128 } from '@src/util/tools';
 import tinyAPI from '@src/util/mods';
 import { getAppearance } from '@src/util/libs/appearance';
+import attemptDecryption from '@src/util/libs/attemptDecryption';
 // import { insertIntoRoomEventsDB } from '@src/util/libs/roomEventsDB';
 
 import renderAvatar from '../../../app/atoms/avatar/render';
@@ -323,11 +324,7 @@ class Notifications extends EventEmitter {
 
     // Encrypted
     if (mEvent.isEncrypted()) {
-      try {
-        await mEvent.attemptDecryption(this.matrixClient.getCrypto());
-      } catch (err) {
-        console.error(err);
-      }
+      await attemptDecryption(mEvent, {}, true);
     }
 
     // Tiny API

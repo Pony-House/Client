@@ -1,6 +1,7 @@
 import { MatrixEvent } from 'matrix-js-sdk';
 import initMatrix from '../../../client/initMatrix';
 import { countObj, objType } from '../../tools';
+// import attemptDecryption from '../attemptDecryption';
 
 const tinyCache = {};
 setInterval(() => {
@@ -65,7 +66,7 @@ export async function getEventById(room, eventId) {
 
         // if (tinyCache[room.roomId][eventId].event.isEncrypted()) {
         // Glitch
-        // await tinyCache[room.roomId][eventId].event.attemptDecryption(initMatrix.matrixClient.getCrypto());
+        // await attemptDecryption(tinyCache[room.roomId][eventId].event);
         // }
       } else {
         tinyCache[room.roomId][eventId].event = null;

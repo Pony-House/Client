@@ -3,6 +3,7 @@ import EventEmitter from 'events';
 import clone from 'clone';
 import objectHash from 'object-hash';
 import moment from '@src/util/libs/momentjs';
+import attemptDecryption from '@src/util/libs/attemptDecryption';
 // import { insertIntoRoomEventsDB } from '@src/util/libs/roomEventsDB';
 
 import {
@@ -750,7 +751,7 @@ class RoomTimeline extends EventEmitter {
       // .filter((event) => event.shouldAttemptDecryption())
       .filter((event) => event.isEncrypted() && !event.clearEvent)
       .reverse()
-      .map((event) => event.attemptDecryption(this.matrixClient.getCrypto(), { isRetry: true }));
+      .map((event) => attemptDecryption(event, { isRetry: true }));
 
     return Promise.allSettled(decryptionPromises);
   }

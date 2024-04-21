@@ -3,6 +3,7 @@ import moment from 'moment-timezone';
 import initMatrix from '@src/client/initMatrix';
 import { objType } from '../../tools';
 import envAPI from '../env';
+import attemptDecryption from '../attemptDecryption';
 
 // Anti Lag
 const delayCache = {
@@ -215,8 +216,7 @@ export function insertIntoRoomEventsDB(event, needsDecrypt = false) {
 
       if (!needsDecrypt) insertEvent().then(resolve).catch(reject);
       else if (event.isEncrypted()) {
-        event
-          .attemptDecryption(initMatrix.matrixClient.getCrypto())
+        attemptDecryption(event)
           .then(() => insertEvent())
           .then(resolve)
           .catch(reject);
