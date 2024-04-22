@@ -1242,10 +1242,10 @@
   resolved "https://registry.yarnpkg.com/@xmtp/user-preferences-bindings-wasm/-/user-preferences-bindings-wasm-0.3.6.tgz#4ca58dca940574483caa8cbd4d9c609577b1e0f1"
   integrity sha512-ANi6ikrO6YBaK978sMuEEnpREvFQQnMVaNdlviaLzmc07u4Of4s/VLNnavl4qTb4F4cvwSiBWou0wSYIE5SWYg==
 
-"@xmtp/xmtp-js@11.5.0":
-  version "11.5.0"
-  resolved "https://registry.yarnpkg.com/@xmtp/xmtp-js/-/xmtp-js-11.5.0.tgz#1b4bf40f8e2cd92bf10ee8a0c547b8683b851394"
-  integrity sha512-ZsB/EO1ts0mx000lgWsxe3S1+9/k1I+RjlIRasC1JmkzxNmf/y8bfMgKL3GdN800G3l17XzoyfTGj+JwgY9HwA==
+"@xmtp/xmtp-js@11.5.1":
+  version "11.5.1"
+  resolved "https://registry.yarnpkg.com/@xmtp/xmtp-js/-/xmtp-js-11.5.1.tgz#ec21c6bef2308bb666f3326ea2226163a960d1eb"
+  integrity sha512-kP4y7MZoUYgBqVcDsJNBAW5LYUSo+5sIwTNGCiMsbIaQUk4Znm+D2JXm1dgGSlFFuHjWY08Wz/B9C+fVHoO5OA==
   dependencies:
     "@noble/secp256k1" "1.7.1"
     "@xmtp/proto" "3.45.0"
