@@ -751,7 +751,7 @@ class RoomTimeline extends EventEmitter {
       // .filter((event) => event.shouldAttemptDecryption())
       .filter((event) => event.isEncrypted() && !event.clearEvent)
       .reverse()
-      .map((event) => attemptDecryption(event, { isRetry: true }));
+      .map((event) => attemptDecryption.exec(event, { isRetry: true }));
 
     return Promise.allSettled(decryptionPromises);
   }

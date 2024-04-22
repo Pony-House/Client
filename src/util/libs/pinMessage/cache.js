@@ -66,7 +66,7 @@ export async function getEventById(room, eventId) {
 
         // if (tinyCache[room.roomId][eventId].event.isEncrypted()) {
         // Glitch
-        // await attemptDecryption(tinyCache[room.roomId][eventId].event);
+        // await attemptDecryption.exec(tinyCache[room.roomId][eventId].event);
         // }
       } else {
         tinyCache[room.roomId][eventId].event = null;

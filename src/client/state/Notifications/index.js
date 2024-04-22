@@ -324,7 +324,7 @@ class Notifications extends EventEmitter {
 
     // Encrypted
     if (mEvent.isEncrypted()) {
-      await attemptDecryption(mEvent, null, true);
+      await attemptDecryption.exec(mEvent, null, true);
     }
 
     // Tiny API

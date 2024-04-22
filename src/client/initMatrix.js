@@ -12,7 +12,7 @@ import Notifications from './state/Notifications';
 import { cryptoCallbacks } from './state/secretStorageKeys';
 import navigation from './state/navigation';
 import logger from './logger';
-import { startDecryption } from '@src/util/libs/attemptDecryption';
+import attemptDecryption from '@src/util/libs/attemptDecryption';
 
 global.Olm = Olm;
 
@@ -124,8 +124,7 @@ class InitMatrix extends EventEmitter {
     }
 
     this.matrixClient = sdk.createClient(clientOps);
-    startDecryption();
-
+    attemptDecryption.start();
     if (__ENV_APP__.ELECTRON_MODE) {
       if (global.tinyJsonDB && typeof global.tinyJsonDB.startClient === 'function')
         await global.tinyJsonDB.startClient();

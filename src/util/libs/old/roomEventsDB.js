@@ -216,7 +216,8 @@ export function insertIntoRoomEventsDB(event, needsDecrypt = false) {
 
       if (!needsDecrypt) insertEvent().then(resolve).catch(reject);
       else if (event.isEncrypted()) {
-        attemptDecryption(event)
+        attemptDecryption
+          .exec(event)
           .then(() => insertEvent())
           .then(resolve)
           .catch(reject);
