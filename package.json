@@ -128,7 +128,7 @@
     "prettier": "3.2.5",
     "sass": "1.75.0",
     "typescript": "5.4.5",
-    "vite": "5.2.8",
+    "vite": "5.2.10",
     "vite-plugin-electron": "^0.28.4",
     "vite-plugin-electron-renderer": "^0.14.5",
     "vite-plugin-static-copy": "1.0.3"
