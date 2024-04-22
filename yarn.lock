@@ -6981,10 +6981,10 @@ vite-plugin-electron-renderer@^0.14.5:
   resolved "https://registry.yarnpkg.com/vite-plugin-electron-renderer/-/vite-plugin-electron-renderer-0.14.5.tgz#2ac36f31773cb23a09353fabb6fb788bdad94f50"
   integrity sha512-EQ7ORuPp8vFPCqfuGnVo7d36fXS0IFH4/RUlKb1drseix3TQEPcgwEuFADdXBxRgqMp70njz/1m0kdf5lEsm8w==
 
-vite-plugin-electron@^0.28.4:
-  version "0.28.4"
-  resolved "https://registry.yarnpkg.com/vite-plugin-electron/-/vite-plugin-electron-0.28.4.tgz#ce06f8626b76890b7e6883a26763dee1d87d1b3f"
-  integrity sha512-OcWQQZk1ygkG4g/nj6cQ0zMu5q9yPcxEtDNcY8xagWqjQ3PxZbWuf1VyElZSo16GqPa71vBzoz+XAukia/TgNQ==
+vite-plugin-electron@^0.28.6:
+  version "0.28.6"
+  resolved "https://registry.yarnpkg.com/vite-plugin-electron/-/vite-plugin-electron-0.28.6.tgz#98bcf291179dfbdfef407f881cbb1e1d58249c57"
+  integrity sha512-DANntooA/XcUQuaOG7tQ0nnWh8iP5yKur2e9GDafjslOPAVZehRyrbi2UEI6rlIhN6hHwcqAjY+/Zz8+thAL5g==
 
 vite-plugin-static-copy@1.0.3:
   version "1.0.3"
