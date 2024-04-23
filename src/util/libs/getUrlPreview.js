@@ -3,6 +3,7 @@ import * as linkify from 'linkifyjs';
 import initMatrix from '../../client/initMatrix';
 import { objType } from '../tools';
 import convertProtocols from './convertProtocols';
+import moment from './momentjs';
 
 const tinyCache = {};
 const urlConvert = {
@@ -38,6 +39,7 @@ const urlPreviewStore = {
     if (typeof url === 'string') {
       if (linkify.test(url)) {
         if (urlPreviewStore.validator(storage[url])) {
+          storage[url].timeout = moment(storage[url].timeout);
           return storage[url];
         }
 
@@ -45,7 +47,9 @@ const urlPreviewStore = {
       }
     } else {
       for (const url2 in storage) {
-        if (!urlPreviewStore.validator(storage[url2])) {
+        if (urlPreviewStore.validator(storage[url2])) {
+          storage[url2].timeout = moment(storage[url2].timeout);
+        } else {
           delete storage[url2];
           urlPreviewStore.delete(url2);
         }
@@ -62,7 +66,10 @@ const urlPreviewStore = {
       const storage = urlPreviewStore.getRaw();
 
       if (value !== null && urlPreviewStore.validator(value)) {
-        storage[url] = value;
+        storage[url] = {
+          data: value.data,
+          timeout: value.valueOf(),
+        };
       } else if (storage[url]) {
         delete storage[url];
       }
@@ -86,14 +93,7 @@ const urlPreviewStore = {
 
 setInterval(() => {
   for (const item in tinyCache) {
-    if (tinyCache[item].timeout > 0) {
-      tinyCache[item].timeout--;
-
-      // eslint-disable-next-line no-use-before-define
-      setTimeout(() => {
-        urlPreviewStore.set(item, tinyCache[item]);
-      }, 1);
-    } else {
+    if (!tinyCache[item].timeout.isValid() || moment().isAfter(tinyCache[item].timeout)) {
       delete tinyCache[item];
 
       // eslint-disable-next-line no-use-before-define
@@ -141,13 +141,13 @@ export default function getUrlPreview(newUrl, ts = 0) {
               urlPreviewStore.using = true;
               mx.getUrlPreview(tinyUrl, ts)
                 .then((embed) => {
-                  tinyCache[url.href] = { data: embed, timeout: 7200 };
+                  tinyCache[url.href] = { data: embed, timeout: moment().add(12, 'hours') };
                   urlPreviewStore.set(url.href, tinyCache[url.href]);
                   urlPreviewStore.using = false;
                   resolve(embed);
                 })
                 .catch((err) => {
-                  tinyCache[url.href] = { data: null, timeout: 60 };
+                  tinyCache[url.href] = { data: null, timeout: moment().add(1, 'hours') };
                   urlPreviewStore.delete(url.href);
                   urlPreviewStore.using = false;
                   reject(err);
@@ -168,4 +168,8 @@ export default function getUrlPreview(newUrl, ts = 0) {
       }
     }
   });
+}
+
+if (__ENV_APP__.MODE === 'development') {
+  global.getUrlPreviewCache = tinyCache;
 }

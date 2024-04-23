@@ -1,5 +1,3 @@
-Fazer o embed cache funcionar por timestamp invés de time local
-
 Tentativa de obter perfil desconhecido
 Opção de odernar a lista de rooms geral por atividade.
 
