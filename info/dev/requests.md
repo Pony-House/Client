@@ -8,6 +8,7 @@ Ver em quais rooms o usuário está (Pelo perfil)
 Tonar isso mais usável ao react events.
 src/app/organisms/space-settings/handleBannerUpload.js
 
+Fazer o load de mensagens no thread
 ENS Ethereum
 
 /src/app/organisms/navigation/Directs.jsx

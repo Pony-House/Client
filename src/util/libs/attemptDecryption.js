@@ -9,12 +9,7 @@ class AttemptDecryption extends EventEmitter {
   }
 
   start() {
-    const mx = initMatrix.matrixClient;
-    mx.on('toDeviceEvent', (event) => {
-      if (event.getType() === 'm.room.encrypted') {
-        event.attemptDecryption(initMatrix.matrixClient.getCrypto()).then(() => {});
-      }
-    });
+    this.emit('start', true);
   }
 
   exec(mEvent, ops = undefined, ignoreError = false) {

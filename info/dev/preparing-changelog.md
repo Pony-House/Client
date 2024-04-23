@@ -1,2 +1,3 @@
 - auto encrypt createDM setting added to ENV.
 - Disable encrypt settings added to ENV.
+- When an existing message is decrypted, it is updated in real time now.

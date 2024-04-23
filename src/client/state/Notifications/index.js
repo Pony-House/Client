@@ -1,5 +1,5 @@
 // import { LocalNotifications } from '@capacitor/local-notifications';
-import { NotificationCountType } from 'matrix-js-sdk';
+import { MatrixEventEvent, NotificationCountType } from 'matrix-js-sdk';
 import EventEmitter from 'events';
 
 import mobileEvents, { isMobile } from '@src/util/libs/mobile';
@@ -329,9 +329,51 @@ class Notifications extends EventEmitter {
 
     // Tiny API
     tinyAPI.emit('roomTimeline', mEvent, room);
-    if (stopNotification || !this.hasNoti(room.roomId, mEvent.thread ? mEvent.thread.id : null))
-      return;
 
+    // Decrypt Notification
+    if (!stopNotification && this.hasNoti(room.roomId, mEvent.thread ? mEvent.thread.id : null)) {
+      const content = mEvent.getContent();
+      const msgType = content?.msgtype;
+      if (msgType !== 'm.bad.encrypted') {
+        this._sendDisplayPopupNoti(mEvent, content, room);
+      }
+
+      // Fail Decrypt 1
+      else {
+        const tinyThis = this;
+        let decryptTimeout;
+        const decryptFunction = (mEvent2) => {
+          if (decryptTimeout) {
+            clearTimeout(decryptTimeout);
+            decryptTimeout = null;
+          }
+
+          // Decrypt Notification 2
+          const content2 = mEvent2.getContent();
+          const msgType2 = content2?.msgtype;
+          if (msgType2 !== 'm.bad.encrypted') {
+            tinyThis._sendDisplayPopupNoti(mEvent2, content2, room);
+          }
+
+          // Fail Decrypt 2
+          else {
+            decryptTimeout = setTimeout(() => {
+              mEvent2.off(MatrixEventEvent.Decrypted, decryptFunction);
+            }, 60000);
+            mEvent2.once(MatrixEventEvent.Decrypted, decryptFunction);
+          }
+        };
+
+        // Try decrypt again
+        decryptTimeout = setTimeout(() => {
+          mEvent.off(MatrixEventEvent.Decrypted, decryptFunction);
+        }, 60000);
+        mEvent.once(MatrixEventEvent.Decrypted, decryptFunction);
+      }
+    }
+  }
+
+  async _sendDisplayPopupNoti(mEvent, content, room) {
     // Data Prepare
     const userStatus = getAccountStatus('status');
     if (!settings.showNotifications && !settings.isNotificationSounds) {
@@ -405,8 +447,6 @@ class Notifications extends EventEmitter {
         borderRadius: 8,
         scale: 8,
       });
-
-      const content = mEvent.getContent();
 
       const state = { kind: 'notification', onlyPlain: true };
       let body;

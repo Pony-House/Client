@@ -11,6 +11,7 @@ import cons from '@src/client/state/cons';
 import { isMobile } from '@src/util/libs/mobile';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import muteUserManager from '@src/util/libs/muteUserManager';
+import attemptDecryption from '@src/util/libs/attemptDecryption';
 
 import Text from '../../atoms/text/Text';
 import { hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
@@ -1393,6 +1394,10 @@ function Message({
 
   mEvent.once(MatrixEventEvent.Status, (e) => {
     setMessageStatus(e.status);
+  });
+
+  mEvent.once(MatrixEventEvent.Decrypted, () => {
+    forceUpdate();
   });
 
   const username = muteUserManager.getMessageName(mEvent, isDM);
