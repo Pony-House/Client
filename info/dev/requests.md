@@ -1,5 +1,4 @@
 Tentativa de obter perfil desconhecido
-Opção de odernar a lista de rooms geral por atividade.
 
 Ver qual Friend ninkcname está sendo usado.
 
