@@ -50,6 +50,22 @@ function findMutedRule(overrideRules, roomId) {
   return overrideRules.find((rule) => rule.rule_id === roomId && isMutedRule(rule));
 }
 
+export const getRoomTitle = (room, sender, thread) => {
+  let title;
+  const threadTitle = !thread ? '' : thread.rootEvent?.getContent()?.body ?? 'Unknown thread';
+  if (!sender || room.name === sender.name) {
+    title = `${room.name}${threadTitle.length > 0 ? ` - ${threadTitle}` : ''}`;
+  } else if (sender) {
+    title = `${sender.name} (${room.name})${threadTitle.length > 0 ? ` - (${threadTitle})` : ''} `;
+  }
+
+  if (room.nameCinny) {
+    if (typeof room.nameCinny.category === 'string') {
+      title = `(${room.nameCinny.category}) - ${title}`;
+    }
+  }
+};
+
 class Notifications extends EventEmitter {
   constructor(roomList) {
     super();
@@ -416,22 +432,8 @@ class Notifications extends EventEmitter {
 
     // Show Notification
     if (settings.showNotifications) {
-      let title;
-      const threadTitle = !mEvent.thread
-        ? ''
-        : mEvent.thread.rootEvent?.getContent()?.body ?? 'Unknown thread';
-      if (!mEvent.sender || room.name === mEvent.sender.name) {
-        title = `${room.name}${threadTitle.length > 0 ? ` - ${threadTitle}` : ''}`;
-      } else if (mEvent.sender) {
-        title = `${mEvent.sender.name} (${room.name})${threadTitle.length > 0 ? ` - (${threadTitle})` : ''} `;
-      }
-
+      const title = getRoomTitle(room, mEvent.sender, mEvent.thread);
       updateName(room);
-      if (room.nameCinny) {
-        if (typeof room.nameCinny.category === 'string') {
-          title = `(${room.nameCinny.category}) - ${title}`;
-        }
-      }
 
       const iconSize = 36;
       const icon = await renderAvatar({
