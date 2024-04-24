@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import matrixAppearance, { getAppearance } from '@src/util/libs/appearance';
 
 import { updateName, sortTime, sortName } from '../../../util/roomName';
 import initMatrix from '../../../client/initMatrix';
@@ -56,6 +57,9 @@ function RoomsCategory({ spaceId, name, hideHeader, roomIds, drawerPostie, notSp
   const mx = initMatrix.matrixClient;
   const { spaces, directs } = initMatrix.roomList;
   const [isOpen, setIsOpen] = useState(true);
+  const [orderHomeByActivity, setOrderHomeByActivity] = useState(
+    getAppearance('orderHomeByActivity'),
+  );
 
   const profileSetting = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
 
@@ -110,11 +114,23 @@ function RoomsCategory({ spaceId, name, hideHeader, roomIds, drawerPostie, notSp
   // Prepare Rooms
   const roomData = roomIds.map(renderData);
 
-  if (!isDM) {
+  if (orderHomeByActivity) {
+    roomData.sort(sortTime);
+  } else if (!isDM) {
     roomData.sort(sortName);
   } else {
     roomData.sort(sortTime);
   }
+
+  useEffect(() => {
+    const forceUpdateRoomList = (value) => {
+      setOrderHomeByActivity(value);
+    };
+    matrixAppearance.on('orderHomeByActivity', forceUpdateRoomList);
+    return () => {
+      matrixAppearance.off('orderHomeByActivity', forceUpdateRoomList);
+    };
+  });
 
   const roomHTML = roomData.map(renderSelector);
 

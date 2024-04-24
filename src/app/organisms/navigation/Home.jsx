@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import PropTypes from 'prop-types';
+import matrixAppearance, { getAppearance } from '@src/util/libs/appearance';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -18,10 +19,14 @@ import { getCurrentState } from '../../../util/matrixUtil';
 const drawerPostie = new Postie();
 function Home({ spaceId }) {
   const mx = initMatrix.matrixClient;
-  const { roomList, notifications, accountData } = initMatrix;
+  const { roomList, notifications, accountData, roomsInput } = initMatrix;
   const { spaces, rooms, directs } = roomList;
   useCategorizedSpaces();
   const isCategorized = accountData.categorizedSpaces.has(spaceId);
+  const [, forceUpdate] = useReducer((count) => count + 1, 0);
+  const [orderHomeByActivity, setOrderHomeByActivity] = useState(
+    getAppearance('orderHomeByActivity'),
+  );
 
   let categories = null;
   let spaceIds = [];
@@ -45,6 +50,11 @@ function Home({ spaceId }) {
   }
 
   useEffect(() => {
+    // Update the room list to execute the item order list
+    const forceUpdateRoomList = () => {
+      if (orderHomeByActivity && !spaceId) forceUpdate();
+    };
+
     const selectorChanged = (
       selectedRoomId,
       prevSelectedRoomId /* , eventId, selectedthreadId, prevThreadId */,
@@ -57,6 +67,7 @@ function Home({ spaceId }) {
         addresses.push(prevSelectedRoomId);
       if (addresses.length === 0) return;
       drawerPostie.post('selector-change', addresses, selectedRoomId);
+      if (orderHomeByActivity) forceUpdateRoomList();
     };
 
     const notiChanged = (roomId, total, prevTotal) => {
@@ -64,17 +75,31 @@ function Home({ spaceId }) {
       if (drawerPostie.hasTopicAndSubscriber('unread-change', roomId)) {
         drawerPostie.post('unread-change', roomId);
       }
+      if (orderHomeByActivity) forceUpdateRoomList();
     };
 
+    if (roomsInput) roomsInput.on(cons.events.roomsInput.MESSAGE_SENT, forceUpdateRoomList);
     navigation.on(cons.events.navigation.ROOM_SELECTED, selectorChanged);
     notifications.on(cons.events.notifications.NOTI_CHANGED, notiChanged);
     notifications.on(cons.events.notifications.MUTE_TOGGLED, notiChanged);
     return () => {
+      if (roomsInput)
+        roomsInput.removeListener(cons.events.roomsInput.MESSAGE_SENT, forceUpdateRoomList);
       navigation.removeListener(cons.events.navigation.ROOM_SELECTED, selectorChanged);
       notifications.removeListener(cons.events.notifications.NOTI_CHANGED, notiChanged);
       notifications.removeListener(cons.events.notifications.MUTE_TOGGLED, notiChanged);
     };
-  }, []);
+  }, [spaceId, orderHomeByActivity]);
+
+  useEffect(() => {
+    const forceUpdateRoomList = (value) => {
+      setOrderHomeByActivity(value);
+    };
+    matrixAppearance.on('orderHomeByActivity', forceUpdateRoomList);
+    return () => {
+      matrixAppearance.off('orderHomeByActivity', forceUpdateRoomList);
+    };
+  });
 
   const room = mx.getRoom(spaceId);
 
@@ -91,7 +116,7 @@ function Home({ spaceId }) {
           notSpace={roomSettings.notSpace}
           type="home"
           name="Spaces"
-          roomIds={spaceIds.sort(roomIdByAtoZ)}
+          roomIds={spaceIds.sort(orderHomeByActivity ? roomIdByActivity : roomIdByAtoZ)}
           drawerPostie={drawerPostie}
         />
       )}
@@ -101,7 +126,7 @@ function Home({ spaceId }) {
           notSpace={roomSettings.notSpace}
           type="home"
           name="Rooms"
-          roomIds={roomIds.sort(roomIdByAtoZ)}
+          roomIds={roomIds.sort(orderHomeByActivity ? roomIdByActivity : roomIdByAtoZ)}
           drawerPostie={drawerPostie}
         />
       )) ||

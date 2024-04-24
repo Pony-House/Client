@@ -81,6 +81,11 @@ class MatrixAppearance extends EventEmitter {
       this.content.sendFileBefore =
         typeof this.content.sendFileBefore === 'boolean' ? this.content.sendFileBefore : true;
 
+      this.content.orderHomeByActivity =
+        typeof this.content.orderHomeByActivity === 'boolean'
+          ? this.content.orderHomeByActivity
+          : true;
+
       this.content.forceThreadButton =
         typeof this.content.forceThreadButton === 'boolean'
           ? this.content.forceThreadButton

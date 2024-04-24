@@ -50,6 +50,10 @@ function AppearanceSection() {
   const [hideMembershipEvents, setHideMembershipEvents] = useState(settings.hideMembershipEvents);
   const [hideNickAvatarEvents, setHideNickAvatarEvents] = useState(settings.hideNickAvatarEvents);
 
+  const [orderHomeByActivity, setOrderHomeByActivity] = useState(
+    appearanceSettings.orderHomeByActivity,
+  );
+
   const [hidePinMessageEvents, setHidePinMessageEvents] = useState(
     appearanceSettings.hidePinMessageEvents,
   );
@@ -257,6 +261,23 @@ function AppearanceSection() {
               <div className="very-small text-gray">
                 Whenever you receive a new notification in your DM list, you will see a notification
                 icon in the sidebar.
+              </div>
+            }
+          />
+
+          <SettingTile
+            title={'Sort "Home" rooms in order by activity.'}
+            options={
+              <Toggle
+                className="d-inline-flex"
+                isActive={orderHomeByActivity}
+                onToggle={toggleAppearanceAction('orderHomeByActivity', setOrderHomeByActivity)}
+              />
+            }
+            content={
+              <div className="very-small text-gray">
+                All rooms in the "Home" tab are always sorted by which one had the most recent
+                message received.
               </div>
             }
           />

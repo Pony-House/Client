@@ -3,3 +3,4 @@
 - When an existing message is decrypted, it is updated in real time now.
 - urlPreviewStore - optimized clear cache.
 - Rooms notification number added to the favicon.
+- Sort "Home" rooms in order by activity. (New appearance setting added)
