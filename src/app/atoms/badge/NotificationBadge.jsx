@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { checkerFavIcon } from '../../../util/libs/favicon';
 
-function NotificationBadge({ alert, content, className, bgColor }) {
+function NotificationBadge({ alert, content, className, bgColor, ignoreClass }) {
   const classes = ['badge', `bg-${bgColor}`, 'notification-badge'];
   if (className) classes.push(className);
+  if (ignoreClass) classes.push('ignore-notification');
 
   let finalContent = '';
   if (alert || content !== null) {
@@ -22,6 +23,7 @@ function NotificationBadge({ alert, content, className, bgColor }) {
 
 NotificationBadge.defaultProps = {
   bgColor: 'bg',
+  ignoreClass: false,
   alert: false,
   content: null,
   className: null,
@@ -29,6 +31,7 @@ NotificationBadge.defaultProps = {
 
 NotificationBadge.propTypes = {
   bgColor: PropTypes.string,
+  ignoreClass: PropTypes.bool,
   alert: PropTypes.bool,
   className: PropTypes.string,
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

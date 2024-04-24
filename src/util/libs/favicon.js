@@ -37,7 +37,7 @@ export function checkerFavIcon() {
     let indirectCount = 0;
 
     // Retrieves notification badges
-    const badges = $('.sidebar .sidebar-1 .notification-badge');
+    const badges = $('.sidebar .sidebar-1 .notification-badge:not(.ignore-notification)');
     for (const badge of badges) {
       indirectCount++;
       const nb = Number($(badge).text());

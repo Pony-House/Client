@@ -200,6 +200,7 @@ export default function FeaturedTab() {
                   className={notificationClasses}
                   alert={childNoti.highlight > 0}
                   content={abbreviateNumber(childNoti.total) || null}
+                  ignoreClass
                 />
               }
             />
