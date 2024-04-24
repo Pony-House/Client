@@ -611,14 +611,14 @@ function ProfileViewer() {
       $(displayNameRef.current).find('> .button').on('click', copyUsername.display);
       $(userNameRef.current).find('> .button').on('click', copyUsername.tag);
 
-      $(profileAvatar.current).on('click', tinyAvatarPreview);
+      // $(profileAvatar.current).on('click', tinyAvatarPreview);
       $(noteRef.current)
         .on('change', tinyNoteUpdate)
         .on('keypress keyup keydown', tinyNoteSpacing)
         .val(tinyNote);
 
       tinyNoteSpacing({ target: noteRef.current });
-      // if (user) updateProfileStatus(null, user);
+      if (user) updateProfileStatus(null, user);
 
       return () => {
         menubar.empty();
@@ -627,7 +627,7 @@ function ProfileViewer() {
         $(noteRef.current)
           .off('change', tinyNoteUpdate)
           .off('keypress keyup keydown', tinyNoteSpacing);
-        // if (user) $(profileAvatar.current).off('click', tinyAvatarPreview);
+        // $(profileAvatar.current).off('click', tinyAvatarPreview);
         if (user) user.removeListener('User.currentlyActive', updateProfileStatus);
         if (user) user.removeListener('User.lastPresenceTs', updateProfileStatus);
         if (user) user.removeListener('User.presence', updateProfileStatus);
