@@ -21,7 +21,7 @@ export function changeFavIcon(value, unread = false, notis = 0, directCount = 0)
     // document.title = !unread ? favicon.title : `${typeof notis === 'number' && notis > 0 ? `${notis <= 99 ? `(${String(notis)})` : '(+99)'} ` : ''}${favicon.title}`;
     document.title = !unread
       ? favicon.title
-      : `${typeof notis === 'number' ? `(${directCount > 0 ? `${directCount < 99 ? String(directCount) : '99+'}` : '• '}) ` : ''}${favicon.title}`;
+      : `${typeof notis === 'number' ? `(${directCount > 0 ? `${directCount < 99 ? String(directCount) : '99+'}` : '•'}) ` : ''}${favicon.title}`;
   }
 }
 
