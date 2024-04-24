@@ -4,6 +4,10 @@ import Olm from '@matrix-org/olm';
 
 import envAPI from '@src/util/libs/env';
 import { startTimestamp } from '@src/util/markdown';
+import attemptDecryption from '@src/util/libs/attemptDecryption';
+import { preloadImages } from '@src/util/tools';
+import defaultAvatar from '@src/app/atoms/avatar/defaultAvatar';
+
 import { secret } from './state/auth';
 import RoomList from './state/RoomList';
 import AccountData from './state/AccountData';
@@ -12,7 +16,6 @@ import Notifications from './state/Notifications';
 import { cryptoCallbacks } from './state/secretStorageKeys';
 import navigation from './state/navigation';
 import logger from './logger';
-import attemptDecryption from '@src/util/libs/attemptDecryption';
 
 global.Olm = Olm;
 
@@ -92,6 +95,13 @@ class InitMatrix extends EventEmitter {
   async startClient(isGuest = false) {
     startCustomDNS();
     startTimestamp();
+
+    const avatarsToLoad = [];
+    for (let i = 0; i < 8; i++) {
+      avatarsToLoad.push(defaultAvatar(i + 1));
+    }
+
+    preloadImages(avatarsToLoad);
 
     const indexedDBStore = new sdk.IndexedDBStore({
       indexedDB: global.indexedDB,
