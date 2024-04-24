@@ -408,17 +408,6 @@ function ProfileViewer() {
     return null;
   };
 
-  // Avatar Preview
-  const tinyAvatarPreview = () => {
-    imageViewer({
-      lightbox,
-      imgQuery: $(profileAvatar.current).find('> img'),
-      name: username,
-      url: avatarUrl,
-      readMime: true,
-    });
-  };
-
   if (!isOpen) tinyMenuId = 'default';
 
   useEffect(() => {
@@ -428,10 +417,22 @@ function ProfileViewer() {
         : user
           ? user?.avatarUrl
           : null;
-      setAvatarUrl(
-        avatarMxc && avatarMxc !== 'null' && avatarMxc !== null ? mx.mxcUrlToHttp(avatarMxc) : null,
-      );
+
+      const newAvatar =
+        avatarMxc && avatarMxc !== 'null' && avatarMxc !== null ? mx.mxcUrlToHttp(avatarMxc) : null;
+      setAvatarUrl(newAvatar);
       setUsername(roomMember ? getUsernameOfRoomMember(roomMember) : getTheUsername());
+
+      // Avatar Preview
+      const tinyAvatarPreview = () => {
+        imageViewer({
+          lightbox,
+          imgQuery: $(profileAvatar.current).find('> img'),
+          name: username,
+          url: newAvatar,
+          readMime: true,
+        });
+      };
 
       // Menu Bar
       const menubar = $(menubarRef.current);
@@ -611,7 +612,7 @@ function ProfileViewer() {
       $(displayNameRef.current).find('> .button').on('click', copyUsername.display);
       $(userNameRef.current).find('> .button').on('click', copyUsername.tag);
 
-      // $(profileAvatar.current).on('click', tinyAvatarPreview);
+      $(profileAvatar.current).on('click', tinyAvatarPreview);
       $(noteRef.current)
         .on('change', tinyNoteUpdate)
         .on('keypress keyup keydown', tinyNoteSpacing)
@@ -627,7 +628,7 @@ function ProfileViewer() {
         $(noteRef.current)
           .off('change', tinyNoteUpdate)
           .off('keypress keyup keydown', tinyNoteSpacing);
-        // $(profileAvatar.current).off('click', tinyAvatarPreview);
+        $(profileAvatar.current).off('click', tinyAvatarPreview);
         if (user) user.removeListener('User.currentlyActive', updateProfileStatus);
         if (user) user.removeListener('User.lastPresenceTs', updateProfileStatus);
         if (user) user.removeListener('User.presence', updateProfileStatus);
