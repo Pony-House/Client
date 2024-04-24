@@ -227,6 +227,11 @@ export function openThreadsMessageModal(room) {
               msgData = $('<span>', { class: 'custom-html' }).append(msgData);
             }
 
+            const td = $('<td>', {
+              class:
+                'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container',
+            });
+
             // Insert Body
             body.push(
               $('<tr>', {
@@ -234,10 +239,7 @@ export function openThreadsMessageModal(room) {
                 class: 'message message--body-only user-you-message chatbox-portable border-bg',
               }).append(
                 // Avatar
-                $('<td>', {
-                  class:
-                    'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container',
-                }).append(
+                td.append(
                   $('<button>')
                     .on('click', () => openProfileViewer(userId, roomId))
                     .append(
@@ -248,8 +250,7 @@ export function openThreadsMessageModal(room) {
                         alt: 'avatar',
                       })
                         .on('load', (event) => {
-                          const e = event.originalEvent;
-                          e.target.style.backgroundColor = 'transparent';
+                          td.addClass('avatar-react-loaded');
                         })
                         .on('error', (event) => {
                           const e = event.originalEvent;

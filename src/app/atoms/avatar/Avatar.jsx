@@ -15,6 +15,22 @@ import { getAppearance } from '../../../util/libs/appearance';
 
 const ImageBrokenSVG = './img/svg/image-broken.svg';
 
+export const avatarDefaultColor = (bgColor) => {
+  // Colors
+  let colorCode = Number(bgColor.substring(0, bgColor.length - 1).replace('var(--mx-uc-', ''));
+  if (
+    typeof colorCode !== 'number' ||
+    Number.isNaN(colorCode) ||
+    !Number.isFinite(colorCode) ||
+    colorCode < 1
+  ) {
+    colorCode = 1;
+  }
+
+  // Default Avatar
+  return defaultAvatar(colorCode);
+};
+
 const Avatar = React.forwardRef(
   (
     {
@@ -36,6 +52,7 @@ const Avatar = React.forwardRef(
   ) => {
     // Freeze Avatar
     const freezeAvatarRef = useRef(null);
+    const ref2 = useRef(null);
 
     // Avatar Config
     const appearanceSettings = getAppearance();
@@ -46,19 +63,7 @@ const Avatar = React.forwardRef(
     if (size === 'small') textSize = 'b1';
     if (size === 'extra-small') textSize = 'b3';
 
-    // Colors
-    let colorCode = Number(bgColor.substring(0, bgColor.length - 1).replace('var(--mx-uc-', ''));
-    if (
-      typeof colorCode !== 'number' ||
-      Number.isNaN(colorCode) ||
-      !Number.isFinite(colorCode) ||
-      colorCode < 1
-    ) {
-      colorCode = 1;
-    }
-
-    // Default Avatar
-    const tinyDa = defaultAvatar(colorCode);
+    const tinyDa = avatarDefaultColor(bgColor);
     setTimeout(forceLoadAvatars, 100);
     useEffect(() => {
       forceLoadAvatars();
@@ -99,13 +104,23 @@ const Avatar = React.forwardRef(
       }
     }, []);
 
+    const onLoadAvatar = () => {
+      if (ref) {
+        if (ref.current) ref.current.classList.add('avatar-react-loaded');
+      } else if (ref2.current) ref2.current.classList.add('avatar-react-loaded');
+    };
+
+    const isImage = imageSrc !== null || isDefaultImage;
+
     // Render
     return (
-      <div ref={ref} className={`avatar-container avatar-container__${size} ${className} noselect`}>
+      <div
+        ref={ref || ref2}
+        className={`avatar-container avatar-container__${size} ${className} noselect${isImage ? '' : ' avatar-react-loaded'}`}
+      >
         {
           // Exist Image
-          // eslint-disable-next-line no-nested-ternary
-          imageSrc !== null || isDefaultImage ? (
+          isImage ? (
             // Image
             !imageAnimSrc || !appearanceSettings.isAnimateAvatarsEnabled ? (
               // Default Image
@@ -118,9 +133,7 @@ const Avatar = React.forwardRef(
                     ? readImageUrl(imageSrc)
                     : tinyDa
                 }
-                onLoad={(e) => {
-                  e.target.style.backgroundColor = 'transparent';
-                }}
+                onLoad={onLoadAvatar}
                 onError={(e) => {
                   e.target.src = ImageBrokenSVG;
                 }}
@@ -132,6 +145,7 @@ const Avatar = React.forwardRef(
                 <img
                   ref={freezeAvatarRef}
                   className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
+                  onLoad={onLoadAvatar}
                   src={
                     typeof imageAnimSrc === 'string' && imageAnimSrc.length > 0
                       ? readImageUrl(imageAnimSrc)
@@ -151,7 +165,10 @@ const Avatar = React.forwardRef(
                 normalsrc={imageSrc}
                 defaultavatar={tinyDa}
                 src={readImageUrl(tinyDa)}
-                onLoad={loadAvatar}
+                onLoad={(e) => {
+                  onLoadAvatar(e);
+                  loadAvatar(e);
+                }}
                 onError={(e) => {
                   e.target.src = ImageBrokenSVG;
                 }}

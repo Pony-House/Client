@@ -64,6 +64,8 @@ export const getRoomTitle = (room, sender, thread) => {
       title = `(${room.nameCinny.category}) - ${title}`;
     }
   }
+
+  return title;
 };
 
 class Notifications extends EventEmitter {

@@ -4,3 +4,6 @@
 - urlPreviewStore - optimized clear cache.
 - Rooms notification number added to the favicon.
 - Sort "Home" rooms in order by activity. (New appearance setting added)
+- Edited text - noselect.
+- Avatar load animation added.
+- New profile modal bg border value: --bg-profile-banner

@@ -107,6 +107,18 @@
   }
 }
 
+@keyframes avatar-container-loading {
+  0% {
+    background-color: var(--bg-surface-hover);
+  }
+  50% {
+    background-color: var(--bg-surface-transparent);
+  }
+  100% {
+    background-color: var(--bg-surface-hover);
+  }
+}
+
 .avatar-container {
   width: 42px;
   height: 42px;
@@ -145,8 +157,28 @@
 
   > img,
   > canvas {
+    font-size: 0;
     border-radius: inherit;
-    background-color: var(--bg-surface-hover);
+    opacity: 0;
+  }
+
+  background-color: var(--bg-surface-hover);
+  -webkit-animation: avatar-container-loading 1.5s infinite ease-in-out;
+  -moz-animation: avatar-container-loading 1.5s infinite ease-in-out;
+  -o-animation: avatar-container-loading 1.5s infinite ease-in-out;
+  animation: avatar-container-loading 1.5s infinite ease-in-out;
+
+  &.avatar-react-loaded {
+    background-color: transparent !important;
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+
+    > img,
+    > canvas {
+      opacity: 1;
+    }
   }
 
   .avatar__border {
@@ -163,6 +195,16 @@
       @extend .avatar__border;
       box-shadow: var(--bs-surface-border);
     }
+  }
+}
+
+.modal-dialog-user-profile,
+.people-drawer-banner {
+  .avatar-container {
+    background-color: var(--bg-profile-banner) !important;
+  }
+  &.avatar-react-loaded {
+    background-color: var(--bg-profile-banner) !important;
   }
 }
 

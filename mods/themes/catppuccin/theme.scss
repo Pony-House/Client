@@ -273,12 +273,7 @@
     background: var(--bg-surface-extra-low) !important;
   }
 
-  .modal-dialog-user-profile,
-  .people-drawer-banner {
-    .avatar-container {
-      background-color: var(--bg-surface-extra-low) !important;
-    }
-  }
+  --bg-profile-banner: var(--bg-surface-extra-low);
 
   .card {
     --bs-card-bg: var(--base) !important;

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import clone from 'clone';
 import envAPI from '@src/util/libs/env';
+import defaultAvatar from '@src/app/atoms/avatar/defaultAvatar';
 
 import { twemojifyReact } from '../../../util/twemojify';
 import { getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
@@ -392,15 +393,46 @@ function ProfileViewer() {
 
   // Get Data
   const mx = initMatrix.matrixClient;
+
   const user = mx.getUser(userId);
   const room = mx.getRoom(roomId);
-  let avatarUrl;
-  let username;
+  const roomMember = room ? room.getMember(userId) : null;
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [username, setUsername] = useState(null);
+
+  const getTheUsername = () => {
+    if (userId) {
+      const newUsername = getUsername(userId);
+      if (newUsername) return newUsername;
+    }
+    return null;
+  };
+
+  // Avatar Preview
+  const tinyAvatarPreview = () => {
+    imageViewer({
+      lightbox,
+      imgQuery: $(profileAvatar.current).find('> img'),
+      name: username,
+      url: avatarUrl,
+      readMime: true,
+    });
+  };
 
   if (!isOpen) tinyMenuId = 'default';
 
   useEffect(() => {
     if (user) {
+      const avatarMxc = roomMember
+        ? roomMember?.getMxcAvatarUrl?.()
+        : user
+          ? user?.avatarUrl
+          : null;
+      setAvatarUrl(
+        avatarMxc && avatarMxc !== 'null' && avatarMxc !== null ? mx.mxcUrlToHttp(avatarMxc) : null,
+      );
+      setUsername(roomMember ? getUsernameOfRoomMember(roomMember) : getTheUsername());
+
       // Menu Bar
       const menubar = $(menubarRef.current);
       const menuBarItems = [];
@@ -558,17 +590,6 @@ function ProfileViewer() {
         display: (event) => copyText(event, 'Display name successfully copied to the clipboard.'),
       };
 
-      // Avatar Preview
-      const tinyAvatarPreview = () => {
-        imageViewer({
-          lightbox,
-          imgQuery: $(profileAvatar.current).find('> img'),
-          name: username,
-          url: avatarUrl,
-          readMime: true,
-        });
-      };
-
       // Update Note
       const tinyNoteUpdate = (event) => {
         addToDataFolder('user_cache', 'note', userId, $(event.target).val(), 200);
@@ -583,9 +604,9 @@ function ProfileViewer() {
       // Read Events
       const tinyNote = getDataList('user_cache', 'note', userId);
 
-      user.on('User.currentlyActive', updateProfileStatus);
-      user.on('User.lastPresenceTs', updateProfileStatus);
-      user.on('User.presence', updateProfileStatus);
+      if (user) user.on('User.currentlyActive', updateProfileStatus);
+      if (user) user.on('User.lastPresenceTs', updateProfileStatus);
+      if (user) user.on('User.presence', updateProfileStatus);
 
       $(displayNameRef.current).find('> .button').on('click', copyUsername.display);
       $(userNameRef.current).find('> .button').on('click', copyUsername.tag);
@@ -597,7 +618,7 @@ function ProfileViewer() {
         .val(tinyNote);
 
       tinyNoteSpacing({ target: noteRef.current });
-      updateProfileStatus(null, user);
+      // if (user) updateProfileStatus(null, user);
 
       return () => {
         menubar.empty();
@@ -606,22 +627,19 @@ function ProfileViewer() {
         $(noteRef.current)
           .off('change', tinyNoteUpdate)
           .off('keypress keyup keydown', tinyNoteSpacing);
-        $(profileAvatar.current).off('click', tinyAvatarPreview);
-        user.removeListener('User.currentlyActive', updateProfileStatus);
-        user.removeListener('User.lastPresenceTs', updateProfileStatus);
-        user.removeListener('User.presence', updateProfileStatus);
+        // if (user) $(profileAvatar.current).off('click', tinyAvatarPreview);
+        if (user) user.removeListener('User.currentlyActive', updateProfileStatus);
+        if (user) user.removeListener('User.lastPresenceTs', updateProfileStatus);
+        if (user) user.removeListener('User.presence', updateProfileStatus);
       };
+    } else {
+      setAvatarUrl(defaultAvatar());
+      setUsername(null);
     }
   }, [user]);
 
   // Render Profile
   const renderProfile = () => {
-    const roomMember = room.getMember(userId);
-    username = roomMember ? getUsernameOfRoomMember(roomMember) : getUsername(userId);
-
-    const avatarMxc = roomMember?.getMxcAvatarUrl?.() || user?.avatarUrl;
-    avatarUrl = avatarMxc && avatarMxc !== 'null' ? mx.mxcUrlToHttp(avatarMxc) : null;
-
     const powerLevel = roomMember?.powerLevel || 0;
     const myPowerLevel = room.getMember(mx.getUserId())?.powerLevel || 0;
 

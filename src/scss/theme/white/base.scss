@@ -259,12 +259,7 @@
   --fluid-slide-down: cubic-bezier(0.02, 0.82, 0.4, 0.96);
   --fluid-slide-up: cubic-bezier(0.13, 0.56, 0.25, 0.99);
 
-  .modal-dialog-user-profile,
-  .people-drawer-banner {
-    .avatar-container {
-      background-color: #f3f3f3;
-    }
-  }
+  --bg-profile-banner: #f3f3f3;
 }
 
 .btn-theme {
