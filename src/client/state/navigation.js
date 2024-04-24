@@ -390,6 +390,8 @@ class Navigation extends EventEmitter {
         if (typeof action.tabId === 'string' && action.tabId.length > 0)
           urlParams.set('tab', action.tabId, false);
         else urlParams.delete('tab', undefined, false);
+
+        urlParams.refreshState();
       },
 
       [cons.actions.navigation.UPDATE_EMOJI_LIST]: () => {
