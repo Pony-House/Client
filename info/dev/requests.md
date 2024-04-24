@@ -23,10 +23,6 @@ ENS Ethereum
 
     =============================================
 
-    Trocar o titulo da página de bolinha de notificação para números
-
-    =============================================
-
     --> Fazer opção para uma room de informações ser realmente de informação.
 
     =======================================================
