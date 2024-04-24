@@ -97,8 +97,8 @@ class InitMatrix extends EventEmitter {
     startTimestamp();
 
     const avatarsToLoad = [];
-    for (let i = 0; i < 8; i++) {
-      avatarsToLoad.push(defaultAvatar(i + 1));
+    for (let i = 0; i < 9; i++) {
+      avatarsToLoad.push(defaultAvatar(i));
     }
 
     preloadImages(avatarsToLoad);

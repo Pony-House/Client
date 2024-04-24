@@ -639,10 +639,10 @@ function ProfileViewer() {
         if (user) user.removeListener('User.presence', updateProfileStatus);
       };
     } else if (!userId) {
-      setAvatarUrl(defaultAvatar());
+      setAvatarUrl(defaultAvatar(0));
       setUsername(null);
     }
-    if (username === null && avatarUrl === defaultAvatar()) {
+    if (username === null && avatarUrl === defaultAvatar(0)) {
       // Avatar Preview
       let newAvatar;
       const tinyAvatarPreview = () => {
