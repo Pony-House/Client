@@ -1,5 +1,3 @@
-Tentativa de obter perfil desconhecido
-
 Ver qual Friend ninkcname está sendo usado.
 
 Ver em quais rooms o usuário está (Pelo perfil)

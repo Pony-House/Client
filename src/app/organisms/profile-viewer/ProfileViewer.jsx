@@ -425,13 +425,15 @@ function ProfileViewer() {
 
       // Avatar Preview
       const tinyAvatarPreview = () => {
-        imageViewer({
-          lightbox,
-          imgQuery: $(profileAvatar.current).find('> img'),
-          name: username,
-          url: newAvatar,
-          readMime: true,
-        });
+        if (newAvatar) {
+          imageViewer({
+            lightbox,
+            imgQuery: $(profileAvatar.current).find('> img'),
+            name: username,
+            url: newAvatar,
+            readMime: true,
+          });
+        }
       };
 
       // Menu Bar
@@ -633,9 +635,46 @@ function ProfileViewer() {
         if (user) user.removeListener('User.lastPresenceTs', updateProfileStatus);
         if (user) user.removeListener('User.presence', updateProfileStatus);
       };
-    } else {
+    } else if (!userId) {
       setAvatarUrl(defaultAvatar());
       setUsername(null);
+    }
+    if (username === null && avatarUrl === defaultAvatar()) {
+      // Avatar Preview
+      let newAvatar;
+      const tinyAvatarPreview = () => {
+        if (newAvatar) {
+          imageViewer({
+            lightbox,
+            imgQuery: $(profileAvatar.current).find('> img'),
+            name: userId,
+            url: newAvatar,
+            readMime: true,
+          });
+        }
+      };
+
+      $(profileAvatar.current).on('click', tinyAvatarPreview);
+      mx.getProfileInfo(userId)
+        .then((userProfile) => {
+          newAvatar =
+            userProfile.avatar_url &&
+            userProfile.avatar_url !== 'null' &&
+            userProfile.avatar_url !== null
+              ? mx.mxcUrlToHttp(userProfile.avatar_url)
+              : null;
+
+          setUsername(userProfile.displayname);
+          setAvatarUrl(newAvatar);
+        })
+        .catch((err) => {
+          console.error(err);
+          alert(err.message);
+        });
+
+      return () => {
+        $(profileAvatar.current).off('click', tinyAvatarPreview);
+      };
     }
   }, [user]);
 
