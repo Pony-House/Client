@@ -146,16 +146,21 @@ class Navigation extends EventEmitter {
     );
 
     // Room Id
-    if (typeof roomId === 'string' && roomId.length > 0) urlParams.set('room_id', roomId);
-    else urlParams.delete('room_id');
+    if (typeof roomId === 'string' && roomId.length > 0) urlParams.set('room_id', roomId, false);
+    else urlParams.delete('room_id', undefined, false);
 
     // Event Id
-    if (typeof eventId === 'string' && eventId.length > 0) urlParams.set('event_id', eventId);
-    else urlParams.delete('event_id');
+    if (typeof eventId === 'string' && eventId.length > 0)
+      urlParams.set('event_id', eventId, false);
+    else urlParams.delete('event_id', undefined, false);
 
     // Thread Id
-    if (typeof threadId === 'string' && threadId.length > 0) urlParams.set('thread_id', threadId);
-    else urlParams.delete('thread_id');
+    if (typeof threadId === 'string' && threadId.length > 0)
+      urlParams.set('thread_id', threadId, false);
+    else urlParams.delete('thread_id', undefined, false);
+
+    // Refresh Url Params
+    urlParams.refreshState();
   }
 
   _selectTabWithRoom(roomId) {
@@ -264,8 +269,8 @@ class Navigation extends EventEmitter {
     tinyAPI.emit('spaceSelected', this.selectedSpaceId);
     this.emit(cons.events.navigation.SPACE_SELECTED, this.selectedSpaceId);
 
-    if (typeof roomId === 'string' && roomId.length > 0) urlParams.set('space_id', roomId);
-    else urlParams.delete('space_id');
+    if (typeof roomId === 'string' && roomId.length > 0) urlParams.set('space_id', roomId, false);
+    else urlParams.delete('space_id', undefined, false);
   }
 
   _selectRoomWithSpace(spaceId) {
@@ -365,10 +370,10 @@ class Navigation extends EventEmitter {
         $('.space-drawer-menu-item').removeClass('active');
 
         if (action.isSpace) {
-          urlParams.set('is_space', 'true');
+          urlParams.set('is_space', 'true', false);
           setSelectSpace(action.tabId);
         } else {
-          urlParams.delete('is_space');
+          urlParams.delete('is_space', undefined, false);
           setSelectSpace(null);
         }
 
@@ -383,8 +388,8 @@ class Navigation extends EventEmitter {
         setTimeout(() => tinyAPI.emit('selectTabAfter', { roomId, tabId: action.tabId }), 100);
 
         if (typeof action.tabId === 'string' && action.tabId.length > 0)
-          urlParams.set('tab', action.tabId);
-        else urlParams.delete('tab');
+          urlParams.set('tab', action.tabId, false);
+        else urlParams.delete('tab', undefined, false);
       },
 
       [cons.actions.navigation.UPDATE_EMOJI_LIST]: () => {
@@ -409,8 +414,8 @@ class Navigation extends EventEmitter {
 
       [cons.actions.navigation.SELECT_ROOM_MODE]: () => {
         if (typeof roomType === 'string' && action.roomType.length > 0)
-          urlParams.set('room_mode', action.roomType);
-        else urlParams.delete('room_mode');
+          urlParams.set('room_mode', action.roomType, false);
+        else urlParams.delete('room_mode', undefined, false);
 
         tinyAPI.emit('selectedRoomMode', action.roomType);
         this.emit(cons.events.navigation.SELECTED_ROOM_MODE, action.roomType);
