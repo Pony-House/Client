@@ -33,7 +33,7 @@ import { colorMXID, cssColorMXID } from '../../../util/colorMXID';
 import Text from '../../atoms/text/Text';
 import Chip from '../../atoms/chip/Chip';
 import Input from '../../atoms/input/Input';
-import Avatar from '../../atoms/avatar/Avatar';
+import Avatar, { avatarDefaultColor } from '../../atoms/avatar/Avatar';
 import Button from '../../atoms/button/Button';
 import { MenuItem } from '../../atoms/context-menu/ContextMenu';
 import PowerLevelSelector from '../../molecules/power-level-selector/PowerLevelSelector';
@@ -419,7 +419,10 @@ function ProfileViewer() {
           : null;
 
       const newAvatar =
-        avatarMxc && avatarMxc !== 'null' && avatarMxc !== null ? mx.mxcUrlToHttp(avatarMxc) : null;
+        avatarMxc && avatarMxc !== 'null' && avatarMxc !== null
+          ? mx.mxcUrlToHttp(avatarMxc)
+          : avatarDefaultColor(colorMXID(userId));
+
       setAvatarUrl(newAvatar);
       setUsername(roomMember ? getUsernameOfRoomMember(roomMember) : getTheUsername());
 
