@@ -108,7 +108,7 @@ class Notifications extends EventEmitter {
     [...this.roomList.directs].forEach(addNoti);
 
     this.initialized = true;
-    // this._updateFavicon();
+    checkerFavIcon();
   }
 
   doesRoomHaveUnread(room) {
@@ -215,7 +215,7 @@ class Notifications extends EventEmitter {
       addNoti(spaceId, addT, addH, roomId);
     });
 
-    // this._updateFavicon();
+    checkerFavIcon();
   }
 
   _deleteNoti(roomId, threadId, total, highlight) {
@@ -252,7 +252,7 @@ class Notifications extends EventEmitter {
       removeNoti(spaceId, total, highlight, roomId);
     });
 
-    // this._updateFavicon();
+    checkerFavIcon();
   }
 
   async sendNotification(data) {

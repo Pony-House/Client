@@ -12,8 +12,8 @@ class AttemptDecryption extends EventEmitter {
     this.emit('start', true);
   }
 
-  exec(mEvent, ops = undefined, ignoreError = false) {
-    return new Promise(async (resolve, reject) => {
+  exec(mEvent, ops = undefined) {
+    return new Promise(async (resolve) => {
       try {
         let result;
         if (!objType(ops, 'object'))
@@ -22,8 +22,8 @@ class AttemptDecryption extends EventEmitter {
 
         resolve(result);
       } catch (err) {
-        if (!ignoreError) reject(err);
-        else console.error(err);
+        resolve(null);
+        console.error(err);
       }
     });
   }
