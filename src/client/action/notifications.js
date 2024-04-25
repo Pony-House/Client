@@ -17,7 +17,7 @@ export async function markAsRead(roomId, threadId) {
     notifications.emit(cons.events.notifications.THREAD_NOTIFICATION, thread);
   }
 
-  initMatrix.notifications.deleteNoti(roomId);
+  initMatrix.notifications.deleteNoti(roomId, threadId);
 
   const userId = mx.getUserId();
   if (!userId) {

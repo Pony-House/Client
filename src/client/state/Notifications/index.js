@@ -579,7 +579,12 @@ class Notifications extends EventEmitter {
             this.getNotiType(room.roomId, mEvent.thread ? mEvent.thread.id : null) ===
             cons.notifs.MUTE
           ) {
-            this.deleteNoti(room.roomId, total ?? 0, highlight ?? 0);
+            this.deleteNoti(
+              room.roomId,
+              mEvent.thread ? mEvent.thread.id : null,
+              total ?? 0,
+              highlight ?? 0,
+            );
             // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
             stopNotification = true;
           }
