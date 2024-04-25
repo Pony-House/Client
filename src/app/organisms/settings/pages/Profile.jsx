@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import moment from '@src/util/libs/momentjs';
 import { readImageUrl } from '@src/util/libs/mediaCache';
+import { avatarDefaultColor } from '@src/app/atoms/avatar/Avatar';
 
 import initMatrix from '../../../../client/initMatrix';
 import { getEventCords } from '../../../../util/common';
@@ -15,7 +16,7 @@ import ImageUpload from '../../../molecules/image-upload/ImageUpload';
 import { toast } from '../../../../util/tools';
 import { getStatusCSS } from '../../../../util/onlineStatus';
 import { confirmDialog } from '../../../molecules/confirm-dialog/ConfirmDialog';
-import defaultAvatar from '../../../atoms/avatar/defaultAvatar';
+import { colorMXID } from '@src/util/colorMXID';
 
 function ProfileSection() {
   const userProfile =
@@ -26,12 +27,14 @@ function ProfileSection() {
   const pronounsRef = useRef(null);
   const timezoneRef = useRef(null);
 
+  const color = colorMXID(initMatrix.matrixClient.getUserId());
+
   const [customStatusIcon, setcustomStatusIcon] = useState(
     typeof userProfile.msgIcon === 'string'
       ? userProfile.msgIcon.length <= 2
         ? twemojifyToUrl(userProfile.msgIcon)
         : initMatrix.matrixClient.mxcUrlToHttp(userProfile.msgIcon)
-      : defaultAvatar(1),
+      : avatarDefaultColor(color),
   );
 
   const [customStatusValue, setcustomStatusValue] = useState(
@@ -273,7 +276,7 @@ function ProfileSection() {
                     fa="fa-solid fa-xmark"
                     className="btn-sm me-2"
                     onClick={() => {
-                      setcustomStatusIcon(defaultAvatar(1));
+                      setcustomStatusIcon(avatarDefaultColor(color));
                       setcustomStatusValue(null);
                     }}
                   />
@@ -299,7 +302,7 @@ function ProfileSection() {
                             setcustomStatusIcon(twemojifyUrl(emoji.hexcode));
                             setcustomStatusValue(emoji.unicode);
                           } else {
-                            setcustomStatusIcon(defaultAvatar(1));
+                            setcustomStatusIcon(avatarDefaultColor(color));
                             setcustomStatusValue(null);
                           }
 
@@ -394,6 +397,7 @@ function ProfileSection() {
               imageSrc={bannerSrc}
               onUpload={handleBannerUpload}
               onRequestRemove={() => handleBannerUpload(null)}
+              defaultImage={avatarDefaultColor(color, 'profile')}
             />
           </li>
         </ul>

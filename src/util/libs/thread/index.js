@@ -16,7 +16,7 @@ import { openProfileViewer, selectRoom } from '@src/client/action/navigation';
 import { createMessageData } from '@src/app/molecules/message/Message';
 import { jqueryTime } from '@src/app/atoms/time/Time';
 
-import defaultAvatar from '@src/app/atoms/avatar/defaultAvatar';
+import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 
 import { btModal, objType } from '../../tools';
 import initMatrix, { fetchFn } from '../../../client/initMatrix';

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import { colorMXID } from '@src/util/colorMXID';
 import ImageUpload from '../../molecules/image-upload/ImageUpload';
-import Avatar from '../../atoms/avatar/Avatar';
+import Avatar, { avatarDefaultColor } from '../../atoms/avatar/Avatar';
 
 import Toggle from '../../atoms/button/Toggle';
 import SettingTile from '../../molecules/setting-tile/SettingTile';
@@ -18,6 +19,7 @@ function PonyHouseSettings({ roomId, room }) {
   const userId = mx.getUserId();
   const roomName = room?.name;
   const [isRoomIconsVisible, setRoomIconsVisible] = useState(false);
+  const color = colorMXID(initMatrix.matrixClient.getUserId());
 
   const toggleShowRoomIcons = async (data) => {
     await mx.sendStateEvent(roomId, 'pony.house.settings', { isActive: data }, 'roomIcons');
@@ -75,6 +77,7 @@ function PonyHouseSettings({ roomId, room }) {
             imageSrc={avatarSrc}
             onUpload={(url) => handleBannerUpload(url, roomId)}
             onRequestRemove={() => handleBannerUpload(null, roomId)}
+            defaultImage={avatarDefaultColor(color, 'space')}
           />
         )}
       </li>

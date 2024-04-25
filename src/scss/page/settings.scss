@@ -62,6 +62,16 @@
 }
 
 #settings-base {
+  #settings-content {
+    .space-banner {
+      .img-upload .avatar-container__large {
+        margin-left: 0px !important;
+      }
+    }
+  }
+}
+
+#settings-base {
   #setting-tab {
     .nav-link {
       color: var(--ic-surface);

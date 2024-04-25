@@ -3,7 +3,7 @@ import moment, { momentFormat } from '@src/util/libs/momentjs';
 import PropTypes from 'prop-types';
 import envAPI from '@src/util/libs/env';
 import { readImageUrl } from '@src/util/libs/mediaCache';
-import defaultAvatar from '@src/app/atoms/avatar/defaultAvatar';
+import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 import { openProfileViewer } from '@src/client/action/navigation';
 
 import { twemojifyReact, twemojify } from '../../../util/twemojify';

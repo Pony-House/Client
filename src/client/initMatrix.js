@@ -6,7 +6,11 @@ import envAPI from '@src/util/libs/env';
 import { startTimestamp } from '@src/util/markdown';
 import attemptDecryption from '@src/util/libs/attemptDecryption';
 import { preloadImages } from '@src/util/tools';
-import defaultAvatar from '@src/app/atoms/avatar/defaultAvatar';
+import {
+  defaultAvatar,
+  defaultProfileBanner,
+  defaultSpaceBanner,
+} from '@src/app/atoms/avatar/defaultAvatar';
 
 import { secret } from './state/auth';
 import RoomList from './state/RoomList';
@@ -99,6 +103,8 @@ class InitMatrix extends EventEmitter {
     const avatarsToLoad = [];
     for (let i = 0; i < 9; i++) {
       avatarsToLoad.push(defaultAvatar(i));
+      avatarsToLoad.push(defaultProfileBanner(i));
+      avatarsToLoad.push(defaultSpaceBanner(i));
     }
 
     preloadImages(avatarsToLoad);

@@ -10,12 +10,18 @@ import Text from '../text/Text';
 import RawIcon from '../system-icons/RawIcon';
 
 import { avatarInitials } from '../../../util/common';
-import defaultAvatar from './defaultAvatar';
+import { defaultAvatar, defaultProfileBanner, defaultSpaceBanner } from './defaultAvatar';
 import { getAppearance } from '../../../util/libs/appearance';
 
 const ImageBrokenSVG = './img/svg/image-broken.svg';
 
-export const avatarDefaultColor = (bgColor) => {
+const defaultGetItems = {
+  avatar: (colorCode) => defaultAvatar(colorCode),
+  space: (colorCode) => defaultSpaceBanner(colorCode),
+  profile: (colorCode) => defaultProfileBanner(colorCode),
+};
+
+export const avatarDefaultColor = (bgColor, type = 'avatar') => {
   // Colors
   let colorCode = Number(bgColor.substring(0, bgColor.length - 1).replace('var(--mx-uc-', ''));
   if (
@@ -28,7 +34,8 @@ export const avatarDefaultColor = (bgColor) => {
   }
 
   // Default Avatar
-  return defaultAvatar(colorCode);
+  if (typeof defaultGetItems[type] === 'function') return defaultGetItems[type](colorCode);
+  return null;
 };
 
 const Avatar = React.forwardRef(

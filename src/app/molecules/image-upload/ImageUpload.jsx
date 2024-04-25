@@ -8,7 +8,16 @@ import Spinner from '../../atoms/spinner/Spinner';
 import RawIcon from '../../atoms/system-icons/RawIcon';
 import FileInput, { fileInputClick, fileInputValue, uploadContent } from '../file-input/FileInput';
 
-function ImageUpload({ text, bgColor, imageSrc, onUpload, onRequestRemove, className, size }) {
+function ImageUpload({
+  text,
+  bgColor,
+  imageSrc,
+  onUpload,
+  onRequestRemove,
+  className,
+  size,
+  defaultImage,
+}) {
   const [uploadPromise, setUploadPromise] = useState(null);
   const uploadImageRef = useRef(null);
 
@@ -44,7 +53,13 @@ function ImageUpload({ text, bgColor, imageSrc, onUpload, onRequestRemove, class
           fileInputClick(uploadImageRef, uploadImage);
         }}
       >
-        <Avatar imageSrc={imageSrc} text={text} bgColor={bgColor} size={size} isDefaultImage />
+        <Avatar
+          imageSrc={imageSrc || defaultImage}
+          text={text}
+          bgColor={bgColor}
+          size={size}
+          isDefaultImage={!defaultImage}
+        />
         <div
           className={`img-upload__process ${uploadPromise === null ? ' img-upload__process--stopped' : ''}`}
         >
@@ -75,6 +90,7 @@ function ImageUpload({ text, bgColor, imageSrc, onUpload, onRequestRemove, class
 
 ImageUpload.defaultProps = {
   className: '',
+  defaultImage: null,
   text: null,
   bgColor: 'transparent',
   imageSrc: null,
@@ -83,6 +99,7 @@ ImageUpload.defaultProps = {
 
 ImageUpload.propTypes = {
   text: PropTypes.string,
+  defaultImage: PropTypes.string,
   className: PropTypes.string,
   bgColor: PropTypes.string,
   imageSrc: PropTypes.string,

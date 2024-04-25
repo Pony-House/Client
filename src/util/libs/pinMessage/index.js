@@ -9,7 +9,7 @@ import { twemojify } from '../../twemojify';
 import { getRoomInfo } from '../../../app/organisms/room/Room';
 
 import { openProfileViewer, selectRoom } from '../../../client/action/navigation';
-import defaultAvatar from '../../../app/atoms/avatar/defaultAvatar';
+import { defaultAvatar } from '../../../app/atoms/avatar/defaultAvatar';
 import { colorMXID } from '../../colorMXID';
 import { createMessageData, messageDataEffects } from '../../../app/molecules/message/Message';
 import { jqueryTime } from '../../../app/atoms/time/Time';

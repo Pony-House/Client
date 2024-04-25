@@ -7,7 +7,7 @@ import initMatrix from '../../../client/initMatrix';
 import { twemojifyReact } from '../../../util/twemojify';
 
 import openTinyURL from '../../../util/message/urlProtection';
-import defaultAvatar from '../../atoms/avatar/defaultAvatar';
+import { defaultAvatar } from '../../atoms/avatar/defaultAvatar';
 import { countObj, objType } from '../../../util/tools';
 import { mediaFix } from '../media/mediaFix';
 
