@@ -7,6 +7,8 @@ import { MatrixEventEvent, RoomEvent, THREAD_RELATION_TYPE } from 'matrix-js-sdk
 import clone from 'clone';
 import hljs from 'highlight.js';
 import * as linkify from 'linkifyjs';
+import forPromise from 'for-promise';
+
 import cons from '@src/client/state/cons';
 import { isMobile } from '@src/util/libs/mobile';
 import { readImageUrl } from '@src/util/libs/mediaCache';
@@ -1513,32 +1515,67 @@ function Message({
           const newEmbeds = [];
           const searchEmbeds = async () => {
             let limit = 5;
-            for (const item in bodyUrls) {
-              if (bodyUrls[item].href && limit > 0 && !bodyUrls[item].href.startsWith('@')) {
-                const tinyEmbed = {
-                  url: bodyUrls[item],
-                  roomId,
-                  senderId,
-                  eventId,
-                };
 
-                if (
-                  bodyUrls[item].href.startsWith('http') ||
-                  bodyUrls[item].href.startsWith('https')
-                ) {
-                  try {
-                    tinyEmbed.data = await getUrlPreview(bodyUrls[item].href);
-                    mediaFix(null, embedHeight, setEmbedHeight);
-                  } catch (err) {
+            const embedParallelLoad = getAppearance('embedParallelLoad');
+            if (embedParallelLoad) {
+              await forPromise({ data: bodyUrls }, async (item, fn) => {
+                if (bodyUrls[item].href && limit > 0 && !bodyUrls[item].href.startsWith('@')) {
+                  const tinyEmbed = {
+                    url: bodyUrls[item],
+                    roomId,
+                    senderId,
+                    eventId,
+                  };
+
+                  if (
+                    bodyUrls[item].href.startsWith('http') ||
+                    bodyUrls[item].href.startsWith('https')
+                  ) {
+                    try {
+                      tinyEmbed.data = await getUrlPreview(bodyUrls[item].href);
+                      mediaFix(null, embedHeight, setEmbedHeight);
+                    } catch (err) {
+                      tinyEmbed.data = null;
+                      console.error(err);
+                    }
+                  } else {
                     tinyEmbed.data = null;
-                    console.error(err);
                   }
-                } else {
-                  tinyEmbed.data = null;
+
+                  newEmbeds.push(tinyEmbed);
+                  limit--;
                 }
 
-                newEmbeds.push(tinyEmbed);
-                limit--;
+                fn();
+              });
+            } else {
+              for (const item in bodyUrls) {
+                if (bodyUrls[item].href && limit > 0 && !bodyUrls[item].href.startsWith('@')) {
+                  const tinyEmbed = {
+                    url: bodyUrls[item],
+                    roomId,
+                    senderId,
+                    eventId,
+                  };
+
+                  if (
+                    bodyUrls[item].href.startsWith('http') ||
+                    bodyUrls[item].href.startsWith('https')
+                  ) {
+                    try {
+                      tinyEmbed.data = await getUrlPreview(bodyUrls[item].href);
+                      mediaFix(null, embedHeight, setEmbedHeight);
+                    } catch (err) {
+                      tinyEmbed.data = null;
+                      console.error(err);
+                    }
+                  } else {
+                    tinyEmbed.data = null;
+                  }
+
+                  newEmbeds.push(tinyEmbed);
+                  limit--;
+                }
               }
             }
 

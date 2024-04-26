@@ -34,6 +34,8 @@ function AppearanceSection() {
   const [sendFileBefore, setSendFileBefore] = useState(appearanceSettings.sendFileBefore);
 
   const [isEmbedEnabled, setEmbedEnabled] = useState(appearanceSettings.isEmbedEnabled);
+  const [embedParallelLoad, setEmbedParallelLoad] = useState(appearanceSettings.embedParallelLoad);
+
   const [isUNhoverEnabled, setUNhoverEnabled] = useState(appearanceSettings.isUNhoverEnabled);
 
   const [showRoomIdInSpacesManager, setShowRoomIdInSpacesManager] = useState(
@@ -654,6 +656,22 @@ function AppearanceSection() {
             }
             content={
               <div className="very-small text-gray">All messages with url will load a embed.</div>
+            }
+          />
+
+          <SettingTile
+            title="Parallel loading"
+            options={
+              <Toggle
+                className="d-inline-flex"
+                isActive={embedParallelLoad}
+                onToggle={toggleAppearanceAction('embedParallelLoad', setEmbedParallelLoad)}
+              />
+            }
+            content={
+              <div className="very-small text-gray">
+                All embeds will be loaded at the same time instead of one by one.
+              </div>
             }
           />
         </ul>

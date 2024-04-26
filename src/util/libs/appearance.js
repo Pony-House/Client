@@ -78,6 +78,11 @@ class MatrixAppearance extends EventEmitter {
           ? this.content.useCustomEmojis
           : !!__ENV_APP__.USE_CUSTOM_EMOJIS;
 
+      this.content.embedParallelLoad =
+        typeof this.content.embedParallelLoad === 'boolean'
+          ? this.content.embedParallelLoad
+          : !!__ENV_APP__.EMBED_PARALLEL_LOAD;
+
       this.content.sendFileBefore =
         typeof this.content.sendFileBefore === 'boolean' ? this.content.sendFileBefore : true;
 

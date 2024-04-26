@@ -9,3 +9,4 @@
 - New profile modal bg border value: --bg-profile-banner
 - Default avatars - size fix to banners.
 - content['m.mentions'] added to message event.
+- New appearance configuration to define whether embeds are loaded in parallel or not.

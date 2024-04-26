@@ -62,6 +62,7 @@
     "ethers": "6.12.0",
     "file-saver": "2.0.5",
     "flux": "4.0.4",
+    "for-promise": "1.4.1",
     "formik": "2.4.5",
     "freezeframe": "5.0.2",
     "generate-api-key": "1.0.2",

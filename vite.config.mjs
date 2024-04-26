@@ -142,6 +142,8 @@ export default defineConfig(({ command, mode }) => {
     USE_CUSTOM_EMOJIS: !!(env.USE_CUSTOM_EMOJIS === true || env.USE_CUSTOM_EMOJIS === 'true'),
     USE_ANIM_PARAMS: !!(env.USE_ANIM_PARAMS === true || env.USE_ANIM_PARAMS === 'true'),
 
+    EMBED_PARALLEL_LOAD: !!(env.EMBED_PARALLEL_LOAD === true || env.EMBED_PARALLEL_LOAD === 'true'),
+
     AUTO_ENCRYPT_CREATE_DM: !!(env.AUTO_ENCRYPT_CREATE_DM === true || env.AUTO_ENCRYPT_CREATE_DM === 'true'),
     DISABLE_ENCRYPT_SETTINGS: !!(env.DISABLE_ENCRYPT_SETTINGS === true || env.DISABLE_ENCRYPT_SETTINGS === 'true'),
 
