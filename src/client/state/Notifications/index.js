@@ -455,9 +455,14 @@ class Notifications extends EventEmitter {
       const state = { kind: 'notification', onlyPlain: true };
       let body;
       if (content.format === 'org.matrix.custom.html') {
-        body = html(content.formatted_body, state);
+        body = html(
+          content.formatted_body,
+          room.roomId,
+          mEvent.thread ? mEvent.thread.id : null,
+          state,
+        );
       } else {
-        body = plain(content.body, state);
+        body = plain(content.body, room.roomId, mEvent.thread ? mEvent.thread.id : null, state);
       }
 
       const tinyThis = this;

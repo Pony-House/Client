@@ -16,6 +16,7 @@ import settings from './settings';
 import { markdown, plain, html } from '../../util/markdown';
 import { clearUrlsFromHtml, clearUrlsFromText } from '../../util/clear-urls/clearUrls';
 import { fetchFn } from '../initMatrix';
+import { objType } from '@src/util/tools';
 
 const blurhashField = 'xyz.amorgan.blurhash';
 
@@ -234,7 +235,8 @@ class RoomsInput extends EventEmitter {
       output = plain;
     }
 
-    const body = output(message, { userNames, emojis });
+    const tinyCache = {};
+    const body = output(message, roomId, threadId, { userNames, emojis }, tinyCache);
 
     if (isHtml) {
       // the html parser might remove stuff we want, so we need to re-add it
@@ -246,6 +248,8 @@ class RoomsInput extends EventEmitter {
       body: body.plain,
       msgtype: msgType,
     };
+
+    if (objType(tinyCache['m.mentions'], 'object')) content['m.mentions'] = tinyCache['m.mentions'];
 
     if (!body.onlyPlain || reply) {
       content.format = 'org.matrix.custom.html';

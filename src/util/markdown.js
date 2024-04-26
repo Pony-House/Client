@@ -5,6 +5,7 @@ import SimpleMarkdown from '@khanacademy/simple-markdown';
 import { idRegex, parseIdUri } from './common';
 import rainbowText from './libs/rainbowText';
 import { tinyFixScrollChat } from '../app/molecules/media/mediaFix';
+import { objType } from './tools';
 
 // const discordRegex = /((`){1,3}|(\*){1,3}|(~){2}|(\|){2}|^(>){1,3}|(_){1,2})+/gm;
 
@@ -234,10 +235,18 @@ const plainRules = {
   },
   mention: {
     plain: (node, _, state) => (state.kind === 'edit' ? node.id : node.content),
-    html: (node) =>
-      htmlTag('a', sanitizeText(node.content), {
+    html: (node) => {
+      if (tinyRenderCache[0] && objType(tinyRenderCache[0].data, 'object')) {
+        if (!objType(tinyRenderCache[0].data['m.mentions'], 'object'))
+          tinyRenderCache[0].data['m.mentions'] = {};
+        if (!Array.isArray(tinyRenderCache[0].data['m.mentions'].user_ids))
+          tinyRenderCache[0].data['m.mentions'].user_ids = [];
+        tinyRenderCache[0].data['m.mentions'].user_ids.push(node.id);
+      }
+      return htmlTag('a', sanitizeText(node.content), {
         href: `https://matrix.to/#/${encodeURIComponent(node.id)}`,
-      }),
+      });
+    },
   },
   emoji: {
     order: defaultRules.em.order - 0.1,
@@ -881,17 +890,28 @@ const plainHtmlOut = outputFor(plainRules, 'html');
 export const mdParser = parserFor(markdownRules, { disableAutoBlockNewlines: true });
 const mdPlainOut = outputFor(markdownRules, 'plain');
 const mdHtmlOut = outputFor(markdownRules, 'html');
+const tinyRenderCache = [];
 
-export function plain(source, state) {
-  return render(plainParser(source, state), state, plainPlainOut, plainHtmlOut);
+export function plain(source, roomId, threadId, state, tinyCache = {}) {
+  tinyRenderCache.push({ data: tinyCache, threadId, roomId });
+  const value = render(plainParser(source, state), state, plainPlainOut, plainHtmlOut);
+  tinyRenderCache.shift();
+  return value;
 }
 
-export function markdown(source, state) {
-  return render(mdParser(source, state), state, mdPlainOut, mdHtmlOut);
+export function markdown(source, roomId, threadId, state, tinyCache = {}) {
+  tinyRenderCache.push({ data: tinyCache, threadId, roomId });
+  const value = render(mdParser(source, state), state, mdPlainOut, mdHtmlOut);
+  tinyRenderCache.shift();
+  return value;
 }
 
-export function html(source, state) {
+export function html(source, roomId, threadId, state, tinyCache = {}) {
+  tinyRenderCache.push({ data: tinyCache, threadId, roomId });
   const el = document.createElement('template');
   el.innerHTML = source;
-  return render(mapChildren(el.content), state, mdPlainOut, mdHtmlOut);
+
+  const value = render(mapChildren(el.content), state, mdPlainOut, mdHtmlOut);
+  tinyRenderCache.shift();
+  return value;
 }

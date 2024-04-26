@@ -896,6 +896,7 @@ const MessageOptions = React.memo(
     edit,
     reply,
     roomid,
+    threadId,
     senderid,
     eventid,
     msgtype,
@@ -997,8 +998,9 @@ const MessageOptions = React.memo(
                   if (messageBody.length > 0) {
                     copyToClipboard(
                       customHTML
-                        ? html(customHTML, { kind: 'edit', onlyPlain: true }).plain
-                        : plain(body, { kind: 'edit', onlyPlain: true }).plain,
+                        ? html(customHTML, roomId, threadId, { kind: 'edit', onlyPlain: true })
+                            .plain
+                        : plain(body, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain,
                     );
                     toast('Text successfully copied to the clipboard.');
                   } else {
@@ -1079,6 +1081,7 @@ const MessageOptions = React.memo(
 // Options Default
 MessageOptions.propTypes = {
   roomid: PropTypes.string,
+  threadId: PropTypes.string,
   senderid: PropTypes.string,
   eventid: PropTypes.string,
   msgtype: PropTypes.string,
@@ -1664,6 +1667,7 @@ function Message({
                 customHTML={customHTML}
                 body={body}
                 roomid={roomId}
+                threadId={threadId}
                 senderid={senderId}
                 eventid={eventId}
                 msgtype={msgType}
@@ -1737,8 +1741,8 @@ function Message({
                 refRoomInput={refRoomInput}
                 body={
                   customHTML
-                    ? html(customHTML, { kind: 'edit', onlyPlain: true }).plain
-                    : plain(body, { kind: 'edit', onlyPlain: true }).plain
+                    ? html(customHTML, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain
+                    : plain(body, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain
                 }
                 onSave={(newBody, oldBody) => {
                   if (newBody !== oldBody) {
@@ -1801,6 +1805,7 @@ function Message({
           <MessageOptions
             refRoomInput={refRoomInput}
             roomid={roomId}
+            threadId={threadId}
             senderid={senderId}
             eventid={eventId}
             msgtype={msgType}
@@ -1851,8 +1856,8 @@ function Message({
             refRoomInput={refRoomInput}
             body={
               customHTML
-                ? html(customHTML, { kind: 'edit', onlyPlain: true }).plain
-                : plain(body, { kind: 'edit', onlyPlain: true }).plain
+                ? html(customHTML, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain
+                : plain(body, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain
             }
             onSave={(newBody, oldBody) => {
               if (newBody !== oldBody) {
