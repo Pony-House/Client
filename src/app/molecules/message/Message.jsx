@@ -14,7 +14,7 @@ import muteUserManager from '@src/util/libs/muteUserManager';
 import attemptDecryption from '@src/util/libs/attemptDecryption';
 
 import Text from '../../atoms/text/Text';
-import { hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
+import { hljsFixer, objType, resizeWindowChecker, toast } from '../../../util/tools';
 import { twemojify, twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 
@@ -1576,6 +1576,21 @@ function Message({
   for (const item in everyoneTags) {
     if (bodyLower.includes(everyoneTags[item])) {
       isMentioned = true;
+    }
+  }
+
+  if (
+    objType(content['m.mentions'], 'object') &&
+    Array.isArray(content['m.mentions'].user_ids) &&
+    content['m.mentions'].user_ids.length > 0
+  ) {
+    for (const item in content['m.mentions'].user_ids) {
+      if (
+        typeof content['m.mentions'].user_ids[item] === 'string' &&
+        content['m.mentions'].user_ids[item] === yourId
+      ) {
+        isMentioned = true;
+      }
     }
   }
 
