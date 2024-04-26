@@ -4,6 +4,7 @@ import initMatrix from '../../client/initMatrix';
 import { objType } from '../tools';
 import convertProtocols from './convertProtocols';
 import moment from './momentjs';
+import { getAppearance } from './appearance';
 
 const tinyCache = {};
 const urlConvert = {
@@ -114,6 +115,7 @@ export default function getUrlPreview(newUrl, ts = 0) {
     if (typeof newUrl === 'string' && linkify.test(newUrl)) {
       // Protocol
       const url = convertProtocols(newUrl, newUrl);
+      const embedParallelLoad = getAppearance('embedParallelLoad');
 
       // Check URL
       if (
@@ -138,7 +140,7 @@ export default function getUrlPreview(newUrl, ts = 0) {
           // Start cache manager
           const lookForCache = () => {
             if (!urlPreviewStore.using) {
-              urlPreviewStore.using = true;
+              if (!embedParallelLoad) urlPreviewStore.using = true;
               mx.getUrlPreview(tinyUrl, ts)
                 .then((embed) => {
                   tinyCache[url.href] = { data: embed, timeout: moment().add(12, 'hours') };

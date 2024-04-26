@@ -670,7 +670,8 @@ function AppearanceSection() {
             }
             content={
               <div className="very-small text-gray">
-                All embeds will be loaded at the same time instead of one by one.
+                All embeds will be loaded at the same time instead of one by one. If the client
+                becomes slow, try disabling this option.
               </div>
             }
           />
