@@ -30,18 +30,10 @@ export async function markAsRead(roomId, threadId) {
   const readEventId = !thread ? room.getEventReadUpTo(userId) : thread.getEventReadUpTo(userId);
 
   const getLatestValidEvent = () => {
-    if (!thread) {
-      for (let i = timeline.length - 1; i >= 0; i -= 1) {
-        const latestEvent = timeline[i];
-        if (latestEvent.getId() === readEventId) return null;
-        if (!latestEvent.isSending()) return latestEvent;
-      }
-    } else {
-      for (let i = 0; i < timeline.length; i++) {
-        const latestEvent = timeline[i];
-        if (latestEvent.getId() === readEventId) return null;
-        if (!latestEvent.isSending()) return latestEvent;
-      }
+    for (let i = timeline.length - 1; i >= 0; i -= 1) {
+      const latestEvent = timeline[i];
+      if (latestEvent.getId() === readEventId) return null;
+      if (!latestEvent.isSending()) return latestEvent;
     }
     return null;
   };
