@@ -1,4 +1,5 @@
 import React from 'react';
+import { getAppearance } from '@src/util/libs/appearance';
 
 import initMatrix from '../../../client/initMatrix';
 import { openReusableContextMenu } from '../../../client/action/navigation';
@@ -156,6 +157,8 @@ function GlobalNotification() {
     ));
   };
 
+  const basicUserMode = getAppearance('basicUserMode');
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
     const { keywordInput } = evt.target.elements;
@@ -198,47 +201,51 @@ function GlobalNotification() {
           }
         />
 
-        <SettingTile
-          title="Message containing @room"
-          options={
-            <Button onClick={(evt) => onSelect(evt, ROOM_PING)} faSrc="fa-solid fa-check">
-              {typeToLabel[rulesToType[ROOM_PING]]}
-            </Button>
-          }
-          content={
-            <div className="very-small text-gray">
-              Default notification settings for all messages containing @room.
-            </div>
-          }
-        />
+        {!basicUserMode ? (
+          <>
+            <SettingTile
+              title="Message containing @room"
+              options={
+                <Button onClick={(evt) => onSelect(evt, ROOM_PING)} faSrc="fa-solid fa-check">
+                  {typeToLabel[rulesToType[ROOM_PING]]}
+                </Button>
+              }
+              content={
+                <div className="very-small text-gray">
+                  Default notification settings for all messages containing @room.
+                </div>
+              }
+            />
 
-        <SettingTile
-          title="Message containing @everyone"
-          options={
-            <Button onClick={(evt) => onSelect(evt, ROOM_PING2)} faSrc="fa-solid fa-check">
-              {typeToLabel[rulesToType[ROOM_PING2]]}
-            </Button>
-          }
-          content={
-            <div className="very-small text-gray">
-              Default notification settings for all messages containing @everyone.
-            </div>
-          }
-        />
+            <SettingTile
+              title="Message containing @everyone"
+              options={
+                <Button onClick={(evt) => onSelect(evt, ROOM_PING2)} faSrc="fa-solid fa-check">
+                  {typeToLabel[rulesToType[ROOM_PING2]]}
+                </Button>
+              }
+              content={
+                <div className="very-small text-gray">
+                  Default notification settings for all messages containing @everyone.
+                </div>
+              }
+            />
 
-        <SettingTile
-          title="Message containing @here"
-          options={
-            <Button onClick={(evt) => onSelect(evt, ROOM_PING3)} faSrc="fa-solid fa-check">
-              {typeToLabel[rulesToType[ROOM_PING3]]}
-            </Button>
-          }
-          content={
-            <div className="very-small text-gray">
-              Default notification settings for all messages containing @here.
-            </div>
-          }
-        />
+            <SettingTile
+              title="Message containing @here"
+              options={
+                <Button onClick={(evt) => onSelect(evt, ROOM_PING3)} faSrc="fa-solid fa-check">
+                  {typeToLabel[rulesToType[ROOM_PING3]]}
+                </Button>
+              }
+              content={
+                <div className="very-small text-gray">
+                  Default notification settings for all messages containing @here.
+                </div>
+              }
+            />
+          </>
+        ) : null}
 
         {rulesToType[KEYWORD] && (
           <SettingTile

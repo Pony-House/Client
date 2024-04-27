@@ -21,6 +21,7 @@ import DonateSection from './pages/Donate';
 import OsSection from './pages/OS';
 import AboutSection from './pages/About';
 import ExperimentalSection from './pages/Experimental';
+import AdvancedUserSection from './pages/AdvancedUserSection';
 import VoiceVideoSection from './pages/VoiceVideo';
 import IpfsSection from './pages/Ipfs';
 import Web3Section from './pages/Web3';
@@ -37,6 +38,7 @@ function EmojiSection() {
 export const tabText = {
   WEB3: 'Web3',
   APPEARANCE: 'Appearance',
+  ADVANCED: 'Advanced User',
   VOICEVIDEO: 'Voice & Video',
   IPFS: 'IPFS Protocol',
   PRIVACY: 'Privacy',
@@ -171,6 +173,13 @@ const buildTabItems = () => {
     });
 
     tabItems.push({ type: 'divider' });
+
+    tabItems.push({
+      text: tabText.ADVANCED,
+      faSrc: 'fa-solid fa-toolbox',
+      disabled: false,
+      render: () => <AdvancedUserSection />,
+    });
 
     tabItems.push({
       text: tabText.EXPERIMENTAL,

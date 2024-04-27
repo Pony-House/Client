@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { getAppearance } from '@src/util/libs/appearance';
+
 import SettingTile from '../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../atoms/button/Toggle';
 import { toggleActionLocal } from '../Api';
@@ -14,6 +16,9 @@ function IpfsSection() {
   const subdomainPublicGatewayRef = useRef(null);
   const apiIpfsRef = useRef(null);
   const localGatewayRef = useRef(null);
+
+  const advancedUserMode = getAppearance('advancedUserMode');
+  const basicUserMode = getAppearance('basicUserMode');
 
   // Effects
   useEffect(() => {
@@ -80,106 +85,112 @@ function IpfsSection() {
             }
           />
 
-          <SettingTile
-            title="Open IPFS Url using Gateway"
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={useGatewayOnOpen}
-                onToggle={toggleActionLocal(
-                  'ponyHouse-ipfs',
-                  'useGatewayOnOpen',
-                  setUseGatewayOnOpen,
-                )}
-              />
-            }
-            content={
-              <div className="very-small text-gray">
-                Instead of trying to open the protocol directly, use the gateway settings to open
-                the url using a http protocol.
-              </div>
-            }
-          />
+          {!basicUserMode && advancedUserMode ? (
+            <SettingTile
+              title="Open IPFS Url using Gateway"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={useGatewayOnOpen}
+                  onToggle={toggleActionLocal(
+                    'ponyHouse-ipfs',
+                    'useGatewayOnOpen',
+                    setUseGatewayOnOpen,
+                  )}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  Instead of trying to open the protocol directly, use the gateway settings to open
+                  the url using a http protocol.
+                </div>
+              }
+            />
+          ) : null}
         </ul>
       </div>
 
-      <div className="card noselect mb-3">
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Gateway</li>
+      {!basicUserMode && advancedUserMode ? (
+        <div className="card noselect mb-3">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item very-small text-gray">Gateway</li>
 
-          <li className="list-group-item border-0">
-            <div className="mb-3">
-              <label htmlFor="publicGateway" className="form-label small">
-                Public Gateway
-              </label>
-              <input
-                ref={publicGatewayRef}
-                type="text"
-                className="form-control form-control-bg"
-                id="publicGateway"
-                placeholder="https://ipfs.io/"
-              />
-              <div className="very-small text-gray">
-                This value will be used for public gateways.
+            <li className="list-group-item border-0">
+              <div className="mb-3">
+                <label htmlFor="publicGateway" className="form-label small">
+                  Public Gateway
+                </label>
+                <input
+                  ref={publicGatewayRef}
+                  type="text"
+                  className="form-control form-control-bg"
+                  id="publicGateway"
+                  placeholder="https://ipfs.io/"
+                />
+                <div className="very-small text-gray">
+                  This value will be used for public gateways.
+                </div>
               </div>
-            </div>
 
-            <div className="mb-3">
-              <label htmlFor="subdomainPublicGateway" className="form-label small">
-                Public Subdomain Gateway
-              </label>
-              <input
-                ref={subdomainPublicGatewayRef}
-                type="text"
-                className="form-control form-control-bg"
-                id="subdomainPublicGateway"
-                placeholder="https://dweb.link/"
-              />
-              <div className="very-small text-gray">
-                This value will be used for public subdomain gateways.
+              <div className="mb-3">
+                <label htmlFor="subdomainPublicGateway" className="form-label small">
+                  Public Subdomain Gateway
+                </label>
+                <input
+                  ref={subdomainPublicGatewayRef}
+                  type="text"
+                  className="form-control form-control-bg"
+                  id="subdomainPublicGateway"
+                  placeholder="https://dweb.link/"
+                />
+                <div className="very-small text-gray">
+                  This value will be used for public subdomain gateways.
+                </div>
               </div>
-            </div>
 
-            <div className="mb-3">
-              <label htmlFor="localGateway" className="form-label small">
-                Local Gateway
-              </label>
-              <input
-                ref={localGatewayRef}
-                type="text"
-                className="form-control form-control-bg"
-                id="localGateway"
-                placeholder="http://localhost:8080/"
-              />
-              <div className="very-small text-gray">Set the URL of your local gateway.</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <div className="card noselect mb-3">
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">API</li>
-
-          <li className="list-group-item border-0">
-            <div className="mb-3">
-              <label htmlFor="apiIpfs" className="form-label small">
-                API Url
-              </label>
-              <input
-                ref={apiIpfsRef}
-                type="text"
-                className="form-control form-control-bg"
-                id="apiIpfs"
-                placeholder="http://127.0.0.1:5001/"
-              />
-              <div className="very-small text-gray">
-                Set the URL of your IPFS API. (Hint: this is where /api/v0/config lives.)
+              <div className="mb-3">
+                <label htmlFor="localGateway" className="form-label small">
+                  Local Gateway
+                </label>
+                <input
+                  ref={localGatewayRef}
+                  type="text"
+                  className="form-control form-control-bg"
+                  id="localGateway"
+                  placeholder="http://localhost:8080/"
+                />
+                <div className="very-small text-gray">Set the URL of your local gateway.</div>
               </div>
-            </div>
-          </li>
-        </ul>
-      </div>
+            </li>
+          </ul>
+        </div>
+      ) : null}
+
+      {!basicUserMode && advancedUserMode ? (
+        <div className="card noselect mb-3">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item very-small text-gray">API</li>
+
+            <li className="list-group-item border-0">
+              <div className="mb-3">
+                <label htmlFor="apiIpfs" className="form-label small">
+                  API Url
+                </label>
+                <input
+                  ref={apiIpfsRef}
+                  type="text"
+                  className="form-control form-control-bg"
+                  id="apiIpfs"
+                  placeholder="http://127.0.0.1:5001/"
+                />
+                <div className="very-small text-gray">
+                  Set the URL of your IPFS API. (Hint: this is where /api/v0/config lives.)
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      ) : null}
     </>
   );
 }

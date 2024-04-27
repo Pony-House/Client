@@ -8,6 +8,8 @@ import FileInput, {
   fileInputValue,
   fileReader,
 } from '@src/app/molecules/file-input/FileInput';
+import { getAppearance } from '@src/util/libs/appearance';
+
 import SettingTile from '../../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../../atoms/button/Toggle';
 import { toggleActionLocal } from '../../Api';
@@ -35,6 +37,8 @@ function Web3Section() {
   const [, setUploadPromise] = useState(null);
 
   const web3ConfigUploadRef = useRef(null);
+  const advancedUserMode = getAppearance('advancedUserMode');
+  const basicUserMode = getAppearance('basicUserMode');
 
   useEffect(() => {
     const newWeb3Settings = getWeb3Cfg();
@@ -194,97 +198,105 @@ function Web3Section() {
         </ul>
       </div>
 
-      <div className="card noselect mb-3">
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Network Settings</li>
+      {!basicUserMode && advancedUserMode ? (
+        <>
+          <div className="card noselect mb-3">
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item very-small text-gray">Network Settings</li>
 
-          <li className="list-group-item very-small text-gray">
-            <button
-              type="button"
-              className="btn btn-sm btn-danger me-3 my-1 my-sm-0"
-              onClick={async () => {
-                const isConfirmed = await tinyConfirm(
-                  'Are you sure you want to reset this? All your data will be lost forever!',
-                  'Reset web3 config',
-                );
-                if (isConfirmed) {
-                  deleteWeb3Cfg('networks');
-                  setNetworks({ keys: [], values: [] });
-                }
-              }}
-            >
-              Reset config
-            </button>
+              <li className="list-group-item very-small text-gray">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-danger me-3 my-1 my-sm-0"
+                  onClick={async () => {
+                    const isConfirmed = await tinyConfirm(
+                      'Are you sure you want to reset this? All your data will be lost forever!',
+                      'Reset web3 config',
+                    );
+                    if (isConfirmed) {
+                      deleteWeb3Cfg('networks');
+                      setNetworks({ keys: [], values: [] });
+                    }
+                  }}
+                >
+                  Reset config
+                </button>
 
-            <button
-              type="button"
-              className="btn btn-sm btn-success me-3 my-1 my-sm-0"
-              onClick={async () => {
-                const newNetwork = await tinyPrompt(
-                  'Choose an Object Id for your new network',
-                  'New web3 network',
-                  { placeholder: 'ethereum' },
-                );
-                if (typeof newNetwork === 'string' && newNetwork.length > 0) {
-                  const newWeb3Settings = getWeb3Cfg();
-                  newWeb3Settings.networks[newNetwork] = { chainName: newNetwork };
-                  setWeb3Cfg('networks', newWeb3Settings.networks);
-                  setNetworks({ keys: [], values: [] });
-                }
-              }}
-            >
-              Create
-            </button>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-success me-3 my-1 my-sm-0"
+                  onClick={async () => {
+                    const newNetwork = await tinyPrompt(
+                      'Choose an Object Id for your new network',
+                      'New web3 network',
+                      { placeholder: 'ethereum' },
+                    );
+                    if (typeof newNetwork === 'string' && newNetwork.length > 0) {
+                      const newWeb3Settings = getWeb3Cfg();
+                      newWeb3Settings.networks[newNetwork] = { chainName: newNetwork };
+                      setWeb3Cfg('networks', newWeb3Settings.networks);
+                      setNetworks({ keys: [], values: [] });
+                    }
+                  }}
+                >
+                  Create
+                </button>
 
-            <button
-              type="button"
-              className="btn btn-sm btn-secondary me-3 my-1 my-sm-0"
-              onClick={() => {
-                const newWeb3Settings = getWeb3Cfg();
-                const blob = new Blob([JSON.stringify(newWeb3Settings.networks, null, 4)], {
-                  type: 'text/plain;charset=us-ascii',
-                });
+                <button
+                  type="button"
+                  className="btn btn-sm btn-secondary me-3 my-1 my-sm-0"
+                  onClick={() => {
+                    const newWeb3Settings = getWeb3Cfg();
+                    const blob = new Blob([JSON.stringify(newWeb3Settings.networks, null, 4)], {
+                      type: 'text/plain;charset=us-ascii',
+                    });
 
-                FileSaver.saveAs(blob, 'pony-house-web3-networks.json');
-              }}
-            >
-              Export
-            </button>
+                    FileSaver.saveAs(blob, 'pony-house-web3-networks.json');
+                  }}
+                >
+                  Export
+                </button>
 
-            <FileInput onChange={tinyChange} ref={web3ConfigUploadRef} accept="application/JSON" />
-            <button
-              type="button"
-              className="btn btn-sm btn-secondary my-1 my-sm-0"
-              onClick={() => fileInputClick(web3ConfigUploadRef, tinyChange)}
-            >
-              Import
-            </button>
-          </li>
-        </ul>
-      </div>
+                <FileInput
+                  onChange={tinyChange}
+                  ref={web3ConfigUploadRef}
+                  accept="application/JSON"
+                />
+                <button
+                  type="button"
+                  className="btn btn-sm btn-secondary my-1 my-sm-0"
+                  onClick={() => fileInputClick(web3ConfigUploadRef, tinyChange)}
+                >
+                  Import
+                </button>
+              </li>
+            </ul>
+          </div>
 
-      {networks && Array.isArray(networks.values) && networks.values.length > 0 ? (
-        networks.values.map((item, index) => (
-          <Web3Item item={item} networkId={networks.keys[index]} />
-        ))
-      ) : (
-        <p className="placeholder-glow m-0">
-          <span className="placeholder col-12" />
-          <span className="placeholder col-12" />
-          <span className="placeholder col-12" />
-          <span className="placeholder col-12" />
-          <span className="placeholder col-12" />
-          <span className="placeholder col-12" />
-          <span className="placeholder col-12" />
-          <span className="placeholder col-12" />
-          <span className="placeholder col-12" />
-          <span className="placeholder col-12" />
-          <span className="placeholder col-12" />
-          <span className="placeholder col-12" />
-          <span className="placeholder col-12" />
-          <span className="placeholder col-12" />
-        </p>
-      )}
+          {networks && Array.isArray(networks.values) && networks.values.length > 0 ? (
+            networks.values.map((item, index) => (
+              <Web3Item item={item} networkId={networks.keys[index]} />
+            ))
+          ) : (
+            <p className="placeholder-glow m-0">
+              <span className="placeholder col-12" />
+              <span className="placeholder col-12" />
+              <span className="placeholder col-12" />
+              <span className="placeholder col-12" />
+              <span className="placeholder col-12" />
+              <span className="placeholder col-12" />
+              <span className="placeholder col-12" />
+              <span className="placeholder col-12" />
+              <span className="placeholder col-12" />
+              <span className="placeholder col-12" />
+              <span className="placeholder col-12" />
+              <span className="placeholder col-12" />
+              <span className="placeholder col-12" />
+              <span className="placeholder col-12" />
+            </p>
+          )}
+        </>
+      ) : null}
     </>
   );
 }

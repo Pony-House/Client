@@ -134,6 +134,12 @@ class MatrixAppearance extends EventEmitter {
         typeof this.content.noReconnectRefresh === 'boolean'
           ? this.content.noReconnectRefresh
           : false;
+
+      this.content.advancedUserMode =
+        typeof this.content.advancedUserMode === 'boolean' ? this.content.advancedUserMode : false;
+
+      this.content.basicUserMode =
+        typeof this.content.basicUserMode === 'boolean' ? this.content.basicUserMode : true;
     }
   }
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getAppearance } from '@src/util/libs/appearance';
 
 import initMatrix from '../../../../client/initMatrix';
 import Toggle from '../../../atoms/button/Toggle';
@@ -11,6 +12,8 @@ function PrivacySection() {
   const [roomAutoRefuse, setRoomAutoRefuse] = useState(false);
   const [sendReadReceipts, setSendReadReceipts] = useState(false);
   const [autoEncryptCreateDM, setAutoEncryptCreateDM] = useState(true);
+
+  const basicUserMode = getAppearance('basicUserMode');
 
   useEffect(() => {
     const content =
@@ -51,23 +54,25 @@ function PrivacySection() {
             }
           />
 
-          <SettingTile
-            title="Auto refuse room and space invites"
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={roomAutoRefuse}
-                onToggle={toggleAction('pony.house.privacy', 'roomAutoRefuse', setRoomAutoRefuse)}
-              />
-            }
-            content={
-              <div className="very-small text-gray">
-                All invitations will automatically attempt to be refused. Whitelisted users will be
-                ignored by this option. (The whitelisted user must be the owner of the DM or room
-                for it to work.)
-              </div>
-            }
-          />
+          {!basicUserMode ? (
+            <SettingTile
+              title="Auto refuse room and space invites"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={roomAutoRefuse}
+                  onToggle={toggleAction('pony.house.privacy', 'roomAutoRefuse', setRoomAutoRefuse)}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  All invitations will automatically attempt to be refused. Whitelisted users will
+                  be ignored by this option. (The whitelisted user must be the owner of the DM or
+                  room for it to work.)
+                </div>
+              }
+            />
+          ) : null}
 
           <SettingTile
             title="Send read receipts"

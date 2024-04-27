@@ -267,163 +267,169 @@ function AppearanceSection() {
             }
           />
 
-          <SettingTile
-            title={'Sort "Home" rooms in order by activity.'}
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={orderHomeByActivity}
-                onToggle={toggleAppearanceAction('orderHomeByActivity', setOrderHomeByActivity)}
-              />
-            }
-            content={
-              <div className="very-small text-gray">
-                All rooms in the "Home" tab are always sorted by which one had the most recent
-                message received.
-              </div>
-            }
-          />
+          {!appearanceSettings.basicUserMode ? (
+            <SettingTile
+              title={'Sort "Home" rooms in order by activity.'}
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={orderHomeByActivity}
+                  onToggle={toggleAppearanceAction('orderHomeByActivity', setOrderHomeByActivity)}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  All rooms in the "Home" tab are always sorted by which one had the most recent
+                  message received.
+                </div>
+              }
+            />
+          ) : null}
         </ul>
       </div>
 
-      <div className="card noselect mt-3">
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Chat events</li>
+      {!appearanceSettings.basicUserMode ? (
+        <div className="card noselect mt-3">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item very-small text-gray">Chat events</li>
 
-          <SettingTile
-            title="Hide membership"
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={hideMembershipEvents}
-                onToggle={() => {
-                  toggleMembershipEvents();
-                  setHideMembershipEvents(!hideMembershipEvents);
-                  updateState({});
-                }}
-              />
-            }
-            content={
-              <div className="very-small text-gray">
-                Hide membership change messages from room timeline. (Join, Leave, Invite, Kick and
-                Ban)
-              </div>
-            }
-          />
+            <SettingTile
+              title="Hide membership"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={hideMembershipEvents}
+                  onToggle={() => {
+                    toggleMembershipEvents();
+                    setHideMembershipEvents(!hideMembershipEvents);
+                    updateState({});
+                  }}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  Hide membership change messages from room timeline. (Join, Leave, Invite, Kick and
+                  Ban)
+                </div>
+              }
+            />
 
-          <SettingTile
-            title="Hide pin message"
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={hidePinMessageEvents}
-                onToggle={toggleAppearanceAction('hidePinMessageEvents', setHidePinMessageEvents)}
-              />
-            }
-            content={
-              <div className="very-small text-gray">
-                Hide pin message warning from room timeline.
-              </div>
-            }
-          />
+            <SettingTile
+              title="Hide pin message"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={hidePinMessageEvents}
+                  onToggle={toggleAppearanceAction('hidePinMessageEvents', setHidePinMessageEvents)}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  Hide pin message warning from room timeline.
+                </div>
+              }
+            />
 
-          <SettingTile
-            title="Hide unpin message"
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={hideUnpinMessageEvents}
-                onToggle={toggleAppearanceAction(
-                  'hideUnpinMessageEvents',
-                  setHideUnpinMessageEvents,
-                )}
-              />
-            }
-            content={
-              <div className="very-small text-gray">
-                Hide unpin message warning from room timeline.
-              </div>
-            }
-          />
+            <SettingTile
+              title="Hide unpin message"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={hideUnpinMessageEvents}
+                  onToggle={toggleAppearanceAction(
+                    'hideUnpinMessageEvents',
+                    setHideUnpinMessageEvents,
+                  )}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  Hide unpin message warning from room timeline.
+                </div>
+              }
+            />
 
-          <SettingTile
-            title="Hide nick/avatar"
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={hideNickAvatarEvents}
-                onToggle={() => {
-                  toggleNickAvatarEvents();
-                  setHideNickAvatarEvents(!hideNickAvatarEvents);
-                  updateState({});
-                }}
-              />
-            }
-            content={
-              <div className="very-small text-gray">
-                Hide nick and avatar change messages from room timeline.
-              </div>
-            }
-          />
-        </ul>
-      </div>
+            <SettingTile
+              title="Hide nick/avatar"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={hideNickAvatarEvents}
+                  onToggle={() => {
+                    toggleNickAvatarEvents();
+                    setHideNickAvatarEvents(!hideNickAvatarEvents);
+                    updateState({});
+                  }}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  Hide nick and avatar change messages from room timeline.
+                </div>
+              }
+            />
+          </ul>
+        </div>
+      ) : null}
 
-      <div className="card noselect my-3">
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Message customization</li>
+      {!appearanceSettings.basicUserMode ? (
+        <div className="card noselect my-3">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item very-small text-gray">Message customization</li>
 
-          <SettingTile
-            title="Show sticker features"
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={showStickers}
-                onToggle={toggleAppearanceAction('showStickers', setShowStickers)}
-              />
-            }
-            content={
-              <div className="very-small text-gray">
-                This setting will manage both visible stickers on your chatbox and your ability to
-                send stickers.
-              </div>
-            }
-          />
+            <SettingTile
+              title="Show sticker features"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={showStickers}
+                  onToggle={toggleAppearanceAction('showStickers', setShowStickers)}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  This setting will manage both visible stickers on your chatbox and your ability to
+                  send stickers.
+                </div>
+              }
+            />
 
-          <SettingTile
-            title="Show custom emojis"
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={useCustomEmojis}
-                onToggle={toggleAppearanceAction('useCustomEmojis', setUseCustomEmojis)}
-              />
-            }
-            content={
-              <div className="very-small text-gray">
-                Allow custom emojis to be visible in your emoji list. This will not make your
-                settings for adding or removing custom emojis disappear.
-              </div>
-            }
-          />
+            <SettingTile
+              title="Show custom emojis"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={useCustomEmojis}
+                  onToggle={toggleAppearanceAction('useCustomEmojis', setUseCustomEmojis)}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  Allow custom emojis to be visible in your emoji list. This will not make your
+                  settings for adding or removing custom emojis disappear.
+                </div>
+              }
+            />
 
-          <SettingTile
-            title="Send file before"
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={sendFileBefore}
-                onToggle={toggleAppearanceAction('sendFileBefore', setSendFileBefore)}
-              />
-            }
-            content={
-              <div className="very-small text-gray">
-                When sending a file that contains a message, the file will be sent first before your
-                message.
-              </div>
-            }
-          />
-        </ul>
-      </div>
+            <SettingTile
+              title="Send file before"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={sendFileBefore}
+                  onToggle={toggleAppearanceAction('sendFileBefore', setSendFileBefore)}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  When sending a file that contains a message, the file will be sent first before
+                  your message.
+                </div>
+              }
+            />
+          </ul>
+        </div>
+      ) : null}
 
       <div className="card noselect mt-3">
         <ul className="list-group list-group-flush">
@@ -467,23 +473,25 @@ function AppearanceSection() {
             />
           ) : null}
 
-          <SettingTile
-            title="Force thread button visibility in encrypted rooms"
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={forceThreadButton}
-                onToggle={toggleAppearanceAction('forceThreadButton', setForceThreadButton)}
-              />
-            }
-            content={
-              <div className="very-small text-gray">
-                {
-                  "The create thread button will be forced to be visible in encrypted rooms. But if you don't have permission, the button will remain invisible."
-                }
-              </div>
-            }
-          />
+          {!appearanceSettings.basicUserMode && appearanceSettings.advancedUserMode ? (
+            <SettingTile
+              title="Force thread button visibility in encrypted rooms"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={forceThreadButton}
+                  onToggle={toggleAppearanceAction('forceThreadButton', setForceThreadButton)}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  {
+                    "The create thread button will be forced to be visible in encrypted rooms. But if you don't have permission, the button will remain invisible."
+                  }
+                </div>
+              }
+            />
+          ) : null}
         </ul>
       </div>
 
@@ -578,24 +586,26 @@ function AppearanceSection() {
         <ul className="list-group list-group-flush">
           <li className="list-group-item very-small text-gray">User avatars</li>
 
-          <SettingTile
-            title="Use native gif thumbs"
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={enableAnimParams}
-                onToggle={toggleAppearanceAction('enableAnimParams', setEnableAnimParams)}
-              />
-            }
-            content={
-              <div className="very-small text-gray">
-                This configuration is disabled by default as not all matrix homeservers are
-                compatible with this configuration. If your homeserver is compatible, this will help
-                you load images faster and save bandwidth. If your gifs suddenly become static, turn
-                this setting off.
-              </div>
-            }
-          />
+          {!appearanceSettings.basicUserMode ? (
+            <SettingTile
+              title="Use native gif thumbs"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={enableAnimParams}
+                  onToggle={toggleAppearanceAction('enableAnimParams', setEnableAnimParams)}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  This configuration is disabled by default as not all matrix homeservers are
+                  compatible with this configuration. If your homeserver is compatible, this will
+                  help you load images faster and save bandwidth. If your gifs suddenly become
+                  static, turn this setting off.
+                </div>
+              }
+            />
+          ) : null}
 
           <SettingTile
             title="Enable animated hover avatars"
@@ -618,28 +628,30 @@ function AppearanceSection() {
         </ul>
       </div>
 
-      <div className="card noselect mt-3">
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Spaces</li>
+      {!appearanceSettings.basicUserMode && appearanceSettings.advancedUserMode ? (
+        <div className="card noselect mt-3">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item very-small text-gray">Spaces</li>
 
-          <SettingTile
-            title="Show room id in space manager"
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={showRoomIdInSpacesManager}
-                onToggle={toggleAppearanceAction(
-                  'showRoomIdInSpacesManager',
-                  setShowRoomIdInSpacesManager,
-                )}
-              />
-            }
-            content={
-              <div className="very-small text-gray">{`Show room id next to the room name in the space's room manager.`}</div>
-            }
-          />
-        </ul>
-      </div>
+            <SettingTile
+              title="Show room id in space manager"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={showRoomIdInSpacesManager}
+                  onToggle={toggleAppearanceAction(
+                    'showRoomIdInSpacesManager',
+                    setShowRoomIdInSpacesManager,
+                  )}
+                />
+              }
+              content={
+                <div className="very-small text-gray">{`Show room id next to the room name in the space's room manager.`}</div>
+              }
+            />
+          </ul>
+        </div>
+      ) : null}
 
       <div className="card noselect mt-3">
         <ul className="list-group list-group-flush">
@@ -659,22 +671,24 @@ function AppearanceSection() {
             }
           />
 
-          <SettingTile
-            title="Parallel loading"
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={embedParallelLoad}
-                onToggle={toggleAppearanceAction('embedParallelLoad', setEmbedParallelLoad)}
-              />
-            }
-            content={
-              <div className="very-small text-gray">
-                All embeds will be loaded at the same time instead of one by one. If the client
-                becomes slow, try disabling this option.
-              </div>
-            }
-          />
+          {!appearanceSettings.basicUserMode ? (
+            <SettingTile
+              title="Parallel loading"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={embedParallelLoad}
+                  onToggle={toggleAppearanceAction('embedParallelLoad', setEmbedParallelLoad)}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  All embeds will be loaded at the same time instead of one by one. If the client
+                  becomes slow, try disabling this option.
+                </div>
+              }
+            />
+          ) : null}
         </ul>
       </div>
     </div>

@@ -10,3 +10,4 @@
 - Default avatars - size fix to banners.
 - content['m.mentions'] added to message event.
 - New appearance configuration to define whether embeds are loaded in parallel or not.
+- Advanced settings mode added.
