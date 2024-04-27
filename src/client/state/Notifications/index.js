@@ -182,7 +182,7 @@ class Notifications extends EventEmitter {
   }
 
   deleteNoti(roomId, threadId) {
-    if (this.hasNoti(roomId)) {
+    if (this.hasNoti(roomId, threadId)) {
       const noti = this.getNoti(roomId, threadId);
       this._deleteNoti(roomId, threadId, noti.total, noti.highlight);
     }
@@ -534,41 +534,51 @@ class Notifications extends EventEmitter {
     this._listenRoomTimeline = (mEvent, room) => {
       if (mEvent.isRedaction()) this._deletePopupNoti(mEvent.event.redacts);
 
+      // Total Data
       let total = 0;
       let highlight = 0;
       let stopNotification = false;
+
+      // Is Classic Crdt
       if (messageIsClassicCrdt(mEvent)) {
         // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
         stopNotification = true;
       }
 
+      // Is Space
       if (!stopNotification && room.isSpaceRoom()) {
         // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
         stopNotification = true;
       }
 
+      // Noti Event
       if (!stopNotification && !isNotifEvent(mEvent)) {
         // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
         stopNotification = true;
       }
 
+      // Continue check
       if (!stopNotification) {
         const liveEvents = !mEvent.thread
           ? room.getLiveTimeline().getEvents()
           : mEvent.thread.timeline;
 
+        // Last Id
         const lastTimelineEvent = liveEvents[liveEvents.length - 1];
         if (lastTimelineEvent.getId() !== mEvent.getId()) {
           // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
           stopNotification = true;
         }
 
+        // Sender check
         if (!stopNotification && mEvent.getSender() === this.matrixClient.getUserId()) {
           // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
           stopNotification = true;
         }
 
+        // Prepare values
         if (!stopNotification) {
+          // Get new numbers
           total = !mEvent.thread
             ? room.getRoomUnreadNotificationCount(NotificationCountType.Total)
             : room.getThreadUnreadNotificationCount(mEvent.thread.id, NotificationCountType.Total);
@@ -580,6 +590,7 @@ class Notifications extends EventEmitter {
                 NotificationCountType.Highlight,
               );
 
+          // Is Muted
           if (
             this.getNotiType(room.roomId, mEvent.thread ? mEvent.thread.id : null) ===
             cons.notifs.MUTE
@@ -594,7 +605,9 @@ class Notifications extends EventEmitter {
             stopNotification = true;
           }
 
+          // Continue
           if (!stopNotification) {
+            // Set Notification
             this._setNoti(
               room.roomId,
               mEvent.thread ? mEvent.thread.id : null,
