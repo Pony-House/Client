@@ -1,3 +1,5 @@
+Usar a mesma lógica de carregar emojis para deixar menos lento o carregamento de imagens do chatbox.
+
 Ver qual Friend ninkcname está sendo usado.
 
 Ver em quais rooms o usuário está (Pelo perfil)
