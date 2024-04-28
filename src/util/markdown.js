@@ -2,10 +2,11 @@
 /* eslint-disable no-use-before-define */
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import SimpleMarkdown from '@khanacademy/simple-markdown';
+import { objType } from 'for-promise/utils/lib.mjs';
+
 import { idRegex, parseIdUri } from './common';
 import rainbowText from './libs/rainbowText';
 import { tinyFixScrollChat } from '../app/molecules/media/mediaFix';
-import { objType } from './tools';
 
 // const discordRegex = /((`){1,3}|(\*){1,3}|(~){2}|(\|){2}|^(>){1,3}|(_){1,2})+/gm;
 

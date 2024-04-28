@@ -1,7 +1,7 @@
 import * as linkify from 'linkifyjs';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 import initMatrix from '../../client/initMatrix';
-import { objType } from '../tools';
 import convertProtocols from './convertProtocols';
 import moment from './momentjs';
 import { getAppearance } from './appearance';

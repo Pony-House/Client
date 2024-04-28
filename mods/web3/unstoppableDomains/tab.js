@@ -2,7 +2,8 @@ import { tinyCrypto } from '@src/util/web3';
 import copyText from '@src/app/organisms/profile-viewer/copyText';
 
 import getUdManager from './abi/polygon/0xa9a6a3626993d487d2dbda3173cf58ca1a9d9e9f';
-import { objType, toast, btModal } from '../../../src/util/tools';
+import { objType } from 'for-promise/utils/lib.mjs';
+import { toast, btModal } from '../../../src/util/tools';
 
 import getWallets from '../../ud';
 

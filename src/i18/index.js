@@ -1,7 +1,7 @@
 // Checker
 import { fetchFn } from '@src/client/initMatrix';
 import clone from 'clone';
-import { objType } from '../util/tools';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 // Lang Cache
 const langs = {

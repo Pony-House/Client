@@ -1,6 +1,7 @@
 import React from 'react';
+import { objType } from 'for-promise/utils/lib.mjs';
+
 import { twemojifyReact } from '../../../../util/twemojify';
-import { objType } from '../../../../util/tools';
 import { openPinMessageModal } from '../../../../util/libs/pinMessage';
 
 export function comparePinEvents(content, prevContent) {

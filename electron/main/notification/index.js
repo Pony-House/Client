@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { Notification } from 'electron';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 import deleteAllFilesInDir from '../../fs/deleteAllFilesInDir';
-import { objType } from '../util/tools';
 import { tempFolderNoti } from '../tempFolders';
 
 deleteAllFilesInDir(tempFolderNoti);

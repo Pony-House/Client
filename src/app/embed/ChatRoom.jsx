@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import * as sdk from 'matrix-js-sdk';
 import Olm from '@matrix-org/olm';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 import { isAuthenticated } from '../../client/state/auth';
 import RoomTimeline from '../../client/state/RoomTimeline';
@@ -10,7 +11,6 @@ import initMatrix from '../../client/initMatrix';
 
 import Spinner from '../atoms/spinner/Spinner';
 import ProcessWrapper from '../templates/auth/modules/ProcessWrapper';
-import { objType } from '../../util/tools';
 import { join } from '../../client/action/room';
 
 import RoomViewContent from '../organisms/room/RoomViewContent';

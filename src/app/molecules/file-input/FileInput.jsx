@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // import { Filesystem } from '@capacitor/filesystem';
 // import { FilePicker } from '@capawesome/capacitor-file-picker';
 
-// import { objType } from '@src/util/tools';
+// import { objType } from 'for-promise/utils/lib.mjs';
 import initMatrix from '@src/client/initMatrix';
 import blobUrlManager from '@src/util/libs/blobUrlManager';
 

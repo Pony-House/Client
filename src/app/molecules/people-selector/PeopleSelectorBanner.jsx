@@ -1,6 +1,8 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import PropTypes from 'prop-types';
+import { objType } from 'for-promise/utils/lib.mjs';
+
 import envAPI from '@src/util/libs/env';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
@@ -13,7 +15,7 @@ import { getUserStatus, updateUserStatusIcon, getPresence } from '../../../util/
 import initMatrix from '../../../client/initMatrix';
 import { colorMXID, cssColorMXID } from '../../../util/colorMXID';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
-import { objType, toast } from '../../../util/tools';
+import { toast } from '../../../util/tools';
 import { copyToClipboard } from '../../../util/common';
 import copyText from '../../organisms/profile-viewer/copyText';
 import matrixAppearance, {

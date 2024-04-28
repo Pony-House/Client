@@ -67,7 +67,7 @@ function Home({ spaceId }) {
         addresses.push(prevSelectedRoomId);
       if (addresses.length === 0) return;
       drawerPostie.post('selector-change', addresses, selectedRoomId);
-      if (orderHomeByActivity) forceUpdateRoomList();
+      if (orderHomeByActivity && !spaceId) forceUpdateRoomList();
     };
 
     const notiChanged = (roomId, total, prevTotal) => {
@@ -75,7 +75,7 @@ function Home({ spaceId }) {
       if (drawerPostie.hasTopicAndSubscriber('unread-change', roomId)) {
         drawerPostie.post('unread-change', roomId);
       }
-      if (orderHomeByActivity) forceUpdateRoomList();
+      if (orderHomeByActivity && !spaceId) forceUpdateRoomList();
     };
 
     if (roomsInput) roomsInput.on(cons.events.roomsInput.MESSAGE_SENT, forceUpdateRoomList);
@@ -89,7 +89,7 @@ function Home({ spaceId }) {
       notifications.removeListener(cons.events.notifications.NOTI_CHANGED, notiChanged);
       notifications.removeListener(cons.events.notifications.MUTE_TOGGLED, notiChanged);
     };
-  }, [spaceId, orderHomeByActivity]);
+  }, [spaceId, orderHomeByActivity, spaceId]);
 
   useEffect(() => {
     const forceUpdateRoomList = (value) => {
@@ -116,7 +116,7 @@ function Home({ spaceId }) {
           notSpace={roomSettings.notSpace}
           type="home"
           name="Spaces"
-          roomIds={spaceIds.sort(orderHomeByActivity ? roomIdByActivity : roomIdByAtoZ)}
+          roomIds={spaceIds.sort(!spaceId && orderHomeByActivity ? roomIdByActivity : roomIdByAtoZ)}
           drawerPostie={drawerPostie}
         />
       )}
@@ -126,7 +126,7 @@ function Home({ spaceId }) {
           notSpace={roomSettings.notSpace}
           type="home"
           name="Rooms"
-          roomIds={roomIds.sort(orderHomeByActivity ? roomIdByActivity : roomIdByAtoZ)}
+          roomIds={roomIds.sort(!spaceId && orderHomeByActivity ? roomIdByActivity : roomIdByAtoZ)}
           drawerPostie={drawerPostie}
         />
       )) ||
@@ -151,7 +151,7 @@ function Home({ spaceId }) {
           notSpace={roomSettings.notSpace}
           type="home"
           name="People"
-          roomIds={directIds.sort(roomIdByActivity)}
+          roomIds={directIds.sort(!spaceId ? roomIdByActivity : roomIdByAtoZ)}
           drawerPostie={drawerPostie}
         />
       )}

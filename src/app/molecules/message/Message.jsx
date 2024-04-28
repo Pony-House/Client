@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback, useRef, useReducer } from 'rea
 import PropTypes from 'prop-types';
 
 import { MatrixEventEvent, RoomEvent, THREAD_RELATION_TYPE } from 'matrix-js-sdk';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 import clone from 'clone';
 import hljs from 'highlight.js';
@@ -16,7 +17,7 @@ import muteUserManager from '@src/util/libs/muteUserManager';
 import attemptDecryption from '@src/util/libs/attemptDecryption';
 
 import Text from '../../atoms/text/Text';
-import { hljsFixer, objType, resizeWindowChecker, toast } from '../../../util/tools';
+import { hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
 import { twemojify, twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 

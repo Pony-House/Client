@@ -1,6 +1,6 @@
 import initMatrix from '@src/client/initMatrix';
 import EventEmitter from 'events';
-import { objType } from '../tools';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 // Emitter
 class AttemptDecryption extends EventEmitter {

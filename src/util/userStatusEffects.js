@@ -1,10 +1,10 @@
 import clone from 'clone';
 import moment from '@src/util/libs/momentjs';
+import { countObj, objType } from 'for-promise/utils/lib.mjs';
 
 import initMatrix from '../client/initMatrix';
 import { emitUpdateProfile } from '../client/action/navigation';
 import tinyAPI from './mods';
-import { countObj, objType } from './tools';
 import { matrixDevices } from '../app/hooks/useDeviceList';
 import mobileEvents from './libs/mobile';
 

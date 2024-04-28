@@ -3,6 +3,8 @@ import encrypt from 'matrix-encrypt-attachment';
 import { encode } from 'blurhash';
 import { EventTimeline } from 'matrix-js-sdk';
 
+import { objType } from 'for-promise/utils/lib.mjs';
+
 import blobUrlManager, { blobToBase64 } from '@src/util/libs/blobUrlManager';
 // import { isMobile } from '@src/util/libs/mobile';
 import { fileReader, uploadContent } from '@src/app/molecules/file-input/FileInput';
@@ -16,7 +18,6 @@ import settings from './settings';
 import { markdown, plain, html } from '../../util/markdown';
 import { clearUrlsFromHtml, clearUrlsFromText } from '../../util/clear-urls/clearUrls';
 import { fetchFn } from '../initMatrix';
-import { objType } from '@src/util/tools';
 
 const blurhashField = 'xyz.amorgan.blurhash';
 

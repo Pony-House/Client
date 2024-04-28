@@ -1,4 +1,4 @@
-import { objType } from '@src/util/tools';
+import { objType } from 'for-promise/utils/lib.mjs';
 import tinyAPI from '@src/util/mods';
 import { fetchFn } from '@src/client/initMatrix';
 

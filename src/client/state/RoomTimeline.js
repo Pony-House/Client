@@ -2,6 +2,8 @@ import * as Y from 'yjs';
 import EventEmitter from 'events';
 import clone from 'clone';
 import objectHash from 'object-hash';
+import { objType } from 'for-promise/utils/lib.mjs';
+
 import moment from '@src/util/libs/momentjs';
 import attemptDecryption from '@src/util/libs/attemptDecryption';
 // import { insertIntoRoomEventsDB } from '@src/util/libs/roomEventsDB';
@@ -21,7 +23,6 @@ import cons from './cons';
 
 import settings from './settings';
 import { messageIsClassicCrdt } from '../../util/libs/crdt';
-import { objType } from '../../util/tools';
 
 import { updateRoomInfo } from '../action/navigation';
 import urlParams from '../../util/libs/urlParams';

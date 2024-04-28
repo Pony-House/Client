@@ -1,8 +1,9 @@
 import clone from 'clone';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 import initMatrix from '../../../client/initMatrix';
 import { getCurrentState } from '../../matrixUtil';
-import { btModal, objType } from '../../tools';
+import { btModal } from '../../tools';
 
 import { setLoadingPage } from '../../../app/templates/client/Loading';
 import { twemojify } from '../../twemojify';

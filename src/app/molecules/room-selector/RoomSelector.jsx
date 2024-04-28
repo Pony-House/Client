@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { objType } from 'for-promise/utils/lib.mjs';
+
 import cons from '@src/client/state/cons';
 import { abbreviateNumber } from '@src/util/common';
 import muteUserManager from '@src/util/libs/muteUserManager';
@@ -14,7 +16,6 @@ import { blurOnBubbling } from '../../atoms/button/script';
 import { getPresence, getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
 import insertCustomStatus from '../people-selector/insertCustomStatus';
-import { objType } from '../../../util/tools';
 import { checkerFavIcon } from '../../../util/libs/favicon';
 import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 import { selectRoom, selectRoomMode } from '../../../client/action/navigation';

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import clone from 'clone';
+import { objType } from 'for-promise/utils/lib.mjs';
+
 import blobUrlManager from '@src/util/libs/blobUrlManager';
 
 import initMatrix from '../../../client/initMatrix';
@@ -14,7 +16,6 @@ import RoomView from './RoomView';
 import RoomSettings from './RoomSettings';
 import PeopleDrawer from './PeopleDrawer';
 import tinyAPI from '../../../util/mods';
-import { objType } from '../../../util/tools';
 
 let resetRoomInfo;
 global.resetRoomInfo = () => (typeof resetRoomInfo === 'function' ? resetRoomInfo() : null);

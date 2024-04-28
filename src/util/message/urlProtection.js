@@ -1,6 +1,7 @@
 // import { Browser } from '@capacitor/browser';
+import { objType } from 'for-promise/utils/lib.mjs';
 
-import { btModal, objType } from '../tools';
+import { btModal } from '../tools';
 import tinyAPI from '../mods';
 import convertProtocols from '../libs/convertProtocols';
 import { setLoadingPage } from '../../app/templates/client/Loading';

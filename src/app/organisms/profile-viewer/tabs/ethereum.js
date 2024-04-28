@@ -1,7 +1,8 @@
 import { ethers } from 'ethers';
+import { objType } from 'for-promise/utils/lib.mjs';
 import moment from '@src/util/libs/momentjs';
 import { getWeb3Cfg, tinyCrypto } from '../../../../util/web3';
-import { btModal, objType, toast } from '../../../../util/tools';
+import { btModal, toast } from '../../../../util/tools';
 
 import getEnsManager from '../../../../util/web3/abi/ethereum/0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb';
 

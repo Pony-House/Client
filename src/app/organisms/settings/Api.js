@@ -1,4 +1,5 @@
-import { objType } from '../../../util/tools';
+import { objType } from 'for-promise/utils/lib.mjs';
+
 import initMatrix from '../../../client/initMatrix';
 
 const toggleAction = (dataFolder, valueName, setToggle) => (data) => {

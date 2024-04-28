@@ -1,4 +1,4 @@
-import { objType } from '../tools';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 // Locale
 export const defaultLocale = 'en';

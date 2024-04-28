@@ -3,7 +3,7 @@ import clone from 'clone';
 import path from 'path';
 import fs from 'fs';
 
-import { objType } from './util/tools';
+import { objType } from 'for-promise/utils/lib.mjs';
 import { getAppFolders } from './libs/utils';
 
 let started = false;

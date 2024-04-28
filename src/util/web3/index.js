@@ -8,7 +8,8 @@ import Web3WsProvider from 'web3-providers-ws';
 import moment from '@src/util/libs/momentjs';
 import modWeb3Cfg from '@mods/web3';
 
-import { objType } from '../tools';
+import { objType } from 'for-promise/utils/lib.mjs';
+
 import startStatus from './status';
 import initMatrix from '../../client/initMatrix';
 import envAPI from '../libs/env';

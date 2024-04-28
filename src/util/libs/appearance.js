@@ -1,8 +1,9 @@
 import initMatrix from '@src/client/initMatrix';
 import EventEmitter from 'events';
 import clone from 'clone';
+import { objType } from 'for-promise/utils/lib.mjs';
+
 import moment, { calendarFormat, localeIs12Hours } from './momentjs';
-import { objType } from '../tools';
 
 // Animated Image Url
 export function getAnimatedImageUrl(url) {

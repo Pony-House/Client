@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import { release } from 'node:os';
 import path from 'node:path';
 
-import { objType } from './util/tools';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 import startNotifications from './notification';
 import startEvents from './events';

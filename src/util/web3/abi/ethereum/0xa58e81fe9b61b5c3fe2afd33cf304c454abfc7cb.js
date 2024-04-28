@@ -1,5 +1,5 @@
 import { Contract } from 'ethers';
-import { objType } from '../../../tools';
+import { objType } from 'for-promise/utils/lib.mjs';
 import { tinyCrypto } from '../..';
 
 const ensAbi = [

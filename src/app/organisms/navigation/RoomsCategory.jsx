@@ -114,12 +114,16 @@ function RoomsCategory({ spaceId, name, hideHeader, roomIds, drawerPostie, notSp
   // Prepare Rooms
   const roomData = roomIds.map(renderData);
 
-  if (orderHomeByActivity) {
-    roomData.sort(sortTime);
-  } else if (!isDM) {
-    roomData.sort(sortName);
+  if (!spaceId) {
+    if (orderHomeByActivity) {
+      roomData.sort(sortTime);
+    } else if (!isDM) {
+      roomData.sort(sortName);
+    } else {
+      roomData.sort(sortTime);
+    }
   } else {
-    roomData.sort(sortTime);
+    roomData.sort(sortName);
   }
 
   useEffect(() => {

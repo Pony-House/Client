@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { objType } from 'for-promise/utils/lib.mjs';
 import { openInviteList } from '../../../../client/action/navigation';
 
 import Avatar from '../../../atoms/avatar/Avatar';
@@ -10,7 +11,6 @@ import { notificationClasses } from './Notification';
 import NotificationBadge from '../../../atoms/badge/NotificationBadge';
 
 import * as roomActions from '../../../../client/action/room';
-import { objType } from '../../../../util/tools';
 import { addToDataFolder, getDataList } from '../../../../util/selectedRoom';
 
 export function getPrivacyRefuseRoom(member, newRoom, isInverse = false, totalInvites = null) {

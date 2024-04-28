@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -12,7 +13,7 @@ import Spinner from '../../atoms/spinner/Spinner';
 import { Message } from '../message/Message';
 
 import { useStore } from '../../hooks/useStore';
-import { objType, resizeWindowChecker } from '../../../util/tools';
+import { resizeWindowChecker } from '../../../util/tools';
 
 const roomIdToBackup = new Map();
 

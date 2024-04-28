@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { objType } from 'for-promise/utils/lib.mjs';
+
 import envAPI from '@src/util/libs/env';
 
 import initMatrix from '../../../../client/initMatrix';
@@ -22,7 +24,6 @@ import NotificationBadge from '../../../atoms/badge/NotificationBadge';
 import { getUserWeb3Account, tinyCrypto } from '../../../../util/web3';
 import navigation from '../../../../client/state/navigation';
 import { setEthereumStatusButton } from '../../../../util/web3/status';
-import { objType } from '../../../../util/tools';
 import { colorMXID } from '../../../../util/colorMXID';
 import { getAppearance, getAnimatedImageUrl } from '../../../../util/libs/appearance';
 

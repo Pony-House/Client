@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clone from 'clone';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 import { setWeb3Cfg, getWeb3Cfg, getDefaultNetworks } from '../../../../../util/web3';
-import { objType, tinyConfirm } from '../../../../../util/tools';
+import { tinyConfirm } from '../../../../../util/tools';
 
 let loadData = null;
 

@@ -1,6 +1,6 @@
 import { MatrixEvent } from 'matrix-js-sdk';
 import initMatrix from '../../../client/initMatrix';
-import { countObj, objType } from '../../tools';
+import { countObj, objType } from 'for-promise/utils/lib.mjs';
 // import attemptDecryption from '../attemptDecryption';
 
 const tinyCache = {};

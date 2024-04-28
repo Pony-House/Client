@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import objectHash from 'object-hash';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 import { getAppearance } from '@src/util/libs/appearance';
 
@@ -25,7 +26,6 @@ import { getSelectRoom, getSelectSpace } from '../../../util/selectedRoom';
 import { getCurrentState } from '../../../util/matrixUtil';
 import { selectRoomMode } from '../../../client/action/navigation';
 import { setLoadingPage } from '../../templates/client/Loading';
-import { objType } from '../../../util/tools';
 
 // System State
 function useSystemState() {

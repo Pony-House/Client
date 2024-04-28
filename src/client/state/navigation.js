@@ -1,11 +1,12 @@
 import EventEmitter from 'events';
+import { objType } from 'for-promise/utils/lib.mjs';
+
 import appDispatcher from '../dispatcher';
 import cons from './cons';
 import tinyAPI from '../../util/mods';
 import urlParams from '../../util/libs/urlParams';
 import { setSelectRoom, setSelectSpace } from '../../util/selectedRoom';
 import { tinyCrypto } from '../../util/web3';
-import { objType } from '../../util/tools';
 
 class Navigation extends EventEmitter {
   constructor() {

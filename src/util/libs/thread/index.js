@@ -1,5 +1,6 @@
 import moment from 'moment-timezone';
 import EventEmitter from 'events';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 import { setLoadingPage } from '@src/app/templates/client/Loading';
 import { colorMXID } from '@src/util/colorMXID';
@@ -18,7 +19,7 @@ import { jqueryTime } from '@src/app/atoms/time/Time';
 
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 
-import { btModal, objType } from '../../tools';
+import { btModal } from '../../tools';
 import initMatrix, { fetchFn } from '../../../client/initMatrix';
 import { readImageUrl } from '../mediaCache';
 

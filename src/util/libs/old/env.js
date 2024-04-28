@@ -4,7 +4,7 @@
 
 import EventEmitter from 'events';
 import moment from 'moment-timezone';
-import { objType } from '../tools';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 // Emitter
 class EnvAPI extends EventEmitter {

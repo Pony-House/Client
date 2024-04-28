@@ -1,7 +1,7 @@
 // Module
 import moment from 'moment-timezone';
+import { objType } from 'for-promise/utils/lib.mjs';
 import { getAppearance } from './appearance';
-import { objType } from '../tools';
 import { appLocale, defaultLocale } from './locale';
 
 // Module Config

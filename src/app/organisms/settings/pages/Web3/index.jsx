@@ -3,6 +3,8 @@ import objectHash from 'object-hash';
 import FileSaver from 'file-saver';
 import clone from 'clone';
 
+import { objType } from 'for-promise/utils/lib.mjs';
+
 import FileInput, {
   fileInputClick,
   fileInputValue,
@@ -23,7 +25,7 @@ import {
   tinyCrypto,
 } from '../../../../../util/web3';
 import Web3Item from './Web3Item';
-import { objType, tinyConfirm, tinyPrompt } from '../../../../../util/tools';
+import { tinyConfirm, tinyPrompt } from '../../../../../util/tools';
 import { ethereumUpdate } from '../../../../../client/action/navigation';
 import initMatrix from '../../../../../client/initMatrix';
 import { setLoadingPage } from '../../../../templates/client/Loading';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { objType } from '@src/util/tools';
+import { objType } from 'for-promise/utils/lib.mjs';
 import threadsList from '@src/util/libs/thread';
 import { twemojifyReact } from '../../../util/twemojify';
 
