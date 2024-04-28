@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import { release } from 'node:os';
 import path from 'node:path';
 
+// @ts-ignore
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import startNotifications from './notification';
