@@ -3433,10 +3433,10 @@ for-each@^0.3.3:
   dependencies:
     is-callable "^1.1.3"
 
-for-promise@1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/for-promise/-/for-promise-1.4.2.tgz#fb2992694c40970cfa3974aa4ece9822434263c3"
-  integrity sha512-c4rIC7F+y0jly1uFnWRP/vyhUSvaPotaXcW7Kb+ujqUXYDYMi/YZgvbwwfCvb0zHncpsTcdiUXrpMKvvNhYxHg==
+for-promise@1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/for-promise/-/for-promise-1.4.3.tgz#04acb52f013846722a2098c547b6abad2806f44c"
+  integrity sha512-GHpaVIJdFYewYsyoH9JLlP+RW4tJHz6YWbKkGYq2O52CVonQ9IzNS+b9GauxEOddoTV//h/3ttZREbr4d7vwJw==
 
 foreground-child@^3.1.0:
   version "3.1.1"
