@@ -1,3 +1,5 @@
+o Custom status de emoji está com glitch
+
 Usar a mesma lógica de carregar emojis para deixar menos lento o carregamento de imagens do chatbox.
 
 Ver qual Friend ninkcname está sendo usado.
