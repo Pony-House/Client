@@ -163,7 +163,10 @@ function Image({
     let unmounted = false;
     async function fetchUrl() {
       const myUrl = await getUrl(link, type, file, roomId, threadId);
-      if (unmounted) return;
+      if (unmounted) {
+        blobUrlManager.delete(myUrl);
+        return;
+      }
       setUrl(myUrl);
     }
     fetchUrl();
@@ -271,7 +274,10 @@ function Sticker({ name, height, width, link, file, type, roomId, threadId }) {
     let unmounted = false;
     async function fetchUrl() {
       const myUrl = await getUrl(link, type, file, roomId, threadId);
-      if (unmounted) return;
+      if (unmounted) {
+        blobUrlManager.delete(myUrl);
+        return;
+      }
       setUrl(myUrl);
     }
     fetchUrl();
@@ -390,7 +396,10 @@ function Video({
     let unmounted = false;
     async function fetchUrl() {
       const myThumbUrl = await getUrl(thumbnail, thumbnailType, thumbnailFile, roomId, threadId);
-      if (unmounted) return;
+      if (unmounted) {
+        blobUrlManager.delete(myThumbUrl);
+        return;
+      }
       setThumbUrl(myThumbUrl);
     }
 
