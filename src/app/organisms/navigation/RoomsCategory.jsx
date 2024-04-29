@@ -128,7 +128,7 @@ function RoomsCategory({ spaceId, name, hideHeader, roomIds, drawerPostie, notSp
 
   useEffect(() => {
     const forceUpdateRoomList = (value) => {
-      setOrderHomeByActivity(value);
+      if (!isSpace) setOrderHomeByActivity(value);
     };
     matrixAppearance.on('orderHomeByActivity', forceUpdateRoomList);
     return () => {

@@ -47,7 +47,7 @@ function EmojiBoardOpener() {
   }
 
   function addEmoji(emoji) {
-    requestCallback(emoji);
+    if (typeof requestCallback === 'function') requestCallback(emoji);
   }
 
   useEffect(() => {
