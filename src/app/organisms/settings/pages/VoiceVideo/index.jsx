@@ -461,7 +461,7 @@ function VoiceVideoSection() {
                     variant="primary"
                     className="btn-sm"
                     size="extra-small"
-                    tooltip="Open in new tab"
+                    tooltip="Test Video"
                     faSrc="fa-solid fa-video"
                   >
                     Test Video

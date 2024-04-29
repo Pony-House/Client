@@ -78,7 +78,7 @@ function FileHeader({ name, link, external, file, type, roomId, threadId }) {
       </Text>
       {link !== null && (
         <>
-          {external && (
+          {!__ENV_APP__.ELECTRON_MODE && external && (
             <IconButton
               size="extra-small"
               tooltip="Open in new tab"
