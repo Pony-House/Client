@@ -4,6 +4,10 @@ o Custom status de emoji está com glitch
 
 Usar a mesma lógica de carregar emojis para deixar menos lento o carregamento de imagens do chatbox.
 
+--> Leitor do dominio matrix.to para abrir diretamente as rooms
+
+==============================================================
+
 Ver qual Friend ninkcname está sendo usado.
 
 Ver em quais rooms o usuário está (Pelo perfil)
@@ -66,8 +70,6 @@ Made by Me
     =======================================================
 
     --> Sistema de perfil do space. Este perfil vai ter mais uma configuração de banner adicional.
-
-    --> Leitor do dominio matrix.to
 
     --> Sistema de bordas personalizadas
 
