@@ -1,3 +1,4 @@
+import { EventTimeline } from 'matrix-js-sdk';
 import initMatrix, { fetchFn } from '../client/initMatrix';
 
 const HashIC = './img/ic/outlined/hash.svg';
@@ -113,7 +114,7 @@ export function hasDMWith(userId) {
 }
 
 export function getCurrentState(room) {
-  return room?.getLiveTimeline()?.endState;
+  return room?.getLiveTimeline()?.getState(EventTimeline.FORWARDS);
 }
 
 export function joinRuleToIconSrc(joinRule, isSpace) {
