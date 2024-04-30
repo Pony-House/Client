@@ -17,6 +17,15 @@ export function getSelectRoom() {
   return room;
 }
 
+let thread;
+export function setSelectThread(value) {
+  thread = value;
+}
+
+export function getSelectThread() {
+  return thread;
+}
+
 let space;
 export function setSelectSpace(value) {
   space = value;

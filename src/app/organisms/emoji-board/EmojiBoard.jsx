@@ -280,9 +280,19 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
       el.addClass('fav-emoji');
 
       if (emoji.hexcode) {
-        addToEmojiList(typesAdd.noCustom, 'fav_emoji', $(emojiBoardRef.current).attr('board-type'));
+        addToEmojiList(
+          typesAdd.noCustom,
+          'fav_emoji',
+          $(emojiBoardRef.current).attr('board-type'),
+          200,
+        );
       } else {
-        addToEmojiList(typesAdd.custom, 'fav_emoji', $(emojiBoardRef.current).attr('board-type'));
+        addToEmojiList(
+          typesAdd.custom,
+          'fav_emoji',
+          $(emojiBoardRef.current).attr('board-type'),
+          200,
+        );
       }
     } else {
       el.removeClass('fav-emoji');

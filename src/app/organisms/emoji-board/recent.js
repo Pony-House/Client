@@ -57,7 +57,7 @@ export function getStickersList(limit, where, tinyStickers) {
   return res;
 }
 
-export function addToEmojiList(emojiData, where, type) {
+export function addToEmojiList(emojiData, where, type, sliceAmount = 100) {
   const recent = getEmojisListRaw(type);
   const i = recent[where].findIndex(
     ([u]) =>
@@ -77,7 +77,7 @@ export function addToEmojiList(emojiData, where, type) {
   }
   recent[where].unshift(entry);
 
-  recent[where] = recent[where].slice(0, 100);
+  recent[where] = recent[where].slice(0, sliceAmount);
   initMatrix.matrixClient.setAccountData(eventType + type, recent);
 }
 
