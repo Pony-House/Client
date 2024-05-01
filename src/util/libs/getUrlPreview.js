@@ -63,19 +63,26 @@ const urlPreviewStore = {
   },
 
   set: (url, value) => {
-    if ((typeof url === 'string' && linkify.test(url)) || value === null) {
-      const storage = urlPreviewStore.getRaw();
+    try {
+      if ((typeof url === 'string' && linkify.test(url)) || value === null) {
+        const storage = urlPreviewStore.getRaw();
 
-      if (value !== null && urlPreviewStore.validator(value)) {
-        storage[url] = {
-          data: value.data,
-          timeout: value.valueOf(),
+        const newValue = {
+          data: objType(value, 'object') ? value.data : null,
+          timeout: value.timeout.valueOf(),
         };
-      } else if (storage[url]) {
-        delete storage[url];
-      }
 
-      return global.localStorage.setItem(localStoragePlace, JSON.stringify(storage));
+        if (urlPreviewStore.validator(newValue)) {
+          storage[url] = newValue;
+        } else if (storage[url]) {
+          delete storage[url];
+        }
+
+        return global.localStorage.setItem(localStoragePlace, JSON.stringify(storage));
+      }
+    } catch (err) {
+      console.error(err);
+      return null;
     }
 
     return null;
@@ -109,6 +116,20 @@ urlPreviewStore.refresh();
 
 export { urlPreviewStore };
 
+const fixGetUrlValues = (tinyUrl, data) => {
+  if (objType(data, 'object')) {
+    if (
+      typeof data['og:url'] === 'string' &&
+      !data['og:url'].startsWith('https://') &&
+      !data['og:url'].startsWith('http://')
+    ) {
+      const url = new URL(tinyUrl);
+      data['og:url'] = `${url.origin}${data['og:url']}`;
+    }
+  }
+  return data;
+};
+
 export default function getUrlPreview(newUrl, ts = 0) {
   return new Promise((resolve, reject) => {
     const mx = initMatrix.matrixClient;
@@ -122,7 +143,7 @@ export default function getUrlPreview(newUrl, ts = 0) {
         tinyCache[url.href] &&
         (objType(tinyCache[url.href].data, 'object') || tinyCache[url.href].data === null)
       ) {
-        resolve(tinyCache[url.href].data);
+        resolve(fixGetUrlValues(url.href, tinyCache[url.href].data));
       } else {
         let tinyUrl = url.href;
         for (const item in urlConvert) {
@@ -146,7 +167,7 @@ export default function getUrlPreview(newUrl, ts = 0) {
                   tinyCache[url.href] = { data: embed, timeout: moment().add(12, 'hours') };
                   urlPreviewStore.set(url.href, tinyCache[url.href]);
                   urlPreviewStore.using = false;
-                  resolve(embed);
+                  resolve(fixGetUrlValues(url.href, embed));
                 })
                 .catch((err) => {
                   tinyCache[url.href] = { data: null, timeout: moment().add(1, 'hours') };
@@ -165,7 +186,7 @@ export default function getUrlPreview(newUrl, ts = 0) {
 
         // Use cache
         else {
-          resolve(storeCache.data);
+          resolve(fixGetUrlValues(tinyUrl, storeCache.data));
         }
       }
     }
