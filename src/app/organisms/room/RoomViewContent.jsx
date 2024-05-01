@@ -258,14 +258,14 @@ function usePaginate(
   eventLimitRef,
 ) {
   const [info, setInfo] = useState(null);
-  const [pagLimit, setPagLimit] = useState(getAppearance('pagLimit'));
+  const [pageLimit, setPageLimit] = useState(getAppearance('pageLimit'));
 
   useEffect(() => {
-    const updatePageLimit = (value) => setPagLimit(value);
-    matrixAppearance.on('pagLimit', updatePageLimit);
+    const updatePageLimit = (value) => setPageLimit(value);
+    matrixAppearance.on('pageLimit', updatePageLimit);
 
     return () => {
-      matrixAppearance.off('pagLimit', updatePageLimit);
+      matrixAppearance.off('pageLimit', updatePageLimit);
     };
   });
 
@@ -277,7 +277,7 @@ function usePaginate(
         const readUpToId = roomTimeline.getReadUpToEventId();
         readUptoEvtStore.setItem(roomTimeline.findEventByIdInTimelineSet(readUpToId));
       }
-      limit.paginate(backwards, pagLimit, roomTimeline.timeline.length);
+      limit.paginate(backwards, pageLimit, roomTimeline.timeline.length);
       setTimeout(() =>
         setInfo({
           backwards,
@@ -309,12 +309,12 @@ function usePaginate(
     if (timelineScroll.bottom < SCROLL_TRIGGER_POS) {
       if (limit.length < tLength) {
         // paginate from memory
-        limit.paginate(false, pagLimit, tLength);
+        limit.paginate(false, pageLimit, tLength);
         //
         forceUpdateLimit();
       } else if (roomTimeline.canPaginateForward()) {
         // paginate from server.
-        await roomTimeline.paginateTimeline(false, pagLimit);
+        await roomTimeline.paginateTimeline(false, pageLimit);
         loadingPage = false;
         return;
       }
@@ -323,11 +323,11 @@ function usePaginate(
     if (timelineScroll.top < SCROLL_TRIGGER_POS || roomTimeline.timeline.length < 1) {
       if (limit.from > 0) {
         // paginate from memory
-        limit.paginate(true, pagLimit, tLength);
+        limit.paginate(true, pageLimit, tLength);
         forceUpdateLimit();
       } else if (roomTimeline.canPaginateBackward()) {
         // paginate from server.
-        await roomTimeline.paginateTimeline(true, pagLimit);
+        await roomTimeline.paginateTimeline(true, pageLimit);
       }
     }
 
@@ -478,7 +478,7 @@ function RoomViewContent({
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
   const [throttle] = useState(new Throttle());
   const [embedHeight, setEmbedHeight] = useState(null);
-  const [pagLimit, setPagLimit] = useState(getAppearance('pagLimit'));
+  const [pageLimit, setPageLimit] = useState(getAppearance('pageLimit'));
 
   const timelineSVRef = useRef(null);
   const timelineScrollRef = useRef(null);
@@ -820,7 +820,7 @@ function RoomViewContent({
   setTimeout(() => {
     if (roomTimeline.timeline.length < 1) {
       autoPaginate().then(() => {
-        if (roomTimeline.timeline.length <= rule3(50, 10, pagLimit)) {
+        if (roomTimeline.timeline.length <= rule3(50, 10, pageLimit)) {
           $(phMsgQuery)
             .addClass('no-loading')
             .off('click', noLoadingPageButton)
@@ -831,7 +831,7 @@ function RoomViewContent({
           tinyAPI.emit('emptyTimeline', forceUpdateLimit);
         }
       });
-    } else if (roomTimeline.timeline.length <= rule3(50, 10, pagLimit)) {
+    } else if (roomTimeline.timeline.length <= rule3(50, 10, pageLimit)) {
       $(phMsgQuery)
         .addClass('no-loading')
         .off('click', noLoadingPageButton)
@@ -841,13 +841,13 @@ function RoomViewContent({
 
   useEffect(() => {
     const updateClock = () => forceUpdate();
-    const updatePageLimit = (value) => setPagLimit(value);
-    matrixAppearance.on('pagLimit', updatePageLimit);
+    const updatePageLimit = (value) => setPageLimit(value);
+    matrixAppearance.on('pageLimit', updatePageLimit);
     matrixAppearance.on('is24hours', updateClock);
     matrixAppearance.on('calendarFormat', updateClock);
 
     return () => {
-      matrixAppearance.off('pagLimit', updatePageLimit);
+      matrixAppearance.off('pageLimit', updatePageLimit);
       matrixAppearance.off('is24hours', updateClock);
       matrixAppearance.off('calendarFormat', updateClock);
     };

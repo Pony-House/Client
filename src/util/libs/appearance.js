@@ -74,9 +74,9 @@ class MatrixAppearance extends EventEmitter {
           ? this.content.showStickers
           : !!__ENV_APP__.SHOW_STICKERS;
 
-      this.content.pagLimit =
-        typeof this.content.pagLimit === 'number'
-          ? this.content.pagLimit
+      this.content.pageLimit =
+        typeof this.content.pageLimit === 'number'
+          ? this.content.pageLimit
           : !isNaN(__ENV_APP__.PAG_LIMIT) &&
               isFinite(__ENV_APP__.PAG_LIMIT) &&
               __ENV_APP__.PAG_LIMIT > 0

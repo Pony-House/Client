@@ -20,11 +20,13 @@ import matrixAppearance, {
   toggleAppearanceAction,
   setAppearance,
 } from '../../../../util/libs/appearance';
+import SettingNumber from '@src/app/molecules/settings-number/SettingsNumber';
 
 function AppearanceSection() {
   const [, updateState] = useState({});
   const appearanceSettings = getAppearance();
 
+  const [pageLimit, setPageLimit] = useState(appearanceSettings.pageLimit);
   const [useCustomEmojis, setUseCustomEmojis] = useState(appearanceSettings.useCustomEmojis);
   const [showStickers, setShowStickers] = useState(appearanceSettings.showStickers);
   const [showUserDMstatus, setShowUserStatus] = useState(appearanceSettings.showUserDMstatus);
@@ -82,18 +84,25 @@ function AppearanceSection() {
     ponyHouseZoom.val(tinyAppZoomValidator(zoomApp));
     ponyHouseZoomRange.val(tinyAppZoomValidator(zoomApp));
 
-    ponyHouseZoomRange.on('change keyup keydown keypress input', () => {
+    const zoomRanger = () => {
       const newValue = Number(ponyHouseZoomRange.val());
       const value = tinyAppZoomValidator(newValue);
       ponyHouseZoom.val(value);
-    });
-
-    ponyHouseZoom.on('change keyup keydown keypress', () => {
+    };
+    const tinyZoom = () => {
       const newValue = Number(ponyHouseZoom.val());
       const value = tinyAppZoomValidator(newValue);
       if (newValue !== value) ponyHouseZoom.val(value);
       ponyHouseZoomRange.val(value);
-    });
+    };
+
+    ponyHouseZoomRange.on('change keyup keydown keypress input', zoomRanger);
+    ponyHouseZoom.on('change keyup keydown keypress', tinyZoom);
+
+    return () => {
+      ponyHouseZoomRange.off('change keyup keydown keypress input', zoomRanger);
+      ponyHouseZoom.off('change keyup keydown keypress', tinyZoom);
+    };
   }, []);
 
   const selectEmpty = () => {
@@ -579,6 +588,25 @@ function AppearanceSection() {
               </div>
             }
           />
+
+          {!appearanceSettings.basicUserMode && appearanceSettings.advancedUserMode ? (
+            <SettingTile
+              title="Limit of visible messages per page"
+              content={
+                <SettingNumber
+                  onChange={(value) => setAppearance('pageLimit', value)}
+                  value={pageLimit}
+                  min={1}
+                  content={
+                    <div className="very-small text-gray">
+                      If the number is greater than what is allowed by the homeserver, the
+                      homeserver itself will load using its own settings or it will fail.
+                    </div>
+                  }
+                />
+              }
+            />
+          ) : null}
         </ul>
       </div>
 
