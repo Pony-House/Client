@@ -260,6 +260,16 @@ if (!gotTheLock) {
             }
           },
         },
+        {
+          label: `Refresh Client`,
+          click: () => {
+            if (appStarted) {
+              if (win) win.show();
+              appShow.change(true);
+              if (win) win.webContents.send('refresh-client', true);
+            }
+          },
+        },
         { type: 'separator' },
         /* {
           label: 'DevTools (Advanced User)',

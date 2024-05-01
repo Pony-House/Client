@@ -5,6 +5,10 @@ ipcRenderer.on('check-version', () => {
   if (typeof global.checkVersions === 'function') global.checkVersions();
 });
 
+ipcRenderer.on('refresh-client', () => {
+  global.location.reload();
+});
+
 let tinyModule;
 const autoLaunch = {
   started: false,

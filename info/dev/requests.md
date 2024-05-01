@@ -1,7 +1,5 @@
 Criar emoji list com o mesmo nome da crash
 
-o Custom status de emoji está com glitch
-
 Usar a mesma lógica de carregar emojis para deixar menos lento o carregamento de imagens do chatbox.
 
 --> Leitor do dominio matrix.to para abrir diretamente as rooms
