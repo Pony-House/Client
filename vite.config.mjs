@@ -136,6 +136,8 @@ export default defineConfig(({ command, mode }) => {
     WEB3: !!(env.WEB3 === true || env.WEB3 === 'true'),
     IPFS: !!(env.IPFS === true || env.IPFS === 'true'),
 
+    PAG_LIMIT: Number(env.PAG_LIMIT),
+
     SAVE_ROOM_DB: !!(env.SAVE_ROOM_DB === true || env.SAVE_ROOM_DB === 'true'),
     DISCORD_STYLE: !!(env.DISCORD_STYLE === true || env.DISCORD_STYLE === 'true'),
     SHOW_STICKERS: !!(env.SHOW_STICKERS === true || env.SHOW_STICKERS === 'true'),
