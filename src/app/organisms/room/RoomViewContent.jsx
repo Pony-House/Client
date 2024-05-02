@@ -118,13 +118,24 @@ function RoomIntroContainer({ event, timeline }) {
   );
 }
 
+const mentionOpen = {
+  '@': (userId) => {
+    const roomId = navigation.selectedRoomId;
+    openProfileViewer(userId, roomId);
+  },
+
+  '#': (roomId) => {
+    console.log(roomId);
+  },
+};
+
 function handleOnClickCapture(e) {
   const { target, nativeEvent } = e;
 
-  const userId = target.getAttribute('data-mx-pill');
-  if (userId) {
-    const roomId = navigation.selectedRoomId;
-    openProfileViewer(userId, roomId);
+  const itemId = target.getAttribute('data-mx-pill');
+  if (typeof itemId === 'string' && itemId.length > 0) {
+    const tag = itemId[0];
+    if (typeof mentionOpen[tag] === 'function') mentionOpen[tag](itemId);
   }
 
   const spoiler = nativeEvent.composedPath().find((el) => el?.hasAttribute?.('data-mx-spoiler'));

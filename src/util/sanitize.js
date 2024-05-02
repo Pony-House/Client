@@ -112,9 +112,9 @@ function transformSpanTag(tagName, attribs) {
   };
 }
 
-export const profileUrlRegex = /^https?:\/\/matrix.to\/#\/(@.+:.+)/;
 function transformATag(tagName, attribs) {
-  const userLink = decodeURIComponent(attribs.href).match(profileUrlRegex);
+  const userLink = decodeURIComponent(attribs.href).match(/^https?:\/\/matrix.to\/#\/(@.+:.+)/);
+  const roomLink = decodeURIComponent(attribs.href).match(/^https?:\/\/matrix.to\/#\/(#.+:.+)/);
   if (userLink !== null) {
     // convert user link to pill
     const userId = userLink[1];
@@ -127,6 +127,16 @@ function transformATag(tagName, attribs) {
     if (userId === mx?.getUserId()) {
       pill.attribs['data-mx-ping'] = undefined;
     }
+    return pill;
+  } else if (roomLink !== null) {
+    // convert room link to pill
+    const roomId = roomLink[1];
+    const pill = {
+      tagName: 'span',
+      attribs: {
+        'data-mx-pill': roomId,
+      },
+    };
     return pill;
   }
 
