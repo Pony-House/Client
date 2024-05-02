@@ -240,9 +240,16 @@ const plainRules = {
       if (tinyRenderCache[0] && objType(tinyRenderCache[0].data, 'object')) {
         if (!objType(tinyRenderCache[0].data['m.mentions'], 'object'))
           tinyRenderCache[0].data['m.mentions'] = {};
-        if (!Array.isArray(tinyRenderCache[0].data['m.mentions'].user_ids))
-          tinyRenderCache[0].data['m.mentions'].user_ids = [];
-        tinyRenderCache[0].data['m.mentions'].user_ids.push(node.id);
+
+        if (node.id.startsWith('@')) {
+          if (!Array.isArray(tinyRenderCache[0].data['m.mentions'].user_ids))
+            tinyRenderCache[0].data['m.mentions'].user_ids = [];
+          tinyRenderCache[0].data['m.mentions'].user_ids.push(node.id);
+        } else if (node.id.startsWith('#')) {
+          if (!Array.isArray(tinyRenderCache[0].data['m.mentions'].room_ids))
+            tinyRenderCache[0].data['m.mentions'].room_ids = [];
+          tinyRenderCache[0].data['m.mentions'].room_ids.push(node.id);
+        }
       }
       return htmlTag('a', sanitizeText(node.content), {
         href: `https://matrix.to/#/${encodeURIComponent(node.id)}`,

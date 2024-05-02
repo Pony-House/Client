@@ -1,2 +1,3 @@
 - fixGetUrlValues added to getUrlPreview.js file.
 - New config to set page limit added to ".env".
+- m.mentions - rooms_ids added.
