@@ -33,8 +33,10 @@ const Button = React.forwardRef(
         type={type}
         disabled={disabled}
       >
-        {iconSrc !== null && <RawIcon size="small" className="me-2" src={iconSrc} />}
-        {faSrc !== null && <RawIcon size="small" className="me-2" fa={faSrc} />}
+        {iconSrc !== null && (
+          <RawIcon size="small" className={children ? 'me-2' : null} src={iconSrc} />
+        )}
+        {faSrc !== null && <RawIcon size="small" className={children ? 'me-2' : null} fa={faSrc} />}
         {children}
       </button>
     );
