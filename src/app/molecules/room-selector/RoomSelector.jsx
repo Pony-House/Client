@@ -22,12 +22,12 @@ import { selectRoom, selectRoomMode } from '../../../client/action/navigation';
 
 function RoomSelectorWrapper({
   isSelected,
-  isMuted,
+  isMuted = false,
   isUnread,
   onClick,
   content,
-  options,
-  onContextMenu,
+  options = null,
+  onContextMenu = null,
   className,
 }) {
   const classes = ['room-selector'];
@@ -50,11 +50,6 @@ function RoomSelectorWrapper({
     </div>
   );
 }
-RoomSelectorWrapper.defaultProps = {
-  isMuted: false,
-  options: null,
-  onContextMenu: null,
-};
 RoomSelectorWrapper.propTypes = {
   isSelected: PropTypes.bool.isRequired,
   isMuted: PropTypes.bool,
@@ -67,25 +62,25 @@ RoomSelectorWrapper.propTypes = {
 
 function RoomSelector({
   name,
-  parentName,
+  parentName = null,
   roomId,
   room,
-  imageSrc,
-  imageAnimSrc,
-  animParentsCount,
-  iconSrc,
-  isSelected,
-  isMuted,
+  imageSrc = null,
+  imageAnimSrc = null,
+  animParentsCount = 4,
+  iconSrc = null,
+  isSelected = false,
+  isMuted = false,
   isUnread,
   notificationCount,
   isAlert,
-  options,
+  options = null,
   onClick,
-  onContextMenu,
-  isProfile,
-  notSpace,
+  onContextMenu = null,
+  isProfile = false,
+  notSpace = false,
   user,
-  allowCustomUsername,
+  allowCustomUsername = false,
 }) {
   const [userData, setPresenceStatus] = useState(null);
   const [imgAnimSrc, setImgAnimSrc] = useState(imageAnimSrc);
@@ -261,20 +256,6 @@ function RoomSelector({
   );
 }
 
-RoomSelector.defaultProps = {
-  animParentsCount: 4,
-  allowCustomUsername: false,
-  notSpace: false,
-  isProfile: false,
-  parentName: null,
-  isSelected: false,
-  imageSrc: null,
-  imageAnimSrc: null,
-  iconSrc: null,
-  isMuted: false,
-  options: null,
-  onContextMenu: null,
-};
 RoomSelector.propTypes = {
   allowCustomUsername: PropTypes.bool,
   animParentsCount: PropTypes.number,

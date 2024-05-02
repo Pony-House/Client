@@ -8,7 +8,7 @@ import { hljsFixer } from '../../../util/tools';
 
 import PopupWindow from '../../molecules/popup-window/PopupWindow';
 
-function ViewSourceBlock({ title, json, className }) {
+function ViewSourceBlock({ title, json, className = '' }) {
   useEffect(() => {
     $('.insert-hljs').each((index, element) => {
       hljs.highlightElement(element);
@@ -31,9 +31,7 @@ function ViewSourceBlock({ title, json, className }) {
     </div>
   );
 }
-ViewSourceBlock.defaultProps = {
-  className: '',
-};
+
 ViewSourceBlock.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string.isRequired,

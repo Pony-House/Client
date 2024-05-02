@@ -14,15 +14,15 @@ import insertCustomStatus from './insertCustomStatus';
 import { getAnimatedImageUrl, getAppearance } from '../../../util/libs/appearance';
 
 function PeopleSelector({
-  avatarSrc,
-  avatarAnimSrc,
+  avatarSrc = null,
+  avatarAnimSrc = null,
   name,
   color,
-  peopleRole,
+  peopleRole = null,
   onClick,
-  user,
-  disableStatus,
-  avatarSize,
+  user = null,
+  disableStatus = false,
+  avatarSize = 32,
   contextMenu,
 }) {
   const statusRef = useRef(null);
@@ -123,15 +123,6 @@ function PeopleSelector({
     </button>
   );
 }
-
-PeopleSelector.defaultProps = {
-  avatarSize: 32,
-  avatarAnimSrc: null,
-  avatarSrc: null,
-  peopleRole: null,
-  user: null,
-  disableStatus: false,
-};
 
 PeopleSelector.propTypes = {
   avatarSize: PropTypes.number,

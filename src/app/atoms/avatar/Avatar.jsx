@@ -41,18 +41,18 @@ export const avatarDefaultColor = (bgColor, type = 'avatar') => {
 const Avatar = React.forwardRef(
   (
     {
-      text,
-      bgColor,
-      iconSrc,
-      faSrc,
-      iconColor,
-      imageSrc,
-      size,
-      className,
-      imgClass,
-      imageAnimSrc,
-      isDefaultImage,
-      animParentsCount,
+      text = null,
+      bgColor = 'transparent',
+      iconSrc = null,
+      faSrc = null,
+      iconColor = null,
+      imageSrc = null,
+      size = 'normal',
+      className = '',
+      imgClass = 'img-fluid',
+      imageAnimSrc = null,
+      isDefaultImage = false,
+      animParentsCount = 4,
       theRef,
     },
     ref,
@@ -213,21 +213,6 @@ const Avatar = React.forwardRef(
 );
 
 // Props
-Avatar.defaultProps = {
-  animParentsCount: 4,
-  isDefaultImage: false,
-  imageAnimSrc: null,
-  imgClass: 'img-fluid',
-  text: null,
-  className: '',
-  bgColor: 'transparent',
-  iconSrc: null,
-  faSrc: null,
-  iconColor: null,
-  imageSrc: null,
-  size: 'normal',
-};
-
 Avatar.propTypes = {
   animParentsCount: PropTypes.number,
   isDefaultImage: PropTypes.bool,

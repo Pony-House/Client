@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Header({ children, title, banner }) {
+function Header({ children, title = null, banner = '' }) {
   return (
     <nav
       className={`${banner ? 'banner-mode ' : ''}navbar navbar-expand navbar-nav p-0 w-100 d-block noselect border-bottom border-bg emoji-size-fix room-view-navbar`}
@@ -14,11 +14,6 @@ function Header({ children, title, banner }) {
     </nav>
   );
 }
-
-Header.defaultProps = {
-  title: null,
-  banner: '',
-};
 
 Header.propTypes = {
   banner: PropTypes.string,

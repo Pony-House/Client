@@ -111,9 +111,7 @@ function JoinAliasContent({ term, requestClose }) {
     </form>
   );
 }
-JoinAliasContent.defaultProps = {
-  term: undefined,
-};
+
 JoinAliasContent.propTypes = {
   term: PropTypes.string,
   requestClose: PropTypes.func.isRequired,

@@ -4,7 +4,15 @@ import PropTypes from 'prop-types';
 import RawIcon from '../system-icons/RawIcon';
 import Button from '../button/Button';
 
-function TabItem({ selected, iconSrc, faSrc, onClick, children, disabled, className }) {
+function TabItem({
+  selected = false,
+  iconSrc = null,
+  faSrc = null,
+  onClick = null,
+  children,
+  disabled = false,
+  className = '',
+}) {
   const isSelected = selected ? 'active' : '';
 
   return (
@@ -22,15 +30,6 @@ function TabItem({ selected, iconSrc, faSrc, onClick, children, disabled, classN
   );
 }
 
-TabItem.defaultProps = {
-  selected: false,
-  iconSrc: null,
-  faSrc: null,
-  onClick: null,
-  disabled: false,
-  className: '',
-};
-
 TabItem.propTypes = {
   selected: PropTypes.bool,
   className: PropTypes.string,
@@ -41,7 +40,15 @@ TabItem.propTypes = {
   disabled: PropTypes.bool,
 };
 
-function Tabs({ items, defaultSelected, onSelect, className, isFullscreen, id, requestClose }) {
+function Tabs({
+  items,
+  defaultSelected = 0,
+  onSelect,
+  className,
+  isFullscreen = false,
+  id,
+  requestClose,
+}) {
   const [selectedItem, setSelectedItem] = useState(items[defaultSelected]);
   const tabRef = useRef(null);
 
@@ -146,11 +153,6 @@ function Tabs({ items, defaultSelected, onSelect, className, isFullscreen, id, r
     </div>
   );
 }
-
-Tabs.defaultProps = {
-  defaultSelected: 0,
-  isFullscreen: false,
-};
 
 Tabs.propTypes = {
   items: PropTypes.arrayOf(

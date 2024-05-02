@@ -1,7 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Text({ className, style, variant, weight, primary, span, children }) {
+function Text({
+  className = null,
+  style = null,
+  variant = 'b1',
+  weight = 'normal',
+  primary = false,
+  span = false,
+  children,
+}) {
   const classes = [];
   if (className) classes.push(className);
 
@@ -41,15 +49,6 @@ function Text({ className, style, variant, weight, primary, span, children }) {
     )
   );
 }
-
-Text.defaultProps = {
-  className: null,
-  style: null,
-  variant: 'b1',
-  weight: 'normal',
-  primary: false,
-  span: false,
-};
 
 Text.propTypes = {
   className: PropTypes.string,

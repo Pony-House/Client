@@ -3,7 +3,15 @@ import PropTypes from 'prop-types';
 
 import RawIcon from '../system-icons/RawIcon';
 
-function SegmentedControls({ selected, segments, onSelect, onEmpty, className, type, iconSrc }) {
+function SegmentedControls({
+  selected,
+  segments,
+  onSelect,
+  onEmpty,
+  className,
+  type = 'buttons',
+  iconSrc,
+}) {
   const [select, setSelect] = useState(selected);
 
   function selectSegment(segmentIndex) {
@@ -64,10 +72,6 @@ function SegmentedControls({ selected, segments, onSelect, onEmpty, className, t
     </select>
   ) : null;
 }
-
-SegmentedControls.defaultProps = {
-  type: 'buttons',
-};
 
 SegmentedControls.propTypes = {
   iconSrc: PropTypes.string,

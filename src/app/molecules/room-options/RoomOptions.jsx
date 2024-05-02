@@ -16,7 +16,7 @@ import RoomNotification from '../room-notification/RoomNotification';
 import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
 import { openPinMessageModal } from '../../../util/libs/pinMessage';
 
-function RoomOptions({ roomId, threadId, afterOptionSelect }) {
+function RoomOptions({ roomId, threadId, afterOptionSelect = null }) {
   const [isFollowing, setIsFollowing] = useState(threadsList.getActive(roomId, threadId));
 
   const mx = initMatrix.matrixClient;
@@ -111,10 +111,6 @@ function RoomOptions({ roomId, threadId, afterOptionSelect }) {
     </div>
   );
 }
-
-RoomOptions.defaultProps = {
-  afterOptionSelect: null,
-};
 
 RoomOptions.propTypes = {
   roomId: PropTypes.string.isRequired,

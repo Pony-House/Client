@@ -11,7 +11,14 @@ import RawIcon from '../../atoms/system-icons/RawIcon';
 import IconButton from '../../atoms/button/IconButton';
 import ImagePackUsageSelector from './ImagePackUsageSelector';
 
-function ImagePackItem({ url, shortcode, usage, onUsageChange, onDelete, onRename }) {
+function ImagePackItem({
+  url,
+  shortcode,
+  usage,
+  onUsageChange = null,
+  onDelete = null,
+  onRename = null,
+}) {
   const handleUsageSelect = (event) => {
     openReusableContextMenu('bottom', getEventCords(event, '.btn-link'), (closeMenu) => (
       <ImagePackUsageSelector
@@ -62,11 +69,6 @@ function ImagePackItem({ url, shortcode, usage, onUsageChange, onDelete, onRenam
   );
 }
 
-ImagePackItem.defaultProps = {
-  onUsageChange: null,
-  onDelete: null,
-  onRename: null,
-};
 ImagePackItem.propTypes = {
   url: PropTypes.string.isRequired,
   shortcode: PropTypes.string.isRequired,

@@ -9,14 +9,14 @@ import RawIcon from '../../atoms/system-icons/RawIcon';
 import FileInput, { fileInputClick, fileInputValue, uploadContent } from '../file-input/FileInput';
 
 function ImageUpload({
-  text,
-  bgColor,
-  imageSrc,
+  text = null,
+  bgColor = 'transparent',
+  imageSrc = null,
   onUpload,
   onRequestRemove,
-  className,
-  size,
-  defaultImage,
+  className = '',
+  size = 'large',
+  defaultImage = null,
 }) {
   const [uploadPromise, setUploadPromise] = useState(null);
   const uploadImageRef = useRef(null);
@@ -87,15 +87,6 @@ function ImageUpload({
     </div>
   );
 }
-
-ImageUpload.defaultProps = {
-  className: '',
-  defaultImage: null,
-  text: null,
-  bgColor: 'transparent',
-  imageSrc: null,
-  size: 'large',
-};
 
 ImageUpload.propTypes = {
   text: PropTypes.string,

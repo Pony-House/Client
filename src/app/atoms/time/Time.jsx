@@ -28,7 +28,7 @@ const timeBase = (timestamp, fullTime) => {
   return { date, formattedFullTime, formattedDate };
 };
 
-function Time({ timestamp, fullTime, className }) {
+function Time({ timestamp, fullTime = false, className = '' }) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
   const { date, formattedFullTime, formattedDate } = timeBase(timestamp, fullTime);
 
@@ -49,11 +49,6 @@ function Time({ timestamp, fullTime, className }) {
     </time>
   );
 }
-
-Time.defaultProps = {
-  fullTime: false,
-  className: '',
-};
 
 Time.propTypes = {
   className: PropTypes.string,

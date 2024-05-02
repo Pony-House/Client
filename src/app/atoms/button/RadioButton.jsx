@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function RadioButton({ isActive, onToggle, disabled }) {
+function RadioButton({ isActive = false, onToggle = null, disabled = false }) {
   if (onToggle === null)
     return <span className={`radio-btn${isActive ? ' radio-btn--active' : ''}`} />;
 
@@ -14,12 +14,6 @@ function RadioButton({ isActive, onToggle, disabled }) {
     />
   );
 }
-
-RadioButton.defaultProps = {
-  isActive: false,
-  onToggle: null,
-  disabled: false,
-};
 
 RadioButton.propTypes = {
   isActive: PropTypes.bool,

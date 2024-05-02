@@ -5,7 +5,7 @@ import Text from '../../atoms/text/Text';
 import RawIcon from '../../atoms/system-icons/RawIcon';
 import Time from '../../atoms/time/Time';
 
-function TimelineChange({ variant, content, timestamp, onClick }) {
+function TimelineChange({ variant = 'other', content, timestamp, onClick = null }) {
   let faSrc;
 
   switch (variant) {
@@ -53,11 +53,6 @@ function TimelineChange({ variant, content, timestamp, onClick }) {
     </tr>
   );
 }
-
-TimelineChange.defaultProps = {
-  variant: 'other',
-  onClick: null,
-};
 
 TimelineChange.propTypes = {
   variant: PropTypes.oneOf([

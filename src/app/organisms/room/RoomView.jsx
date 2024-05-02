@@ -15,7 +15,14 @@ import RoomViewCmdBar from './RoomViewCmdBar';
 const viewEvent = new EventEmitter();
 viewEvent.setMaxListeners(Infinity);
 
-function RoomView({ roomTimeline, eventId, isUserList, roomItem, isGuest, isLoading }) {
+function RoomView({
+  roomTimeline,
+  eventId = null,
+  isUserList,
+  roomItem,
+  isGuest = false,
+  isLoading,
+}) {
   const refcmdInput = useRef(null);
   const refRoomInput = useRef(null);
   const roomViewRef = useRef(null);
@@ -83,10 +90,6 @@ function RoomView({ roomTimeline, eventId, isUserList, roomItem, isGuest, isLoad
   );
 }
 
-RoomView.defaultProps = {
-  eventId: null,
-  isGuest: false,
-};
 RoomView.propTypes = {
   roomTimeline: PropTypes.shape({}).isRequired,
   eventId: PropTypes.string,

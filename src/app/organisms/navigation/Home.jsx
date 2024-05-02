@@ -17,7 +17,7 @@ import Button from '../../atoms/button/Button';
 import { getCurrentState } from '../../../util/matrixUtil';
 
 const drawerPostie = new Postie();
-function Home({ spaceId }) {
+function Home({ spaceId = null }) {
   const mx = initMatrix.matrixClient;
   const { roomList, notifications, accountData, roomsInput } = initMatrix;
   const { spaces, rooms, directs } = roomList;
@@ -181,9 +181,7 @@ function Home({ spaceId }) {
     </>
   );
 }
-Home.defaultProps = {
-  spaceId: null,
-};
+
 Home.propTypes = {
   spaceId: PropTypes.string,
 };

@@ -6,15 +6,15 @@ import IconButton from '../button/IconButton';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
 function InfoCard({
-  className,
-  style,
-  variant,
-  iconSrc,
-  faSrc,
+  className = null,
+  style = null,
+  variant = 'link btn-bg',
+  iconSrc = null,
+  faSrc = null,
   title,
-  content,
-  rounded,
-  requestClose,
+  content = null,
+  rounded = false,
+  requestClose = null,
 }) {
   const classes = [`info-card info-card--${variant}`];
   if (rounded) classes.push('info-card--rounded');
@@ -44,17 +44,6 @@ function InfoCard({
     </div>
   );
 }
-
-InfoCard.defaultProps = {
-  className: null,
-  style: null,
-  variant: 'link btn-bg',
-  faSrc: null,
-  iconSrc: null,
-  content: null,
-  rounded: false,
-  requestClose: null,
-};
 
 InfoCard.propTypes = {
   className: PropTypes.string,

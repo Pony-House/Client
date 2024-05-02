@@ -386,10 +386,6 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
   );
 }
 
-PublicRooms.defaultProps = {
-  searchTerm: undefined,
-};
-
 PublicRooms.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   searchTerm: PropTypes.string,

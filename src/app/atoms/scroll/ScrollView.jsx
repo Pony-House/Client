@@ -2,7 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const ScrollView = React.forwardRef(
-  ({ horizontal, vertical, autoHide, invisible, onScroll, children, className, id }, ref) => {
+  (
+    {
+      horizontal = false,
+      vertical = true,
+      autoHide = false,
+      invisible = false,
+      onScroll = null,
+      children,
+      className,
+      id,
+    },
+    ref,
+  ) => {
     let scrollbarClasses = '';
     if (horizontal) scrollbarClasses += ' scrollbar__h';
     if (vertical) scrollbarClasses += ' scrollbar__v';
@@ -16,16 +28,6 @@ const ScrollView = React.forwardRef(
     );
   },
 );
-
-ScrollView.defaultProps = {
-  id: null,
-  className: null,
-  horizontal: false,
-  vertical: true,
-  autoHide: false,
-  invisible: false,
-  onScroll: null,
-};
 
 ScrollView.propTypes = {
   id: PropTypes.string,

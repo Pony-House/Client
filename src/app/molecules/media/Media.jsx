@@ -55,7 +55,7 @@ function getNativeHeight(width, height, maxWidth = 296) {
   return '';
 }
 
-function FileHeader({ name, link, external, file, type, roomId, threadId }) {
+function FileHeader({ name, link = null, external = false, file = null, type, roomId, threadId }) {
   const [url, setUrl] = useState(null);
 
   async function getFile() {
@@ -99,11 +99,7 @@ function FileHeader({ name, link, external, file, type, roomId, threadId }) {
     </div>
   );
 }
-FileHeader.defaultProps = {
-  external: false,
-  file: null,
-  link: null,
-};
+
 FileHeader.propTypes = {
   name: PropTypes.string.isRequired,
   link: PropTypes.string,
@@ -112,7 +108,7 @@ FileHeader.propTypes = {
   type: PropTypes.string.isRequired,
 };
 
-function File({ name, link, file, type, roomId, threadId }) {
+function File({ name, link, file = null, type = '', roomId, threadId }) {
   return (
     <div className="file-container">
       <FileHeader
@@ -126,10 +122,7 @@ function File({ name, link, file, type, roomId, threadId }) {
     </div>
   );
 }
-File.defaultProps = {
-  file: null,
-  type: '',
-};
+
 File.propTypes = {
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
@@ -141,16 +134,16 @@ function Image({
   name,
   roomId,
   threadId,
-  width,
-  height,
+  width = null,
+  height = null,
   link,
-  file,
-  type,
-  blurhash,
-  className,
-  classImage,
-  ignoreContainer,
-  maxWidth,
+  file = null,
+  type = '',
+  blurhash = '',
+  className = null,
+  classImage = null,
+  ignoreContainer = false,
+  maxWidth = 296,
 }) {
   const [url, setUrl] = useState(null);
   const [blur, setBlur] = useState(true);
@@ -239,17 +232,7 @@ function Image({
 
   return imgData;
 }
-Image.defaultProps = {
-  maxWidth: 296,
-  ignoreContainer: false,
-  file: null,
-  width: null,
-  height: null,
-  className: null,
-  classImage: null,
-  type: '',
-  blurhash: '',
-};
+
 Image.propTypes = {
   maxWidth: PropTypes.number,
   ignoreContainer: PropTypes.bool,
@@ -264,7 +247,16 @@ Image.propTypes = {
   blurhash: PropTypes.string,
 };
 
-function Sticker({ name, height, width, link, file, type, roomId, threadId }) {
+function Sticker({
+  name,
+  height = null,
+  width = null,
+  link,
+  file = null,
+  type = '',
+  roomId,
+  threadId,
+}) {
   const [url, setUrl] = useState(null);
 
   const itemEmbed = useRef(null);
@@ -299,12 +291,7 @@ function Sticker({ name, height, width, link, file, type, roomId, threadId }) {
     </Tooltip>
   );
 }
-Sticker.defaultProps = {
-  file: null,
-  type: '',
-  width: null,
-  height: null,
-};
+
 Sticker.propTypes = {
   name: PropTypes.string.isRequired,
   width: PropTypes.number,
@@ -314,7 +301,7 @@ Sticker.propTypes = {
   type: PropTypes.string,
 };
 
-function Audio({ name, link, type, file, roomId, threadId }) {
+function Audio({ name, link, type = '', file = null, roomId, threadId }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [url, setUrl] = useState(null);
@@ -358,10 +345,7 @@ function Audio({ name, link, type, file, roomId, threadId }) {
     </div>
   );
 }
-Audio.defaultProps = {
-  file: null,
-  type: '',
-};
+
 Audio.propTypes = {
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
@@ -374,14 +358,14 @@ function Video({
   roomId,
   threadId,
   link,
-  thumbnail,
-  thumbnailFile,
-  thumbnailType,
-  width,
-  height,
-  file,
-  type,
-  blurhash,
+  thumbnail = null,
+  thumbnailFile = null,
+  thumbnailType = null,
+  width = null,
+  height = null,
+  file = null,
+  type = '',
+  blurhash = null,
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -462,16 +446,7 @@ function Video({
     </div>
   );
 }
-Video.defaultProps = {
-  width: null,
-  height: null,
-  file: null,
-  thumbnail: null,
-  thumbnailType: null,
-  thumbnailFile: null,
-  type: '',
-  blurhash: null,
-};
+
 Video.propTypes = {
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,

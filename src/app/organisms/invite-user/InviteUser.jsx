@@ -294,11 +294,6 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
   );
 }
 
-InviteUser.defaultProps = {
-  roomId: undefined,
-  searchTerm: undefined,
-};
-
 InviteUser.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   roomId: PropTypes.string,

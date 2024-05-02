@@ -10,7 +10,17 @@ import blobUrlManager from '@src/util/libs/blobUrlManager';
 
 // Build HTML
 const FileInput = React.forwardRef(
-  ({ onChange, accept, required, /* webkitdirectory, directory, */ capture, multiple }, ref) => {
+  (
+    {
+      onChange = null,
+      accept = null,
+      required = false,
+      /* webkitdirectory, directory, */
+      capture = null,
+      multiple = false,
+    },
+    ref,
+  ) => {
     const inputRef = useRef(null);
     // const isNativeMobile = Capacitor.isNativePlatform();
     const isNativeMobile = false;
@@ -190,15 +200,6 @@ const fileInputValue = (inputRef, value) => {
 };
 
 // Validators
-FileInput.defaultProps = {
-  accept: null,
-  onChange: null,
-  capture: null,
-  required: false,
-  // webkitdirectory: false,
-  // directory: false,
-  multiple: false,
-};
 FileInput.propTypes = {
   accept: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   onChange: PropTypes.func,

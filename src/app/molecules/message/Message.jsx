@@ -178,16 +178,11 @@ MessageHeader.propTypes = {
   username: PropTypes.string.isRequired,
 };
 
-const MessageTime = React.memo(({ timestamp, fullTime, className }) => (
+const MessageTime = React.memo(({ timestamp, fullTime = false, className = '' }) => (
   <span className={`${className} very-small text-gray`}>
     <Time timestamp={timestamp} fullTime={fullTime} />
   </span>
 ));
-
-MessageTime.defaultProps = {
-  fullTime: false,
-  className: '',
-};
 
 MessageTime.propTypes = {
   timestamp: PropTypes.number.isRequired,
@@ -432,15 +427,15 @@ const MessageBody = React.memo(
     roomId,
     senderId,
     eventId,
-    threadId,
-    content,
-    className,
+    threadId = null,
+    content = {},
+    className = '',
     senderName,
     body,
-    isCustomHTML,
-    isSystem,
-    isEdited,
-    msgType,
+    isCustomHTML = false,
+    isSystem = false,
+    isEdited = false,
+    msgType = null,
     messageStatus,
   }) => {
     const messageBody = useRef(null);
@@ -502,15 +497,6 @@ const MessageBody = React.memo(
   },
 );
 
-MessageBody.defaultProps = {
-  className: '',
-  isCustomHTML: false,
-  isSystem: false,
-  isEdited: false,
-  msgType: null,
-  threadId: null,
-  content: {},
-};
 MessageBody.propTypes = {
   content: PropTypes.object,
   senderName: PropTypes.string.isRequired,
@@ -724,9 +710,7 @@ function MessageReaction({ reaction, shortcode, count, users, isActive, onClick 
     </Tooltip>
   );
 }
-MessageReaction.defaultProps = {
-  shortcode: undefined,
-};
+
 MessageReaction.propTypes = {
   reaction: PropTypes.node.isRequired,
   shortcode: PropTypes.string,
@@ -1343,21 +1327,21 @@ function getEditedBody(editedMEvent) {
 
 function Message({
   mEvent,
-  isBodyOnly,
-  roomTimeline,
-  focus,
-  focusTime,
-  fullTime,
-  isEdit,
-  setEdit,
-  cancelEdit,
+  isBodyOnly = false,
+  roomTimeline = null,
+  focus = false,
+  focusTime = 10,
+  fullTime = false,
+  isEdit = false,
+  setEdit = null,
+  cancelEdit = null,
   children,
-  className,
-  classNameMessage,
+  className = null,
+  classNameMessage = null,
   timelineSVRef,
   isDM,
-  isGuest,
-  disableActions,
+  isGuest = false,
+  disableActions = false,
   usernameHover,
   refRoomInput,
 }) {
@@ -1935,21 +1919,6 @@ function Message({
 }
 
 // Message Default Data
-Message.defaultProps = {
-  focusTime: 10,
-  classNameMessage: null,
-  className: null,
-  isBodyOnly: false,
-  focus: false,
-  roomTimeline: null,
-  fullTime: false,
-  isEdit: false,
-  setEdit: null,
-  cancelEdit: null,
-  isGuest: false,
-  disableActions: false,
-};
-
 Message.propTypes = {
   focusTime: PropTypes.number,
   classNameMessage: PropTypes.string,

@@ -11,7 +11,7 @@ import { abbreviateNumber } from '../../../util/common';
 
 import NotificationBadge from '../../atoms/badge/NotificationBadge';
 
-function DrawerBreadcrumb({ spaceId }) {
+function DrawerBreadcrumb({ spaceId = null }) {
   const [, forceUpdate] = useState({});
   const scrollRef = useRef(null);
   const { roomList, notifications, accountData } = initMatrix;
@@ -131,10 +131,6 @@ function DrawerBreadcrumb({ spaceId }) {
     </div>
   );
 }
-
-DrawerBreadcrumb.defaultProps = {
-  spaceId: null,
-};
 
 DrawerBreadcrumb.propTypes = {
   spaceId: PropTypes.string,

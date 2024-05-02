@@ -7,7 +7,14 @@ import Button from '../button/Button';
 import ScrollView from '../scroll/ScrollView';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
-function ContextMenu({ content, placement, maxWidth, render, afterToggle, className }) {
+function ContextMenu({
+  content,
+  placement = 'right',
+  maxWidth = 'unset',
+  render,
+  afterToggle = null,
+  className = null,
+}) {
   const [isVisible, setVisibility] = useState(false);
   const showMenu = () => setVisibility(true);
   const hideMenu = () => setVisibility(false);
@@ -38,13 +45,6 @@ function ContextMenu({ content, placement, maxWidth, render, afterToggle, classN
   );
 }
 
-ContextMenu.defaultProps = {
-  className: null,
-  maxWidth: 'unset',
-  placement: 'right',
-  afterToggle: null,
-};
-
 ContextMenu.propTypes = {
   className: PropTypes.string,
   content: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
@@ -66,7 +66,16 @@ MenuHeader.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-function MenuItem({ variant, iconSrc, faSrc, type, onClick, children, disabled, className }) {
+function MenuItem({
+  variant = 'link btn-bg',
+  iconSrc = null,
+  faSrc = null,
+  type = 'button',
+  onClick = null,
+  children,
+  disabled = false,
+  className = null,
+}) {
   return (
     <li className="list-group-item very-small text-gray w-100 p-0">
       <Button
@@ -83,16 +92,6 @@ function MenuItem({ variant, iconSrc, faSrc, type, onClick, children, disabled, 
     </li>
   );
 }
-
-MenuItem.defaultProps = {
-  className: null,
-  variant: 'link btn-bg',
-  iconSrc: null,
-  faSrc: null,
-  type: 'button',
-  disabled: false,
-  onClick: null,
-};
 
 MenuItem.propTypes = {
   className: PropTypes.string,

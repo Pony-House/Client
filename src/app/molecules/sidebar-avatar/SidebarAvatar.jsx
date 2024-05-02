@@ -8,7 +8,18 @@ import Tooltip from '../../atoms/tooltip/Tooltip';
 import { blurOnBubbling } from '../../atoms/button/script';
 
 const SidebarAvatar = React.forwardRef(
-  ({ className, tooltip, active, onClick, onContextMenu, avatar, notificationBadge }, ref) => {
+  (
+    {
+      className = null,
+      tooltip,
+      active = false,
+      onClick = null,
+      onContextMenu = null,
+      avatar,
+      notificationBadge = null,
+    },
+    ref,
+  ) => {
     const classes = ['sidebar-avatar', 'position-relative'];
     if (active) classes.push('sidebar-avatar--active');
     if (className) classes.push(className);
@@ -30,13 +41,6 @@ const SidebarAvatar = React.forwardRef(
     );
   },
 );
-SidebarAvatar.defaultProps = {
-  className: null,
-  active: false,
-  onClick: null,
-  onContextMenu: null,
-  notificationBadge: null,
-};
 
 SidebarAvatar.propTypes = {
   className: PropTypes.string,

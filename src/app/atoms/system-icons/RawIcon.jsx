@@ -1,7 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function RawIcon({ color, size, src, isImage, fa, className }) {
+function RawIcon({
+  color = null,
+  size = 'normal',
+  src,
+  isImage = false,
+  fa = null,
+  className = null,
+}) {
   const style = {};
   if (!fa) {
     if (color !== null) style.backgroundColor = color;
@@ -29,14 +36,6 @@ function RawIcon({ color, size, src, isImage, fa, className }) {
     />
   );
 }
-
-RawIcon.defaultProps = {
-  className: null,
-  fa: null,
-  color: null,
-  size: 'normal',
-  isImage: false,
-};
 
 RawIcon.propTypes = {
   className: PropTypes.string,

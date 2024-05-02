@@ -40,7 +40,7 @@ setInterval(() => {
   }
 }, 60000);
 
-function PeopleSelectorBanner({ name, color, user, roomId }) {
+function PeopleSelectorBanner({ name, color, user = null, roomId }) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
   const statusRef = useRef(null);
@@ -374,10 +374,6 @@ function PeopleSelectorBanner({ name, color, user, roomId }) {
 
   return null;
 }
-
-PeopleSelectorBanner.defaultProps = {
-  user: null,
-};
 
 PeopleSelectorBanner.propTypes = {
   user: PropTypes.object,

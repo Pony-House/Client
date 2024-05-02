@@ -2,7 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
-function Checkbox({ name, variant, isActive, onToggle, disabled, tabIndex, className }) {
+function Checkbox({
+  name = null,
+  variant = 'primary',
+  isActive = false,
+  onToggle = null,
+  disabled = false,
+  tabIndex = 0,
+  className = null,
+}) {
   const newClassName = `checkbox checkbox-${variant}${isActive ? ' checkbox--active' : ''}${typeof className === 'string' ? ` ${className}` : ''}`;
   if (onToggle === null) return <span className={newClassName} />;
 
@@ -22,16 +30,6 @@ function Checkbox({ name, variant, isActive, onToggle, disabled, tabIndex, class
     </>
   );
 }
-
-Checkbox.defaultProps = {
-  name: null,
-  variant: 'primary',
-  isActive: false,
-  onToggle: null,
-  disabled: false,
-  tabIndex: 0,
-  className: null,
-};
 
 Checkbox.propTypes = {
   variant: PropTypes.oneOf(bsColorsArray),

@@ -11,7 +11,7 @@ import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 
 const nicknameSizeLimit = 30;
 
-function UserOptions({ userId, afterOptionSelect }) {
+function UserOptions({ userId, afterOptionSelect = null }) {
   const mx = initMatrix.matrixClient;
   const user = mx.getUser(userId);
   const isWhitelist = getDataList('user_cache', 'whitelist', userId);
@@ -170,10 +170,6 @@ function UserOptions({ userId, afterOptionSelect }) {
     </div>
   );
 }
-
-UserOptions.defaultProps = {
-  afterOptionSelect: null,
-};
 
 UserOptions.propTypes = {
   userId: PropTypes.string.isRequired,

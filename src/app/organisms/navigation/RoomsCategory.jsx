@@ -19,7 +19,7 @@ import Selector from './Selector';
 import SpaceOptions from '../../molecules/space-options/SpaceOptions';
 import { HomeSpaceOptions } from './DrawerHeader';
 
-function setCategoryOpen({ roomName }) {
+function setCategoryOpen({ roomName = '' }) {
   const tinyIsOpen = getDataList('hc_cache', 'data', roomName);
 
   const dom = $(`#category_bt_${roomName}`);
@@ -45,14 +45,20 @@ function setCategoryOpen({ roomName }) {
   }
 }
 
-setCategoryOpen.defaultProps = {
-  roomName: '',
-};
 setCategoryOpen.propTypes = {
   roomName: PropTypes.string,
 };
 
-function RoomsCategory({ spaceId, name, hideHeader, roomIds, drawerPostie, notSpace, type, isDM }) {
+function RoomsCategory({
+  spaceId = null,
+  name,
+  hideHeader = false,
+  roomIds,
+  drawerPostie,
+  notSpace = false,
+  type = null,
+  isDM = false,
+}) {
   // Prepare Code Base
   const mx = initMatrix.matrixClient;
   const { spaces, directs } = initMatrix.roomList;
@@ -277,13 +283,7 @@ function RoomsCategory({ spaceId, name, hideHeader, roomIds, drawerPostie, notSp
     </div>
   );
 }
-RoomsCategory.defaultProps = {
-  type: null,
-  notSpace: false,
-  spaceId: null,
-  hideHeader: false,
-  isDM: false,
-};
+
 RoomsCategory.propTypes = {
   isDM: PropTypes.bool,
   type: PropTypes.string,

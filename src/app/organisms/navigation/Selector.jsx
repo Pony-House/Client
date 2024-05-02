@@ -23,7 +23,15 @@ import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearanc
 import { getDataList } from '../../../util/selectedRoom';
 
 // Selector Function
-function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, notSpace }) {
+function Selector({
+  roomId,
+  isDM = true,
+  drawerPostie,
+  onClick,
+  roomObject,
+  isProfile = false,
+  notSpace = false,
+}) {
   // Base Script
   const mx = initMatrix.matrixClient;
   const noti = initMatrix.notifications;
@@ -203,12 +211,6 @@ function Selector({ roomId, isDM, drawerPostie, onClick, roomObject, isProfile, 
 }
 
 // Default
-Selector.defaultProps = {
-  isDM: true,
-  isProfile: false,
-  notSpace: false,
-};
-
 Selector.propTypes = {
   notSpace: PropTypes.bool,
   isProfile: PropTypes.bool,

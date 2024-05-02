@@ -10,7 +10,14 @@ import Text from '../../atoms/text/Text';
 import { MenuItem } from '../../atoms/context-menu/ContextMenu';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
-function PWContentSelector({ selected, variant, iconSrc, type, onClick, children }) {
+function PWContentSelector({
+  selected = false,
+  variant = 'link btn-bg',
+  iconSrc = 'none',
+  type = 'button',
+  onClick,
+  children,
+}) {
   const pwcsClass = selected ? ' pw-content-selector--selected' : '';
   return (
     <div className={`pw-content-selector${pwcsClass}`}>
@@ -20,13 +27,6 @@ function PWContentSelector({ selected, variant, iconSrc, type, onClick, children
     </div>
   );
 }
-
-PWContentSelector.defaultProps = {
-  selected: false,
-  variant: 'link btn-bg',
-  iconSrc: 'none',
-  type: 'button',
-};
 
 PWContentSelector.propTypes = {
   selected: PropTypes.bool,
@@ -38,17 +38,17 @@ PWContentSelector.propTypes = {
 };
 
 function PopupWindow({
-  className,
+  className = null,
   isOpen,
   title,
-  contentTitle,
-  drawer,
-  onAfterClose,
-  onRequestClose,
+  contentTitle = null,
+  drawer = null,
+  onAfterClose = null,
+  onRequestClose = null,
   children,
-  classBody,
-  size,
-  id,
+  classBody = null,
+  size = null,
+  id = null,
 }) {
   const haveDrawer = drawer !== null;
   const cTitle = contentTitle !== null ? contentTitle : title;
@@ -102,17 +102,6 @@ function PopupWindow({
     </Modal>
   );
 }
-
-PopupWindow.defaultProps = {
-  id: null,
-  classBody: null,
-  className: null,
-  size: null,
-  drawer: null,
-  contentTitle: null,
-  onAfterClose: null,
-  onRequestClose: null,
-};
 
 PopupWindow.propTypes = {
   id: PropTypes.string,

@@ -24,7 +24,7 @@ import { confirmDialog } from '../confirm-dialog/ConfirmDialog';
 
 const HashSearchIC = './img/ic/outlined/hash-search.svg';
 
-function SpaceOptions({ roomId, afterOptionSelect }) {
+function SpaceOptions({ roomId, afterOptionSelect = null }) {
   const mx = initMatrix.matrixClient;
   const { roomList } = initMatrix;
   const room = mx.getRoom(roomId);
@@ -122,10 +122,6 @@ function SpaceOptions({ roomId, afterOptionSelect }) {
     </div>
   );
 }
-
-SpaceOptions.defaultProps = {
-  afterOptionSelect: null,
-};
 
 SpaceOptions.propTypes = {
   roomId: PropTypes.string.isRequired,

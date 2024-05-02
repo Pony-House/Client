@@ -28,7 +28,7 @@ const HashGlobeIC = './img/ic/outlined/hash-globe.svg';
 const HashSearchIC = './img/ic/outlined/hash-search.svg';
 const SpacePlusIC = './img/ic/outlined/space-plus.svg';
 
-export function HomeSpaceOptions({ spaceId, afterOptionSelect }) {
+export function HomeSpaceOptions({ spaceId = null, afterOptionSelect }) {
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(spaceId);
   const canManage = room
@@ -112,15 +112,13 @@ export function HomeSpaceOptions({ spaceId, afterOptionSelect }) {
     </>
   );
 }
-HomeSpaceOptions.defaultProps = {
-  spaceId: null,
-};
+
 HomeSpaceOptions.propTypes = {
   spaceId: PropTypes.string,
   afterOptionSelect: PropTypes.func.isRequired,
 };
 
-function DrawerHeader({ selectedTab, spaceId, room, banner }) {
+function DrawerHeader({ selectedTab, spaceId = null, room = null, banner = null }) {
   const tabName = selectedTab !== cons.tabs.DIRECTS ? 'Home' : 'Direct messages';
 
   const isDMTab = selectedTab === cons.tabs.DIRECTS;
@@ -184,11 +182,6 @@ function DrawerHeader({ selectedTab, spaceId, room, banner }) {
   );
 }
 
-DrawerHeader.defaultProps = {
-  spaceId: null,
-  banner: null,
-  room: null,
-};
 DrawerHeader.propTypes = {
   selectedTab: PropTypes.string.isRequired,
   spaceId: PropTypes.string,

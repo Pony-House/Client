@@ -19,7 +19,7 @@ const tinyUrlAction = (event) => {
 };
 
 // Embed Data
-function Embed({ embed, roomId, threadId }) {
+function Embed({ embed = {}, roomId = null, threadId = null }) {
   // URL Ref
   const tinyUrl = useRef(null);
   const itemEmbed = useRef(null);
@@ -224,12 +224,6 @@ function Embed({ embed, roomId, threadId }) {
 }
 
 // Message Default Data
-Embed.defaultProps = {
-  embed: {},
-  roomId: null,
-  threadId: null,
-};
-
 Embed.propTypes = {
   embed: PropTypes.object,
   roomId: PropTypes.string,

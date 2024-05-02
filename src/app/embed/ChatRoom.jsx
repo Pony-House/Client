@@ -21,7 +21,14 @@ import cons from '../../client/state/cons';
 
 global.Olm = Olm;
 
-function ChatRoomFrame({ roomId, refreshTime, className, style, hsUrl, joinGuest }) {
+function ChatRoomFrame({
+  roomId = null,
+  refreshTime = null,
+  className = null,
+  style = null,
+  hsUrl = null,
+  joinGuest = false,
+}) {
   // Theme
   const frameRef = useRef(null);
   const theme = settings.getTheme();
@@ -95,15 +102,6 @@ function ChatRoomjFrame(roomId, data = {}) {
   return iframe;
 }
 
-ChatRoomFrame.defaultProps = {
-  refreshTime: null,
-  roomId: null,
-  className: null,
-  style: null,
-  hsUrl: null,
-  joinGuest: false,
-};
-
 ChatRoomFrame.propTypes = {
   hsUrl: PropTypes.string,
   roomId: PropTypes.string,
@@ -130,7 +128,7 @@ export { ChatRoomFrame, ChatRoomjFrame };
 
 */
 
-function ChatRoom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameHover }) {
+function ChatRoom({ roomId, homeserver = null, joinGuest, refreshTime, theme, usernameHover }) {
   // States
   const [isLoading, setIsLoading] = useState(1);
   const [roomTimeline, setTimeline] = useState(null);
@@ -330,10 +328,6 @@ function ChatRoom({ roomId, homeserver, joinGuest, refreshTime, theme, usernameH
     </ProcessWrapper>
   );
 }
-
-ChatRoom.defaultProps = {
-  homeserver: null,
-};
 
 ChatRoom.propTypes = {
   roomId: PropTypes.string.isRequired,

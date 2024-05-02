@@ -5,7 +5,15 @@ import { colorMXID } from '../../../util/colorMXID';
 
 import Avatar from '../../atoms/avatar/Avatar';
 
-function RoomIntro({ roomId, avatarSrc, avatarAnimSrc, name, heading, desc, time }) {
+function RoomIntro({
+  roomId,
+  avatarSrc = null,
+  avatarAnimSrc = null,
+  name,
+  heading,
+  desc,
+  time = null,
+}) {
   return (
     <tr className="welcome-msg">
       <td colSpan="2">
@@ -28,12 +36,6 @@ function RoomIntro({ roomId, avatarSrc, avatarAnimSrc, name, heading, desc, time
     </tr>
   );
 }
-
-RoomIntro.defaultProps = {
-  avatarAnimSrc: null,
-  avatarSrc: null,
-  time: null,
-};
 
 RoomIntro.propTypes = {
   roomId: PropTypes.string.isRequired,

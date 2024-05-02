@@ -13,13 +13,13 @@ import ImageUpload from '../image-upload/ImageUpload';
 import ImagePackUsageSelector from './ImagePackUsageSelector';
 
 function ImagePackProfile({
-  avatarUrl,
+  avatarUrl = null,
   displayName,
-  attribution,
+  attribution = null,
   usage,
-  onUsageChange,
-  onAvatarChange,
-  onEditProfile,
+  onUsageChange = null,
+  onAvatarChange = null,
+  onEditProfile = null,
 }) {
   const [isEdit, setIsEdit] = useState(false);
 
@@ -110,13 +110,6 @@ function ImagePackProfile({
   );
 }
 
-ImagePackProfile.defaultProps = {
-  avatarUrl: null,
-  attribution: null,
-  onUsageChange: null,
-  onAvatarChange: null,
-  onEditProfile: null,
-};
 ImagePackProfile.propTypes = {
   avatarUrl: PropTypes.string,
   displayName: PropTypes.string.isRequired,

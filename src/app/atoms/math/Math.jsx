@@ -5,20 +5,18 @@ import katex from 'katex';
 
 import 'katex/dist/contrib/copy-tex';
 
-const Math = React.memo(({ content, throwOnError, errorColor, displayMode }) => {
-  const ref = useRef(null);
+const Math = React.memo(
+  ({ content, throwOnError = null, errorColor = null, displayMode = null }) => {
+    const ref = useRef(null);
 
-  useEffect(() => {
-    katex.render(content, ref.current, { throwOnError, errorColor, displayMode });
-  }, [content, throwOnError, errorColor, displayMode]);
+    useEffect(() => {
+      katex.render(content, ref.current, { throwOnError, errorColor, displayMode });
+    }, [content, throwOnError, errorColor, displayMode]);
 
-  return <span ref={ref} />;
-});
-Math.defaultProps = {
-  throwOnError: null,
-  errorColor: null,
-  displayMode: null,
-};
+    return <span ref={ref} />;
+  },
+);
+
 Math.propTypes = {
   content: PropTypes.string.isRequired,
   throwOnError: PropTypes.bool,

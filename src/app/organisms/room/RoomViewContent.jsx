@@ -466,11 +466,11 @@ function useEventArrive(roomTimeline, readUptoEvtStore, timelineScrollRef, event
 let jumpToItemIndex = -1;
 
 function RoomViewContent({
-  eventId,
+  eventId = null,
   roomTimeline,
   isUserList,
-  isGuest,
-  disableActions,
+  isGuest = false,
+  disableActions = false,
   usernameHover,
   refRoomInput,
   isLoading,
@@ -870,11 +870,6 @@ function RoomViewContent({
   );
 }
 
-RoomViewContent.defaultProps = {
-  eventId: null,
-  isGuest: false,
-  disableActions: false,
-};
 RoomViewContent.propTypes = {
   eventId: PropTypes.string,
   isGuest: PropTypes.bool,

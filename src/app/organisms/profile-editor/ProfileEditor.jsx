@@ -12,7 +12,7 @@ import Input from '../../atoms/input/Input';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
-function ProfileEditor({ userId }) {
+function ProfileEditor({ userId = null }) {
   // Values
   const [isEditing, setIsEditing] = useState(false);
   const mx = initMatrix.matrixClient;
@@ -133,10 +133,6 @@ function ProfileEditor({ userId }) {
     </div>
   );
 }
-
-ProfileEditor.defaultProps = {
-  userId: null,
-};
 
 ProfileEditor.propTypes = {
   userId: PropTypes.string,

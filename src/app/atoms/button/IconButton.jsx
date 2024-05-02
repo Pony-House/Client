@@ -8,23 +8,23 @@ import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 const IconButton = React.forwardRef(
   (
     {
-      variant,
-      size,
-      type,
-      fa,
+      variant = 'link btn-bg',
+      size = 'normal',
+      type = 'button',
+      fa = null,
       tooltip,
-      tooltipPlacement,
+      tooltipPlacement = 'top',
       src,
-      onClick,
-      onDblClick,
-      tabIndex,
-      disabled,
-      isImage,
-      className,
-      customColor,
+      onClick = null,
+      onDblClick = null,
+      tabIndex = 0,
+      disabled = false,
+      isImage = false,
+      className = '',
+      customColor = null,
       style,
-      children,
-      id,
+      children = null,
+      id = null,
     },
     ref,
   ) => {
@@ -77,23 +77,6 @@ const IconButton = React.forwardRef(
     );
   },
 );
-
-IconButton.defaultProps = {
-  id: null,
-  customColor: null,
-  variant: 'link btn-bg',
-  size: 'normal',
-  type: 'button',
-  tooltipPlacement: 'top',
-  onClick: null,
-  onDblClick: null,
-  fa: null,
-  tabIndex: 0,
-  disabled: false,
-  isImage: false,
-  className: '',
-  children: null,
-};
 
 IconButton.propTypes = {
   id: PropTypes.string,

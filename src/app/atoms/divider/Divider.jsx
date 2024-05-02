@@ -4,7 +4,14 @@ import { markAsRead } from '../../../client/action/notifications';
 
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
-function Divider({ text, variant, className, clickRemove, roomId, thread }) {
+function Divider({
+  text = null,
+  variant = 'link btn-bg',
+  className,
+  clickRemove = false,
+  roomId = null,
+  thread,
+}) {
   const [isVisible, setIsVisible] = useState(true);
 
   return (
@@ -31,13 +38,6 @@ function Divider({ text, variant, className, clickRemove, roomId, thread }) {
     )
   );
 }
-
-Divider.defaultProps = {
-  text: null,
-  roomId: null,
-  clickRemove: false,
-  variant: 'link btn-bg',
-};
 
 Divider.propTypes = {
   clickRemove: PropTypes.bool,

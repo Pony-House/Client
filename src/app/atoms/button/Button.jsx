@@ -6,7 +6,21 @@ import { blurOnBubbling } from './script';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';
 
 const Button = React.forwardRef(
-  ({ id, className, variant, iconSrc, faSrc, type, onClick, children, disabled, size }, ref) => {
+  (
+    {
+      id = '',
+      className = null,
+      variant = 'link btn-bg',
+      iconSrc = null,
+      faSrc = null,
+      type = 'button',
+      onClick = null,
+      children,
+      disabled = false,
+      size = 'sm',
+    },
+    ref,
+  ) => {
     const iconClass = iconSrc === null ? '' : `btn-${variant}--icon`;
 
     return (
@@ -26,18 +40,6 @@ const Button = React.forwardRef(
     );
   },
 );
-
-Button.defaultProps = {
-  id: '',
-  size: 'sm',
-  className: null,
-  variant: 'link btn-bg',
-  iconSrc: null,
-  faSrc: null,
-  type: 'button',
-  onClick: null,
-  disabled: false,
-};
 
 Button.propTypes = {
   id: PropTypes.string,

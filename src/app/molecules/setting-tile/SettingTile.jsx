@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function SettingTile({ title, options, content }) {
+function SettingTile({ title, options = null, content = null }) {
   let colNumber = 12;
   if (options !== null) {
     colNumber = 9;
@@ -19,11 +19,6 @@ function SettingTile({ title, options, content }) {
     </li>
   );
 }
-
-SettingTile.defaultProps = {
-  options: null,
-  content: null,
-};
 
 SettingTile.propTypes = {
   title: PropTypes.node.isRequired,

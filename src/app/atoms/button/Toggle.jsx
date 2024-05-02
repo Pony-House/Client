@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Toggle({ isActive, onToggle, disabled, className }) {
+function Toggle({ isActive = false, onToggle = null, disabled = false, className = null }) {
   const tinyClass = `${className ? `${className} ` : ''}toggle${isActive ? ' toggle--active' : ''}`;
   if (onToggle === null) return <span className={className} />;
 
@@ -14,13 +14,6 @@ function Toggle({ isActive, onToggle, disabled, className }) {
     />
   );
 }
-
-Toggle.defaultProps = {
-  className: null,
-  isActive: false,
-  disabled: false,
-  onToggle: null,
-};
 
 Toggle.propTypes = {
   className: PropTypes.string,

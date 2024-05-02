@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-function SettingNumber({ value, min, max, onChange, content }) {
+function SettingNumber({ value = 0, min = null, max = null, onChange = null, content = null }) {
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -51,14 +51,6 @@ function SettingNumber({ value, min, max, onChange, content }) {
     </>
   );
 }
-
-SettingNumber.defaultProps = {
-  max: null,
-  min: null,
-  onChange: null,
-  value: 0,
-  content: null,
-};
 
 SettingNumber.propTypes = {
   max: PropTypes.number,

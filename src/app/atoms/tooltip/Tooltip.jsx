@@ -2,7 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { OverlayTrigger, Tooltip as BootstrapTooltip } from 'react-bootstrap';
 
-function Tooltip({ className, placement, content, delay, children, bsClass }) {
+function Tooltip({
+  className = null,
+  placement = 'top',
+  content,
+  delay = [200, 0],
+  children,
+  bsClass = 'tooltip',
+}) {
   const tooltip = (
     <BootstrapTooltip className={`noselect emoji-size-fix-2${className ? ` ${className}` : ''}`}>
       {content}
@@ -21,13 +28,6 @@ function Tooltip({ className, placement, content, delay, children, bsClass }) {
     </OverlayTrigger>
   );
 }
-
-Tooltip.defaultProps = {
-  bsClass: 'tooltip',
-  placement: 'top',
-  className: null,
-  delay: [200, 0],
-};
 
 Tooltip.propTypes = {
   bsClass: PropTypes.string,

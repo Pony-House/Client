@@ -7,14 +7,14 @@ import Modal from 'react-bootstrap/Modal';
 import { twemojifyReact } from '../../../util/twemojify';
 
 function Dialog({
-  className,
+  className = null,
   isOpen,
   title,
-  onAfterOpen,
-  onAfterClose,
-  onRequestClose,
+  onAfterOpen = null,
+  onAfterClose = null,
+  onRequestClose = null,
   children,
-  bodyClass,
+  bodyClass = '',
 }) {
   useEffect(() => {
     const closeByMobile = () => typeof onRequestClose === 'function' && onRequestClose();
@@ -46,14 +46,6 @@ function Dialog({
     </Modal>
   );
 }
-
-Dialog.defaultProps = {
-  bodyClass: '',
-  className: null,
-  onAfterOpen: null,
-  onAfterClose: null,
-  onRequestClose: null,
-};
 
 Dialog.propTypes = {
   bodyClass: PropTypes.string,

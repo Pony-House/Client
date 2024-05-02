@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { MenuItem } from '../../atoms/context-menu/ContextMenu';
 
-function RoomUpload({ roomId, afterOptionSelect, handleUploadClick }) {
+function RoomUpload({ roomId, afterOptionSelect = null, handleUploadClick }) {
   const uplaodButton = () => {
     handleUploadClick(roomId);
     afterOptionSelect();
@@ -22,10 +22,6 @@ function RoomUpload({ roomId, afterOptionSelect, handleUploadClick }) {
     </div>
   );
 }
-
-RoomUpload.defaultProps = {
-  afterOptionSelect: null,
-};
 
 RoomUpload.propTypes = {
   roomId: PropTypes.string.isRequired,

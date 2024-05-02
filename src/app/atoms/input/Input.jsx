@@ -5,23 +5,23 @@ import TextareaAutosize from 'react-autosize-textarea';
 import { isMobile } from '@src/util/libs/mobile';
 
 function Input({
-  id,
-  label,
-  name,
-  value,
-  placeholder,
-  required,
-  type,
-  onChange,
-  forwardRef,
-  resizable,
-  minHeight,
-  onResize,
-  state,
-  onKeyDown,
-  disabled,
-  autoFocus,
-  className,
+  id = null,
+  label = '',
+  name = '',
+  value = '',
+  placeholder = '',
+  required = false,
+  type = 'text',
+  onChange = null,
+  forwardRef = null,
+  resizable = false,
+  minHeight = 46,
+  onResize = null,
+  state = 'normal',
+  onKeyDown = null,
+  disabled = false,
+  autoFocus = false,
+  className = null,
 }) {
   const isAutoFocus = !isMobile() ? autoFocus : false;
   return (
@@ -73,26 +73,6 @@ function Input({
     </>
   );
 }
-
-Input.defaultProps = {
-  className: null,
-  id: null,
-  name: '',
-  label: '',
-  value: '',
-  placeholder: '',
-  type: 'text',
-  required: false,
-  onChange: null,
-  forwardRef: null,
-  resizable: false,
-  minHeight: 46,
-  onResize: null,
-  state: 'normal',
-  onKeyDown: null,
-  disabled: false,
-  autoFocus: false,
-};
 
 Input.propTypes = {
   className: PropTypes.string,
