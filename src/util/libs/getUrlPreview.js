@@ -69,7 +69,7 @@ const urlPreviewStore = {
 
         const newValue = {
           data: objType(value, 'object') ? value.data : null,
-          timeout: value.timeout.valueOf(),
+          timeout: value !== null ? value.timeout.valueOf() : null,
         };
 
         if (urlPreviewStore.validator(newValue)) {
