@@ -28,7 +28,6 @@ import RawIcon from '../../atoms/system-icons/RawIcon';
 import IconButton from '../../atoms/button/IconButton';
 import ScrollView from '../../atoms/scroll/ScrollView';
 import { MessageReply } from '../../molecules/message/Message';
-// import { flattenNodes } from '../../molecules/markdown-input/MarkdownInput';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
@@ -94,11 +93,6 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
       viewEvent.removeListener('focus_msg_input', requestFocusInput);
     };
   }, [roomsInput, viewEvent]);
-
-  /* function getEditorContent() {
-    const content = editor.current.children;
-    return flattenNodes(content);
-  } */
 
   function clearEditor() {
     if (editor.current)
@@ -798,12 +792,6 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     recognizeCmd(e.target.value);
     if (!isCmdActivated) processTyping(msg);
   };
-
-  /* const handleMsgTypingPlugin = (e) => {
-    const msg = flattenNodes(e);
-    recognizeCmd(msg);
-    if (!isCmdActivated) processTyping(msg);
-  }; */
 
   // Keydown
   const handleKeyDown = (e) => {
