@@ -320,6 +320,10 @@ Use the msgOptions.custom object to customize the final result of your message. 
     userId
     roomId
 
+### roomViewerOpened (Not ready for production)
+
+    roomId
+
 ### settingsOpened (Not ready for production)
 
     tabText

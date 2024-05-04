@@ -534,6 +534,11 @@ class Navigation extends EventEmitter {
         this.emit(cons.events.navigation.PROFILE_VIEWER_OPENED, action.userId, action.roomId);
       },
 
+      [cons.actions.navigation.OPEN_ROOM_VIEWER]: () => {
+        tinyAPI.emit('roomViewerOpened', action.roomId);
+        this.emit(cons.events.navigation.ROOM_VIEWER_OPENED, action.roomId);
+      },
+
       [cons.actions.navigation.OPEN_SETTINGS]: () => {
         if (
           tinyCrypto &&

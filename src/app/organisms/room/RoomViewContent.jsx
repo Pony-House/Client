@@ -16,7 +16,7 @@ import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import settings from '../../../client/state/settings';
-import { openProfileViewer } from '../../../client/action/navigation';
+import { openProfileViewer, openRoomViewer } from '../../../client/action/navigation';
 import { diffMinutes, isInSameDay, Throttle } from '../../../util/common';
 import { markAsRead } from '../../../client/action/notifications';
 
@@ -125,7 +125,7 @@ const mentionOpen = {
   },
 
   '#': (roomId) => {
-    console.log(roomId);
+    openRoomViewer(roomId);
   },
 };
 
