@@ -141,18 +141,55 @@ class BlobUrlManager extends EventEmitter {
   }
 
   deleteGroup(groupId) {
+    // Result
     let executed = false;
-    while (Array.isArray(this.groups[groupId]) && this.groups[groupId].length > 0) {
-      for (const item in this.groups[groupId]) {
-        const hash = this.groups[groupId][item];
-        if (typeof hash === 'string') {
-          const tinyUrl = this.hashes[hash];
-          if (typeof tinyUrl === 'string') {
-            this.delete(tinyUrl, groupId);
+
+    // Try
+    try {
+      while (Array.isArray(this.groups[groupId]) && this.groups[groupId].length > 0) {
+        for (const item in this.groups[groupId]) {
+          const hash = this.groups[groupId][item];
+          if (typeof hash === 'string') {
+            const tinyUrl = this.hashes[hash];
+            if (typeof tinyUrl === 'string') {
+              this.delete(tinyUrl, groupId);
+            }
+
+            // Glitch 2
+            else {
+              console.error(
+                `[blob-manager] Url hash of "${String(hash)}" not found in the group id "${String(groupId)}".\nHash value: ${String(tinyUrl)}`,
+              );
+              console.error(
+                `[blob-manager] The blob cache is corrupted, but the system will continue to function to avoid crashes.`,
+              );
+              delete this.groups[groupId];
+              delete this.hashes[hash];
+            }
+          }
+
+          // Glitch 1
+          else {
+            console.error(
+              `[blob-manager] Hash value "${String(hash)}" not found in the group id "${String(groupId)}".`,
+            );
+            console.error(
+              `[blob-manager] The blob cache is corrupted, but the system will continue to function to avoid crashes.`,
+            );
+            delete this.groups[groupId];
           }
         }
+
+        // Complete
+        executed = true;
       }
-      executed = true;
+    } catch (err) {
+      // Fail
+      executed = false;
+      console.error(err);
+      console.error(
+        `[blob-manager] The blob cache is corrupted, but the system will continue to function to avoid crashes.`,
+      );
     }
     return executed;
   }
