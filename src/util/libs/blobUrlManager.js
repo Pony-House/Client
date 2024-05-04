@@ -146,6 +146,7 @@ class BlobUrlManager extends EventEmitter {
 
     // Try
     try {
+      // For some mysterious reason, sometimes for does not delete all data from the cache, so While is there to try to fix this.
       while (Array.isArray(this.groups[groupId]) && this.groups[groupId].length > 0) {
         for (const item in this.groups[groupId]) {
           const hash = this.groups[groupId][item];
