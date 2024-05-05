@@ -4,11 +4,8 @@ import * as linkify from 'linkifyjs';
 import linkifyHtml from 'linkify-html';
 import Linkify from 'linkify-react';
 
-import linkifyRegisterKeywords from 'linkify-plugin-keyword';
-
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
-import startKeyWords from '@mods/keywords';
 import { everyoneTags } from '@src/app/molecules/global-notification/KeywordNotification';
 
 import Tooltip from '../app/atoms/tooltip/Tooltip';
@@ -47,39 +44,6 @@ const registerExtraProtocols = () => {
       linkify.registerCustomProtocol('ar');
       linkify.registerCustomProtocol('lbry');
     }
-  }
-};
-
-// Register Keywords
-const tinywordsDB = {};
-
-let keywords = [];
-const insertKeyWords = () => {
-  if (keywords.length < 1) {
-    const tinywords = [];
-    keywords = startKeyWords();
-
-    for (const item in keywords) {
-      if (typeof keywords[item].name === 'string') {
-        tinywords.push(keywords[item].name);
-        tinywordsDB[keywords[item].name] = {
-          href: keywords[item].href,
-          title: keywords[item].title,
-        };
-      } else if (Array.isArray(keywords[item].name) && keywords[item].name.length > 0) {
-        for (const item2 in keywords[item].name) {
-          if (typeof keywords[item].name[item2] === 'string') {
-            tinywords.push(keywords[item].name[item2]);
-            tinywordsDB[keywords[item].name[item2]] = {
-              href: keywords[item].href,
-              title: keywords[item].title,
-            };
-          }
-        }
-      }
-    }
-
-    linkifyRegisterKeywords(tinywords);
   }
 };
 
@@ -130,15 +94,7 @@ const tinyRender = {
         for (const attr in attributes) {
           tinyAttr += ` ${attr}${attributes[attr].length > 0 ? `=${attributes[attr]}` : ''}`;
         }
-
-        if (type === 'keyword') {
-          tinyAttr += ' iskeyword="true"';
-        } else {
-          tinyAttr += ' iskeyword="false"';
-        }
-
-        const db = tinywordsDB[content.toLowerCase()];
-        return `<a${tinyAttr} title="${db?.title}">${content}</a>`;
+        return `<a${tinyAttr}>${content}</a>`;
       }
 
       return content;
@@ -149,7 +105,6 @@ const tinyRender = {
     ({ attributes, content }) => {
       if (tinyLinkifyFixer(type, content)) {
         const { href, ...props } = attributes;
-        const db = tinywordsDB[content.toLowerCase()];
         const result = (
           <a
             href={href}
@@ -159,17 +114,16 @@ const tinyRender = {
               return false;
             }}
             {...props}
-            iskeyword={type === 'keyword' ? 'true' : 'false'}
             className="lk-href"
           >
             {content}
           </a>
         );
 
-        return db?.title ? <Tooltip content={<small>{db.title}</small>}>{result}</Tooltip> : result;
+        return result;
       }
 
-      return <span>{content}</span>;
+      return <>{content}</>;
     },
 };
 
@@ -178,14 +132,12 @@ tinyRender.list = {
     url: tinyRender.react('url'),
     mail: tinyRender.react('mail'),
     email: tinyRender.react('email'),
-    keyword: tinyRender.react('keyword'),
   },
 
   html: {
     url: tinyRender.html('url'),
     mail: tinyRender.html('mail'),
     email: tinyRender.html('email'),
-    keyword: tinyRender.html('keyword'),
   },
 };
 
@@ -204,7 +156,6 @@ for (const item in everyoneTags) {
  */
 const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) => {
   registerExtraProtocols();
-  insertKeyWords();
   // Not String
   if (typeof text !== 'string') return text;
 
@@ -232,15 +183,6 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
   // Linkify Options
   const linkifyOptions = {
     defaultProtocol: 'https',
-
-    formatHref: {
-      keyword: (keyword) => {
-        const tinyword = keyword.toLowerCase();
-        if (tinywordsDB[tinyword] && typeof tinywordsDB[tinyword].href === 'string')
-          return tinywordsDB[tinyword].href;
-      },
-    },
-
     rel: 'noreferrer noopener',
     target: '_blank',
   };

@@ -2,3 +2,5 @@
 - New config to set page limit added to ".env".
 - m.mentions - rooms_ids added.
 - Anti blob freeze crash.
+- Keywords chat support removed.
+- LinkifyHtml issue fixed.
