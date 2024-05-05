@@ -535,8 +535,8 @@ class Navigation extends EventEmitter {
       },
 
       [cons.actions.navigation.OPEN_ROOM_VIEWER]: () => {
-        tinyAPI.emit('roomViewerOpened', action.roomId);
-        this.emit(cons.events.navigation.ROOM_VIEWER_OPENED, action.roomId);
+        tinyAPI.emit('roomViewerOpened', action.roomId, action.oId);
+        this.emit(cons.events.navigation.ROOM_VIEWER_OPENED, action.roomId, action.oId);
       },
 
       [cons.actions.navigation.OPEN_SETTINGS]: () => {

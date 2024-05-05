@@ -78,11 +78,13 @@ RoomFooter.propTypes = {
 function useToggleDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const [roomId, setRoomId] = useState(null);
+  const [originalRoomId, setOriginalRoomId] = useState(null);
 
   useEffect(() => {
-    const loadRoom = (rId) => {
+    const loadRoom = (rId, oId) => {
       setIsOpen(true);
       setRoomId(rId);
+      setOriginalRoomId(oId);
     };
     navigation.on(cons.events.navigation.ROOM_VIEWER_OPENED, loadRoom);
     return () => {
@@ -94,9 +96,10 @@ function useToggleDialog() {
 
   const afterClose = () => {
     setRoomId(null);
+    setOriginalRoomId(null);
   };
 
-  return [isOpen, roomId, closeDialog, afterClose];
+  return [isOpen, originalRoomId, roomId, closeDialog, afterClose];
 }
 
 // Read Profile
@@ -104,7 +107,7 @@ function RoomViewer() {
   // Prepare
   const profileAvatar = useRef(null);
 
-  const [isOpen, roomId, closeDialog, handleAfterClose] = useToggleDialog();
+  const [isOpen, originalRoomId, roomId, closeDialog, handleAfterClose] = useToggleDialog();
   const [lightbox, setLightbox] = useState(false);
 
   const userNameRef = useRef(null);
@@ -119,7 +122,7 @@ function RoomViewer() {
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [username, setUsername] = useState(null);
 
-  console.log(room, roomId, avatarUrl, username);
+  console.log(room, roomId, originalRoomId, avatarUrl, username);
 
   useEffect(() => {
     if (room) {
@@ -203,7 +206,7 @@ function RoomViewer() {
                 <span className="button">{twemojifyReact(username)}</span>
               </h6>
               <small ref={userNameRef} className="text-gray emoji-size-fix username">
-                <span className="button">{twemojifyReact(roomId)}</span>
+                <span className="button">{twemojifyReact(originalRoomId)}</span>
               </small>
             </div>
           </div>

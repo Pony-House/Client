@@ -323,6 +323,7 @@ Use the msgOptions.custom object to customize the final result of your message. 
 ### roomViewerOpened (Not ready for production)
 
     roomId
+    originalRoomid
 
 ### settingsOpened (Not ready for production)
 

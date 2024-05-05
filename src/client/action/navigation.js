@@ -126,10 +126,11 @@ export function openProfileViewer(userId, roomId) {
   });
 }
 
-export function openRoomViewer(roomId) {
+export function openRoomViewer(roomId, oId) {
   appDispatcher.dispatch({
     type: cons.actions.navigation.OPEN_ROOM_VIEWER,
     roomId,
+    oId,
   });
 }
 
