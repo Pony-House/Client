@@ -190,7 +190,7 @@ function RoomViewer() {
               />
             </div>
 
-            <div className="col-md-9">
+            <div className="col-md-9 buttons-list">
               <div className="float-end">
                 <RoomFooter roomId={roomId} onRequestClose={closeDialog} />
               </div>
@@ -216,7 +216,7 @@ function RoomViewer() {
   return (
     <Dialog
       bodyClass="bg-bg2 p-0"
-      className="modal-dialog-scrollable modal-dialog-centered modal-lg noselect modal-dialog-user-profile"
+      className="modal-dialog-scrollable modal-dialog-centered modal-lg noselect modal-dialog-user-profile modal-dialog-room-profile"
       isOpen={isOpen}
       title="Room Profile"
       onAfterClose={handleAfterClose}

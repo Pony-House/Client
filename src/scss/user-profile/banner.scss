@@ -178,4 +178,37 @@
       left: -17px !important;
     }
   }
+
+  /* Room Profile */
+  &.modal-dialog-room-profile {
+    .modal-header {
+      display: flex !important;
+    }
+
+    .avatar-container img,
+    .avatar-container canvas {
+      padding: 0px;
+    }
+
+    .avatar-container {
+      margin-top: 0px;
+    }
+
+    .avatar-container,
+    .avatar-container img,
+    .avatar-container canvas {
+      height: 110px;
+      width: 110px;
+    }
+
+    .modal-user-profile-avatar {
+      height: 100%;
+      width: 135px;
+    }
+
+    .buttons-list {
+      margin-top: -31px;
+      width: 100%;
+    }
+  }
 }
