@@ -33,6 +33,8 @@ class RoomList extends EventEmitter {
     // Contains roomId to parent spaces roomId mapping of all spaces children.
     // No matter if you have joined those children rooms or not.
     this.roomIdToParents = new Map();
+    this.roomAliases = {};
+    this.roomAliasesId = {};
 
     this.inviteDirects = new Set();
     this.inviteSpaces = new Set();
@@ -157,6 +159,7 @@ class RoomList extends EventEmitter {
   roomActions(action) {
     const addRoom = (roomId, isDM) => {
       const myRoom = this.matrixClient.getRoom(roomId);
+      this.addRoomAliases(roomId, myRoom);
       if (myRoom === null) return false;
 
       if (isDM) this.directs.add(roomId);
@@ -211,6 +214,29 @@ class RoomList extends EventEmitter {
     return mDirectsId;
   }
 
+  addRoomAliases(roomId, room) {
+    this.roomAliases[roomId] = room.getAltAliases();
+    if (Array.isArray(this.roomAliases[roomId])) {
+      for (const item in this.roomAliases[roomId]) {
+        this.roomAliasesId[this.roomAliases[roomId][item]] = roomId;
+      }
+    }
+  }
+
+  deleteRoomAliases(roomId) {
+    for (const id in this.roomAliasesId) {
+      if (this.roomAliasesId[id] === roomId) {
+        delete this.roomAliasesId[id];
+      }
+    }
+    if (this.roomAliases) delete this.roomAliases[roomId];
+  }
+
+  getRoomAliasId(roomAlias) {
+    if (typeof this.roomAliasesId[roomAlias] === 'string') return this.roomAliasesId[roomAlias];
+    return null;
+  }
+
   _populateRooms() {
     this.directs.clear();
     this.roomIdToParents.clear();
@@ -237,6 +263,7 @@ class RoomList extends EventEmitter {
 
       if (room.getMyMembership() !== 'join') return;
 
+      this.addRoomAliases(roomId, room);
       if (this.mDirects.has(roomId)) this.directs.add(roomId);
       else if (room.isSpaceRoom()) this.addToSpaces(roomId);
       else this.rooms.add(roomId);
@@ -306,6 +333,12 @@ class RoomList extends EventEmitter {
         return;
       }
 
+      if (mEvent.getType() === 'm.room.canonical_alias') {
+        const roomId = mEvent.event.room_id;
+        this.addRoomAliases(roomId, this.matrixClient.getRoom(roomId));
+        return;
+      }
+
       if (mEvent.getType() === 'm.room.join_rules') {
         this.emit(cons.events.roomList.ROOMLIST_UPDATED);
         return;
@@ -352,6 +385,7 @@ class RoomList extends EventEmitter {
       }
 
       if (['leave', 'kick', 'ban'].includes(membership)) {
+        this.deleteRoomAliases(roomId, room);
         if (this.directs.has(roomId)) this.directs.delete(roomId);
         else if (this.spaces.has(roomId)) this.deleteFromSpaces(roomId);
         else this.rooms.delete(roomId);
@@ -363,6 +397,7 @@ class RoomList extends EventEmitter {
       // when user create room/DM OR accept room/dm invite from this client.
       // we will update this.rooms/this.directs with user action
       if (membership === 'join' && this.processingRooms.has(roomId)) {
+        this.addRoomAliases(roomId, room);
         const procRoomInfo = this.processingRooms.get(roomId);
 
         if (procRoomInfo.isDM) this.directs.add(roomId);
@@ -378,6 +413,7 @@ class RoomList extends EventEmitter {
       }
 
       if (this.mDirects.has(roomId) && membership === 'join') {
+        this.addRoomAliases(roomId, room);
         this.directs.add(roomId);
         this.emit(cons.events.roomList.ROOM_JOINED, roomId);
         this.emit(cons.events.roomList.ROOMLIST_UPDATED);
@@ -385,6 +421,7 @@ class RoomList extends EventEmitter {
       }
 
       if (membership === 'join') {
+        this.addRoomAliases(roomId, room);
         if (room.isSpaceRoom()) this.addToSpaces(roomId);
         else this.rooms.add(roomId);
         this.emit(cons.events.roomList.ROOM_JOINED, roomId);

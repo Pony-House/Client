@@ -2,6 +2,8 @@ Criar emoji list com o mesmo nome da crash
 
 Usar a mesma lógica de carregar emojis para deixar menos lento o carregamento de imagens do chatbox.
 
+https://www.npmjs.com/package/jimp
+
 ==============================================================
 
 Ver qual Friend ninkcname está sendo usado.

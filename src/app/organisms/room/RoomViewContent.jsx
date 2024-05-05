@@ -125,7 +125,7 @@ const mentionOpen = {
   },
 
   '#': (roomId) => {
-    openRoomViewer(roomId);
+    openRoomViewer(initMatrix.roomList.getRoomAliasId(roomId) || roomId);
   },
 };
 
