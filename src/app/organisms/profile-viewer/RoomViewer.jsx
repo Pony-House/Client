@@ -62,9 +62,11 @@ function RoomFooter({ roomId, onRequestClose }) {
     }
   };
 
+  // disabled={isCreatingDM}
+
   return (
     <>
-      <Button className="me-2" variant="primary" onClick={openDM} disabled={isCreatingDM}>
+      <Button className="me-2" variant="primary" onClick={openDM} disabled>
         {isCreatingDM ? 'Creating room...' : 'Message'}
       </Button>
     </>
