@@ -96,7 +96,7 @@
     }
 
     &.default-emoji {
-      top: -1px;
+      top: -2px;
       position: relative;
       .linkify-base {
         height: 100%;
@@ -112,6 +112,7 @@
       }
     }
 
+    /* Others */
     @media (hover: hover) {
       &:hover {
         background-color: var(--bg-surface-hover);
@@ -132,6 +133,17 @@
       &:active {
         background-color: var(--bg-reaction-active);
       }
+    }
+  }
+
+  .reaction-message {
+    height: 26px;
+    position: relative;
+    top: -3px;
+    i {
+      font-size: 13px;
+      position: relative;
+      top: -3px;
     }
   }
 
