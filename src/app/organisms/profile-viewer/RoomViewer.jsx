@@ -67,9 +67,11 @@ function RoomFooter({ roomId, publicData, isSpace, room, onRequestClose }) {
         {isCreatingDM ? 'Creating room...' : 'Message'}
       </Button>
       */
-  const isJoined = initMatrix.matrixClient.getRoom(roomId)?.getMyMembership() === 'join';
+  const isJoined = roomId
+    ? initMatrix.matrixClient.getRoom(roomId)?.getMyMembership() === 'join'
+    : null;
 
-  return (
+  return roomId ? (
     <>
       {isJoined && (
         <Button onClick={() => {}} variant="secondary" disabled>
@@ -82,7 +84,7 @@ function RoomFooter({ roomId, publicData, isSpace, room, onRequestClose }) {
         </Button>
       )}
     </>
-  );
+  ) : null;
 }
 RoomFooter.propTypes = {
   isSpace: PropTypes.bool.isRequired,
