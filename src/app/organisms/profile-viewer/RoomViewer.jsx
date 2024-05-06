@@ -95,6 +95,7 @@ RoomFooter.propTypes = {
 function useToggleDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const [roomId, setRoomId] = useState(null);
+  const [aliasId, setAliasId] = useState(null);
   const [originalRoomId, setOriginalRoomId] = useState(null);
   const [publicData, setPublicData] = useState(null);
   const [isLoadingPublic, setIsLoadingPublic] = useState(false);
@@ -105,6 +106,7 @@ function useToggleDialog() {
       setIsLoadingPublic(true);
       setIsOpen(true);
       setRoomId(rId);
+      setAliasId(null);
       setOriginalRoomId(oId);
       setPublicData(null);
       setIsLoadingPublic(false);
@@ -120,6 +122,39 @@ function useToggleDialog() {
       if (publicData === null && (!isLoadingPublic || isLoadingId !== originalRoomId)) {
         setIsLoadingPublic(true);
         setIsLoadingId(originalRoomId);
+
+        const tinyError = (err) => {
+          console.error(err);
+          alert(err.message);
+          setPublicData({});
+          setIsLoadingPublic(false);
+          setIsLoadingId(null);
+        };
+
+        const finalResult = (result, aliasId) => {
+          if (isLoadingId === null) {
+            setAliasId(aliasId);
+            if (
+              objType(result, 'object') &&
+              Array.isArray(result.chunk) &&
+              objType(result.chunk[0], 'object')
+            )
+              setPublicData(result.chunk[0]);
+            else setPublicData({});
+            setIsLoadingPublic(false);
+            setIsLoadingId(null);
+          }
+        };
+
+        const getAlias = (result) => {
+          initMatrix.matrixClient
+            .getRoomIdForAlias(originalRoomId)
+            .then((data) => {
+              finalResult(result, data?.room_id);
+            })
+            .catch(tinyError);
+        };
+
         initMatrix.matrixClient
           .publicRooms({
             server: originalRoomId.split(':')[1],
@@ -129,26 +164,8 @@ function useToggleDialog() {
               generic_search_term: originalRoomId.split(':')[0],
             },
           })
-          .then((result) => {
-            if (isLoadingId === null) {
-              if (
-                objType(result, 'object') &&
-                Array.isArray(result.chunk) &&
-                objType(result.chunk[0], 'object')
-              )
-                setPublicData(result.chunk[0]);
-              else setPublicData({});
-              setIsLoadingPublic(false);
-              setIsLoadingId(null);
-            }
-          })
-          .catch((err) => {
-            console.error(err);
-            alert(err.message);
-            setPublicData({});
-            setIsLoadingPublic(false);
-            setIsLoadingId(null);
-          });
+          .then((result) => getAlias(result))
+          .catch(tinyError);
       }
     }
   });
@@ -160,12 +177,13 @@ function useToggleDialog() {
 
   const afterClose = () => {
     setRoomId(null);
+    setAliasId(null);
     setOriginalRoomId(null);
     setPublicData(null);
     setIsLoadingId(null);
   };
 
-  return [isOpen, originalRoomId, roomId, publicData, closeDialog, afterClose];
+  return [isOpen, originalRoomId, roomId, aliasId, publicData, closeDialog, afterClose];
 }
 
 // Read Profile
@@ -173,7 +191,7 @@ function RoomViewer() {
   // Prepare
   const profileAvatar = useRef(null);
 
-  const [isOpen, originalRoomId, roomId, publicData, closeDialog, handleAfterClose] =
+  const [isOpen, originalRoomId, roomId, aliasId, publicData, closeDialog, handleAfterClose] =
     useToggleDialog();
   const [lightbox, setLightbox] = useState(false);
 
@@ -183,7 +201,7 @@ function RoomViewer() {
   // Get Data
   const mx = initMatrix.matrixClient;
 
-  const room = mx.getRoom(roomId);
+  const room = mx.getRoom(aliasId);
   let isSpace = room ? room.isSpaceRoom() : null;
 
   const [avatarUrl, setAvatarUrl] = useState(null);
@@ -258,6 +276,7 @@ function RoomViewer() {
     isSpace = publicData.room_type === 'm.space';
   }
 
+  // Get data
   const profileData = {};
   if (publicData) {
     profileData.topic = publicData.topic;
@@ -266,9 +285,16 @@ function RoomViewer() {
         ? publicData.canonical_alias
         : publicData.room_id;
     profileData.joinedMembersCount = publicData.num_joined_members;
+
+    if (room) {
+      const currentState = getCurrentState(room);
+      profileData.topic = currentState.getStateEvents('m.room.topic')[0]?.getContent().topic;
+      profileData.alias = originalRoomId;
+    }
   } else if (room) {
     const currentState = getCurrentState(room);
     profileData.topic = currentState.getStateEvents('m.room.topic')[0]?.getContent().topic;
+    profileData.alias = originalRoomId;
   }
 
   // Render Profile
@@ -301,7 +327,7 @@ function RoomViewer() {
               <div className="float-end">
                 <RoomFooter
                   publicData={publicData}
-                  roomId={roomId}
+                  roomId={aliasId}
                   room={room}
                   isSpace={isSpace}
                   onRequestClose={closeDialog}
@@ -336,10 +362,10 @@ function RoomViewer() {
                 typeof profileData.alias === 'string' ||
                 typeof profileData.joinedMembersCount !== 'undefined') ? (
                 <p className="card-text p-y-1 very-small text-gray">
-                  {profileData.alias}
-                  {profileData.joinedMembersCount === null
+                  {profileData.alias !== originalRoomId ? profileData.alias : ''}
+                  {typeof profileData.joinedMembersCount !== 'number'
                     ? ''
-                    : ` • ${profileData.joinedMembersCount} members`}
+                    : `${profileData.alias !== originalRoomId ? ' •' : ''} ${profileData.joinedMembersCount} members`}
                 </p>
               ) : !publicData ? (
                 <>
