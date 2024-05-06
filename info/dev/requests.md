@@ -6,9 +6,12 @@ Ao ver a reação, mostrar uma preview maior
 
 https://www.npmjs.com/package/jimp
 
+https://matrix-org.github.io/matrix-js-sdk/classes/matrix.MatrixClient.html#slidingSync
 initMatrix.matrixClient.slidingSync();
 /\_matrix/client/v3/sync
 /\_matrix/client/unstable/org.matrix.msc3575/sync
+
+Buscador de emojis de custom status fica gelado.
 
 Ver a lista de quem reagiu
 

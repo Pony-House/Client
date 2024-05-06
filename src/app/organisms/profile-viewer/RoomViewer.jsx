@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 import { twemojifyReact } from '../../../util/twemojify';
-
 import imageViewer from '../../../util/imageViewer';
 
 import initMatrix from '../../../client/initMatrix';
@@ -81,12 +81,18 @@ function useToggleDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const [roomId, setRoomId] = useState(null);
   const [originalRoomId, setOriginalRoomId] = useState(null);
+  const [publicData, setPublicData] = useState(null);
+  const [isLoadingPublic, setIsLoadingPublic] = useState(false);
+  const [isLoadingId, setIsLoadingId] = useState(null);
 
   useEffect(() => {
     const loadRoom = (rId, oId) => {
+      setIsLoadingPublic(true);
       setIsOpen(true);
       setRoomId(rId);
       setOriginalRoomId(oId);
+      setPublicData(null);
+      setIsLoadingPublic(false);
     };
     navigation.on(cons.events.navigation.ROOM_VIEWER_OPENED, loadRoom);
     return () => {
@@ -94,14 +100,57 @@ function useToggleDialog() {
     };
   }, []);
 
-  const closeDialog = () => setIsOpen(false);
+  useEffect(() => {
+    if (roomId) {
+      if (publicData === null && (!isLoadingPublic || isLoadingId !== originalRoomId)) {
+        setIsLoadingPublic(true);
+        setIsLoadingId(originalRoomId);
+        initMatrix.matrixClient
+          .publicRooms({
+            server: originalRoomId.split(':')[1],
+            limit: 1,
+            include_all_networks: true,
+            filter: {
+              generic_search_term: originalRoomId.split(':')[0],
+            },
+          })
+          .then((result) => {
+            if (isLoadingId === null) {
+              if (
+                objType(result, 'object') &&
+                Array.isArray(result.chunk) &&
+                objType(result.chunk[0], 'object')
+              )
+                setPublicData(result.chunk[0]);
+              else setPublicData({});
+              setIsLoadingPublic(false);
+              setIsLoadingId(null);
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            alert(err.message);
+            setPublicData({});
+            setIsLoadingPublic(false);
+            setIsLoadingId(null);
+          });
+      }
+    }
+  });
+
+  const closeDialog = () => {
+    setIsLoadingPublic(true);
+    setIsOpen(false);
+  };
 
   const afterClose = () => {
     setRoomId(null);
     setOriginalRoomId(null);
+    setPublicData(null);
+    setIsLoadingId(null);
   };
 
-  return [isOpen, originalRoomId, roomId, closeDialog, afterClose];
+  return [isOpen, originalRoomId, roomId, publicData, closeDialog, afterClose];
 }
 
 // Read Profile
@@ -109,7 +158,8 @@ function RoomViewer() {
   // Prepare
   const profileAvatar = useRef(null);
 
-  const [isOpen, originalRoomId, roomId, closeDialog, handleAfterClose] = useToggleDialog();
+  const [isOpen, originalRoomId, roomId, publicData, closeDialog, handleAfterClose] =
+    useToggleDialog();
   const [lightbox, setLightbox] = useState(false);
 
   const userNameRef = useRef(null);
@@ -122,15 +172,17 @@ function RoomViewer() {
   const isSpace = room ? room.isSpaceRoom() : null;
 
   const [avatarUrl, setAvatarUrl] = useState(null);
+  const [isDefaultAvatar, setIsDefaultAvatar] = useState(true);
   const [username, setUsername] = useState(null);
 
-  console.log(room, roomId, originalRoomId, avatarUrl, username);
+  console.log(publicData, roomId, originalRoomId);
 
   useEffect(() => {
     if (room) {
       const theAvatar = room.getAvatarUrl(initMatrix.matrixClient.baseUrl);
       const newAvatar = theAvatar ? theAvatar : avatarDefaultColor(colorMXID(roomId));
 
+      setIsDefaultAvatar(!theAvatar);
       setAvatarUrl(newAvatar);
       setUsername(room.name || roomId);
 
@@ -164,7 +216,10 @@ function RoomViewer() {
         $(profileAvatar.current).off('click', tinyAvatarPreview);
       };
     } else if (!roomId) {
-      setAvatarUrl(defaultAvatar(0));
+      setIsDefaultAvatar(true);
+      setAvatarUrl(
+        originalRoomId ? avatarDefaultColor(colorMXID(originalRoomId)) : defaultAvatar(0),
+      );
       setUsername(null);
     }
   }, [room]);
@@ -175,6 +230,14 @@ function RoomViewer() {
       if (!avatarUrl) return;
       setLightbox(!lightbox);
     };
+
+    // Get avatar
+    let imageSrc;
+    if (!isDefaultAvatar || publicData === null || typeof publicData.avatar_url !== 'string') {
+      imageSrc = avatarUrl;
+    } else {
+      imageSrc = mx.mxcUrlToHttp(publicData.avatar_url);
+    }
 
     return (
       <>
@@ -187,7 +250,7 @@ function RoomViewer() {
             >
               <Avatar
                 ref={profileAvatar}
-                imageSrc={avatarUrl}
+                imageSrc={imageSrc}
                 text={username}
                 bgColor={colorMXID(roomId)}
                 size="large"
