@@ -301,9 +301,11 @@ function RoomViewer() {
 
           <div className="card bg-bg">
             <div className="card-body">
-              <h6 ref={displayNameRef} className="emoji-size-fix m-0 mb-1 fw-bold display-name">
-                <span className="button">{twemojifyReact(roomName)}</span>
-              </h6>
+              {roomName ? (
+                <h6 ref={displayNameRef} className="emoji-size-fix m-0 mb-1 fw-bold display-name">
+                  <span className="button">{twemojifyReact(roomName)}</span>
+                </h6>
+              ) : null}
               <small ref={userNameRef} className="text-gray emoji-size-fix username">
                 <span className="button">{twemojifyReact(originalRoomId)}</span>
               </small>
@@ -332,6 +334,19 @@ function RoomViewer() {
                       ? ''
                       : ` • ${publicData.num_joined_members} members`}
                   </p>
+                </>
+              ) : !publicData ? (
+                <>
+                  <br className="mt-3" />
+                  <strong>
+                    <div
+                      role="status"
+                      className="me-2 spinner-border spinner-border-sm d-inline-block"
+                    >
+                      <span className="visually-hidden">Loading...</span>
+                    </div>
+                    Loading data...
+                  </strong>
                 </>
               ) : null}
             </div>
