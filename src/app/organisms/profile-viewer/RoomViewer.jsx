@@ -258,6 +258,16 @@ function RoomViewer() {
     isSpace = publicData.room_type === 'm.space';
   }
 
+  const profileData = {};
+  if (publicData) {
+    profileData.topic = publicData.topic;
+    profileData.alias =
+      typeof publicData.canonical_alias === 'string'
+        ? publicData.canonical_alias
+        : publicData.room_id;
+    profileData.joinedMembersCount = publicData.num_joined_members;
+  }
+
   // Render Profile
   const renderProfile = () => {
     const toggleLightbox = () => {
@@ -309,28 +319,25 @@ function RoomViewer() {
               </small>
 
               {publicData &&
-              (publicData.topic === 'string' ||
-                typeof publicData.canonical_alias === 'string' ||
-                publicData.room_id ||
-                typeof publicData.num_joined_members !== 'undefined') ? (
+              (profileData.topic === 'string' ||
+                typeof profileData.alias === 'string' ||
+                typeof profileData.joinedMembersCount !== 'undefined') ? (
                 <>
-                  {typeof publicData.topic === 'string' && publicData.topic.length > 0 ? (
+                  {typeof profileData.topic === 'string' && profileData.topic.length > 0 ? (
                     <>
                       <hr />
                       <div className="text-gray text-uppercase fw-bold very-small mb-2">About</div>
                       <p className="card-text p-y-1 text-freedom text-size-box very-small emoji-size-fix">
-                        {twemojifyReact(publicData.topic, undefined, true)}
+                        {twemojifyReact(profileData.topic, undefined, true)}
                       </p>
                     </>
                   ) : null}
 
                   <p className="card-text p-y-1 very-small text-gray">
-                    {typeof publicData.canonical_alias === 'string'
-                      ? publicData.canonical_alias
-                      : publicData.room_id}
-                    {publicData.num_joined_members === null
+                    {profileData.alias}
+                    {profileData.joinedMembersCount === null
                       ? ''
-                      : ` • ${publicData.num_joined_members} members`}
+                      : ` • ${profileData.joinedMembersCount} members`}
                   </p>
                 </>
               ) : !publicData ? (
