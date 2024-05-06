@@ -10,6 +10,8 @@ initMatrix.matrixClient.slidingSync();
 /\_matrix/client/v3/sync
 /\_matrix/client/unstable/org.matrix.msc3575/sync
 
+Ver a lista de quem reagiu
+
 ==============================================================
 
 Ver qual Friend ninkcname está sendo usado.
