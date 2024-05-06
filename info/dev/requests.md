@@ -6,6 +6,10 @@ Ao ver a reação, mostrar uma preview maior
 
 https://www.npmjs.com/package/jimp
 
+initMatrix.matrixClient.slidingSync();
+/\_matrix/client/v3/sync
+/\_matrix/client/unstable/org.matrix.msc3575/sync
+
 ==============================================================
 
 Ver qual Friend ninkcname está sendo usado.
