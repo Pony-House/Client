@@ -4,3 +4,4 @@
 - Anti blob freeze crash.
 - Keywords chat support removed.
 - LinkifyHtml issue fixed.
+- Reactions CSS fix.

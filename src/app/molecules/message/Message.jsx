@@ -728,7 +728,7 @@ function MessageReaction({ reaction, shortcode, count, users, isActive, onClick 
       <button
         onClick={onClick}
         type="button"
-        className={`msg__reaction${isActive ? ' msg__reaction--active' : ''}`}
+        className={`msg__reaction${isActive ? ' msg__reaction--active' : ''}${customEmojiUrl ? ' custom-emoji' : ' default-emoji'}`}
       >
         {customEmojiUrl ? (
           <img

@@ -69,6 +69,7 @@
     padding: 0 var(--sp-ultra-tight);
     display: inline-flex;
     align-items: center;
+    align-content: center;
     color: var(--tc-surface-normal);
     background-color: var(--bg-surface-low);
     border: 1px solid var(--bg-surface-border);
@@ -76,13 +77,39 @@
     margin-right: 3px;
     cursor: pointer;
 
+    /* First fix */
     & .react-emoji {
       height: 13px;
-      margin: 2px;
+      padding-left: 3px;
+      padding-right: 3px;
     }
     &-count {
-      margin: 0 var(--sp-ultra-tight);
+      padding-left: 3px;
+      padding-right: 3px;
       color: var(--tc-surface-normal);
+    }
+
+    /* Fix Position */
+    .msg__reaction-count {
+      top: 1px;
+      position: relative;
+    }
+
+    &.default-emoji {
+      top: -1px;
+      position: relative;
+      .linkify-base {
+        height: 100%;
+      }
+      .react-emoji {
+        margin-top: -3px;
+      }
+    }
+
+    &.custom-emoji {
+      .react-emoji {
+        margin-top: 1px;
+      }
     }
 
     @media (hover: hover) {
