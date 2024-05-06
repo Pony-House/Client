@@ -72,12 +72,12 @@ function RoomFooter({ roomId, publicData, isSpace, room, onRequestClose }) {
   return (
     <>
       {isJoined && (
-        <Button onClick={() => {}} variant="secondary">
+        <Button onClick={() => {}} variant="secondary" disabled>
           Open
         </Button>
       )}
       {!isJoined && (
-        <Button onClick={() => {}} variant="primary">
+        <Button onClick={() => {}} variant="primary" disabled>
           Join
         </Button>
       )}
