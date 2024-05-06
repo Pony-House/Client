@@ -12,6 +12,8 @@ import {
   defaultSpaceBanner,
 } from '@src/app/atoms/avatar/defaultAvatar';
 
+import MatrixVoiceChat from '@src/util/libs/voiceChat';
+
 import { secret } from './state/auth';
 import RoomList from './state/RoomList';
 import AccountData from './state/AccountData';
@@ -181,6 +183,7 @@ class InitMatrix extends EventEmitter {
           this.accountData = new AccountData(this.roomList);
           this.roomsInput = new RoomsInput(this.matrixClient, this.roomList);
           this.notifications = new Notifications(this.roomList);
+          this.voiceChat = new MatrixVoiceChat(this.matrixClient);
 
           this.accountData.setMaxListeners(Infinity);
           this.roomList.setMaxListeners(Infinity);

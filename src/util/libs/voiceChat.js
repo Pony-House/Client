@@ -101,6 +101,7 @@ class MatrixVoiceChat {
 
       this.roomId = roomId;
       this.call = createNewMatrixCall(this.mx, roomId);
+      this.call.setMaxListeners(Infinity);
       myEmitter.emit('state', 'call_created');
 
       this.start();
@@ -578,8 +579,4 @@ class MatrixVoiceChat {
 */
 
 // Base
-let vc;
-export default function getVoiceChat(mx) {
-  if (!vc) vc = new MatrixVoiceChat(mx);
-  return vc;
-}
+export default MatrixVoiceChat;

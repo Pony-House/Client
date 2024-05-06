@@ -20,7 +20,6 @@ import { openSettings } from '../../../client/action/navigation';
 import tinyAPI from '../../../util/mods';
 import { enableAfkSystem } from '../../../util/userStatusEffects';
 import { getUserWeb3Account } from '../../../util/web3';
-import getVoiceChat from '../../../util/libs/voiceChat';
 import { getSound } from '../../../client/state/Notifications';
 
 import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
@@ -43,7 +42,7 @@ export function getAccountStatus(where) {
 function ProfileAvatarMenu() {
   // Data
   const mx = initMatrix.matrixClient;
-  const voiceChat = getVoiceChat(mx);
+  const voiceChat = initMatrix.voiceChat;
 
   const user = mx.getUser(mx.getUserId());
   const customStatusRef = useRef(null);
