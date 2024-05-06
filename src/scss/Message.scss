@@ -339,3 +339,8 @@ em-emoji-picker {
     }
   }
 }
+
+.msg__reaction-tooltip,
+.msg__reaction-tooltip .tooltip-inner {
+  min-width: 325px;
+}

@@ -654,22 +654,57 @@ function pickEmoji(e, roomId, eventId, roomTimeline, extraX = 0, extraX2 = 0, re
 }
 
 // Reaction Generator
-function genReactionMsg(userIds, reaction, shortcode) {
+function genReactionMsg(userIds, reaction, shortcode, customEmojiUrl) {
+  const usersReaction = [];
+  let userLimit = 3;
+  let extraUserLimit = 0;
+  for (const item in userIds) {
+    if (usersReaction.length < userLimit) {
+      usersReaction.push(userIds[item]);
+    } else {
+      extraUserLimit++;
+    }
+  }
   return (
-    <>
-      {userIds.map((userId, index) => (
-        <React.Fragment key={userId}>
-          <span className="emoji-size-fix-2">{twemojifyReact(getUsername(userId))}</span>
-          {index < userIds.length - 1 && (
-            <span style={{ opacity: '.6' }}>{index === userIds.length - 2 ? ' and ' : ', '}</span>
+    <div className="row small">
+      <div className="col-3">
+        <center>
+          {customEmojiUrl ? (
+            <img
+              className="react-emoji"
+              draggable="false"
+              alt={shortcode ?? reaction}
+              src={readImageUrl(customEmojiUrl)}
+            />
+          ) : (
+            twemojifyReact(reaction, { className: 'react-emoji' })
+          )}
+        </center>
+      </div>
+      <div className="col-9">
+        {usersReaction.map((userId, index) => (
+          <React.Fragment key={userId}>
+            <span className="emoji-size-fix-2">{twemojifyReact(getUsername(userId))}</span>
+            {index < usersReaction.length - 1 && (
+              <span style={{ opacity: '.6' }}>
+                {index === usersReaction.length - 2 ? ' and ' : ', '}
+              </span>
+            )}
+          </React.Fragment>
+        ))}
+        <React.Fragment key={`reactionUserMessage${String(extraUserLimit)}`}>
+          {extraUserLimit > 0 && (
+            <span
+              style={{ opacity: '.6' }}
+            >{`, and ${extraUserLimit < 2 ? `${String(extraUserLimit)} other` : `${String(extraUserLimit)} others`}`}</span>
           )}
         </React.Fragment>
-      ))}
-      <span style={{ opacity: '.6' }}>{' reacted with '}</span>
-      <span className="emoji-size-fix-2">
-        {twemojifyReact(shortcode ? `:${shortcode}:` : reaction, { className: 'react-emoji' })}
-      </span>
-    </>
+        <span style={{ opacity: '.6' }}>{' reacted with '}</span>
+        <span className="emoji-size-fix-2">
+          {twemojifyReact(shortcode ? `:${shortcode}:` : reaction, { className: 'react-emoji' })}
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -685,7 +720,7 @@ function MessageReaction({ reaction, shortcode, count, users, isActive, onClick 
       content={
         <div className="small">
           {users.length > 0
-            ? genReactionMsg(users, reaction, shortcode)
+            ? genReactionMsg(users, reaction, shortcode, customEmojiUrl)
             : 'Unable to load who has reacted'}
         </div>
       }
