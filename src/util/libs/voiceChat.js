@@ -55,6 +55,14 @@ class MatrixVoiceChat {
     });
   }
 
+  supportsVoip() {
+    return this.mx.supportsVoip();
+  }
+
+  existsCall() {
+    return typeof this.call !== 'undefined';
+  }
+
   /* Audio */
   getAudioMute() {
     return global.localStorage.getItem('pony-house-muted-audio') === 'true';
@@ -67,32 +75,43 @@ class MatrixVoiceChat {
   setAudioMute(value) {
     if (typeof value === 'boolean') {
       myEmitter.emit('pony_house_muted_audio', value);
-      global.localStorage.setItem('pony-house-muted-audio', value === true ? 'true' : 'false');
+      return global.localStorage.setItem(
+        'pony-house-muted-audio',
+        value === true ? 'true' : 'false',
+      );
     }
+    return null;
   }
 
   setMicrophoneMute(value) {
     if (typeof value === 'boolean') {
       myEmitter.emit('pony_house_muted_microphone', value);
-      global.localStorage.setItem('pony-house-muted-microphone', value === true ? 'true' : 'false');
+      return global.localStorage.setItem(
+        'pony-house-muted-microphone',
+        value === true ? 'true' : 'false',
+      );
     }
+    return null;
   }
 
   // Create Call
   create(roomId) {
-    this.stop();
+    if (this.mx.supportsVoip()) {
+      this.stop();
 
-    this.roomId = roomId;
-    this.call = createNewMatrixCall(this.mx, roomId);
-    myEmitter.emit('state', 'call_created');
+      this.roomId = roomId;
+      this.call = createNewMatrixCall(this.mx, roomId);
+      myEmitter.emit('state', 'call_created');
 
-    this.start();
+      this.start();
 
-    return this.call;
+      return this.call;
+    }
+    return null;
   }
 
   stop() {
-    if (this.call) this.call.reject();
+    if (this.existsCall()) this.call.reject();
 
     this.roomId = null;
 
@@ -111,11 +130,12 @@ class MatrixVoiceChat {
     this.started = false;
 
     myEmitter.emit('state', 'call_stopped');
+    return true;
   }
 
   // Start Call
   start() {
-    if (this.call && !this.started) {
+    if (this.mx.supportsVoip() && this.call && !this.started) {
       const tinyThis = this;
       this.started = true;
 
@@ -223,7 +243,9 @@ class MatrixVoiceChat {
       });
 
       myEmitter.emit('state', 'call_started');
+      return true;
     }
+    return null;
   }
 
   // Call
@@ -232,245 +254,299 @@ class MatrixVoiceChat {
   }
 
   placeCall(audio = false, video = false) {
-    if (this.call) {
+    if (this.existsCall()) {
       // Stop other call
       this.call.reject();
 
       // Insert Call
-      this.call.placeCall(audio, video);
+      return this.call.placeCall(audio, video);
     }
+    return null;
   }
 
   // Get
   getCurrentCallStats() {
-    return this.call && this.call.isLocalOnHold();
+    if (this.existsCall()) return this.call.isLocalOnHold();
+    return null;
   }
 
   getFeeds() {
-    return this.call && this.call.getFeeds();
+    if (this.existsCall()) return this.call.getFeeds();
+    return null;
   }
 
   getLocalFeeds() {
-    return this.call && this.call.getLocalFeeds();
+    if (this.existsCall()) return this.call.getLocalFeeds();
+    return null;
   }
 
   getOpponentDeviceId() {
-    return this.call && this.call.getOpponentDeviceId();
+    if (this.existsCall()) return this.call.getOpponentDeviceId();
+    return null;
   }
 
   getOpponentMember() {
-    return this.call && this.call.getOpponentMember();
+    if (this.existsCall()) return this.call.getOpponentMember();
+    return null;
   }
 
   getOpponentSessionId() {
-    return this.call && this.call.getOpponentSessionId();
+    if (this.existsCall()) return this.call.getOpponentSessionId();
+    return null;
   }
 
   getRemoteAssertedIdentity() {
-    return this.call && this.call.getRemoteAssertedIdentity();
+    if (this.existsCall()) return this.call.getRemoteAssertedIdentity();
+    return null;
   }
 
   getRemoteFeeds() {
-    return this.call && this.call.getRemoteFeeds();
+    if (this.existsCall()) return this.call.getRemoteFeeds();
+    return null;
   }
 
   isLocalOnHold() {
-    return this.call && this.call.isLocalOnHold();
+    if (this.existsCall()) return this.call.isLocalOnHold();
+    return null;
   }
 
   isLocalVideoMuted() {
-    return this.call && this.call.isLocalVideoMuted();
+    if (this.existsCall()) return this.call.isLocalVideoMuted();
+    return null;
   }
 
   isMicrophoneMuted() {
-    return this.call && this.call.isMicrophoneMuted();
+    if (this.existsCall()) return this.call.isMicrophoneMuted();
+    return null;
   }
 
   isRemoteOnHold() {
-    return this.call && this.call.isRemoteOnHold();
+    if (this.existsCall()) return this.call.isRemoteOnHold();
+    return null;
   }
 
   isScreensharing() {
-    return this.call && this.call.isScreensharing();
+    if (this.existsCall()) return this.call.isScreensharing();
+    return null;
   }
 
   opponentCanBeTransferred() {
-    return this.call && this.call.opponentCanBeTransferred();
+    if (this.existsCall()) return this.call.opponentCanBeTransferred();
+    return null;
   }
 
   opponentSupportsDTMF() {
-    return this.call && this.call.opponentSupportsDTMF();
+    if (this.existsCall()) return this.call.opponentSupportsDTMF();
+    return null;
   }
 
   opponentSupportsSDPStreamMetadata() {
-    return this.call && this.call.opponentSupportsSDPStreamMetadata();
+    if (this.existsCall()) return this.call.opponentSupportsSDPStreamMetadata();
+    return null;
   }
 
   // Has
   hasLocalUserMediaAudioTrack() {
-    return this.call && this.call.hasLocalUserMediaAudioTrack();
+    if (this.existsCall()) return this.call.hasLocalUserMediaAudioTrack();
+    return null;
   }
 
   hasLocalUserMediaVideoTrack() {
-    return this.call && this.call.hasLocalUserMediaVideoTrack();
+    if (this.existsCall()) return this.call.hasLocalUserMediaVideoTrack();
+    return null;
   }
 
   hasPeerConnection() {
-    return this.call && this.call.hasPeerConnection();
+    if (this.existsCall()) return this.call.hasPeerConnection();
+    return null;
   }
 
   hasRemoteUserMediaAudioTrack() {
-    return this.call && this.call.hasRemoteUserMediaAudioTrack();
+    if (this.existsCall()) return this.call.hasRemoteUserMediaAudioTrack();
+    return null;
   }
 
   hasRemoteUserMediaVideoTrack() {
-    return this.call && this.call.hasRemoteUserMediaVideoTrack();
+    if (this.existsCall()) return this.call.hasRemoteUserMediaVideoTrack();
+    return null;
   }
 
   // More Get
   callHasEnded() {
-    return this.call && this.call.callHasEnded();
+    if (this.existsCall()) return this.call.callHasEnded();
+    return null;
   }
 
   localScreensharingFeed() {
-    return this.call && this.call.localScreensharingFeed();
+    if (this.existsCall()) return this.call.localScreensharingFeed();
+    return null;
   }
 
   localScreensharingStream() {
-    return this.call && this.call.localScreensharingStream();
+    if (this.existsCall()) return this.call.localScreensharingStream();
+    return null;
   }
 
   localUsermediaFeed() {
-    return this.call && this.call.localUsermediaFeed();
+    if (this.existsCall()) return this.call.localUsermediaFeed();
+    return null;
   }
 
   localUsermediaStream() {
-    return this.call && this.call.localUsermediaStream();
+    if (this.existsCall()) return this.call.localUsermediaStream();
+    return null;
   }
 
   remoteScreensharingFeed() {
-    return this.call && this.call.remoteScreensharingFeed();
+    if (this.existsCall()) return this.call.remoteScreensharingFeed();
+    return null;
   }
 
   remoteScreensharingStream() {
-    return this.call && this.call.remoteScreensharingStream();
+    if (this.existsCall()) return this.call.remoteScreensharingStream();
+    return null;
   }
 
   remoteUsermediaFeed() {
-    return this.call && this.call.remoteUsermediaFeed();
+    if (this.existsCall()) return this.call.remoteUsermediaFeed();
+    return null;
   }
 
   remoteUsermediaStream() {
-    return this.call && this.call.remoteUsermediaStream();
+    if (this.existsCall()) return this.call.remoteUsermediaStream();
+    return null;
   }
 
   state() {
-    return this.call && this.call.state();
+    if (this.existsCall()) return this.call.state();
+    return null;
   }
 
   type() {
-    return this.call && this.call.type();
+    if (this.existsCall()) return this.call.type();
+    return null;
   }
 
   // Set
   setLocalVideoMuted(muted) {
-    return this.call && this.call.setLocalVideoMuted(muted);
+    if (this.existsCall()) return this.call.setLocalVideoMuted(muted);
+    return null;
   }
 
   setMicrophoneMuted(muted) {
-    return this.call && this.call.setMicrophoneMuted(muted);
+    if (this.existsCall()) return this.call.setMicrophoneMuted(muted);
+    return null;
   }
 
   setRemoteOnHold(onHold) {
-    return this.call && this.call.setRemoteOnHold(onHold);
+    if (this.existsCall()) return this.call.setRemoteOnHold(onHold);
+    return null;
   }
 
   setScreensharingEnabled(enabled, opts) {
-    return this.call && this.call.setScreensharingEnabled(enabled, opts);
+    if (this.existsCall()) return this.call.setScreensharingEnabled(enabled, opts);
+    return null;
   }
 
   sendDtmfDigit(digit) {
-    return this.call && this.call.sendDtmfDigit(digit);
+    if (this.existsCall()) return this.call.sendDtmfDigit(digit);
+    return null;
   }
 
   sendMetadataUpdate() {
-    return this.call && this.call.sendMetadataUpdate();
+    if (this.existsCall()) return this.call.sendMetadataUpdate();
+    return null;
   }
 
   // Replace
   replacedBy(newCall) {
-    if (this.call) this.call.replacedBy(newCall);
+    if (this.existsCall()) return this.call.replacedBy(newCall);
+    return null;
   }
 
   // Transfer
   transfer(targetUserId) {
-    if (this.call) this.call.transfer(targetUserId);
+    if (this.existsCall()) return this.call.transfer(targetUserId);
+    return null;
   }
 
   transferToCall(transferTargetCall) {
-    if (this.call) this.call.transferToCall(transferTargetCall);
+    if (this.existsCall()) return this.call.transferToCall(transferTargetCall);
+    return null;
   }
 
   // Update Stream
   updateLocalUsermediaStream(stream, forceAudio, forceVideo) {
-    if (this.call) this.call.updateLocalUsermediaStream(stream, forceAudio, forceVideo);
+    if (this.existsCall())
+      return this.call.updateLocalUsermediaStream(stream, forceAudio, forceVideo);
+    return null;
   }
 
   // Reject a call This used to be done by calling hangup, but is a separate method and protocol event as of MSC2746.
   reject() {
-    if (this.call) this.call.reject();
+    if (this.existsCall()) return this.call.reject();
+    return null;
   }
 
   answer(audio, video) {
-    if (this.call) this.call.answer(audio, video);
+    if (this.existsCall()) return this.call.answer(audio, video);
+    return null;
   }
 
   answerWithCallFeeds(callFeeds) {
-    if (this.call) this.call.answerWithCallFeeds(callFeeds);
+    if (this.existsCall()) return this.call.answerWithCallFeeds(callFeeds);
+    return null;
   }
 
   // Data Channel
   createDataChannel(label, options) {
-    if (this.call) this.call.createDataChannel(label, options);
+    if (this.existsCall()) return this.call.createDataChannel(label, options);
+    return null;
   }
 
   // Call Time
   hangup(reason, suppressEvent) {
-    if (this.call) this.call.hangup(reason, suppressEvent);
+    if (this.existsCall()) return this.call.hangup(reason, suppressEvent);
+    return null;
   }
 
   initStats(stats, peerId) {
-    if (this.call) this.call.initStats(stats, peerId);
+    if (this.existsCall()) return this.call.initStats(stats, peerId);
+    return null;
   }
 
   initWithHangup(event) {
-    if (this.call) this.call.initWithHangup(event);
+    if (this.existsCall()) return this.call.initWithHangup(event);
+    return null;
   }
 
   initWithInvite(event) {
-    if (this.call) this.call.initWithInvite(event);
+    if (this.existsCall()) return this.call.initWithInvite(event);
+    return null;
   }
 
   // Emit
   emit(event, args) {
-    if (this.call) return this.call.emit(event, args);
+    if (this.existsCall()) return this.call.emit(event, args);
+    return null;
   }
 
   emitPromised(event, args) {
-    if (this.call) return this.call.emitPromised(event, args);
+    if (this.existsCall()) return this.call.emitPromised(event, args);
+    return null;
   }
 
   // Events
   on(event, callback) {
-    myEmitter.on(event, callback);
+    return myEmitter.on(event, callback);
   }
 
   off(event, callback) {
-    myEmitter.off(event, callback);
+    return myEmitter.off(event, callback);
   }
 
   once(event, callback) {
-    myEmitter.once(event, callback);
+    return myEmitter.once(event, callback);
   }
 }
 
