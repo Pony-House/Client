@@ -12,7 +12,7 @@ import navigation from '../../../client/state/navigation';
 import { selectRoom, selectRoomMode } from '../../../client/action/navigation';
 import * as roomActions from '../../../client/action/room';
 
-import { hasDMWith, hasDevices } from '../../../util/matrixUtil';
+import { getCurrentState, hasDMWith, hasDevices } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
 
 import Avatar, { avatarDefaultColor } from '../../atoms/avatar/Avatar';
@@ -266,6 +266,9 @@ function RoomViewer() {
         ? publicData.canonical_alias
         : publicData.room_id;
     profileData.joinedMembersCount = publicData.num_joined_members;
+  } else if (room) {
+    const currentState = getCurrentState(room);
+    profileData.topic = currentState.getStateEvents('m.room.topic')[0]?.getContent().topic;
   }
 
   // Render Profile
@@ -318,32 +321,30 @@ function RoomViewer() {
                 <span className="button">{twemojifyReact(originalRoomId)}</span>
               </small>
 
+              {typeof profileData.topic === 'string' && profileData.topic.length > 0 ? (
+                <>
+                  <hr />
+                  <div className="text-gray text-uppercase fw-bold very-small mb-2">About</div>
+                  <p className="card-text p-y-1 text-freedom text-size-box very-small emoji-size-fix">
+                    {twemojifyReact(profileData.topic, undefined, true)}
+                  </p>
+                </>
+              ) : null}
+
               {publicData &&
               (profileData.topic === 'string' ||
                 typeof profileData.alias === 'string' ||
                 typeof profileData.joinedMembersCount !== 'undefined') ? (
-                <>
-                  {typeof profileData.topic === 'string' && profileData.topic.length > 0 ? (
-                    <>
-                      <hr />
-                      <div className="text-gray text-uppercase fw-bold very-small mb-2">About</div>
-                      <p className="card-text p-y-1 text-freedom text-size-box very-small emoji-size-fix">
-                        {twemojifyReact(profileData.topic, undefined, true)}
-                      </p>
-                    </>
-                  ) : null}
-
-                  <p className="card-text p-y-1 very-small text-gray">
-                    {profileData.alias}
-                    {profileData.joinedMembersCount === null
-                      ? ''
-                      : ` • ${profileData.joinedMembersCount} members`}
-                  </p>
-                </>
+                <p className="card-text p-y-1 very-small text-gray">
+                  {profileData.alias}
+                  {profileData.joinedMembersCount === null
+                    ? ''
+                    : ` • ${profileData.joinedMembersCount} members`}
+                </p>
               ) : !publicData ? (
                 <>
-                  <br className="mt-3" />
-                  <strong>
+                  <br />
+                  <strong className="small">
                     <div
                       role="status"
                       className="me-2 spinner-border spinner-border-sm d-inline-block"
