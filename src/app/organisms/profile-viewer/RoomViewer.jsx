@@ -190,8 +190,6 @@ function RoomViewer() {
   const [isDefaultAvatar, setIsDefaultAvatar] = useState(true);
   const [username, setUsername] = useState(null);
 
-  console.log(publicData, roomId, originalRoomId);
-
   useEffect(() => {
     if (room) {
       const theAvatar = room.getAvatarUrl(initMatrix.matrixClient.baseUrl);
