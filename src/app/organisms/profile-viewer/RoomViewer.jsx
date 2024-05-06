@@ -224,33 +224,33 @@ function RoomViewer() {
     }
   }, [room]);
 
+  // Get avatar
+  let imageSrc;
+  if (!isDefaultAvatar || publicData === null || typeof publicData.avatar_url !== 'string') {
+    imageSrc = avatarUrl;
+  } else {
+    imageSrc = mx.mxcUrlToHttp(publicData.avatar_url);
+  }
+
+  // Get username
+  let roomName;
+  if (publicData === null || typeof publicData.name !== 'string') {
+    roomName = username;
+  } else {
+    roomName = publicData.name;
+  }
+
+  // Is Space
+  if (isSpace === null && publicData !== null && typeof publicData.room_type === 'string') {
+    isSpace = publicData.room_type === 'm.space';
+  }
+
   // Render Profile
   const renderProfile = () => {
     const toggleLightbox = () => {
       if (!avatarUrl) return;
       setLightbox(!lightbox);
     };
-
-    // Get avatar
-    let imageSrc;
-    if (!isDefaultAvatar || publicData === null || typeof publicData.avatar_url !== 'string') {
-      imageSrc = avatarUrl;
-    } else {
-      imageSrc = mx.mxcUrlToHttp(publicData.avatar_url);
-    }
-
-    // Get username
-    let roomName;
-    if (publicData === null || typeof publicData.name !== 'string') {
-      roomName = username;
-    } else {
-      roomName = publicData.name;
-    }
-
-    // Is Space
-    if (isSpace === null && publicData !== null && typeof publicData.room_type === 'string') {
-      isSpace = publicData.room_type === 'm.space';
-    }
 
     return (
       <>
@@ -299,7 +299,7 @@ function RoomViewer() {
       bodyClass="bg-bg2 p-0"
       className="modal-dialog-scrollable modal-dialog-centered modal-lg noselect modal-dialog-user-profile modal-dialog-room-profile"
       isOpen={isOpen}
-      title="Room Profile"
+      title={`${!isSpace ? 'Room' : 'Space'} Profile`}
       onAfterClose={handleAfterClose}
       onRequestClose={closeDialog}
     >
