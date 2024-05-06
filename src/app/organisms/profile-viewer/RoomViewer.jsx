@@ -169,7 +169,7 @@ function RoomViewer() {
   const mx = initMatrix.matrixClient;
 
   const room = mx.getRoom(roomId);
-  const isSpace = room ? room.isSpaceRoom() : null;
+  let isSpace = room ? room.isSpaceRoom() : null;
 
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [isDefaultAvatar, setIsDefaultAvatar] = useState(true);
@@ -239,6 +239,19 @@ function RoomViewer() {
       imageSrc = mx.mxcUrlToHttp(publicData.avatar_url);
     }
 
+    // Get username
+    let roomName;
+    if (publicData === null || typeof publicData.name !== 'string') {
+      roomName = username;
+    } else {
+      roomName = publicData.name;
+    }
+
+    // Is Space
+    if (isSpace === null && publicData !== null && typeof publicData.room_type === 'string') {
+      isSpace = publicData.room_type === 'm.space';
+    }
+
     return (
       <>
         <div className="p-4">
@@ -268,7 +281,7 @@ function RoomViewer() {
           <div className="card bg-bg">
             <div className="card-body">
               <h6 ref={displayNameRef} className="emoji-size-fix m-0 mb-1 fw-bold display-name">
-                <span className="button">{twemojifyReact(username)}</span>
+                <span className="button">{twemojifyReact(roomName)}</span>
               </h6>
               <small ref={userNameRef} className="text-gray emoji-size-fix username">
                 <span className="button">{twemojifyReact(originalRoomId)}</span>
