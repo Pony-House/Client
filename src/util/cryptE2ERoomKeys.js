@@ -1,5 +1,4 @@
 // https://github.com/matrix-org/matrix-react-sdk/blob/e78a1adb6f1af2ea425b0bae9034fb7344a4b2e8/src/utils/MegolmExportEncryption.js
-import logger from '../client/logger';
 import { isMobile } from './libs/mobile';
 
 const subtleCrypto = window.crypto.subtle || window.crypto.webkitSubtle;
@@ -63,7 +62,7 @@ async function deriveKeys(salt, iterations, password) {
   }
 
   const now = new Date();
-  logger.log(`E2e import/export: deriveKeys took ${now - start}ms`);
+  console.log(`E2e import/export: deriveKeys took ${now - start}ms`);
 
   const aesKey = keybits.slice(0, 32);
   const hmacKey = keybits.slice(32);

@@ -2,7 +2,6 @@ import clone from 'clone';
 import moment from '@src/util/libs/momentjs';
 
 import { logger as mxLogger } from 'matrix-js-sdk/lib/logger';
-import { consoleRemoveData, consoleNewData, consoleUpdate } from '../action/navigation';
 import tinyAPI from '../../util/mods';
 
 const logCache = {
@@ -17,17 +16,9 @@ const logCache = {
 
       if (logCache.data.length > 1000) {
         const tinyData = logCache.data.shift();
-
-        consoleRemoveData(tinyData);
-        tinyAPI.emit('consoleRemoveData', tinyData);
       }
 
       const tinyData = { level, msg };
-      consoleNewData(tinyData);
-      tinyAPI.emit('consoleNewData', tinyData);
-
-      consoleUpdate(logCache.data);
-      tinyAPI.emit('consoleUpdate', logCache.data);
     }
   },
 };

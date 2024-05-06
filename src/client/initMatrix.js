@@ -19,7 +19,6 @@ import RoomsInput from './state/RoomsInput';
 import Notifications from './state/Notifications';
 import { cryptoCallbacks } from './state/secretStorageKeys';
 import navigation from './state/navigation';
-import logger from './logger';
 
 global.Olm = Olm;
 
@@ -166,14 +165,14 @@ class InitMatrix extends EventEmitter {
     startCustomDNS();
     const sync = {
       NULL: () => {
-        logger.log(`NULL state`);
+        console.log(`NULL state`);
       },
       SYNCING: () => {
-        logger.log(`SYNCING state`);
+        console.log(`SYNCING state`);
       },
       PREPARED: (prevState) => {
-        logger.log(`PREPARED state`);
-        logger.log(`Previous state: `, prevState);
+        console.log(`PREPARED state`);
+        console.log(`Previous state: `, prevState);
         if (__ENV_APP__.MODE === 'development') {
           global.initMatrix = this;
         }
@@ -195,16 +194,16 @@ class InitMatrix extends EventEmitter {
         }
       },
       RECONNECTING: () => {
-        logger.log(`RECONNECTING state`);
+        console.log(`RECONNECTING state`);
       },
       CATCHUP: () => {
-        logger.log(`CATCHUP state`);
+        console.log(`CATCHUP state`);
       },
       ERROR: () => {
-        logger.log(`ERROR state`);
+        console.log(`ERROR state`);
       },
       STOPPED: () => {
-        logger.log(`STOPPED state`);
+        console.log(`STOPPED state`);
       },
     };
     this.matrixClient.on('sync', (state, prevState) => sync[state](prevState));

@@ -114,16 +114,6 @@ The difference is that the methods below will update the url in real time, and w
     urlParams.on('delete');
     urlParams.on('append');
 
-## Methods
-
-### logger.getData()
-
-Returns an Array with the list of the matrix-sdk logs. (Read-only)
-
-### logger.play()
-
-Display the matrix-sdk logs.
-
 ## Events
 
 <hr/>
@@ -154,24 +144,6 @@ Empty Timeline loaded
 ### setRoomInfo
 
     roomInfo
-
-<hr/>
-
-`src/client/logger/index.js`
-
-console object = level, message
-
-### consoleRemoveData
-
-    console object
-
-### consoleNewData
-
-    console object
-
-### consoleUpdate
-
-    console cache
 
 <hr/>
 
