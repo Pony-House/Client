@@ -22,11 +22,10 @@ import Dialog from '../../molecules/dialog/Dialog';
 import copyText from './copyText';
 import tinyAPI from '../../../util/mods';
 
-function RoomFooter({ roomId, onRequestClose }) {
+function RoomFooter({ roomId, publicData, isSpace, room, onRequestClose }) {
   const [isCreatingDM, setIsCreatingDM] = useState(false);
 
   const mx = initMatrix.matrixClient;
-  const room = mx.getRoom(roomId);
 
   const onCreated = (dmRoomId) => {
     setIsCreatingDM(false);
@@ -63,17 +62,33 @@ function RoomFooter({ roomId, onRequestClose }) {
   };
 
   // disabled={isCreatingDM}
+  /*
+        <Button className="me-2" variant="primary" onClick={openDM} disabled>
+        {isCreatingDM ? 'Creating room...' : 'Message'}
+      </Button>
+      */
+  const isJoined = initMatrix.matrixClient.getRoom(roomId)?.getMyMembership() === 'join';
 
   return (
     <>
-      <Button className="me-2" variant="primary" onClick={openDM} disabled>
-        {isCreatingDM ? 'Creating room...' : 'Message'}
-      </Button>
+      {isJoined && (
+        <Button onClick={() => {}} variant="secondary">
+          Open
+        </Button>
+      )}
+      {!isJoined && (
+        <Button onClick={() => {}} variant="primary">
+          Join
+        </Button>
+      )}
     </>
   );
 }
 RoomFooter.propTypes = {
+  isSpace: PropTypes.bool.isRequired,
   roomId: PropTypes.string.isRequired,
+  room: PropTypes.object.isRequired,
+  publicData: PropTypes.object.isRequire,
   onRequestClose: PropTypes.func.isRequired,
 };
 
@@ -273,7 +288,13 @@ function RoomViewer() {
 
             <div className="col-md-9 buttons-list">
               <div className="float-end">
-                <RoomFooter roomId={roomId} onRequestClose={closeDialog} />
+                <RoomFooter
+                  publicData={publicData}
+                  roomId={roomId}
+                  room={room}
+                  isSpace={isSpace}
+                  onRequestClose={closeDialog}
+                />
               </div>
             </div>
           </div>
@@ -286,6 +307,33 @@ function RoomViewer() {
               <small ref={userNameRef} className="text-gray emoji-size-fix username">
                 <span className="button">{twemojifyReact(originalRoomId)}</span>
               </small>
+
+              {publicData &&
+              (publicData.topic === 'string' ||
+                typeof publicData.canonical_alias === 'string' ||
+                publicData.room_id ||
+                typeof publicData.num_joined_members !== 'undefined') ? (
+                <>
+                  {typeof publicData.topic === 'string' && publicData.topic.length > 0 ? (
+                    <>
+                      <hr />
+                      <div className="text-gray text-uppercase fw-bold very-small mb-2">About</div>
+                      <p className="card-text p-y-1 text-freedom text-size-box very-small emoji-size-fix">
+                        {twemojifyReact(publicData.topic, undefined, true)}
+                      </p>
+                    </>
+                  ) : null}
+
+                  <p className="card-text p-y-1 very-small text-gray">
+                    {typeof publicData.canonical_alias === 'string'
+                      ? publicData.canonical_alias
+                      : publicData.room_id}
+                    {publicData.num_joined_members === null
+                      ? ''
+                      : ` • ${publicData.num_joined_members} members`}
+                  </p>
+                </>
+              ) : null}
             </div>
           </div>
         </div>
