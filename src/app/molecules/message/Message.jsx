@@ -666,8 +666,8 @@ function genReactionMsg(userIds, reaction, shortcode, customEmojiUrl) {
     }
   }
   return (
-    <div className="row small">
-      <div className="col-3">
+    <>
+      <div className="img">
         <center>
           {customEmojiUrl ? (
             <img
@@ -681,7 +681,7 @@ function genReactionMsg(userIds, reaction, shortcode, customEmojiUrl) {
           )}
         </center>
       </div>
-      <div className="col-9">
+      <div className="info">
         {usersReaction.map((userId, index) => (
           <React.Fragment key={userId}>
             <span className="emoji-size-fix-2">{twemojifyReact(getUsername(userId))}</span>
@@ -704,7 +704,7 @@ function genReactionMsg(userIds, reaction, shortcode, customEmojiUrl) {
           {twemojifyReact(shortcode ? `:${shortcode}:` : reaction, { className: 'react-emoji' })}
         </span>
       </div>
-    </div>
+    </>
   );
 }
 

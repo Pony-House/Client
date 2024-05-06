@@ -344,3 +344,15 @@ em-emoji-picker {
 .msg__reaction-tooltip .tooltip-inner {
   min-width: 325px;
 }
+
+.msg__reaction-tooltip .tooltip-inner {
+  small {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    img {
+      height: 52px !important;
+      margin-right: 7px;
+    }
+  }
+}
