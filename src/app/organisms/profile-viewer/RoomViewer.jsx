@@ -291,7 +291,6 @@ function RoomViewer() {
     if (room) {
       const currentState = getCurrentState(room);
       profileData.topic = currentState.getStateEvents('m.room.topic')[0]?.getContent().topic;
-      profileData.alias = originalRoomId;
     }
   } else if (room) {
     const currentState = getCurrentState(room);
