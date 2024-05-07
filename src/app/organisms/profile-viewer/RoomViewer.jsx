@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
+import { setLoadingPage } from '@src/app/templates/client/Loading';
 import { twemojifyReact } from '../../../util/twemojify';
 import imageViewer from '../../../util/imageViewer';
 
@@ -56,6 +57,13 @@ function RoomFooter({ roomId, publicData, onRequestClose }) {
     onRequestClose();
   }
 
+  async function joinRoom() {
+    setLoadingPage('Joining room...');
+    await roomActions.join(roomId, false);
+    setLoadingPage(false);
+    onRequestClose();
+  }
+
   return roomId ? (
     <>
       {isJoined && (
@@ -64,7 +72,7 @@ function RoomFooter({ roomId, publicData, onRequestClose }) {
         </Button>
       )}
       {!isJoined && (
-        <Button onClick={() => {}} variant="primary" disabled>
+        <Button onClick={joinRoom} variant="primary" disabled>
           Join
         </Button>
       )}
