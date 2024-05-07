@@ -37,7 +37,7 @@ import { mediaFix } from '../../molecules/media/mediaFix';
 import RoomUpload from '../../molecules/room-upload-button/RoomUpload';
 
 // Variables
-const CMD_REGEX = /(^\/|:|@)(\S*)$/;
+const CMD_REGEX = /(^\/|:|@|#)(\S*)$/;
 let isTyping = false;
 let isCmdActivated = false;
 let cmdCursorPos = null;

@@ -1,4 +1,6 @@
 import EventEmitter from 'events';
+import clone from 'clone';
+
 import appDispatcher from '../dispatcher';
 import cons from './cons';
 import { updateEmojiListData } from '../action/navigation';
@@ -235,6 +237,10 @@ class RoomList extends EventEmitter {
   getRoomAliasId(roomAlias) {
     if (typeof this.roomAliasesId[roomAlias] === 'string') return this.roomAliasesId[roomAlias];
     return null;
+  }
+
+  getAllRoomAliasesId() {
+    return clone(this.roomAliasesId);
   }
 
   _populateRooms() {

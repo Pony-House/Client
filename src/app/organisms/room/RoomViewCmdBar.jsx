@@ -112,7 +112,7 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
     });
   }
 
-  function renderNameSuggestion(namePrefix, members) {
+  function renderUserSuggestion(namePrefix, members) {
     const cmdDOM = $('.cmd-bar');
     cmdDOM.removeClass('active');
 
@@ -135,10 +135,34 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
     });
   }
 
+  function renderRoomSuggestion(namePrefix, rooms) {
+    const cmdDOM = $('.cmd-bar');
+    cmdDOM.removeClass('active');
+
+    return rooms.map((room) => {
+      cmdDOM.addClass('active');
+
+      return (
+        <CmdItem
+          key={room.roomId}
+          onClick={() => {
+            fireCmd({
+              prefix: namePrefix,
+              result: room,
+            });
+          }}
+        >
+          <Text variant="b2">{twemojifyReact(room.name)}</Text>
+        </CmdItem>
+      );
+    });
+  }
+
   const cmd = {
     '/': (cmds) => renderCmdSuggestions(prefix, cmds),
     ':': (emos) => renderEmojiSuggestion(prefix, emos),
-    '@': (members) => renderNameSuggestion(prefix, members),
+    '@': (members) => renderUserSuggestion(prefix, members),
+    '#': (rooms) => renderRoomSuggestion(prefix, rooms),
   };
   return cmd[prefix]?.(suggestions);
 }
@@ -236,6 +260,15 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent, refcmdInput }) {
         const endIndex = members.length > 20 ? 20 : members.length;
         setCmd({ prefix, suggestions: members.slice(0, endIndex) });
       },
+      '#': () => {
+        const aliasesId = Object.keys(initMatrix.roomList.getAllRoomAliasesId()).map((roomId) => ({
+          name: roomId,
+          roomId: roomId.slice(1),
+        }));
+        asyncSearch.setup(aliasesId, { keys: ['roomId'], limit: 20 });
+        const endIndex = aliasesId.length > 20 ? 20 : aliasesId.length;
+        setCmd({ prefix, suggestions: aliasesId.slice(0, endIndex) });
+      },
     };
     setupSearch[prefix]?.();
   }
@@ -277,6 +310,12 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent, refcmdInput }) {
     if (myCmd.prefix === '@') {
       viewEvent.emit('cmd_fired', {
         replace: `@${myCmd.result.userId}`,
+      });
+    }
+
+    if (myCmd.prefix === '#') {
+      viewEvent.emit('cmd_fired', {
+        replace: `#${myCmd.result.roomId}`,
       });
     }
 
