@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { objType } from 'for-promise/utils/lib.mjs';
 
@@ -24,8 +24,7 @@ import copyText from './copyText';
 import tinyAPI from '../../../util/mods';
 
 function RoomFooter({ roomId, publicData, onRequestClose }) {
-  const [isCreatingDM, setIsCreatingDM] = useState(false);
-
+  const [, forceUpdate] = useReducer((count) => count + 1, 0);
   const mx = initMatrix.matrixClient;
 
   const onCreated = (dmRoomId) => {
@@ -58,10 +57,11 @@ function RoomFooter({ roomId, publicData, onRequestClose }) {
   }
 
   async function joinRoom() {
+    onRequestClose();
     setLoadingPage('Joining room...');
     await roomActions.join(roomId, false);
     setLoadingPage(false);
-    onRequestClose();
+    forceUpdate();
   }
 
   return roomId ? (
@@ -72,7 +72,7 @@ function RoomFooter({ roomId, publicData, onRequestClose }) {
         </Button>
       )}
       {!isJoined && (
-        <Button onClick={joinRoom} variant="primary" disabled>
+        <Button onClick={joinRoom} variant="primary">
           Join
         </Button>
       )}
