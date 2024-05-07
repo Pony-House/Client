@@ -232,6 +232,14 @@ if (!gotTheLock) {
   app.on('ready', () => {
     if (!appReady) {
       appReady = true;
+      // Show app
+      const showApp = () => {
+        if (appStarted) {
+          if (win) win.show();
+          appShow.change(true);
+        }
+      };
+
       // Create Tray
       const tray = new Tray(icon);
       const contextMenu = Menu.buildFromTemplate([
@@ -243,12 +251,7 @@ if (!gotTheLock) {
         { type: 'separator' },
         {
           label: `Open ${title}`,
-          click: () => {
-            if (appStarted) {
-              if (win) win.show();
-              appShow.change(true);
-            }
-          },
+          click: showApp,
         },
         {
           label: `Check for Updates`,
@@ -292,17 +295,8 @@ if (!gotTheLock) {
       tray.setTitle(title);
       tray.setContextMenu(contextMenu);
 
-      tray.on('double-click', () => {
-        if (appStarted) {
-          if (!appShow.enabled) {
-            if (win) win.show();
-            appShow.change(true);
-          } else {
-            if (win) win.hide();
-            appShow.change(false);
-          }
-        }
-      });
+      if (process.platform === 'linux') tray.on('click', showApp);
+      else tray.on('double-click', showApp);
 
       ipcMain.on('change-tray-icon', (event, img) => {
         try {
