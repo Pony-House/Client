@@ -299,7 +299,7 @@ function RoomAliases({ roomId }) {
           />
           <div className="ms-3">
             {alias}
-            {isMain && <span>Main</span>}
+            {isMain && <span className="ms-1 badge bg-secondary">Main</span>}
           </div>
         </div>
         {isActive && renderAliasBtns(alias)}
