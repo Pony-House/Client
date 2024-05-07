@@ -7,3 +7,4 @@
 - Reactions CSS fix.
 - alert() css updated.
 - Room mention support added.
+- Notification issue fixed.

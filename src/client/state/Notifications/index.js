@@ -605,6 +605,12 @@ class Notifications extends EventEmitter {
             stopNotification = true;
           }
 
+          // Nothing
+          if (total < 1 && highlight < 1) {
+            // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
+            stopNotification = true;
+          }
+
           // Continue
           if (!stopNotification) {
             // Set Notification
