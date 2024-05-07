@@ -5,3 +5,4 @@
 - Keywords chat support removed.
 - LinkifyHtml issue fixed.
 - Reactions CSS fix.
+- alert() css updated.

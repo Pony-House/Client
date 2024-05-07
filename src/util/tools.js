@@ -296,7 +296,7 @@ export function btModal(data) {
 global.alert = (text = '', title = 'App Alert') =>
   btModal({
     id: 'browser-alert',
-    dialog: 'modal-dialog-centered modal-dialog-scrollable',
+    dialog: 'modal-lg modal-dialog-centered modal-dialog-scrollable',
     bodyClass: 'small text-freedom noselect p-4',
     title,
     body: twemojify(text),

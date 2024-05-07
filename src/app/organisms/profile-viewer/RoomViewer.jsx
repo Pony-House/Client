@@ -9,7 +9,7 @@ import imageViewer from '../../../util/imageViewer';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
-import { selectRoom, selectRoomMode } from '../../../client/action/navigation';
+import { selectRoom, selectRoomMode, selectTab } from '../../../client/action/navigation';
 import * as roomActions from '../../../client/action/room';
 
 import { getCurrentState, hasDMWith, hasDevices } from '../../../util/matrixUtil';
@@ -22,7 +22,7 @@ import Dialog from '../../molecules/dialog/Dialog';
 import copyText from './copyText';
 import tinyAPI from '../../../util/mods';
 
-function RoomFooter({ roomId, publicData, isSpace, room, onRequestClose }) {
+function RoomFooter({ roomId, publicData, onRequestClose }) {
   const [isCreatingDM, setIsCreatingDM] = useState(false);
 
   const mx = initMatrix.matrixClient;
@@ -42,39 +42,24 @@ function RoomFooter({ roomId, publicData, isSpace, room, onRequestClose }) {
     };
   }, []);
 
-  const openDM = async () => {
-    // Check and open if room already have a DM with roomId.
-    const dmRoomId = hasDMWith(roomId);
-    if (dmRoomId) {
-      selectRoomMode('room');
-      selectRoom(dmRoomId);
-      onRequestClose();
-      return;
-    }
-
-    // Create new DM
-    try {
-      setIsCreatingDM(true);
-      await roomActions.createDM(roomId, await hasDevices(roomId));
-    } catch {
-      setIsCreatingDM(false);
-    }
-  };
-
-  // disabled={isCreatingDM}
-  /*
-        <Button className="me-2" variant="primary" onClick={openDM} disabled>
-        {isCreatingDM ? 'Creating room...' : 'Message'}
-      </Button>
-      */
   const isJoined = roomId
     ? initMatrix.matrixClient.getRoom(roomId)?.getMyMembership() === 'join'
     : null;
 
+  function handleViewRoom() {
+    const room = initMatrix.matrixClient.getRoom(roomId);
+    if (room.isSpaceRoom()) selectTab(roomId, true);
+    else {
+      selectRoomMode('room');
+      selectRoom(roomId);
+    }
+    onRequestClose();
+  }
+
   return roomId ? (
     <>
       {isJoined && (
-        <Button onClick={() => {}} variant="secondary" disabled>
+        <Button onClick={handleViewRoom} variant="secondary">
           Open
         </Button>
       )}
