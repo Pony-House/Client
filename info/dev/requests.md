@@ -13,6 +13,8 @@ Buscador de emojis de custom status fica gelado.
 
 Ver a lista de quem reagiu
 
+Quando o people tabs é atualizado, o custom status some
+
 ==============================================================
 
 Ver qual Friend ninkcname está sendo usado.
