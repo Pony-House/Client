@@ -1227,10 +1227,28 @@
   resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.8.10.tgz#a1337ca426aa61cef9fe15b5b28e340a72f6fa99"
   integrity sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==
 
-"@xmtp/proto@3.45.0":
-  version "3.45.0"
-  resolved "https://registry.yarnpkg.com/@xmtp/proto/-/proto-3.45.0.tgz#2aaca656a6da85a05ae75f72340ce1ef5e4fb2ec"
-  integrity sha512-6d/UE/vqi1erpL+z/HSGvFOnJt+y7RE23g6SUUUB7tx75VAi5A0/uLwzPr/eyVkiHZGqlbktq8Rzco+HgTyTAw==
+"@xmtp/consent-proof-signature@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@xmtp/consent-proof-signature/-/consent-proof-signature-0.1.2.tgz#c40eca3a086f7616b7f85e3efe5b35c34d2b24ad"
+  integrity sha512-TSd4bbfl5mOR4zxvcBnSyXSZDBg8xbR/7m79/kPtcGD4RujdS03lCJTMVg6aXaUsu7QnqoQgXE1G25KrAB6UCQ==
+  dependencies:
+    "@xmtp/proto" "3.56.0"
+    long "^5.2.3"
+
+"@xmtp/proto@3.54.0":
+  version "3.54.0"
+  resolved "https://registry.yarnpkg.com/@xmtp/proto/-/proto-3.54.0.tgz#1b6be9fa2268a51b730bf484af3bf0ebc2621505"
+  integrity sha512-X0jDRR19/tH0qRB8mM/H/vBueQAK22VZF4QUnDN7TgnbNaOYL5DvSmPfXFH+xzeGKQ5S0zgwc+qFJbI4xoKNHw==
+  dependencies:
+    long "^5.2.0"
+    protobufjs "^7.0.0"
+    rxjs "^7.8.0"
+    undici "^5.8.1"
+
+"@xmtp/proto@3.56.0":
+  version "3.56.0"
+  resolved "https://registry.yarnpkg.com/@xmtp/proto/-/proto-3.56.0.tgz#48dfbfed6f97e1d14775a10caf274f23238f0594"
+  integrity sha512-zW8/s7x9je0keYjJpu/c5zmYK5wE14MxcDWLkxzMwRmrajwdy69BNN0NgVJ1uBzMUqGTjnGQJANDev8lpa58qQ==
   dependencies:
     long "^5.2.0"
     protobufjs "^7.0.0"
@@ -1242,13 +1260,14 @@
   resolved "https://registry.yarnpkg.com/@xmtp/user-preferences-bindings-wasm/-/user-preferences-bindings-wasm-0.3.6.tgz#4ca58dca940574483caa8cbd4d9c609577b1e0f1"
   integrity sha512-ANi6ikrO6YBaK978sMuEEnpREvFQQnMVaNdlviaLzmc07u4Of4s/VLNnavl4qTb4F4cvwSiBWou0wSYIE5SWYg==
 
-"@xmtp/xmtp-js@11.5.1":
-  version "11.5.1"
-  resolved "https://registry.yarnpkg.com/@xmtp/xmtp-js/-/xmtp-js-11.5.1.tgz#ec21c6bef2308bb666f3326ea2226163a960d1eb"
-  integrity sha512-kP4y7MZoUYgBqVcDsJNBAW5LYUSo+5sIwTNGCiMsbIaQUk4Znm+D2JXm1dgGSlFFuHjWY08Wz/B9C+fVHoO5OA==
+"@xmtp/xmtp-js@11.6.1":
+  version "11.6.1"
+  resolved "https://registry.yarnpkg.com/@xmtp/xmtp-js/-/xmtp-js-11.6.1.tgz#00fe344969b736f1fac59c8d0d2a8a078a61274b"
+  integrity sha512-tXb7PYSmWx8Pd1i6NcSFgpYb/HtuOAPVmVaesD7PUCARuJVMDrieDFCRu5WOlrjbaYnvq9EuIwYBzHZQK/XpJQ==
   dependencies:
     "@noble/secp256k1" "1.7.1"
-    "@xmtp/proto" "3.45.0"
+    "@xmtp/consent-proof-signature" "^0.1.2"
+    "@xmtp/proto" "3.54.0"
     "@xmtp/user-preferences-bindings-wasm" "^0.3.6"
     async-mutex "^0.5.0"
     elliptic "^6.5.4"
