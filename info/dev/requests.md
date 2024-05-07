@@ -2,8 +2,6 @@ Criar emoji list com o mesmo nome da crash
 
 Usar a mesma lógica de carregar emojis para deixar menos lento o carregamento de imagens do chatbox.
 
-Ao ver a reação, mostrar uma preview maior
-
 https://www.npmjs.com/package/jimp
 
 https://matrix-org.github.io/matrix-js-sdk/classes/matrix.MatrixClient.html#slidingSync
