@@ -80,16 +80,23 @@ function useValidate(hsString) {
 function getAliases(roomId) {
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
+  if (room) {
+    const main = room.getCanonicalAlias();
+    const published = room.getAltAliases();
+    if (main && !published.includes(main)) published.splice(0, 0, main);
 
-  const main = room.getCanonicalAlias();
-  const published = room.getAltAliases();
-  if (main && !published.includes(main)) published.splice(0, 0, main);
-
-  return {
-    main,
-    published: [...new Set(published)],
-    local: [],
-  };
+    return {
+      main,
+      published: [...new Set(published)],
+      local: [],
+    };
+  } else {
+    return {
+      main: null,
+      published: [],
+      local: [],
+    };
+  }
 }
 
 function RoomAliases({ roomId }) {
