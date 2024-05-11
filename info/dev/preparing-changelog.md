@@ -1,1 +1,2 @@
 - When you click on the tray, it will show the window now.
+- Alias glitch fixed.
