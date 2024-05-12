@@ -11,7 +11,7 @@ import {
   selectRoomMode,
 } from '../../../client/action/navigation';
 import { getEventCords } from '../../../util/common';
-import { getDataList, addToDataFolder } from '../../../util/selectedRoom';
+import { getDataList, addToDataFolder, getSelectRoom } from '../../../util/selectedRoom';
 
 import RawIcon from '../../atoms/system-icons/RawIcon';
 import IconButton from '../../atoms/button/IconButton';
@@ -134,7 +134,11 @@ function RoomsCategory({
 
   useEffect(() => {
     const forceUpdateRoomList = (value) => {
-      if (!isSpace) setOrderHomeByActivity(value);
+      const roomId = getSelectRoom();
+      if (roomId) {
+        const isSpace = spaces.has(roomId);
+        if (!isSpace) setOrderHomeByActivity(value);
+      }
     };
     matrixAppearance.on('orderHomeByActivity', forceUpdateRoomList);
     return () => {
