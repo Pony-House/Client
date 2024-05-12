@@ -15,6 +15,8 @@ Ver a lista de quem reagiu
 
 Quando o people tabs é atualizado, o custom status some
 
+Método extra de obter lista de notificações sem esperar pelo sincronizador.
+
 ==============================================================
 
 alright, btw there's a small visual bug i just noticed, it's not breaking anything really, but my laptop has a touchpad with scrolling velocity (so when u scroll and release from the touch pad the scrolling maintains a velocity that slows down over a short period of time), when scrolling down while already at the bottom of the chat it makes the chat kind of.....shudder while the touchpad is still sending those scroll down commands
