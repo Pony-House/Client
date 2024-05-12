@@ -185,6 +185,7 @@ class InitMatrix extends EventEmitter {
           this.notifications = new Notifications(this.roomList);
           this.voiceChat = new MatrixVoiceChat(this.matrixClient);
 
+          this.matrixClient.setMaxListeners(Infinity);
           this.accountData.setMaxListeners(Infinity);
           this.roomList.setMaxListeners(Infinity);
           this.roomsInput.setMaxListeners(Infinity);

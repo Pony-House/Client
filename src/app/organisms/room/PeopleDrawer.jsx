@@ -39,6 +39,7 @@ function simplyfiMembers(members) {
 }
 
 const asyncSearch = new AsyncSearch();
+asyncSearch.setMaxListeners(Infinity);
 function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
   const PER_PAGE_MEMBER = 50;
   const mx = initMatrix.matrixClient;

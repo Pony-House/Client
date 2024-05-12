@@ -207,6 +207,7 @@ export function blobToBase64(blob) {
 
 // Module
 const blobUrlManager = new BlobUrlManager();
+blobUrlManager.setMaxListeners(Infinity);
 export default blobUrlManager;
 
 if (__ENV_APP__.MODE === 'development') {

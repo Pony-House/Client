@@ -71,6 +71,7 @@ function useMemberOfMembership(roomId, membership) {
 function useSearchMembers(members) {
   const [searchMembers, setSearchMembers] = useState(null);
   const [asyncSearch] = useState(new AsyncSearch());
+  if (asyncSearch) asyncSearch.setMaxListeners(Infinity);
 
   const reSearch = useCallback(() => {
     if (searchMembers) {

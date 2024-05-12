@@ -168,6 +168,7 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
 }
 
 const asyncSearch = new AsyncSearch();
+asyncSearch.setMaxListeners(Infinity);
 let cmdPrefix;
 let cmdOption;
 function RoomViewCmdBar({ roomId, roomTimeline, viewEvent, refcmdInput }) {

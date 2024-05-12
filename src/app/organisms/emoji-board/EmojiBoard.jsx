@@ -110,6 +110,7 @@ EmojiGroup.propTypes = {
 
 // Search Emoji
 const asyncSearch = new AsyncSearch();
+asyncSearch.setMaxListeners(Infinity);
 asyncSearch.setup(emojis, {
   keys: ['shortcode', 'shortcodes', 'label', 'tags'],
   isContain: true,
