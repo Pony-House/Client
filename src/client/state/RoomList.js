@@ -217,10 +217,12 @@ class RoomList extends EventEmitter {
   }
 
   addRoomAliases(roomId, room) {
-    this.roomAliases[roomId] = room.getAltAliases();
-    if (Array.isArray(this.roomAliases[roomId])) {
-      for (const item in this.roomAliases[roomId]) {
-        this.roomAliasesId[this.roomAliases[roomId][item]] = roomId;
+    if (room) {
+      this.roomAliases[roomId] = room.getAltAliases();
+      if (Array.isArray(this.roomAliases[roomId])) {
+        for (const item in this.roomAliases[roomId]) {
+          this.roomAliasesId[this.roomAliases[roomId][item]] = roomId;
+        }
       }
     }
   }
