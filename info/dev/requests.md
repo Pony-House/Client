@@ -21,6 +21,12 @@ alright, btw there's a small visual bug i just noticed, it's not breaking anythi
 
 ==============================================================
 
+also i wonder if u could put somewhere in the settings a count of the number of rooms and spaces ur "subscribed" to?
+
+that could be useful for future diagnostics
+
+==============================================================
+
 Ver qual Friend ninkcname está sendo usado.
 
 Ver em quais rooms o usuário está (Pelo perfil)
