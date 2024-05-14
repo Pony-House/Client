@@ -152,9 +152,9 @@ class Navigation extends EventEmitter {
     else urlParams.delete('room_id', undefined, false);
 
     // Event Id
-    if (typeof eventId === 'string' && eventId.length > 0)
+    /* if (typeof eventId === 'string' && eventId.length > 0)
       urlParams.set('event_id', eventId, false);
-    else urlParams.delete('event_id', undefined, false);
+    else urlParams.delete('event_id', undefined, false); */
 
     // Thread Id
     if (typeof threadId === 'string' && threadId.length > 0)
