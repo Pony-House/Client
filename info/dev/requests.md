@@ -17,7 +17,7 @@ Quando o people tabs é atualizado, o custom status some
 
 Método extra de obter lista de notificações sem esperar pelo sincronizador.
 
-Adicionar mentions na parte de super global notifications
+css de avatar no topo na lista de rooms/dms
 
 urlParams.set('event_id', eventId, false);
 

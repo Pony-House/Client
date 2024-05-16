@@ -96,7 +96,7 @@ class Postie {
     }
     const subscribers = this._getSubscribers(topic);
     address.forEach((addr) => {
-      sendPost(subscribers.get(addr[0], addr[1]), addr[0], addr[1]);
+      sendPost(subscribers.get(`${addr[0]}${addr[1] ? `:${addr[1]}` : ''}`), addr[0], addr[1]);
     });
   }
 }
