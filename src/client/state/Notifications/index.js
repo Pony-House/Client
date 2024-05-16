@@ -212,7 +212,7 @@ class Notifications extends EventEmitter {
     addNoti(!threadId ? roomId : `${roomId}:${threadId}`, roomId, threadId, addT, addH);
     const allParentSpaces = this.roomList.getAllParentSpaces(roomId);
     allParentSpaces.forEach((spaceId) => {
-      addNoti(spaceId, roomId, threadId, addT, addH, roomId);
+      addNoti(spaceId, spaceId, threadId, addT, addH, roomId);
     });
 
     checkerFavIcon();
