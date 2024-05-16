@@ -18,7 +18,7 @@ function DrawerBreadcrumb({ spaceId = null }) {
   const mx = initMatrix.matrixClient;
   const spacePath = navigation.selectedSpacePath;
 
-  function onNotiChanged(roomId, total, prevTotal) {
+  function onNotiChanged(roomId, threadId, total, prevTotal) {
     if (total === prevTotal) return;
     if (navigation.selectedSpacePath.includes(roomId)) {
       forceUpdate({});

@@ -157,9 +157,9 @@ class Navigation extends EventEmitter {
     else urlParams.delete('event_id', undefined, false); */
 
     // Thread Id
-    if (typeof threadId === 'string' && threadId.length > 0)
+    /* if (typeof threadId === 'string' && threadId.length > 0)
       urlParams.set('thread_id', threadId, false);
-    else urlParams.delete('thread_id', undefined, false);
+    else urlParams.delete('thread_id', undefined, false); */
 
     // Refresh Url Params
     urlParams.refreshState();

@@ -13,7 +13,7 @@ export function useNotificationUpdate() {
   const { notifications } = initMatrix;
   const [, forceUpdate] = useState({});
   useEffect(() => {
-    function onNotificationChanged(roomId, total, prevTotal) {
+    function onNotificationChanged(roomId, threadId, total, prevTotal) {
       if (total === prevTotal) return;
       forceUpdate({});
     }

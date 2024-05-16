@@ -25,6 +25,7 @@ import { getDataList } from '../../../util/selectedRoom';
 // Selector Function
 function Selector({
   roomId,
+  threadId,
   isDM = true,
   drawerPostie,
   onClick,
@@ -100,8 +101,8 @@ function Selector({
   // Effects
   useEffect(() => {
     const threadsListUpdate = () => setLastThreads(threadsList.getActives());
-    const unSub1 = drawerPostie.subscribe('selector-change', roomId, forceUpdate);
-    const unSub2 = drawerPostie.subscribe('unread-change', roomId, forceUpdate);
+    const unSub1 = drawerPostie.subscribe('selector-change', roomId, threadId, forceUpdate);
+    const unSub2 = drawerPostie.subscribe('unread-change', roomId, threadId, forceUpdate);
     threadsList.on('updatedActiveThreads', threadsListUpdate);
     return () => {
       unSub1();
@@ -116,7 +117,7 @@ function Selector({
     return null;
   }
 
-  const openOptions = (e, threadId) => {
+  const openOptions = (e, tId) => {
     // Get Cords
     const cords = getEventCords(e, '.room-selector');
 
@@ -132,7 +133,7 @@ function Selector({
       room.isSpaceRoom()
         ? (closeMenu) => <SpaceOptions roomId={roomId} afterOptionSelect={closeMenu} />
         : (closeMenu) => (
-            <RoomOptions threadId={threadId} roomId={roomId} afterOptionSelect={closeMenu} />
+            <RoomOptions threadId={tId} roomId={roomId} afterOptionSelect={closeMenu} />
           ),
     );
   };
@@ -215,6 +216,7 @@ Selector.propTypes = {
   notSpace: PropTypes.bool,
   isProfile: PropTypes.bool,
   roomId: PropTypes.string.isRequired,
+  threadId: PropTypes.string,
   isDM: PropTypes.bool,
 
   roomObject: PropTypes.object,

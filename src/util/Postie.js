@@ -11,11 +11,13 @@ class Postie {
     return subscribers;
   }
 
-  _getInboxes(topic, address) {
+  _getInboxes(topic, address, tAddress) {
     const subscribers = this._getSubscribers(topic);
-    const inboxes = subscribers.get(address);
+    const inboxes = subscribers.get(`${address}${tAddress ? `:${tAddress}` : ''}`);
     if (inboxes === undefined) {
-      throw new Error(`Inbox on topic:"${topic}" at address:"${address}" doesn't exist.`);
+      throw new Error(
+        `Inbox on topic:"${topic}" at address:"${address}" "${tAddress}" doesn't exist.`,
+      );
     }
     return inboxes;
   }
@@ -24,21 +26,22 @@ class Postie {
     return this._topics.get(topic) !== undefined;
   }
 
-  hasSubscriber(topic, address) {
+  hasSubscriber(topic, address, tAddress) {
     const subscribers = this._getSubscribers(topic);
-    return subscribers.get(address) !== undefined;
+    return subscribers.get(`${address}${tAddress ? `:${tAddress}` : ''}`) !== undefined;
   }
 
-  hasTopicAndSubscriber(topic, address) {
-    return this.hasTopic(topic) ? this.hasSubscriber(topic, address) : false;
+  hasTopicAndSubscriber(topic, address, tAddress) {
+    return this.hasTopic(topic) ? this.hasSubscriber(topic, address, tAddress) : false;
   }
 
   /**
    * @param {string} topic - Subscription topic
    * @param {string} address - Address of subscriber
+   * @param {string} tAddress - Thread Address of subscriber
    * @param {function} inbox - The inbox function to receive post data
    */
-  subscribe(topic, address, inbox) {
+  subscribe(topic, address, tAddress, inbox) {
     if (typeof inbox !== 'function') {
       throw new TypeError('Inbox  must be a function.');
     }
@@ -48,51 +51,52 @@ class Postie {
     }
     const subscribers = this._topics.get(topic);
 
-    const inboxes = subscribers.get(address) ?? new Set();
+    const inboxes = subscribers.get(`${address}${tAddress ? `:${tAddress}` : ''}`) ?? new Set();
     inboxes.add(inbox);
-    subscribers.set(address, inboxes);
+    subscribers.set(`${address}${tAddress ? `:${tAddress}` : ''}`, inboxes);
 
-    return () => this.unsubscribe(topic, address, inbox);
+    return () => this.unsubscribe(topic, address, tAddress, inbox);
   }
 
-  unsubscribe(topic, address, inbox) {
+  unsubscribe(topic, address, tAddress, inbox) {
     const subscribers = this._getSubscribers(topic);
     if (!subscribers) throw new Error(`Unable to unsubscribe. Topic: "${topic}" doesn't exist.`);
 
-    const inboxes = subscribers.get(address);
+    const inboxes = subscribers.get(`${address}${tAddress ? `:${tAddress}` : ''}`);
     if (!inboxes)
       throw new Error(
-        `Unable to unsubscribe. Subscriber on topic:"${topic}" at address:"${address}" doesn't exist`,
+        `Unable to unsubscribe. Subscriber on topic:"${topic}" at address:"${address}" "${tAddress}" doesn't exist`,
       );
 
     if (!inboxes.delete(inbox)) throw new Error("Unable to unsubscribe. Inbox doesn't exist");
 
-    if (inboxes.size === 0) subscribers.delete(address);
+    if (inboxes.size === 0) subscribers.delete(`${address}${tAddress ? `:${tAddress}` : ''}`);
     if (subscribers.size === 0) this._topics.delete(topic);
   }
 
   /**
    * @param {string} topic - Subscription topic
    * @param {string|string[]} address - Address of subscriber
+   * @param {string|string[]} tAddress - Thread Address of subscriber
    * @param {*} data - Data to deliver to subscriber
    */
-  post(topic, address, data) {
-    const sendPost = (inboxes, addr) => {
+  post(topic, address, tAddress, data) {
+    const sendPost = (inboxes, addr, tAddr) => {
       if (inboxes === undefined) {
         throw new Error(
-          `Unable to post on topic:"${topic}" at address:"${addr}". Subscriber doesn't exist.`,
+          `Unable to post on topic:"${topic}" at address:"${addr}" "${tAddr}". Subscriber doesn't exist.`,
         );
       }
       inboxes.forEach((inbox) => inbox(data));
     };
 
     if (typeof address === 'string') {
-      sendPost(this._getInboxes(topic, address), address);
+      sendPost(this._getInboxes(topic, address, tAddress), address, tAddress);
       return;
     }
     const subscribers = this._getSubscribers(topic);
     address.forEach((addr) => {
-      sendPost(subscribers.get(addr), addr);
+      sendPost(subscribers.get(addr[0], addr[1]), addr[0], addr[1]);
     });
   }
 }

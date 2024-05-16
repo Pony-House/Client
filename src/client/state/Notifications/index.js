@@ -189,9 +189,9 @@ class Notifications extends EventEmitter {
   }
 
   _setNoti(roomId, threadId, total, highlight) {
-    const addNoti = (id, t, h, fromId) => {
+    const addNoti = (id, rid, tid, t, h, fromId) => {
       const prevTotal = this.roomIdToNoti.get(id)?.total ?? null;
-      const noti = this.getNoti(id);
+      const noti = this.getNoti(rid, tid);
 
       noti.total += t;
       noti.highlight += h;
@@ -201,7 +201,7 @@ class Notifications extends EventEmitter {
         noti.from.add(fromId);
       }
       this.roomIdToNoti.set(id, noti);
-      this.emit(cons.events.notifications.NOTI_CHANGED, id, noti.total, prevTotal);
+      this.emit(cons.events.notifications.NOTI_CHANGED, rid, tid, noti.total, prevTotal);
     };
 
     const noti = this.getNoti(roomId);
@@ -209,10 +209,10 @@ class Notifications extends EventEmitter {
     const addH = highlight - noti.highlight;
     if (addT < 0 || addH < 0) return;
 
-    addNoti(!threadId ? roomId : `${roomId}:${threadId}`, addT, addH);
+    addNoti(!threadId ? roomId : `${roomId}:${threadId}`, roomId, threadId, addT, addH);
     const allParentSpaces = this.roomList.getAllParentSpaces(roomId);
     allParentSpaces.forEach((spaceId) => {
-      addNoti(spaceId, addT, addH, roomId);
+      addNoti(spaceId, roomId, threadId, addT, addH, roomId);
     });
 
     checkerFavIcon();
@@ -238,11 +238,11 @@ class Notifications extends EventEmitter {
 
       if (noti.from === null || noti.from.size === 0) {
         this.roomIdToNoti.delete(id);
-        this.emit(cons.events.notifications.FULL_READ, id);
-        this.emit(cons.events.notifications.NOTI_CHANGED, id, null, prevTotal);
+        this.emit(cons.events.notifications.FULL_READ, roomId, threadId);
+        this.emit(cons.events.notifications.NOTI_CHANGED, roomId, threadId, null, prevTotal);
       } else {
         this.roomIdToNoti.set(id, noti);
-        this.emit(cons.events.notifications.NOTI_CHANGED, id, noti.total, prevTotal);
+        this.emit(cons.events.notifications.NOTI_CHANGED, roomId, threadId, noti.total, prevTotal);
       }
     };
 
@@ -605,12 +605,6 @@ class Notifications extends EventEmitter {
             stopNotification = true;
           }
 
-          // Nothing
-          if (total < 1 && highlight < 1) {
-            // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
-            stopNotification = true;
-          }
-
           // Continue
           if (!stopNotification) {
             // Set Notification
@@ -622,6 +616,12 @@ class Notifications extends EventEmitter {
             );
             if (mEvent.thread)
               this.emit(cons.events.notifications.THREAD_NOTIFICATION, mEvent.thread);
+          }
+
+          // Nothing
+          if (total < 1 && highlight < 1) {
+            // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
+            stopNotification = true;
           }
         }
       }

@@ -40,22 +40,25 @@ function Directs({ size }) {
   useEffect(() => {
     const selectorChanged = (
       selectedRoomId,
-      prevSelectedRoomId /* , eventId, selectedThreadId, prevThreadId */,
+      prevSelectedRoomId,
+      eventId,
+      selectedThreadId,
+      prevThreadId,
     ) => {
       if (!drawerPostie.hasTopic('selector-change')) return;
       const addresses = [];
-      if (drawerPostie.hasSubscriber('selector-change', selectedRoomId))
-        addresses.push(selectedRoomId);
-      if (drawerPostie.hasSubscriber('selector-change', prevSelectedRoomId))
-        addresses.push(prevSelectedRoomId);
+      if (drawerPostie.hasSubscriber('selector-change', selectedRoomId, selectedThreadId))
+        addresses.push([selectedRoomId, selectedThreadId]);
+      if (drawerPostie.hasSubscriber('selector-change', prevSelectedRoomId, prevThreadId))
+        addresses.push([prevSelectedRoomId, prevThreadId]);
       if (addresses.length === 0) return;
-      drawerPostie.post('selector-change', addresses, selectedRoomId);
+      drawerPostie.post('selector-change', addresses, selectedRoomId, selectedThreadId);
     };
 
-    const notiChanged = (roomId, total, prevTotal) => {
+    const notiChanged = (roomId, threadId, total, prevTotal) => {
       if (total === prevTotal) return;
-      if (drawerPostie.hasTopicAndSubscriber('unread-change', roomId)) {
-        drawerPostie.post('unread-change', roomId);
+      if (drawerPostie.hasTopicAndSubscriber('unread-change', roomId, threadId)) {
+        drawerPostie.post('unread-change', roomId, threadId);
       }
     };
 
