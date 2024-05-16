@@ -1121,9 +1121,10 @@ const MessageThreadSummary = React.memo(({ thread }) => {
   if (thread.length === 0) return null;
 
   const lastSender = lastReply?.sender;
+  const color = colorMXID(lastSender);
   const lastSenderAvatarSrc =
     lastSender?.getAvatarUrl(initMatrix.matrixClient.baseUrl, 36, 36, 'crop', true, false) ??
-    undefined;
+    avatarDefaultColor(color);
 
   function selectThread() {
     selectRoom(thread.roomId, undefined, thread.rootEvent?.getId());
