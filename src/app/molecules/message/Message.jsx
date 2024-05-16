@@ -10,6 +10,7 @@ import hljs from 'highlight.js';
 import * as linkify from 'linkifyjs';
 import forPromise from 'for-promise';
 
+import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 import cons from '@src/client/state/cons';
 import { isMobile } from '@src/util/libs/mobile';
 import { readImageUrl } from '@src/util/libs/mediaCache';
@@ -1121,10 +1122,13 @@ const MessageThreadSummary = React.memo(({ thread }) => {
   if (thread.length === 0) return null;
 
   const lastSender = lastReply?.sender;
-  const color = typeof lastSender === 'string' ? colorMXID(lastSender) : null;
+  const color =
+    lastSender && typeof lastSender?.name === 'string' ? colorMXID(lastSender?.name) : null;
   const lastSenderAvatarSrc =
     lastSender?.getAvatarUrl(initMatrix.matrixClient.baseUrl, 36, 36, 'crop', true, false) ??
-    avatarDefaultColor(color || 0);
+    typeof color
+      ? avatarDefaultColor(color)
+      : defaultAvatar(0);
 
   function selectThread() {
     selectRoom(thread.roomId, undefined, thread.rootEvent?.getId());
