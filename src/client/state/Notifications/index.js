@@ -568,12 +568,14 @@ class Notifications extends EventEmitter {
         if (lastTimelineEvent.getId() !== mEvent.getId()) {
           // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
           stopNotification = true;
+          console.log(`[matrix-noti] Event blocked by last id validator: ${mEvent.getId()}`);
         }
 
         // Sender check
         if (!stopNotification && mEvent.getSender() === this.matrixClient.getUserId()) {
           // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
           stopNotification = true;
+          console.log(`[matrix-noti] Event blocked by is same user: ${mEvent.getId()}`);
         }
 
         // Prepare values
@@ -603,6 +605,7 @@ class Notifications extends EventEmitter {
             );
             // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
             stopNotification = true;
+            console.log(`[matrix-noti] Event blocked by mute: ${mEvent.getId()}`);
           }
 
           // Continue
@@ -622,6 +625,7 @@ class Notifications extends EventEmitter {
           if (mEvent.thread && total < 1 && highlight < 1) {
             // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
             stopNotification = true;
+            console.log(`[matrix-noti] Event blocked by no counter: ${mEvent.getId()}`);
           }
         }
       }
