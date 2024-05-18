@@ -19,6 +19,8 @@ Método extra de obter lista de notificações sem esperar pelo sincronizador.
 
 css de avatar no topo na lista de rooms/dms
 
+Dots invadindo o contador no DM.
+
 urlParams.set('event_id', eventId, false);
 
 ==============================================================
