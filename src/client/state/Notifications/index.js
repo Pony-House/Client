@@ -619,7 +619,7 @@ class Notifications extends EventEmitter {
           }
 
           // Nothing
-          if (total < 1 && highlight < 1) {
+          if (mEvent.thread && total < 1 && highlight < 1) {
             // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
             stopNotification = true;
           }
