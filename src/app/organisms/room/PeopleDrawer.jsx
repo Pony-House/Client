@@ -45,6 +45,7 @@ function PeopleDrawer({
   isUserList,
   setIsUserList,
   isHoverSidebar = false,
+  sidebarTransition = false,
   isDrawer = true,
 }) {
   const PER_PAGE_MEMBER = 50;
@@ -190,18 +191,26 @@ function PeopleDrawer({
 
   const mList = searchedMembers !== null ? searchedMembers.data : memberList.slice(0, itemCount);
   tinyAPI.emit('roomSearchedMembers', mList, membership);
-  const showPeopleDrawer = !isDrawer && isHoverSidebar;
+  const showPeopleDrawer = !isDrawer && (isHoverSidebar || sidebarTransition);
 
   return (
     <>
       <div
-        className={`people-drawer${!isUserList ? ' people-drawer-banner' : ''}${showPeopleDrawer ? ' d-none' : ''}`}
-        onMouseEnter={() => {
-          $('body').addClass('people-drawer-hover');
-        }}
-        onMouseLeave={() => {
-          $('body').removeClass('people-drawer-hover');
-        }}
+        className={`people-drawer${!isUserList ? ' people-drawer-banner' : ''}${showPeopleDrawer ? ' d-hide-drawer' : ''}`}
+        onMouseEnter={
+          isHoverSidebar
+            ? () => {
+                if (isHoverSidebar) $('body').addClass('people-drawer-hover');
+              }
+            : null
+        }
+        onMouseLeave={
+          isHoverSidebar
+            ? () => {
+                if (isHoverSidebar) $('body').removeClass('people-drawer-hover');
+              }
+            : null
+        }
       >
         <Header>
           <ul className="navbar-nav mr-auto pb-1">
@@ -353,13 +362,21 @@ function PeopleDrawer({
         </div>
       </div>
       <div
-        className={`people-drawer-hidden${!showPeopleDrawer ? ' d-none' : ''}`}
-        onMouseEnter={() => {
-          $('body').addClass('navigation-wrapper-hover');
-        }}
-        onMouseLeave={() => {
-          $('body').removeClass('navigation-wrapper-hover');
-        }}
+        className={`people-drawer-hidden${!showPeopleDrawer && isHoverSidebar ? ' d-none' : ''}`}
+        onMouseEnter={
+          isHoverSidebar
+            ? () => {
+                if (isHoverSidebar) $('body').addClass('people-drawer-hover');
+              }
+            : null
+        }
+        onMouseLeave={
+          isHoverSidebar
+            ? () => {
+                if (isHoverSidebar) $('body').removeClass('people-drawer-hover');
+              }
+            : null
+        }
       >
         <div className="tiny-divider border-bg border-bottom" />
       </div>

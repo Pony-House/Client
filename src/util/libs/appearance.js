@@ -98,6 +98,11 @@ class MatrixAppearance extends EventEmitter {
           ? this.content.hoverSidebar
           : !!__ENV_APP__.HOVER_SIDEBAR;
 
+      this.content.sidebarTransition =
+        typeof this.content.sidebarTransition === 'boolean'
+          ? this.content.sidebarTransition
+          : !!__ENV_APP__.SIDEBAR_TRANSITION;
+
       this.content.sendFileBefore =
         typeof this.content.sendFileBefore === 'boolean' ? this.content.sendFileBefore : true;
 

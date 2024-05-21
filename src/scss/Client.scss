@@ -87,16 +87,21 @@ body:not(.disable-navigation-wrapper) {
     background-color: var(--bg-surface);
   }
 
-  .disable-navigation-wrapper {
+  .use-transition-sidebar {
+    .navigation-wrapper,
+    .people-drawer,
+    .people-drawer.d-hide-drawer {
+      transition: width 0.2s !important;
+    }
+  }
+
+  .disable-navigation-wrapper:not(.navigation-wrapper-hover) {
     #space-header,
     #profile-sidebar {
       display: none;
     }
     .navigation-wrapper {
       width: 80px;
-    }
-    .room-view .nav-sidebar-1 {
-      display: none !important;
     }
     &.theme-type-dark,
     &.theme-type-dark2,
@@ -107,16 +112,30 @@ body:not(.disable-navigation-wrapper) {
       }
     }
   }
-}
 
-.people-drawer-hidden {
-  width: 5px;
-  z-index: 999;
-  background: var(--bg-surface-gradient);
+  .disable-navigation-wrapper {
+    .room-view .nav-sidebar-1 {
+      display: none !important;
+    }
+  }
 
-  .tiny-divider {
-    background-color: var(--bg-surface);
-    height: 51px;
-    width: 100%;
+  .use-hover-sidebar {
+    .people-drawer-hidden {
+      width: 5px;
+      z-index: 999;
+      background: var(--bg-surface-gradient);
+
+      .tiny-divider {
+        background-color: var(--bg-surface);
+        height: 51px;
+        width: 100%;
+      }
+    }
+  }
+
+  body:not(.people-drawer-hover) {
+    .people-drawer.d-hide-drawer {
+      width: 0px !important;
+    }
   }
 }

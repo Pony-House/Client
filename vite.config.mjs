@@ -150,6 +150,7 @@ export default defineConfig(({ command, mode }) => {
     DISABLE_ENCRYPT_SETTINGS: !!(env.DISABLE_ENCRYPT_SETTINGS === true || env.DISABLE_ENCRYPT_SETTINGS === 'true'),
 
     HOVER_SIDEBAR: !!(env.HOVER_SIDEBAR === true || env.HOVER_SIDEBAR === 'true'),
+    SIDEBAR_TRANSITION: !!(env.SIDEBAR_TRANSITION === true || env.SIDEBAR_TRANSITION === 'true'),
 
     LOGIN: {
       DEFAULT_HOMESERVER: Number(env.DEFAULT_HOMESERVER),

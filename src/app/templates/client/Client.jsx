@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import appLoadMsg from '@mods/appLoadMsg';
 
+import matrixAppearance from '@src/util/libs/appearance';
 import { initHotkeys } from '../../../client/event/hotkeys';
 import { initRoomListListener } from '../../../client/event/roomList';
 
@@ -47,6 +48,11 @@ function Client() {
   const [isLoading, changeLoading] = useState(true);
   const [loadingMsg, setLoadingMsg] = useState(
     appLoadMsg.en.items[dice(appLoadMsg.en.items.length) - 1],
+  );
+
+  const [isHoverSidebar, setIsHoverSidebar] = useState(matrixAppearance.get('hoverSidebar'));
+  const [sidebarTransition, setSidebarTransition] = useState(
+    matrixAppearance.get('sidebarTransition'),
   );
 
   const navWrapperRef = useRef(null);
@@ -155,6 +161,17 @@ function Client() {
     initMatrix.init();
   }, []);
 
+  useEffect(() => {
+    const handleHoverSidebar = (visiblity) => setIsHoverSidebar(visiblity);
+    const handleHoverSidebarEffect = (visiblity) => setSidebarTransition(visiblity);
+    matrixAppearance.on('sidebarTransition', handleHoverSidebarEffect);
+    matrixAppearance.on('hoverSidebar', handleHoverSidebar);
+    return () => {
+      matrixAppearance.off('sidebarTransition', handleHoverSidebarEffect);
+      matrixAppearance.off('hoverSidebar', handleHoverSidebar);
+    };
+  }, []);
+
   if (isLoading) {
     return (
       <div className="loading-display">
@@ -229,19 +246,31 @@ function Client() {
   const tinyMod = <Mods />;
 
   resizeWindowChecker();
+  const classesDragDrop = [];
+  if (sidebarTransition) classesDragDrop.push('use-transition-sidebar');
+  if (isHoverSidebar) classesDragDrop.push('use-hover-sidebar');
+
   return (
     <>
       <LoadingPage />
       {tinyMod}
-      <DragDrop navWrapperRef={navWrapperRef}>
+      <DragDrop className={classesDragDrop.join(' ')} navWrapperRef={navWrapperRef}>
         <div
           className="navigation-wrapper"
-          onMouseEnter={() => {
-            $('body').addClass('navigation-wrapper-hover');
-          }}
-          onMouseLeave={() => {
-            $('body').removeClass('navigation-wrapper-hover');
-          }}
+          onMouseEnter={
+            isHoverSidebar
+              ? () => {
+                  if (isHoverSidebar) $('body').addClass('navigation-wrapper-hover');
+                }
+              : null
+          }
+          onMouseLeave={
+            isHoverSidebar
+              ? () => {
+                  if (isHoverSidebar) $('body').removeClass('navigation-wrapper-hover');
+                }
+              : null
+          }
         >
           <Navigation />
         </div>

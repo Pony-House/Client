@@ -4,7 +4,7 @@ import navigation from '../../../client/state/navigation';
 import cons from '../../../client/state/cons';
 import initMatrix from '../../../client/initMatrix';
 
-function DragDrop({ children, navWrapperRef }) {
+function DragDrop({ children, navWrapperRef, className }) {
   const dropZone = useRef(null);
 
   function dragContainsFiles(e) {
@@ -95,7 +95,7 @@ function DragDrop({ children, navWrapperRef }) {
           <h2 className="mt-3">Drop file to upload</h2>
         </center>
       </div>
-      <div ref={navWrapperRef} className="client-container">
+      <div ref={navWrapperRef} className={`client-container${className ? ` ${className}` : ''}`}>
         {children}
       </div>
     </>

@@ -37,6 +37,10 @@ function Room() {
   tinyAPI.emit('setRoomInfo', defaultRoomInfo);
 
   const [isHoverSidebar, setIsHoverSidebar] = useState(matrixAppearance.get('hoverSidebar'));
+  const [sidebarTransition, setSidebarTransition] = useState(
+    matrixAppearance.get('sidebarTransition'),
+  );
+
   const [isDrawer, setIsDrawer] = useState(settings.isPeopleDrawer);
   const [isUserList, setIsUserList] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -142,10 +146,13 @@ function Room() {
   useEffect(() => {
     const handleDrawerToggling = (visiblity) => setIsDrawer(visiblity);
     const handleHoverSidebar = (visiblity) => setIsHoverSidebar(visiblity);
+    const handleHoverSidebarEffect = (visiblity) => setSidebarTransition(visiblity);
+    matrixAppearance.on('sidebarTransition', handleHoverSidebarEffect);
     matrixAppearance.on('hoverSidebar', handleHoverSidebar);
     settings.on(cons.events.settings.PEOPLE_DRAWER_TOGGLED, handleDrawerToggling);
     return () => {
       matrixAppearance.off('hoverSidebar', handleHoverSidebar);
+      matrixAppearance.off('sidebarTransition', handleHoverSidebarEffect);
       settings.removeListener(cons.events.settings.PEOPLE_DRAWER_TOGGLED, handleDrawerToggling);
     };
   }, []);
@@ -159,9 +166,10 @@ function Room() {
 
   // Checker is User List
   const cloneIsUserList = clone(isUserList);
-  const peopleDrawer = (isDrawer || isHoverSidebar) && (
+  const peopleDrawer = (isDrawer || isHoverSidebar || sidebarTransition) && (
     <PeopleDrawer
       isDrawer={isDrawer}
+      sidebarTransition={sidebarTransition}
       isHoverSidebar={isHoverSidebar}
       isUserList={isUserList}
       setIsUserList={setIsUserList}
