@@ -3,6 +3,7 @@ import clone from 'clone';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import blobUrlManager from '@src/util/libs/blobUrlManager';
+import matrixAppearance from '@src/util/libs/appearance';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -35,6 +36,7 @@ function Room() {
   const [roomInfo, setRoomInfo] = useState(defaultRoomInfo);
   tinyAPI.emit('setRoomInfo', defaultRoomInfo);
 
+  const [isHoverSidebar, setIsHoverSidebar] = useState(matrixAppearance.get('hoverSidebar'));
   const [isDrawer, setIsDrawer] = useState(settings.isPeopleDrawer);
   const [isUserList, setIsUserList] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -139,8 +141,11 @@ function Room() {
 
   useEffect(() => {
     const handleDrawerToggling = (visiblity) => setIsDrawer(visiblity);
+    const handleHoverSidebar = (visiblity) => setIsHoverSidebar(visiblity);
+    matrixAppearance.on('hoverSidebar', handleHoverSidebar);
     settings.on(cons.events.settings.PEOPLE_DRAWER_TOGGLED, handleDrawerToggling);
     return () => {
+      matrixAppearance.off('hoverSidebar', handleHoverSidebar);
       settings.removeListener(cons.events.settings.PEOPLE_DRAWER_TOGGLED, handleDrawerToggling);
     };
   }, []);
@@ -154,8 +159,10 @@ function Room() {
 
   // Checker is User List
   const cloneIsUserList = clone(isUserList);
-  const peopleDrawer = isDrawer && (
+  const peopleDrawer = (isDrawer || isHoverSidebar) && (
     <PeopleDrawer
+      isDrawer={isDrawer}
+      isHoverSidebar={isHoverSidebar}
       isUserList={isUserList}
       setIsUserList={setIsUserList}
       roomId={roomTimeline.roomId}

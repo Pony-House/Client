@@ -234,7 +234,15 @@ function Client() {
       <LoadingPage />
       {tinyMod}
       <DragDrop navWrapperRef={navWrapperRef}>
-        <div className="navigation-wrapper">
+        <div
+          className="navigation-wrapper"
+          onMouseEnter={() => {
+            $('body').addClass('navigation-wrapper-hover');
+          }}
+          onMouseLeave={() => {
+            $('body').removeClass('navigation-wrapper-hover');
+          }}
+        >
           <Navigation />
         </div>
         <div className="room-wrapper">

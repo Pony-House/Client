@@ -40,7 +40,13 @@ function simplyfiMembers(members) {
 
 const asyncSearch = new AsyncSearch();
 asyncSearch.setMaxListeners(Infinity);
-function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
+function PeopleDrawer({
+  roomId,
+  isUserList,
+  setIsUserList,
+  isHoverSidebar = false,
+  isDrawer = true,
+}) {
   const PER_PAGE_MEMBER = 50;
   const mx = initMatrix.matrixClient;
   const { directs } = initMatrix.roomList;
@@ -184,65 +190,113 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
 
   const mList = searchedMembers !== null ? searchedMembers.data : memberList.slice(0, itemCount);
   tinyAPI.emit('roomSearchedMembers', mList, membership);
+  const showPeopleDrawer = !isDrawer && isHoverSidebar;
 
   return (
-    <div className={`people-drawer${!isUserList ? ' people-drawer-banner' : ''}`}>
-      <Header>
-        <ul className="navbar-nav mr-auto pb-1">
-          {isUserList ? (
-            <li className="nav-item ps-2">
-              People
-              <div className="very-small text-gray">{`${usersCount} members`}</div>
+    <>
+      <div
+        className={`people-drawer${!isUserList ? ' people-drawer-banner' : ''}${showPeopleDrawer ? ' d-none' : ''}`}
+        onMouseEnter={() => {
+          $('body').addClass('people-drawer-hover');
+        }}
+        onMouseLeave={() => {
+          $('body').removeClass('people-drawer-hover');
+        }}
+      >
+        <Header>
+          <ul className="navbar-nav mr-auto pb-1">
+            {isUserList ? (
+              <li className="nav-item ps-2">
+                People
+                <div className="very-small text-gray">{`${usersCount} members`}</div>
+              </li>
+            ) : (
+              <li className="nav-item ps-2">
+                User Room
+                <div className="very-small text-gray">The user private room</div>
+              </li>
+            )}
+          </ul>
+
+          <ul className="navbar-nav ms-auto mb-0 small">
+            <li className="nav-item">
+              <IconButton
+                onClick={() => openInviteUser(roomId)}
+                tooltipPlacement="bottom"
+                tooltip="Invite"
+                fa="fa-solid fa-user-plus"
+                disabled={!canInvite}
+              />
             </li>
-          ) : (
-            <li className="nav-item ps-2">
-              User Room
-              <div className="very-small text-gray">The user private room</div>
-            </li>
-          )}
-        </ul>
+          </ul>
+        </Header>
 
-        <ul className="navbar-nav ms-auto mb-0 small">
-          <li className="nav-item">
-            <IconButton
-              onClick={() => openInviteUser(roomId)}
-              tooltipPlacement="bottom"
-              tooltip="Invite"
-              fa="fa-solid fa-user-plus"
-              disabled={!canInvite}
-            />
-          </li>
-        </ul>
-      </Header>
+        <div className={`people-drawer__content-wrapper people-drawer-select-${membership.value}`}>
+          <center
+            className={`${isUserList ? 'p-3 ' : ''} w-100`}
+            style={{
+              height: '100%',
+              overflowY: 'auto',
+            }}
+          >
+            {isUserList ? (
+              <SegmentedControl
+                className="pb-3"
+                selected={(() => {
+                  const getSegmentIndex = segmentsIndex;
+                  return getSegmentIndex[membership.value];
+                })()}
+                segments={segments}
+                onSelect={(index) => {
+                  const selectSegment = selectMembership;
+                  selectSegment[index]?.();
+                }}
+              />
+            ) : null}
 
-      <div className={`people-drawer__content-wrapper people-drawer-select-${membership.value}`}>
-        <center
-          className={`${isUserList ? 'p-3 ' : ''} w-100`}
-          style={{
-            height: '100%',
-            overflowY: 'auto',
-          }}
-        >
-          {isUserList ? (
-            <SegmentedControl
-              className="pb-3"
-              selected={(() => {
-                const getSegmentIndex = segmentsIndex;
-                return getSegmentIndex[membership.value];
-              })()}
-              segments={segments}
-              onSelect={(index) => {
-                const selectSegment = selectMembership;
-                selectSegment[index]?.();
-              }}
-            />
-          ) : null}
+            {mList.map((member) =>
+              !member.customSelector ? (
+                isUserList ? (
+                  <PeopleSelector
+                    avatarSize={32}
+                    key={member.userId}
+                    user={mx.getUser(member.userId)}
+                    onClick={() =>
+                      typeof member.customClick !== 'function'
+                        ? openProfileViewer(member.userId, roomId)
+                        : member.customClick()
+                    }
+                    contextMenu={(e) => {
+                      openReusableContextMenu(
+                        'bottom',
+                        getEventCords(e, '.ic-btn'),
+                        (closeMenu) => (
+                          <UserOptions userId={member.userId} afterOptionSelect={closeMenu} />
+                        ),
+                      );
 
-          {mList.map((member) =>
-            !member.customSelector ? (
-              isUserList ? (
-                <PeopleSelector
-                  avatarSize={32}
+                      e.preventDefault();
+                    }}
+                    customData={member.customData}
+                    avatarSrc={member.avatarSrc}
+                    name={member.name}
+                    color={colorMXID(member.userId)}
+                    peopleRole={member.peopleRole}
+                  />
+                ) : member.userId !== mx.getUserId() ? (
+                  <PeopleSelectorBanner
+                    key={member.userId}
+                    roomId={roomId}
+                    user={mx.getUser(member.userId)}
+                    name={member.name}
+                    color={colorMXID(member.userId)}
+                    peopleRole={member.peopleRole}
+                  />
+                ) : (
+                  ''
+                )
+              ) : (
+                <member.customSelector
                   key={member.userId}
                   user={mx.getUser(member.userId)}
                   onClick={() =>
@@ -250,88 +304,64 @@ function PeopleDrawer({ roomId, isUserList, setIsUserList }) {
                       ? openProfileViewer(member.userId, roomId)
                       : member.customClick()
                   }
-                  contextMenu={(e) => {
-                    openReusableContextMenu('bottom', getEventCords(e, '.ic-btn'), (closeMenu) => (
-                      <UserOptions userId={member.userId} afterOptionSelect={closeMenu} />
-                    ));
-
-                    e.preventDefault();
-                  }}
-                  customData={member.customData}
                   avatarSrc={member.avatarSrc}
                   name={member.name}
+                  customData={member.customData}
                   color={colorMXID(member.userId)}
                   peopleRole={member.peopleRole}
                 />
-              ) : member.userId !== mx.getUserId() ? (
-                <PeopleSelectorBanner
-                  key={member.userId}
-                  roomId={roomId}
-                  user={mx.getUser(member.userId)}
-                  name={member.name}
-                  color={colorMXID(member.userId)}
-                  peopleRole={member.peopleRole}
-                />
-              ) : (
-                ''
-              )
-            ) : (
-              <member.customSelector
-                key={member.userId}
-                user={mx.getUser(member.userId)}
-                onClick={() =>
-                  typeof member.customClick !== 'function'
-                    ? openProfileViewer(member.userId, roomId)
-                    : member.customClick()
-                }
-                avatarSrc={member.avatarSrc}
-                name={member.name}
-                customData={member.customData}
-                color={colorMXID(member.userId)}
-                peopleRole={member.peopleRole}
-              />
-            ),
-          )}
+              ),
+            )}
+
+            {isUserList ? (
+              <>
+                {(searchedMembers?.data.length === 0 || memberList.length === 0) && (
+                  <div className="people-drawer__noresult">
+                    <Text variant="b2">No results found!</Text>
+                  </div>
+                )}
+
+                <div className="people-drawer__load-more">
+                  {mList.length !== 0 &&
+                    memberList.length > itemCount &&
+                    searchedMembers === null && <Button onClick={loadMorePeople}>View more</Button>}
+                </div>
+              </>
+            ) : null}
+          </center>
 
           {isUserList ? (
-            <>
-              {(searchedMembers?.data.length === 0 || memberList.length === 0) && (
-                <div className="people-drawer__noresult">
-                  <Text variant="b2">No results found!</Text>
+            <div className="pt-1">
+              <form onSubmit={(e) => e.preventDefault()} className="people-search">
+                <div>
+                  <Input
+                    forwardRef={searchRef}
+                    type="text"
+                    onChange={handleSearch}
+                    placeholder="Search"
+                    required
+                  />
                 </div>
-              )}
-
-              <div className="people-drawer__load-more">
-                {mList.length !== 0 &&
-                  memberList.length > itemCount &&
-                  searchedMembers === null && <Button onClick={loadMorePeople}>View more</Button>}
-              </div>
-            </>
+                {searchedMembers !== null && (
+                  <center>
+                    <IconButton onClick={handleSearch} size="small" fa="fa-solid fa-xmark" />
+                  </center>
+                )}
+              </form>
+            </div>
           ) : null}
-        </center>
-
-        {isUserList ? (
-          <div className="pt-1">
-            <form onSubmit={(e) => e.preventDefault()} className="people-search">
-              <div>
-                <Input
-                  forwardRef={searchRef}
-                  type="text"
-                  onChange={handleSearch}
-                  placeholder="Search"
-                  required
-                />
-              </div>
-              {searchedMembers !== null && (
-                <center>
-                  <IconButton onClick={handleSearch} size="small" fa="fa-solid fa-xmark" />
-                </center>
-              )}
-            </form>
-          </div>
-        ) : null}
+        </div>
       </div>
-    </div>
+      <div
+        className={`people-drawer-hidden${!showPeopleDrawer ? ' d-none' : ''}`}
+        onMouseEnter={() => {
+          $('body').addClass('navigation-wrapper-hover');
+        }}
+        onMouseLeave={() => {
+          $('body').removeClass('navigation-wrapper-hover');
+        }}
+      />
+    </>
   );
 }
 
