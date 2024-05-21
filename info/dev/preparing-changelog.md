@@ -1,0 +1,1 @@
+- Sidebar hover option added.
