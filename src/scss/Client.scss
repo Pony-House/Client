@@ -112,4 +112,11 @@ body:not(.disable-navigation-wrapper) {
 .people-drawer-hidden {
   width: 5px;
   z-index: 999;
+  background: var(--bg-surface-gradient);
+
+  .tiny-divider {
+    background-color: var(--bg-surface);
+    height: 51px;
+    width: 100%;
+  }
 }

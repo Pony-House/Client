@@ -360,7 +360,9 @@ function PeopleDrawer({
         onMouseLeave={() => {
           $('body').removeClass('navigation-wrapper-hover');
         }}
-      />
+      >
+        <div className="tiny-divider border-bg border-bottom" />
+      </div>
     </>
   );
 }
