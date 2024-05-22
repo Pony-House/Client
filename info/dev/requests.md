@@ -23,6 +23,8 @@ css de avatar no topo na lista de rooms/dms
 
 Full screen do electron está crashando.
 
+Quando está em thread, o botão de seta tem que sair do thread.
+
 urlParams.set('event_id', eventId, false);
 
 ==============================================================

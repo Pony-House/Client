@@ -322,9 +322,20 @@ class Settings extends EventEmitter {
     if (typeof this.isPeopleDrawer === 'boolean') return this.isPeopleDrawer;
 
     const settings = getSettings();
-    if (settings === null) return true;
-    if (typeof settings.isPeopleDrawer === 'undefined') return true;
+    const defaultValue =
+      typeof __ENV_APP__.PEOPLE_DRAWER_HIDDEN === 'boolean'
+        ? !__ENV_APP__.PEOPLE_DRAWER_HIDDEN
+        : true;
+
+    if (settings === null) return defaultValue;
+    if (typeof settings.isPeopleDrawer === 'undefined') return defaultValue;
     return settings.isPeopleDrawer;
+  }
+
+  getIsNavigationSidebarHidden() {
+    return typeof __ENV_APP__.NAVIGATION_SIDEBAR_HIDDEN === 'boolean'
+      ? !__ENV_APP__.NAVIGATION_SIDEBAR_HIDDEN
+      : true;
   }
 
   get showNotifications() {

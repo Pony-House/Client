@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
+import settings from '@src/client/state/settings';
+
 import { forceUnloadedAvatars } from '../../atoms/avatar/load';
 import { twemojifyReact } from '../../../util/twemojify';
 
@@ -35,6 +37,10 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
   const mx = initMatrix.matrixClient;
   const isDM = initMatrix.roomList && initMatrix.roomList.directs.has(roomId);
   const room = !roomItem ? mx.getRoom(roomId) : roomItem;
+
+  const [navigationSidebarHidden, setNavigationSidebarHidden] = useState(
+    settings.getIsNavigationSidebarHidden(),
+  );
 
   const getAvatarUrl = () =>
     isDM
@@ -101,16 +107,32 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
 
   setTimeout(forceUnloadedAvatars, 200);
 
-  const navigationSidebarCallback = () => {
+  const navigationSidebarCallback = (value) => {
     if (window.matchMedia('screen and (max-width: 768px)').matches) {
       selectRoomMode('navigation');
       openNavigation();
-    } else if ($('body').hasClass('disable-navigation-wrapper')) {
+    } else {
+      navigationSidebarSet(value);
+    }
+  };
+
+  const navigationSidebarSet = (value = null) => {
+    if (typeof value !== 'boolean') {
+      if (!navigationSidebarHidden) {
+        $('body').removeClass('disable-navigation-wrapper');
+        setNavigationSidebarHidden(true);
+      } else {
+        $('body').addClass('disable-navigation-wrapper');
+        setNavigationSidebarHidden(false);
+      }
+    } else if (!value) {
       $('body').removeClass('disable-navigation-wrapper');
     } else {
       $('body').addClass('disable-navigation-wrapper');
     }
   };
+
+  navigationSidebarSet(!navigationSidebarHidden);
 
   return (
     <Header>
