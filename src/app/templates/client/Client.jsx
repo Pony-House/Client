@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import appLoadMsg from '@mods/appLoadMsg';
 
+import settings from '@src/client/state/settings';
 import matrixAppearance from '@src/util/libs/appearance';
 import { initHotkeys } from '../../../client/event/hotkeys';
 import { initRoomListListener } from '../../../client/event/roomList';
@@ -48,6 +49,9 @@ function Client() {
   const [isLoading, changeLoading] = useState(true);
   const [loadingMsg, setLoadingMsg] = useState(
     appLoadMsg.en.items[dice(appLoadMsg.en.items.length) - 1],
+  );
+  const [navigationSidebarHidden, setNavigationSidebarHidden] = useState(
+    settings.getIsNavigationSidebarHidden(),
   );
 
   const [isHoverSidebar, setIsHoverSidebar] = useState(matrixAppearance.get('hoverSidebar'));
@@ -162,6 +166,8 @@ function Client() {
   }, []);
 
   useEffect(() => {
+    const handleDrawerToggling = (visiblity) => setNavigationSidebarHidden(visiblity);
+    settings.on(cons.events.settings.NAVIGATION_SIDEBAR_HIDDEN_TOGGLED, handleDrawerToggling);
     const handleHoverSidebar = (visiblity) => setIsHoverSidebar(visiblity);
     const handleHoverSidebarEffect = (visiblity) => setSidebarTransition(visiblity);
     matrixAppearance.on('sidebarTransition', handleHoverSidebarEffect);
@@ -169,6 +175,10 @@ function Client() {
     return () => {
       matrixAppearance.off('sidebarTransition', handleHoverSidebarEffect);
       matrixAppearance.off('hoverSidebar', handleHoverSidebar);
+      settings.removeListener(
+        cons.events.settings.NAVIGATION_SIDEBAR_HIDDEN_TOGGLED,
+        handleDrawerToggling,
+      );
     };
   }, []);
 
@@ -254,7 +264,10 @@ function Client() {
     <>
       <LoadingPage />
       {tinyMod}
-      <DragDrop className={classesDragDrop.join(' ')} navWrapperRef={navWrapperRef}>
+      <DragDrop
+        className={`${classesDragDrop.join(' ')}${navigationSidebarHidden ? ' disable-navigation-wrapper' : ''}`}
+        navWrapperRef={navWrapperRef}
+      >
         <div
           className="navigation-wrapper"
           onMouseEnter={

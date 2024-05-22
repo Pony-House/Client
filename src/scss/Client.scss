@@ -95,13 +95,13 @@ body:not(.disable-navigation-wrapper) {
     }
   }
 
-  .disable-navigation-wrapper:not(.navigation-wrapper-hover) {
+  body:not(.navigation-wrapper-hover) .disable-navigation-wrapper {
     #space-header,
     #profile-sidebar {
       display: none;
     }
     .navigation-wrapper {
-      width: 80px;
+      width: 72px;
     }
     &.theme-type-dark,
     &.theme-type-dark2,
@@ -113,23 +113,15 @@ body:not(.disable-navigation-wrapper) {
     }
   }
 
-  .disable-navigation-wrapper {
-    .room-view .nav-sidebar-1 {
-      display: none !important;
-    }
-  }
+  .people-drawer-hidden {
+    width: 5px;
+    z-index: 999;
+    background: var(--bg-surface-gradient);
 
-  .use-hover-sidebar {
-    .people-drawer-hidden {
-      width: 5px;
-      z-index: 999;
-      background: var(--bg-surface-gradient);
-
-      .tiny-divider {
-        background-color: var(--bg-surface);
-        height: 51px;
-        width: 100%;
-      }
+    .tiny-divider {
+      background-color: var(--bg-surface);
+      height: 51px;
+      width: 100%;
     }
   }
 

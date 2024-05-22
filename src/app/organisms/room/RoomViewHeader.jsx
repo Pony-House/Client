@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import settings from '@src/client/state/settings';
-
 import { forceUnloadedAvatars } from '../../atoms/avatar/load';
 import { twemojifyReact } from '../../../util/twemojify';
 
@@ -40,10 +38,6 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
   const mx = initMatrix.matrixClient;
   const isDM = initMatrix.roomList && initMatrix.roomList.directs.has(roomId);
   const room = !roomItem ? mx.getRoom(roomId) : roomItem;
-
-  const [navigationSidebarHidden, setNavigationSidebarHidden] = useState(
-    settings.getIsNavigationSidebarHidden(),
-  );
 
   const getAvatarUrl = () =>
     isDM
@@ -117,19 +111,6 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
       toggleNavigationSidebarHidden();
     }
   };
-
-  useEffect(() => {
-    const handleDrawerToggling = (visiblity) => setNavigationSidebarHidden(visiblity);
-    settings.on(cons.events.settings.NAVIGATION_SIDEBAR_HIDDEN_TOGGLED, handleDrawerToggling);
-    return () => {
-      settings.removeListener(
-        cons.events.settings.NAVIGATION_SIDEBAR_HIDDEN_TOGGLED,
-        handleDrawerToggling,
-      );
-    };
-  }, []);
-
-  console.log(navigationSidebarHidden);
 
   return (
     <Header>
