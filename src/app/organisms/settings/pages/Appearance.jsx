@@ -38,6 +38,9 @@ function AppearanceSection() {
   const [isEmbedEnabled, setEmbedEnabled] = useState(appearanceSettings.isEmbedEnabled);
   const [embedParallelLoad, setEmbedParallelLoad] = useState(appearanceSettings.embedParallelLoad);
 
+  const [hoverSidebar, setHoverSidebar] = useState(appearanceSettings.hoverSidebar);
+  const [sidebarTransition, setSidebarTransition] = useState(appearanceSettings.sidebarTransition);
+
   const [isUNhoverEnabled, setUNhoverEnabled] = useState(appearanceSettings.isUNhoverEnabled);
 
   const [showRoomIdInSpacesManager, setShowRoomIdInSpacesManager] = useState(
@@ -433,6 +436,46 @@ function AppearanceSection() {
                 <div className="very-small text-gray">
                   When sending a file that contains a message, the file will be sent first before
                   your message.
+                </div>
+              }
+            />
+          </ul>
+        </div>
+      ) : null}
+
+      {!appearanceSettings.basicUserMode ? (
+        <div className="card noselect my-3">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item very-small text-gray">Sidebar hover</li>
+
+            <SettingTile
+              title="Enable hover"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={hoverSidebar}
+                  onToggle={toggleAppearanceAction('hoverSidebar', setHoverSidebar)}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  Make the sidebars appear through hover effect on the sides of the window.
+                </div>
+              }
+            />
+
+            <SettingTile
+              title="Transition effect"
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  isActive={sidebarTransition}
+                  onToggle={toggleAppearanceAction('sidebarTransition', setSidebarTransition)}
+                />
+              }
+              content={
+                <div className="very-small text-gray">
+                  Activate transition effects on the sidebars.
                 </div>
               }
             />
