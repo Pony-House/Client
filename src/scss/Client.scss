@@ -76,9 +76,13 @@
 }
 
 /* Navigation Wrapper hide */
-body:not(.disable-navigation-wrapper) {
+.navigation-tiny-base:not(.disable-navigation-wrapper) {
   .room-view .nav-sidebar-2 {
     display: none !important;
+  }
+
+  .room-view .nav-sidebar-1 {
+    display: block !important;
   }
 }
 
@@ -111,6 +115,10 @@ body:not(.disable-navigation-wrapper) {
         width: 72px;
       }
     }
+  }
+
+  .room-view .nav-sidebar-1 {
+    display: none !important;
   }
 
   .people-drawer-hidden {
