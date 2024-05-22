@@ -21,6 +21,8 @@ css de avatar no topo na lista de rooms/dms
 
 =========> Dots invadindo o contador no DM quando a room é encryptada.
 
+Full screen do electron está crashando.
+
 urlParams.set('event_id', eventId, false);
 
 ==============================================================
