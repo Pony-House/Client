@@ -339,7 +339,7 @@ class Settings extends EventEmitter {
     const settings = getSettings();
     const defaultValue =
       typeof __ENV_APP__.NAVIGATION_SIDEBAR_HIDDEN === 'boolean'
-        ? !__ENV_APP__.NAVIGATION_SIDEBAR_HIDDEN
+        ? __ENV_APP__.NAVIGATION_SIDEBAR_HIDDEN
         : true;
 
     if (settings === null) return defaultValue;
