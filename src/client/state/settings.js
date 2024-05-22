@@ -107,6 +107,7 @@ class Settings extends EventEmitter {
     this.useSystemTheme = this.getUseSystemTheme();
     this.isMarkdown = this.getIsMarkdown();
     this.isPeopleDrawer = this.getIsPeopleDrawer();
+    this.isNavigationSidebarHidden = this.getIsNavigationSidebarHidden();
     this.hideMembershipEvents = this.getHideMembershipEvents();
     this.hideNickAvatarEvents = this.getHideNickAvatarEvents();
     this._showNotifications = this.getShowNotifications();
@@ -333,9 +334,17 @@ class Settings extends EventEmitter {
   }
 
   getIsNavigationSidebarHidden() {
-    return typeof __ENV_APP__.NAVIGATION_SIDEBAR_HIDDEN === 'boolean'
-      ? !__ENV_APP__.NAVIGATION_SIDEBAR_HIDDEN
-      : true;
+    if (typeof this.isNavigationSidebarHidden === 'boolean') return this.isNavigationSidebarHidden;
+
+    const settings = getSettings();
+    const defaultValue =
+      typeof __ENV_APP__.NAVIGATION_SIDEBAR_HIDDEN === 'boolean'
+        ? !__ENV_APP__.NAVIGATION_SIDEBAR_HIDDEN
+        : true;
+
+    if (settings === null) return defaultValue;
+    if (typeof settings.isNavigationSidebarHidden === 'undefined') return defaultValue;
+    return settings.isNavigationSidebarHidden;
   }
 
   get showNotifications() {
@@ -375,6 +384,14 @@ class Settings extends EventEmitter {
         this.isPeopleDrawer = !this.isPeopleDrawer;
         setSettings('isPeopleDrawer', this.isPeopleDrawer);
         this.emit(cons.events.settings.PEOPLE_DRAWER_TOGGLED, this.isPeopleDrawer);
+      },
+      [cons.actions.settings.TOGGLE_NAVIGATION_SIDEBAR_HIDDEN]: () => {
+        this.isNavigationSidebarHidden = !this.isNavigationSidebarHidden;
+        setSettings('isNavigationSidebarHidden', this.isNavigationSidebarHidden);
+        this.emit(
+          cons.events.settings.NAVIGATION_SIDEBAR_HIDDEN_TOGGLED,
+          this.isNavigationSidebarHidden,
+        );
       },
       [cons.actions.settings.TOGGLE_MEMBERSHIP_EVENT]: () => {
         this.hideMembershipEvents = !this.hideMembershipEvents;

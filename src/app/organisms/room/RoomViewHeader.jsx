@@ -15,7 +15,10 @@ import {
   openNavigation,
   selectRoomMode,
 } from '../../../client/action/navigation';
-import { togglePeopleDrawer /* , startVoiceChat */ } from '../../../client/action/settings';
+import {
+  toggleNavigationSidebarHidden,
+  togglePeopleDrawer /* , startVoiceChat */,
+} from '../../../client/action/settings';
 import { colorMXID } from '../../../util/colorMXID';
 import { getEventCords } from '../../../util/common';
 
@@ -106,33 +109,27 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
   //       <IconButton className="room-header__drawer-btn" onClick={startVoiceChat} tooltip="Start VC" fa="fa-solid fa-phone" />
 
   setTimeout(forceUnloadedAvatars, 200);
-
-  const navigationSidebarCallback = (value) => {
+  const navigationSidebarCallback = () => {
     if (window.matchMedia('screen and (max-width: 768px)').matches) {
       selectRoomMode('navigation');
       openNavigation();
     } else {
-      navigationSidebarSet(value);
+      toggleNavigationSidebarHidden();
     }
   };
 
-  const navigationSidebarSet = (value = null) => {
-    if (typeof value !== 'boolean') {
-      if (!navigationSidebarHidden) {
-        $('body').removeClass('disable-navigation-wrapper');
-        setNavigationSidebarHidden(true);
-      } else {
-        $('body').addClass('disable-navigation-wrapper');
-        setNavigationSidebarHidden(false);
-      }
-    } else if (!value) {
-      $('body').removeClass('disable-navigation-wrapper');
-    } else {
-      $('body').addClass('disable-navigation-wrapper');
-    }
-  };
+  useEffect(() => {
+    const handleDrawerToggling = (visiblity) => setNavigationSidebarHidden(visiblity);
+    settings.on(cons.events.settings.NAVIGATION_SIDEBAR_HIDDEN_TOGGLED, handleDrawerToggling);
+    return () => {
+      settings.removeListener(
+        cons.events.settings.NAVIGATION_SIDEBAR_HIDDEN_TOGGLED,
+        handleDrawerToggling,
+      );
+    };
+  }, []);
 
-  navigationSidebarSet(!navigationSidebarHidden);
+  console.log(navigationSidebarHidden);
 
   return (
     <Header>
