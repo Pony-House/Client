@@ -39,7 +39,7 @@ const blobCreator = (result) => {
   return new Blob([], { type: 'text/plain' });
 };
 
-export function shuffle(array) {
+export function shuffleArray(array) {
   let currentIndex = array.length;
 
   // While there remain elements to shuffle...
