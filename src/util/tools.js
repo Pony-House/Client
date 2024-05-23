@@ -51,6 +51,8 @@ export function shuffleArray(array) {
     // And swap it with the current element.
     [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
   }
+
+  return array;
 }
 
 export function tinyAtob(b64txt) {
