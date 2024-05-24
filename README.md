@@ -16,7 +16,7 @@
 
 # Pony House
 
-A Cinny fork Matrix client, focused on being a completely customizable open source superapp with everything you need to be happy in your online life with your friends.
+A Matrix client, focused on being a completely customizable open source superapp with everything you need to be happy in your online life with your friends.
 
 <img align="center" src="https://github.com/Pony-House/Client/blob/dev/docs/assets/preview-1.png?raw=true" height="380">
 
@@ -154,3 +154,11 @@ Nope. But you can install mods from third-party creators that code this type of 
 Pony House's crypto resources are developed to be as secure as possible from trusted sources. Normally limited to personal uses between users only. (This is a CHAT SOFTWARE, not a crypto marketplace)
 
 When installing third-party mods involving web3, you are assuming that everything is at your own risk between you and the third-party developer. (including any accident of loss of funds due to lack of care on the part of both the user and the third-party developer)
+
+## Cinny Fork
+
+Pony House is a Cinny fork that started from the commit below:
+
+https://github.com/cinnyapp/cinny/tree/3969c9501a7053b2d4edbba17df11e372f204d69
+
+https://github.com/Pony-House/OLD-Client
