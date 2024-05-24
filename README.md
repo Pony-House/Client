@@ -157,7 +157,7 @@ When installing third-party mods involving web3, you are assuming that everythin
 
 ## Cinny Fork
 
-Pony House is a Cinny fork that started from the commit below:
+Pony House started on a Cinny fork from the commit below:
 
 https://github.com/cinnyapp/cinny/tree/3969c9501a7053b2d4edbba17df11e372f204d69
 
