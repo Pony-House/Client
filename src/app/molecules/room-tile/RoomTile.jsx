@@ -22,6 +22,7 @@ function RoomTile({
     <div className="room-tile">
       <div className="room-tile__avatar">
         <Avatar
+          className="profile-image-container"
           imageAnimSrc={avatarAnimSrc}
           imageSrc={avatarSrc}
           bgColor={colorMXID(id)}

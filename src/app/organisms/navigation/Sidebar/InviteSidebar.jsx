@@ -117,7 +117,13 @@ export default function InviteSidebar() {
       <SidebarAvatar
         tooltip="Invites"
         onClick={() => openInviteList()}
-        avatar={<Avatar faSrc="bi bi-envelope-plus-fill" size="normal" />}
+        avatar={
+          <Avatar
+            faSrc="bi bi-envelope-plus-fill"
+            className="profile-image-container"
+            size="normal"
+          />
+        }
         notificationBadge={
           <NotificationBadge className={notificationClasses} alert content={totalInvites} />
         }

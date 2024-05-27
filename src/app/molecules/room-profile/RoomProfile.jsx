@@ -346,6 +346,7 @@ function RoomProfile({ roomId, isSpace }) {
           {!canChangeAvatar && (
             <center>
               <Avatar
+                className="profile-image-container"
                 imageSrc={avatarSrc}
                 text={roomName}
                 bgColor={colorMXID(roomId)}

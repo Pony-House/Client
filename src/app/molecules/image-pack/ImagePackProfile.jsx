@@ -58,7 +58,13 @@ function ImagePackProfile({
           onRequestRemove={() => onAvatarChange(undefined)}
         />
       ) : (
-        <Avatar bgColor="#555" text={displayName} imageSrc={avatarUrl} size="normal" />
+        <Avatar
+          bgColor="#555"
+          text={displayName}
+          imageSrc={avatarUrl}
+          className="profile-image-container"
+          size="normal"
+        />
       )}
       <div className="image-pack-profile__content noselect">
         {isEdit ? (

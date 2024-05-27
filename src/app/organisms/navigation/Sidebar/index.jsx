@@ -26,7 +26,13 @@ function CrossSigninAlert() {
       className="sidebar__cross-signin-alert"
       tooltip={`${unverified.length} unverified sessions`}
       onClick={() => openSettings(settingTabText.SECURITY)}
-      avatar={<Avatar faSrc="bi bi-shield-lock-fill btn-text-danger" size="normal" />}
+      avatar={
+        <Avatar
+          faSrc="bi bi-shield-lock-fill btn-text-danger"
+          className="profile-image-container"
+          size="normal"
+        />
+      }
     />
   );
 }
@@ -51,7 +57,13 @@ function SideBar() {
               <SidebarAvatar
                 tooltip="Pin spaces"
                 onClick={() => openShortcutSpaces()}
-                avatar={<Avatar faSrc="bi bi-bookmark-plus-fill" size="normal" />}
+                avatar={
+                  <Avatar
+                    faSrc="bi bi-bookmark-plus-fill"
+                    className="profile-image-container"
+                    size="normal"
+                  />
+                }
               />
             </div>
           </div>
@@ -64,7 +76,13 @@ function SideBar() {
           <SidebarAvatar
             tooltip="Search"
             onClick={() => openSearch()}
-            avatar={<Avatar faSrc="fa-solid fa-magnifying-glass" size="normal" />}
+            avatar={
+              <Avatar
+                faSrc="fa-solid fa-magnifying-glass"
+                className="profile-image-container"
+                size="normal"
+              />
+            }
           />
         </div>
       </center>

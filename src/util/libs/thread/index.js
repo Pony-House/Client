@@ -230,7 +230,7 @@ export function openThreadsMessageModal(room) {
 
             const td = $('<td>', {
               class:
-                'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container',
+                'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container profile-image-container',
             });
 
             // Insert Body

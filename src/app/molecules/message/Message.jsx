@@ -113,7 +113,7 @@ const MessageAvatar = React.memo(
       onClick={() => openProfileViewer(userId, roomId)}
     >
       <Avatar
-        imgClass=""
+        imgClass="profile-image-container"
         imageAnimSrc={avatarAnimSrc}
         imageSrc={avatarSrc}
         text={username}
@@ -1155,6 +1155,7 @@ const MessageThreadSummary = React.memo(({ thread }) => {
             {lastSender ? (
               <>
                 <Avatar
+                  className="profile-image-container"
                   imageSrc={lastSenderAvatarSrc}
                   text={lastSender?.name}
                   bgColor={backgroundColorMXID(lastSender?.userId)}

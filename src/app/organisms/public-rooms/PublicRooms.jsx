@@ -238,6 +238,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
           <div className="card p-3 m-2" style={{ height: '350px' }}>
             <h4 className="card-title">
               <Avatar
+                className="profile-image-container"
                 imageSrc={
                   typeof room.avatar_url === 'string'
                     ? initMatrix.matrixClient.mxcUrlToHttp(room.avatar_url, 42, 42, 'crop')

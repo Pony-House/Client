@@ -103,6 +103,7 @@ function DraggableSpaceShortcut({ isActive, spaceId, index, moveShortcut, onDrop
       onContextMenu={(e) => openSpaceOptions(e, spaceId)}
       avatar={
         <Avatar
+          className="profile-image-container"
           ref={avatarRef}
           text={room.name}
           bgColor={colorMXID(room.roomId)}

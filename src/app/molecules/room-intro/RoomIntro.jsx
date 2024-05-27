@@ -19,6 +19,7 @@ function RoomIntro({
       <td colSpan="2">
         <div className="ps-5 pt-5 pb-3">
           <Avatar
+            className="profile-image-container"
             imageSrc={avatarSrc}
             imageAnimSrc={avatarAnimSrc}
             text={name}

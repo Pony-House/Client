@@ -251,7 +251,7 @@ function ProfileAvatarMenu() {
               type="button"
             >
               <Avatar
-                className="d-inline-block float-start"
+                className="d-inline-block float-start profile-image-container"
                 text={profile.displayName}
                 bgColor={colorMXID(mx.getUserId())}
                 size="normal"

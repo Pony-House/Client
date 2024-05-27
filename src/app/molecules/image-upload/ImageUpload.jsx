@@ -54,6 +54,7 @@ function ImageUpload({
         }}
       >
         <Avatar
+          className="profile-image-container"
           imageSrc={imageSrc || defaultImage}
           text={text}
           bgColor={bgColor}

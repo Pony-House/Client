@@ -94,6 +94,7 @@ function PeopleSelector({
       type="button"
     >
       <Avatar
+        className="profile-image-container"
         imageAnimSrc={imageAnimSrc}
         imageSrc={imageSrc}
         text={name}

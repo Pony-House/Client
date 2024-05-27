@@ -304,6 +304,7 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
 
         <div className="text-center profile-user-profile-avatar">
           <Avatar
+            className="profile-image-container"
             ref={profileAvatar}
             imageSrc={mx.mxcUrlToHttp(avatarUrl, 100, 100, 'crop')}
             imageAnimSrc={

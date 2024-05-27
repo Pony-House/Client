@@ -160,16 +160,6 @@ function AboutSection() {
               .
             </div>
           </li>
-
-          <li className="list-group-item border-0">
-            <div className="small">
-              {`The ${__ENV_APP__.INFO.name} is a fork from the `}
-              <a href="https://github.com/cinnyapp/cinny" target="_blank" rel="noreferrer noopener">
-                Cinny
-              </a>
-              . All source code base credits go to this group.
-            </div>
-          </li>
         </ul>
       </div>
     </div>

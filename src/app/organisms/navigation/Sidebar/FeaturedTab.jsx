@@ -112,7 +112,9 @@ export default function FeaturedTab() {
           setSelectedUser(null);
           selectTab(cons.tabs.DIRECTS);
         }}
-        avatar={<Avatar faSrc="fa-solid fa-user" size="normal" />}
+        avatar={
+          <Avatar faSrc="fa-solid fa-user" size="normal" className="profile-image-container" />
+        }
         notificationBadge={
           dmsNoti ? (
             <NotificationBadge
@@ -131,7 +133,9 @@ export default function FeaturedTab() {
           setSelectedUser(null);
           selectTab(cons.tabs.HOME);
         }}
-        avatar={<Avatar faSrc="fa-solid fa-house" size="normal" />}
+        avatar={
+          <Avatar faSrc="fa-solid fa-house" size="normal" className="profile-image-container" />
+        }
         notificationBadge={
           homeNoti ? (
             <NotificationBadge
@@ -150,7 +154,13 @@ export default function FeaturedTab() {
           className={`ethereum-sidebar-icon ${userWeb3.valid ? 'ethereum-valid' : 'ethereum-invalid'}${!tinyCrypto.existEthereum() ? ' ethereum-none' : ''}`}
           active={null}
           onClick={() => openSettings(settingTabText.WEB3)}
-          avatar={<Avatar faSrc="fa-brands fa-ethereum" size="normal" />}
+          avatar={
+            <Avatar
+              faSrc="fa-brands fa-ethereum"
+              size="normal"
+              className="profile-image-container"
+            />
+          }
           notificationBadge={null}
         />
       ) : null}
@@ -173,6 +183,7 @@ export default function FeaturedTab() {
               }}
               avatar={
                 <Avatar
+                  className="profile-image-container"
                   text={room.name}
                   bgColor={colorMXID(room.roomId)}
                   size="normal"
