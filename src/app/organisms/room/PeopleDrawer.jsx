@@ -193,12 +193,6 @@ function PeopleDrawer({
   tinyAPI.emit('roomSearchedMembers', mList, membership);
   const showPeopleDrawer = !isDrawer && (isHoverSidebar || sidebarTransition);
 
-  if (isDrawer) {
-    $('body').addClass('people-drawer-auto-visible');
-  } else {
-    $('body').removeClass('people-drawer-auto-visible');
-  }
-
   return (
     <>
       <div

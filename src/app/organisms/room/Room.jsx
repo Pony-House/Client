@@ -164,6 +164,12 @@ function Room() {
     return <Welcome />;
   }
 
+  if (isDrawer) {
+    $('body').addClass('people-drawer-auto-visible');
+  } else {
+    $('body').removeClass('people-drawer-auto-visible');
+  }
+
   // Checker is User List
   const cloneIsUserList = clone(isUserList);
   const peopleDrawer = (isDrawer || isHoverSidebar || sidebarTransition) && (
