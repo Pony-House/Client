@@ -260,6 +260,12 @@ function Client() {
   if (sidebarTransition) classesDragDrop.push('use-transition-sidebar');
   if (isHoverSidebar) classesDragDrop.push('use-hover-sidebar');
 
+  if (!navigationSidebarHidden) {
+    $('body').addClass('navigation-wrapper-auto-visible');
+  } else {
+    $('body').removeClass('navigation-wrapper-auto-visible');
+  }
+
   return (
     <>
       <LoadingPage />
