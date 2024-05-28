@@ -1,3 +1,0 @@
-- Sidebar hover option added.
-- Electron desktop crashing when you maximizes the window. (Fixed by the Electron version update)
-- profile-image-container class added.
