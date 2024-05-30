@@ -334,5 +334,9 @@
     --bs-gradient: none;
   }
 
+  .message__threadSummary {
+    background-color: var(--bg-surface-active);
+  }
+
   --bg-profile-banner: #1b1b1b;
 }
