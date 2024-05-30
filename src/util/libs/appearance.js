@@ -4,6 +4,7 @@ import clone from 'clone';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import moment, { calendarFormat, localeIs12Hours } from './momentjs';
+import { eventMaxListeners } from '../matrixUtil';
 
 // Animated Image Url
 export function getAnimatedImageUrl(url) {
@@ -210,7 +211,7 @@ const toggleAppearanceAction = (dataFolder, setToggle) => (data) => {
   setToggle(data === true);
 };
 
-matrixAppearance.setMaxListeners(Infinity);
+matrixAppearance.setMaxListeners(eventMaxListeners);
 
 export { toggleAppearanceAction };
 export default matrixAppearance;

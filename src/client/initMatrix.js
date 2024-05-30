@@ -13,6 +13,7 @@ import {
 } from '@src/app/atoms/avatar/defaultAvatar';
 
 import MatrixVoiceChat from '@src/util/libs/voiceChat';
+import { eventMaxListeners } from '@src/util/matrixUtil';
 
 import { secret } from './state/auth';
 import RoomList from './state/RoomList';
@@ -153,7 +154,7 @@ class InitMatrix extends EventEmitter {
     await envAPI.startDB();
     await indexedDBStore.startup();
     await this.matrixClient.initCrypto();
-    this.matrixClient.setMaxListeners(Infinity);
+    this.matrixClient.setMaxListeners(eventMaxListeners);
 
     await this.matrixClient.startClient({
       lazyLoadMembers: true,
@@ -185,11 +186,11 @@ class InitMatrix extends EventEmitter {
           this.notifications = new Notifications(this.roomList);
           this.voiceChat = new MatrixVoiceChat(this.matrixClient);
 
-          this.matrixClient.setMaxListeners(Infinity);
-          this.accountData.setMaxListeners(Infinity);
-          this.roomList.setMaxListeners(Infinity);
-          this.roomsInput.setMaxListeners(Infinity);
-          this.notifications.setMaxListeners(Infinity);
+          this.matrixClient.setMaxListeners(eventMaxListeners);
+          this.accountData.setMaxListeners(eventMaxListeners);
+          this.roomList.setMaxListeners(eventMaxListeners);
+          this.roomsInput.setMaxListeners(eventMaxListeners);
+          this.notifications.setMaxListeners(eventMaxListeners);
 
           this.emit('init_loading_finished');
           this.notifications._initNoti();
@@ -254,6 +255,6 @@ class InitMatrix extends EventEmitter {
 }
 
 const initMatrix = new InitMatrix();
-initMatrix.setMaxListeners(Infinity);
+initMatrix.setMaxListeners(eventMaxListeners);
 
 export default initMatrix;

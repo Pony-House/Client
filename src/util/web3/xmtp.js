@@ -2,6 +2,7 @@ import { Client } from '@xmtp/xmtp-js';
 import EventEmitter from 'events';
 import { tinyCrypto } from '.';
 import envAPI from '../libs/env';
+import { eventMaxListeners } from '../matrixUtil';
 
 // Create a client using keys returned from getKeys
 const ENCODING = 'binary';
@@ -76,7 +77,7 @@ class Xmtp extends EventEmitter {
 }
 
 const web3Talk = new Xmtp(mode);
-web3Talk.setMaxListeners(Infinity);
+web3Talk.setMaxListeners(eventMaxListeners);
 
 if (__ENV_APP__.MODE === 'development') {
   global.web3Talk = web3Talk;

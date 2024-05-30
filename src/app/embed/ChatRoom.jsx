@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import * as sdk from 'matrix-js-sdk';
 import Olm from '@matrix-org/olm';
 import { objType } from 'for-promise/utils/lib.mjs';
+import { eventMaxListeners } from '@src/util/matrixUtil';
 
 import { isAuthenticated } from '../../client/state/auth';
 import RoomTimeline from '../../client/state/RoomTimeline';
@@ -192,7 +193,7 @@ function ChatRoom({ roomId, homeserver = null, joinGuest, refreshTime, theme, us
 
                   join(roomId, false, via).then((tinyRoom) => {
                     const newTimeline = new RoomTimeline(tinyRoom);
-                    newTimeline.setMaxListeners(Infinity);
+                    newTimeline.setMaxListeners(eventMaxListeners);
                     setTimeline(newTimeline);
                     setIsLoading(0);
                   });
@@ -208,7 +209,7 @@ function ChatRoom({ roomId, homeserver = null, joinGuest, refreshTime, theme, us
                       : null,
                   );
 
-                  newTimeline.setMaxListeners(Infinity);
+                  newTimeline.setMaxListeners(eventMaxListeners);
                   setTimeline(newTimeline);
                   setIsLoading(0);
                 }

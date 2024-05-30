@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import EventEmitter from 'events';
+import { eventMaxListeners } from '@src/util/matrixUtil';
 
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
@@ -13,7 +14,7 @@ import RoomViewInput from './RoomViewInput';
 import RoomViewCmdBar from './RoomViewCmdBar';
 
 const viewEvent = new EventEmitter();
-viewEvent.setMaxListeners(Infinity);
+viewEvent.setMaxListeners(eventMaxListeners);
 
 function RoomView({
   roomTimeline,

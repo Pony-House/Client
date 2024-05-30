@@ -3,11 +3,12 @@
 // https://matrix-org.github.io/matrix-js-sdk/stable/classes/MatrixCall.html
 import { createNewMatrixCall } from 'matrix-js-sdk';
 import { EventEmitter } from 'events';
+import { eventMaxListeners } from '../matrixUtil';
 
 // Emitter
 class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter();
-myEmitter.setMaxListeners(Infinity);
+myEmitter.setMaxListeners(eventMaxListeners);
 
 // Class
 class MatrixVoiceChat {
@@ -101,7 +102,7 @@ class MatrixVoiceChat {
 
       this.roomId = roomId;
       this.call = createNewMatrixCall(this.mx, roomId);
-      this.call.setMaxListeners(Infinity);
+      this.call.setMaxListeners(eventMaxListeners);
       myEmitter.emit('state', 'call_created');
 
       this.start();

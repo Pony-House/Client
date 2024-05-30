@@ -4,6 +4,7 @@ import EventEmitter from 'events';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import { isMobile, notificationStatus } from '@src/util/libs/mobile';
+import { eventMaxListeners } from '@src/util/matrixUtil';
 
 import appDispatcher from '../dispatcher';
 
@@ -434,7 +435,7 @@ class Settings extends EventEmitter {
 }
 
 const settings = new Settings();
-settings.setMaxListeners(Infinity);
+settings.setMaxListeners(eventMaxListeners);
 export function startSettings() {
   settings.startData();
   settings.applyTheme();

@@ -12,6 +12,7 @@ import {
   getDataList,
   removeFromDataFolder,
 } from '@src/util/selectedRoom';
+import { eventMaxListeners } from '@src/util/matrixUtil';
 
 import { openProfileViewer, selectRoom } from '@src/client/action/navigation';
 import { createMessageData } from '@src/app/molecules/message/Message';
@@ -176,7 +177,7 @@ class ThreadsList extends EventEmitter {
 
 // Prepare module
 const threadsList = new ThreadsList();
-threadsList.setMaxListeners(Infinity);
+threadsList.setMaxListeners(eventMaxListeners);
 export default threadsList;
 
 // Get thread list

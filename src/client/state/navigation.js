@@ -2,6 +2,7 @@ import EventEmitter from 'events';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import { checkerFavIcon } from '@src/util/libs/favicon';
+import { eventMaxListeners } from '@src/util/matrixUtil';
 import appDispatcher from '../dispatcher';
 import cons from './cons';
 import tinyAPI from '../../util/mods';
@@ -665,7 +666,7 @@ class Navigation extends EventEmitter {
 }
 
 const navigation = new Navigation();
-navigation.setMaxListeners(Infinity);
+navigation.setMaxListeners(eventMaxListeners);
 appDispatcher.register(navigation.navigate.bind(navigation));
 
 export default navigation;

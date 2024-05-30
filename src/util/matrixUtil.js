@@ -10,6 +10,8 @@ const SpaceLockIC = './img/ic/outlined/space-lock.svg';
 
 const WELL_KNOWN_URI = '/.well-known/matrix/client';
 
+export const eventMaxListeners = 1000;
+
 export async function getBaseUrl(servername) {
   let protocol = 'https://';
   if (servername.match(/^https?:\/\//) !== null) protocol = '';

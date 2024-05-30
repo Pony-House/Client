@@ -5,7 +5,7 @@ import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import AsyncSearch from '../../../util/AsyncSearch';
 import { selectRoom, selectTab, selectRoomMode } from '../../../client/action/navigation';
-import { joinRuleToIconSrc } from '../../../util/matrixUtil';
+import { eventMaxListeners, joinRuleToIconSrc } from '../../../util/matrixUtil';
 import { roomIdByActivity } from '../../../util/sort';
 
 import Dialog from '../../molecules/dialog/Dialog';
@@ -74,7 +74,7 @@ function Search() {
   const appearanceSettings = getAppearance();
   const [result, setResult] = useState(null);
   const [asyncSearch] = useState(new AsyncSearch());
-  if (asyncSearch) asyncSearch.setMaxListeners(Infinity);
+  if (asyncSearch) asyncSearch.setMaxListeners(eventMaxListeners);
   const [isOpen, requestClose] = useVisiblityToggle(setResult);
   const searchRef = useRef(null);
   const mx = initMatrix.matrixClient;

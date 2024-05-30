@@ -3,6 +3,7 @@
 */
 
 import EventEmitter from 'events';
+import { eventMaxListeners } from '../matrixUtil';
 
 // Emitter
 class EnvAPI extends EventEmitter {
@@ -116,7 +117,7 @@ class EnvAPI extends EventEmitter {
 
 // Functions and class
 const envAPI = new EnvAPI();
-envAPI.setMaxListeners(Infinity);
+envAPI.setMaxListeners(eventMaxListeners);
 export default envAPI;
 
 if (__ENV_APP__.MODE === 'development') {

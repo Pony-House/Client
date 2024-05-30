@@ -5,6 +5,7 @@
 import EventEmitter from 'events';
 import moment from 'moment-timezone';
 import { objType } from 'for-promise/utils/lib.mjs';
+import { eventMaxListeners } from '@src/util/matrixUtil';
 
 // Emitter
 class EnvAPI extends EventEmitter {
@@ -126,7 +127,7 @@ class EnvAPI extends EventEmitter {
 
 // Functions and class
 const envAPI = new EnvAPI();
-envAPI.setMaxListeners(Infinity);
+envAPI.setMaxListeners(eventMaxListeners);
 export default envAPI;
 
 if (__ENV_APP__.MODE === 'development') {

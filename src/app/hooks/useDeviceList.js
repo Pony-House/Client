@@ -3,6 +3,7 @@ import moment from 'moment-timezone';
 import objectHash from 'object-hash';
 import EventEmitter from 'events';
 import { objType } from 'for-promise/utils/lib.mjs';
+import { eventMaxListeners } from '@src/util/matrixUtil';
 
 import initMatrix from '../../client/initMatrix';
 
@@ -23,7 +24,7 @@ class MatrixDevices extends EventEmitter {
 }
 
 const matrixDevices = new MatrixDevices();
-matrixDevices.setMaxListeners(Infinity);
+matrixDevices.setMaxListeners(eventMaxListeners);
 const sendPing = () => {
   const mx = initMatrix.matrixClient;
   if (mx && typeof mx.getAccountData === 'function') {

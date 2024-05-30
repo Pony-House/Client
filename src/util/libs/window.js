@@ -1,4 +1,5 @@
 import EventEmitter from 'events';
+import { eventMaxListeners } from '../matrixUtil';
 
 // Emitter
 class WindowEvents extends EventEmitter {
@@ -32,6 +33,6 @@ class WindowEvents extends EventEmitter {
 }
 
 const windowEvents = new WindowEvents();
-windowEvents.setMaxListeners(Infinity);
+windowEvents.setMaxListeners(eventMaxListeners);
 
 export default windowEvents;

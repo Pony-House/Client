@@ -7,6 +7,7 @@ import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import matrixAppearance from '@src/util/libs/appearance';
+import { eventMaxListeners } from '@src/util/matrixUtil';
 
 import { emojis } from './emoji';
 import { loadEmojiData, getEmojiData, ROW_EMOJIS_COUNT, ROW_STICKERS_COUNT } from './emojiData';
@@ -110,7 +111,7 @@ EmojiGroup.propTypes = {
 
 // Search Emoji
 const asyncSearch = new AsyncSearch();
-asyncSearch.setMaxListeners(Infinity);
+asyncSearch.setMaxListeners(eventMaxListeners);
 asyncSearch.setup(emojis, {
   keys: ['shortcode', 'shortcodes', 'label', 'tags'],
   isContain: true,
