@@ -129,7 +129,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
           <li className="nav-item back-navigation">
             <IconButton
               className="nav-link nav-sidebar-1"
-              fa="fa-solid fa-chevron-left"
+              fa={`fa-solid ${!threadId ? 'fa-chevron-left' : 'fa-arrow-right-from-bracket'}`}
               tooltip={!threadId ? 'Navigation sidebar' : 'Back to Room'}
               tooltipPlacement="bottom"
               onClick={navigationSidebarCallback}
@@ -137,7 +137,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
 
             <IconButton
               className="nav-link nav-sidebar-2"
-              fa="fa-solid fa-chevron-right"
+              fa={`fa-solid ${!threadId ? 'fa-chevron-right' : 'fa-door-openfa-arrow-right-from-bracket'}`}
               tooltip={!threadId ? 'Navigation sidebar' : 'Back to Room'}
               tooltipPlacement="bottom"
               onClick={navigationSidebarCallback}

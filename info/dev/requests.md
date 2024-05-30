@@ -21,8 +21,6 @@ css de avatar no topo na lista de rooms/dms
 
 =========> Dots invadindo o contador no DM quando a room é encryptada.
 
-Quando está em thread, o botão de seta tem que sair do thread.
-
 urlParams.set('event_id', eventId, false);
 
 ==============================================================
