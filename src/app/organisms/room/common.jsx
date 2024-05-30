@@ -25,6 +25,7 @@ import NameChangedMessage from './chat-messages/NameChanged';
 import NameRemovedMessage from './chat-messages/NameRemoved';
 
 import PinnedEventsMessage, { comparePinEvents } from './chat-messages/PinnedEventsMessage';
+import moment from '@src/util/libs/momentjs';
 
 function getTimelineJSXMessages() {
   return {
@@ -147,8 +148,10 @@ function parseTimelineChange(mEvent) {
   const appearanceSettings = getAppearance();
   const mx = initMatrix.matrixClient;
 
+  const eventMoment = moment(mEvent.getDate());
+
   const type = mEvent.getType();
-  const date = mEvent.getDate();
+  const date = eventMoment.isValid() ? eventMoment.valueOf() || 0 : 0;
   const content = mEvent.getContent();
   const prevContent = mEvent.getPrevContent();
   const sender = mEvent.getSender();

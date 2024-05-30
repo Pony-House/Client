@@ -1,2 +1,3 @@
 - Thread detector on the room title.
 - Thread icon fixed.
+- Join/Leave messages sync fixed.

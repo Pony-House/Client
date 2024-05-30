@@ -4,7 +4,7 @@ import { twemojifyReact } from '../../../../util/twemojify';
 import { textValueToNumber } from '../../../../util/tools';
 
 export default function LibMessages({ where, defaultMessage, user, date }) {
-  let textIndex = textValueToNumber(`${user}_${date}`, appLoadMsg.en[where].length);
+  let textIndex = textValueToNumber(`${user}_${String(date)}`, appLoadMsg.en[where].length);
   if (textIndex > appLoadMsg.en[where].length) {
     textIndex = appLoadMsg.en[where].length - 1;
   } else if (textIndex < 0) {
