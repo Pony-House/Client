@@ -1131,12 +1131,13 @@ const MessageThreadSummary = React.memo(({ thread }) => {
 
   // Color
   const color =
-    lastSender && typeof lastSender?.name === 'string' ? colorMXID(lastSender?.name) : null;
+    lastSender && typeof lastSender?.userId === 'string' ? colorMXID(lastSender?.userId) : null;
 
   // Avatar
-  const lastSenderAvatarSrc =
-    lastSender?.getAvatarUrl(initMatrix.matrixClient.baseUrl, 36, 36, 'crop', true, false) ??
-    typeof color === 'string'
+  const newAvatar = lastSender?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop', true, false);
+  const lastSenderAvatarSrc = newAvatar
+    ? newAvatar
+    : typeof color === 'string'
       ? avatarDefaultColor(color)
       : defaultAvatar(0);
 

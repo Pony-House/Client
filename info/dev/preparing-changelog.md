@@ -1,1 +1,2 @@
 - Thread detector on the room title.
+- Thread icon fixed.
