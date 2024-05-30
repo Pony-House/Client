@@ -1,0 +1,1 @@
+- Thread detector on the room title.

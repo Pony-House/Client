@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 import { forceUnloadedAvatars } from '../../atoms/avatar/load';
 import { twemojifyReact } from '../../../util/twemojify';
@@ -12,6 +13,7 @@ import {
   openReusableContextMenu,
   openNavigation,
   selectRoomMode,
+  selectRoom,
 } from '../../../client/action/navigation';
 import {
   toggleNavigationSidebarHidden,
@@ -32,6 +34,7 @@ import copyText from '../profile-viewer/copyText';
 
 import { openPinMessageModal } from '../../../util/libs/pinMessage';
 import { openThreadsMessageModal } from '../../../util/libs/thread';
+import { getRoomInfo } from './Room';
 
 function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions = false }) {
   const [, forceUpdate] = useForceUpdate();
@@ -104,13 +107,20 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
 
   setTimeout(forceUnloadedAvatars, 200);
   const navigationSidebarCallback = () => {
-    if (window.matchMedia('screen and (max-width: 768px)').matches) {
-      selectRoomMode('navigation');
-      openNavigation();
+    if (!threadId) {
+      if (window.matchMedia('screen and (max-width: 768px)').matches) {
+        selectRoomMode('navigation');
+        openNavigation();
+      } else {
+        toggleNavigationSidebarHidden();
+      }
     } else {
-      toggleNavigationSidebarHidden();
+      selectRoom(roomId);
     }
   };
+
+  const thread = threadId ? getRoomInfo().roomTimeline.room.getThread(threadId) : null;
+  const contentThread = thread && thread.rootEvent ? thread.rootEvent.getContent() : null;
 
   return (
     <Header>
@@ -120,7 +130,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
             <IconButton
               className="nav-link nav-sidebar-1"
               fa="fa-solid fa-chevron-left"
-              tooltip="Navigation sidebar"
+              tooltip={!threadId ? 'Navigation sidebar' : 'Back to Room'}
               tooltipPlacement="bottom"
               onClick={navigationSidebarCallback}
             />
@@ -128,7 +138,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
             <IconButton
               className="nav-link nav-sidebar-2"
               fa="fa-solid fa-chevron-right"
-              tooltip="Navigation sidebar"
+              tooltip={!threadId ? 'Navigation sidebar' : 'Back to Room'}
               tooltipPlacement="bottom"
               onClick={navigationSidebarCallback}
             />
@@ -152,6 +162,11 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
               />
               <span className="me-2 text-truncate d-inline-block room-name">
                 {twemojifyReact(roomName)}
+                {objType(contentThread, 'object') ? (
+                  <strong className="ms-2">
+                    {twemojifyReact(` -- ${contentThread.pain || contentThread.body}`)}
+                  </strong>
+                ) : null}
               </span>
               <RawIcon fa="fa-solid fa-chevron-down room-icon" />
             </button>
