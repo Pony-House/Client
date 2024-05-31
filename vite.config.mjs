@@ -155,6 +155,8 @@ export default defineConfig(({ command, mode }) => {
     HOVER_SIDEBAR: !!(env.HOVER_SIDEBAR === true || env.HOVER_SIDEBAR === 'true'),
     SIDEBAR_TRANSITION: !!(env.SIDEBAR_TRANSITION === true || env.SIDEBAR_TRANSITION === 'true'),
 
+    MAX_LISTENERS: Number(env.MAX_LISTENERS),
+
     EMOJIBOARD: {
       ROW_LIMIT: {
 

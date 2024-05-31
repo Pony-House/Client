@@ -15,8 +15,6 @@ Ver a lista de quem reagiu
 
 Quando o people tabs é atualizado, o custom status some
 
-css de avatar no topo na lista de rooms/dms
-
 =========> Dots invadindo o contador no DM quando a room é encryptada.
 
 urlParams.set('event_id', eventId, false);
