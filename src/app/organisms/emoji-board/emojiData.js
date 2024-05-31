@@ -116,11 +116,23 @@ export function loadEmojiData(selectedRoomId) {
   tinyBoardData.sticker.data.map(readPacker('sticker', 'getStickers', addStickerToList));
   addDefaultEmojisToList(tinyBoardData.emoji.fav);
 
-  tinyBoardData.emoji.recent = getEmojisList(3 * ROW_EMOJIS_COUNT, 'recent_emoji');
-  tinyBoardData.emoji.fav = getEmojisList(3 * ROW_EMOJIS_COUNT, 'fav_emoji');
+  tinyBoardData.emoji.recent = getEmojisList(
+    __ENV_APP__.EMOJIBOARD.ROW_LIMIT.EMOJI.RECENT * ROW_EMOJIS_COUNT,
+    'recent_emoji',
+  );
+  tinyBoardData.emoji.fav = getEmojisList(
+    __ENV_APP__.EMOJIBOARD.ROW_LIMIT.EMOJI.FAV * ROW_EMOJIS_COUNT,
+    'fav_emoji',
+  );
 
-  tinyBoardData.sticker.recent = getStickersList(3 * ROW_STICKERS_COUNT, 'recent_emoji');
-  tinyBoardData.sticker.fav = getStickersList(3 * ROW_STICKERS_COUNT, 'fav_emoji');
+  tinyBoardData.sticker.recent = getStickersList(
+    __ENV_APP__.EMOJIBOARD.ROW_LIMIT.STICKER.RECENT * ROW_STICKERS_COUNT,
+    'recent_emoji',
+  );
+  tinyBoardData.sticker.fav = getStickersList(
+    __ENV_APP__.EMOJIBOARD.ROW_LIMIT.STICKER.FAV * ROW_STICKERS_COUNT,
+    'fav_emoji',
+  );
 
   return tinyBoardData;
 }

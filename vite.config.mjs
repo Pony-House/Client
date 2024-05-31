@@ -155,6 +155,22 @@ export default defineConfig(({ command, mode }) => {
     HOVER_SIDEBAR: !!(env.HOVER_SIDEBAR === true || env.HOVER_SIDEBAR === 'true'),
     SIDEBAR_TRANSITION: !!(env.SIDEBAR_TRANSITION === true || env.SIDEBAR_TRANSITION === 'true'),
 
+    EMOJIBOARD: {
+      ROW_LIMIT: {
+
+        EMOJI: {
+          FAV: Number(env.FAV_EMOJI_ROWS_LIMIT),
+          RECENT: Number(env.RECENT_EMOJI_ROWS_LIMIT),
+        },
+
+        STICKER: {
+          FAV: Number(env.FAV_STICKER_ROWS_LIMIT),
+          RECENT: Number(env.RECENT_STICKER_ROWS_LIMIT),
+        }
+
+      }
+    },
+
     LOGIN: {
       DEFAULT_HOMESERVER: Number(env.DEFAULT_HOMESERVER),
       ALLOW_CUSTOM_HOMESERVERS: !!(typeof env.ALLOW_CUSTOM_HOMESERVERS === 'string' && env.ALLOW_CUSTOM_HOMESERVERS === 'true'),
