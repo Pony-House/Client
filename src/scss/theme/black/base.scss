@@ -24,6 +24,10 @@
   --bg-surface-gradient-3: none;
   --bg-auth-gradient: none;
 
+  .message__threadSummary {
+    background-color: var(--bg-surface-active);
+  }
+
   #settings-base #setting-tab .nav-link:hover {
     background-color: #121212 !important;
   }

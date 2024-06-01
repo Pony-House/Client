@@ -1,6 +1,1 @@
-- Thread detector on the room title.
-- Thread icon fixed.
-- Join/Leave messages sync fixed.
-- Thread leave icon added.
-- New fav emoji limit.
-- MAX_LISTENERS added into ".env".
+- Thread title color fixed.
