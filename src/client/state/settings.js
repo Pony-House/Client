@@ -115,6 +115,7 @@ class Settings extends EventEmitter {
       },
     );
 
+    this.systemIsDark = null;
     this.useSystemTheme = this.getUseSystemTheme();
     this.isMarkdown = this.getIsMarkdown();
     this.isPeopleDrawer = this.getIsPeopleDrawer();
@@ -126,6 +127,13 @@ class Settings extends EventEmitter {
 
     this.isTouchScreenDevice =
       'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+  }
+
+  getSystemTheme() {
+    return {
+      enabled: this.useSystemTheme,
+      isDark: this.systemIsDark,
+    };
   }
 
   getThemeIndex() {
@@ -246,10 +254,12 @@ class Settings extends EventEmitter {
       body.addClass('discord-style');
     }
 
+    this.systemIsDark =
+      window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     if (useSystemTheme) {
       body.addClass('system-theme');
 
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      if (this.systemIsDark) {
         body.addClass(this.defaultSystemThemeType.dark);
       } else {
         body.addClass(this.defaultSystemThemeType.light);
