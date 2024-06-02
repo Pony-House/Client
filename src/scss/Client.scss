@@ -62,6 +62,13 @@ body.rounded-avatar-mode .profile-image-container {
   }
 }
 
+.nav-sidebar-1,
+.nav-sidebar-2 {
+  .ic-base {
+    margin-top: 4px;
+  }
+}
+
 @media (max-width: 768px) {
   #space-drawer-home-button,
   .room-mode .navigation-wrapper,

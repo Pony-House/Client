@@ -1,1 +1,1 @@
-- Thread title color fixed.
+- Navigation button - css fixed.
