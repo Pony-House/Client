@@ -2776,10 +2776,10 @@ emoji-regex@^9.2.2:
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-9.2.2.tgz#840c8803b0d8047f4ff0cf963176b32d4ef3ed72"
   integrity sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==
 
-emojibase-data@7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/emojibase-data/-/emojibase-data-7.0.1.tgz#a81d7fcd12247f7d94a96dcbdb143e6b6dd5c328"
-  integrity sha512-BLZpOdwyFpZ7lzBWyDtnxmKVm/SJMYgAfp1if3o6n1TVUMSXAf0nikONXl90LZuJ/m3XWPBkkubgCet2BsCGGQ==
+emojibase-data@15.3.1:
+  version "15.3.1"
+  resolved "https://registry.yarnpkg.com/emojibase-data/-/emojibase-data-15.3.1.tgz#91ec2bae3f51de7361af6ee63fbe93d4b20dad93"
+  integrity sha512-4dmrg4cUYnaBuT31zGtDEX07eZIku+ag9DLuAp3Dyxcpp0jdQGU7DKdqUeEXmDEMty9r3LXjNcagfwJ+TMJpUw==
 
 encode-utf8@^1.0.3:
   version "1.0.3"
