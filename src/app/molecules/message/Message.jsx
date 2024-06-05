@@ -16,6 +16,7 @@ import { isMobile } from '@src/util/libs/mobile';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import muteUserManager from '@src/util/libs/muteUserManager';
 import attemptDecryption from '@src/util/libs/attemptDecryption';
+import { getEventReactions } from '@src/util/libs/reactions';
 
 import Text from '../../atoms/text/Text';
 import { btModal, hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
@@ -757,71 +758,6 @@ MessageReaction.propTypes = {
   onClick: PropTypes.func.isRequired,
 };
 
-export const getEventReactions = (eventReactions, ignoreMute = true, rLimit = null) => {
-  const mx = initMatrix.matrixClient;
-  const reactions = {};
-
-  const addReaction = (key, shortcode, count, senderId, isActive, index) => {
-    let isNewReaction = false;
-    let reaction = reactions[key];
-    if (reaction === undefined) {
-      reaction = {
-        index,
-        count: 0,
-        users: [],
-        isActive: false,
-      };
-      isNewReaction = true;
-    }
-
-    if (shortcode) reaction.shortcode = shortcode;
-    if (count) {
-      reaction.count = count;
-    } else {
-      reaction.users.push(senderId);
-      reaction.count = reaction.users.length;
-      if (isActive) reaction.isActive = isActive;
-    }
-
-    reactions[key] = reaction;
-    return isNewReaction;
-  };
-
-  if (eventReactions) {
-    let tinyIndex = 0;
-    eventReactions.forEach((rEvent) => {
-      if (rEvent.getRelation() === null) return;
-
-      const reaction = rEvent.getRelation();
-      const senderId = rEvent.getSender();
-      const { shortcode } = rEvent.getContent();
-      const isActive = senderId === mx.getUserId();
-
-      if (
-        (ignoreMute || !muteUserManager.isReactionMuted(senderId)) &&
-        addReaction(reaction.key, shortcode, undefined, senderId, isActive, tinyIndex)
-      ) {
-        tinyIndex++;
-      }
-    });
-  } else {
-    // Use aggregated reactions
-    const aggregatedReaction = mEvent.getServerAggregatedRelation('m.annotation')?.chunk;
-    if (!aggregatedReaction) return null;
-
-    aggregatedReaction.forEach((reaction) => {
-      if (reaction.type !== 'm.reaction') return;
-      addReaction(reaction.key, undefined, reaction.count, undefined, false);
-    });
-  }
-
-  const reacts = Object.keys(reactions).sort((a, b) => reactions[a].index - reactions[b].index);
-
-  if (typeof rLimit === 'number') reacts.slice(0, rLimit);
-
-  return { order: reacts, data: reactions };
-};
-
 function MessageReactionGroup({ roomTimeline, mEvent }) {
   const itemEmbed = useRef(null);
   const [embedHeight, setEmbedHeight] = useState(null);
@@ -1028,19 +964,46 @@ const MessageOptions = React.memo(
                   faSrc="fa-solid fa-face-smile"
                   onClick={() => {
                     const body = [];
+                    const ul = $('<ul>', { class: 'nav nav-tabs' });
+                    const content = $('<div>', { class: 'tab-content' });
+
+                    const { reactionTimeline } = roomTimeline;
+                    const eventReactions = reactionTimeline.get(mEvent.getId());
+                    const reacts = getEventReactions(eventReactions);
+                    console.log(reacts);
+
+                    let i = 0;
+                    for (const item in reacts) {
+                      const id = `reactions_${eventId}_${i}`;
+                      content.append(
+                        $('<div>', {
+                          class: `tab-pane container ${i !== 0 ? 'fade' : 'active'}`,
+                          id,
+                        }).append($('<div>')),
+                      );
+
+                      ul.append(
+                        $('<li>', { class: 'nav-item' }).append(
+                          $('<a>', {
+                            class: `nav-link${i !== 0 ? '' : ' active'}`,
+                            'data-bs-toggle': 'tab',
+                            href: `#${id}`,
+                          }).append($('<img>')),
+                        ),
+                      );
+                      i++;
+                    }
 
                     // Empty List
                     if (body.length < 1) {
                       body.push(
-                        $('<tr>', {
-                          class: 'message message--body-only user-you-message chatbox-portable',
-                        }).append(
-                          $('<td>', {
-                            class: 'p-0 pe-3 py-1 text-center text-bg-force small',
-                            colspan: 2,
-                          }).text("This message doesn't have any reactions... yet."),
-                        ),
+                        $('<center>', {
+                          class: 'p-0 pe-3 py-1 small',
+                        }).text("This message doesn't have any reactions... yet."),
                       );
+                    } else {
+                      body.push(ul);
+                      body.push(content);
                     }
 
                     btModal({
@@ -1048,11 +1011,7 @@ const MessageOptions = React.memo(
 
                       id: 'message-reactions',
                       dialog: 'modal-lg modal-dialog-scrollable modal-dialog-centered',
-                      body: [
-                        $('<table>', {
-                          class: `table table-borderless table-hover align-middle m-0`,
-                        }).append($('<tbody>').append(body)),
-                      ],
+                      body,
                     });
                     hideMenu();
                   }}

@@ -1,5 +1,7 @@
 Criar emoji list com o mesmo nome da crash
 
+Buscador de emojis de custom status fica gelado.
+
 Usar a mesma lógica de carregar emojis para deixar menos lento o carregamento de imagens do chatbox.
 
 https://www.npmjs.com/package/jimp
@@ -8,10 +10,6 @@ https://matrix-org.github.io/matrix-js-sdk/classes/matrix.MatrixClient.html#slid
 initMatrix.matrixClient.slidingSync();
 /\_matrix/client/v3/sync
 /\_matrix/client/unstable/org.matrix.msc3575/sync
-
-Buscador de emojis de custom status fica gelado.
-
-Ver a lista de quem reagiu
 
 Quando o people tabs é atualizado, o custom status some
 
