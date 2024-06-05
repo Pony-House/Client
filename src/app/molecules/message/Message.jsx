@@ -18,7 +18,7 @@ import muteUserManager from '@src/util/libs/muteUserManager';
 import attemptDecryption from '@src/util/libs/attemptDecryption';
 
 import Text from '../../atoms/text/Text';
-import { hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
+import { btModal, hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
 import { twemojify, twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 
@@ -757,25 +757,10 @@ MessageReaction.propTypes = {
   onClick: PropTypes.func.isRequired,
 };
 
-function MessageReactionGroup({ roomTimeline, mEvent }) {
-  const itemEmbed = useRef(null);
-  const [embedHeight, setEmbedHeight] = useState(null);
-  const [, forceUpdate] = useReducer((count) => count + 1, 0);
-
-  const { roomId, room, reactionTimeline } = roomTimeline;
+export const getEventReactions = (eventReactions, ignoreMute = false, rLimit = null) => {
   const mx = initMatrix.matrixClient;
   const reactions = {};
-  const canSendReaction = getCurrentState(room).maySendEvent('m.reaction', mx.getUserId());
 
-  const eventReactions = reactionTimeline.get(mEvent.getId());
-
-  useEffect(() => {
-    const tinyUpdate = () => forceUpdate();
-    muteUserManager.on('muteReaction', tinyUpdate);
-    return () => {
-      muteUserManager.off('muteReaction', tinyUpdate);
-    };
-  });
   const addReaction = (key, shortcode, count, senderId, isActive, index) => {
     let isNewReaction = false;
     let reaction = reactions[key];
@@ -813,7 +798,7 @@ function MessageReactionGroup({ roomTimeline, mEvent }) {
       const isActive = senderId === mx.getUserId();
 
       if (
-        !muteUserManager.isReactionMuted(senderId) &&
+        (ignoreMute || !muteUserManager.isReactionMuted(senderId)) &&
         addReaction(reaction.key, shortcode, undefined, senderId, isActive, tinyIndex)
       ) {
         tinyIndex++;
@@ -830,25 +815,49 @@ function MessageReactionGroup({ roomTimeline, mEvent }) {
     });
   }
 
+  const reacts = Object.keys(reactions).sort((a, b) => reactions[a].index - reactions[b].index);
+
+  if (typeof rLimit === 'number') reacts.slice(0, rLimit);
+
+  return { order: reacts, data: reactions };
+};
+
+function MessageReactionGroup({ roomTimeline, mEvent }) {
+  const itemEmbed = useRef(null);
+  const [embedHeight, setEmbedHeight] = useState(null);
+  const [, forceUpdate] = useReducer((count) => count + 1, 0);
+
+  const { roomId, room, reactionTimeline } = roomTimeline;
+  const mx = initMatrix.matrixClient;
+  const canSendReaction = getCurrentState(room).maySendEvent('m.reaction', mx.getUserId());
+
+  const eventReactions = reactionTimeline.get(mEvent.getId());
+
+  useEffect(() => {
+    const tinyUpdate = () => forceUpdate();
+    muteUserManager.on('muteReaction', tinyUpdate);
+    return () => {
+      muteUserManager.off('muteReaction', tinyUpdate);
+    };
+  });
+
   // Create reaction list and limit the amount to 20
-  const reacts = Object.keys(reactions)
-    .sort((a, b) => reactions[a].index - reactions[b].index)
-    .slice(0, reactionLimit);
+  const reacts = getEventReactions(eventReactions, false, reactionLimit);
 
   useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
 
   return (
     <div className="noselect">
-      {reacts.map((key) => (
+      {reacts.order.map((key) => (
         <MessageReaction
           key={key}
           reaction={key}
-          shortcode={reactions[key].shortcode}
-          count={reactions[key].count}
-          users={reactions[key].users}
-          isActive={reactions[key].isActive}
+          shortcode={reacts.data[key].shortcode}
+          count={reacts.data[key].count}
+          users={reacts.data[key].users}
+          isActive={reacts.data[key].isActive}
           onClick={() => {
-            toggleEmoji(roomId, mEvent.getId(), key, reactions[key].shortcode, roomTimeline);
+            toggleEmoji(roomId, mEvent.getId(), key, reacts.data[key].shortcode, roomTimeline);
           }}
         />
       ))}
@@ -1014,6 +1023,43 @@ const MessageOptions = React.memo(
 
               <MenuItem
                 className="text-start"
+                faSrc="fa-solid fa-face-smile"
+                onClick={() => {
+                  const body = [];
+
+                  // Empty List
+                  if (body.length < 1) {
+                    body.push(
+                      $('<tr>', {
+                        class: 'message message--body-only user-you-message chatbox-portable',
+                      }).append(
+                        $('<td>', {
+                          class: 'p-0 pe-3 py-1 text-center text-bg-force small',
+                          colspan: 2,
+                        }).text("This message doesn't have any reactions... yet."),
+                      ),
+                    );
+                  }
+
+                  btModal({
+                    title: 'Reactions',
+
+                    id: 'message-reactions',
+                    dialog: 'modal-lg modal-dialog-scrollable modal-dialog-centered',
+                    body: [
+                      $('<table>', {
+                        class: `table table-borderless table-hover align-middle m-0`,
+                      }).append($('<tbody>').append(body)),
+                    ],
+                  });
+                  hideMenu();
+                }}
+              >
+                View reactions
+              </MenuItem>
+
+              <MenuItem
+                className="text-start"
                 faSrc="fa-solid fa-copy"
                 onClick={() => {
                   const messageBody = $(
@@ -1027,8 +1073,10 @@ const MessageOptions = React.memo(
                         : plain(body, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain,
                     );
                     toast('Text successfully copied to the clipboard.');
+                    hideMenu();
                   } else {
                     toast('No text was found in this message.');
+                    hideMenu();
                   }
                 }}
               >
