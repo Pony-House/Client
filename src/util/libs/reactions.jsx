@@ -2,8 +2,16 @@ import React from 'react';
 
 import initMatrix from '@src/client/initMatrix';
 import muteUserManager from './muteUserManager';
-import { twemojifyReact } from '../twemojify';
+import { twemojify, twemojifyReact } from '../twemojify';
 import { readImageUrl } from './mediaCache';
+
+export const getCustomEmojiUrl = (reaction) => {
+  let customEmojiUrl = null;
+  if (reaction.match(/^mxc:\/\/\S+$/)) {
+    customEmojiUrl = initMatrix.matrixClient.mxcUrlToHttp(reaction);
+  }
+  return customEmojiUrl;
+};
 
 export const getEventReactions = (eventReactions, ignoreMute = true, rLimit = null) => {
   const mx = initMatrix.matrixClient;
@@ -80,4 +88,15 @@ export const ReactionImgReact = ({ reaction, shortcode, customEmojiUrl }) => {
   ) : (
     twemojifyReact(reaction, { className: 'react-emoji' })
   );
+};
+
+export const reactionImgjQuery = (reaction, shortcode, customEmojiUrl) => {
+  return customEmojiUrl
+    ? $('<img>', {
+        class: 'react-emoji',
+        draggable: 'false',
+        alt: shortcode ?? reaction,
+        src: readImageUrl(customEmojiUrl),
+      })
+    : twemojify(reaction, { className: 'react-emoji' });
 };

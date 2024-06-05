@@ -16,7 +16,12 @@ import { isMobile } from '@src/util/libs/mobile';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import muteUserManager from '@src/util/libs/muteUserManager';
 import attemptDecryption from '@src/util/libs/attemptDecryption';
-import { ReactionImgReact, getEventReactions } from '@src/util/libs/reactions';
+import {
+  ReactionImgReact,
+  getCustomEmojiUrl,
+  getEventReactions,
+  reactionImgjQuery,
+} from '@src/util/libs/reactions';
 
 import Text from '../../atoms/text/Text';
 import { btModal, hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
@@ -708,10 +713,7 @@ function genReactionMsg(userIds, reaction, shortcode, customEmojiUrl) {
 
 // Reaction Manager
 function MessageReaction({ reaction, shortcode, count, users, isActive, onClick }) {
-  let customEmojiUrl = null;
-  if (reaction.match(/^mxc:\/\/\S+$/)) {
-    customEmojiUrl = initMatrix.matrixClient.mxcUrlToHttp(reaction);
-  }
+  const customEmojiUrl = getCustomEmojiUrl(reaction);
   return (
     <Tooltip
       className="msg__reaction-tooltip"
@@ -963,7 +965,7 @@ const MessageOptions = React.memo(
                     console.log(reacts);
 
                     let i = 0;
-                    for (const item in reacts) {
+                    for (const key in reacts) {
                       const id = `reactions_${eventId}_${i}`;
                       content.append(
                         $('<div>', {
@@ -978,7 +980,13 @@ const MessageOptions = React.memo(
                             class: `nav-link${i !== 0 ? '' : ' active'}`,
                             'data-bs-toggle': 'tab',
                             href: `#${id}`,
-                          }).append($('<img>')),
+                          }).append(
+                            reactionImgjQuery(
+                              key,
+                              reacts.data[key].shortcode,
+                              getCustomEmojiUrl(key),
+                            ),
+                          ),
                         ),
                       );
                       i++;
