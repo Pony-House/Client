@@ -965,7 +965,7 @@ const MessageOptions = React.memo(
                     console.log(reacts);
 
                     let i = 0;
-                    for (const key in reacts) {
+                    for (const key in reacts.data) {
                       const id = `reactions_${eventId}_${i}`;
                       content.append(
                         $('<div>', {
@@ -993,7 +993,7 @@ const MessageOptions = React.memo(
                     }
 
                     // Empty List
-                    if (body.length < 1) {
+                    if (i < 1) {
                       body.push(
                         $('<center>', {
                           class: 'p-0 pe-3 py-1 small',
