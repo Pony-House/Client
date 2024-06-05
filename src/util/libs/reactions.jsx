@@ -1,5 +1,9 @@
+import React from 'react';
+
 import initMatrix from '@src/client/initMatrix';
 import muteUserManager from './muteUserManager';
+import { twemojifyReact } from '../twemojify';
+import { readImageUrl } from './mediaCache';
 
 export const getEventReactions = (eventReactions, ignoreMute = true, rLimit = null) => {
   const mx = initMatrix.matrixClient;
@@ -63,4 +67,17 @@ export const getEventReactions = (eventReactions, ignoreMute = true, rLimit = nu
   if (typeof rLimit === 'number') reacts = reacts.slice(0, rLimit);
 
   return { order: reacts, data: reactions };
+};
+
+export const ReactionImgReact = ({ reaction, shortcode, customEmojiUrl }) => {
+  return customEmojiUrl ? (
+    <img
+      className="react-emoji"
+      draggable="false"
+      alt={shortcode ?? reaction}
+      src={readImageUrl(customEmojiUrl)}
+    />
+  ) : (
+    twemojifyReact(reaction, { className: 'react-emoji' })
+  );
 };

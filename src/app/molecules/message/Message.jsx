@@ -16,7 +16,7 @@ import { isMobile } from '@src/util/libs/mobile';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import muteUserManager from '@src/util/libs/muteUserManager';
 import attemptDecryption from '@src/util/libs/attemptDecryption';
-import { getEventReactions } from '@src/util/libs/reactions';
+import { ReactionImgReact, getEventReactions } from '@src/util/libs/reactions';
 
 import Text from '../../atoms/text/Text';
 import { btModal, hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
@@ -672,16 +672,11 @@ function genReactionMsg(userIds, reaction, shortcode, customEmojiUrl) {
     <>
       <div className="img">
         <center>
-          {customEmojiUrl ? (
-            <img
-              className="react-emoji"
-              draggable="false"
-              alt={shortcode ?? reaction}
-              src={readImageUrl(customEmojiUrl)}
-            />
-          ) : (
-            twemojifyReact(reaction, { className: 'react-emoji' })
-          )}
+          <ReactionImgReact
+            reaction={reaction}
+            shortcode={shortcode}
+            customEmojiUrl={customEmojiUrl}
+          />
         </center>
       </div>
       <div className="info">
@@ -733,16 +728,11 @@ function MessageReaction({ reaction, shortcode, count, users, isActive, onClick 
         type="button"
         className={`msg__reaction${isActive ? ' msg__reaction--active' : ''}${customEmojiUrl ? ' custom-emoji' : ' default-emoji'}`}
       >
-        {customEmojiUrl ? (
-          <img
-            className="react-emoji"
-            draggable="false"
-            alt={shortcode ?? reaction}
-            src={readImageUrl(customEmojiUrl)}
-          />
-        ) : (
-          twemojifyReact(reaction, { className: 'react-emoji' })
-        )}
+        <ReactionImgReact
+          reaction={reaction}
+          shortcode={shortcode}
+          customEmojiUrl={customEmojiUrl}
+        />
         <div className="very-small text-gray msg__reaction-count">{count}</div>
       </button>
     </Tooltip>
