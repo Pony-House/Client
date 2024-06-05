@@ -757,7 +757,7 @@ MessageReaction.propTypes = {
   onClick: PropTypes.func.isRequired,
 };
 
-export const getEventReactions = (eventReactions, ignoreMute = false, rLimit = null) => {
+export const getEventReactions = (eventReactions, ignoreMute = true, rLimit = null) => {
   const mx = initMatrix.matrixClient;
   const reactions = {};
 
@@ -923,6 +923,7 @@ function handleOpenViewSource(mEvent, roomTimeline) {
 
 const MessageOptions = React.memo(
   ({
+    haveReactions = false,
     refRoomInput,
     roomTimeline,
     mEvent,
@@ -1021,42 +1022,44 @@ const MessageOptions = React.memo(
             <>
               <MenuHeader>Options</MenuHeader>
 
-              <MenuItem
-                className="text-start"
-                faSrc="fa-solid fa-face-smile"
-                onClick={() => {
-                  const body = [];
+              {haveReactions ? (
+                <MenuItem
+                  className="text-start"
+                  faSrc="fa-solid fa-face-smile"
+                  onClick={() => {
+                    const body = [];
 
-                  // Empty List
-                  if (body.length < 1) {
-                    body.push(
-                      $('<tr>', {
-                        class: 'message message--body-only user-you-message chatbox-portable',
-                      }).append(
-                        $('<td>', {
-                          class: 'p-0 pe-3 py-1 text-center text-bg-force small',
-                          colspan: 2,
-                        }).text("This message doesn't have any reactions... yet."),
-                      ),
-                    );
-                  }
+                    // Empty List
+                    if (body.length < 1) {
+                      body.push(
+                        $('<tr>', {
+                          class: 'message message--body-only user-you-message chatbox-portable',
+                        }).append(
+                          $('<td>', {
+                            class: 'p-0 pe-3 py-1 text-center text-bg-force small',
+                            colspan: 2,
+                          }).text("This message doesn't have any reactions... yet."),
+                        ),
+                      );
+                    }
 
-                  btModal({
-                    title: 'Reactions',
+                    btModal({
+                      title: 'Reactions',
 
-                    id: 'message-reactions',
-                    dialog: 'modal-lg modal-dialog-scrollable modal-dialog-centered',
-                    body: [
-                      $('<table>', {
-                        class: `table table-borderless table-hover align-middle m-0`,
-                      }).append($('<tbody>').append(body)),
-                    ],
-                  });
-                  hideMenu();
-                }}
-              >
-                View reactions
-              </MenuItem>
+                      id: 'message-reactions',
+                      dialog: 'modal-lg modal-dialog-scrollable modal-dialog-centered',
+                      body: [
+                        $('<table>', {
+                          class: `table table-borderless table-hover align-middle m-0`,
+                        }).append($('<tbody>').append(body)),
+                      ],
+                    });
+                    hideMenu();
+                  }}
+                >
+                  View reactions
+                </MenuItem>
+              ) : null}
 
               <MenuItem
                 className="text-start"
@@ -1152,6 +1155,7 @@ const MessageOptions = React.memo(
 
 // Options Default
 MessageOptions.propTypes = {
+  haveReactions: PropTypes.bool,
   roomid: PropTypes.string,
   threadId: PropTypes.string,
   senderid: PropTypes.string,
@@ -1808,6 +1812,7 @@ function Message({
           <td className="p-0 pe-3 py-1" colSpan={!children ? '2' : ''}>
             {!isGuest && !disableActions && roomTimeline && !isEdit && (
               <MessageOptions
+                haveReactions={haveReactions}
                 refRoomInput={refRoomInput}
                 customHTML={customHTML}
                 body={body}
@@ -1948,6 +1953,7 @@ function Message({
       <td className="p-0 pe-3 py-1">
         {!isGuest && !disableActions && roomTimeline && !isEdit && (
           <MessageOptions
+            haveReactions={haveReactions}
             refRoomInput={refRoomInput}
             roomid={roomId}
             threadId={threadId}
