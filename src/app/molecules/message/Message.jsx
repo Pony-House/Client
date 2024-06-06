@@ -794,7 +794,7 @@ function MessageReactionGroup({ roomTimeline, mEvent }) {
         <IconButton
           className="ms-2 btn-sm reaction-message"
           onClick={(e) => {
-            if (reacts.length < reactionLimit) {
+            if (reacts.order.length < reactionLimit) {
               pickEmoji(e, roomId, mEvent.getId(), roomTimeline, -430, 0, reacts);
             } else {
               toast(
