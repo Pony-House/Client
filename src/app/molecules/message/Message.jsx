@@ -956,8 +956,8 @@ const MessageOptions = React.memo(
                   faSrc="fa-solid fa-face-smile"
                   onClick={() => {
                     const body = [];
-                    const ul = $('<ul>', { class: 'nav nav-tabs' });
-                    const content = $('<div>', { class: 'tab-content' });
+                    const ul = $('<ul>', { class: 'nav nav-pills nav flex-column react-list' });
+                    const content = $('<div>', { class: 'tab-content react-content' });
 
                     const { reactionTimeline } = roomTimeline;
                     const eventReactions = reactionTimeline.get(mEvent.getId());
@@ -986,6 +986,7 @@ const MessageOptions = React.memo(
                               reacts.data[key].shortcode,
                               getCustomEmojiUrl(key),
                             ),
+                            $('<span>', { class: 'react-count' }).text(reacts.data[key].count),
                           ),
                         ),
                       );

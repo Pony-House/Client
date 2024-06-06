@@ -15,6 +15,42 @@
   }
 }
 
+#message-reactions {
+  .react-list {
+    width: 102px;
+    border-right: 1px solid var(--bg-surface-border);
+    padding-right: 12px;
+    .react-emoji,
+    .linkify-base {
+      height: 27px !important;
+      display: inline-block !important;
+      position: relative;
+      top: -1px;
+    }
+
+    .nav-link {
+      text-decoration: none !important;
+    }
+
+    .react-count {
+      font-size: 14pt;
+      margin-left: 10px;
+      color: var(--tc-surface-normal) !important;
+    }
+
+    .nav-link:hover {
+      background-color: var(--bg-surface-hover);
+    }
+
+    .nav-link.active {
+      background-color: var(--bg-surface-active);
+    }
+  }
+
+  .react-content {
+  }
+}
+
 #chatbox,
 .chatbox-portable,
 #search-chatbox {
