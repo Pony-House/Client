@@ -244,10 +244,6 @@ class Settings extends EventEmitter {
         tinyThis.off(cons.events.settings.THEME_APPLIED, isColoredDetector);
       };
     });
-
-    return () => {
-      setIsColored(tinyThis.isSelectedThemeColored());
-    };
   }
 
   changeMobileBackground(value = 'default') {

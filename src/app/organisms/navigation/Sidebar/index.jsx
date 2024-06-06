@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import settings from '@src/client/state/settings';
 
 import { openShortcutSpaces, openSearch, openSettings } from '../../../../client/action/navigation';
 
@@ -39,6 +40,9 @@ function CrossSigninAlert() {
 
 // Sidebar
 function SideBar() {
+  const [isIconsColored, setIsIconsColored] = useState(settings.isSelectedThemeColored());
+  settings.isThemeColoredDetector(useEffect, setIsIconsColored);
+
   return (
     <>
       <center className="sidebar-item-1 h-100">
@@ -59,6 +63,7 @@ function SideBar() {
                 onClick={() => openShortcutSpaces()}
                 avatar={
                   <Avatar
+                    iconColor={!isIconsColored ? null : 'rgb(84, 101, 232)'}
                     faSrc="bi bi-bookmark-plus-fill"
                     className="profile-image-container"
                     size="normal"
@@ -78,6 +83,7 @@ function SideBar() {
             onClick={() => openSearch()}
             avatar={
               <Avatar
+                iconColor={!isIconsColored ? null : 'rgb(164, 42, 212)'}
                 faSrc="fa-solid fa-magnifying-glass"
                 className="profile-image-container"
                 size="normal"

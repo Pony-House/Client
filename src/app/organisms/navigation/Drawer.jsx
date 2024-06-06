@@ -4,6 +4,7 @@ import objectHash from 'object-hash';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import { getAppearance } from '@src/util/libs/appearance';
+import settings from '@src/client/state/settings';
 
 import tinyAPI from '../../../util/mods';
 import initMatrix from '../../../client/initMatrix';
@@ -99,6 +100,9 @@ function Drawer() {
 
   const homeClickRef = useRef(null);
 
+  const [isIconsColored, setIsIconsColored] = useState(settings.isSelectedThemeColored());
+  settings.isThemeColoredDetector(useEffect, setIsIconsColored);
+
   const { roomList } = initMatrix;
 
   useEffect(() => {
@@ -148,6 +152,7 @@ function Drawer() {
           {!spaceId ? (
             <center className="small text-start d-grid w-100">
               <IconButton
+                iconColor={!isIconsColored ? null : 'rgb(164, 42, 212)'}
                 ref={homeClickRef}
                 fa="fa-solid fa-house"
                 id="space-drawer-home-button"
