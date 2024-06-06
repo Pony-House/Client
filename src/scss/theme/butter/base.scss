@@ -1,5 +1,8 @@
 .butter-theme,
 .butter-theme-no-gradient {
+  --selection-color: #fff;
+  --selection-background: rgb(19, 160, 196);
+
   /* background color | --bg-[background type]: value */
   --bg-surface: hsl(64, 6%, 14%);
   --bg-surface-transparent: hsla(64, 6%, 14%, 0);

@@ -1,5 +1,8 @@
 .silver-theme,
 .silver-theme-no-gradient {
+  --selection-color: #fff;
+  --selection-background: rgb(19, 160, 196);
+
   /* background color | --bg-[background type]: value */
   --bg-input: #e2e2e2;
   --bg-surface: hsl(0, 0%, 95%);

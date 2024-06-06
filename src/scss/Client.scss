@@ -1,5 +1,16 @@
 @use './partials/screen';
 
+::-moz-selection {
+  /* Code for Firefox */
+  color: var(--selection-color);
+  background: var(--selection-background);
+}
+
+::selection {
+  color: var(--selection-color);
+  background: var(--selection-background);
+}
+
 body.rounded-avatar-mode .profile-image-container {
   &,
   img,

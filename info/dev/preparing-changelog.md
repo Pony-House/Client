@@ -1,1 +1,3 @@
 - Navigation button - css fixed.
+- --selection-color and --selection-background added.
+- Reactions list added.

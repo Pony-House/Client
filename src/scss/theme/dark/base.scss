@@ -10,6 +10,9 @@
     rgb(30 30 30) 100%
   );
 
+  --selection-color: #fff;
+  --selection-background: rgb(19, 160, 196);
+
   /* background color | --bg-[background type]: value */
 
   --bg-loadingoverlay: rgba(0, 0, 0, 0.6);
