@@ -962,16 +962,61 @@ const MessageOptions = React.memo(
                     const { reactionTimeline } = roomTimeline;
                     const eventReactions = reactionTimeline.get(mEvent.getId());
                     const reacts = getEventReactions(eventReactions);
-                    console.log(reacts);
+                    const appearanceSettings = getAppearance();
 
                     let i = 0;
                     for (const key in reacts.data) {
                       const id = `reactions_${eventId}_${i}`;
+
+                      const users = [];
+                      for (const item in reacts.data[key].users) {
+                        const user = mx.getUser(reacts.data[key].users[item]);
+                        const color = colorMXID(reacts.data[key].users[item]);
+
+                        const username = user
+                          ? muteUserManager.getSelectorName(user)
+                          : reacts.data[key].users[item];
+                        const avatarAnimSrc = user
+                          ? !appearanceSettings.enableAnimParams
+                            ? mx.mxcUrlToHttp(user.avatarUrl)
+                            : getAnimatedImageUrl(
+                                mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop'),
+                              ) ?? avatarDefaultColor(color)
+                          : avatarDefaultColor(color);
+
+                        const ct = $('<div>', {
+                          class:
+                            'align-top text-center chat-base avatar-container profile-image-container d-inline-block',
+                        });
+
+                        users.push(
+                          $('<div>', { class: 'my-2 user-react' }).append(
+                            ct.append(
+                              $('<img>', {
+                                class: 'avatar-react',
+                                draggable: false,
+                                src: readImageUrl(avatarAnimSrc),
+                                alt: 'avatar',
+                              })
+                                .on('load', (event) => {
+                                  ct.addClass('avatar-react-loaded');
+                                })
+                                .on('error', (event) => {
+                                  const e = event.originalEvent;
+                                  e.target.src = ImageBrokenSVG;
+                                }),
+                            ),
+
+                            $('<span>', { class: 'small react-username' }).text(username),
+                          ),
+                        );
+                      }
+
                       content.append(
                         $('<div>', {
                           class: `tab-pane container ${i !== 0 ? 'fade' : 'active'}`,
                           id,
-                        }).append($('<div>')),
+                        }).append(users),
                       );
 
                       ul.append(
