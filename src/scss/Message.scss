@@ -63,6 +63,18 @@
       top: 5px;
       margin-left: 9px;
     }
+
+    .user-react {
+      cursor: pointer;
+    }
+
+    .user-react:hover {
+      background-color: var(--bg-surface-hover);
+    }
+
+    .user-react:active {
+      background-color: var(--bg-surface-active);
+    }
   }
 }
 

@@ -963,6 +963,7 @@ const MessageOptions = React.memo(
                     const eventReactions = reactionTimeline.get(mEvent.getId());
                     const reacts = getEventReactions(eventReactions);
                     const appearanceSettings = getAppearance();
+                    let modal;
 
                     let i = 0;
                     for (const key in reacts.data) {
@@ -970,12 +971,11 @@ const MessageOptions = React.memo(
 
                       const users = [];
                       for (const item in reacts.data[key].users) {
-                        const user = mx.getUser(reacts.data[key].users[item]);
-                        const color = colorMXID(reacts.data[key].users[item]);
+                        const userId = reacts.data[key].users[item];
+                        const user = mx.getUser(userId);
+                        const color = colorMXID(userId);
 
-                        const username = user
-                          ? muteUserManager.getSelectorName(user)
-                          : reacts.data[key].users[item];
+                        const username = user ? muteUserManager.getSelectorName(user) : userId;
                         const avatarAnimSrc = user
                           ? !appearanceSettings.enableAnimParams
                             ? mx.mxcUrlToHttp(user.avatarUrl)
@@ -990,25 +990,30 @@ const MessageOptions = React.memo(
                         });
 
                         users.push(
-                          $('<div>', { class: 'my-2 user-react' }).append(
-                            ct.append(
-                              $('<img>', {
-                                class: 'avatar-react',
-                                draggable: false,
-                                src: readImageUrl(avatarAnimSrc),
-                                alt: 'avatar',
-                              })
-                                .on('load', (event) => {
-                                  ct.addClass('avatar-react-loaded');
+                          $('<div>', { class: 'my-2 user-react rounded p-1' })
+                            .append(
+                              ct.append(
+                                $('<img>', {
+                                  class: 'avatar-react',
+                                  draggable: false,
+                                  src: readImageUrl(avatarAnimSrc),
+                                  alt: 'avatar',
                                 })
-                                .on('error', (event) => {
-                                  const e = event.originalEvent;
-                                  e.target.src = ImageBrokenSVG;
-                                }),
-                            ),
+                                  .on('load', (event) => {
+                                    ct.addClass('avatar-react-loaded');
+                                  })
+                                  .on('error', (event) => {
+                                    const e = event.originalEvent;
+                                    e.target.src = ImageBrokenSVG;
+                                  }),
+                              ),
 
-                            $('<span>', { class: 'small react-username' }).text(username),
-                          ),
+                              $('<span>', { class: 'small react-username' }).text(username),
+                            )
+                            .on('click', () => {
+                              modal.hide();
+                              openProfileViewer(userId, roomId);
+                            }),
                         );
                       }
 
@@ -1050,7 +1055,7 @@ const MessageOptions = React.memo(
                       body.append(content);
                     }
 
-                    btModal({
+                    modal = btModal({
                       title: 'Reactions',
 
                       id: 'message-reactions',
