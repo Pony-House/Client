@@ -94,7 +94,7 @@ export const reactionImgjQuery = (reaction, shortcode, customEmojiUrl) => {
   return customEmojiUrl
     ? $('<img>', {
         class: 'react-emoji',
-        draggable: 'false',
+        draggable: false,
         alt: shortcode ?? reaction,
         src: readImageUrl(customEmojiUrl),
       })
