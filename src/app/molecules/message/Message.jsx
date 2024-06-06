@@ -955,7 +955,7 @@ const MessageOptions = React.memo(
                   className="text-start"
                   faSrc="fa-solid fa-face-smile"
                   onClick={() => {
-                    const body = [];
+                    const body = $('<div>', { class: 'd-flex' });
                     const ul = $('<ul>', { class: 'nav nav-pills nav flex-column react-list' });
                     const content = $('<div>', { class: 'tab-content react-content' });
 
@@ -995,14 +995,14 @@ const MessageOptions = React.memo(
 
                     // Empty List
                     if (i < 1) {
-                      body.push(
+                      body.append(
                         $('<center>', {
                           class: 'p-0 pe-3 py-1 small',
                         }).text("This message doesn't have any reactions... yet."),
                       );
                     } else {
-                      body.push(ul);
-                      body.push(content);
+                      body.append(ul);
+                      body.append(content);
                     }
 
                     btModal({
