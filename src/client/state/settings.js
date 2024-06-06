@@ -220,17 +220,34 @@ class Settings extends EventEmitter {
     return this.themes[this.themeIndex].type;
   }
 
-  isSelectedThemeColored(id) {
-    return this.themes[this.themeIndex] &&
-      typeof this.themes[this.themeIndex].coloredIcons === 'boolean' &&
-      this.themes[this.themeIndex].coloredIcons
-      ? true
-      : false;
+  _checkThemeIsColored(theme) {
+    return theme && typeof theme.coloredIcons === 'boolean' && theme.coloredIcons ? true : false;
+  }
+
+  isSelectedThemeColored() {
+    return this._checkThemeIsColored(this.themes[this.themeIndex]);
   }
 
   isThemeColored(id) {
-    const theme = this.getThemeById(id);
-    return typeof theme.coloredIcons === 'boolean' && theme.coloredIcons ? true : false;
+    return this._checkThemeIsColored(this.getThemeById(id));
+  }
+
+  isThemeColoredDetector(useEffect, setIsColored) {
+    const tinyThis = this;
+    useEffect(() => {
+      const isColoredDetector = (index, theme) => {
+        setIsColored(tinyThis._checkThemeIsColored(theme));
+      };
+
+      tinyThis.on(cons.events.settings.THEME_APPLIED, isColoredDetector);
+      return () => {
+        tinyThis.off(cons.events.settings.THEME_APPLIED, isColoredDetector);
+      };
+    });
+
+    return () => {
+      setIsColored(tinyThis.isSelectedThemeColored());
+    };
   }
 
   changeMobileBackground(value = 'default') {
