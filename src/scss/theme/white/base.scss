@@ -419,6 +419,7 @@
 
 body.discord-style {
   font-family: 'gg sans Normal Regular';
+
   #chatbox {
     .username-base {
       font-family: 'gg sans SemiBold Regular';
@@ -451,5 +452,10 @@ body.discord-style {
 
   .badge:not(.notification-badge) {
     font-size: 0.8em;
+  }
+
+  strong,
+  b {
+    font-family: 'gg sans SemiBold Regular';
   }
 }
