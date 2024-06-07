@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { objType } from 'for-promise/utils/lib.mjs';
+import settings from '@src/client/state/settings';
 import { openInviteList } from '../../../../client/action/navigation';
 
 import Avatar from '../../../atoms/avatar/Avatar';
@@ -89,6 +90,9 @@ function useTotalInvites() {
 export default function InviteSidebar() {
   const [lastMemberRoomId, setLastMemberRoomId] = useState(null);
 
+  const [isIconsColored, setIsIconsColored] = useState(settings.isSelectedThemeColored());
+  settings.isThemeColoredDetector(useEffect, setIsIconsColored);
+
   const mx = initMatrix.matrixClient;
   useEffect(() => {
     const roomJoinValidator = (event, member) => {
@@ -119,6 +123,7 @@ export default function InviteSidebar() {
         onClick={() => openInviteList()}
         avatar={
           <Avatar
+            iconColor={!isIconsColored ? null : 'rgb(164, 42, 212)'}
             faSrc="bi bi-envelope-plus-fill"
             className="profile-image-container"
             size="normal"

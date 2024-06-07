@@ -207,6 +207,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
             <>
               <li className="nav-item">
                 <IconButton
+                  iconColor={!isIconsColored ? null : 'rgb(164, 42, 212)'}
                   className="nav-link btn btn-bg border-0"
                   onClick={() => toggleRoomSettings(tabText.SEARCH)}
                   tooltipPlacement="bottom"
@@ -217,6 +218,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
 
               <li className="nav-item">
                 <IconButton
+                  iconColor={!isIconsColored ? null : 'rgb(41, 220, 131)'}
                   className="nav-link border-0 d-none d-sm-block"
                   onClick={() => openThreadsMessageModal(room)}
                   tooltipPlacement="bottom"
@@ -227,6 +229,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
 
               <li className="nav-item">
                 <IconButton
+                  iconColor={!isIconsColored ? null : 'rgb(220, 215, 41)'}
                   className="nav-link border-0 d-none d-sm-block"
                   onClick={() => openPinMessageModal(room)}
                   tooltipPlacement="bottom"
