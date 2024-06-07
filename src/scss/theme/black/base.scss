@@ -28,6 +28,36 @@
   --bg-surface-gradient-3: none;
   --bg-auth-gradient: none;
 
+  .btn-theme {
+    --bs-btn-bg: #000000;
+    --bs-btn-border-color: #313131;
+    --bs-btn-hover-bg: #424649;
+    --bs-btn-hover-border-color: #313131;
+    --bs-btn-focus-shadow-rgb: 66, 70, 73;
+    --bs-btn-active-bg: #4d5154;
+    --bs-btn-active-border-color: #313131;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-bg: #000000;
+    --bs-btn-disabled-border-color: #313131;
+  }
+
+  .btn-outline-theme {
+    --bs-btn-color: #fff;
+    --bs-btn-border-color: #212529;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #212529;
+    --bs-btn-hover-border-color: #212529;
+    --bs-btn-focus-shadow-rgb: 33, 37, 41;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #212529;
+    --bs-btn-active-border-color: #212529;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #212529;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #212529;
+    --bs-gradient: none;
+  }
+
   .message__threadSummary {
     background-color: var(--bg-surface-active);
   }
