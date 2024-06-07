@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { objType } from 'for-promise/utils/lib.mjs';
+import settings from '@src/client/state/settings';
 
 import { forceUnloadedAvatars } from '../../atoms/avatar/load';
 import { twemojifyReact } from '../../../util/twemojify';
@@ -41,6 +42,9 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
   const mx = initMatrix.matrixClient;
   const isDM = initMatrix.roomList && initMatrix.roomList.directs.has(roomId);
   const room = !roomItem ? mx.getRoom(roomId) : roomItem;
+
+  const [isIconsColored, setIsIconsColored] = useState(settings.isSelectedThemeColored());
+  settings.isThemeColoredDetector(useEffect, setIsIconsColored);
 
   const getAvatarUrl = () =>
     isDM
@@ -235,6 +239,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
 
           <li className="nav-item">
             <IconButton
+              iconColor={!isIconsColored ? null : 'rgb(0 159 255)'}
               className="nav-link border-0 d-none d-sm-block"
               onClick={togglePeopleDrawer}
               tooltipPlacement="bottom"
@@ -244,6 +249,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
           </li>
           <li className="nav-item">
             <IconButton
+              iconColor={!isIconsColored ? null : 'rgb(255	235	127)'}
               className="nav-link border-0 d-none d-sm-block"
               onClick={() => toggleRoomSettings(tabText.MEMBERS)}
               tooltipPlacement="bottom"
