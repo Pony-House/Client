@@ -19,7 +19,13 @@ import silverTheme from '../../scss/theme/silver';
 import whiteTheme from '../../scss/theme/white';
 
 const themes = {
-  black: { data: blackTheme, id: 'black-theme', type: 'dark-solid', coloredIcons: true },
+  black: { data: blackTheme, id: 'black-theme', type: 'dark-solid', coloredIcons: false },
+  black_colors: {
+    data: blackTheme,
+    id: 'black-colors-theme',
+    type: 'dark-solid',
+    coloredIcons: true,
+  },
 
   butter: { data: butterTheme, id: 'butter-theme', type: 'dark2', coloredIcons: false },
   butter_no_gradient: {
@@ -80,6 +86,7 @@ class Settings extends EventEmitter {
       themes.butter,
       themes.butter_no_gradient,
       themes.black,
+      themes.black_colors,
     ];
 
     this.themesName = [
@@ -92,6 +99,7 @@ class Settings extends EventEmitter {
       { text: 'Butter' },
       { text: 'Butter (No Gradients)' },
       { text: 'Black (Beta)' },
+      { text: 'Black Colors (Beta)' },
     ];
 
     this.defaultSystemThemeType = {
