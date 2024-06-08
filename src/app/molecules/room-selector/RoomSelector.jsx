@@ -16,7 +16,7 @@ import { blurOnBubbling } from '../../atoms/button/script';
 import { getPresence, getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
 import insertCustomStatus from '../people-selector/insertCustomStatus';
-import { checkerFavIcon } from '../../../util/libs/favicon';
+import favIconManager from '../../../util/libs/favicon';
 import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 import { selectRoom, selectRoomMode } from '../../../client/action/navigation';
 
@@ -172,7 +172,7 @@ function RoomSelector({
     }
   });
 
-  checkerFavIcon();
+  favIconManager.checkerFavIcon();
   const isDefault = !iconSrc || notSpace;
 
   useEffect(() => {

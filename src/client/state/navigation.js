@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import { objType } from 'for-promise/utils/lib.mjs';
 
-import { checkerFavIcon } from '@src/util/libs/favicon';
+import favIconManager from '@src/util/libs/favicon';
 import { eventMaxListeners } from '@src/util/matrixUtil';
 import appDispatcher from '../dispatcher';
 import cons from './cons';
@@ -164,7 +164,7 @@ class Navigation extends EventEmitter {
 
     // Refresh Url Params
     urlParams.refreshState();
-    checkerFavIcon();
+    favIconManager.checkerFavIcon();
   }
 
   _selectTabWithRoom(roomId) {
@@ -396,7 +396,7 @@ class Navigation extends EventEmitter {
         else urlParams.delete('tab', undefined, false);
 
         urlParams.refreshState();
-        checkerFavIcon();
+        favIconManager.checkerFavIcon();
       },
 
       [cons.actions.navigation.UPDATE_EMOJI_LIST]: () => {

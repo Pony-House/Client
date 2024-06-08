@@ -99,6 +99,8 @@ async function createWindow() {
     win = new BrowserWindow({
       title,
       icon,
+      frame: false,
+      titleBarStyle: 'hidden',
       show: true,
       autoHideMenuBar: true,
       width: bounds.width,

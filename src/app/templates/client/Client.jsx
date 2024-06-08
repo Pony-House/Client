@@ -38,6 +38,7 @@ import {
   selectSpace,
   selectTab,
 } from '../../../client/action/navigation';
+import ElectronSidebar from './ElectronSidebar';
 
 let versionChecked = false;
 
@@ -268,6 +269,7 @@ function Client() {
 
   return (
     <>
+      <ElectronSidebar />
       <LoadingPage />
       {tinyMod}
       <DragDrop

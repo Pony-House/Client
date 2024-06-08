@@ -20,7 +20,7 @@ import { updateName } from '../../../util/roomName';
 import { html, plain } from '../../../util/markdown';
 import { getAccountStatus } from '../../../app/organisms/navigation/ProfileAvatarMenu';
 import { messageIsClassicCrdt } from '../../../util/libs/crdt';
-import { checkerFavIcon } from '../../../util/libs/favicon';
+import favIconManager from '../../../util/libs/favicon';
 import { getPrivacyRefuseRoom } from '../../../app/organisms/navigation/Sidebar/InviteSidebar';
 // import { insertEvent } from '../eventsDelay';
 
@@ -108,7 +108,7 @@ class Notifications extends EventEmitter {
     [...this.roomList.directs].forEach(addNoti);
 
     this.initialized = true;
-    checkerFavIcon();
+    favIconManager.checkerFavIcon();
   }
 
   doesRoomHaveUnread(room) {
@@ -215,7 +215,7 @@ class Notifications extends EventEmitter {
       addNoti(spaceId, spaceId, threadId, addT, addH, roomId);
     });
 
-    checkerFavIcon();
+    favIconManager.checkerFavIcon();
   }
 
   _deleteNoti(roomId, threadId, total, highlight) {
@@ -252,7 +252,7 @@ class Notifications extends EventEmitter {
       removeNoti(spaceId, total, highlight, roomId);
     });
 
-    checkerFavIcon();
+    favIconManager.checkerFavIcon();
   }
 
   async sendNotification(data) {
@@ -338,7 +338,7 @@ class Notifications extends EventEmitter {
 
   async _displayPopupNoti(mEvent, room, stopNotification = false) {
     // Favicon
-    checkerFavIcon();
+    favIconManager.checkerFavIcon();
 
     // Encrypted
     if (mEvent.isEncrypted()) {

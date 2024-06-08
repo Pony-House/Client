@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { checkerFavIcon } from '../../../util/libs/favicon';
+import favIconManager from '../../../util/libs/favicon';
 
 function NotificationBadge({
   alert = false,
@@ -22,7 +22,7 @@ function NotificationBadge({
     classes.push('empty-badge');
   }
 
-  checkerFavIcon();
+  favIconManager.checkerFavIcon();
 
   return <div className={classes.join(' ')}>{finalContent}</div>;
 }

@@ -1,5 +1,5 @@
 import { NotificationCountType, ReceiptType } from 'matrix-js-sdk';
-import { checkerFavIcon } from '@src/util/libs/favicon';
+import favIconManager from '@src/util/libs/favicon';
 
 import initMatrix from '../initMatrix';
 import cons from '../state/cons';
@@ -49,5 +49,5 @@ export async function markAsRead(roomId, threadId) {
       ? ReceiptType.Read
       : ReceiptType.ReadPrivate;
   await mx.sendReadReceipt(latestEvent, receiptType);
-  checkerFavIcon();
+  favIconManager.checkerFavIcon();
 }
