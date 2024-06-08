@@ -1,6 +1,10 @@
-body.electron-mode {
+body.electron-mode:not(.electron-maximized) {
   --electron-body-radius: 10px;
   border-radius: var(--electron-body-radius) !important;
+
+  #setting-close {
+    right: 1px !important;
+  }
 
   #dropzone {
     border-bottom-left-radius: var(--electron-body-radius) !important;

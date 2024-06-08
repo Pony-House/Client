@@ -31,6 +31,12 @@ function ElectronSidebar() {
         }
       }
 
+      if (electronWindowStatus.isMaximized()) {
+        $('body').addClass('electron-maximized');
+      } else {
+        $('body').removeClass('electron-maximized');
+      }
+
       const newSize = $(window).height() - 29;
       if (rootSize)
         $(rootSize).html(`.root-electron-style { height: ${String(newSize)}px !important; }`);
