@@ -41,6 +41,7 @@ export const avatarDefaultColor = (bgColor, type = 'avatar') => {
 const Avatar = React.forwardRef(
   (
     {
+      neonColor = false,
       text = null,
       bgColor = 'transparent',
       iconSrc = null,
@@ -188,7 +189,7 @@ const Avatar = React.forwardRef(
               style={{ backgroundColor: faSrc === null ? bgColor : 'transparent' }}
               className={`avatar__border${faSrc !== null ? '--active' : ''}`}
             >
-              <RawIcon size={size} fa={faSrc} color={iconColor} />
+              <RawIcon size={size} fa={faSrc} neonColor={neonColor} color={iconColor} />
             </span>
           ) : (
             <span
@@ -196,7 +197,7 @@ const Avatar = React.forwardRef(
               className={`avatar__border${iconSrc !== null ? '--active' : ''}`}
             >
               {iconSrc !== null ? (
-                <RawIcon size={size} src={iconSrc} color={iconColor} />
+                <RawIcon size={size} src={iconSrc} neonColor={neonColor} color={iconColor} />
               ) : (
                 text !== null && (
                   <Text variant={textSize} primary>
@@ -214,6 +215,7 @@ const Avatar = React.forwardRef(
 
 // Props
 Avatar.propTypes = {
+  neonColor: PropTypes.bool,
   animParentsCount: PropTypes.number,
   isDefaultImage: PropTypes.bool,
   imageAnimSrc: PropTypes.string,

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function RawIcon({
+  neonColor = false,
   color = null,
   size = 'normal',
   src,
@@ -38,6 +39,7 @@ function RawIcon({
 }
 
 RawIcon.propTypes = {
+  neonColor: PropTypes.bool,
   className: PropTypes.string,
   fa: PropTypes.string,
   color: PropTypes.string,

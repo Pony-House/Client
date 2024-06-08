@@ -118,6 +118,7 @@ export default function FeaturedTab() {
         }}
         avatar={
           <Avatar
+            neonColor
             faSrc="fa-solid fa-user"
             size="normal"
             iconColor={!isIconsColored ? null : 'rgb(0 159 255)'}
@@ -144,6 +145,7 @@ export default function FeaturedTab() {
         }}
         avatar={
           <Avatar
+            neonColor
             faSrc="fa-solid fa-house"
             size="normal"
             iconColor={!isIconsColored ? null : 'rgb(118, 232, 84)'}
@@ -170,6 +172,7 @@ export default function FeaturedTab() {
           onClick={() => openSettings(settingTabText.WEB3)}
           avatar={
             <Avatar
+              neonColor
               iconColor={!isIconsColored ? null : 'rgb(121, 231, 231)'}
               faSrc="fa-brands fa-ethereum"
               size="normal"

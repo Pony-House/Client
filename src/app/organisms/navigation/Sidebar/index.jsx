@@ -63,6 +63,7 @@ function SideBar() {
                 onClick={() => openShortcutSpaces()}
                 avatar={
                   <Avatar
+                    neonColor
                     iconColor={!isIconsColored ? null : 'rgb(84, 101, 232)'}
                     faSrc="bi bi-bookmark-plus-fill"
                     className="profile-image-container"
@@ -83,6 +84,7 @@ function SideBar() {
             onClick={() => openSearch()}
             avatar={
               <Avatar
+                neonColor
                 iconColor={!isIconsColored ? null : 'rgb(164, 42, 212)'}
                 faSrc="fa-solid fa-magnifying-glass"
                 className="profile-image-container"

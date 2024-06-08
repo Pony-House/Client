@@ -238,6 +238,7 @@ function PeopleDrawer({
           <ul className="navbar-nav ms-auto mb-0 small">
             <li className="nav-item">
               <IconButton
+                neonColor
                 iconColor={!isIconsColored ? null : 'rgb(164, 42, 212)'}
                 onClick={() => openInviteUser(roomId)}
                 tooltipPlacement="bottom"

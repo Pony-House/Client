@@ -152,6 +152,7 @@ function Drawer() {
           {!spaceId ? (
             <center className="small text-start d-grid w-100">
               <IconButton
+                neonColor
                 iconColor={!isIconsColored ? null : 'rgb(164, 42, 212)'}
                 ref={homeClickRef}
                 fa="fa-solid fa-house"

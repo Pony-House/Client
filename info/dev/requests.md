@@ -1,3 +1,9 @@
+Compu
+@Tiny Jasmini do u think u could make it so broken images for space icons fall back to the default colored icons for spaces without images set? preferably change it to show the first letter of the space's name?
+if media breaks then having just a list of identical broken image icons makes things difficult
+
+Ajeitar a posição dos ícones dos botões do custom titlebar.
+
 Criar emoji list com o mesmo nome da crash
 
 Buscador de emojis de custom status fica gelado.

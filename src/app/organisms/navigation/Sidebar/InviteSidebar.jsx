@@ -123,6 +123,7 @@ export default function InviteSidebar() {
         onClick={() => openInviteList()}
         avatar={
           <Avatar
+            neonColor
             iconColor={!isIconsColored ? null : 'rgb(164, 42, 212)'}
             faSrc="bi bi-envelope-plus-fill"
             className="profile-image-container"
