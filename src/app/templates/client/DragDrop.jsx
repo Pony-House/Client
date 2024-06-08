@@ -85,7 +85,11 @@ function DragDrop({ children, navWrapperRef, className }) {
 
   return (
     <>
-      <div ref={dropZone} className="justify-content-center w-100 h-100 noselect" id="dropzone">
+      <div
+        ref={dropZone}
+        className={`${__ENV_APP__.ELECTRON_MODE ? 'root-electron-style ' : ''}justify-content-center w-100 h-100 noselect`}
+        id="dropzone"
+      >
         <center>
           <img
             className="app-welcome__logo noselect"
@@ -95,7 +99,10 @@ function DragDrop({ children, navWrapperRef, className }) {
           <h2 className="mt-3">Drop file to upload</h2>
         </center>
       </div>
-      <div ref={navWrapperRef} className={`client-container${className ? ` ${className}` : ''}`}>
+      <div
+        ref={navWrapperRef}
+        className={`${__ENV_APP__.ELECTRON_MODE ? 'root-electron-style ' : ''}client-container${className ? ` ${className}` : ''}`}
+      >
         {children}
       </div>
     </>

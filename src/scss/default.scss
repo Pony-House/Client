@@ -124,6 +124,7 @@
 @import './RoomSelector.scss';
 
 @import './utils/loadingoverlay.scss';
-@import './ElectronSidebar.scss';
+@import './electron/ElectronSidebar.scss';
 
 @import '../../config/custom-css.scss';
+@import './electron/border-radius.scss';

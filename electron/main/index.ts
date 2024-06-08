@@ -100,12 +100,12 @@ async function createWindow() {
       title,
       icon,
       frame: false,
+      transparent: true,
       titleBarStyle: 'hidden',
       show: true,
       autoHideMenuBar: true,
       width: bounds.width,
       height: bounds.height,
-      backgroundColor: '#282c34',
       minWidth: 700,
       minHeight: 400,
       webPreferences: {

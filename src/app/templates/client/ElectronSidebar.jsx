@@ -1,6 +1,7 @@
 import favIconManager from '@src/util/libs/favicon';
 import React, { useEffect, useState } from 'react';
 
+let head;
 function ElectronSidebar() {
   const [isMaximize, setIsMaximize] = useState(false);
 
@@ -15,6 +16,25 @@ function ElectronSidebar() {
 
   if (__ENV_APP__.ELECTRON_MODE) {
     $('body').addClass('electron-mode');
+    const resizeRoot = () => {
+      let rootSize;
+      if (!head) head = document.head || document.getElementsByTagName('head')[0];
+      if (head) {
+        // Exist DOM
+        rootSize = head.querySelector('style#root_electron_css');
+
+        // Create One
+        if (!rootSize) {
+          rootSize = document.createElement('style');
+          rootSize.id = 'root_electron_css';
+          head.appendChild(rootSize);
+        }
+      }
+
+      const newSize = $(window).height() - 29;
+      if (rootSize)
+        $(rootSize).html(`.root-electron-style { height: ${String(newSize)}px !important; }`);
+    };
 
     useEffect(() => {
       const favIconUpdated = (info) => {
@@ -28,6 +48,7 @@ function ElectronSidebar() {
       };
       const resizePage = () => {
         setIsMaximize(electronWindowStatus.isMaximized());
+        resizeRoot();
       };
 
       $(window).on('resize', resizePage);
@@ -44,6 +65,8 @@ function ElectronSidebar() {
           ) : null}
     */
 
+    resizeRoot();
+    setTimeout(() => resizeRoot(), 10);
     return (
       <div id="electron-titlebar" className="d-flex">
         <div className="title w-100">

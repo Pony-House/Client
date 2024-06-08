@@ -250,13 +250,24 @@ body,
 
 body {
   color: var(--tc-surface-normal);
-  background-color: var(--bg-surface-low) !important;
   font-size: 16px;
   font-weight: var(--fw-normal);
   font-family: var(--font-secondary);
 
   /*Why font-variant-ligatures => https://github.com/rsms/inter/issues/222 */
   font-variant-ligatures: no-contextual;
+}
+
+body:not(.electron-mode) {
+  background-color: var(--bg-surface-low) !important;
+}
+
+body.electron-mode {
+  background-color: transparent !important;
+
+  #root {
+    background-color: var(--bg-surface-low) !important;
+  }
 }
 
 .font-primary {
