@@ -58,4 +58,26 @@ body.electron-mode {
   .modal {
     border-radius: var(--electron-body-radius) !important;
   }
+
+  --electron-body-border: 1px solid var(--bg-electron-border);
+  #root {
+    > *:not(#electron-titlebar) {
+      border-left: var(--electron-body-border) !important;
+      border-right: var(--electron-body-border) !important;
+      border-bottom: var(--electron-body-border) !important;
+    }
+  }
+
+  #electron-titlebar {
+    border-left: var(--electron-body-border) !important;
+    border-right: var(--electron-body-border) !important;
+    border-top: var(--electron-body-border) !important;
+  }
+
+  .modal-backdrop,
+  .modal {
+    border-left: var(--electron-body-border) !important;
+    border-right: var(--electron-body-border) !important;
+    border-bottom: var(--electron-body-border) !important;
+  }
 }
