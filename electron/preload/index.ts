@@ -159,3 +159,26 @@ ipcRenderer.on('tiny-app-is-show', (event, data) => {
 });
 
 contextBridge.exposeInMainWorld('getElectronShowStatus', () => appShow);
+
+let isMaximized: any = false;
+ipcRenderer.on('window-is-maximized', (_event, arg) => {
+  isMaximized = arg;
+});
+
+const electronWindowStatus = {
+  maximize: () => {
+    ipcRenderer.send('window-maximize', true);
+  },
+  unmaximize: () => {
+    ipcRenderer.send('window-unmaximize', true);
+  },
+  minimize: () => {
+    ipcRenderer.send('window-minimize', true);
+  },
+  close: () => {
+    ipcRenderer.send('window-close', true);
+  },
+  isMaximized: () => isMaximized,
+};
+
+contextBridge.exposeInMainWorld('electronWindowStatus', electronWindowStatus);
