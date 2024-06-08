@@ -18,6 +18,8 @@ function ElectronSidebar() {
 
     useEffect(() => {
       const favIconUpdated = (info) => {
+        setIcon(info.icon);
+        setUrlBase(info.urlBase);
         setTitle(info.title);
         setSubTitle(info.subTitle);
         // setDirectCount(info.directCount);
@@ -43,9 +45,10 @@ function ElectronSidebar() {
           {typeof urlBase === 'string' && typeof icon === 'string' ? (
             <img className="icon" src={`${urlBase}${icon}`} alt="icon" />
           ) : null}
-          {typeof subTitle === 'string' ? <span className="tsub">{` | ${subTitle}`}</span> : null}
-          <span className="tbase">{title}</span>
-          {typeof subTitle === 'string' ? <span className="tsub">{` | ${subTitle}`}</span> : null}
+          <span className="tbase text-truncate">{title}</span>
+          {typeof subTitle === 'string' ? (
+            <span className="tsub text-truncate">{` | ${subTitle}`}</span>
+          ) : null}
         </div>
         <div className="options text-end">
           <button className="minimize button">

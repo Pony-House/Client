@@ -185,33 +185,36 @@ function Client() {
 
   if (isLoading) {
     return (
-      <div className="loading-display">
-        <div className="loading__menu">
-          <ContextMenu
-            placement="bottom"
-            content={
-              <>
-                <MenuItem onClick={() => initMatrix.clearCacheAndReload()}>
-                  Clear cache & reload
-                </MenuItem>
-                <MenuItem onClick={() => initMatrix.logout()}>Logout</MenuItem>
-              </>
-            }
-            render={(toggle) => (
-              <IconButton size="extra-small" onClick={toggle} fa="bi bi-three-dots-vertical" />
-            )}
-          />
-        </div>
-        <Spinner />
-        <div className="very-small fw-bold text-uppercase mt-3">Did you know</div>
-        <p className="loading__message small">{loadingMsg}</p>
+      <>
+        <ElectronSidebar />
+        <div className="loading-display">
+          <div className="loading__menu">
+            <ContextMenu
+              placement="bottom"
+              content={
+                <>
+                  <MenuItem onClick={() => initMatrix.clearCacheAndReload()}>
+                    Clear cache & reload
+                  </MenuItem>
+                  <MenuItem onClick={() => initMatrix.logout()}>Logout</MenuItem>
+                </>
+              }
+              render={(toggle) => (
+                <IconButton size="extra-small" onClick={toggle} fa="bi bi-three-dots-vertical" />
+              )}
+            />
+          </div>
+          <Spinner />
+          <div className="very-small fw-bold text-uppercase mt-3">Did you know</div>
+          <p className="loading__message small">{loadingMsg}</p>
 
-        <div className="loading__appname">
-          <Text variant="h2" weight="medium">
-            {__ENV_APP__.INFO.name}
-          </Text>
+          <div className="loading__appname">
+            <Text variant="h2" weight="medium">
+              {__ENV_APP__.INFO.name}
+            </Text>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
