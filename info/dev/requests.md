@@ -2,6 +2,10 @@ Compu
 @Tiny Jasmini do u think u could make it so broken images for space icons fall back to the default colored icons for spaces without images set? preferably change it to show the first letter of the space's name?
 if media breaks then having just a list of identical broken image icons makes things difficult
 
+btw would it be possible to enable re-ordering the emoji packs in the picker?
+like maybe add grab handles in the settings in the emoji tab?
+currently it's just ordered by when u clicked the "use globally" checkbox for each pack
+
 Ajeitar a posição dos ícones dos botões do custom titlebar.
 
 Criar emoji list com o mesmo nome da crash
