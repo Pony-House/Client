@@ -54,6 +54,11 @@ body.electron-mode {
         &.close:active {
           background-color: var(--ic-danger-high);
         }
+
+        i {
+          position: relative;
+          top: 2px;
+        }
       }
     }
   }
