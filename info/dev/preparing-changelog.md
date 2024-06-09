@@ -1,0 +1,1 @@
+- pswp css fixed on electron mode.
