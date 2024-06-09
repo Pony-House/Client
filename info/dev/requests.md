@@ -6,6 +6,8 @@ btw would it be possible to enable re-ordering the emoji packs in the picker?
 like maybe add grab handles in the settings in the emoji tab?
 currently it's just ordered by when u clicked the "use globally" checkbox for each pack
 
+Buttons in the picture viewer to go to the next/previous image in the chat
+
 Ajeitar a posição dos ícones dos botões do custom titlebar.
 
 Criar emoji list com o mesmo nome da crash
