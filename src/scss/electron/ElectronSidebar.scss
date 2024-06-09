@@ -69,6 +69,16 @@ body.electron-mode {
     padding-top: 29px !important;
   }
 
+  .pswp.pswp--open {
+    .pswp__bg {
+      margin-top: 29px !important;
+    }
+    .pswp__container,
+    .pswp__top-bar {
+      padding-top: 29px;
+    }
+  }
+
   .root-electron-style {
     position: relative !important;
     top: 29px !important;

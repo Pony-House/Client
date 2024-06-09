@@ -39,7 +39,9 @@ function ElectronSidebar() {
 
       const newSize = $(window).height() - 29;
       if (rootSize)
-        $(rootSize).html(`.root-electron-style { height: ${String(newSize)}px !important; }`);
+        $(rootSize).html(
+          `.root-electron-style, .pswp.pswp--open .pswp__bg { height: ${String(newSize)}px !important; }`,
+        );
     };
 
     useEffect(() => {
