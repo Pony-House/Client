@@ -1,0 +1,2 @@
+- tinyNode issue fixed.
+- Removed deprecated functions.
