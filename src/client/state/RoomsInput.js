@@ -17,7 +17,7 @@ import cons from './cons';
 import settings from './settings';
 import { markdown, plain, html } from '../../util/markdown';
 import { clearUrlsFromHtml, clearUrlsFromText } from '../../util/clear-urls/clearUrls';
-import { fetchFn } from '../initMatrix';
+import initMatrix, { fetchFn } from '../initMatrix';
 
 const blurhashField = 'xyz.amorgan.blurhash';
 
@@ -397,6 +397,7 @@ class RoomsInput extends EventEmitter {
     };
     const content = { info };
     let uploadData = null;
+    const room = initMatrix.matrixClient.getRoom(roomId);
 
     if (fileType === 'image') {
       // let imgData;
@@ -439,7 +440,7 @@ class RoomsInput extends EventEmitter {
           thumbnailData.thumbnail,
         );
         info.thumbnail_info = thumbnailData.info;
-        if (this.matrixClient.isRoomEncrypted(roomId)) {
+        if (room.hasEncryptionStateEvent()) {
           info.thumbnail_file = thumbnailUploadData.file;
         } else {
           info.thumbnail_url = thumbnailUploadData.url;
@@ -470,7 +471,7 @@ class RoomsInput extends EventEmitter {
       this.emit(cons.events.roomsInput.FILE_UPLOAD_CANCELED, roomId, threadId);
       return;
     }
-    if (this.matrixClient.isRoomEncrypted(roomId)) {
+    if (room.hasEncryptionStateEvent()) {
       content.file = uploadData.file;
       if (!threadId) await this.matrixClient.sendMessage(roomId, content);
       else await this.matrixClient.sendMessage(roomId, threadId, content);
@@ -483,7 +484,8 @@ class RoomsInput extends EventEmitter {
 
   // Upload file
   async uploadFile(roomId, threadId, file, progressHandler) {
-    const isEncryptedRoom = this.matrixClient.isRoomEncrypted(roomId);
+    const room = initMatrix.matrixClient.getRoom(roomId);
+    const isEncryptedRoom = room.hasEncryptionStateEvent();
 
     let encryptInfo = null;
     let encryptBlob = null;

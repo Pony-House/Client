@@ -39,7 +39,7 @@ function ExportE2ERoomKeys() {
       type: cons.status.IN_FLIGHT,
     });
     try {
-      const keys = await initMatrix.matrixClient.exportRoomKeys();
+      const keys = await initMatrix.matrixClient.getCrypto().exportRoomKeys();
       if (isMountStore.getItem()) {
         setStatus({
           isOngoing: true,

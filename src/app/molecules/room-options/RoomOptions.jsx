@@ -84,7 +84,7 @@ function RoomOptions({ roomId, threadId, afterOptionSelect = null }) {
           >
             Invite
           </MenuItem>
-          {mx.isRoomEncrypted(roomId) === false ? (
+          {room.hasEncryptionStateEvent() === false ? (
             <MenuItem
               className="text-start d-sm-none"
               faSrc="bi bi-pin-angle-fill"

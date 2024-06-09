@@ -28,7 +28,7 @@ function EmojiVerificationContent({ data, requestClose }) {
     if (
       isCrossVerified(mx.deviceId) &&
       (mx.getCrossSigningId() === null ||
-        (await mx.crypto.crossSigningInfo.isStoredInKeyCache('self_signing')) === false)
+        (await mx.getCrypto().crossSigningInfo.isStoredInKeyCache('self_signing')) === false)
     ) {
       if (!hasPrivateKey(getDefaultSSKey())) {
         const keyData = await accessSecretStorage('Emoji verification');

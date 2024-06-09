@@ -203,7 +203,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
 
       {!disableActions ? (
         <ul className="navbar-nav ms-auto mb-0 small" id="room-options">
-          {mx.isRoomEncrypted(roomId) === false && (
+          {room.hasEncryptionStateEvent() === false && (
             <>
               <li className="nav-item">
                 <IconButton

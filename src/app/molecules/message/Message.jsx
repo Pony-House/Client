@@ -1094,7 +1094,7 @@ const MessageOptions = React.memo(
                 Copy text
               </MenuItem>
 
-              {!mx.isRoomEncrypted(roomId) && canPinMessage(room, myUserId) ? (
+              {!room.hasEncryptionStateEvent() && canPinMessage(room, myUserId) ? (
                 <MenuItem
                   className="text-start"
                   faSrc={`bi bi-pin-angle${!isPinnedMessage(room, eventid) ? '-fill' : ''}`}

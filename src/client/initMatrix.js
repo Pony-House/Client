@@ -180,6 +180,13 @@ class InitMatrix extends EventEmitter {
           global.initMatrix = this;
         }
         if (prevState === null) {
+          this.isEncryptionEnabledInRoom =
+            this.matrixClient &&
+            typeof this.matrixClient.getCrypto === 'function' &&
+            typeof this.matrixClient.getCrypto().isEncryptionEnabledInRoom === 'function'
+              ? this.matrixClient.getCrypto().isEncryptionEnabledInRoom
+              : () => false;
+
           this.roomList = new RoomList(this.matrixClient);
           this.accountData = new AccountData(this.roomList);
           this.roomsInput = new RoomsInput(this.matrixClient, this.roomList);

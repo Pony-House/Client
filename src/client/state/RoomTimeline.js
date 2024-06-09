@@ -345,7 +345,7 @@ class RoomTimeline extends EventEmitter {
   }
 
   isEncrypted() {
-    return this.matrixClient.isRoomEncrypted(this.roomId);
+    return this.room && this.room.hasEncryptionStateEvent();
   }
 
   clearLocalTimelines() {

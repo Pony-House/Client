@@ -43,7 +43,7 @@ function ImportE2ERoomKeys() {
           type: cons.status.IN_FLIGHT,
         });
       }
-      await initMatrix.matrixClient.importRoomKeys(JSON.parse(keys));
+      await initMatrix.matrixClient.getCrypto().importRoomKeys(JSON.parse(keys));
       if (isMountStore.getItem()) {
         setStatus({
           isOngoing: false,

@@ -140,7 +140,7 @@ function DeviceManage() {
   };
 
   const verifyWithEmojis = async (deviceId) => {
-    const req = await mx.requestVerification(mx.getUserId(), [deviceId]);
+    const req = await mx.getCrypto().requestDeviceVerification(mx.getUserId(), deviceId);
     openEmojiVerification(req, { userId: mx.getUserId(), deviceId });
   };
 

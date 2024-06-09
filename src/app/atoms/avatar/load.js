@@ -102,31 +102,43 @@ export function installAvatarData(img) {
 
               // Prepare Node Detector
               let tinyNode = img.get(0);
-              for (let i = 0; i < img.data('avatars-parents'); i++) {
-                tinyNode = tinyNode.parentNode;
+              if (tinyNode) {
+                for (let i = 0; i < img.data('avatars-parents'); i++) {
+                  if (tinyNode) {
+                    tinyNode = tinyNode.parentNode;
+                  } else {
+                    break;
+                  }
+                }
+
+                if (tinyNode) {
+                  // Final Node
+                  tinyNode = $(tinyNode);
+
+                  // Insert Effects
+                  tinyNode.hover(
+                    () => {
+                      if (img.data('avatars-type') === 'gif' && img.data('avatars-animate'))
+                        img.attr('src', img.data('avatars-animate'));
+                    },
+                    () => {
+                      if (img.data('avatars-type') === 'gif' && img.data('avatars-normal'))
+                        img.attr('src', img.data('avatars-normal'));
+                    },
+                  );
+
+                  // Set Normal Image
+                  img.attr('src', img.data('avatars-normal'));
+                  img.attr('loadingimg', 'false');
+
+                  // Complete
+                  resolve(true);
+                } else {
+                  resolve(false);
+                }
+              } else {
+                resolve(false);
               }
-
-              // Final Node
-              tinyNode = $(tinyNode);
-
-              // Insert Effects
-              tinyNode.hover(
-                () => {
-                  if (img.data('avatars-type') === 'gif' && img.data('avatars-animate'))
-                    img.attr('src', img.data('avatars-animate'));
-                },
-                () => {
-                  if (img.data('avatars-type') === 'gif' && img.data('avatars-normal'))
-                    img.attr('src', img.data('avatars-normal'));
-                },
-              );
-
-              // Set Normal Image
-              img.attr('src', img.data('avatars-normal'));
-              img.attr('loadingimg', 'false');
-
-              // Complete
-              resolve(true);
 
               // Invalid values here
             } else {
