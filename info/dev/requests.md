@@ -8,6 +8,8 @@ currently it's just ordered by when u clicked the "use globally" checkbox for ea
 
 Buttons in the picture viewer to go to the next/previous image in the chat
 
+--> Neon no ícone de sessões não verificadas
+
 Ajeitar a posição dos ícones dos botões do custom titlebar.
 
 Criar emoji list com o mesmo nome da crash
