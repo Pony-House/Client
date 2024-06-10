@@ -2,3 +2,4 @@
 - Removed deprecated functions.
 - ExportE2ERoomKeys - file name changed.
 - CrossSigninAlert - neon added on the colors theme.
+- Welcome icon and message changed.

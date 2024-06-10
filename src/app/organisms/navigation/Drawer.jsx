@@ -155,7 +155,7 @@ function Drawer() {
                 neonColor
                 iconColor={!isIconsColored ? null : 'rgb(164, 42, 212)'}
                 ref={homeClickRef}
-                fa="fa-solid fa-house"
+                fa="fa-solid fa-window-maximize"
                 id="space-drawer-home-button"
                 className={`text-start mt-3 mx-3 space-drawer-menu-item${!getSelectRoom() && !getSelectSpace() ? ' active' : ''}`}
                 onClick={() => {
@@ -164,7 +164,7 @@ function Drawer() {
                   $(homeClickRef.current).addClass('active');
                 }}
               >
-                <span className="ms-3">Home</span>
+                <span className="ms-3">Welcome</span>
               </IconButton>
             </center>
           ) : null}
