@@ -1,3 +1,4 @@
 - tinyNode issue fixed.
 - Removed deprecated functions.
 - ExportE2ERoomKeys - file name changed.
+- CrossSigninAlert - neon added on the colors theme.
