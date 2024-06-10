@@ -8,8 +8,6 @@ currently it's just ordered by when u clicked the "use globally" checkbox for ea
 
 Buttons in the picture viewer to go to the next/previous image in the chat
 
---> Neon no ícone de sessões não verificadas
-
 Criar emoji list com o mesmo nome da crash
 
 Buscador de emojis de custom status fica gelado.
