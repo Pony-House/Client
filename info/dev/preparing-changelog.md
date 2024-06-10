@@ -1,2 +1,3 @@
 - tinyNode issue fixed.
 - Removed deprecated functions.
+- ExportE2ERoomKeys - file name changed.
