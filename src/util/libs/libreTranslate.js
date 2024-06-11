@@ -94,21 +94,19 @@ class LibreTranslate extends EventEmitter {
 
       if (typeof coptions.apiKey === 'string') options.apiKey = coptions.apiKey;
 
+      const url = `${this.content.host.startsWith('https://') || this.content.host.startsWith('http://') ? this.content.host : `https://${this.content.host}`}${!this.content.host.endsWith('/') ? '/' : ''}translate`;
       const options = {
         method: 'POST',
         body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
       };
 
+      if (isDebug) console.log('[LibreTranslate] [url]', url);
       if (isDebug) console.log('[LibreTranslate] [body]', body);
       if (isDebug) console.log('[LibreTranslate] [options]', options);
 
-      const res = await fetchFn(
-        `${this.content.host.startsWith('https://') || this.content.host.startsWith('http://') ? this.content.host : `https://${this.content.host}`}${!this.content.host.endsWith('/') ? '/' : ''}translate`,
-        options,
-      );
-
       try {
+        const res = await fetchFn(url, options);
         const result = await res.json();
         if (isDebug) console.log('[LibreTranslate] [result]', result);
         if (!result.error) {
