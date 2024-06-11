@@ -27,7 +27,7 @@ function SettingNumber({ value = 0, min = null, max = null, onChange = null, con
       }
 
       if (validated && event.type === 'change' && onChange) {
-        onChange(tinyValue);
+        onChange(tinyValue, event.target, el);
       }
     };
 

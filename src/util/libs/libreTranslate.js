@@ -12,7 +12,7 @@ class LibreTranslate extends EventEmitter {
     this.Initialized = false;
   }
 
-  _testUrl(value) {
+  testUrl(value) {
     return (
       (!value.startsWith('https://') &&
         !value.startsWith('http://') &&
@@ -43,7 +43,7 @@ class LibreTranslate extends EventEmitter {
       this.defaultHost =
         typeof __ENV_APP__.LIBRE_TRANSLATE.DEFAULT_HOST === 'string' &&
         __ENV_APP__.LIBRE_TRANSLATE.DEFAULT_HOST.length > 0 &&
-        this._testUrl(__ENV_APP__.LIBRE_TRANSLATE.DEFAULT_HOST)
+        this.testUrl(__ENV_APP__.LIBRE_TRANSLATE.DEFAULT_HOST)
           ? __ENV_APP__.LIBRE_TRANSLATE.DEFAULT_HOST
           : null;
 
@@ -55,7 +55,7 @@ class LibreTranslate extends EventEmitter {
       this.content.host =
         typeof this.content.host === 'string' &&
         this.content.host.length > 0 &&
-        this._testUrl(this.content.host)
+        this.testUrl(this.content.host)
           ? this.content.host
           : this.defaultHost;
 
@@ -78,7 +78,7 @@ class LibreTranslate extends EventEmitter {
       this.content &&
       typeof this.content.host === 'string' &&
       this.content.host.length > 0 &&
-      this._testUrl(this.content.host)
+      this.testUrl(this.content.host)
     ) {
       const body = {
         q: text,
@@ -125,6 +125,10 @@ class LibreTranslate extends EventEmitter {
       }
     }
     return null;
+  }
+
+  getDefaultHost() {
+    return this.defaultHost;
   }
 
   get(folder) {

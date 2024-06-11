@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import libreTranslate from '@src/util/libs/libreTranslate';
+import SegmentedControls from '@src/app/atoms/segmented-controls/SegmentedControls';
+import { getAppearance } from '@src/util/libs/appearance';
+import SettingsText from '@src/app/molecules/settings-text/SettingsText';
 
 import SettingTile from '../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../atoms/button/Toggle';
 import { toggleActionLocal } from '../Api';
-import SegmentedControls from '@src/app/atoms/segmented-controls/SegmentedControls';
 
 function LibreTranslateSection() {
+  const appearanceSettings = getAppearance();
   const [isEnabled, setIsEnabled] = useState(libreTranslate.get('enabled'));
+
   const [host, setHost] = useState(libreTranslate.get('host'));
   const [apiKey, setApiKey] = useState(libreTranslate.get('apiKey'));
-
   const [source, setSource] = useState(libreTranslate.get('source'));
   const [target, setTarget] = useState(libreTranslate.get('target'));
 
@@ -43,6 +46,54 @@ function LibreTranslateSection() {
               </div>
             }
           />
+
+          {!appearanceSettings.basicUserMode && appearanceSettings.advancedUserMode ? (
+            <SettingTile
+              title="Host domain"
+              content={
+                <SettingsText
+                  value={host || libreTranslate.getDefaultHost()}
+                  onChange={(value, target, queryTarget) => {
+                    if (libreTranslate.testUrl(value)) {
+                      libreTranslate.set('host', value);
+                      setHost(value);
+                    } else {
+                      queryTarget.val('');
+                    }
+                  }}
+                  maxLength={100}
+                  content={
+                    <div className="very-small text-gray">
+                      Enter the host domain of your LibreTranslate. You can just type the domain, or
+                      type your address into a http or https protocol.
+                    </div>
+                  }
+                />
+              }
+            />
+          ) : null}
+
+          {!appearanceSettings.basicUserMode && appearanceSettings.advancedUserMode ? (
+            <SettingTile
+              title="API Key"
+              content={
+                <SettingsText
+                  value={apiKey}
+                  onChange={(value) => {
+                    libreTranslate.set('apiKey', value);
+                    setApiKey(value);
+                  }}
+                  maxLength={300}
+                  content={
+                    <div className="very-small text-gray">
+                      If you are using a LibreTranslate instance that requires an API key, please
+                      enter here.
+                    </div>
+                  }
+                />
+              }
+            />
+          ) : null}
 
           <SettingTile
             title="Source"
