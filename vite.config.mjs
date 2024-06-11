@@ -157,8 +157,11 @@ export default defineConfig(({ command, mode }) => {
 
     MAX_LISTENERS: Number(env.MAX_LISTENERS),
 
-    LIBRE_TRANSLATE_DEFAULT_HOST: typeof env.LIBRE_TRANSLATE_DEFAULT_HOST === 'string' && env.LIBRE_TRANSLATE_DEFAULT_HOST.length > 0 ?
-      env.LIBRE_TRANSLATE_DEFAULT_HOST : null,
+    LIBRE_TRANSLATE_: {
+      DEFAULT_HOST: typeof env.LIBRE_TRANSLATE_DEFAULT_HOST === 'string' && env.LIBRE_TRANSLATE_DEFAULT_HOST.length > 0 ?
+        env.LIBRE_TRANSLATE_DEFAULT_HOST : null,
+      ENABLED: !!(env.LIBRE_TRANSLATE_ENABLED === true || env.LIBRE_TRANSLATE_ENABLED === 'true'),
+    },
 
     EMOJIBOARD: {
       ROW_LIMIT: {
