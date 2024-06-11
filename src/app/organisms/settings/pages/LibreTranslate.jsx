@@ -73,45 +73,45 @@ function LibreTranslateSection() {
             />
           ) : null}
 
-          {!appearanceSettings.basicUserMode && appearanceSettings.advancedUserMode ? (
+          <SettingTile
+            title="API Key"
+            content={
+              <SettingsText
+                value={apiKey}
+                onChange={(value) => {
+                  libreTranslate.set('apiKey', value);
+                  setApiKey(value);
+                }}
+                maxLength={300}
+                content={
+                  <div className="very-small text-gray">
+                    If you are using a LibreTranslate instance that requires an API key, please
+                    enter here.
+                  </div>
+                }
+              />
+            }
+          />
+
+          {!appearanceSettings.basicUserMode ? (
             <SettingTile
-              title="API Key"
+              title="Source"
               content={
-                <SettingsText
-                  value={apiKey}
-                  onChange={(value) => {
-                    libreTranslate.set('apiKey', value);
-                    setApiKey(value);
-                  }}
-                  maxLength={300}
-                  content={
-                    <div className="very-small text-gray">
-                      If you are using a LibreTranslate instance that requires an API key, please
-                      enter here.
-                    </div>
-                  }
-                />
+                <div className="mt-2">
+                  <SegmentedControls
+                    type="select"
+                    selected={typeof source === 'string' ? langs.indexOf(source) : -1}
+                    segments={langs}
+                    onSelect={(index) => {
+                      const value = Number(index);
+                      libreTranslate.set('source', langs[index]);
+                      setSource(langs[index]);
+                    }}
+                  />
+                </div>
               }
             />
           ) : null}
-
-          <SettingTile
-            title="Source"
-            content={
-              <div className="mt-2">
-                <SegmentedControls
-                  type="select"
-                  selected={typeof source === 'string' ? langs.indexOf(source) : -1}
-                  segments={langs}
-                  onSelect={(index) => {
-                    const value = Number(index);
-                    libreTranslate.set('source', langs[index]);
-                    setSource(langs[index]);
-                  }}
-                />
-              </div>
-            }
-          />
 
           <SettingTile
             title="Target"
