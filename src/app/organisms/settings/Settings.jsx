@@ -25,6 +25,7 @@ import AdvancedUserSection from './pages/AdvancedUserSection';
 import VoiceVideoSection from './pages/VoiceVideo';
 import IpfsSection from './pages/Ipfs';
 import Web3Section from './pages/Web3';
+import LibreTranslateSection from './pages/LibreTranslate';
 
 function EmojiSection() {
   return (
@@ -40,6 +41,7 @@ export const tabText = {
   APPEARANCE: 'Appearance',
   ADVANCED: 'Advanced User',
   VOICEVIDEO: 'Voice & Video',
+  LIBRETRANSLATE: 'Libre Translate',
   IPFS: 'IPFS Protocol',
   PRIVACY: 'Privacy',
   NOTIFICATIONS: 'Notifications',
@@ -134,9 +136,15 @@ const buildTabItems = () => {
       });
     }
 
-    if (envAPI.get('WEB3') || envAPI.get('IPFS')) {
-      tabItems.push({ type: 'divider' });
+    tabItems.push({ type: 'divider' });
+    tabItems.push({
+      text: tabText.LIBRETRANSLATE,
+      faSrc: 'fa-solid fa-globe',
+      disabled: false,
+      render: () => <LibreTranslateSection />,
+    });
 
+    if (envAPI.get('WEB3') || envAPI.get('IPFS')) {
       if (envAPI.get('IPFS')) {
         tabItems.push({
           text: tabText.IPFS,
