@@ -6,3 +6,4 @@
 - Desktop mode - auth-base css fixed.
 - Error alerts - title updated.
 - LibreTranslate support added.
+- Container - electron loading css fixed.

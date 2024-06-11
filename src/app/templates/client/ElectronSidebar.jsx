@@ -40,7 +40,7 @@ function ElectronSidebar() {
       const newSize = $(window).height() - 29;
       if (rootSize)
         $(rootSize).html(
-          `.root-electron-style, .pswp.pswp--open .pswp__bg { height: ${String(newSize)}px !important; }`,
+          `.root-electron-style, .root-electron-style-solo, .pswp.pswp--open .pswp__bg { height: ${String(newSize)}px !important; }`,
         );
     };
 
