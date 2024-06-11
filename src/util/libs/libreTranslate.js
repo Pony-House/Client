@@ -101,7 +101,7 @@ class LibreTranslate extends EventEmitter {
       };
 
       if (isDebug) console.log('[LibreTranslate] [body]', body);
-      if (isDebug) console.log('[LibreTranslate] [options', options);
+      if (isDebug) console.log('[LibreTranslate] [options]', options);
 
       const res = await fetchFn(
         `${this.content.host.startsWith('https://') || this.content.host.startsWith('http://') ? this.content.host : `https://${this.content.host}`}${!this.content.host.endsWith('/') ? '/' : ''}translate`,
@@ -111,9 +111,13 @@ class LibreTranslate extends EventEmitter {
       try {
         const result = await res.json();
         if (isDebug) console.log('[LibreTranslate] [result]', result);
-
-        if (objType(result, 'object') && typeof result.translatedText === 'string')
-          return result.translatedText;
+        if (!result.error) {
+          if (objType(result, 'object') && typeof result.translatedText === 'string')
+            return result.translatedText;
+        } else {
+          console.error(result.error);
+          if (typeof result.error === 'string') alert(result.error, 'LibreTranslate');
+        }
       } catch (err) {
         console.error(err);
         alert(err.message);
