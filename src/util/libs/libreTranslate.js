@@ -88,6 +88,9 @@ class LibreTranslate extends EventEmitter {
         format: 'text',
       };
 
+      let isJson = false;
+      if (typeof coptions.isJson === 'boolean') isJson = coptions.isJson;
+
       if (typeof coptions.source === 'string') options.source = coptions.source;
 
       if (typeof coptions.target === 'string') options.target = coptions.target;
@@ -111,7 +114,7 @@ class LibreTranslate extends EventEmitter {
         if (isDebug) console.log('[LibreTranslate] [result]', result);
         if (!result.error) {
           if (objType(result, 'object') && typeof result.translatedText === 'string')
-            return result.translatedText;
+            return !isJson ? result.translatedText : result;
         } else {
           console.error(result.error);
           if (typeof result.error === 'string') alert(result.error, 'Libre Translate Error');
