@@ -21,6 +21,10 @@ class LibreTranslate extends EventEmitter {
     );
   }
 
+  getUrl() {
+    return `${this.content.host.startsWith('https://') || this.content.host.startsWith('http://') ? this.content.host : `https://${this.content.host}`}${!this.content.host.endsWith('/') ? '/' : ''}`;
+  }
+
   start() {
     if (!this.Initialized) {
       this.Initialized = true;
@@ -97,7 +101,7 @@ class LibreTranslate extends EventEmitter {
 
       if (typeof coptions.apiKey === 'string') options.apiKey = coptions.apiKey;
 
-      const url = `${this.content.host.startsWith('https://') || this.content.host.startsWith('http://') ? this.content.host : `https://${this.content.host}`}${!this.content.host.endsWith('/') ? '/' : ''}translate`;
+      const url = `${this.getUrl()}translate`;
       const options = {
         method: 'POST',
         body: JSON.stringify(body),

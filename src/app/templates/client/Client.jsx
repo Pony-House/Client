@@ -187,7 +187,9 @@ function Client() {
     return (
       <>
         <ElectronSidebar />
-        <div className="loading-display">
+        <div
+          className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}`}
+        >
           <div className="loading__menu">
             <ContextMenu
               placement="bottom"
