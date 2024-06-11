@@ -10,6 +10,7 @@ import Client from '@src/app/templates/client/Client';
 
 import web3Talk from '@src/util/web3/xmtp';
 import envAPI from '@src/util/libs/env';
+import libreTranslate from '@src/util/libs/libreTranslate';
 
 function App() {
   const [firstTime, setFirstTime] = useState(true);
@@ -19,6 +20,7 @@ function App() {
   });
 
   if (!firstTime) {
+    libreTranslate.start();
     startWeb3(() => web3Talk.start());
   } else {
     return null;

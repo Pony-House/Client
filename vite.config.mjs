@@ -157,9 +157,11 @@ export default defineConfig(({ command, mode }) => {
 
     MAX_LISTENERS: Number(env.MAX_LISTENERS),
 
-    LIBRE_TRANSLATE_: {
+    LIBRE_TRANSLATE: {
       DEFAULT_HOST: typeof env.LIBRE_TRANSLATE_DEFAULT_HOST === 'string' && env.LIBRE_TRANSLATE_DEFAULT_HOST.length > 0 ?
-        env.LIBRE_TRANSLATE_DEFAULT_HOST : null,
+        env.LIBRE_TRANSLATE_DEFAULT_HOST : '',
+      API_KEY: typeof env.LIBRE_TRANSLATE_API_KEY === 'string' && env.LIBRE_TRANSLATE_API_KEY.length > 0 ?
+        env.LIBRE_TRANSLATE_API_KEY : '',
       ENABLED: !!(env.LIBRE_TRANSLATE_ENABLED === true || env.LIBRE_TRANSLATE_ENABLED === 'true'),
     },
 
