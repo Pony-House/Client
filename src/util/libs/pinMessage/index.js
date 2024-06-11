@@ -53,7 +53,7 @@ export function getPinnedMessagesRaw(room, filterLimit = true) {
   } catch (err) {
     // Error
     console.error(err);
-    alert(err.message);
+    alert(err.message, 'Get Pinned Messages Raw Error');
     result = [];
   }
 
@@ -88,7 +88,7 @@ export async function getPinnedMessages(room, filterLimit = true) {
   } catch (err) {
     // Error warn
     console.error(err);
-    alert(err.message);
+    alert(err.message, ' Get Pinned Messages Error');
     return [];
   }
 

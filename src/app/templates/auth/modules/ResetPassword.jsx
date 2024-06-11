@@ -185,13 +185,13 @@ function ResetPassword({ baseUrl, serverName }) {
                 .requestPasswordEmailToken(email, clientSecret, 1)
                 .then((data) => {
                   setLoadingPage(false);
-                  alert('The password email was successfully resent.');
+                  alert('The password email was successfully resent.', 'Password Reset');
                   setSubmitData(data);
                 })
                 .catch((err) => {
                   setLoadingPage(false);
                   console.error(err);
-                  alert(err.message);
+                  alert(err.message, 'Password Reset Error');
                 });
             }}
             variant="secondary"

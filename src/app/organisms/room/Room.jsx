@@ -116,7 +116,7 @@ function Room() {
               })
               .catch((err) => {
                 console.error(err);
-                alert(err.message);
+                alert(err.message, 'Thread Timeline Error');
                 setIsLoading(false);
                 setRoomSelected(roomId, threadId, eventId, forceScroll);
               });

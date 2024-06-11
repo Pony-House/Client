@@ -116,11 +116,11 @@ class LibreTranslate extends EventEmitter {
             return result.translatedText;
         } else {
           console.error(result.error);
-          if (typeof result.error === 'string') alert(result.error, 'LibreTranslate');
+          if (typeof result.error === 'string') alert(result.error, 'Libre Translate Error');
         }
       } catch (err) {
         console.error(err);
-        alert(err.message);
+        alert(err.message, 'Libre Translate Error');
         return null;
       }
     }

@@ -112,7 +112,7 @@ export default async (url, vanillaUrl) => {
                 })
                 .catch((err) => {
                   console.error(err);
-                  alert(err.message);
+                  alert(err.message, 'Open Url Error 1');
                   tinyModal.hide();
                   setLoadingPage(false);
                 });
@@ -128,7 +128,7 @@ export default async (url, vanillaUrl) => {
         })
         .catch((err) => {
           console.error(err);
-          alert(err.message);
+          alert(err.message, 'Open Url Error 2');
           setLoadingPage(false);
         });
     }

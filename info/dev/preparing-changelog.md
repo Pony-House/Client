@@ -4,3 +4,4 @@
 - CrossSigninAlert - neon added on the colors theme.
 - Welcome icon and message changed.
 - Desktop mode - auth-base css fixed.
+- Error alerts - title updated.

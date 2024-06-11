@@ -342,7 +342,7 @@ export function openThreadsMessageModal(room) {
     })
     .catch((err) => {
       console.error(err);
-      alert(err.message);
+      alert(err.message, 'Open Threads Message Modal Error');
     });
 }
 

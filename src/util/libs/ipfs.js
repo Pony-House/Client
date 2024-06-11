@@ -24,7 +24,7 @@ export function getIpfsCfg(folder, getDefault = true, domainsParse = false) {
         content.publicGateway = new URL(content.publicGateway);
       } catch (err) {
         console.error(err);
-        alert(err.message);
+        alert(err.message, 'Public Gateway IPFS Error');
       }
     }
 
@@ -38,7 +38,7 @@ export function getIpfsCfg(folder, getDefault = true, domainsParse = false) {
         content.subdomainPublicGateway = new URL(content.subdomainPublicGateway);
       } catch (err) {
         console.error(err);
-        alert(err.message);
+        alert(err.message, 'SubDomain Public Gateway IPFS Error');
       }
     }
 
@@ -51,7 +51,7 @@ export function getIpfsCfg(folder, getDefault = true, domainsParse = false) {
         content.apiIpfs = new URL(content.apiIpfs);
       } catch (err) {
         console.error(err);
-        alert(err.message);
+        alert(err.message, 'IPFS API Error');
       }
     }
 
@@ -64,7 +64,7 @@ export function getIpfsCfg(folder, getDefault = true, domainsParse = false) {
         content.localGateway = new URL(content.localGateway);
       } catch (err) {
         console.error(err);
-        alert(err.message);
+        alert(err.message, 'Local Gateway IPFS Error');
       }
     }
   }

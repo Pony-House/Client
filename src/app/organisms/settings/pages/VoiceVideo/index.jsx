@@ -168,7 +168,7 @@ function VoiceVideoSection() {
         (err) => {
           testWebcamButton.removeClass('disabled');
           console.error(err);
-          alert(err.message);
+          alert(err.message, 'Webcam Stream Error');
         },
       );
     };
@@ -237,13 +237,13 @@ function VoiceVideoSection() {
                 testMicroButton.removeClass('disabled');
 
                 console.error(err);
-                alert(err.message);
+                alert(err.message, 'Microphone Stream Error');
               },
             );
           })
           .catch((err) => {
             console.error(err);
-            alert(err.message);
+            alert(err.message, 'Stop Microphone Error');
           });
       }
 
@@ -258,7 +258,7 @@ function VoiceVideoSection() {
           })
           .catch((err) => {
             console.error(err);
-            alert(err.message);
+            alert(err.message, 'Stop Microphone Error');
           });
       }
     };
@@ -318,7 +318,7 @@ function VoiceVideoSection() {
         })
         .catch((err) => {
           console.error(err);
-          alert(err.message);
+          alert(err.message, 'List Devices Error');
         });
     } else {
       setDevicesItem(devices);

@@ -78,7 +78,7 @@ function Web3Section() {
       })
       .catch((err) => {
         console.error(err);
-        alert(err.message);
+        alert(err.message, 'Web3 File Reader Error');
         setUploadPromise(null);
       });
 
@@ -183,7 +183,7 @@ function Web3Section() {
                       .catch((err) => {
                         setLoadingPage(false);
                         console.error(err);
-                        alert(err.message);
+                        alert(err.message, 'Set User Web3 Account Error');
                       });
                   }}
                 >

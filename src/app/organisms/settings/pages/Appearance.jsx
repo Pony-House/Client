@@ -134,7 +134,7 @@ function AppearanceSection() {
                   const isConfirmed = await tinyConfirm('Are you sure? All your old settings saved in your account will be replaced by the current ones.', 'Export appearance settings');
                   if (isConfirmed) {
                     matrixAppearance.saveCloud();
-                    alert(`Your settings have been successfully uploaded to the cloud.`);
+                    alert(`Your settings have been successfully uploaded to the cloud.`, 'Cloud');
                   }
                 }}>
                   Export
@@ -144,7 +144,7 @@ function AppearanceSection() {
                   const isConfirmed = await tinyConfirm('Are you sure? All your old account settings will be lost.', 'Import appearance settings');
                   if (isConfirmed) {
                     matrixAppearance.loadCloud();
-                    alert(`Your settings have been successfully loaded from the cloud.`);
+                    alert(`Your settings have been successfully loaded from the cloud.`, 'Cloud');
                     updateState({});
                   }
                 }}>

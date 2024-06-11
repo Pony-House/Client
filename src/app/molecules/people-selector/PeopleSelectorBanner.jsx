@@ -90,7 +90,7 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
                 toast('Ethereum address successfully copied to the clipboard.');
               } catch (err) {
                 console.error(err);
-                alert(err.message);
+                alert(err.message, 'Ethereum Icon - Clipboard Error');
               }
             })
             .tooltip();

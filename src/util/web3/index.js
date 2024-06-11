@@ -440,7 +440,7 @@ const startWeb3 = (/* tcall */) => {
     // Ready Provider and check the connection
     const tinyConnectionError = (err) => {
       console.error(err);
-      alert(err.message);
+      alert(err.message, 'Web3 Ethers Error');
     };
 
     tinyCrypto

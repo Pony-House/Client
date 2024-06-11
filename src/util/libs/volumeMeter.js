@@ -52,7 +52,7 @@ VolumeMeter.prototype.connectToSource = function (stream, hearVoice, callback) {
     }
   } catch (err) {
     console.error(err);
-    alert(err.message);
+    alert(err.message, 'Volume Meter Connect to Source Error');
   }
 };
 

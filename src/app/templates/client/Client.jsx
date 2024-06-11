@@ -249,7 +249,7 @@ function Client() {
       })
       .catch((err) => {
         console.error(err);
-        alert(err.message);
+        alert(err.message, 'Check Versions Error');
       });
   }
 

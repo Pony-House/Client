@@ -122,7 +122,7 @@ function useToggleDialog() {
 
         const tinyError = (err) => {
           console.error(err);
-          alert(err.message);
+          alert(err.message, 'Room Viewer Error');
           setPublicData({});
           setIsLoadingPublic(false);
           setIsLoadingId(null);

@@ -447,7 +447,7 @@ class RoomsInput extends EventEmitter {
         }
       } catch (e) {
         console.error(e);
-        alert(e.message);
+        alert(e.message, 'Load Video Error');
         this.emit(cons.events.roomsInput.FILE_UPLOAD_CANCELED, roomId, threadId);
         return;
       }
@@ -467,7 +467,7 @@ class RoomsInput extends EventEmitter {
       this.emit(cons.events.roomsInput.FILE_UPLOADED, roomId, threadId);
     } catch (e) {
       console.error(e);
-      alert(e.message);
+      alert(e.message, 'Upload File Error');
       this.emit(cons.events.roomsInput.FILE_UPLOAD_CANCELED, roomId, threadId);
       return;
     }
