@@ -75,6 +75,31 @@ class LibreTranslate extends EventEmitter {
     }
   }
 
+  async getLanguages() {
+    try {
+      const res = await fetchFn(`${this.getUrl()}languages`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const result = await res.json();
+      if (objType(result, 'object') || Array.isArray(result)) {
+        if (!result.error) {
+          return result;
+        } else {
+          console.error(result.error);
+          if (typeof result.error === 'string') alert(result.error, 'Libre Translate Error');
+        }
+      } else if (typeof result === 'string') {
+        console.log('[LibreTranslate] [Unknown]', result);
+      }
+    } catch (err) {
+      console.error(err);
+      alert(err.message, 'Libre Translate - Languages Error');
+      return null;
+    }
+    return null;
+  }
+
   async translate(text, coptions = {}, isDebug = false) {
     if (isDebug) console.log('[LibreTranslate] [settings]', this.content);
     if (
@@ -116,12 +141,17 @@ class LibreTranslate extends EventEmitter {
         const res = await fetchFn(url, options);
         const result = await res.json();
         if (isDebug) console.log('[LibreTranslate] [result]', result);
-        if (!result.error) {
-          if (objType(result, 'object') && typeof result.translatedText === 'string')
-            return !isJson ? result.translatedText : result;
-        } else {
-          console.error(result.error);
-          if (typeof result.error === 'string') alert(result.error, 'Libre Translate Error');
+
+        if (objType(result, 'object')) {
+          if (!result.error) {
+            if (typeof result.translatedText === 'string')
+              return !isJson ? result.translatedText : result;
+          } else {
+            console.error(result.error);
+            if (typeof result.error === 'string') alert(result.error, 'Libre Translate Error');
+          }
+        } else if (typeof result === 'string') {
+          console.log('[LibreTranslate] [Unknown]', result);
         }
       } catch (err) {
         console.error(err);

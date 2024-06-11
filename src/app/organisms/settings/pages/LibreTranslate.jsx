@@ -148,7 +148,7 @@ function LibreTranslateSection() {
               This software is not directly installed at Pony House. This is a third-party service
               with a connected API that will only be executed when you request execution. If you are
               an advanced user, you can use your own LibreTranslate self-host to increase your
-              privacy. Enable advanced user settings to change the host used by{' '}
+              privacy. Enable advanced user settings to change the host used by the{' '}
               {__ENV_APP__.INFO.name}.
             </div>
             <div className="small">
