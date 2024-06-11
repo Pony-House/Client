@@ -5,3 +5,4 @@
 - Welcome icon and message changed.
 - Desktop mode - auth-base css fixed.
 - Error alerts - title updated.
+- LibreTranslate support added.
