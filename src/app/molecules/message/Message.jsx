@@ -1136,18 +1136,18 @@ const MessageOptions = React.memo(
                       });
                   }}
                 >
-                  Translate text
+                  Translate message
                 </MenuItem>
               ) : typeof translateText === 'string' ? (
                 <MenuItem
-                  className="text-start"
+                  className="text-start btn-text-warning"
                   faSrc="fa-solid fa-language"
                   onClick={() => {
                     hideMenu();
                     setTranslateText(null);
                   }}
                 >
-                  <strong>Original text</strong>
+                  <strong className="text-warning">Original message</strong>
                 </MenuItem>
               ) : null}
 
