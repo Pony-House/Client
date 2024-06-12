@@ -7,3 +7,4 @@
 - Error alerts - title updated.
 - LibreTranslate support added.
 - Container - electron loading css fixed.
+- Rust Crypto end-to-end encryption support added.
