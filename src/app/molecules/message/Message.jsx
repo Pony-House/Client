@@ -864,6 +864,7 @@ function handleOpenViewSource(mEvent, roomTimeline) {
 
 const MessageOptions = React.memo(
   ({
+    allowTranslate = false,
     haveReactions = false,
     translateText,
     setTranslateText,
@@ -951,8 +952,6 @@ const MessageOptions = React.memo(
         hideMenu();
         setTranslateText(null);
       };
-
-    const allowTranslate = translateText === null && libreTranslate.canUse();
 
     return (
       <div className="message__options">
@@ -1248,6 +1247,9 @@ const MessageOptions = React.memo(
 
 // Options Default
 MessageOptions.propTypes = {
+  allowTranslate: PropTypes.bool,
+  translateText: PropTypes.string,
+  setTranslateText: PropTypes.func,
   haveReactions: PropTypes.bool,
   roomid: PropTypes.string,
   threadId: PropTypes.string,
@@ -1855,9 +1857,18 @@ function Message({
     const tinyUpdate = (info) => {
       if (info.userId === senderId) forceUpdate();
     };
+    const tinyUpdate2 = (info) => {
+      forceUpdate();
+    };
+    libreTranslate.on('enabled', tinyUpdate2);
+    libreTranslate.on('apiKey', tinyUpdate2);
+    libreTranslate.on('host', tinyUpdate2);
     muteUserManager.on('mute', tinyUpdate);
     muteUserManager.on('friendNickname', tinyUpdate);
     return () => {
+      libreTranslate.off('enabled', tinyUpdate2);
+      libreTranslate.off('apiKey', tinyUpdate2);
+      libreTranslate.off('host', tinyUpdate2);
       muteUserManager.off('mute', tinyUpdate);
       muteUserManager.off('friendNickname', tinyUpdate);
     };
@@ -1870,6 +1881,8 @@ function Message({
 
     e.preventDefault();
   };
+
+  const allowTranslate = translateText === null && libreTranslate.canUse();
 
   // Normal Message
   if (msgType !== 'm.bad.encrypted') {
@@ -1906,6 +1919,7 @@ function Message({
           <td className="p-0 pe-3 py-1" colSpan={!children ? '2' : ''}>
             {!isGuest && !disableActions && roomTimeline && !isEdit && (
               <MessageOptions
+                allowTranslate={allowTranslate}
                 setTranslateText={setTranslateText}
                 translateText={translateText}
                 haveReactions={haveReactions}
@@ -2050,6 +2064,7 @@ function Message({
       <td className="p-0 pe-3 py-1">
         {!isGuest && !disableActions && roomTimeline && !isEdit && (
           <MessageOptions
+            allowTranslate={allowTranslate}
             setTranslateText={setTranslateText}
             translateText={translateText}
             haveReactions={haveReactions}
