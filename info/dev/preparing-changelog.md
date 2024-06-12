@@ -9,3 +9,4 @@
 - Container - electron loading css fixed.
 - Rust Crypto end-to-end encryption support added.
 - DevTools button added to tray.
+- Console alert added to the desktop version.
