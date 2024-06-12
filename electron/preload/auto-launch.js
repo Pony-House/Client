@@ -9,6 +9,10 @@ ipcRenderer.on('refresh-client', () => {
   global.location.reload();
 });
 
+ipcRenderer.on('console-message', (event, msg) => {
+  console.log(msg);
+});
+
 let tinyModule;
 const autoLaunch = {
   started: false,

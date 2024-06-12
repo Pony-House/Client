@@ -1,0 +1,60 @@
+export const addTray = (electronCache, app, appShow, win, showApp, icon, title) => {
+  const trayData = [];
+  trayData.push({
+    label: title,
+    enabled: false,
+    icon,
+  });
+
+  trayData.push({ type: 'separator' });
+
+  trayData.push({
+    label: `Open ${title}`,
+    click: showApp,
+  });
+
+  trayData.push({
+    label: `Check for Updates`,
+    click: () => {
+      if (electronCache.appStarted) {
+        if (win) win.show();
+        appShow.change(true);
+        if (win) win.webContents.send('check-version', true);
+      }
+    },
+  });
+
+  trayData.push({
+    label: `Refresh Client`,
+    click: () => {
+      if (electronCache.appStarted) {
+        if (win) win.show();
+        appShow.change(true);
+        if (win) win.webContents.send('refresh-client', true);
+      }
+    },
+  });
+
+  if (__ENV_APP__.DEV_TOOLS_TRAY) {
+    trayData.push({ type: 'separator' });
+    trayData.push({
+      label: 'DevTools (Advanced User)',
+      click: () => {
+        if (electronCache.appStarted) {
+          startDevTools();
+        }
+      },
+    });
+  }
+
+  trayData.push({ type: 'separator' });
+  trayData.push({
+    label: `Quit ${title}`,
+    click: () => {
+      electronCache.isQuiting = true;
+      app.quit();
+    },
+  });
+
+  return trayData;
+};

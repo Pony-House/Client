@@ -146,6 +146,8 @@ export default defineConfig(({ command, mode }) => {
     USE_CUSTOM_EMOJIS: addBooleanToEnv('USE_CUSTOM_EMOJIS'),
     USE_ANIM_PARAMS: addBooleanToEnv('USE_ANIM_PARAMS'),
 
+    DEV_TOOLS_TRAY: addBooleanToEnv('DEV_TOOLS_TRAY'),
+
     PEOPLE_DRAWER_HIDDEN: addBooleanToEnv('PEOPLE_DRAWER_HIDDEN'),
     NAVIGATION_SIDEBAR_HIDDEN: addBooleanToEnv('NAVIGATION_SIDEBAR_HIDDEN'),
 

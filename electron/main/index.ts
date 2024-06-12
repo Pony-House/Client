@@ -11,6 +11,7 @@ import startNotifications from './notification';
 import startEvents from './events';
 import startResizeEvents from './events/resize';
 import { appDataPrivate, startTempFolders } from './tempFolders';
+import { addTray } from './tray';
 // import tinyDB from './db';
 
 // The built directory structure
@@ -46,10 +47,12 @@ if (process.platform === 'win32') app.setAppUserModelId(app.getName());
 // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 const title = 'Pony House';
-let isQuiting = false;
-let appStarted = false;
-let firstTime = false;
-let appReady = false;
+const electronCache = {
+  isQuiting: false,
+  appStarted: false,
+  firstTime: false,
+  appReady: false,
+};
 
 let win: BrowserWindow | null = null;
 // Here, you can also use other preload
@@ -68,10 +71,20 @@ const appShow = {
   enabled: false,
 };
 
+const startDevTools = () => {
+  if (win && win.webContents) {
+    win.webContents.openDevTools();
+    win.webContents.send(
+      'console-message',
+      `This is a developer console! Putting weird things can result in theft of accounts or crashing your machine! Do not trust strange people asking you to paste things here!`,
+    );
+  }
+};
+
 async function createWindow() {
-  if (!firstTime) {
+  if (!electronCache.firstTime) {
     // Mark First time
-    firstTime = true;
+    electronCache.firstTime = true;
 
     // Load Frame Extension
     // await loadExtension('frame');
@@ -186,7 +199,7 @@ async function createWindow() {
 
     // Start modules
     startResizeEvents(ipcMain, win);
-    startEvents(ipcMain, win, appShow);
+    startEvents(ipcMain, win, appShow, startDevTools);
     startNotifications(ipcMain, win);
 
     // Remove Menu
@@ -196,17 +209,17 @@ async function createWindow() {
       // electron-vite-vue#298
       win.loadURL(tinyUrl);
       // Open devTool if the app is not packaged
-      if (!openDevTools) win.webContents.openDevTools();
+      if (!openDevTools) startDevTools();
     } else {
       win.loadFile(indexHtml);
     }
 
-    if (openDevTools) win.webContents.openDevTools();
+    if (openDevTools) startDevTools();
 
     // Show Page
     win.once('ready-to-show', () => {
       // if (win) win.show();
-      appStarted = true;
+      electronCache.appStarted = true;
       appShow.change(true);
 
       // Ping
@@ -246,8 +259,8 @@ async function createWindow() {
         fs.writeFileSync(initFile, JSON.stringify(winData));
       }
 
-      if (appStarted) {
-        if (!isQuiting) {
+      if (electronCache.appStarted) {
+        if (!electronCache.isQuiting) {
           event.preventDefault();
           if (win) win.hide();
           appShow.change(false);
@@ -280,11 +293,11 @@ if (!gotTheLock) {
   // Some APIs can only be used after this event occurs.
   app.whenReady().then(() => createWindow());
   app.on('ready', () => {
-    if (!appReady) {
-      appReady = true;
+    if (!electronCache.appReady) {
+      electronCache.appReady = true;
       // Show app
       const showApp = () => {
-        if (appStarted) {
+        if (electronCache.appStarted) {
           if (win) win.show();
           appShow.change(true);
         }
@@ -292,54 +305,10 @@ if (!gotTheLock) {
 
       // Create Tray
       const tray = new Tray(icon);
-      const contextMenu = Menu.buildFromTemplate([
-        {
-          label: title,
-          enabled: false,
-          icon,
-        },
-        { type: 'separator' },
-        {
-          label: `Open ${title}`,
-          click: showApp,
-        },
-        {
-          label: `Check for Updates`,
-          click: () => {
-            if (appStarted) {
-              if (win) win.show();
-              appShow.change(true);
-              if (win) win.webContents.send('check-version', true);
-            }
-          },
-        },
-        {
-          label: `Refresh Client`,
-          click: () => {
-            if (appStarted) {
-              if (win) win.show();
-              appShow.change(true);
-              if (win) win.webContents.send('refresh-client', true);
-            }
-          },
-        },
-        { type: 'separator' },
-        /* {
-          label: 'DevTools (Advanced User)',
-          click: () => {
-            if (appStarted) {
-              if (win) win.webContents.openDevTools();
-            }
-          },
-        }, */
-        {
-          label: `Quit ${title}`,
-          click: () => {
-            isQuiting = true;
-            app.quit();
-          },
-        },
-      ]);
+      const contextMenu = Menu.buildFromTemplate(
+        // @ts-ignore
+        addTray(electronCache, app, appShow, win, showApp, icon, title),
+      );
 
       tray.setToolTip(title);
       tray.setTitle(title);
@@ -363,7 +332,7 @@ if (!gotTheLock) {
 
 app.on('window-all-closed', () => {
   win = null;
-  isQuiting = true;
+  electronCache.isQuiting = true;
   if (process.platform !== 'darwin') app.quit();
 });
 

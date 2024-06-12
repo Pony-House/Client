@@ -1,6 +1,6 @@
 import { BrowserWindow, powerMonitor } from 'electron';
 
-export default function startEvents(ipcMain, newWin, appShow) {
+export default function startEvents(ipcMain, newWin, appShow, startDevTools) {
   ipcMain.on('set-title', (event, title) => {
     const webContents = event.sender;
     const tinyWin = BrowserWindow.fromWebContents(webContents);
@@ -28,7 +28,7 @@ export default function startEvents(ipcMain, newWin, appShow) {
   });
 
   ipcMain.on('openDevTools', () => {
-    newWin.webContents.openDevTools();
+    startDevTools();
   });
 
   ipcMain.on('windowIsVisible', (event, isVisible) => {
