@@ -19,9 +19,11 @@ function LibreTranslateSection() {
   const [source, setSource] = useState(libreTranslate.get('source'));
   const [target, setTarget] = useState(libreTranslate.get('target'));
   const [langs, setLangs] = useState(null);
+  const [loadingLangs, setLoadingLangs] = useState(false);
 
   useEffect(() => {
-    if (langs === null) {
+    if (langs === null && !loadingLangs) {
+      setLoadingLangs(true);
       libreTranslate
         .getLanguages()
         .then((langData) => {
@@ -36,8 +38,12 @@ function LibreTranslateSection() {
 
             setLangs(newLangs);
           }
+          setLoadingLangs(false);
         })
-        .catch(console.error);
+        .catch((err) => {
+          console.error(err);
+          setLoadingLangs(false);
+        });
     }
   });
 
@@ -135,13 +141,16 @@ function LibreTranslateSection() {
                 <div className="mt-2">
                   <SegmentedControls
                     type="select"
+                    disabled={!Array.isArray(langs)}
                     selected={validatorSelect(source, sourceList)}
                     segments={Array.isArray(sourceList) ? sourceList : []}
                     onSelect={(index) => {
                       if (Array.isArray(langs)) {
-                        const value = Number(index);
-                        libreTranslate.set('source', langs[index].value);
-                        setSource(langs[index].value);
+                        const value = langs[index].value;
+                        if (value !== source) {
+                          libreTranslate.set('source', langs[index].value);
+                          setSource(langs[index].value);
+                        }
                       }
                     }}
                   />
@@ -156,13 +165,16 @@ function LibreTranslateSection() {
               <div className="mt-2">
                 <SegmentedControls
                   type="select"
+                  disabled={!Array.isArray(langs)}
                   selected={validatorSelect(target, langs)}
                   segments={Array.isArray(langs) ? langs : []}
                   onSelect={(index) => {
                     if (Array.isArray(langs)) {
-                      const value = Number(index);
-                      libreTranslate.set('target', langs[index].value);
-                      setTarget(langs[index].value);
+                      const value = langs[index].value;
+                      if (value !== target) {
+                        libreTranslate.set('target', value);
+                        setTarget(value);
+                      }
                     }
                   }}
                 />

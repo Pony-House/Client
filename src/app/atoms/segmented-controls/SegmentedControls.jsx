@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import RawIcon from '../system-icons/RawIcon';
 
 function SegmentedControls({
+  disabled = false,
   selected,
   segments,
   onSelect,
@@ -30,9 +31,10 @@ function SegmentedControls({
         <button
           seg_value={segment.value}
           key={Math.random().toString(20).substring(2, 6)}
-          className={`btn btn-theme ${select === index ? ' active' : ''}`}
+          className={`btn btn-theme ${select === index ? ' active' : ''}${disabled ? ' disabled' : ''}`}
           type="button"
           onClick={() => selectSegment(index)}
+          disabled={disabled}
         >
           {segment.iconSrc && <RawIcon size="small" src={segment.iconSrc} />}
           {segment.text && <small>{segment.text}</small>}
@@ -41,7 +43,8 @@ function SegmentedControls({
     </div>
   ) : type === 'select' ? (
     <select
-      className="form-select form-control-bg"
+      disabled={disabled}
+      className={`form-select form-control-bg${disabled ? ' disabled' : ''}`}
       onChange={(event) => {
         const el = $(event.target);
         const value = $(event.target).val();
@@ -79,6 +82,7 @@ function SegmentedControls({
 }
 
 SegmentedControls.propTypes = {
+  disabled: PropTypes.bool,
   iconSrc: PropTypes.string,
   type: PropTypes.string,
   className: PropTypes.string,
