@@ -921,6 +921,39 @@ const MessageOptions = React.memo(
       };
     });
 
+    const translateMessage =
+      (hideMenu = () => {}) =>
+      () => {
+        hideMenu();
+        setLoadingPage();
+        libreTranslate
+          .translate(
+            customHTML
+              ? html(customHTML, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain
+              : plain(body, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain,
+          )
+          .then((text) => {
+            setLoadingPage(false);
+            if (typeof text === 'string') {
+              setTranslateText(text);
+            }
+          })
+          .catch((err) => {
+            setLoadingPage(false);
+            console.error(err);
+            alert(err.message, 'Libre Translate Progress Error');
+          });
+      };
+
+    const removeTranslateMessage =
+      (hideMenu = () => {}) =>
+      () => {
+        hideMenu();
+        setTranslateText(null);
+      };
+
+    const allowTranslate = translateText === null && libreTranslate.canUse();
+
     return (
       <div className="message__options">
         {canSendReaction && (
@@ -960,6 +993,25 @@ const MessageOptions = React.memo(
             tooltip="Delete"
           />
         )}
+
+        {allowTranslate ? (
+          <IconButton
+            className="need-shift"
+            onClick={translateMessage()}
+            fa="fa-solid fa-language btn-text-info"
+            size="normal"
+            tooltip="Translate message"
+          />
+        ) : typeof translateText === 'string' ? (
+          <IconButton
+            className="need-shift"
+            onClick={removeTranslateMessage()}
+            fa="fa-solid fa-language btn-text-warning"
+            size="normal"
+            tooltip="Original message"
+          />
+        ) : null}
+
         <ContextMenu
           content={(hideMenu) => (
             <>
@@ -1109,32 +1161,11 @@ const MessageOptions = React.memo(
                 Copy text
               </MenuItem>
 
-              {translateText === null && libreTranslate.canUse() ? (
+              {allowTranslate ? (
                 <MenuItem
                   className="text-start"
                   faSrc="fa-solid fa-language"
-                  onClick={() => {
-                    hideMenu();
-                    setLoadingPage();
-                    libreTranslate
-                      .translate(
-                        customHTML
-                          ? html(customHTML, roomId, threadId, { kind: 'edit', onlyPlain: true })
-                              .plain
-                          : plain(body, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain,
-                      )
-                      .then((text) => {
-                        setLoadingPage(false);
-                        if (typeof text === 'string') {
-                          setTranslateText(text);
-                        }
-                      })
-                      .catch((err) => {
-                        setLoadingPage(false);
-                        console.error(err);
-                        alert(err.message, 'Libre Translate Progress Error');
-                      });
-                  }}
+                  onClick={translateMessage(hideMenu)}
                 >
                   Translate message
                 </MenuItem>
@@ -1142,10 +1173,7 @@ const MessageOptions = React.memo(
                 <MenuItem
                   className="text-start btn-text-warning"
                   faSrc="fa-solid fa-language"
-                  onClick={() => {
-                    hideMenu();
-                    setTranslateText(null);
-                  }}
+                  onClick={removeTranslateMessage(hideMenu)}
                 >
                   <strong className="text-warning">Original message</strong>
                 </MenuItem>
