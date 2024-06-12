@@ -4,6 +4,7 @@ import { objType } from 'for-promise/utils/lib.mjs';
 
 import { eventMaxListeners } from '../matrixUtil';
 import { fetchFn } from '@src/client/initMatrix';
+import i18 from './locale';
 
 // Emitter
 class LibreTranslate extends EventEmitter {
@@ -80,7 +81,7 @@ class LibreTranslate extends EventEmitter {
       this.content.target =
         typeof this.content.target === 'string' && this.content.target.length > 0
           ? this.content.target
-          : 'en';
+          : i18.getLocale();
     }
   }
 
