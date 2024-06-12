@@ -9,8 +9,8 @@ ipcRenderer.on('refresh-client', () => {
   global.location.reload();
 });
 
-ipcRenderer.on('console-message', (event, msg) => {
-  console.log(msg);
+ipcRenderer.on('console-message', (event, msg, msg2) => {
+  console.log(msg, msg2);
 });
 
 let tinyModule;

@@ -76,7 +76,8 @@ const startDevTools = () => {
     win.webContents.openDevTools();
     win.webContents.send(
       'console-message',
-      `This is a developer console! Putting weird things can result in theft of accounts or crashing your machine! Do not trust strange people asking you to paste things here!`,
+      `%cThis is a developer console! Putting weird things can result in theft of accounts or crashing your machine! Do not trust strange people asking you to paste things here!`,
+      'color:red; font-size: 12pt; font-weight: 700;',
     );
   }
 };
