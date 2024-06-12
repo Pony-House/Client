@@ -44,6 +44,7 @@ function SegmentedControls({
   ) : type === 'select' ? (
     <select
       disabled={disabled}
+      value={select}
       className={`form-select form-control-bg${disabled ? ' disabled' : ''}`}
       onChange={(event) => {
         const el = $(event.target);
@@ -67,12 +68,7 @@ function SegmentedControls({
       </option>
 
       {segments.map((segment, index) => (
-        <option
-          seg_value={segment.value}
-          value={index}
-          selected={select === index}
-          key={Math.random().toString(20).substring(2, 6)}
-        >
+        <option value={index} key={Math.random().toString(20).substring(2, 6)}>
           {segment.iconSrc && <RawIcon size="small" src={segment.iconSrc} />}
           {segment.text && <small>{segment.text}</small>}
         </option>
