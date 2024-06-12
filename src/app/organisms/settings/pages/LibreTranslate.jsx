@@ -146,10 +146,10 @@ function LibreTranslateSection() {
                     segments={Array.isArray(sourceList) ? sourceList : []}
                     onSelect={(index) => {
                       if (Array.isArray(langs)) {
-                        const value = langs[index].value;
+                        const value = sourceList[index].value;
                         if (value !== source) {
-                          libreTranslate.set('source', langs[index].value);
-                          setSource(langs[index].value);
+                          libreTranslate.set('source', value);
+                          setSource(value);
                         }
                       }
                     }}
