@@ -153,7 +153,15 @@ class InitMatrix extends EventEmitter {
 
     await envAPI.startDB();
     await indexedDBStore.startup();
-    await this.matrixClient.initCrypto();
+
+    if (!__ENV_APP__.RUST_CRYPTO_MODE) {
+      console.log('[matrix-js-sdk] Using initCrypto.');
+      await this.matrixClient.initCrypto();
+    } else {
+      console.log('[matrix-js-sdk] Using initRustCrypto.');
+      await this.matrixClient.initRustCrypto();
+    }
+
     this.matrixClient.setMaxListeners(eventMaxListeners);
 
     await this.matrixClient.startClient({

@@ -98,6 +98,8 @@ export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const electronMode = (String(env.ELECTRON_MODE) === 'true' || process?.versions.electron);
   console.log(`[vite-config] [electron] ${electronMode}`);
+  const addBooleanToEnv = (valueName) =>
+    !!(env[valueName] === true || env[valueName] === 'true');
 
   const envData = {
 
@@ -109,7 +111,7 @@ export default defineConfig(({ command, mode }) => {
     PLATFORM: process.platform,
     CUSTOM_DNS: {
 
-      ENABLED: !!(env.CUSTOM_DNS === true || env.CUSTOM_DNS === 'true'),
+      ENABLED: addBooleanToEnv('CUSTOM_DNS'),
       PORT: Number(env.CUSTOM_DNS_PORT),
 
       BLOCKCHAIN: {
@@ -133,27 +135,29 @@ export default defineConfig(({ command, mode }) => {
       welcome: String(env.APP_WELCOME)
     },
 
-    WEB3: !!(env.WEB3 === true || env.WEB3 === 'true'),
-    IPFS: !!(env.IPFS === true || env.IPFS === 'true'),
+    WEB3: addBooleanToEnv('WEB3'),
+    IPFS: addBooleanToEnv('IPFS'),
 
     PAG_LIMIT: Number(env.PAG_LIMIT),
 
-    SAVE_ROOM_DB: !!(env.SAVE_ROOM_DB === true || env.SAVE_ROOM_DB === 'true'),
-    DISCORD_STYLE: !!(env.DISCORD_STYLE === true || env.DISCORD_STYLE === 'true'),
-    SHOW_STICKERS: !!(env.SHOW_STICKERS === true || env.SHOW_STICKERS === 'true'),
-    USE_CUSTOM_EMOJIS: !!(env.USE_CUSTOM_EMOJIS === true || env.USE_CUSTOM_EMOJIS === 'true'),
-    USE_ANIM_PARAMS: !!(env.USE_ANIM_PARAMS === true || env.USE_ANIM_PARAMS === 'true'),
+    SAVE_ROOM_DB: addBooleanToEnv('SAVE_ROOM_DB'),
+    DISCORD_STYLE: addBooleanToEnv('DISCORD_STYLE'),
+    SHOW_STICKERS: addBooleanToEnv('SHOW_STICKERS'),
+    USE_CUSTOM_EMOJIS: addBooleanToEnv('USE_CUSTOM_EMOJIS'),
+    USE_ANIM_PARAMS: addBooleanToEnv('USE_ANIM_PARAMS'),
 
-    PEOPLE_DRAWER_HIDDEN: !!(env.PEOPLE_DRAWER_HIDDEN === true || env.PEOPLE_DRAWER_HIDDEN === 'true'),
-    NAVIGATION_SIDEBAR_HIDDEN: !!(env.NAVIGATION_SIDEBAR_HIDDEN === true || env.NAVIGATION_SIDEBAR_HIDDEN === 'true'),
+    PEOPLE_DRAWER_HIDDEN: addBooleanToEnv('PEOPLE_DRAWER_HIDDEN'),
+    NAVIGATION_SIDEBAR_HIDDEN: addBooleanToEnv('NAVIGATION_SIDEBAR_HIDDEN'),
 
-    EMBED_PARALLEL_LOAD: !!(env.EMBED_PARALLEL_LOAD === true || env.EMBED_PARALLEL_LOAD === 'true'),
+    RUST_CRYPTO_MODE: addBooleanToEnv('RUST_CRYPTO_MODE'),
 
-    AUTO_ENCRYPT_CREATE_DM: !!(env.AUTO_ENCRYPT_CREATE_DM === true || env.AUTO_ENCRYPT_CREATE_DM === 'true'),
-    DISABLE_ENCRYPT_SETTINGS: !!(env.DISABLE_ENCRYPT_SETTINGS === true || env.DISABLE_ENCRYPT_SETTINGS === 'true'),
+    EMBED_PARALLEL_LOAD: addBooleanToEnv('EMBED_PARALLEL_LOAD'),
 
-    HOVER_SIDEBAR: !!(env.HOVER_SIDEBAR === true || env.HOVER_SIDEBAR === 'true'),
-    SIDEBAR_TRANSITION: !!(env.SIDEBAR_TRANSITION === true || env.SIDEBAR_TRANSITION === 'true'),
+    AUTO_ENCRYPT_CREATE_DM: addBooleanToEnv('AUTO_ENCRYPT_CREATE_DM'),
+    DISABLE_ENCRYPT_SETTINGS: addBooleanToEnv('DISABLE_ENCRYPT_SETTINGS'),
+
+    HOVER_SIDEBAR: addBooleanToEnv('HOVER_SIDEBAR'),
+    SIDEBAR_TRANSITION: addBooleanToEnv('SIDEBAR_TRANSITION'),
 
     MAX_LISTENERS: Number(env.MAX_LISTENERS),
 
@@ -162,7 +166,7 @@ export default defineConfig(({ command, mode }) => {
         env.LIBRE_TRANSLATE_DEFAULT_HOST : '',
       API_KEY: typeof env.LIBRE_TRANSLATE_API_KEY === 'string' && env.LIBRE_TRANSLATE_API_KEY.length > 0 ?
         env.LIBRE_TRANSLATE_API_KEY : '',
-      ENABLED: !!(env.LIBRE_TRANSLATE_ENABLED === true || env.LIBRE_TRANSLATE_ENABLED === 'true'),
+      ENABLED: addBooleanToEnv('LIBRE_TRANSLATE_ENABLED'),
     },
 
     EMOJIBOARD: {
@@ -183,7 +187,7 @@ export default defineConfig(({ command, mode }) => {
 
     LOGIN: {
       DEFAULT_HOMESERVER: Number(env.DEFAULT_HOMESERVER),
-      ALLOW_CUSTOM_HOMESERVERS: !!(typeof env.ALLOW_CUSTOM_HOMESERVERS === 'string' && env.ALLOW_CUSTOM_HOMESERVERS === 'true'),
+      ALLOW_CUSTOM_HOMESERVERS: addBooleanToEnv('ALLOW_CUSTOM_HOMESERVERS'),
       HOMESERVER_LIST: [],
     },
 
