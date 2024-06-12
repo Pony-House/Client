@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import clone from 'clone';
+
 import libreTranslate from '@src/util/libs/libreTranslate';
 import SegmentedControls from '@src/app/atoms/segmented-controls/SegmentedControls';
 import { getAppearance } from '@src/util/libs/appearance';
@@ -16,13 +18,46 @@ function LibreTranslateSection() {
   const [apiKey, setApiKey] = useState(libreTranslate.get('apiKey'));
   const [source, setSource] = useState(libreTranslate.get('source'));
   const [target, setTarget] = useState(libreTranslate.get('target'));
+  const [langs, setLangs] = useState(null);
 
-  const [langs, setLangs] = useState([]);
+  useEffect(() => {
+    if (langs === null) {
+      libreTranslate
+        .getLanguages()
+        .then((langData) => {
+          if (langData !== null && langData.length > 0) {
+            const newLangs = [];
+            for (const item in langData) {
+              newLangs.push({
+                text: langData[item].name,
+                value: langData[item].code,
+              });
+            }
+
+            setLangs(newLangs);
+          }
+        })
+        .catch(console.error);
+    }
+  });
 
   const toggleAppearanceAction = (where, setData) => (data) => {
     setData(data);
     libreTranslate.set(where, data);
   };
+
+  const validatorSelect = (value, items) => {
+    if (Array.isArray(items)) return items.findIndex((ti) => ti.value === value);
+    return -1;
+  };
+
+  const sourceList = clone(langs);
+  if (Array.isArray(sourceList)) {
+    sourceList.push({
+      text: 'Auto Detect',
+      value: 'auto',
+    });
+  }
 
   // Complete Render
   return (
@@ -100,12 +135,14 @@ function LibreTranslateSection() {
                 <div className="mt-2">
                   <SegmentedControls
                     type="select"
-                    selected={typeof source === 'string' ? langs.indexOf(source) : -1}
-                    segments={langs}
+                    selected={validatorSelect(source, sourceList)}
+                    segments={Array.isArray(sourceList) ? sourceList : []}
                     onSelect={(index) => {
-                      const value = Number(index);
-                      libreTranslate.set('source', langs[index]);
-                      setSource(langs[index]);
+                      if (Array.isArray(langs)) {
+                        const value = Number(index);
+                        libreTranslate.set('source', langs[index].value);
+                        setSource(langs[index].value);
+                      }
                     }}
                   />
                 </div>
@@ -119,12 +156,14 @@ function LibreTranslateSection() {
               <div className="mt-2">
                 <SegmentedControls
                   type="select"
-                  selected={typeof target === 'string' ? langs.indexOf(target) : -1}
-                  segments={langs}
+                  selected={validatorSelect(target, langs)}
+                  segments={Array.isArray(langs) ? langs : []}
                   onSelect={(index) => {
-                    const value = Number(index);
-                    libreTranslate.set('target', langs[index]);
-                    setTarget(langs[index]);
+                    if (Array.isArray(langs)) {
+                      const value = Number(index);
+                      libreTranslate.set('target', langs[index].value);
+                      setTarget(langs[index].value);
+                    }
                   }}
                 />
               </div>

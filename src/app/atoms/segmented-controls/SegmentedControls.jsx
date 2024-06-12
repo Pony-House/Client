@@ -11,12 +11,13 @@ function SegmentedControls({
   className,
   type = 'buttons',
   iconSrc,
+  chooseText = 'Choose...',
 }) {
   const [select, setSelect] = useState(selected);
 
-  function selectSegment(segmentIndex) {
+  function selectSegment(segmentIndex, segValue) {
     setSelect(segmentIndex);
-    onSelect(segmentIndex);
+    onSelect(segmentIndex, segValue);
   }
 
   useEffect(() => {
@@ -27,6 +28,7 @@ function SegmentedControls({
     <div className={`btn-group noselect ${className}`} role="group">
       {segments.map((segment, index) => (
         <button
+          seg_value={segment.value}
           key={Math.random().toString(20).substring(2, 6)}
           className={`btn btn-theme ${select === index ? ' active' : ''}`}
           type="button"
@@ -41,11 +43,13 @@ function SegmentedControls({
     <select
       className="form-select form-control-bg"
       onChange={(event) => {
+        const el = $(event.target);
         const value = $(event.target).val();
+        const segValue = $(event.target).attr('seg_value');
         if (typeof value === 'string' && value.length > 0) {
           const index = Number(value);
           if (!Number.isNaN(index) && Number.isFinite(index) && index > -1) {
-            selectSegment(index);
+            selectSegment(index, segValue);
           } else if (typeof onEmpty === 'function') {
             onEmpty();
           }
@@ -56,11 +60,12 @@ function SegmentedControls({
     >
       <option>
         {iconSrc && <RawIcon size="small" src={iconSrc} />}
-        <small>Choose...</small>
+        <small>{chooseText}</small>
       </option>
 
       {segments.map((segment, index) => (
         <option
+          seg_value={segment.value}
           value={index}
           selected={select === index}
           key={Math.random().toString(20).substring(2, 6)}
