@@ -307,7 +307,7 @@ if (!gotTheLock) {
       const tray = new Tray(icon);
       const contextMenu = Menu.buildFromTemplate(
         // @ts-ignore
-        addTray(electronCache, app, appShow, win, showApp, icon, title),
+        addTray(electronCache, startDevTools, app, appShow, win, showApp, icon, title),
       );
 
       tray.setToolTip(title);

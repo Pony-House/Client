@@ -1,4 +1,4 @@
-export const addTray = (electronCache, app, appShow, win, showApp, icon, title) => {
+export const addTray = (electronCache, startDevTools, app, appShow, win, showApp, icon, title) => {
   const trayData = [];
   trayData.push({
     label: title,
