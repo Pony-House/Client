@@ -55,6 +55,25 @@
       }
     }
 
+    #setting-tab {
+      .badge,
+      .badge > span {
+        position: relative;
+      }
+      .badge {
+        top: -1px;
+      }
+      .badge > span {
+        top: 1px;
+      }
+
+      @-moz-document url-prefix() {
+        .badge > span {
+          top: 0px;
+        }
+      }
+    }
+
     #settings-content {
       padding-left: 270px;
     }

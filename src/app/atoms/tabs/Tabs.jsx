@@ -93,6 +93,17 @@ function Tabs({
                     disabled={item.disabled}
                   >
                     {item.text}
+                    {item.badge && typeof item.badge.text === 'string' ? (
+                      <span
+                        className={
+                          typeof item.badge.color === 'string'
+                            ? `badge bg-${item.badge.color} ms-1`
+                            : null
+                        }
+                      >
+                        <span>{item.badge.text}</span>
+                      </span>
+                    ) : null}
                   </TabItem>
                 ),
             )}
@@ -143,6 +154,17 @@ function Tabs({
                 {item.iconSrc && <RawIcon size="small" className="me-2" src={item.iconSrc} />}
                 {item.faSrc && <RawIcon size="small" className="me-2" fa={item.faSrc} />}
                 {item.text}
+                {item.badge && typeof item.badge.text === 'string' ? (
+                  <span
+                    className={
+                      typeof item.badge.color === 'string'
+                        ? `badge bg-${item.badge.color} ms-1`
+                        : null
+                    }
+                  >
+                    <span>{item.badge.text}</span>
+                  </span>
+                ) : null}
               </button>
             );
           }

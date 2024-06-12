@@ -138,6 +138,7 @@ const buildTabItems = () => {
 
     tabItems.push({ type: 'divider' });
     tabItems.push({
+      badge: { text: 'Beta', color: 'secondary' },
       text: tabText.LIBRETRANSLATE,
       faSrc: 'fa-solid fa-globe',
       disabled: false,
