@@ -16,6 +16,10 @@ import { isMobile } from '@src/util/libs/mobile';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import muteUserManager from '@src/util/libs/muteUserManager';
 import attemptDecryption from '@src/util/libs/attemptDecryption';
+
+import libreTranslate from '@src/util/libs/libreTranslate';
+import { setLoadingPage } from '@src/app/templates/client/Loading';
+
 import {
   ReactionImgReact,
   getCustomEmojiUrl,
@@ -444,6 +448,7 @@ const MessageBody = React.memo(
     isSystem = false,
     isEdited = false,
     msgType = null,
+    translateText,
     messageStatus,
   }) => {
     const messageBody = useRef(null);
@@ -457,17 +462,19 @@ const MessageBody = React.memo(
     if (typeof body !== 'string') return <div className="message__body">{body}</div>;
 
     // Message Data
-    let msgData = createMessageData(
-      content,
-      body,
-      isCustomHTML,
-      isSystem,
-      false,
-      roomId,
-      senderId,
-      eventId,
-      threadId,
-    );
+    let msgData = !translateText
+      ? createMessageData(
+          content,
+          body,
+          isCustomHTML,
+          isSystem,
+          false,
+          roomId,
+          senderId,
+          eventId,
+          threadId,
+        )
+      : translateText;
 
     // Emoji Only
     const emojiOnly = isEmojiOnly(msgData?.props?.children?.props?.children);
@@ -500,12 +507,18 @@ const MessageBody = React.memo(
         )}
         {msgData}
         {isEdited && <div className="very-small text-gray noselect">(edited)</div>}
+        {typeof translateText === 'string' ? (
+          <>
+            <div className="very-small text-gray noselect">(translation)</div>
+          </>
+        ) : null}
       </div>
     );
   },
 );
 
 MessageBody.propTypes = {
+  translateText: PropTypes.string,
   content: PropTypes.object,
   senderName: PropTypes.string.isRequired,
   roomId: PropTypes.string.isRequired,
@@ -852,6 +865,8 @@ function handleOpenViewSource(mEvent, roomTimeline) {
 const MessageOptions = React.memo(
   ({
     haveReactions = false,
+    translateText,
+    setTranslateText,
     refRoomInput,
     roomTimeline,
     mEvent,
@@ -1093,6 +1108,48 @@ const MessageOptions = React.memo(
               >
                 Copy text
               </MenuItem>
+
+              {translateText === null && libreTranslate.canUse() ? (
+                <MenuItem
+                  className="text-start"
+                  faSrc="fa-solid fa-language"
+                  onClick={() => {
+                    hideMenu();
+                    setLoadingPage();
+                    libreTranslate
+                      .translate(
+                        customHTML
+                          ? html(customHTML, roomId, threadId, { kind: 'edit', onlyPlain: true })
+                              .plain
+                          : plain(body, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain,
+                      )
+                      .then((text) => {
+                        setLoadingPage(false);
+                        if (typeof text === 'string') {
+                          setTranslateText(text);
+                        }
+                      })
+                      .catch((err) => {
+                        setLoadingPage(false);
+                        console.error(err);
+                        alert(err.message, 'Libre Translate Progress Error');
+                      });
+                  }}
+                >
+                  Translate text
+                </MenuItem>
+              ) : typeof translateText === 'string' ? (
+                <MenuItem
+                  className="text-start"
+                  faSrc="fa-solid fa-language"
+                  onClick={() => {
+                    hideMenu();
+                    setTranslateText(null);
+                  }}
+                >
+                  <strong>Original text</strong>
+                </MenuItem>
+              ) : null}
 
               {!room.hasEncryptionStateEvent() && canPinMessage(room, myUserId) ? (
                 <MenuItem
@@ -1475,6 +1532,7 @@ function Message({
   const [embeds, setEmbeds] = useState([]);
   const [embedHeight, setEmbedHeight] = useState(null);
   const [isFocus, setIsFocus] = useState(null);
+  const [translateText, setTranslateText] = useState(null);
   const messageElement = useRef(null);
 
   const [isStickersVisible, setIsStickersVisible] = useState(matrixAppearance.get('showStickers'));
@@ -1820,6 +1878,8 @@ function Message({
           <td className="p-0 pe-3 py-1" colSpan={!children ? '2' : ''}>
             {!isGuest && !disableActions && roomTimeline && !isEdit && (
               <MessageOptions
+                setTranslateText={setTranslateText}
+                translateText={translateText}
                 haveReactions={haveReactions}
                 refRoomInput={refRoomInput}
                 customHTML={customHTML}
@@ -1863,6 +1923,7 @@ function Message({
                   className={classNameMessage}
                   senderName={username}
                   isCustomHTML={isCustomHTML}
+                  translateText={translateText}
                   body={
                     isMedia(mEvent)
                       ? genMediaContent(mEvent, seeHiddenData, setSeeHiddenData)
@@ -1961,6 +2022,8 @@ function Message({
       <td className="p-0 pe-3 py-1">
         {!isGuest && !disableActions && roomTimeline && !isEdit && (
           <MessageOptions
+            setTranslateText={setTranslateText}
+            translateText={translateText}
             haveReactions={haveReactions}
             refRoomInput={refRoomInput}
             roomid={roomId}

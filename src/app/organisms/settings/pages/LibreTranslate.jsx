@@ -105,8 +105,8 @@ function LibreTranslateSection() {
                   maxLength={100}
                   content={
                     <div className="very-small text-gray">
-                      Enter the host domain of your LibreTranslate. You can just type the domain, or
-                      type your address into a http or https protocol.
+                      Enter the host domain of your LibreTranslate instance. You can just type the
+                      domain, or type your address into a http or https protocol.
                     </div>
                   }
                 />
@@ -197,8 +197,8 @@ function LibreTranslateSection() {
             />
             <div className="small">
               This software is not directly installed at Pony House. This is a third-party service
-              with a connected API that will only be executed when you request execution. If you are
-              an advanced user, you can use your own LibreTranslate self-host to increase your
+              connected using a API that will only be executed when you request execution. If you
+              are an advanced user, you can use your own LibreTranslate self-host to increase your
               privacy. Enable advanced user settings to change the host used by the{' '}
               {__ENV_APP__.INFO.name}.
             </div>

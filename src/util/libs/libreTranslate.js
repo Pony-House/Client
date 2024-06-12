@@ -31,6 +31,10 @@ class LibreTranslate extends EventEmitter {
     );
   }
 
+  canUse() {
+    return this.content.enabled && this.checkHostUrl();
+  }
+
   getUrl() {
     return `${this.content.host.startsWith('https://') || this.content.host.startsWith('http://') ? this.content.host : `https://${this.content.host}`}${!this.content.host.endsWith('/') ? '/' : ''}`;
   }
