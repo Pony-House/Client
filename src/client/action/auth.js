@@ -28,6 +28,7 @@ async function login(baseUrl, username, email, password) {
     identifier.type = 'm.id.thirdparty';
     identifier.medium = 'email';
     identifier.address = email;
+    identifier.identifier = email;
   } else throw new Error('Bad Input');
 
   const client = createTemporaryClient(baseUrl);

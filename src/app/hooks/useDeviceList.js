@@ -96,27 +96,42 @@ export function useDeviceList() {
   // Data
   const mx = initMatrix.matrixClient;
   const [deviceList, setDeviceList] = useState(null);
+  const [deviceKeys, setDeviceKeys] = useState(null);
 
   // Effect
   useEffect(() => {
     let isMounted = true;
 
     // Start update
-    const updateDevices = () =>
-      mx.getDevices().then((data) => {
-        if (!isMounted) return;
+    const updateDevices = () => {
+      const tinyErr = (err) => {
+        console.error(err);
+        alert(err.message, 'Matrix Devices Error');
+      };
 
-        const devices = data.devices || [];
-        matrixDevices.updateDevices(devices);
-        matrixDevices.emit('devicesUpdated', devices);
+      mx.getDevices()
+        .then((data) => {
+          mx.getCrypto()
+            .getOwnDeviceKeys()
+            .then((dKeys) => {
+              if (!isMounted) return;
 
-        if (firstTime) {
-          firstTime = false;
-          sendPing();
-        }
+              const devices = data.devices || [];
+              matrixDevices.updateDevices(devices);
+              matrixDevices.emit('devicesUpdated', devices);
 
-        setDeviceList(devices);
-      });
+              if (firstTime) {
+                firstTime = false;
+                sendPing();
+              }
+
+              setDeviceKeys(dKeys);
+              setDeviceList(devices);
+            })
+            .catch(tinyErr);
+        })
+        .catch(tinyErr);
+    };
 
     // First check
     updateDevices();
@@ -151,5 +166,5 @@ export function useDeviceList() {
   }, []);
 
   // Complete
-  return deviceList;
+  return { deviceList, deviceKeys };
 }

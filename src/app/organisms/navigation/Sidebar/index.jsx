@@ -17,7 +17,7 @@ import InviteSidebar from './InviteSidebar';
 
 // Cross Sigin Alert
 function CrossSigninAlert({ isIconsColored }) {
-  const deviceList = useDeviceList();
+  const { deviceList } = useDeviceList();
   const unverified = deviceList?.filter((device) => isCrossVerified(device.device_id) === false);
 
   if (!unverified?.length) return null;

@@ -66,7 +66,7 @@ function DeviceManage() {
   const TRUNCATED_COUNT = 4;
   const mx = initMatrix.matrixClient;
   const isCSEnabled = useCrossSigningStatus();
-  const deviceList = useDeviceList();
+  const { deviceList, deviceKeys } = useDeviceList();
   const [processing, setProcessing] = useState([]);
   const [truncated, setTruncated] = useState(true);
   const mountStore = useStore();
@@ -75,7 +75,7 @@ function DeviceManage() {
 
   useEffect(() => {
     setProcessing([]);
-  }, [deviceList]);
+  }, [deviceList, deviceKeys]);
 
   const addToProcessing = (device) => {
     const old = [...processing];
@@ -87,7 +87,7 @@ function DeviceManage() {
     setProcessing([]);
   };
 
-  if (deviceList === null) {
+  if (deviceList === null || deviceKeys === null) {
     return (
       <div className="card noselect">
         <ul className="list-group list-group-flush">
@@ -216,10 +216,7 @@ function DeviceManage() {
             )}
             {isCurrentDevice && (
               <div className="very-small text-gray">
-                {`Session Key: ${initMatrix.matrixClient
-                  .getDeviceEd25519Key()
-                  .match(/.{1,4}/g)
-                  .join(' ')}`}
+                {`Session Key: ${deviceKeys.curve25519.match(/.{1,4}/g).join(' ')}`}
               </div>
             )}
           </>
