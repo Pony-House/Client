@@ -21,6 +21,15 @@ class LibreTranslate extends EventEmitter {
     );
   }
 
+  checkHostUrl() {
+    return (
+      this.content &&
+      typeof this.content.host === 'string' &&
+      this.content.host.length > 0 &&
+      this.testUrl(this.content.host)
+    );
+  }
+
   getUrl() {
     return `${this.content.host.startsWith('https://') || this.content.host.startsWith('http://') ? this.content.host : `https://${this.content.host}`}${!this.content.host.endsWith('/') ? '/' : ''}`;
   }
@@ -76,39 +85,80 @@ class LibreTranslate extends EventEmitter {
   }
 
   async getLanguages() {
-    try {
-      const res = await fetchFn(`${this.getUrl()}languages`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      const result = await res.json();
-      if (objType(result, 'object') || Array.isArray(result)) {
-        if (!result.error) {
-          return result;
-        } else {
-          console.error(result.error);
-          if (typeof result.error === 'string') alert(result.error, 'Libre Translate Error');
+    if (this.checkHostUrl()) {
+      try {
+        const res = await fetchFn(`${this.getUrl()}languages`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const result = await res.json();
+        if (objType(result, 'object') || Array.isArray(result)) {
+          if (!result.error) {
+            return result;
+          } else {
+            console.error(result.error);
+            if (typeof result.error === 'string') alert(result.error, 'Libre Translate Error');
+          }
+        } else if (typeof result === 'string') {
+          console.log('[LibreTranslate] [Unknown]', result);
         }
-      } else if (typeof result === 'string') {
-        console.log('[LibreTranslate] [Unknown]', result);
+      } catch (err) {
+        console.error(err);
+        alert(err.message, 'Libre Translate - Languages Error');
+        return null;
       }
-    } catch (err) {
-      console.error(err);
-      alert(err.message, 'Libre Translate - Languages Error');
-      return null;
+    }
+    return null;
+  }
+
+  async detect(text, coptions = {}, isDebug = false) {
+    if (isDebug) console.log('[LibreTranslate] [settings]', this.content);
+    if (typeof text === 'string' && this.checkHostUrl()) {
+      const body = {
+        q: text,
+        api_key: this.content.apiKey,
+      };
+
+      if (typeof coptions.apiKey === 'string') options.apiKey = coptions.apiKey;
+
+      const url = `${this.getUrl()}detect`;
+      const options = {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+      };
+
+      if (isDebug) console.log('[LibreTranslate] [url]', url);
+      if (isDebug) console.log('[LibreTranslate] [body]', body);
+      if (isDebug) console.log('[LibreTranslate] [options]', options);
+
+      try {
+        const res = await fetchFn(url, options);
+        const result = await res.json();
+        if (isDebug) console.log('[LibreTranslate] [result]', result);
+
+        if (objType(result, 'object') || Array.isArray(result)) {
+          if (!result.error) {
+            return result;
+          } else {
+            console.error(result.error);
+            if (typeof result.error === 'string') alert(result.error, 'Libre Translate Error');
+          }
+        } else if (typeof result === 'string') {
+          console.log('[LibreTranslate] [Unknown]', result);
+        }
+      } catch (err) {
+        console.error(err);
+        alert(err.message, 'Libre Translate Detector Error');
+        return null;
+      }
     }
     return null;
   }
 
   async translate(text, coptions = {}, isDebug = false) {
     if (isDebug) console.log('[LibreTranslate] [settings]', this.content);
-    if (
-      typeof text === 'string' &&
-      this.content &&
-      typeof this.content.host === 'string' &&
-      this.content.host.length > 0 &&
-      this.testUrl(this.content.host)
-    ) {
+    if (typeof text === 'string' && this.checkHostUrl()) {
       const body = {
         q: text,
         source: this.content.source,
