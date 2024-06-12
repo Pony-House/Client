@@ -32,7 +32,7 @@ class TinyLocale extends EventEmitter {
   appLocale() {
     if (navigator && navigator.language === 'string' && navigator.language.length > 0)
       return navigator.language;
-    else return defaultLocale;
+    else return this.defaultLocale;
   }
 }
 
