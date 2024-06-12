@@ -19,7 +19,9 @@ function AboutSection() {
     ['jQuery', __ENV_APP__.DEPS.jquery],
     ['jQuery UI', __ENV_APP__.DEPS['jquery-ui']],
     ['Linkifyjs', __ENV_APP__.DEPS.linkifyjs],
-    ['OLM Version', initMatrix.matrixClient.olmVersion.join('.')],
+    initMatrix.matrixClient.olmVersion
+      ? ['OLM Version', initMatrix.matrixClient.olmVersion.join('.')]
+      : null,
     ['Verification Methods', initMatrix.matrixClient.verificationMethods.join(', ')],
   ];
 
@@ -73,13 +75,15 @@ function AboutSection() {
       <div className="card mt-3">
         <ul className="list-group list-group-flush">
           <li className="list-group-item very-small text-gray">Matrix Client</li>
-          {deps.map((dep) => (
-            <li className="list-group-item border-0">
-              <div className="small">
-                <strong>{dep[0]}</strong> - {dep[1]}
-              </div>
-            </li>
-          ))}
+          {deps.map((dep) =>
+            Array.isArray(dep) ? (
+              <li className="list-group-item border-0">
+                <div className="small">
+                  <strong>{dep[0]}</strong> - {dep[1]}
+                </div>
+              </li>
+            ) : null,
+          )}
         </ul>
       </div>
 
