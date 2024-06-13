@@ -10,3 +10,4 @@
 - Rust Crypto end-to-end encryption support added.
 - DevTools button added to tray.
 - Console alert added to the desktop version.
+- New error screen added to the page login.
