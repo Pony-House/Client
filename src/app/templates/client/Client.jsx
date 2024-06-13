@@ -47,6 +47,8 @@ if (__ENV_APP__.ELECTRON_MODE) {
 }
 
 function Client() {
+  const [startWorked, setStartWorked] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('Unknown');
   const [isLoading, changeLoading] = useState(true);
   const [loadingMsg, setLoadingMsg] = useState(
     appLoadMsg.en.items[dice(appLoadMsg.en.items.length) - 1],
@@ -163,7 +165,18 @@ function Client() {
       }, 100);
     });
 
-    initMatrix.init();
+    initMatrix
+      .init()
+      .then((tinyResult) => {
+        if (tinyResult.err && typeof tinyResult.err.message === 'string')
+          setErrorMessage(tinyResult.err.message);
+        setStartWorked(tinyResult.userId !== null);
+      })
+      .catch((err) => {
+        console.error(err);
+        if (typeof err.message === 'string') setErrorMessage(err.message);
+        setStartWorked(null);
+      });
   }, []);
 
   useEffect(() => {
@@ -183,7 +196,139 @@ function Client() {
     };
   }, []);
 
-  if (isLoading) {
+  if (startWorked) {
+    if (isLoading) {
+      return (
+        <>
+          <ElectronSidebar />
+          <div
+            className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}`}
+          >
+            <div className="loading__menu">
+              <ContextMenu
+                placement="bottom"
+                content={
+                  <>
+                    <MenuItem onClick={() => initMatrix.clearCacheAndReload()}>
+                      Clear cache & reload
+                    </MenuItem>
+                    <MenuItem onClick={() => initMatrix.logout()}>Logout</MenuItem>
+                  </>
+                }
+                render={(toggle) => (
+                  <IconButton size="extra-small" onClick={toggle} fa="bi bi-three-dots-vertical" />
+                )}
+              />
+            </div>
+            <Spinner />
+            <div className="very-small fw-bold text-uppercase mt-3">Did you know</div>
+            <p className="loading__message small">{loadingMsg}</p>
+
+            <div className="loading__appname">
+              <Text variant="h2" weight="medium">
+                {__ENV_APP__.INFO.name}
+              </Text>
+            </div>
+          </div>
+        </>
+      );
+    }
+
+    if (__ENV_APP__.ELECTRON_MODE && !versionChecked && global.checkVersions) {
+      versionChecked = true;
+      global
+        .checkVersions()
+        .then((versionData) => {
+          if (
+            versionData &&
+            typeof versionData.value.name === 'string' &&
+            versionData.result === 1
+          ) {
+            const tinyUrl = `https://github.com/Pony-House/Client/releases/tag/${versionData.value.name}`;
+            const tinyModal = btModal({
+              id: 'tiny-update-warn',
+              title: `New version available!`,
+
+              dialog: 'modal-dialog-centered modal-lg',
+              body: [
+                $('<p>', { class: 'small' }).text(
+                  `Version ${versionData.value.name} of the app is now available for download! Click the button below to be sent to the update page.`,
+                ),
+                $('<center>').append(
+                  $('<a>', { href: tinyUrl, class: 'btn btn-primary text-bg-force' })
+                    .on('click', () => {
+                      global.open(tinyUrl, '_target');
+                      tinyModal.hide();
+                      return false;
+                    })
+                    .text('Open download page'),
+                ),
+              ],
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          alert(err.message, 'Check Versions Error');
+        });
+    }
+
+    $('body').css(
+      'zoom',
+      `${tinyAppZoomValidator(Number(global.localStorage.getItem('pony-house-zoom')))}%`,
+    );
+    const tinyMod = <Mods />;
+
+    resizeWindowChecker();
+    const classesDragDrop = ['navigation-tiny-base'];
+    if (sidebarTransition) classesDragDrop.push('use-transition-sidebar');
+    if (isHoverSidebar) classesDragDrop.push('use-hover-sidebar');
+
+    if (!navigationSidebarHidden) {
+      $('body').addClass('navigation-wrapper-auto-visible');
+    } else {
+      $('body').removeClass('navigation-wrapper-auto-visible');
+    }
+
+    return (
+      <>
+        <ElectronSidebar />
+        <LoadingPage />
+        {tinyMod}
+        <DragDrop
+          className={`${classesDragDrop.join(' ')}${navigationSidebarHidden ? ' disable-navigation-wrapper' : ''}`}
+          navWrapperRef={navWrapperRef}
+        >
+          <div
+            className="navigation-wrapper"
+            onMouseEnter={
+              isHoverSidebar
+                ? () => {
+                    if (isHoverSidebar) $('body').addClass('navigation-wrapper-hover');
+                  }
+                : null
+            }
+            onMouseLeave={
+              isHoverSidebar
+                ? () => {
+                    if (isHoverSidebar) $('body').removeClass('navigation-wrapper-hover');
+                  }
+                : null
+            }
+          >
+            <Navigation />
+          </div>
+          <div className="room-wrapper">
+            <Room />
+          </div>
+          <Windows />
+          <Dialogs />
+          <EmojiBoardOpener />
+          <ReusableContextMenu />
+        </DragDrop>
+      </>
+    );
+  } else {
     return (
       <>
         <ElectronSidebar />
@@ -206,9 +351,11 @@ function Client() {
               )}
             />
           </div>
-          <Spinner />
-          <div className="very-small fw-bold text-uppercase mt-3">Did you know</div>
-          <p className="loading__message small">{loadingMsg}</p>
+          <p className="loading__message h2 text-danger">
+            <i class="fa-solid fa-triangle-exclamation" />
+          </p>
+          <div className="small fw-bold text-uppercase mt-3 text-danger">CLIENT ERROR</div>
+          <div className="very-small fw-bold text-uppercase mt-3">{errorMessage}</div>
 
           <div className="loading__appname">
             <Text variant="h2" weight="medium">
@@ -219,97 +366,6 @@ function Client() {
       </>
     );
   }
-
-  if (__ENV_APP__.ELECTRON_MODE && !versionChecked && global.checkVersions) {
-    versionChecked = true;
-    global
-      .checkVersions()
-      .then((versionData) => {
-        if (versionData && typeof versionData.value.name === 'string' && versionData.result === 1) {
-          const tinyUrl = `https://github.com/Pony-House/Client/releases/tag/${versionData.value.name}`;
-          const tinyModal = btModal({
-            id: 'tiny-update-warn',
-            title: `New version available!`,
-
-            dialog: 'modal-dialog-centered modal-lg',
-            body: [
-              $('<p>', { class: 'small' }).text(
-                `Version ${versionData.value.name} of the app is now available for download! Click the button below to be sent to the update page.`,
-              ),
-              $('<center>').append(
-                $('<a>', { href: tinyUrl, class: 'btn btn-primary text-bg-force' })
-                  .on('click', () => {
-                    global.open(tinyUrl, '_target');
-                    tinyModal.hide();
-                    return false;
-                  })
-                  .text('Open download page'),
-              ),
-            ],
-          });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        alert(err.message, 'Check Versions Error');
-      });
-  }
-
-  $('body').css(
-    'zoom',
-    `${tinyAppZoomValidator(Number(global.localStorage.getItem('pony-house-zoom')))}%`,
-  );
-  const tinyMod = <Mods />;
-
-  resizeWindowChecker();
-  const classesDragDrop = ['navigation-tiny-base'];
-  if (sidebarTransition) classesDragDrop.push('use-transition-sidebar');
-  if (isHoverSidebar) classesDragDrop.push('use-hover-sidebar');
-
-  if (!navigationSidebarHidden) {
-    $('body').addClass('navigation-wrapper-auto-visible');
-  } else {
-    $('body').removeClass('navigation-wrapper-auto-visible');
-  }
-
-  return (
-    <>
-      <ElectronSidebar />
-      <LoadingPage />
-      {tinyMod}
-      <DragDrop
-        className={`${classesDragDrop.join(' ')}${navigationSidebarHidden ? ' disable-navigation-wrapper' : ''}`}
-        navWrapperRef={navWrapperRef}
-      >
-        <div
-          className="navigation-wrapper"
-          onMouseEnter={
-            isHoverSidebar
-              ? () => {
-                  if (isHoverSidebar) $('body').addClass('navigation-wrapper-hover');
-                }
-              : null
-          }
-          onMouseLeave={
-            isHoverSidebar
-              ? () => {
-                  if (isHoverSidebar) $('body').removeClass('navigation-wrapper-hover');
-                }
-              : null
-          }
-        >
-          <Navigation />
-        </div>
-        <div className="room-wrapper">
-          <Room />
-        </div>
-        <Windows />
-        <Dialogs />
-        <EmojiBoardOpener />
-        <ReusableContextMenu />
-      </DragDrop>
-    </>
-  );
 }
 
 export default Client;

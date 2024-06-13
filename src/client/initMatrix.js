@@ -74,10 +74,13 @@ class InitMatrix extends EventEmitter {
 
   async init(isGuest = false) {
     startCustomDNS();
-    await this.startClient(isGuest);
-    this.setupSync();
-    this.listenEvents();
-    return secret.userId;
+    const started = await this.startClient(isGuest);
+    if (started.ready) {
+      this.setupSync();
+      this.listenEvents();
+      return { userId: secret.userId };
+    }
+    return { userId: null, err: started.err };
   }
 
   async getAccount3pid() {
@@ -171,9 +174,11 @@ class InitMatrix extends EventEmitter {
       });
 
       this.matrixClient.setGlobalErrorOnUnknownDevices(false);
+      return { ready: true };
     } catch (err) {
       alert(err.message, 'Client Start Error');
-      throw err;
+      console.error(err);
+      return { ready: false, err };
     }
   }
 
