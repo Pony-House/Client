@@ -99,77 +99,82 @@ class InitMatrix extends EventEmitter {
   }
 
   async startClient(isGuest = false) {
-    startCustomDNS();
-    startTimestamp();
+    try {
+      startCustomDNS();
+      startTimestamp();
 
-    const avatarsToLoad = [];
-    for (let i = 0; i < 9; i++) {
-      avatarsToLoad.push(defaultAvatar(i));
-      avatarsToLoad.push(defaultProfileBanner(i));
-      avatarsToLoad.push(defaultSpaceBanner(i));
+      const avatarsToLoad = [];
+      for (let i = 0; i < 9; i++) {
+        avatarsToLoad.push(defaultAvatar(i));
+        avatarsToLoad.push(defaultProfileBanner(i));
+        avatarsToLoad.push(defaultSpaceBanner(i));
+      }
+
+      preloadImages(avatarsToLoad);
+
+      const indexedDBStore = new sdk.IndexedDBStore({
+        indexedDB: global.indexedDB,
+        localStorage: global.localStorage,
+        dbName: 'web-sync-store',
+      });
+
+      const clientOps = {
+        baseUrl: secret.baseUrl,
+
+        accessToken: secret.accessToken,
+        userId: secret.userId,
+        store: indexedDBStore,
+
+        cryptoStore: new sdk.IndexedDBCryptoStore(global.indexedDB, 'crypto-store'),
+
+        deviceId: secret.deviceId,
+
+        useE2eForGroupCall: !isGuest,
+        isVoipWithNoMediaAllowed: !isGuest,
+        timelineSupport: true,
+        supportsCallTransfer: !isGuest,
+
+        cryptoCallbacks,
+        verificationMethods: ['m.sas.v1'],
+      };
+
+      if (__ENV_APP__.ELECTRON_MODE) {
+        clientOps.fetchFn = fetchBase;
+      }
+
+      this.matrixClient = sdk.createClient(clientOps);
+      attemptDecryption.start();
+      if (__ENV_APP__.ELECTRON_MODE) {
+        if (global.tinyJsonDB && typeof global.tinyJsonDB.startClient === 'function')
+          await global.tinyJsonDB.startClient();
+
+        // if (typeof global.startMediaCacheElectron === 'function')
+        //  await global.startMediaCacheElectron();
+      }
+
+      await envAPI.startDB();
+      await indexedDBStore.startup();
+
+      if (!__ENV_APP__.RUST_CRYPTO_MODE) {
+        console.log('[matrix-js-sdk] Using initCrypto.');
+        await this.matrixClient.initCrypto();
+      } else {
+        console.log('[matrix-js-sdk] Using initRustCrypto.');
+        await this.matrixClient.initRustCrypto();
+      }
+
+      this.matrixClient.setMaxListeners(eventMaxListeners);
+
+      await this.matrixClient.startClient({
+        lazyLoadMembers: true,
+        threadSupport: true,
+      });
+
+      this.matrixClient.setGlobalErrorOnUnknownDevices(false);
+    } catch (err) {
+      alert(err.message, 'Client Start Error');
+      throw err;
     }
-
-    preloadImages(avatarsToLoad);
-
-    const indexedDBStore = new sdk.IndexedDBStore({
-      indexedDB: global.indexedDB,
-      localStorage: global.localStorage,
-      dbName: 'web-sync-store',
-    });
-
-    const clientOps = {
-      baseUrl: secret.baseUrl,
-
-      accessToken: secret.accessToken,
-      userId: secret.userId,
-      store: indexedDBStore,
-
-      cryptoStore: new sdk.IndexedDBCryptoStore(global.indexedDB, 'crypto-store'),
-
-      deviceId: secret.deviceId,
-
-      useE2eForGroupCall: !isGuest,
-      isVoipWithNoMediaAllowed: !isGuest,
-      timelineSupport: true,
-      supportsCallTransfer: !isGuest,
-
-      cryptoCallbacks,
-      verificationMethods: ['m.sas.v1'],
-    };
-
-    if (__ENV_APP__.ELECTRON_MODE) {
-      clientOps.fetchFn = fetchBase;
-    }
-
-    this.matrixClient = sdk.createClient(clientOps);
-    attemptDecryption.start();
-    if (__ENV_APP__.ELECTRON_MODE) {
-      if (global.tinyJsonDB && typeof global.tinyJsonDB.startClient === 'function')
-        await global.tinyJsonDB.startClient();
-
-      // if (typeof global.startMediaCacheElectron === 'function')
-      //  await global.startMediaCacheElectron();
-    }
-
-    await envAPI.startDB();
-    await indexedDBStore.startup();
-
-    if (!__ENV_APP__.RUST_CRYPTO_MODE) {
-      console.log('[matrix-js-sdk] Using initCrypto.');
-      await this.matrixClient.initCrypto();
-    } else {
-      console.log('[matrix-js-sdk] Using initRustCrypto.');
-      await this.matrixClient.initRustCrypto();
-    }
-
-    this.matrixClient.setMaxListeners(eventMaxListeners);
-
-    await this.matrixClient.startClient({
-      lazyLoadMembers: true,
-      threadSupport: true,
-    });
-
-    this.matrixClient.setGlobalErrorOnUnknownDevices(false);
   }
 
   setupSync() {
