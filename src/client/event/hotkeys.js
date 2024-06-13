@@ -72,8 +72,8 @@ function listenKeyboard(event) {
     // focus the text field on most keypresses
     if (shouldFocusMessageField(event.code)) {
       // press any key to focus and type in message field
-      const msgTextarea = document.getElementById('message-textarea');
-      msgTextarea?.focus();
+      const msgTextarea = $('#message-textarea');
+      msgTextarea.focus();
     }
   }
 }

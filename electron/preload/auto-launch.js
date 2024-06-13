@@ -6,6 +6,7 @@ ipcRenderer.on('check-version', () => {
 });
 
 ipcRenderer.on('refresh-client', () => {
+  console.log('[electron] Realoding page...');
   global.location.reload();
 });
 
