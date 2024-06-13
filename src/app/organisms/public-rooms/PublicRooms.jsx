@@ -215,7 +215,12 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
   function joinRoom(roomIdOrAlias) {
     joiningRooms.add(roomIdOrAlias);
     updateJoiningRooms(new Set(Array.from(joiningRooms)));
-    roomActions.join(roomIdOrAlias, false);
+    roomActions.join(roomIdOrAlias, false).catch((err) => {
+      console.error(err);
+      alert(err.message, 'Join Public Room Error');
+      joiningRooms.delete(roomIdOrAlias);
+      updateJoiningRooms(new Set(Array.from(joiningRooms)));
+    });
   }
 
   function renderRoomList(rooms) {
