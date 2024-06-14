@@ -56,7 +56,7 @@ export default {
       'Yay!',
       ':3',
 
-      "Client's official birthday is Apr 10, 2023.",
+      "Pony House's official birthday is Apr 10, 2023.",
       'Holding SHIFT while clicking emoji allows you to send multiple emoji.',
       'SHIFT+ENTER to make a new line without sending your message.',
       "Customize client's appearance in the user setings menu.",

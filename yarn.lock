@@ -1230,7 +1230,7 @@
     "@types/babel__core" "^7.20.5"
     react-refresh "^0.14.2"
 
-"@xmldom/xmldom@^0.8.8":
+"@xmldom/xmldom@^0.8.10", "@xmldom/xmldom@^0.8.8":
   version "0.8.10"
   resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.8.10.tgz#a1337ca426aa61cef9fe15b5b28e340a72f6fa99"
   integrity sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==
@@ -3252,6 +3252,13 @@ events@3.3.0, events@^3.2.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
   integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
+
+exifreader@4.23.3:
+  version "4.23.3"
+  resolved "https://registry.yarnpkg.com/exifreader/-/exifreader-4.23.3.tgz#3389c2dab3ab2501562ebdef4115ea34ab9d9aa4"
+  integrity sha512-/Ii4jiNp/5BXdKOiWXZYrWmZFn/ANu3bMVGO7GFQufao5M52/fK2OsAPMH34PL4S79z1eZBzAoaYyBXit0zzVA==
+  optionalDependencies:
+    "@xmldom/xmldom" "^0.8.10"
 
 explain-error@^1.0.4:
   version "1.0.4"

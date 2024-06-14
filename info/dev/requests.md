@@ -1,3 +1,9 @@
+Ajeitar PowerLevelSelector.jsx
+Ajeitar o selecionador de custom status icon.
+exifreader
+
+const tags = await ExifReader.load(body, { async: true });
+
 Compu
 @Tiny Jasmini do u think u could make it so broken images for space icons fall back to the default colored icons for spaces without images set? preferably change it to show the first letter of the space's name?
 if media breaks then having just a list of identical broken image icons makes things difficult

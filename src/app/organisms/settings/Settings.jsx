@@ -13,6 +13,7 @@ import { resizeWindowChecker } from '../../../util/tools';
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
 import ProfileSection from './pages/Profile';
+import AccountSection from './pages/Account';
 import AppearanceSection from './pages/Appearance';
 import NotificationsSection from './pages/Notifications';
 import SecuritySection from './pages/Security';
@@ -39,6 +40,7 @@ function EmojiSection() {
 export const tabText = {
   WEB3: 'Web3',
   APPEARANCE: 'Appearance',
+  ACCOUNT: 'Account',
   ADVANCED: 'Advanced User',
   VOICEVIDEO: 'Voice & Video',
   LIBRETRANSLATE: 'Libre Translate',
@@ -63,6 +65,13 @@ const buildTabItems = () => {
       faSrc: 'fa-solid fa-id-card',
       disabled: false,
       render: () => <ProfileSection />,
+    });
+
+    tabItems.push({
+      text: tabText.ACCOUNT,
+      faSrc: 'fa-solid fa-user',
+      disabled: false,
+      render: () => <AccountSection />,
     });
 
     tabItems.push({
