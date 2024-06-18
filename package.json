@@ -127,7 +127,7 @@
     "eslint-plugin-react-hooks": "4.6.2",
     "esm": "^3.2.25",
     "fs-extra": "^11.1.1",
-    "globals": "15.4.0",
+    "globals": "15.6.0",
     "prettier": "3.3.2",
     "sass": "1.77.4",
     "typescript": "5.4.5",
