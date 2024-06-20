@@ -232,11 +232,22 @@ export function getSSKeyInfo(key) {
   }
 }
 
-export async function hasDevices(userId) {
+export async function getDevices(userId) {
   const mx = initMatrix.matrixClient;
   const Crypto = initMatrix.matrixClient.getCrypto();
+  const mainUserId = mx.getUserId();
+  if (userId !== mainUserId) {
+    const usersDeviceMap = await Crypto.getUserDeviceInfo([userId, mainUserId]);
+    return usersDeviceMap;
+  } else {
+    const usersDeviceMap = await Crypto.getUserDeviceInfo([userId]);
+    return usersDeviceMap;
+  }
+}
+
+export async function hasDevices(userId) {
   try {
-    const usersDeviceMap = await Crypto.getUserDeviceInfo([userId, mx.getUserId()]);
+    const usersDeviceMap = await getDevices(userId);
     return Object.values(usersDeviceMap).every(
       (userDevices) => Object.keys(userDevices).length > 0,
     );
@@ -247,8 +258,14 @@ export async function hasDevices(userId) {
 }
 
 export async function hasDevice(userId, deviceId) {
-  const userDevices = await hasDevices(userId);
-  return userDevices;
+  try {
+    const usersDeviceMap = await getDevices(userId);
+    if (typeof deviceId !== 'undefined') return usersDeviceMap.get(userId).get(deviceId);
+    else return usersDeviceMap.get(userId);
+  } catch (e) {
+    console.error(`[matrix] Error determining if it's possible to encrypt to all users: `, e);
+    return null;
+  }
 }
 
 if (__ENV_APP__.MODE === 'development') {
@@ -272,6 +289,7 @@ if (__ENV_APP__.MODE === 'development') {
     hasCrossSigningAccountData,
     getDefaultSSKey,
     getSSKeyInfo,
+    getDevices,
     hasDevices,
     hasDevice,
   };
