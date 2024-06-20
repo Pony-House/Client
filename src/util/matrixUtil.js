@@ -197,10 +197,12 @@ export function isCrossVerified(deviceId) {
   try {
     const mx = initMatrix.matrixClient;
     const crossSignInfo = mx.getStoredCrossSigningForUser(mx.getUserId());
+    // const deviceInfo = mx.getCrypto().getUserDeviceInfo()([mx.getUserId()]);
     const deviceInfo = mx.getStoredDevice(mx.getUserId(), deviceId);
     const deviceTrust = crossSignInfo.checkDeviceTrust(crossSignInfo, deviceInfo, false, true);
     return deviceTrust.isCrossSigningVerified();
-  } catch {
+  } catch (err) {
+    console.error(err);
     // device does not support encryption
     return null;
   }
@@ -242,4 +244,35 @@ export async function hasDevices(userId) {
     console.error(`[matrix] Error determining if it's possible to encrypt to all users: `, e);
     return false;
   }
+}
+
+export async function hasDevice(userId, deviceId) {
+  const userDevices = await hasDevices(userId);
+  return userDevices;
+}
+
+if (__ENV_APP__.MODE === 'development') {
+  global.matrixUtil = {
+    eventMaxListeners,
+    getBaseUrl,
+    getUsername,
+    getUsernameOfRoomMember,
+    isRoomAliasAvailable,
+    getPowerLabel,
+    parseReply,
+    trimHTMLReply,
+    hasDMWith,
+    getCurrentState,
+    joinRuleToIconSrc,
+    getHighestPowerUserId,
+    getIdServer,
+    getServerToPopulation,
+    genRoomVia,
+    isCrossVerified,
+    hasCrossSigningAccountData,
+    getDefaultSSKey,
+    getSSKeyInfo,
+    hasDevices,
+    hasDevice,
+  };
 }

@@ -13,7 +13,7 @@ import { resizeWindowChecker } from '../../../util/tools';
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
 import ProfileSection from './pages/Profile';
-// import AccountSection from './pages/Account';
+import AccountSection from './pages/Account';
 import AppearanceSection from './pages/Appearance';
 import NotificationsSection from './pages/Notifications';
 import SecuritySection from './pages/Security';
@@ -67,12 +67,12 @@ const buildTabItems = () => {
       render: () => <ProfileSection />,
     });
 
-    /* tabItems.push({
+    tabItems.push({
       text: tabText.ACCOUNT,
       faSrc: 'fa-solid fa-user',
       disabled: false,
       render: () => <AccountSection />,
-    }); */
+    });
 
     tabItems.push({
       text: tabText.APPEARANCE,
