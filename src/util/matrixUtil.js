@@ -14,7 +14,7 @@ export const eventMaxListeners = __ENV_APP__.MAX_LISTENERS;
 
 export const canSupport = (where) => {
   const mx = initMatrix.matrixClient;
-  const supportData = mx.canSupport.get(where);
+  const supportData = mx.canSupport ? mx.canSupport.get(where) : null;
   if (
     typeof supportData === 'number' &&
     !Number.isNaN(supportData) &&

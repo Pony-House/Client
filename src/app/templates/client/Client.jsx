@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import appLoadMsg from '@mods/appLoadMsg';
+import { canSupport } from '@src/util/matrixUtil';
 
 import settings from '@src/client/state/settings';
 import matrixAppearance from '@src/util/libs/appearance';
@@ -159,7 +160,9 @@ function Client() {
           selectRoom(
             roomId,
             typeof eventId === 'string' && eventId.length > 0 ? eventId : null,
-            typeof threadId === 'string' && threadId.length > 0 ? threadId : null,
+            canSupport('Thread') && typeof threadId === 'string' && threadId.length > 0
+              ? threadId
+              : null,
           );
         }
       }, 100);
