@@ -193,14 +193,15 @@ export function genRoomVia(room) {
   return via.concat(mostPop3.slice(0, 2));
 }
 
-export function isCrossVerified(deviceId) {
+export async function isCrossVerified(deviceId) {
   try {
     const mx = initMatrix.matrixClient;
-    const crossSignInfo = mx.getStoredCrossSigningForUser(mx.getUserId());
-    // const deviceInfo = mx.getCrypto().getUserDeviceInfo()([mx.getUserId()]);
-    const deviceInfo = mx.getStoredDevice(mx.getUserId(), deviceId);
-    const deviceTrust = crossSignInfo.checkDeviceTrust(crossSignInfo, deviceInfo, false, true);
-    return deviceTrust.isCrossSigningVerified();
+    const crypto = mx.getCrypto();
+    let deviceTrust;
+    if (!deviceId) deviceTrust = await crypto.checkUserTrust(mx.getUserId());
+    else deviceTrust = await crypto.getDeviceVerificationStatus(mx.getUserId(), deviceId);
+
+    return deviceTrust.crossSigningVerified;
   } catch (err) {
     console.error(err);
     // device does not support encryption
