@@ -121,6 +121,24 @@ function DeviceManage() {
 
       checkDevices();
     }
+
+    try {
+      const updateList = () => setDevicesChecked(false);
+      const crypto = mx.getCrypto();
+      crypto.setMaxListeners(eventMaxListeners);
+      crypto.on('deviceVerificationChanged', updateList);
+      crypto.on('crypto.devicesUpdated', updateList);
+      crypto.on('userCrossSigningUpdated', updateList);
+      crypto.on('userTrustStatusChanged', updateList);
+      return () => {
+        crypto.off('deviceVerificationChanged', updateList);
+        crypto.off('crypto.devicesUpdated', updateList);
+        crypto.off('userCrossSigningUpdated', updateList);
+        crypto.off('userTrustStatusChanged', updateList);
+      };
+    } catch (err) {
+      console.error(err);
+    }
   });
 
   useEffect(() => {
