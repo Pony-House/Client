@@ -130,21 +130,15 @@ function DeviceManage() {
       crypto.on('userCrossSigningUpdated', updateList);
       crypto.on('userTrustStatusChanged', updateList);
       crypto.on('crypto.devicesUpdated', updateList);
-      crypto.on('crypto.roomKeyRequestCancellation', updateList);
-      crypto.on('crypto.roomKeyRequest', updateList);
       crypto.on('crypto.verificationRequestReceived', updateList);
       crypto.on('crypto.willUpdateDevices', updateList);
-      crypto.on('crypto.warning', updateList);
       return () => {
         crypto.off('deviceVerificationChanged', updateList);
         crypto.off('userCrossSigningUpdated', updateList);
         crypto.off('userTrustStatusChanged', updateList);
         crypto.off('crypto.devicesUpdated', updateList);
-        crypto.off('crypto.roomKeyRequestCancellation', updateList);
-        crypto.off('crypto.roomKeyRequest', updateList);
         crypto.off('crypto.verificationRequestReceived', updateList);
         crypto.off('crypto.willUpdateDevices', updateList);
-        crypto.off('crypto.warning', updateList);
       };
     } catch (err) {
       console.error(err);
