@@ -3,6 +3,7 @@ import JSZip from 'jszip';
 import FileSaver from 'file-saver';
 
 import initMatrix, { fetchFn } from '@src/client/initMatrix';
+import { setLoadingPage } from '@src/app/templates/client/Loading';
 
 import { getCurrentState } from './matrixUtil';
 import { ImagePack as ImagePackBuilder } from '@src/app/organisms/emoji-board/custom-emoji';
@@ -99,6 +100,7 @@ export function isGlobalPack(roomId, stateKey) {
 
 // Export Emoji
 export function emojiExport(title, images, roomId = null) {
+  setLoadingPage('Exporting emojis...');
   try {
     const zip = new JSZip();
     const img = zip.folder('images');
@@ -122,7 +124,12 @@ export function emojiExport(title, images, roomId = null) {
           .generateAsync({ type: 'blob' })
           .then((content) =>
             FileSaver.saveAs(content, `emojipack_${encodeURIComponent(title)}.zip`),
-          );
+          )
+          .catch((err) => {
+            console.error(err);
+            alert(err.message, 'Emoji Export Save Error');
+            setLoadingPage(false);
+          });
       }
     };
 
@@ -169,5 +176,6 @@ export function emojiExport(title, images, roomId = null) {
   } catch (err) {
     console.error(err);
     alert(err.message, 'Emoji Export Error');
+    setLoadingPage(false);
   }
 }
