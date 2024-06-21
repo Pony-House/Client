@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 
 import initMatrix from '../../../client/initMatrix';
-import { isCrossVerified } from '../../../util/matrixUtil';
+import { eventMaxListeners, isCrossVerified } from '../../../util/matrixUtil';
 import { openReusableDialog, openEmojiVerification } from '../../../client/action/navigation';
 
 import Text from '../../atoms/text/Text';
