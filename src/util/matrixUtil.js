@@ -197,11 +197,10 @@ export async function isCrossVerified(deviceId) {
   try {
     const mx = initMatrix.matrixClient;
     const crypto = mx.getCrypto();
-    let deviceTrust;
-    if (!deviceId) deviceTrust = await crypto.checkUserTrust(mx.getUserId());
-    else deviceTrust = await crypto.getDeviceVerificationStatus(mx.getUserId(), deviceId);
-
-    return deviceTrust.crossSigningVerified;
+    const deviceTrust = await crypto.getDeviceVerificationStatus(mx.getUserId(), deviceId);
+    return (
+      deviceTrust.crossSigningVerified || deviceTrust.signedByOwner || deviceTrust.localVerified
+    );
   } catch (err) {
     console.error(err);
     // device does not support encryption
