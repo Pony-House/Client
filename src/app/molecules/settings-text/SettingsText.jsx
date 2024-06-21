@@ -16,8 +16,8 @@ function SettingsText({ value = '', maxLength = null, onChange = null, content =
       if (
         typeof textValue === 'string' &&
         typeof maxLength === 'number' &&
-        !isNaN(maxLength) &&
-        isFinite(maxLength) &&
+        !Number.isNaN(maxLength) &&
+        Number.isFinite(maxLength) &&
         maxLength > -1 &&
         textValue.length > maxLength
       ) {

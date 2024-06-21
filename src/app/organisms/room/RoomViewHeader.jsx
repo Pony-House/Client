@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { objType } from 'for-promise/utils/lib.mjs';
 import settings from '@src/client/state/settings';
+import { canSupport } from '@src/util/matrixUtil';
 
 import { forceUnloadedAvatars } from '../../atoms/avatar/load';
 import { twemojifyReact } from '../../../util/twemojify';
@@ -217,17 +218,19 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
                 />
               </li>
 
-              <li className="nav-item">
-                <IconButton
-                  neonColor
-                  iconColor={!isIconsColored ? null : 'rgb(41, 220, 131)'}
-                  className="nav-link border-0 d-none d-sm-block"
-                  onClick={() => openThreadsMessageModal(room)}
-                  tooltipPlacement="bottom"
-                  tooltip="Threads"
-                  fa="bi bi-layers"
-                />
-              </li>
+              {canSupport('Thread') ? (
+                <li className="nav-item">
+                  <IconButton
+                    neonColor
+                    iconColor={!isIconsColored ? null : 'rgb(41, 220, 131)'}
+                    className="nav-link border-0 d-none d-sm-block"
+                    onClick={() => openThreadsMessageModal(room)}
+                    tooltipPlacement="bottom"
+                    tooltip="Threads"
+                    fa="bi bi-layers"
+                  />
+                </li>
+              ) : null}
 
               <li className="nav-item">
                 <IconButton

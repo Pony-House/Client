@@ -39,6 +39,7 @@ import {
   trimHTMLReply,
   getCurrentState,
   eventMaxListeners,
+  canSupport,
 } from '../../../util/matrixUtil';
 
 import { colorMXID, backgroundColorMXID } from '../../../util/colorMXID';
@@ -965,14 +966,16 @@ const MessageOptions = React.memo(
         )}
         <IconButton onClick={() => reply()} fa="fa-solid fa-reply" size="normal" tooltip="Reply" />
 
-        {canCreateThread && (isForceThreadVisible || !roomTimeline.isEncrypted()) && (
-          <IconButton
-            onClick={() => createThread()}
-            fa="bi bi-layers"
-            size="normal"
-            tooltip="Create thread"
-          />
-        )}
+        {canSupport('Thread') &&
+          canCreateThread &&
+          (isForceThreadVisible || !roomTimeline.isEncrypted()) && (
+            <IconButton
+              onClick={() => createThread()}
+              fa="bi bi-layers"
+              size="normal"
+              tooltip="Create thread"
+            />
+          )}
 
         {senderId === mx.getUserId() && !isMedia(mEvent) && (
           <IconButton

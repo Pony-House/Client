@@ -12,6 +12,34 @@ const WELL_KNOWN_URI = '/.well-known/matrix/client';
 
 export const eventMaxListeners = __ENV_APP__.MAX_LISTENERS;
 
+export const canSupport = (where) => {
+  const mx = initMatrix.matrixClient;
+  const supportData = mx.canSupport.get(where);
+  if (
+    typeof supportData === 'number' &&
+    !Number.isNaN(supportData) &&
+    Number.isFinite(supportData) &&
+    supportData < 2
+  ) {
+    return true;
+  }
+  return false;
+};
+
+export const canSupportUnstable = (where) => {
+  const mx = initMatrix.matrixClient;
+  const supportData = mx.canSupport.get(where);
+  if (
+    typeof supportData === 'number' &&
+    !Number.isNaN(supportData) &&
+    Number.isFinite(supportData) &&
+    supportData === 1
+  ) {
+    return true;
+  }
+  return false;
+};
+
 export async function getBaseUrl(servername) {
   let protocol = 'https://';
   if (servername.match(/^https?:\/\//) !== null) protocol = '';

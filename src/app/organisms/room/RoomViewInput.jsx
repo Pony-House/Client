@@ -17,7 +17,7 @@ import settings from '../../../client/state/settings';
 import { openEmojiBoard, openReusableContextMenu } from '../../../client/action/navigation';
 import navigation from '../../../client/state/navigation';
 import { bytesToSize, getEventCords } from '../../../util/common';
-import { getUsername, getCurrentState } from '../../../util/matrixUtil';
+import { getUsername, getCurrentState, canSupport } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
 import { shiftNuller } from '../../../util/shortcut';
 import audioRecorder from '../../../util/audioRec';
@@ -665,7 +665,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
     if (roomsInput) textArea.val(roomsInput.getMessage(roomId, threadId)).css('height', 'unset');
 
     // Follow Thread
-    if (threadId) threadsList.addActive(roomId, threadId);
+    if (canSupport('Thread') && threadId) threadsList.addActive(roomId, threadId);
 
     // Reply Fix
     if (replyTo !== null) setReplyTo(null);

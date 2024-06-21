@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { objType } from 'for-promise/utils/lib.mjs';
 import threadsList from '@src/util/libs/thread';
+import { canSupport } from '@src/util/matrixUtil';
+
 import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
@@ -57,7 +59,7 @@ function RoomOptions({ roomId, threadId, afterOptionSelect = null }) {
       <MenuItem className="text-start" faSrc="fa-solid fa-check-double" onClick={handleMarkAsRead}>
         Mark as read
       </MenuItem>
-      {threadId ? (
+      {canSupport('Thread') && threadId ? (
         <MenuItem
           className="text-start"
           faSrc={followedThread ? 'fa-solid fa-minus' : 'fa-solid fa-plus'}

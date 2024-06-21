@@ -10,7 +10,7 @@ import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import { openReusableContextMenu } from '../../../client/action/navigation';
 import { getEventCords, abbreviateNumber } from '../../../util/common';
-import { joinRuleToIconSrc } from '../../../util/matrixUtil';
+import { canSupport, joinRuleToIconSrc } from '../../../util/matrixUtil';
 import { updateName } from '../../../util/roomName';
 
 import IconButton from '../../atoms/button/IconButton';
@@ -96,18 +96,20 @@ function Selector({
 
   // Force Update
   const [, forceUpdate] = useForceUpdate();
-  const [lastThreads, setLastThreads] = useState(threadsList.getActives());
+  const [lastThreads, setLastThreads] = useState(
+    canSupport('Thread') ? threadsList.getActives() : null,
+  );
 
   // Effects
   useEffect(() => {
     const threadsListUpdate = () => setLastThreads(threadsList.getActives());
     const unSub1 = drawerPostie.subscribe('selector-change', roomId, threadId, forceUpdate);
     const unSub2 = drawerPostie.subscribe('unread-change', roomId, threadId, forceUpdate);
-    threadsList.on('updatedActiveThreads', threadsListUpdate);
+    if (canSupport('Thread')) threadsList.on('updatedActiveThreads', threadsListUpdate);
     return () => {
       unSub1();
       unSub2();
-      threadsList.off('updatedActiveThreads', threadsListUpdate);
+      if (canSupport('Thread')) threadsList.off('updatedActiveThreads', threadsListUpdate);
     };
   }, []);
 

@@ -39,7 +39,7 @@ class MatrixAppearance extends EventEmitter {
         typeof this.content.calendarFormat === 'number'
       ) {
         const timeIndex = Number(this.content.calendarFormat);
-        if (!isNaN(timeIndex)) {
+        if (!Number.isNaN(timeIndex)) {
           const tinyFormat = calendarFormat[Number(this.content.calendarFormat)];
           if (objType(tinyFormat, 'object') && typeof tinyFormat.text === 'string') {
             needSetCalendarFormat = false;
@@ -78,8 +78,8 @@ class MatrixAppearance extends EventEmitter {
       this.content.pageLimit =
         typeof this.content.pageLimit === 'number'
           ? this.content.pageLimit
-          : !isNaN(__ENV_APP__.PAG_LIMIT) &&
-              isFinite(__ENV_APP__.PAG_LIMIT) &&
+          : !Number.isNaN(__ENV_APP__.PAG_LIMIT) &&
+              Number.isFinite(__ENV_APP__.PAG_LIMIT) &&
               __ENV_APP__.PAG_LIMIT > 0
             ? __ENV_APP__.PAG_LIMIT
             : 50;

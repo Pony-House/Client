@@ -22,6 +22,7 @@ import { getAccountStatus } from '../../../app/organisms/navigation/ProfileAvata
 import { messageIsClassicCrdt } from '../../../util/libs/crdt';
 import favIconManager from '../../../util/libs/favicon';
 import { getPrivacyRefuseRoom } from '../../../app/organisms/navigation/Sidebar/InviteSidebar';
+import { canSupport } from '@src/util/matrixUtil';
 // import { insertEvent } from '../eventsDelay';
 
 const soundFiles = {
@@ -583,14 +584,18 @@ class Notifications extends EventEmitter {
           // Get new numbers
           total = !mEvent.thread
             ? room.getRoomUnreadNotificationCount(NotificationCountType.Total)
-            : room.getThreadUnreadNotificationCount(mEvent.thread.id, NotificationCountType.Total);
+            : canSupport('ThreadUnreadNotifications')
+              ? room.getThreadUnreadNotificationCount(mEvent.thread.id, NotificationCountType.Total)
+              : 0;
 
           highlight = !mEvent.thread
             ? room.getRoomUnreadNotificationCount(NotificationCountType.Highlight)
-            : room.getThreadUnreadNotificationCount(
-                mEvent.thread.id,
-                NotificationCountType.Highlight,
-              );
+            : canSupport('ThreadUnreadNotifications')
+              ? room.getThreadUnreadNotificationCount(
+                  mEvent.thread.id,
+                  NotificationCountType.Highlight,
+                )
+              : 0;
 
           // Is Muted
           if (
