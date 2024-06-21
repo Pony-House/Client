@@ -1,7 +1,10 @@
 import FileSaver from 'file-saver';
 import PhotoSwipeLightbox from 'photoswipe';
+import ExifReader from 'exifreader';
+import { fetchFn } from '@src/client/initMatrix';
+
 import { getFileContentType } from './fileMime';
-import { toast } from './tools';
+import { btModal, toast } from './tools';
 
 export default function imageViewer(data) {
   return new Promise(async (resolve, reject) => {
@@ -80,6 +83,66 @@ export default function imageViewer(data) {
             html: '<i class="fa-solid fa-floppy-disk pswp__icn" height="32" width="32"></i>',
             onClick: () => {
               FileSaver.saveAs(data.url, filename);
+            },
+          });
+
+          pswp.ui.registerElement({
+            name: 'information-button',
+            ariaLabel: 'Image Metadata',
+            order: 10,
+            isButton: true,
+            html: '<i class="fa-solid fa-circle-info pswp__icn" height="32" width="32"></i>',
+            onClick: () => {
+              fetchFn(data.url)
+                .then((res) => res.arrayBuffer())
+                .then(async (body) => {
+                  const tags = await ExifReader.load(body, { async: true, includeUnknown: true });
+                  const table = $('<table>', {
+                    class: 'table border-bg table-hover align-middle m-0',
+                  });
+                  const thead = $('<thead>').append(
+                    $('<tr>').append(
+                      $('<th>', { scope: 'col' }).text('Name'),
+                      $('<th>', { scope: 'col' }).text('Description'),
+                      $('<th>', { scope: 'col' }).text('Value'),
+                    ),
+                  );
+                  table.append(thead);
+                  const tbody = $('<tbody>');
+
+                  for (const item in tags) {
+                    if (
+                      tags[item] &&
+                      (typeof tags[item].description === 'string' ||
+                        typeof tags[item].description === 'number') &&
+                      (typeof tags[item].value === 'string' || typeof tags[item].value === 'number')
+                    ) {
+                      const tr = $('<tr>');
+
+                      tr.append($('<td>').text(item));
+                      if (tags[item].description !== tags[item].value) {
+                        tr.append($('<td>').text(tags[item].description));
+                        tr.append($('<td>').text(tags[item].value));
+                      } else {
+                        tr.append($('<td>', { colspan: 2 }).text(tags[item].description));
+                      }
+
+                      tbody.append(tr);
+                    }
+                  }
+
+                  table.append(tbody);
+                  btModal({
+                    title: 'Image Metadata',
+                    id: 'image-metadata',
+                    dialog: 'modal-lg modal-dialog-centered',
+                    body: table,
+                  });
+                })
+                .catch((err) => {
+                  console.error(err);
+                  alert(err.message, 'Image Metadata Error');
+                });
             },
           });
         });

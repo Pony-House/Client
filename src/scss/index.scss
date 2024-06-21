@@ -96,6 +96,13 @@ audio:not([controls]) {
   }
 }
 
+.table {
+  td,
+  th {
+    color: var(--tc-surface-normal);
+  }
+}
+
 .input-group-text {
   color: var(--ic-surface-low);
   background-color: var(--bg-surface);

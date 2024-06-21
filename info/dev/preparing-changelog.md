@@ -12,3 +12,4 @@
 - Console alert added to the desktop version.
 - New error screen added to the page login.
 - Emoji export button added.
+- image viewer - metadata viewer added.
