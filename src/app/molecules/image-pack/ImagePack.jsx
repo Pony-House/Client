@@ -242,7 +242,9 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
                 {viewMore ? 'View less' : `View ${pack.images.size - 2} more`}
               </Button>
             )}
-            <Button onClick={() => emojiExport([...pack.images])}>Export</Button>
+            <Button onClick={() => emojiExport(pack.displayName ?? 'Unknown', [...pack.images])}>
+              Export
+            </Button>
             {handlePackDelete && (
               <Button variant="danger" onClick={handleDeletePack}>
                 Delete Pack
@@ -250,7 +252,9 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
             )}
           </>
         ) : (
-          <Button onClick={() => emojiExport([...pack.images])}>Export</Button>
+          <Button onClick={() => emojiExport(pack.displayName ?? 'Unknown', [...pack.images])}>
+            Export
+          </Button>
         )}
       </div>
 
@@ -337,7 +341,9 @@ function ImagePackUser() {
                 <br />
               </>
             )}
-            <Button onClick={() => emojiExport([...pack.images])}>Export Personal Emojis</Button>
+            <Button onClick={() => emojiExport('Personal Pack', [...pack.images])}>
+              Export Personal Emojis
+            </Button>
           </center>
         </li>
       </ul>

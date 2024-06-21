@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
 import JSZip from 'jszip';
+import FileSaver from 'file-saver';
 
-import initMatrix from '@src/client/initMatrix';
+import initMatrix, { fetchFn } from '@src/client/initMatrix';
 
 import { getCurrentState } from './matrixUtil';
 import { ImagePack as ImagePackBuilder } from '@src/app/organisms/emoji-board/custom-emoji';
+import moment from './libs/momentjs';
 
 export function useUserImagePack() {
   const mx = initMatrix.matrixClient;
@@ -96,21 +98,73 @@ export function isGlobalPack(roomId, stateKey) {
 }
 
 // Export Emoji
-export function emojiExport(images) {
+export function emojiExport(title, images, roomId = null) {
   try {
     const zip = new JSZip();
-    const mx = initMatrix.matrixClient;
+    const img = zip.folder('images');
+    const errorFolder = zip.folder('error');
+    const jsons = zip.folder('json');
+    const fileData = {
+      title,
+      timestamp: moment().valueOf(),
+      roomId,
+      client: 'pony-house',
+    };
 
-    console.log('Export Emojis', images);
+    let count = 0;
+
+    const mx = initMatrix.matrixClient;
+    const validatorComplete = () => {
+      if (count === images.length) {
+        zip.file(`metadata.json`, JSON.stringify(fileData));
+
+        zip
+          .generateAsync({ type: 'blob' })
+          .then((content) =>
+            FileSaver.saveAs(content, `emojipack_${encodeURIComponent(title)}.zip`),
+          );
+      }
+    };
+
     images.map(([shortcode, image]) => {
       const fileUrl = new URL(mx.mxcUrlToHttp(image.mxc));
-      const jsonData = {
-        mxc: image.mxc,
-        shortcode,
-        usage: getEmojiUsage(image.usage),
-      };
+      const filename = encodeURIComponent(shortcode);
+      fetchFn(fileUrl.href)
+        .then((res) => {
+          res.blob().then((blob) => {
+            const mime = blob.type.split('/');
+            if (mime[0] === 'image') {
+              if (mime[1] === 'jpeg') mime[1] = 'jpg';
+              img.file(`${filename}.${mime[1]}`, blob);
+              jsons.file(
+                `${filename}.json`,
+                JSON.stringify({
+                  mxc: image.mxc,
+                  shortcode,
+                  usage: getEmojiUsage(image.usage),
+                }),
+              );
+            }
 
-      console.log(fileUrl, jsonData);
+            count++;
+            validatorComplete();
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          errorFolder.file(
+            `${filename}.json`,
+            JSON.stringify({
+              message: err.message,
+              code: err.code,
+              mxc: image.mxc,
+              shortcode,
+              usage: getEmojiUsage(image.usage),
+            }),
+          );
+          count++;
+          validatorComplete();
+        });
     });
   } catch (err) {
     console.error(err);
