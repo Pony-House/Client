@@ -17,6 +17,14 @@
   }
 }
 
+.modal-loading-page {
+  z-index: 99998;
+}
+
+.modal-backdrop-loading-page {
+  z-index: 99997;
+}
+
 .loadingoverlay {
   background: var(--bg-loadingoverlay) !important;
   justify-content: center !important;
