@@ -102,7 +102,7 @@
     "tippy.js": "6.3.7",
     "twemoji": "14.0.2",
     "web3-providers-ws": "4.0.7",
-    "yjs": "13.6.16"
+    "yjs": "13.6.17"
   },
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "0.2.3",
