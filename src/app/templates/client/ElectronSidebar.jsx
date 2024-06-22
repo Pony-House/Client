@@ -1,10 +1,11 @@
 import favIconManager from '@src/util/libs/favicon';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 let head;
 function ElectronSidebar({ isDevToolsOpen = false }) {
   const [isMaximize, setIsMaximize] = useState(false);
+  const windowRef = useRef(null);
 
   const [icon, setIcon] = useState(favIconManager.getIcon());
   const [urlBase, setUrlBase] = useState(favIconManager.getUrlBase());
@@ -44,8 +45,18 @@ function ElectronSidebar({ isDevToolsOpen = false }) {
           `.root-electron-style, .root-electron-style-solo, .pswp.pswp--open .pswp__bg { height: ${String(newSize)}px !important; }`,
         );
     };
+    const maxWindow = () => {
+      if (electronWindowStatus.isMaximized()) {
+        electronWindowStatus.unmaximize();
+        setIsMaximize(false);
+      } else {
+        electronWindowStatus.maximize();
+        setIsMaximize(true);
+      }
+    };
 
     useEffect(() => {
+      const el = $(windowRef.current);
       const favIconUpdated = (info) => {
         setIcon(info.icon);
         setUrlBase(info.urlBase);
@@ -62,9 +73,11 @@ function ElectronSidebar({ isDevToolsOpen = false }) {
 
       $(window).on('resize', resizePage);
       favIconManager.on('valueChange', favIconUpdated);
+      el.on('dblclick', maxWindow);
       return () => {
         favIconManager.off('valueChange', favIconUpdated);
         $(window).off('resize', resizePage);
+        el.off('dblclick', maxWindow);
       };
     });
 
@@ -77,7 +90,11 @@ function ElectronSidebar({ isDevToolsOpen = false }) {
     resizeRoot();
     setTimeout(() => resizeRoot(), 10);
     return (
-      <div id="electron-titlebar" className={`d-flex${isDevToolsOpen ? ' devtools-open' : ''}`}>
+      <div
+        ref={windowRef}
+        id="electron-titlebar"
+        className={`d-flex${isDevToolsOpen ? ' devtools-open' : ''}`}
+      >
         <div className="title w-100">
           {typeof urlBase === 'string' && typeof icon === 'string' ? (
             <img className="icon" src={`${urlBase}${icon}`} alt="icon" />
@@ -91,18 +108,7 @@ function ElectronSidebar({ isDevToolsOpen = false }) {
           <button className="minimize button" onClick={() => electronWindowStatus.minimize()}>
             <i className="bi bi-dash-lg" />
           </button>
-          <button
-            className="maximize button"
-            onClick={() => {
-              if (electronWindowStatus.isMaximized()) {
-                electronWindowStatus.unmaximize();
-                setIsMaximize(false);
-              } else {
-                electronWindowStatus.maximize();
-                setIsMaximize(true);
-              }
-            }}
-          >
+          <button className="maximize button" onClick={maxWindow}>
             {isMaximize ? <i className="bi bi-window-stack" /> : <i className="bi bi-square" />}
           </button>
           <button className="close button" onClick={() => electronWindowStatus.close()}>

@@ -60,7 +60,8 @@ let win: BrowserWindow | null = null;
 const preload = path.join(__dirname, '../preload/index.js');
 const tinyUrl = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = path.join(process.env.DIST, 'index.html');
-const iconPath = path.join(process.env.VITE_PUBLIC, './img/png');
+const imgPath = path.join(process.env.VITE_PUBLIC, './img');
+const iconPath = path.join(imgPath, './png');
 const icon = path.join(iconPath, './cinny.png');
 
 const appShow = {
@@ -303,7 +304,7 @@ if (!gotTheLock) {
       };
 
       // Create Tray
-      const tray = new Tray(icon);
+      const tray = new Tray(path.join(imgPath, './android/android-chrome-16x16.png'));
       const contextMenu = Menu.buildFromTemplate(
         // @ts-ignore
         addTray(electronCache, startDevTools, app, appShow, win, showApp, icon, title),

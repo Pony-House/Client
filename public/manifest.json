@@ -4,14 +4,22 @@
   "description": "The open source house, your house, the house for all matrix ponies.",
   "dir": "auto",
   "lang": "en-US",
-  "display_override": ["window-control-overlay", "minimal-ui"],
+  "display_override": [
+    "window-control-overlay",
+    "minimal-ui"
+  ],
   "display": "standalone",
   "orientation": "portrait",
   "start_url": "/",
   "scope": "/",
   "background_color": "#212121",
   "theme_color": "#212121",
-  "categories": ["matrix", "matrix-client", "social", "chat"],
+  "categories": [
+    "matrix",
+    "matrix-client",
+    "social",
+    "chat"
+  ],
   "screenshots": [
     {
       "src": "/img/manifest/screenshot1.jpg",
@@ -27,6 +35,11 @@
     }
   ],
   "icons": [
+    {
+      "src": "/img/android/android-chrome-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
     {
       "src": "/img/android/android-chrome-36x36.png",
       "sizes": "36x36",
