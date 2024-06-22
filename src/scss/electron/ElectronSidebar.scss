@@ -63,10 +63,13 @@ body.electron-mode {
     }
   }
 
-  .modal.show,
+  .modal.show:not(.full-screen-mode),
   #dropzone,
   .auth-base {
     padding-top: 29px !important;
+  }
+
+  .modal.show.full-screen-mode {
   }
 
   .pswp.pswp--open {

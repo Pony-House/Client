@@ -271,13 +271,12 @@ function Settings() {
 
   return (
     <PopupWindow
+      isFullscreen={!window.matchMedia('screen and (max-width: 768px)').matches}
       id="settings-base"
       classBody="py-0 my-0"
       title={window.matchMedia('screen and (max-width: 768px)').matches ? 'Settings' : null}
       isOpen={isOpen}
-      size={
-        window.matchMedia('screen and (max-width: 768px)').matches ? 'modal-xl' : 'modal-fullscreen'
-      }
+      size={'modal-xl'}
       onRequestClose={requestClose}
     >
       {isOpen &&

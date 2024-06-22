@@ -219,6 +219,7 @@ function SpaceSettings() {
 
   return (
     <PopupWindow
+      isFullscreen={!window.matchMedia('screen and (max-width: 768px)').matches}
       id="settings-base"
       isOpen={isOpen}
       className="modal-dialog-scrollable noselect"
@@ -230,9 +231,7 @@ function SpaceSettings() {
           </>
         ) : null
       }
-      size={
-        window.matchMedia('screen and (max-width: 768px)').matches ? 'modal-xl' : 'modal-fullscreen'
-      }
+      size={'modal-xl'}
       onRequestClose={requestClose}
     >
       {isOpen &&

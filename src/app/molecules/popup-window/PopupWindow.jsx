@@ -38,6 +38,7 @@ PWContentSelector.propTypes = {
 };
 
 function PopupWindow({
+  isFullscreen = false,
   className = null,
   isOpen,
   title,
@@ -83,10 +84,11 @@ function PopupWindow({
       show={isOpen}
       onHide={onRequestClose}
       onExited={onAfterClose}
+      className={isFullscreen ? 'full-screen-mode' : null}
       dialogClassName={
         className === null
-          ? `${size} modal-dialog-scrollable modal-popup`
-          : `${className} ${size} modal-dialog-scrollable modal-popup`
+          ? `${isFullscreen ? 'modal-fullscreen ' : typeof size === 'string' ? `${size} ` : ''}modal-dialog-scrollable modal-popup${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}`
+          : `${typeof className === 'string' ? `${className} ` : ''}${isFullscreen ? 'modal-fullscreen ' : typeof size === 'string' ? `${size} ` : ''} modal-dialog-scrollable modal-popup${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}`
       }
     >
       {finalTitle ? (
@@ -104,6 +106,7 @@ function PopupWindow({
 }
 
 PopupWindow.propTypes = {
+  isFullscreen: PropTypes.bool,
   id: PropTypes.string,
   classBody: PropTypes.string,
   className: PropTypes.string,
