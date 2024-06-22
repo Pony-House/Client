@@ -41,6 +41,9 @@
     allowToChangeInstallationDirectory: true,
     deleteAppDataOnUninstall: false,
     uninstallDisplayName: 'Pony House',
+    installerSidebar: 'build/nsisSidebar.png',
+    uninstallerSidebar: 'build/nsisSidebar.png',
+    license: 'LICENSE',
   },
   publish: {
     provider: 'generic',
