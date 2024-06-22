@@ -62,7 +62,7 @@ const tinyUrl = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = path.join(process.env.DIST, 'index.html');
 const imgPath = path.join(process.env.VITE_PUBLIC, './img');
 const iconPath = path.join(imgPath, './png');
-const icon = path.join(iconPath, './cinny.png');
+const icon = path.join(iconPath, './cinny.ico');
 
 const appShow = {
   change: (value: boolean) => {
