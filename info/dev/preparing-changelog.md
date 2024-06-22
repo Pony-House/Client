@@ -14,3 +14,4 @@
 - Emoji export button added.
 - image viewer - metadata viewer added.
 - DevTools alert added to the browser.
+- App icon sizes fixed.
