@@ -165,6 +165,10 @@ async function createWindow() {
       }
     });
 
+    ipcMain.on('electron-cache-values', () => {
+      if (win && win.webContents) win.webContents.send('electron-cache-values', electronCache);
+    });
+
     ipcMain.on('window-is-maximized', () => {
       if (win && win.webContents) {
         win.webContents.send('window-is-maximized', win.isMaximized());
