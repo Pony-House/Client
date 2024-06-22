@@ -227,7 +227,8 @@ export async function isCrossVerified(deviceId) {
     const crypto = mx.getCrypto();
     const deviceTrust = await crypto.getDeviceVerificationStatus(mx.getUserId(), deviceId);
     return (
-      deviceTrust.crossSigningVerified || deviceTrust.signedByOwner || deviceTrust.localVerified
+      deviceTrust !== null &&
+      (deviceTrust.crossSigningVerified || deviceTrust.signedByOwner || deviceTrust.localVerified)
     );
   } catch (err) {
     console.error(err);
