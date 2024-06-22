@@ -146,13 +146,23 @@ contextBridge.exposeInMainWorld('setElectronResize', (callback: Function) => {
 });
 
 contextBridge.exposeInMainWorld('changeTrayIcon', (img: string) => {
-  if (img === 'cinny.png' || img === 'cinny-unread-red.png') {
+  if (
+    img === 'cinny.ico' ||
+    img === 'cinny-unread-red.ico' ||
+    img === 'cinny.png' ||
+    img === 'cinny-unread-red.png'
+  ) {
     ipcRenderer.send('change-tray-icon', img);
   }
 });
 
 contextBridge.exposeInMainWorld('changeAppIcon', (img: string) => {
-  if (img === 'cinny.png' || img === 'cinny-unread-red.png') {
+  if (
+    img === 'cinny.ico' ||
+    img === 'cinny-unread-red.ico' ||
+    img === 'cinny.png' ||
+    img === 'cinny-unread-red.png'
+  ) {
     ipcRenderer.send('change-app-icon', img);
   }
 });

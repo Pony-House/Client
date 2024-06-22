@@ -117,16 +117,16 @@ class FavIconManager extends EventEmitter {
       // Change Icon
       const finalNumber = directCount || indirectCount;
       if (finalNumber > 0) {
-        tinyThis.changeFavIcon('cinny-unread-red.png', true, finalNumber, directCount);
+        tinyThis.changeFavIcon('cinny-unread-red.ico', true, finalNumber, directCount);
         if (__ENV_APP__.ELECTRON_MODE) {
-          global.changeTrayIcon('cinny-unread-red.png');
-          global.changeAppIcon('cinny-unread-red.png');
+          global.changeTrayIcon('cinny-unread-red.ico');
+          global.changeAppIcon('cinny-unread-red.ico');
         }
       } else {
-        tinyThis.changeFavIcon('cinny.png', false, finalNumber);
+        tinyThis.changeFavIcon('cinny.ico', false, finalNumber);
         if (__ENV_APP__.ELECTRON_MODE) {
-          global.changeTrayIcon('cinny.png');
-          global.changeAppIcon('cinny.png');
+          global.changeTrayIcon('cinny.ico');
+          global.changeAppIcon('cinny.ico');
         }
       }
     }, 100);
