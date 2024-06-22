@@ -15,3 +15,4 @@
 - image viewer - metadata viewer added.
 - DevTools alert added to the browser.
 - App icon sizes fixed.
+- Settings full screen css size fixed.

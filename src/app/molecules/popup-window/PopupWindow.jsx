@@ -84,7 +84,11 @@ function PopupWindow({
       show={isOpen}
       onHide={onRequestClose}
       onExited={onAfterClose}
-      className={isFullscreen ? 'full-screen-mode' : null}
+      className={
+        isFullscreen
+          ? `full-screen-mode${__ENV_APP__.ELECTRON_MODE ? ' electron-full-screen-mode' : ''}`
+          : null
+      }
       dialogClassName={
         className === null
           ? `${isFullscreen ? 'modal-fullscreen ' : typeof size === 'string' ? `${size} ` : ''}modal-dialog-scrollable modal-popup${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}`

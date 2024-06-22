@@ -15,7 +15,7 @@
     }
     #setting-close {
       position: fixed;
-      right: 0;
+      right: 0px;
       border-top-right-radius: 0px;
       border-bottom-right-radius: 0px;
       span {
@@ -77,6 +77,18 @@
     #settings-content {
       padding-left: 270px;
     }
+  }
+}
+
+.modal.show.full-screen-mode:not(.electron-full-screen-mode) {
+  #setting-tab {
+    height: 100%;
+  }
+}
+
+.modal.show.full-screen-mode {
+  .modal-body {
+    overflow-y: scroll !important;
   }
 }
 

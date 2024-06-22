@@ -238,7 +238,10 @@ function SpaceSettings() {
         roomId &&
         (!window.matchMedia('screen and (max-width: 768px)').matches ? (
           <div className="my-0 py-0">
-            <div id="setting-tab" className="py-3 h-100 border-bg">
+            <div
+              id="setting-tab"
+              className={`py-3 border-bg${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style-solo' : ''}`}
+            >
               <Tabs
                 requestClose={requestClose}
                 className="border-bottom border-bg"
