@@ -117,10 +117,24 @@ class FavIconManager extends EventEmitter {
       // Change Icon
       const finalNumber = directCount || indirectCount;
       if (finalNumber > 0) {
-        tinyThis.changeFavIcon('cinny-unread-red.ico', true, finalNumber, directCount);
+        if (__ENV_APP__.PLATFORM === 'linux') {
+          tinyThis.changeFavIcon('cinny-unread-red.png', true, finalNumber, directCount);
+          if (__ENV_APP__.ELECTRON_MODE) {
+            global.changeTrayIcon('cinny-unread-red.png');
+            global.changeAppIcon('cinny-unread-red.png');
+          }
+        } else {
+          tinyThis.changeFavIcon('cinny-unread-red.ico', true, finalNumber, directCount);
+          if (__ENV_APP__.ELECTRON_MODE) {
+            global.changeTrayIcon('cinny-unread-red.ico');
+            global.changeAppIcon('cinny-unread-red.ico');
+          }
+        }
+      } else if (__ENV_APP__.PLATFORM === 'linux') {
+        tinyThis.changeFavIcon('cinny.png', false, finalNumber);
         if (__ENV_APP__.ELECTRON_MODE) {
-          global.changeTrayIcon('cinny-unread-red.ico');
-          global.changeAppIcon('cinny-unread-red.ico');
+          global.changeTrayIcon('cinny.png');
+          global.changeAppIcon('cinny.png');
         }
       } else {
         tinyThis.changeFavIcon('cinny.ico', false, finalNumber);

@@ -62,7 +62,8 @@ const tinyUrl = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = path.join(process.env.DIST, 'index.html');
 const imgPath = path.join(process.env.VITE_PUBLIC, './img');
 const iconPath = path.join(imgPath, './png');
-const icon = path.join(iconPath, './cinny.ico');
+const icon = path.join(iconPath, `./cinny.${process.platform === 'linux' ? 'png' : 'ico'}`);
+const iconPng = path.join(iconPath, './cinny.png');
 
 const appShow = {
   change: (value: boolean) => {
@@ -304,10 +305,10 @@ if (!gotTheLock) {
       };
 
       // Create Tray
-      const tray = new Tray(path.join(imgPath, './android/android-chrome-16x16.png'));
+      const tray = new Tray(path.join(imgPath, './android/android-chrome-36x36.png'));
       const contextMenu = Menu.buildFromTemplate(
         // @ts-ignore
-        addTray(electronCache, startDevTools, app, appShow, win, showApp, icon, title),
+        addTray(electronCache, startDevTools, app, appShow, win, showApp, iconPng, title),
       );
 
       tray.setToolTip(title);
