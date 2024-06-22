@@ -242,7 +242,7 @@ export default defineConfig(({ command, mode }) => {
     ],
 
     optimizeDeps: {
-      exclude: ['rust-crypto'],
+      exclude: ['rust-crypto', 'vite'],
       esbuildOptions: {
 
         define: {
