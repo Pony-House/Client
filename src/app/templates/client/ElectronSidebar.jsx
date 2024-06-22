@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 let head;
-function ElectronSidebar({ devToolsStatus = false }) {
+function ElectronSidebar({ isDevToolsOpen = false }) {
   const [isMaximize, setIsMaximize] = useState(false);
 
   const [icon, setIcon] = useState(favIconManager.getIcon());
@@ -77,7 +77,7 @@ function ElectronSidebar({ devToolsStatus = false }) {
     resizeRoot();
     setTimeout(() => resizeRoot(), 10);
     return (
-      <div id="electron-titlebar" className={`d-flex${devToolsStatus ? ' devtools-open' : ''}`}>
+      <div id="electron-titlebar" className={`d-flex${isDevToolsOpen ? ' devtools-open' : ''}`}>
         <div className="title w-100">
           {typeof urlBase === 'string' && typeof icon === 'string' ? (
             <img className="icon" src={`${urlBase}${icon}`} alt="icon" />
@@ -118,7 +118,7 @@ function ElectronSidebar({ devToolsStatus = false }) {
 }
 
 ElectronSidebar.propTypes = {
-  devToolsStatus: PropTypes.bool,
+  isDevToolsOpen: PropTypes.bool,
 };
 
 export default ElectronSidebar;

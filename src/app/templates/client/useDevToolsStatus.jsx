@@ -20,3 +20,7 @@ export function useDevToolsStatus() {
 
   return isDevToolsOpen;
 }
+
+if (__ENV_APP__.MODE === 'development') {
+  global.devtoolsDetect = devtoolsDetect;
+}

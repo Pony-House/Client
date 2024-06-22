@@ -11,8 +11,10 @@ import Client from '@src/app/templates/client/Client';
 import web3Talk from '@src/util/web3/xmtp';
 import envAPI from '@src/util/libs/env';
 import libreTranslate from '@src/util/libs/libreTranslate';
+import { useDevToolsStatus } from '../templates/client/useDevToolsStatus';
 
 function App() {
+  const isDevToolsOpen = useDevToolsStatus();
   const [firstTime, setFirstTime] = useState(true);
 
   useEffect(() => {
@@ -26,7 +28,11 @@ function App() {
     return null;
   }
 
-  return isAuthenticated() ? <Client /> : <Auth />;
+  return isAuthenticated() ? (
+    <Client isDevToolsOpen={isDevToolsOpen} />
+  ) : (
+    <Auth isDevToolsOpen={isDevToolsOpen} />
+  );
 }
 
 export default App;

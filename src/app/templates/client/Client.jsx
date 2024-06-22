@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+
 import appLoadMsg from '@mods/appLoadMsg';
 import { canSupport } from '@src/util/matrixUtil';
 
@@ -40,7 +42,6 @@ import {
   selectTab,
 } from '../../../client/action/navigation';
 import ElectronSidebar from './ElectronSidebar';
-import { useDevToolsStatus } from './useDevToolsStatus';
 
 let versionChecked = false;
 
@@ -48,7 +49,7 @@ if (__ENV_APP__.ELECTRON_MODE) {
   window.setElectronResize(() => resizeWindowChecker());
 }
 
-function Client() {
+function Client({ isDevToolsOpen = false }) {
   const [startWorked, setStartWorked] = useState(true);
   const [errorMessage, setErrorMessage] = useState('Unknown');
   const [isLoading, changeLoading] = useState(true);
@@ -65,7 +66,6 @@ function Client() {
   );
 
   const navWrapperRef = useRef(null);
-  const devToolsStatus = useDevToolsStatus();
 
   function onRoomModeSelected(roomType) {
     const navWrapper = $(navWrapperRef.current);
@@ -205,9 +205,9 @@ function Client() {
     if (isLoading) {
       return (
         <>
-          <ElectronSidebar devToolsStatus={devToolsStatus} />
+          <ElectronSidebar isDevToolsOpen={isDevToolsOpen} />
           <div
-            className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}${devToolsStatus ? ' devtools-open' : ''}`}
+            className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}${isDevToolsOpen ? ' devtools-open' : ''}`}
           >
             <div className="loading__menu">
               <ContextMenu
@@ -297,11 +297,11 @@ function Client() {
 
     return (
       <>
-        <ElectronSidebar devToolsStatus={devToolsStatus} />
+        <ElectronSidebar isDevToolsOpen={isDevToolsOpen} />
         <LoadingPage />
         {tinyMod}
         <DragDrop
-          className={`${classesDragDrop.join(' ')}${navigationSidebarHidden ? ' disable-navigation-wrapper' : ''}${devToolsStatus ? ' devtools-open' : ''}`}
+          className={`${classesDragDrop.join(' ')}${navigationSidebarHidden ? ' disable-navigation-wrapper' : ''}${isDevToolsOpen ? ' devtools-open' : ''}`}
           navWrapperRef={navWrapperRef}
         >
           <div
@@ -336,9 +336,9 @@ function Client() {
   } else {
     return (
       <>
-        <ElectronSidebar devToolsStatus={devToolsStatus} />
+        <ElectronSidebar isDevToolsOpen={isDevToolsOpen} />
         <div
-          className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}${devToolsStatus ? ' devtools-open' : ''}`}
+          className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}${isDevToolsOpen ? ' devtools-open' : ''}`}
         >
           <div className="loading__menu">
             <ContextMenu
@@ -372,5 +372,9 @@ function Client() {
     );
   }
 }
+
+Client.propTypes = {
+  isDevToolsOpen: PropTypes.bool,
+};
 
 export default Client;

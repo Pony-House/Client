@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import * as auth from '../../../client/action/auth';
 import cons from '../../../client/state/cons';
@@ -9,7 +10,7 @@ import LoadingScreen from './modules/LoadingScreen';
 import AuthCard from './modules/AuthCard';
 import ElectronSidebar from '../client/ElectronSidebar';
 
-function Auth() {
+function Auth({ isDevToolsOpen = false }) {
   const [loginToken, setLoginToken] = useState(getUrlParams('loginToken'));
 
   useEffect(() => {
@@ -35,8 +36,8 @@ function Auth() {
 
   return (
     <>
-      <ElectronSidebar />
-      <section className="vh-100 auth-base">
+      <ElectronSidebar isDevToolsOpen={isDevToolsOpen} />
+      <section className={`vh-100 auth-base${isDevToolsOpen ? ' devtools-open' : ''}`}>
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col col-xl-10 tiny-box">
@@ -103,5 +104,9 @@ function Auth() {
     </>
   );
 }
+
+Auth.propTypes = {
+  isDevToolsOpen: PropTypes.bool,
+};
 
 export default Auth;
