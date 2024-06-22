@@ -40,6 +40,7 @@ import {
   selectTab,
 } from '../../../client/action/navigation';
 import ElectronSidebar from './ElectronSidebar';
+import { useDevToolsStatus } from './useDevToolsStatus';
 
 let versionChecked = false;
 
@@ -64,6 +65,7 @@ function Client() {
   );
 
   const navWrapperRef = useRef(null);
+  const devToolsStatus = useDevToolsStatus();
 
   function onRoomModeSelected(roomType) {
     const navWrapper = $(navWrapperRef.current);
@@ -203,9 +205,9 @@ function Client() {
     if (isLoading) {
       return (
         <>
-          <ElectronSidebar />
+          <ElectronSidebar devToolsStatus={devToolsStatus} />
           <div
-            className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}`}
+            className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}${devToolsStatus ? ' devtools-open' : ''}`}
           >
             <div className="loading__menu">
               <ContextMenu
@@ -295,11 +297,11 @@ function Client() {
 
     return (
       <>
-        <ElectronSidebar />
+        <ElectronSidebar devToolsStatus={devToolsStatus} />
         <LoadingPage />
         {tinyMod}
         <DragDrop
-          className={`${classesDragDrop.join(' ')}${navigationSidebarHidden ? ' disable-navigation-wrapper' : ''}`}
+          className={`${classesDragDrop.join(' ')}${navigationSidebarHidden ? ' disable-navigation-wrapper' : ''}${devToolsStatus ? ' devtools-open' : ''}`}
           navWrapperRef={navWrapperRef}
         >
           <div
@@ -334,9 +336,9 @@ function Client() {
   } else {
     return (
       <>
-        <ElectronSidebar />
+        <ElectronSidebar devToolsStatus={devToolsStatus} />
         <div
-          className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}`}
+          className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}${devToolsStatus ? ' devtools-open' : ''}`}
         >
           <div className="loading__menu">
             <ContextMenu

@@ -1,8 +1,9 @@
 import favIconManager from '@src/util/libs/favicon';
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 let head;
-function ElectronSidebar() {
+function ElectronSidebar({ devToolsStatus = false }) {
   const [isMaximize, setIsMaximize] = useState(false);
 
   const [icon, setIcon] = useState(favIconManager.getIcon());
@@ -76,7 +77,7 @@ function ElectronSidebar() {
     resizeRoot();
     setTimeout(() => resizeRoot(), 10);
     return (
-      <div id="electron-titlebar" className="d-flex">
+      <div id="electron-titlebar" className={`d-flex${devToolsStatus ? ' devtools-open' : ''}`}>
         <div className="title w-100">
           {typeof urlBase === 'string' && typeof icon === 'string' ? (
             <img className="icon" src={`${urlBase}${icon}`} alt="icon" />
@@ -115,5 +116,9 @@ function ElectronSidebar() {
   $('body').removeClass('electron-mode');
   return null;
 }
+
+ElectronSidebar.propTypes = {
+  devToolsStatus: PropTypes.bool,
+};
 
 export default ElectronSidebar;
