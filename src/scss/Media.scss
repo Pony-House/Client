@@ -122,12 +122,18 @@
   height: 32px !important;
   width: 32px !important;
   color: var(--pswp-icon-color);
+  text-shadow:
+    -1px 0 #665b56,
+    0 1px #665b56,
+    1px 0 #665b56,
+    0 -1px #665b56;
 }
 
 .pswp__icn.fa-solid {
   height: 23px !important;
   width: 23px !important;
-  top: 21px;
+  padding: 1px;
+  top: 20px;
   left: 17px;
   font-size: 20px !important;
 }

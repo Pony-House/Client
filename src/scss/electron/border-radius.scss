@@ -63,6 +63,8 @@ body.electron-mode:not(.electron-maximized) {
   }
 
   .pswp.pswp--open {
+    border-bottom-right-radius: var(--electron-body-radius) !important;
+    border-bottom-left-radius: var(--electron-body-radius) !important;
     .pswp__bg {
       border-bottom-right-radius: var(--electron-body-radius) !important;
       border-bottom-left-radius: var(--electron-body-radius) !important;
@@ -70,6 +72,11 @@ body.electron-mode:not(.electron-maximized) {
   }
 
   --electron-body-border: 1px solid var(--bg-electron-border);
+  .pswp.pswp--open {
+    border-left: var(--electron-body-border) !important;
+    border-right: var(--electron-body-border) !important;
+  }
+
   #root {
     > *:not(#electron-titlebar) {
       border-left: var(--electron-body-border) !important;

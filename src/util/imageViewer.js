@@ -48,7 +48,7 @@ export default function imageViewer(data) {
         }
 
         // Create Lightbox
-        const pswp = new PhotoSwipeLightbox({
+        const options = {
           dataSource: [
             {
               src: data.url,
@@ -58,7 +58,13 @@ export default function imageViewer(data) {
             },
           ],
           padding: { top: 40, bottom: 40, left: 100, right: 100 },
-        });
+        };
+
+        if (__ENV_APP__.ELECTRON_MODE) {
+          options.mainClass = 'root-electron-style';
+        }
+
+        const pswp = new PhotoSwipeLightbox(options);
 
         // Register Buttons
         pswp.on('uiRegister', () => {

@@ -19,3 +19,4 @@
 - Scroll css fixed.
 - Electron - value detector fixed.
 - tableflip and unflip commands added.
+- PhotoSwipeLightbox css fixed to electron.
