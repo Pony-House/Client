@@ -1,4 +1,4 @@
-export const addTray = (electronCache, startDevTools, app, appShow, win, showApp, icon, title) => {
+export const addTray = (electronCache, startDevTools, app, appShow, showApp, icon, title) => {
   const trayData = [];
   trayData.push({
     label: title,
@@ -17,9 +17,8 @@ export const addTray = (electronCache, startDevTools, app, appShow, win, showApp
     label: `Check for Updates`,
     click: () => {
       if (electronCache.appStarted) {
-        if (win) win.show();
-        appShow.change(true);
-        if (win) win.webContents.send('check-version', true);
+        showApp();
+        if (electronCache.win) electronCache.win.webContents.send('check-version', true);
       }
     },
   });
@@ -28,9 +27,8 @@ export const addTray = (electronCache, startDevTools, app, appShow, win, showApp
     label: `Refresh Client`,
     click: () => {
       if (electronCache.appStarted) {
-        if (win) win.show();
-        appShow.change(true);
-        if (win) win.webContents.send('refresh-client', true);
+        showApp();
+        if (electronCache.win) electronCache.win.webContents.send('refresh-client', true);
       }
     },
   });

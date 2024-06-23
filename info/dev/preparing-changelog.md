@@ -17,3 +17,4 @@
 - App icon sizes fixed.
 - Settings full screen css size fixed.
 - Scroll css fixed.
+- Electron - value detector fixed.

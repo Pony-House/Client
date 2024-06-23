@@ -48,14 +48,20 @@ if (process.platform === 'win32') app.setAppUserModelId(app.getName());
 // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 const title = 'Pony House';
-const electronCache = {
+const electronCache: {
+  isQuiting: boolean;
+  appStarted: boolean;
+  firstTime: boolean;
+  appReady: boolean;
+  win: BrowserWindow | null;
+} = {
   isQuiting: false,
   appStarted: false,
   firstTime: false,
   appReady: false,
+  win: null,
 };
 
-let win: BrowserWindow | null = null;
 // Here, you can also use other preload
 const preload = path.join(__dirname, '../preload/index.js');
 const tinyUrl = process.env.VITE_DEV_SERVER_URL;
@@ -67,17 +73,18 @@ const icon = path.join(iconPath, `./cinny.${process.platform === 'linux' ? 'png'
 const appShow = {
   change: (value: boolean) => {
     appShow.enabled = value;
-    if (win && win.webContents) win.webContents.send('tiny-app-is-show', value);
+    if (electronCache.win && electronCache.win.webContents)
+      electronCache.win.webContents.send('tiny-app-is-show', value);
   },
 
   enabled: false,
 };
 
 const startDevTools = () => {
-  if (win && win.webContents) {
+  if (electronCache.win && electronCache.win.webContents) {
     const consoleMessage = getConsoleMessage();
-    win.webContents.openDevTools();
-    win.webContents.send('console-message', consoleMessage[0], consoleMessage[1]);
+    electronCache.win.webContents.openDevTools();
+    electronCache.win.webContents.send('console-message', consoleMessage[0], consoleMessage[1]);
   }
 };
 
@@ -109,7 +116,7 @@ async function createWindow() {
         : { width: 1200, height: 700 };
 
     // Create Window
-    win = new BrowserWindow({
+    electronCache.win = new BrowserWindow({
       title,
       icon,
       frame: false,
@@ -129,72 +136,75 @@ async function createWindow() {
       },
     });
 
-    startTempFolders(win, tinyUrl ? '_dev' : '');
-    // await tinyDB(path.join(appDataPrivate, `database${tinyUrl ? '_dev' : ''}.db`), ipcMain, win);
+    startTempFolders(electronCache.win, tinyUrl ? '_dev' : '');
+    // await tinyDB(path.join(appDataPrivate, `database${tinyUrl ? '_dev' : ''}.db`), ipcMain, electronCache.win);
     if (process.platform === 'win32') {
-      win.setAppDetails({
+      electronCache.win.setAppDetails({
         appId: 'pony-house-matrix',
         appIconPath: icon,
         relaunchDisplayName: title,
       });
     }
 
-    win.on('maximize', () => {
-      if (win && win.webContents) win.webContents.send('window-is-maximized', true);
+    electronCache.win.on('maximize', () => {
+      if (electronCache.win && electronCache.win.webContents)
+        electronCache.win.webContents.send('window-is-maximized', true);
     });
 
-    win.on('unmaximize', () => {
-      if (win && win.webContents) win.webContents.send('window-is-maximized', false);
+    electronCache.win.on('unmaximize', () => {
+      if (electronCache.win && electronCache.win.webContents)
+        electronCache.win.webContents.send('window-is-maximized', false);
     });
 
-    win.on('will-resize', () => {
-      if (win && win.webContents) {
-        win.webContents.send('window-is-maximized', win.isMaximized());
+    electronCache.win.on('will-resize', () => {
+      if (electronCache.win && electronCache.win.webContents) {
+        electronCache.win.webContents.send('window-is-maximized', electronCache.win.isMaximized());
       }
     });
 
-    win.on('resize', () => {
-      if (win && win.webContents) {
-        win.webContents.send('window-is-maximized', win.isMaximized());
+    electronCache.win.on('resize', () => {
+      if (electronCache.win && electronCache.win.webContents) {
+        electronCache.win.webContents.send('window-is-maximized', electronCache.win.isMaximized());
       }
     });
 
-    win.on('resized', () => {
-      if (win && win.webContents) {
-        win.webContents.send('window-is-maximized', win.isMaximized());
+    electronCache.win.on('resized', () => {
+      if (electronCache.win && electronCache.win.webContents) {
+        electronCache.win.webContents.send('window-is-maximized', electronCache.win.isMaximized());
       }
     });
 
     ipcMain.on('electron-cache-values', () => {
-      if (win && win.webContents) win.webContents.send('electron-cache-values', electronCache);
+      if (electronCache.win && electronCache.win.webContents)
+        electronCache.win.webContents.send('electron-cache-values', electronCache);
     });
 
     ipcMain.on('window-is-maximized', () => {
-      if (win && win.webContents) {
-        win.webContents.send('window-is-maximized', win.isMaximized());
+      if (electronCache.win && electronCache.win.webContents) {
+        electronCache.win.webContents.send('window-is-maximized', electronCache.win.isMaximized());
       }
     });
 
     ipcMain.on('window-maximize', () => {
-      if (win) win.maximize();
+      if (electronCache.win) electronCache.win.maximize();
     });
 
     ipcMain.on('window-unmaximize', () => {
-      if (win) win.unmaximize();
+      if (electronCache.win) electronCache.win.unmaximize();
     });
 
     ipcMain.on('window-minimize', () => {
-      if (win) win.minimize();
+      if (electronCache.win) electronCache.win.minimize();
     });
 
     ipcMain.on('window-close', () => {
-      if (win) win.hide();
+      if (electronCache.win) electronCache.win.hide();
     });
 
     ipcMain.on('change-app-icon', (event, img) => {
       try {
         if (typeof img === 'string' && img.length > 0) {
-          if (win) win.setIcon(path.join(iconPath, `./${img}`));
+          if (electronCache.win) electronCache.win.setIcon(path.join(iconPath, `./${img}`));
         }
       } catch (err) {
         console.error(err);
@@ -202,33 +212,33 @@ async function createWindow() {
     });
 
     // Start modules
-    startResizeEvents(ipcMain, win);
-    startEvents(ipcMain, win, appShow, startDevTools);
-    startNotifications(ipcMain, win);
+    startResizeEvents(ipcMain, electronCache);
+    startEvents(ipcMain, electronCache, appShow, startDevTools);
+    startNotifications(ipcMain, electronCache);
 
     // Remove Menu
-    win.removeMenu();
+    electronCache.win.removeMenu();
 
     if (tinyUrl) {
       // electron-vite-vue#298
-      win.loadURL(tinyUrl);
+      electronCache.win.loadURL(tinyUrl);
       // Open devTool if the app is not packaged
       if (!openDevTools) startDevTools();
     } else {
-      win.loadFile(indexHtml);
+      electronCache.win.loadFile(indexHtml);
     }
 
     if (openDevTools) startDevTools();
 
     // Show Page
-    win.once('ready-to-show', () => {
-      // if (win) win.show();
+    electronCache.win.once('ready-to-show', () => {
+      // if (electronCache.win) electronCache.win.show();
       electronCache.appStarted = true;
       appShow.change(true);
 
       // Ping
-      if (win && win.webContents) {
-        win.webContents.send('ping', {
+      if (electronCache.win && electronCache.win.webContents) {
+        electronCache.win.webContents.send('ping', {
           exe: app.getPath('exe'),
           DIST_ELECTRON: process.env.DIST_ELECTRON,
           DIST: process.env.DIST,
@@ -245,7 +255,7 @@ async function createWindow() {
     });
 
     // Make all links open with the browser, not with the application
-    win.webContents.setWindowOpenHandler(({ url }) => {
+    electronCache.win.webContents.setWindowOpenHandler(({ url }) => {
       if (url.startsWith('https:')) shell.openExternal(url);
       return { action: 'deny' };
     });
@@ -257,16 +267,16 @@ async function createWindow() {
     });
 
     // Prevent Close
-    win.on('close', (event) => {
-      if (win) {
-        const winData = { bounds: win.getBounds() };
+    electronCache.win.on('close', (event) => {
+      if (electronCache.win) {
+        const winData = { bounds: electronCache.win.getBounds() };
         fs.writeFileSync(initFile, JSON.stringify(winData));
       }
 
       if (electronCache.appStarted) {
         if (!electronCache.isQuiting) {
           event.preventDefault();
-          if (win) win.hide();
+          if (electronCache.win) electronCache.win.hide();
           appShow.change(false);
         }
 
@@ -284,11 +294,11 @@ if (!gotTheLock) {
 } else {
   app.on('second-instance', () => {
     // Someone tried to run a second instance, we should focus our window.
-    if (win) {
-      if (win.isMinimized()) {
-        win.restore();
+    if (electronCache.win) {
+      if (electronCache.win.isMinimized()) {
+        electronCache.win.restore();
       }
-      win?.focus();
+      electronCache.win?.focus();
     }
   });
 
@@ -302,7 +312,7 @@ if (!gotTheLock) {
       // Show app
       const showApp = () => {
         if (electronCache.appStarted) {
-          if (win) win.show();
+          if (electronCache.win) electronCache.win.show();
           appShow.change(true);
         }
       };
@@ -316,7 +326,6 @@ if (!gotTheLock) {
           startDevTools,
           app,
           appShow,
-          win,
           showApp,
           path.join(imgPath, './android/android-chrome-16x16.png'),
           title,
@@ -344,16 +353,16 @@ if (!gotTheLock) {
 }
 
 app.on('window-all-closed', () => {
-  win = null;
+  electronCache.win = null;
   electronCache.isQuiting = true;
   if (process.platform !== 'darwin') app.quit();
 });
 
 app.on('second-instance', () => {
-  if (win) {
+  if (electronCache.win) {
     // Focus on the main window if the user tried to open another
-    if (win.isMinimized()) win.restore();
-    win.focus();
+    if (electronCache.win.isMinimized()) electronCache.win.restore();
+    electronCache.win.focus();
   }
 });
 

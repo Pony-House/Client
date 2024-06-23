@@ -8,7 +8,7 @@ import { tempFolderNoti } from '../tempFolders';
 
 deleteAllFilesInDir(tempFolderNoti);
 const notifications = {};
-let win;
+let electronCache;
 
 // Events
 const filterEvent = () => {
@@ -30,35 +30,54 @@ const engines = {
 
     notifications[tag].on('show', (event) => {
       const newEvent = filterEvent(event);
-      win.send('tiny-notification-show', { tag, event: newEvent });
-      win.send('tiny-notification-all', { type: 'show', tag, event: newEvent });
+      if (electronCache && electronCache.win) {
+        electronCache.win.send('tiny-notification-show', { tag, event: newEvent });
+        electronCache.win.send('tiny-notification-all', { type: 'show', tag, event: newEvent });
+      }
     });
 
     notifications[tag].on('click', (event) => {
       const newEvent = filterEvent(event);
-      win.send('tiny-notification-click', { tag, event: newEvent });
-      win.send('tiny-notification-all', { type: 'click', tag, event: newEvent });
+      if (electronCache && electronCache.win) {
+        electronCache.win.send('tiny-notification-click', { tag, event: newEvent });
+        electronCache.win.send('tiny-notification-all', { type: 'click', tag, event: newEvent });
+      }
     });
 
     notifications[tag].on('reply', (event, reply) => {
       const newEvent = filterEvent(event);
-      win.send('tiny-notification-reply', { tag, event: newEvent, reply });
-      win.send('tiny-notification-all', { type: 'reply', tag, event: newEvent, reply });
+      if (electronCache && electronCache.win) {
+        electronCache.win.send('tiny-notification-reply', { tag, event: newEvent, reply });
+        electronCache.win.send('tiny-notification-all', {
+          type: 'reply',
+          tag,
+          event: newEvent,
+          reply,
+        });
+      }
     });
 
     notifications[tag].on('action', (event, index) => {
       const newEvent = filterEvent(event);
-      win.send('tiny-notification-action', { tag, event: newEvent, index });
-      win.send('tiny-notification-all', { type: 'action', tag, event: newEvent, index });
+      if (electronCache && electronCache.win) {
+        electronCache.win.send('tiny-notification-action', { tag, event: newEvent, index });
+        electronCache.win.send('tiny-notification-all', {
+          type: 'action',
+          tag,
+          event: newEvent,
+          index,
+        });
+      }
     });
 
-    notifications[tag].on('failed', (event, error) =>
-      win.send('tiny-notification-failed', {
-        tag,
-        event: filterEvent(event),
-        error: { message: error.message, fileName: error.fileName, lineNumber: error.lineNumber },
-      }),
-    );
+    notifications[tag].on('failed', (event, error) => {
+      if (electronCache && electronCache.win)
+        electronCache.win.send('tiny-notification-failed', {
+          tag,
+          event: filterEvent(event),
+          error: { message: error.message, fileName: error.fileName, lineNumber: error.lineNumber },
+        });
+    });
     notifications[tag].on('close', closeNoti);
   },
 };
@@ -86,10 +105,11 @@ const createNotification = (data) => {
     try {
       if (notifications[tag]) {
         delete notifications[tag];
-        win.send(`tiny-notification-close${forceClose ? '-timeout' : ''}`, {
-          tag,
-          event: filterEvent(event),
-        });
+        if (electronCache && electronCache.win)
+          electronCache.win.send(`tiny-notification-close${forceClose ? '-timeout' : ''}`, {
+            tag,
+            event: filterEvent(event),
+          });
 
         if (data.iconFromWeb && typeof data.iconFile === 'string') {
           const filePath = path.join(tempFolderNoti, `./${data.iconFile}`);
@@ -112,13 +132,17 @@ const createNotification = (data) => {
   }
 
   // Send Confirm
-  win.send('tiny-notification-create-confirm', { tag, isSupported: Notification.isSupported() });
+  if (electronCache && electronCache.win)
+    electronCache.win.send('tiny-notification-create-confirm', {
+      tag,
+      isSupported: Notification.isSupported(),
+    });
 };
 
 // Module
-export default function startNotifications(ipcMain, newWin) {
+export default function startNotifications(ipcMain, newElectronCache) {
   // Create
-  win = newWin;
+  electronCache = newElectronCache;
   ipcMain.on('tiny-notification-create', (e, data) => {
     if (objType(data, 'object') && typeof data.tag === 'string') {
       // Is Data Cache

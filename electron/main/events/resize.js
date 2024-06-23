@@ -1,22 +1,23 @@
-export default function startResizeEvents(ipcMain, newWin) {
+export default function startResizeEvents(ipcMain, electronCache) {
   // Resize
   const resizeWindowEvent = function () {
-    newWin.webContents.send('resize', newWin.getSize());
+    if (electronCache.win)
+      electronCache.win.webContents.send('resize', electronCache.win.getSize());
   };
 
-  newWin.on('resize', resizeWindowEvent);
-  newWin.on('resized', resizeWindowEvent);
-  newWin.on('will-resize', resizeWindowEvent);
+  electronCache.win.on('resize', resizeWindowEvent);
+  electronCache.win.on('resized', resizeWindowEvent);
+  electronCache.win.on('will-resize', resizeWindowEvent);
 
-  newWin.on('maximize', resizeWindowEvent);
-  newWin.on('unmaximize', resizeWindowEvent);
+  electronCache.win.on('maximize', resizeWindowEvent);
+  electronCache.win.on('unmaximize', resizeWindowEvent);
 
-  newWin.on('minimize', resizeWindowEvent);
-  newWin.on('restore', resizeWindowEvent);
+  electronCache.win.on('minimize', resizeWindowEvent);
+  electronCache.win.on('restore', resizeWindowEvent);
 
-  newWin.on('enter-full-screen', resizeWindowEvent);
-  newWin.on('leave-full-screen', resizeWindowEvent);
+  electronCache.win.on('enter-full-screen', resizeWindowEvent);
+  electronCache.win.on('leave-full-screen', resizeWindowEvent);
 
-  newWin.on('enter-html-full-screen', resizeWindowEvent);
-  newWin.on('leave-html-full-screen', resizeWindowEvent);
+  electronCache.win.on('enter-html-full-screen', resizeWindowEvent);
+  electronCache.win.on('leave-html-full-screen', resizeWindowEvent);
 }

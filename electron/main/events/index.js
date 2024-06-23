@@ -1,6 +1,6 @@
 import { BrowserWindow, powerMonitor } from 'electron';
 
-export default function startEvents(ipcMain, newWin, appShow, startDevTools) {
+export default function startEvents(ipcMain, electronCache, appShow, startDevTools) {
   ipcMain.on('set-title', (event, title) => {
     const webContents = event.sender;
     const tinyWin = BrowserWindow.fromWebContents(webContents);
@@ -19,12 +19,12 @@ export default function startEvents(ipcMain, newWin, appShow, startDevTools) {
 
   ipcMain.on('systemIdleTime', () => {
     const idleSecs = powerMonitor.getSystemIdleTime();
-    newWin.webContents.send('systemIdleTime', idleSecs);
+    if (electronCache.win) electronCache.win.webContents.send('systemIdleTime', idleSecs);
   });
 
   ipcMain.on('systemIdleState', (event, value) => {
     const idleSecs = powerMonitor.getSystemIdleState(value);
-    newWin.webContents.send('systemIdleState', idleSecs);
+    if (electronCache.win) electronCache.win.webContents.send('systemIdleState', idleSecs);
   });
 
   ipcMain.on('openDevTools', () => {
@@ -32,7 +32,7 @@ export default function startEvents(ipcMain, newWin, appShow, startDevTools) {
   });
 
   ipcMain.on('windowIsVisible', (event, isVisible) => {
-    newWin[!isVisible ? 'hide' : 'show']();
+    if (electronCache.win) electronCache.win[!isVisible ? 'hide' : 'show']();
     appShow.change(isVisible === true);
   });
 }
