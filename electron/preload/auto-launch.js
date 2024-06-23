@@ -2,7 +2,9 @@ import { contextBridge, ipcRenderer } from 'electron';
 import AutoLaunch from 'auto-launch';
 
 ipcRenderer.on('check-version', () => {
+  console.log('[electron] Checking version...');
   if (typeof global.checkVersions === 'function') global.checkVersions();
+  console.log('[electron] Version check complete!');
 });
 
 ipcRenderer.on('refresh-client', () => {
