@@ -176,7 +176,12 @@ async function createWindow() {
 
     ipcMain.on('electron-cache-values', () => {
       if (electronCache.win && electronCache.win.webContents)
-        electronCache.win.webContents.send('electron-cache-values', electronCache);
+        electronCache.win.webContents.send('electron-cache-values', {
+          isQuiting: electronCache.isQuiting,
+          appStarted: electronCache.appStarted,
+          firstTime: electronCache.firstTime,
+          appReady: electronCache.appReady,
+        });
     });
 
     ipcMain.on('window-is-maximized', () => {
