@@ -102,8 +102,8 @@ body.electron-mode .app-loading-wrap {
 
 // ----------------------------------------------------------------------
 
-startAutoLaunch();
 const { appendLoading, removeLoading } = useLoading();
+startAutoLaunch({ appendLoading, removeLoading });
 contextBridge.exposeInMainWorld('useLoadingElectron', { appendLoading, removeLoading });
 domReady().then(appendLoading);
 

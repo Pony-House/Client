@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import AutoLaunch from 'auto-launch';
 
+let useLoadingElectron;
 ipcRenderer.on('check-version', () => {
   console.log('[electron] Checking version...');
   if (typeof global.checkVersions === 'function') global.checkVersions();
@@ -9,6 +10,7 @@ ipcRenderer.on('check-version', () => {
 
 ipcRenderer.on('refresh-client', () => {
   console.log('[electron] Realoding page...');
+  if (useLoadingElectron) useLoadingElectron.appendLoading();
   global.location.reload();
 });
 
@@ -41,4 +43,6 @@ contextBridge.exposeInMainWorld('autoLaunch', autoLaunch);
 contextBridge.exposeInMainWorld('electronCacheValues', () => {
   ipcRenderer.send('electron-cache-values', true);
 });
-export default function startAutoLaunch() {}
+export default function startAutoLaunch(newUseLoadingElectron) {
+  useLoadingElectron = newUseLoadingElectron;
+}
