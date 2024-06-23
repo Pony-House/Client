@@ -18,3 +18,4 @@
 - Settings full screen css size fixed.
 - Scroll css fixed.
 - Electron - value detector fixed.
+- tableflip and unflip commands added.

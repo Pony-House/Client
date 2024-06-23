@@ -28,6 +28,26 @@ const messageCommands = {
     },
   },
 
+  tableflip: {
+    category: 'default',
+    sub_category: 'message',
+    type: 'msg',
+    name: 'tableflip',
+    description: 'Send (╯°□°)╯︵ ┻━┻ as message',
+    exe: (roomId, data, onSuccess) =>
+      onSuccess(`(╯°□°)╯︵ ┻━┻${data.trim() !== '' ? ` ${data}` : ''}`, { msgType: 'm.text' }),
+  },
+
+  unflip: {
+    category: 'default',
+    sub_category: 'message',
+    type: 'msg',
+    name: 'unflip',
+    description: 'Send ┬─┬ノ( º _ ºノ) as message',
+    exe: (roomId, data, onSuccess) =>
+      onSuccess(`┬─┬ノ( º _ ºノ)${data.trim() !== '' ? ` ${data}` : ''}`, { msgType: 'm.text' }),
+  },
+
   shrug: {
     category: 'default',
     sub_category: 'message',

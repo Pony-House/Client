@@ -61,6 +61,10 @@ export default {
       'SHIFT+ENTER to make a new line without sending your message.',
       "Customize client's appearance in the user setings menu.",
       'You can temporarily mute a space or room by right-clicking it.',
+      'Click your avatar in the lower-left corner to set a custom status.',
+      'Right click to pin messages in a room or DM to save them for later.',
+      'You can type /tableflip and /unflip to spice up your messages.',
+      'You can type /rainbowme and /rainbow to make your messages colorful.',
 
       'I found a bit coin in equestria. Bitcoin? Nope. Bits!',
 
