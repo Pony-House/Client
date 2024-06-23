@@ -41,6 +41,7 @@ export const avatarDefaultColor = (bgColor, type = 'avatar') => {
 const Avatar = React.forwardRef(
   (
     {
+      onClick = null,
       neonColor = false,
       text = null,
       bgColor = 'transparent',
@@ -123,6 +124,7 @@ const Avatar = React.forwardRef(
     // Render
     return (
       <div
+        onClick={onClick}
         ref={ref || ref2}
         className={`avatar-container avatar-container__${size} ${className} noselect${isImage ? '' : ' avatar-react-loaded'}`}
       >
@@ -227,6 +229,7 @@ Avatar.propTypes = {
   faSrc: PropTypes.string,
   iconColor: PropTypes.string,
   imageSrc: PropTypes.string,
+  onClick: PropTypes.func,
   size: PropTypes.oneOf(['large', 'normal', 'small', 'extra-small']),
 };
 
