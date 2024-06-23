@@ -82,6 +82,7 @@
 
 .electron-full-screen-mode {
   overflow-y: hidden;
+  padding-bottom: 29px;
 }
 
 .modal.show.full-screen-mode:not(.electron-full-screen-mode) {
