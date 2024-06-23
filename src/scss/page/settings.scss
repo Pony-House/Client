@@ -80,6 +80,10 @@
   }
 }
 
+.electron-full-screen-mode {
+  overflow-y: hidden;
+}
+
 .modal.show.full-screen-mode:not(.electron-full-screen-mode) {
   #setting-tab {
     height: 100%;
