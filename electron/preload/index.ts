@@ -86,7 +86,7 @@ body.electron-mode .app-loading-wrap {
   oStyle.id = 'app-loading-style';
   oStyle.innerHTML = styleContent;
   oDiv.className = 'app-loading-wrap root-electron-style-solo';
-  oDiv.innerHTML = `<div class="${className}"><div class="${containerClass}"><div></div></div></div>`;
+  oDiv.innerHTML = `<div class="${className} root-electron-style-solo"><div class="${containerClass} root-electron-style-solo"><div></div></div></div>`;
 
   return {
     appendLoading() {
