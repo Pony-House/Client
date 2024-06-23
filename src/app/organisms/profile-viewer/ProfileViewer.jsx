@@ -16,6 +16,7 @@ import {
   selectRoom,
   openReusableContextMenu,
   selectRoomMode,
+  openProfileViewer,
 } from '../../../client/action/navigation';
 import * as roomActions from '../../../client/action/room';
 
@@ -413,6 +414,10 @@ function ProfileViewer() {
   if (!isOpen) tinyMenuId = 'default';
 
   useEffect(() => {
+    const reopenProfile = () => {
+      if (userId) openProfileViewer(userId, roomId);
+    };
+
     if (user) {
       const avatarMxc = roomMember
         ? roomMember?.getMxcAvatarUrl?.()
@@ -433,6 +438,7 @@ function ProfileViewer() {
         if (newAvatar) {
           imageViewer({
             lightbox,
+            onClose: reopenProfile,
             imgQuery: $(profileAvatar.current).find('> img'),
             name: username,
             url: newAvatar,
@@ -650,6 +656,7 @@ function ProfileViewer() {
       const tinyAvatarPreview = () => {
         if (newAvatar) {
           imageViewer({
+            onClose: reopenProfile,
             lightbox,
             imgQuery: $(profileAvatar.current).find('> img'),
             name: userId,

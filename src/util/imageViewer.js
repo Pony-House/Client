@@ -163,6 +163,17 @@ export default function imageViewer(data) {
           });
         });
 
+        pswp.on('close', () => {
+          if (typeof data.onClose === 'function') data.onClose();
+          setTimeout(() => {
+            pswp.destroy();
+          }, 5000);
+        });
+
+        pswp.on('destroy', () => {
+          if (typeof data.onDestroyonDestroy === 'function') data.onDestroy();
+        });
+
         // Init lightbox now
         resolve(pswp);
 
