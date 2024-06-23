@@ -96,7 +96,10 @@ export default function imageViewer(data) {
               fetchFn(data.url)
                 .then((res) => res.arrayBuffer())
                 .then(async (body) => {
-                  const tags = await ExifReader.load(body, { async: true, includeUnknown: true });
+                  const newTags = await ExifReader.load(body, {
+                    async: true,
+                    includeUnknown: true,
+                  });
                   const table = $('<table>', {
                     class: 'table border-bg table-hover align-middle m-0',
                   });
@@ -110,27 +113,40 @@ export default function imageViewer(data) {
                   table.append(thead);
                   const tbody = $('<tbody>');
 
-                  for (const item in tags) {
-                    if (
-                      tags[item] &&
-                      (typeof tags[item].description === 'string' ||
-                        typeof tags[item].description === 'number') &&
-                      (typeof tags[item].value === 'string' || typeof tags[item].value === 'number')
-                    ) {
-                      const tr = $('<tr>');
+                  console.log('[image] [metadata]', newTags);
+                  const addTags = (tags, oldTile = '') => {
+                    for (const item in tags) {
+                      if (
+                        tags[item] &&
+                        (typeof tags[item].description === 'string' ||
+                          typeof tags[item].description === 'number') &&
+                        (typeof tags[item].value === 'string' ||
+                          typeof tags[item].value === 'number' ||
+                          Array.isArray(tags[item].value))
+                      ) {
+                        const tr = $('<tr>');
 
-                      tr.append($('<td>').text(item));
-                      if (tags[item].description !== tags[item].value) {
-                        tr.append($('<td>').text(tags[item].description));
-                        tr.append($('<td>').text(tags[item].value));
-                      } else {
-                        tr.append($('<td>', { colspan: 2 }).text(tags[item].description));
+                        tr.append($('<td>').text(`${oldTile}${item}`));
+                        if (tags[item].description !== tags[item].value) {
+                          tr.append($('<td>').text(tags[item].description));
+
+                          if (!Array.isArray(tags[item].value)) {
+                            tr.append($('<td>', { colspan: 2 }).text(tags[item].value));
+                          } else {
+                            for (const item2 in tags[item].value) {
+                              addTags(tags[item].value[item2], `${item} - ${oldTile}`);
+                            }
+                          }
+                        } else {
+                          tr.append($('<td>', { colspan: 2 }).text(tags[item].description));
+                        }
+
+                        tbody.append(tr);
                       }
-
-                      tbody.append(tr);
                     }
-                  }
+                  };
 
+                  addTags(newTags);
                   table.append(tbody);
                   btModal({
                     title: 'Image Metadata',
