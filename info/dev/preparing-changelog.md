@@ -20,4 +20,4 @@
 - Electron - value detector fixed.
 - tableflip and unflip commands added.
 - PhotoSwipeLightbox css fixed to electron.
-- Bye tippyjs and ContextMenu fixed.
+- ContextMenu fixed.
