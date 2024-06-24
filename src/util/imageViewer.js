@@ -62,6 +62,7 @@ export default function imageViewer(data) {
 
         if (__ENV_APP__.ELECTRON_MODE) {
           options.mainClass = 'root-electron-style';
+          options.padding.bottom += 29;
         }
 
         const pswp = new PhotoSwipeLightbox(options);
