@@ -23,8 +23,7 @@ body.electron-mode:not(.electron-maximized) {
   }
 
   #root {
-    border-bottom-right-radius: var(--electron-body-radius) !important;
-    border-bottom-left-radius: var(--electron-body-radius) !important;
+    border-radius: var(--electron-body-radius) !important;
 
     > .client-container {
       border-bottom-right-radius: var(--electron-body-radius) !important;
