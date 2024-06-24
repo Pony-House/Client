@@ -75,6 +75,14 @@ body.electron-mode:not(.electron-maximized) {
   }
 
   --electron-body-border: 1px solid var(--bg-electron-border);
+  .pswp {
+    .pswp__item {
+      border-left: var(--electron-body-border) !important;
+      border-right: var(--electron-body-border) !important;
+      border-bottom: var(--electron-body-border) !important;
+    }
+  }
+
   .pswp.pswp--open {
     border-left: var(--electron-body-border) !important;
     border-right: var(--electron-body-border) !important;
