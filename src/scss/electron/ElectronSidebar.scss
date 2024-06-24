@@ -74,6 +74,10 @@ body.electron-mode {
     top: 29px !important;
   }
 
+  .modal.root-electron-style {
+    position: fixed !important;
+  }
+
   .loading-display {
     .loading__menu {
       margin-top: 29px !important;
