@@ -26,6 +26,7 @@ import cons from '../../../client/state/cons';
 import DragDrop from './DragDrop';
 import {
   btModal,
+  checkVersions,
   dice,
   resizeWindowChecker,
   scrollFixer,
@@ -48,6 +49,42 @@ let versionChecked = false;
 if (__ENV_APP__.ELECTRON_MODE) {
   window.setElectronResize(() => resizeWindowChecker());
 }
+
+export const versionChecker = () =>
+  new Promise((resolve, reject) => {
+    checkVersions()
+      .then((versionData) => {
+        if (versionData && typeof versionData.value.name === 'string' && versionData.result === 1) {
+          const tinyUrl = `https://github.com/Pony-House/Client/releases/tag/${versionData.value.name}`;
+          const tinyModal = btModal({
+            id: 'tiny-update-warn',
+            title: `New version available!`,
+
+            dialog: 'modal-dialog-centered modal-lg',
+            body: [
+              $('<p>', { class: 'small' }).text(
+                `Version ${versionData.value.name} of the app is now available for download! Click the button below to be sent to the update page.`,
+              ),
+              $('<center>').append(
+                $('<a>', { href: tinyUrl, class: 'btn btn-primary text-bg-force' })
+                  .on('click', () => {
+                    global.open(tinyUrl, '_target');
+                    tinyModal.hide();
+                    return false;
+                  })
+                  .text('Open download page'),
+              ),
+            ],
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        alert(err.message, 'Check Versions Error');
+      });
+  });
+
+global.versionChecker = versionChecker;
 
 function Client({ isDevToolsOpen = false }) {
   const [startWorked, setStartWorked] = useState(true);
@@ -241,41 +278,7 @@ function Client({ isDevToolsOpen = false }) {
 
     if (__ENV_APP__.ELECTRON_MODE && !versionChecked && global.checkVersions) {
       versionChecked = true;
-      global
-        .checkVersions()
-        .then((versionData) => {
-          if (
-            versionData &&
-            typeof versionData.value.name === 'string' &&
-            versionData.result === 1
-          ) {
-            const tinyUrl = `https://github.com/Pony-House/Client/releases/tag/${versionData.value.name}`;
-            const tinyModal = btModal({
-              id: 'tiny-update-warn',
-              title: `New version available!`,
-
-              dialog: 'modal-dialog-centered modal-lg',
-              body: [
-                $('<p>', { class: 'small' }).text(
-                  `Version ${versionData.value.name} of the app is now available for download! Click the button below to be sent to the update page.`,
-                ),
-                $('<center>').append(
-                  $('<a>', { href: tinyUrl, class: 'btn btn-primary text-bg-force' })
-                    .on('click', () => {
-                      global.open(tinyUrl, '_target');
-                      tinyModal.hide();
-                      return false;
-                    })
-                    .text('Open download page'),
-                ),
-              ],
-            });
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-          alert(err.message, 'Check Versions Error');
-        });
+      versionChecker();
     }
 
     $('body').css(

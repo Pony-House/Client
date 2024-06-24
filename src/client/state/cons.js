@@ -205,40 +205,4 @@ const cons = {
 };
 
 Object.freeze(cons);
-
-// https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repository-tags
-global.checkVersions = () =>
-  new Promise((resolve, reject) => {
-    fetchFn(`https://api.github.com/repos/Pony-House/Client/tags`, {
-      method: 'GET',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-      },
-    })
-      .then((response) => {
-        response
-          .json()
-          .then((data) => {
-            if (Array.isArray(data) && data.length > 0) {
-              resolve({
-                data, // Data Viewer
-                value: data[0], // Data selected
-                result: compareVersions(data[0].name, cons.version), // Version Compare
-              });
-            } else {
-              resolve({
-                data: null,
-                comparation: null,
-              });
-            }
-          })
-          .catch(reject);
-      })
-      .catch(reject);
-  });
-
 export default cons;

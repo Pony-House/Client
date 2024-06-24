@@ -4,7 +4,7 @@ import AutoLaunch from 'auto-launch';
 let useLoadingElectron;
 ipcRenderer.on('check-version', () => {
   console.log('[electron] Checking version...');
-  if (typeof global.checkVersions === 'function') global.checkVersions();
+  if (typeof global.versionChecker === 'function') global.versionChecker();
   console.log('[electron] Version check complete!');
 });
 
