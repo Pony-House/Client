@@ -372,7 +372,7 @@ function PeopleDrawer({
         </div>
       </div>
       <div
-        className={`people-drawer-hidden${!showPeopleDrawer && isHoverSidebar ? ' d-none' : ''}`}
+        className={`${isHoverSidebar ? 'people-drawer-hidden' : ''}${!showPeopleDrawer && isHoverSidebar ? ' d-none' : ''}`}
         onMouseEnter={
           isHoverSidebar
             ? () => {
