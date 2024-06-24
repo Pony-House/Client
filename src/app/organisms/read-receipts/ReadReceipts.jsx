@@ -58,7 +58,7 @@ function ReadReceipts() {
 
   return (
     <Dialog
-      className="modal-dialog-scrollable noselect"
+      className="noselect"
       isOpen={isOpen}
       title="Seen by"
       onAfterClose={handleAfterClose}

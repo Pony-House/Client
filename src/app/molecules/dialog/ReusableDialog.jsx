@@ -31,7 +31,7 @@ function ReusableDialog() {
 
   return (
     <Dialog
-      className="modal-dialog-scrollable noselect"
+      className="noselect"
       isOpen={isOpen}
       title={data?.title || ''}
       onAfterClose={handleAfterClose}

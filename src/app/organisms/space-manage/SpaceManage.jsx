@@ -472,7 +472,7 @@ function SpaceManage() {
     return (
       <PopupWindow
         isOpen={roomId !== null}
-        className="modal-lg modal-dialog-scrollable noselect"
+        className="modal-lg noselect"
         title={
           <>
             {roomId && twemojifyReact(room.name)}

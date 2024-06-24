@@ -179,6 +179,7 @@ function Drawer() {
 
       {systemState !== null && systemState.status !== null ? (
         <Modal
+          className={__ENV_APP__.ELECTRON_MODE ? 'root-electron-style' : null}
           backdropClassName={__ENV_APP__.ELECTRON_MODE ? 'root-electron-style' : null}
           dialogClassName="modal-dialog-centered modal-dialog-scrollable"
           show

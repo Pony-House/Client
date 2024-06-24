@@ -14,7 +14,7 @@ function LoadingPage() {
 
   return systemState !== null && typeof systemState.status === 'string' ? (
     <Modal
-      className="modal-loading-page"
+      className={`modal-loading-page${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}`}
       backdropClassName={`${__ENV_APP__.ELECTRON_MODE ? 'root-electron-style ' : ''}modal-backdrop-loading-page`}
       contentClassName="modal-content-loading-page"
       dialogClassName="modal-dialog-centered modal-dialog-scrollable modal-dialog-loading-page"

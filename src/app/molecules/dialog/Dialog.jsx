@@ -31,6 +31,7 @@ function Dialog({
       onEntered={onAfterOpen}
       onHide={onRequestClose}
       onExited={onAfterClose}
+      className={__ENV_APP__.ELECTRON_MODE ? 'root-electron-style' : null}
       backdropClassName={__ENV_APP__.ELECTRON_MODE ? 'root-electron-style' : null}
       dialogClassName={
         className === null

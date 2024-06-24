@@ -152,7 +152,7 @@ function ShortcutSpaces() {
     <Dialog
       bodyClass="space-add-existing-modal pin-spaces"
       isOpen={isOpen}
-      className="modal-lg modal-dialog-scrollable noselect"
+      className="modal-lg noselect"
       title={
         <Text variant="s1" weight="medium" primary>
           Pin spaces

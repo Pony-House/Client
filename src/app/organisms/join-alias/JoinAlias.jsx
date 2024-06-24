@@ -140,7 +140,7 @@ function JoinAlias() {
 
   return (
     <Dialog
-      className="modal-dialog-scrollable noselect"
+      className="noselect"
       isOpen={data !== null}
       title={
         <Text variant="s1" weight="medium" primary>

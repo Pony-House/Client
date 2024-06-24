@@ -21,3 +21,4 @@
 - tableflip and unflip commands added.
 - PhotoSwipeLightbox css fixed to electron.
 - ContextMenu fixed.
+- modals css - positions class fixed.

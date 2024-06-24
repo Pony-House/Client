@@ -86,16 +86,16 @@ function PopupWindow({
       onExited={onAfterClose}
       backdrop={!isFullscreen}
       backdropClassName={`${isFullscreen ? 'modal-fullscreen ' : ''}${__ENV_APP__.ELECTRON_MODE ? 'root-electron-style' : ''}`}
-      className={
+      className={`${__ENV_APP__.ELECTRON_MODE ? 'root-electron-style ' : ''}${
         isFullscreen
           ? `full-screen-mode${__ENV_APP__.ELECTRON_MODE ? ' electron-full-screen-mode' : ''}`
           : null
-      }
-      dialogClassName={
+      }`}
+      dialogClassName={`${
         className === null
-          ? `${isFullscreen ? 'modal-fullscreen ' : typeof size === 'string' ? `${size} ` : ''}modal-dialog-scrollable modal-popup${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}`
-          : `${typeof className === 'string' ? `${className} ` : ''}${isFullscreen ? 'modal-fullscreen ' : typeof size === 'string' ? `${size} ` : ''} modal-dialog-scrollable modal-popup${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}`
-      }
+          ? `${isFullscreen ? 'modal-fullscreen ' : typeof size === 'string' ? `${size} ` : ''}`
+          : `${typeof className === 'string' ? `${className} ` : ''}${isFullscreen ? 'modal-fullscreen ' : typeof size === 'string' ? `${size} ` : ''} `
+      }modal-dialog-centered modal-dialog-scrollable modal-popup`}
     >
       {finalTitle ? (
         <Modal.Header className="noselect" closeButton>

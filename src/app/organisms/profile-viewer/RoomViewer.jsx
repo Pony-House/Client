@@ -389,7 +389,7 @@ function RoomViewer() {
   return (
     <Dialog
       bodyClass="bg-bg2 p-0"
-      className="modal-dialog-scrollable modal-dialog-centered modal-lg noselect modal-dialog-user-profile modal-dialog-room-profile"
+      className=" modal-dialog-centered modal-lg noselect modal-dialog-user-profile modal-dialog-room-profile"
       isOpen={isOpen}
       title={`${!isSpace ? 'Room' : 'Space'} Profile`}
       onAfterClose={handleAfterClose}
