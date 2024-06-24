@@ -1,7 +1,10 @@
 // import { Toast } from '@capacitor/toast';
 import { objType } from 'for-promise/utils/lib.mjs';
+import { compareVersions } from 'compare-versions';
+
 import moment from '@src/util/libs/momentjs';
 import { fetchFn } from '@src/client/initMatrix';
+import cons from '@src/client/state/cons';
 
 import tinyAPI from './mods';
 import { twemojify } from './twemojify';

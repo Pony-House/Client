@@ -1,6 +1,4 @@
 import { isMobile } from '@src/util/libs/mobile';
-import { compareVersions } from 'compare-versions';
-import { fetchFn } from '../initMatrix';
 
 const cons = {
   version: __ENV_APP__.VERSION,
