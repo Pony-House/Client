@@ -250,7 +250,7 @@ export function btModal(data) {
   }
 
   const modal = $('<div>', {
-    class: 'fade modal',
+    class: `fade modal${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}`,
     id: data.id,
     tabindex: -1,
     role: 'dialog',

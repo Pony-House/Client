@@ -178,7 +178,11 @@ function Drawer() {
       </div>
 
       {systemState !== null && systemState.status !== null ? (
-        <Modal dialogClassName="modal-dialog-centered modal-dialog-scrollable" show>
+        <Modal
+          backdropClassName={__ENV_APP__.ELECTRON_MODE ? 'root-electron-style' : null}
+          dialogClassName="modal-dialog-centered modal-dialog-scrollable"
+          show
+        >
           <Modal.Header className="noselect">
             <Modal.Title className="h5">System Status</Modal.Title>
           </Modal.Header>

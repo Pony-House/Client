@@ -56,9 +56,13 @@ body.electron-mode:not(.electron-maximized) {
     }
   }
 
-  .modal-backdrop,
   .modal {
     border-radius: var(--electron-body-radius) !important;
+  }
+
+  .modal-backdrop {
+    border-bottom-right-radius: var(--electron-body-radius) !important;
+    border-bottom-left-radius: var(--electron-body-radius) !important;
   }
 
   .pswp.pswp--open {

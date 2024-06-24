@@ -69,7 +69,7 @@ body.electron-mode {
     }
   }
 
-  .modal.show:not(.full-screen-mode),
+  .modal:not(.full-screen-mode),
   #dropzone,
   .auth-base {
     padding-top: 29px !important;
@@ -88,5 +88,10 @@ body.electron-mode {
 
   [data-tippy-root] {
     z-index: 999999999 !important;
+  }
+
+  .electron-full-screen-mode {
+    overflow-y: hidden;
+    padding-bottom: 29px;
   }
 }
