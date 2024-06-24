@@ -69,7 +69,6 @@ body.electron-mode {
     transition: opacity 0.7s linear;
   }
 
-  .modal:not(.full-screen-mode),
   #dropzone,
   .auth-base {
     padding-top: 29px !important;
@@ -82,12 +81,6 @@ body.electron-mode {
 
   .modal.root-electron-style {
     position: fixed !important;
-  }
-
-  .loading-display {
-    .loading__menu {
-      margin-top: 29px !important;
-    }
   }
 
   .electron-full-screen-mode {

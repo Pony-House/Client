@@ -84,6 +84,7 @@ function PopupWindow({
       show={isOpen}
       onHide={onRequestClose}
       onExited={onAfterClose}
+      backdrop={!isFullscreen}
       backdropClassName={`${isFullscreen ? 'modal-fullscreen ' : ''}${__ENV_APP__.ELECTRON_MODE ? 'root-electron-style' : ''}`}
       className={
         isFullscreen
