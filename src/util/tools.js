@@ -546,7 +546,7 @@ export const checkVersions = () =>
         response
           .json()
           .then((data) => {
-            console.log('[electron] [version-data]', data);
+            console.log('[version-data]', data);
             if (Array.isArray(data) && data.length > 0) {
               resolve({
                 data, // Data Viewer
