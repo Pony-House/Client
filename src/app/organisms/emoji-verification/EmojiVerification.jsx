@@ -181,7 +181,7 @@ function EmojiVerification() {
   return (
     <Dialog
       isOpen={data !== null}
-      className="modal-lg noselect"
+      className="modal-dialog-centered modal-lg noselect"
       title={
         <Text variant="s1" weight="medium" primary>
           Emoji verification

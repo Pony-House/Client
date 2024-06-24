@@ -301,7 +301,7 @@ function CreateRoom() {
 
   return (
     <Dialog
-      className="modal-lg noselect"
+      className="modal-dialog-centered modal-lg noselect"
       isOpen={create !== null}
       title={
         <Text variant="s1" weight="medium" primary>
