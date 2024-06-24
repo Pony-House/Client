@@ -304,6 +304,7 @@ function Client({ isDevToolsOpen = false }) {
           className={`${classesDragDrop.join(' ')}${navigationSidebarHidden ? ' disable-navigation-wrapper' : ''}${isDevToolsOpen ? ' devtools-open' : ''}`}
           navWrapperRef={navWrapperRef}
         >
+          <EmojiBoardOpener />
           <div
             className="navigation-wrapper"
             onMouseEnter={
@@ -328,7 +329,6 @@ function Client({ isDevToolsOpen = false }) {
           </div>
           <Windows />
           <Dialogs />
-          <EmojiBoardOpener />
           <ReusableContextMenu />
         </DragDrop>
       </>

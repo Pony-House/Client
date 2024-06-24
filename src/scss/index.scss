@@ -287,11 +287,6 @@ body.electron-mode {
   position: fixed;
 }
 
-#tippy-2,
-#tippy-1 {
-  z-index: 9999 !important;
-}
-
 /* Link */
 a {
   color: var(--tc-link) !important;
@@ -406,13 +401,21 @@ a {
   }
 }
 
-.modal-fullscreen {
+.modal-backdrop.modal-fullscreen {
+  -webkit-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+  opacity: 0 !important;
+  display: none !important;
+}
+
+.modal-dialog.modal-fullscreen {
   margin: 0px;
   min-height: 100%;
   min-width: 100%;
 }
 
-.modal-fullscreen .modal-content {
+.modal-dialog.modal-fullscreen .modal-content {
   border-radius: 0px;
   border: 0px;
 }

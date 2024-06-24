@@ -369,7 +369,10 @@
 
 #chatbox tr:hover,
 .chatbox-portable tr:hover,
-#search-chatbox tr:hover {
+#search-chatbox tr:hover,
+#chatbox tr:active,
+.chatbox-portable tr:active,
+#search-chatbox tr:active {
   .hc-time {
     display: block;
   }
@@ -388,6 +391,10 @@
   .reaction-message {
     display: inline;
   }
+}
+
+.message__options.fix_message__options {
+  display: inline-block !important;
 }
 
 /* Textarea */

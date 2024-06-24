@@ -63,6 +63,12 @@ body.electron-mode {
     }
   }
 
+  .modal-dialog.modal-fullscreen {
+    -webkit-transition: opacity 0.7s linear;
+    -o-transition: opacity 0.7s linear;
+    transition: opacity 0.7s linear;
+  }
+
   .modal:not(.full-screen-mode),
   #dropzone,
   .auth-base {
@@ -82,10 +88,6 @@ body.electron-mode {
     .loading__menu {
       margin-top: 29px !important;
     }
-  }
-
-  [data-tippy-root] {
-    z-index: 999999999 !important;
   }
 
   .electron-full-screen-mode {

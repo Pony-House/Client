@@ -25,6 +25,7 @@ function ContextMenu({
 
   return (
     <Tippy
+      zIndex={999999999}
       animation="scale-extreme"
       className={`context-menu${className ? ` ${className}` : ''}`}
       visible={isVisible}
