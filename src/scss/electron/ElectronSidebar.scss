@@ -63,12 +63,6 @@ body.electron-mode {
     }
   }
 
-  .modal-dialog.modal-fullscreen {
-    -webkit-transition: opacity 0.7s linear;
-    -o-transition: opacity 0.7s linear;
-    transition: opacity 0.7s linear;
-  }
-
   #dropzone,
   .auth-base {
     padding-top: 29px !important;

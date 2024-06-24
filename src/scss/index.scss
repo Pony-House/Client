@@ -413,6 +413,9 @@ a {
   margin: 0px;
   min-height: 100%;
   min-width: 100%;
+  -webkit-transition: opacity 0.7s linear !important;
+  -o-transition: opacity 0.7s linear !important;
+  transition: opacity 0.7s linear !important;
 }
 
 .modal-dialog.modal-fullscreen .modal-content {

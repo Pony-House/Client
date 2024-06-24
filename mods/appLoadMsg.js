@@ -65,6 +65,7 @@ export default {
       'Right click to pin messages in a room or DM to save them for later.',
       'You can type /tableflip and /unflip to spice up your messages.',
       'You can type /rainbowme and /rainbow to make your messages colorful.',
+      'The charcter on our 404 page is a robot pony named Annie Vorechine.',
 
       'I found a bit coin in equestria. Bitcoin? Nope. Bits!',
 
