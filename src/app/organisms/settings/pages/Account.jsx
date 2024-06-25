@@ -131,7 +131,8 @@ function AccountSection() {
                   options={
                     <IconButton
                       size="small"
-                      className="mx-1 text-danger"
+                      className="mx-1"
+                      iconColor="var(--tc-danger-normal)"
                       onClick={() => {}}
                       fa="fa-solid fa-trash-can"
                       tooltip="Remove email"
