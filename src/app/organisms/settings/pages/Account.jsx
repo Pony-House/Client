@@ -270,6 +270,16 @@ function AccountSection() {
           ) : (
             <SettingLoading title="Loading auth stuff..." />
           )}
+
+          <SettingTile
+            title="Why am I seeing that?"
+            content={
+              <div className="very-small text-gray">
+                The contents of this list are not compatible to be managed. This list is only
+                available for you is aware of what is running on your account.
+              </div>
+            }
+          />
         </ul>
       </div>
     </>
