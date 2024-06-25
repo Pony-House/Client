@@ -11,7 +11,7 @@ function AccountSection() {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPassword2, setNewPassword2] = useState('');
-  const [email, setEmail] = useState(null);
+  const [newEmail, setNewEmail] = useState(null);
 
   const mx = initMatrix.matrixClient;
 
@@ -19,7 +19,7 @@ function AccountSection() {
     username: mx.getUserId().split(':')[0].substring(1),
     password: newPassword,
     confirmPassword: newPassword2,
-    email: email !== null ? email : '',
+    email: newEmail !== null ? newEmail : '',
   });
 
   return (
@@ -81,6 +81,32 @@ function AccountSection() {
                   }
                 />
               </>
+            }
+          />
+        </ul>
+      </div>
+
+      <div className="card">
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item very-small text-gray">Email addresses</li>
+
+          <SettingTile
+            title="Add a new account email"
+            content={
+              <SettingsText
+                placeHolder="Email address"
+                value={newEmail}
+                onChange={setNewEmail}
+                maxLength={100}
+                isEmail
+                content={
+                  accountValidation.email ? (
+                    <div className="very-small text-danger">
+                      <span className="email">{accountValidation.email}</span>
+                    </div>
+                  ) : null
+                }
+              />
             }
           />
         </ul>

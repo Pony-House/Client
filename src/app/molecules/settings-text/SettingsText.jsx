@@ -8,6 +8,7 @@ function SettingsText({
   onChange = null,
   content = null,
   isPassword = false,
+  isEmail = false,
 }) {
   const inputRef = useRef(null);
 
@@ -52,7 +53,7 @@ function SettingsText({
     <>
       <input
         ref={inputRef}
-        type={!isPassword ? 'text' : 'password'}
+        type={!isPassword ? (!isEmail ? 'text' : 'email') : 'password'}
         maxLength={maxLength}
         placeholder={placeHolder}
         className="form-control form-control-bg mt-2 mb-1"
@@ -63,6 +64,7 @@ function SettingsText({
 }
 
 SettingsText.propTypes = {
+  isEmail: PropTypes.bool,
   isPassword: PropTypes.bool,
   placeHolder: PropTypes.string,
   maxLength: PropTypes.number,
