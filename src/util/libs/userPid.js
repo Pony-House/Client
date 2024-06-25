@@ -8,7 +8,7 @@ import { eventMaxListeners } from '../matrixUtil';
 class UserPid extends EventEmitter {
   constructor() {
     super();
-    this.vanilla = [];
+    this.vanilla = null;
     this.firstCheck = false;
   }
 

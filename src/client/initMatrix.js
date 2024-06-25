@@ -1,6 +1,8 @@
 import EventEmitter from 'events';
 import * as sdk from 'matrix-js-sdk';
 
+import Olm from '@matrix-org/olm';
+
 import envAPI from '@src/util/libs/env';
 import { startTimestamp } from '@src/util/markdown';
 import attemptDecryption from '@src/util/libs/attemptDecryption';
@@ -22,10 +24,7 @@ import Notifications from './state/Notifications';
 import { cryptoCallbacks } from './state/secretStorageKeys';
 import navigation from './state/navigation';
 
-if (!__ENV_APP__.RUST_CRYPTO_MODE) {
-  const Olm = import('@matrix-org/olm');
-  global.Olm = Olm;
-}
+global.Olm = Olm;
 
 // eslint-disable-next-line import/no-mutable-exports
 const fetchBase = (url, ops) => {

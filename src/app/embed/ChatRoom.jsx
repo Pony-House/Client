@@ -3,6 +3,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import * as sdk from 'matrix-js-sdk';
 import { objType } from 'for-promise/utils/lib.mjs';
+
+import Olm from '@matrix-org/olm';
+
 import { eventMaxListeners } from '@src/util/matrixUtil';
 
 import { isAuthenticated } from '../../client/state/auth';
@@ -19,10 +22,7 @@ import RoomViewHeader from '../organisms/room/RoomViewHeader';
 import settings from '../../client/state/settings';
 import cons from '../../client/state/cons';
 
-if (!__ENV_APP__.RUST_CRYPTO_MODE) {
-  const Olm = import('@matrix-org/olm');
-  global.Olm = Olm;
-}
+global.Olm = Olm;
 
 function ChatRoomFrame({
   roomId = null,

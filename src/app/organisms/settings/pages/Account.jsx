@@ -17,6 +17,7 @@ import { toast } from '../../../../util/tools';
 import { getStatusCSS } from '../../../../util/onlineStatus';
 import { confirmDialog } from '../../../molecules/confirm-dialog/ConfirmDialog';
 import { colorMXID } from '@src/util/colorMXID';
+import userPid from '@src/util/libs/userPid';
 
 function AccountSection() {
   return <></>;

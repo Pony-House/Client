@@ -62,6 +62,11 @@ const copyFiles = {
     },
 
     {
+      src: 'node_modules/@matrix-org/olm/olm.wasm',
+      dest: '',
+    },
+
+    {
       src: 'config/config.json',
       dest: '',
     },
@@ -95,13 +100,6 @@ export default defineConfig(({ command, mode }) => {
   console.log(`[vite-config] [electron] ${electronMode}`);
   const addBooleanToEnv = (valueName) =>
     !!(env[valueName] === true || env[valueName] === 'true');
-
-  if (!addBooleanToEnv('RUST_CRYPTO_MODE')) {
-    copyFiles.targets.push({
-      src: 'node_modules/@matrix-org/olm/olm.wasm',
-      dest: '',
-    });
-  }
 
   const envData = {
 
