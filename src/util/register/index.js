@@ -1,3 +1,5 @@
+import { isValidInput } from './validator';
+
 export const LOCALPART_SIGNUP_REGEX = /^[a-z0-9_\-.=/]+$/;
 export const BAD_LOCALPART_ERROR = "Username can only contain characters a-z, 0-9, or '=_-./'";
 export const USER_ID_TOO_LONG_ERROR =
