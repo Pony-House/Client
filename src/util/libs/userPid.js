@@ -27,7 +27,7 @@ class UserPid extends EventEmitter {
       }
 
       if (typeof type !== 'string') return this.vanilla;
-      else return this.getData(type);
+      else return this.getList(type);
     }
     return [];
   }
@@ -58,6 +58,7 @@ class UserPid extends EventEmitter {
           if (tinyIndex === index) return this.vanilla[item];
         }
       }
+      return null;
     }
     throw new Error('You didn\'t do the first data check using "this.fetch()"!');
   }

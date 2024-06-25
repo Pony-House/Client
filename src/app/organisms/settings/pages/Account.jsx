@@ -26,7 +26,15 @@ function AccountSection() {
 
   useEffect(() => {
     if (emails === null) {
-      // userPid.fetch();
+      userPid
+        .fetch('email')
+        .then((userEmails) => {
+          console.log(userEmails);
+        })
+        .catch((err) => {
+          console.error(err);
+          alert(err.message, 'Get User Emails Error');
+        });
     }
   });
 
