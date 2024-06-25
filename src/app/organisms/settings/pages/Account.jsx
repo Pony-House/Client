@@ -22,8 +22,6 @@ function AccountSection() {
     email: email !== null ? email : '',
   });
 
-  console.log(accountValidation);
-
   return (
     <>
       <div className="card noselect mb-3">
@@ -39,6 +37,7 @@ function AccountSection() {
                   value={currentPassword}
                   onChange={setCurrentPassword}
                   maxLength={100}
+                  isPassword
                   content={
                     <div className="very-small text-gray">
                       Put your password here to confirm any changes you try to make in your account.
@@ -60,18 +59,25 @@ function AccountSection() {
                   value={newPassword}
                   onChange={setNewPassword}
                   maxLength={100}
+                  isPassword
                 />
                 <SettingsText
                   placeHolder="Confirm the new password"
                   value={newPassword2}
                   onChange={setNewPassword2}
                   maxLength={100}
+                  isPassword
                   content={
-                    <div className="very-small text-gray">
-                      Put your password here to confirm any changes you try to make in your account.
-                      For safety this field will always be empty after performing an action on this
-                      page.
-                    </div>
+                    accountValidation.password || accountValidation.confirmPassword ? (
+                      <div className="very-small text-danger">
+                        {!accountValidation.confirmPassword && accountValidation.password && (
+                          <div className="password">{accountValidation.password}</div>
+                        )}
+                        {accountValidation.confirmPassword && (
+                          <div className="confirmPassword">{accountValidation.confirmPassword}</div>
+                        )}
+                      </div>
+                    ) : null
                   }
                 />
               </>

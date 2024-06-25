@@ -124,10 +124,11 @@ function LibreTranslateSection() {
                   setApiKey(value);
                 }}
                 maxLength={300}
+                isPassword
                 content={
                   <div className="very-small text-gray">
                     If you are using a LibreTranslate instance that requires an API key, please
-                    enter here.
+                    enter here. This information is saved on your machine locally.
                   </div>
                 }
               />
