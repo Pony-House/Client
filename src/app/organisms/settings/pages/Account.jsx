@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import userPid from '@src/util/libs/userPid';
 import { registerValidator } from '@src/util/register';
 
@@ -13,6 +13,7 @@ function AccountSection() {
   const [newPassword, setNewPassword] = useState('');
   const [newPassword2, setNewPassword2] = useState('');
   const [newEmail, setNewEmail] = useState(null);
+  const [emails, setEmails] = useState(null);
 
   const mx = initMatrix.matrixClient;
 
@@ -21,6 +22,12 @@ function AccountSection() {
     password: newPassword,
     confirmPassword: newPassword2,
     email: newEmail !== null ? newEmail : '',
+  });
+
+  useEffect(() => {
+    if (emails === null) {
+      // userPid.fetch();
+    }
   });
 
   return (
@@ -114,7 +121,11 @@ function AccountSection() {
                       <span className="email">{accountValidation.email}</span>
                     </div>
                   ) : (
-                    <Button variant="primary" disabled={newEmail.length < 1} onClick={() => {}}>
+                    <Button
+                      variant="primary"
+                      disabled={typeof newEmail !== 'string' || newEmail.length < 1}
+                      onClick={() => {}}
+                    >
                       Add Email
                     </Button>
                   )
