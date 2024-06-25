@@ -3,13 +3,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 
-import {
-  EMAIL_REGEX,
-  BAD_EMAIL_ERROR,
-  PASSWORD_STRENGHT_REGEX,
-  BAD_PASSWORD_ERROR,
-  CONFIRM_PASSWORD_ERROR,
-} from '@src/util/register/regex';
 import { isValidInput } from '@src/util/register/validator';
 import { registerValidator } from '@src/util/register';
 

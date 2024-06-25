@@ -1,3 +1,10 @@
+import {
+  EMAIL_REGEX,
+  BAD_EMAIL_ERROR,
+  PASSWORD_STRENGHT_REGEX,
+  BAD_PASSWORD_ERROR,
+  CONFIRM_PASSWORD_ERROR,
+} from './regex';
 import { isValidInput } from './validator';
 
 export const LOCALPART_SIGNUP_REGEX = /^[a-z0-9_\-.=/]+$/;
