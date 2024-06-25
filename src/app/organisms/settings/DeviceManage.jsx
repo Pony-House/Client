@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
+import SettingLoading from '@src/app/molecules/setting-loading/SettingLoading';
 
 import initMatrix from '../../../client/initMatrix';
 import { eventMaxListeners, isCrossVerified } from '../../../util/matrixUtil';
@@ -160,16 +161,7 @@ function DeviceManage() {
   };
 
   if (deviceList === null || deviceKeys === null) {
-    return (
-      <div className="card noselect">
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item small pt-3 text-center">
-            <Spinner size="small" />
-          </li>
-          <li className="list-group-item small pb-3 text-center">Loading devices...</li>
-        </ul>
-      </div>
-    );
+    return <SettingLoading title="Loading devices..." />;
   }
 
   const handleRename = async (device) => {

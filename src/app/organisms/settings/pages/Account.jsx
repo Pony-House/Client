@@ -7,6 +7,7 @@ import SettingsText from '@src/app/molecules/settings-text/SettingsText';
 import Button from '@src/app/atoms/button/Button';
 
 import initMatrix from '../../../../client/initMatrix';
+import SettingLoading from '@src/app/molecules/setting-loading/SettingLoading';
 
 function AccountSection() {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -14,6 +15,7 @@ function AccountSection() {
   const [newPassword2, setNewPassword2] = useState('');
   const [newEmail, setNewEmail] = useState(null);
   const [emails, setEmails] = useState(null);
+  const [loadingEmails, setLoadingEmails] = useState(false);
 
   const mx = initMatrix.matrixClient;
 
@@ -25,15 +27,19 @@ function AccountSection() {
   });
 
   useEffect(() => {
-    if (emails === null) {
+    if (!loadingEmails && emails === null) {
+      setLoadingEmails(true);
       userPid
         .fetch('email')
         .then((userEmails) => {
-          console.log(userEmails);
+          setEmails(userEmails);
+          setLoadingEmails(false);
         })
         .catch((err) => {
           console.error(err);
           alert(err.message, 'Get User Emails Error');
+          setEmails([]);
+          setLoadingEmails(false);
         });
     }
   });
@@ -113,6 +119,8 @@ function AccountSection() {
       <div className="card">
         <ul className="list-group list-group-flush">
           <li className="list-group-item very-small text-gray">Email addresses</li>
+
+          {!loadingEmails ? null : <SettingLoading title="Loading emails..." />}
 
           <SettingTile
             title="Add a new account email"
