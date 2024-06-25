@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import userPid from '@src/util/libs/userPid';
+import { registerValidator } from '@src/util/register';
 
 import SettingTile from '@src/app/molecules/setting-tile/SettingTile';
 import SettingsText from '@src/app/molecules/settings-text/SettingsText';
@@ -10,6 +11,18 @@ function AccountSection() {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPassword2, setNewPassword2] = useState('');
+  const [email, setEmail] = useState(null);
+
+  const mx = initMatrix.matrixClient;
+
+  const accountValidation = registerValidator({
+    username: mx.getUserId().split(':')[0].substring(1),
+    password: newPassword,
+    confirmPassword: newPassword2,
+    email: email !== null ? email : '',
+  });
+
+  console.log(accountValidation);
 
   return (
     <>
