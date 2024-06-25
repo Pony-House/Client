@@ -16,10 +16,12 @@ function AccountSection() {
   const [newPassword, setNewPassword] = useState('');
   const [newPassword2, setNewPassword2] = useState('');
   const [newEmail, setNewEmail] = useState(null);
+
   const [emails, setEmails] = useState(null);
   const [phones, setPhones] = useState(null);
-  const [loadingEmails, setLoadingEmails] = useState(false);
+  const [othersAuth, setOthersAuth] = useState(null);
 
+  const [loadingEmails, setLoadingEmails] = useState(false);
   const mx = initMatrix.matrixClient;
 
   const accountValidation = registerValidator({
@@ -37,13 +39,16 @@ function AccountSection() {
         .then((userEmails) => {
           const tinyEmails = [];
           const tinyPhones = [];
+          const tinyOthers = [];
           for (const item in userEmails) {
             if (userEmails[item].medium === 'email') tinyEmails.push(userEmails[item]);
-            if (userEmails[item].medium === 'msisdn') tinyPhones.push(userEmails[item]);
+            else if (userEmails[item].medium === 'msisdn') tinyPhones.push(userEmails[item]);
+            else tinyOthers.push(userEmails[item]);
           }
 
           setEmails(tinyEmails);
           setPhones(tinyPhones);
+          setOthersAuth(tinyOthers);
           setLoadingEmails(false);
         })
         .catch((err) => {
@@ -216,12 +221,24 @@ function AccountSection() {
 
       <div className="card mb-3">
         <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Phone numbers</li>
+          <li className="list-group-item very-small text-gray">Phones number</li>
 
           {!loadingEmails ? (
             loadItemsList(phones, 'phone number', () => {})
           ) : (
             <SettingLoading title="Loading phone numbers..." />
+          )}
+        </ul>
+      </div>
+
+      <div className="card">
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item very-small text-gray">Other Auth</li>
+
+          {!loadingEmails ? (
+            loadItemsList(othersAuth, 'auth', () => {})
+          ) : (
+            <SettingLoading title="Loading auth stuff..." />
           )}
         </ul>
       </div>
