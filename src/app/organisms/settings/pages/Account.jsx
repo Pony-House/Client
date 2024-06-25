@@ -4,6 +4,7 @@ import { registerValidator } from '@src/util/register';
 
 import SettingTile from '@src/app/molecules/setting-tile/SettingTile';
 import SettingsText from '@src/app/molecules/settings-text/SettingsText';
+import Button from '@src/app/atoms/button/Button';
 
 import initMatrix from '../../../../client/initMatrix';
 
@@ -77,7 +78,15 @@ function AccountSection() {
                           <div className="confirmPassword">{accountValidation.confirmPassword}</div>
                         )}
                       </div>
-                    ) : null
+                    ) : (
+                      <Button
+                        variant="primary"
+                        disabled={newPassword.length < 1}
+                        onClick={() => {}}
+                      >
+                        Change Password
+                      </Button>
+                    )
                   }
                 />
               </>
@@ -104,7 +113,11 @@ function AccountSection() {
                     <div className="very-small text-danger">
                       <span className="email">{accountValidation.email}</span>
                     </div>
-                  ) : null
+                  ) : (
+                    <Button variant="primary" disabled={newEmail.length < 1} onClick={() => {}}>
+                      Add Email
+                    </Button>
+                  )
                 }
               />
             }
