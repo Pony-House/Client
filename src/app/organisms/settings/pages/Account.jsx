@@ -16,6 +16,7 @@ function AccountSection() {
   const [newPassword, setNewPassword] = useState('');
   const [newPassword2, setNewPassword2] = useState('');
   const [newEmail, setNewEmail] = useState(null);
+  const [newPhone, setNewPhone] = useState(null);
 
   const [emails, setEmails] = useState(null);
   const [phones, setPhones] = useState(null);
@@ -104,7 +105,7 @@ function AccountSection() {
         />
       ))
     ) : (
-      <center className="very-small p-3"> No {title} found.</center>
+      <center className="very-small p-3 border-bottom border-bg"> No {title} found.</center>
     );
 
   return (
@@ -228,6 +229,35 @@ function AccountSection() {
           ) : (
             <SettingLoading title="Loading phone numbers..." />
           )}
+
+          <SettingTile
+            title="Add a new phone number"
+            content={
+              <SettingsText
+                placeHolder="Phone number"
+                value={newPhone}
+                onChange={setNewPhone}
+                maxLength={100}
+                isPhone
+                disabled
+                content={
+                  accountValidation.phone ? (
+                    <div className="very-small text-danger">
+                      <span className="phone">{accountValidation.phone}</span>
+                    </div>
+                  ) : (
+                    <Button
+                      variant="primary"
+                      disabled={typeof newPhone !== 'string' || newPhone.length < 1}
+                      onClick={() => {}}
+                    >
+                      Add phone
+                    </Button>
+                  )
+                }
+              />
+            }
+          />
         </ul>
       </div>
 
