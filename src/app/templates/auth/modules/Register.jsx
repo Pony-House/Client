@@ -3,6 +3,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 
+import {
+  EMAIL_REGEX,
+  BAD_EMAIL_ERROR,
+  PASSWORD_STRENGHT_REGEX,
+  BAD_PASSWORD_ERROR,
+  CONFIRM_PASSWORD_ERROR,
+} from '@src/util/register/regex';
+import { isValidInput } from '@src/util/register/validator';
+import { registerValidator } from '@src/util/register';
+
 import * as auth from '../../../../client/action/auth';
 import Button from '../../../atoms/button/Button';
 import IconButton from '../../../atoms/button/IconButton';
@@ -15,20 +25,6 @@ import LoadingScreen from './LoadingScreen';
 import Recaptcha from './Recaptcha';
 import Terms from './Terms';
 import EmailVerify from './EmailVerify';
-
-import {
-  EMAIL_REGEX,
-  BAD_EMAIL_ERROR,
-  PASSWORD_STRENGHT_REGEX,
-  BAD_PASSWORD_ERROR,
-  CONFIRM_PASSWORD_ERROR,
-} from './regex';
-import { isValidInput } from './validator';
-
-const LOCALPART_SIGNUP_REGEX = /^[a-z0-9_\-.=/]+$/;
-const BAD_LOCALPART_ERROR = "Username can only contain characters a-z, 0-9, or '=_-./'";
-const USER_ID_TOO_LONG_ERROR =
-  "Your user ID, including the hostname, can't be more than 255 characters long.";
 
 let sid;
 let clientSecret;
@@ -65,26 +61,6 @@ function Register({ registerInfo, loginFlow, baseUrl }) {
     other: '',
   };
 
-  const validator = (values) => {
-    const errors = {};
-    if (values.username.list > 255) errors.username = USER_ID_TOO_LONG_ERROR;
-    if (values.username.length > 0 && !isValidInput(values.username, LOCALPART_SIGNUP_REGEX)) {
-      errors.username = BAD_LOCALPART_ERROR;
-    }
-    if (values.password.length > 0 && !isValidInput(values.password, PASSWORD_STRENGHT_REGEX)) {
-      errors.password = BAD_PASSWORD_ERROR;
-    }
-    if (
-      values.confirmPassword.length > 0 &&
-      !isValidInput(values.confirmPassword, values.password)
-    ) {
-      errors.confirmPassword = CONFIRM_PASSWORD_ERROR;
-    }
-    if (values.email.length > 0 && !isValidInput(values.email, EMAIL_REGEX)) {
-      errors.email = BAD_EMAIL_ERROR;
-    }
-    return errors;
-  };
   const submitter = (values, actions) => {
     const tempClient = auth.createTemporaryClient(baseUrl);
     clientSecret = tempClient.generateClientSecret();
@@ -213,7 +189,7 @@ function Register({ registerInfo, loginFlow, baseUrl }) {
       </div>
 
       {!isDisabled && (
-        <Formik initialValues={initialValues} onSubmit={submitter} validate={validator}>
+        <Formik initialValues={initialValues} onSubmit={submitter} validate={registerValidator}>
           {({ values, errors, handleChange, handleSubmit, isSubmitting }) => (
             <>
               {process.type === undefined && isSubmitting && (

@@ -4,15 +4,16 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import Checkbox from '@src/app/atoms/button/Checkbox';
 
-import * as auth from '../../../../client/action/auth';
 import {
   EMAIL_REGEX,
   BAD_EMAIL_ERROR,
   CONFIRM_PASSWORD_ERROR,
   BAD_PASSWORD_ERROR,
   PASSWORD_STRENGHT_REGEX,
-} from './regex';
-import { isValidInput } from './validator';
+} from '@src/util/register/regex';
+import { isValidInput } from '@src/util/register/validator';
+
+import * as auth from '../../../../client/action/auth';
 import Input from '../../../atoms/input/Input';
 import Text from '../../../atoms/text/Text';
 import Button from '../../../atoms/button/Button';

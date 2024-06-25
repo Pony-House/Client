@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import envAPI from '@src/util/libs/env';
 
+import { EMAIL_REGEX, BAD_EMAIL_ERROR } from '@src/util/register/regex';
+import { normalizeUsername, isValidInput } from '@src/util/register/validator';
+
 import Text from '../../../atoms/text/Text';
 import * as auth from '../../../../client/action/auth';
 import { getBaseUrl } from '../../../../util/matrixUtil';
@@ -15,9 +18,6 @@ import ContextMenu, { MenuItem } from '../../../atoms/context-menu/ContextMenu';
 import SSOButtons from '../../../molecules/sso-buttons/SSOButtons';
 
 import LoadingScreen from './LoadingScreen';
-
-import { EMAIL_REGEX, BAD_EMAIL_ERROR } from './regex';
-import { normalizeUsername, isValidInput } from './validator';
 
 function Login({ loginFlow, baseUrl }) {
   const [typeIndex, setTypeIndex] = useState(0);
