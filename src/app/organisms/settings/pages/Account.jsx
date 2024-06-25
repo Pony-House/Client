@@ -56,49 +56,51 @@ function AccountSection() {
   });
 
   const loadItemsList = (where, title, removeClick) =>
-    Array.isArray(where)
-      ? where.map((email, index) => (
-          <SettingTile
-            key={`${email.address}_${index}`}
-            title={<div className={`small`}>{email.address}</div>}
-            options={
-              <IconButton
-                size="small"
-                className="mx-1"
-                iconColor="var(--tc-danger-normal)"
-                onClick={removeClick}
-                fa="fa-solid fa-trash-can"
-                tooltip={`Remove ${title}`}
-              />
-            }
-            content={
-              <>
-                {typeof email.added_at === 'number' && (
-                  <div className="very-small text-gray">
-                    Added at
-                    <span style={{ color: 'var(--tc-surface-normal)' }}>
-                      {moment(email.added_at).format(
-                        ` ${momentFormat.clock()}, ${momentFormat.calendar()}`,
-                      )}
-                    </span>
-                  </div>
-                )}
+    Array.isArray(where) && where.length > 0 ? (
+      where.map((email, index) => (
+        <SettingTile
+          key={`${email.address}_${index}`}
+          title={<div className={`small`}>{email.address}</div>}
+          options={
+            <IconButton
+              size="small"
+              className="mx-1"
+              iconColor="var(--tc-danger-normal)"
+              onClick={removeClick}
+              fa="fa-solid fa-trash-can"
+              tooltip={`Remove ${title}`}
+            />
+          }
+          content={
+            <>
+              {typeof email.added_at === 'number' && (
+                <div className="very-small text-gray">
+                  Added at
+                  <span style={{ color: 'var(--tc-surface-normal)' }}>
+                    {moment(email.added_at).format(
+                      ` ${momentFormat.clock()}, ${momentFormat.calendar()}`,
+                    )}
+                  </span>
+                </div>
+              )}
 
-                {typeof email.validated_at === 'number' && (
-                  <div className="very-small text-gray">
-                    Validated at
-                    <span style={{ color: 'var(--tc-surface-normal)' }}>
-                      {moment(email.validated_at).format(
-                        ` ${momentFormat.clock()}, ${momentFormat.calendar()}`,
-                      )}
-                    </span>
-                  </div>
-                )}
-              </>
-            }
-          />
-        ))
-      : null;
+              {typeof email.validated_at === 'number' && (
+                <div className="very-small text-gray">
+                  Validated at
+                  <span style={{ color: 'var(--tc-surface-normal)' }}>
+                    {moment(email.validated_at).format(
+                      ` ${momentFormat.clock()}, ${momentFormat.calendar()}`,
+                    )}
+                  </span>
+                </div>
+              )}
+            </>
+          }
+        />
+      ))
+    ) : (
+      <center className="very-small p-3"> No {title} found.</center>
+    );
 
   return (
     <>
@@ -172,7 +174,7 @@ function AccountSection() {
         </ul>
       </div>
 
-      <div className="card">
+      <div className="card mb-3">
         <ul className="list-group list-group-flush">
           <li className="list-group-item very-small text-gray">Email addresses</li>
 
@@ -209,6 +211,18 @@ function AccountSection() {
               />
             }
           />
+        </ul>
+      </div>
+
+      <div className="card mb-3">
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item very-small text-gray">Phone numbers</li>
+
+          {!loadingEmails ? (
+            loadItemsList(phones, 'phone number', () => {})
+          ) : (
+            <SettingLoading title="Loading phone numbers..." />
+          )}
         </ul>
       </div>
     </>
