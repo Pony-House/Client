@@ -17,6 +17,7 @@ function AccountSection() {
   const [newPassword2, setNewPassword2] = useState('');
   const [newEmail, setNewEmail] = useState(null);
   const [emails, setEmails] = useState(null);
+  const [phones, setPhones] = useState(null);
   const [loadingEmails, setLoadingEmails] = useState(false);
 
   const mx = initMatrix.matrixClient;
@@ -32,9 +33,17 @@ function AccountSection() {
     if (!loadingEmails && emails === null) {
       setLoadingEmails(true);
       userPid
-        .fetch('email')
+        .fetch()
         .then((userEmails) => {
-          setEmails(userEmails);
+          const tinyEmails = [];
+          const tinyPhones = [];
+          for (const item in userEmails) {
+            if (userEmails[item].medium === 'email') tinyEmails.push(userEmails[item]);
+            if (userEmails[item].medium === 'msisdn') tinyPhones.push(userEmails[item]);
+          }
+
+          setEmails(tinyEmails);
+          setPhones(tinyPhones);
           setLoadingEmails(false);
         })
         .catch((err) => {
@@ -45,6 +54,51 @@ function AccountSection() {
         });
     }
   });
+
+  const loadItemsList = (where, title, removeClick) =>
+    Array.isArray(where)
+      ? where.map((email, index) => (
+          <SettingTile
+            key={`${email.address}_${index}`}
+            title={<div className={`small`}>{email.address}</div>}
+            options={
+              <IconButton
+                size="small"
+                className="mx-1"
+                iconColor="var(--tc-danger-normal)"
+                onClick={removeClick}
+                fa="fa-solid fa-trash-can"
+                tooltip={`Remove ${title}`}
+              />
+            }
+            content={
+              <>
+                {typeof email.added_at === 'number' && (
+                  <div className="very-small text-gray">
+                    Added at
+                    <span style={{ color: 'var(--tc-surface-normal)' }}>
+                      {moment(email.added_at).format(
+                        ` ${momentFormat.clock()}, ${momentFormat.calendar()}`,
+                      )}
+                    </span>
+                  </div>
+                )}
+
+                {typeof email.validated_at === 'number' && (
+                  <div className="very-small text-gray">
+                    Validated at
+                    <span style={{ color: 'var(--tc-surface-normal)' }}>
+                      {moment(email.validated_at).format(
+                        ` ${momentFormat.clock()}, ${momentFormat.calendar()}`,
+                      )}
+                    </span>
+                  </div>
+                )}
+              </>
+            }
+          />
+        ))
+      : null;
 
   return (
     <>
@@ -123,49 +177,7 @@ function AccountSection() {
           <li className="list-group-item very-small text-gray">Email addresses</li>
 
           {!loadingEmails ? (
-            Array.isArray(emails) ? (
-              emails.map((email, index) => (
-                <SettingTile
-                  key={`${email.address}_${index}`}
-                  title={<div className={`small`}>{email.address}</div>}
-                  options={
-                    <IconButton
-                      size="small"
-                      className="mx-1"
-                      iconColor="var(--tc-danger-normal)"
-                      onClick={() => {}}
-                      fa="fa-solid fa-trash-can"
-                      tooltip="Remove email"
-                    />
-                  }
-                  content={
-                    <>
-                      {typeof email.added_at === 'number' && (
-                        <div className="very-small text-gray">
-                          Added at
-                          <span style={{ color: 'var(--tc-surface-normal)' }}>
-                            {moment(email.added_at).format(
-                              ` ${momentFormat.clock()}, ${momentFormat.calendar()}`,
-                            )}
-                          </span>
-                        </div>
-                      )}
-
-                      {typeof email.validated_at === 'number' && (
-                        <div className="very-small text-gray">
-                          Validated at
-                          <span style={{ color: 'var(--tc-surface-normal)' }}>
-                            {moment(email.validated_at).format(
-                              ` ${momentFormat.clock()}, ${momentFormat.calendar()}`,
-                            )}
-                          </span>
-                        </div>
-                      )}
-                    </>
-                  }
-                />
-              ))
-            ) : null
+            loadItemsList(emails, 'email', () => {})
           ) : (
             <SettingLoading title="Loading emails..." />
           )}
