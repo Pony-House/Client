@@ -5,6 +5,8 @@ import { registerValidator } from '@src/util/register';
 import SettingTile from '@src/app/molecules/setting-tile/SettingTile';
 import SettingsText from '@src/app/molecules/settings-text/SettingsText';
 import Button from '@src/app/atoms/button/Button';
+import moment, { momentFormat } from '@src/util/libs/momentjs';
+import IconButton from '@src/app/atoms/button/IconButton';
 
 import initMatrix from '../../../../client/initMatrix';
 import SettingLoading from '@src/app/molecules/setting-loading/SettingLoading';
@@ -120,7 +122,52 @@ function AccountSection() {
         <ul className="list-group list-group-flush">
           <li className="list-group-item very-small text-gray">Email addresses</li>
 
-          {!loadingEmails ? null : <SettingLoading title="Loading emails..." />}
+          {!loadingEmails ? (
+            Array.isArray(emails) ? (
+              emails.map((email, index) => (
+                <SettingTile
+                  key={`${email.address}_${index}`}
+                  title={<div className={`small`}>{email.address}</div>}
+                  options={
+                    <IconButton
+                      size="small"
+                      className="mx-1 text-danger"
+                      onClick={() => {}}
+                      fa="fa-solid fa-trash-can"
+                      tooltip="Remove email"
+                    />
+                  }
+                  content={
+                    <>
+                      {typeof email.added_at === 'number' && (
+                        <div className="very-small text-gray">
+                          Added at
+                          <span style={{ color: 'var(--tc-surface-normal)' }}>
+                            {moment(email.added_at).format(
+                              ` ${momentFormat.clock()}, ${momentFormat.calendar()}`,
+                            )}
+                          </span>
+                        </div>
+                      )}
+
+                      {typeof email.validated_at === 'number' && (
+                        <div className="very-small text-gray">
+                          Validated at
+                          <span style={{ color: 'var(--tc-surface-normal)' }}>
+                            {moment(email.validated_at).format(
+                              ` ${momentFormat.clock()}, ${momentFormat.calendar()}`,
+                            )}
+                          </span>
+                        </div>
+                      )}
+                    </>
+                  }
+                />
+              ))
+            ) : null
+          ) : (
+            <SettingLoading title="Loading emails..." />
+          )}
 
           <SettingTile
             title="Add a new account email"
