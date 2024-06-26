@@ -428,7 +428,34 @@ function AccountSection() {
                           accountValidation.password ||
                           accountValidation.confirmPassword
                         }
-                        onClick={() => {}}
+                        onClick={() => {
+                          setLoadingPage('Changing password...');
+                          initMatrix.matrixClient
+                            .setPassword(
+                              {
+                                type: 'm.login.password',
+                                identifier: {
+                                  type: 'm.id.user',
+                                  user: initMatrix.matrixClient
+                                    .getUserId()
+                                    .split(':')[0]
+                                    .substring(1),
+                                },
+                                password: currentPassword,
+                              },
+                              newPassword,
+                              logoutDevices,
+                            )
+                            .then(() => {
+                              setCurrentPassword('');
+                              setLoadingPage(false);
+                              alert(`You successfully changed your password!`, 'Change Password');
+                            })
+                            .catch((err) => {
+                              console.error(err);
+                              alert(err.message, 'Change Password Error');
+                            });
+                        }}
                       >
                         Change Password
                       </Button>
