@@ -343,12 +343,14 @@ function AccountSection() {
       <center className="very-small p-3 border-bottom border-bg"> No {title} found.</center>
     );
 
-  const updateValue = (callback, refItem) => (value, target, el, method) => {
-    callback(value);
-    if (method.isEnter) {
-      $(refItem.current).focus();
-    }
-  };
+  const updateValue =
+    (callback, refItem, err = null) =>
+    (value, target, el, method) => {
+      callback(value);
+      if (method.isEnter && !err) {
+        $(refItem.current).focus();
+      }
+    };
 
   // Complete
   return (
@@ -405,10 +407,14 @@ function AccountSection() {
                       {accountValidation.password || accountValidation.confirmPassword ? (
                         <div className="very-small text-danger">
                           {!accountValidation.confirmPassword && accountValidation.password && (
-                            <div className="password">{accountValidation.password}</div>
+                            <div className="password">
+                              <i class="fa-solid fa-triangle-exclamation me-1" />
+                              {accountValidation.password}
+                            </div>
                           )}
                           {accountValidation.confirmPassword && (
                             <div className="confirmPassword">
+                              <i class="fa-solid fa-triangle-exclamation me-1" />
                               {accountValidation.confirmPassword}
                             </div>
                           )}
@@ -451,18 +457,23 @@ function AccountSection() {
               <SettingsText
                 placeHolder="Email address"
                 value={newEmail}
-                onChange={updateValue(setNewEmail, submitEmail)}
+                onChange={updateValue(setNewEmail, submitEmail, accountValidation.email)}
                 maxLength={100}
                 isEmail
                 content={
-                  accountValidation.email ? (
-                    <div className="very-small text-danger">
-                      <span className="email">{accountValidation.email}</span>
-                    </div>
-                  ) : (
+                  <>
+                    {accountValidation.email ? (
+                      <div className="very-small text-danger mb-1">
+                        <span className="email">
+                          <i class="fa-solid fa-triangle-exclamation me-1" />
+                          {accountValidation.email}
+                        </span>
+                      </div>
+                    ) : null}
                     <Button
                       ref={submitEmail}
                       variant="primary"
+                      disabled={newEmail.length < 1 || accountValidation.email}
                       onClick={requestTokenProgress(
                         // Text
                         'email address',
@@ -481,7 +492,7 @@ function AccountSection() {
                     >
                       Add Email
                     </Button>
-                  )
+                  </>
                 }
               />
             }
@@ -505,16 +516,17 @@ function AccountSection() {
               <SettingsText
                 placeHolder="Phone number"
                 value={newPhone}
-                onChange={updateValue(setNewPhone, submitPhone)}
+                onChange={updateValue(setNewPhone, submitPhone, accountValidation.phone)}
                 maxLength={100}
                 isPhone
                 disabled
                 content={
-                  accountValidation.phone ? (
-                    <div className="very-small text-danger">
-                      <span className="phone">{accountValidation.phone}</span>
-                    </div>
-                  ) : (
+                  <>
+                    {accountValidation.phone ? (
+                      <div className="very-small text-danger mb-1">
+                        <span className="phone">{accountValidation.phone}</span>
+                      </div>
+                    ) : null}
                     <Button
                       ref={submitPhone}
                       variant="primary"
@@ -525,7 +537,7 @@ function AccountSection() {
                     >
                       Add phone
                     </Button>
-                  )
+                  </>
                 }
               />
             }
