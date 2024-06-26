@@ -24,6 +24,7 @@ function AccountSection() {
   const [newPassword2, setNewPassword2] = useState('');
   const [newEmail, setNewEmail] = useState(null);
   const [newPhone, setNewPhone] = useState(null);
+  const [bind, setBind] = useState(false);
 
   // Items list
   const [emails, setEmails] = useState(null);
@@ -122,33 +123,54 @@ function AccountSection() {
               $('<button>', { class: `btn btn-primary mx-2` })
                 .text('Sign On')
                 .on('click', () => {
-                  // Check session
-                  tinyModal.hide();
-                  setLoadingPage('Checking session...');
+                  // Final step
+                  const finishProgress = () => {
+                    // Check session
+                    tinyModal.hide();
+                    setLoadingPage('Checking session...');
 
-                  // Send bindThreePid
-                  initMatrix.matrixClient
-                    .bindThreePid({
-                      client_secret: initMatrix.matrixClient.generateClientSecret(),
-                      id_access_token: initMatrix.matrixClient.getAccessToken(),
-                      id_server:
-                        initMatrix.matrixClient.getIdentityServerUrl(true) ||
-                        initMatrix.matrixClient.baseUrl.split('://')[1],
-                      sid: result.sid,
-                    })
+                    // Send bindThreePid
 
-                    // Complete
-                    .then(() => {
-                      setLoadingPage(false);
-                      alert(`Your ${type} has been successfully verified!`, 'Session Verification');
-                    })
+                    const threePidAction = bind
+                      ? initMatrix.matrixClient.bindThreePid
+                      : initMatrix.matrixClient.addThreePidOnly;
+                    const threePidOptions = bind
+                      ? // bindThreePid
+                        {
+                          client_secret: initMatrix.matrixClient.generateClientSecret(),
+                          id_access_token: initMatrix.matrixClient.getAccessToken(),
+                          id_server:
+                            initMatrix.matrixClient.getIdentityServerUrl(true) ||
+                            initMatrix.matrixClient.baseUrl.split('://')[1],
+                          sid: result.sid,
+                        }
+                      : // addThreePidOnly
+                        {
+                          sid: result.sid,
+                          client_secret: initMatrix.matrixClient.generateClientSecret(),
+                          auth: undefined,
+                        };
 
-                    // Error Session
-                    .catch((err) => {
-                      setLoadingPage(false);
-                      console.error(err);
-                      alert(err.message, 'Session Verification Error');
-                    });
+                    threePidAction(threePidOptions)
+                      // Complete
+                      .then(() => {
+                        setLoadingPage(false);
+                        alert(
+                          `Your ${type} has been successfully verified!`,
+                          'Session Verification',
+                        );
+                      })
+
+                      // Error Session
+                      .catch((err) => {
+                        setLoadingPage(false);
+                        console.error(err);
+                        alert(err.message, 'Session Verification Error');
+                      });
+                  };
+
+                  // Finish
+                  finishProgress();
                 }),
             ],
           });
@@ -157,6 +179,7 @@ function AccountSection() {
 
       // Error
       .catch((err) => {
+        setLoadingPage(false);
         console.error(err);
         alert(err.message, 'New Account Email Error');
       });

@@ -13,6 +13,10 @@ function createTemporaryClient(baseUrl) {
   return sdk.createClient({ baseUrl });
 }
 
+function createTemporaryClientId(baseUrl) {
+  return sdk.createClient({ baseUrl: '', idBaseUrl: identityUrl });
+}
+
 async function startSsoLogin(baseUrl, type, idpId) {
   const client = createTemporaryClient(baseUrl);
   localStorage.setItem(cons.secretKey.BASE_URL, client.baseUrl);
