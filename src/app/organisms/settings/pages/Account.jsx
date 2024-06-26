@@ -120,10 +120,10 @@ function AccountSection() {
             );
           }
 
-          body.push($('<br>'));
-
-          if (typeof result.sid === 'string')
+          if (typeof result.sid === 'string') {
+            body.push($('<br>'));
             body.push($('<strong>', { class: 'small' }).text(`Session Id: ${result.sid}`));
+          }
 
           tinyModal = btModal({
             title: 'Use "Single Sign On" to continue',
