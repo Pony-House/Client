@@ -131,9 +131,7 @@ function AccountSection() {
 
                     // Send bindThreePid
 
-                    const threePidAction = bind
-                      ? initMatrix.matrixClient.bindThreePid
-                      : initMatrix.matrixClient.addThreePidOnly;
+                    const threePidAction = bind ? 'bindThreePid' : 'addThreePidOnly';
                     const threePidOptions = bind
                       ? // bindThreePid
                         {
@@ -151,7 +149,7 @@ function AccountSection() {
                           auth: undefined,
                         };
 
-                    threePidAction(threePidOptions)
+                    initMatrix.matrixClient[threePidAction](threePidOptions)
                       // Complete
                       .then(() => {
                         setLoadingPage(false);
