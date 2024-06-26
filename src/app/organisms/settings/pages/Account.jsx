@@ -100,17 +100,17 @@ function AccountSection() {
             // Prepare modal
             let tinyModal;
             const body = [
-              $('<h6>', { class: 'mb-4 noselect' }).text(
-                `The request to add a new ${type} was successfully sent!`,
-              ),
+              $('<h6>').text(`The request to add a new ${type} was successfully sent!`),
             ];
 
             body.push(
-              $('<span>').text(`Confirm the inclusion of this ${type} to prove your identity.`),
+              $('<span>', { class: 'small' }).text(
+                `Confirm the inclusion of this ${type} to prove your identity.`,
+              ),
             );
 
             body.push($('<br>'));
-            body.push($('<strong>', { class: 'small' }).text(`Session Id: ${result.sid}`));
+            body.push($('<strong>', { class: 'very-small' }).text(`Session Id: ${result.sid}`));
 
             // Send modal
             tinyModal = btModal({
@@ -229,6 +229,11 @@ function AccountSection() {
                                 .then(sessionComplete)
                                 .catch(sessionError);
                             }*/
+
+                            // Nothing
+                            else {
+                              sessionError(err);
+                            }
                           }
 
                           // Fail
@@ -277,18 +282,16 @@ function AccountSection() {
                   return initMatrix.matrixClient
                     .deleteThreePid(medium, email.address)
                     .then((result) => {
-                      const tinyIndex = where.findIndex((item) => item.address);
-                      if (tinyIndex > -1) where.splice(tinyIndex, 1);
-
                       if (
                         objType(result, 'object') &&
                         typeof result.id_server_unbind_result === 'string' &&
                         result.id_server_unbind_result === 'success'
-                      )
+                      ) {
+                        const tinyIndex = where.findIndex((item) => item.address);
+                        if (tinyIndex > -1) where.splice(tinyIndex, 1);
                         alert(`Your ${title} was successfully removed.`, 'Complete!');
-                      else alert(`It was not possible to remove your ${title}.`, 'Error!');
-
-                      if (tinyIndex > -1) setWhere(where);
+                        if (tinyIndex > -1) setWhere(where);
+                      } else alert(`It was not possible to remove your ${title}.`, 'Error!');
                       setLoadingPage(false);
                     })
                     .catch((err) => {
