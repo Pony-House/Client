@@ -34,8 +34,10 @@ function SettingNumber({
         el.val(tinyValue);
       }
 
-      if (validated && event.type === 'change' && onChange) {
-        onChange(tinyValue, event.target, el);
+      const isChange = event.type === 'change';
+      const isEnter = event.type === 'keypress' && event.which === 13;
+      if (validated && (isChange || isEnter) && onChange) {
+        onChange(tinyValue, event.target, el, { isChange, isEnter });
       }
     };
 

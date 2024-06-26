@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import userPid from '@src/util/libs/userPid';
@@ -30,6 +30,9 @@ function AccountSection() {
   const [emails, setEmails] = useState(null);
   const [phones, setPhones] = useState(null);
   const [othersAuth, setOthersAuth] = useState(null);
+
+  const submitEmail = useRef(null);
+  const submitPhone = useRef(null);
 
   // Data
   const [loadingEmails, setLoadingEmails] = useState(false);
@@ -302,6 +305,13 @@ function AccountSection() {
       <center className="very-small p-3 border-bottom border-bg"> No {title} found.</center>
     );
 
+  const updateValue = (callback, refItem) => (value, target, el, method) => {
+    callback(value);
+    if (method.isEnter) {
+      $(refItem.current).focus();
+    }
+  };
+
   // Complete
   return (
     <>
@@ -391,7 +401,7 @@ function AccountSection() {
               <SettingsText
                 placeHolder="Email address"
                 value={newEmail}
-                onChange={setNewEmail}
+                onChange={updateValue(setNewEmail, submitEmail)}
                 maxLength={100}
                 isEmail
                 content={
@@ -401,6 +411,7 @@ function AccountSection() {
                     </div>
                   ) : (
                     <Button
+                      ref={submitEmail}
                       variant="primary"
                       onClick={requestTokenProgress(
                         // Text
@@ -444,7 +455,7 @@ function AccountSection() {
               <SettingsText
                 placeHolder="Phone number"
                 value={newPhone}
-                onChange={setNewPhone}
+                onChange={updateValue(setNewPhone, submitPhone)}
                 maxLength={100}
                 isPhone
                 disabled
@@ -455,6 +466,7 @@ function AccountSection() {
                     </div>
                   ) : (
                     <Button
+                      ref={submitPhone}
                       variant="primary"
                       disabled
                       onClick={() => {
