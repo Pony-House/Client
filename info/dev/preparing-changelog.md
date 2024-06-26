@@ -1,3 +1,13 @@
+- LibreTranslate support added.
+- Rust Crypto end-to-end encryption support added.
+- DevTools button added to tray. (Desktop Only)
+- Console alert added to the desktop version.
+- DevTools alert added to the browser.
+- Emoji export button added.
+- Image Viewer - Metadata viewer added.
+- tableflip and unflip commands added.
+- Account Settings tab added. Now you can manage emails and passwords through the client.
+
 - tinyNode issue fixed.
 - Removed deprecated functions.
 - ExportE2ERoomKeys - file name changed.
@@ -5,20 +15,12 @@
 - Welcome icon and message changed.
 - Desktop mode - auth-base css fixed.
 - Error alerts - title updated.
-- LibreTranslate support added.
 - Container - electron loading css fixed.
-- Rust Crypto end-to-end encryption support added.
-- DevTools button added to tray.
-- Console alert added to the desktop version.
 - New error screen added to the page login.
-- Emoji export button added.
-- image viewer - metadata viewer added.
-- DevTools alert added to the browser.
 - App icon sizes fixed.
 - Settings full screen css size fixed.
 - Scroll css fixed.
 - Electron - value detector fixed.
-- tableflip and unflip commands added.
 - PhotoSwipeLightbox css fixed to electron.
 - ContextMenu fixed.
 - modals css - positions class fixed.
