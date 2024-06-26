@@ -282,16 +282,16 @@ function AccountSection() {
                   return initMatrix.matrixClient
                     .deleteThreePid(medium, email.address)
                     .then((result) => {
-                      if (
+                      /* if (
                         objType(result, 'object') &&
                         typeof result.id_server_unbind_result === 'string' &&
                         result.id_server_unbind_result === 'success'
-                      ) {
-                        const tinyIndex = where.findIndex((item) => item.address);
-                        if (tinyIndex > -1) where.splice(tinyIndex, 1);
-                        alert(`Your ${title} was successfully removed.`, 'Complete!');
-                        if (tinyIndex > -1) setWhere(where);
-                      } else alert(`It was not possible to remove your ${title}.`, 'Error!');
+                      ) { */
+                      const tinyIndex = where.findIndex((item) => item.address);
+                      if (tinyIndex > -1) where.splice(tinyIndex, 1);
+                      alert(`Your ${title} was successfully removed.`, 'Complete!');
+                      if (tinyIndex > -1) setWhere(where);
+                      // } else alert(`It was not possible to remove your ${title}.`, 'Error!');
                       setLoadingPage(false);
                     })
                     .catch((err) => {
