@@ -67,12 +67,12 @@ const buildTabItems = () => {
       render: () => <ProfileSection />,
     });
 
-    tabItems.push({
+    /* tabItems.push({
       text: tabText.ACCOUNT,
       faSrc: 'fa-solid fa-user',
       disabled: false,
       render: () => <AccountSection />,
-    });
+    }); */
 
     tabItems.push({
       text: tabText.APPEARANCE,

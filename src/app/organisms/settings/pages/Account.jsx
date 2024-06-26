@@ -79,6 +79,7 @@ function AccountSection() {
     request(tinyValue, mx.generateClientSecret())
       .then((result) => {
         if (objType(result, 'object')) {
+          // Process data
           const fastCache = wscript();
           fastCache.where.push({
             address: tinyValue,
@@ -90,50 +91,71 @@ function AccountSection() {
           fastCache.complete(null);
           setLoadingPage(false);
 
+          // Prepare modal
           let tinyModal;
-          const footer = [
-            $('<button>', { class: 'btn btn-bg mx-2' })
-              .text('Go Back')
-              .on('click', () => tinyModal.hide()),
-            ,
-          ];
-
           const body = [
             $('<h6>', { class: 'mb-4 noselect' }).text(
               `The request to add a new ${type} was successfully sent!`,
             ),
           ];
 
-          if (typeof result.submit_url === 'string') {
-            footer.push(
-              $('<button>', { class: `btn btn-primary mx-2` })
-                .text('Sign On')
-                .on('click', () => {
-                  openUrl(result.submit_url);
-                }),
-            );
+          body.push(
+            $('<span>').text(
+              `Confirm the inclusion of this ${type} using Single Sign On to prove your identity.`,
+            ),
+          );
 
-            body.push(
-              $('<span>').text(
-                `Confirm the inclusion of this ${type} using Single Sign On to prove your identity.`,
-              ),
-            );
-          }
+          body.push($('<br>'));
+          body.push($('<strong>', { class: 'small' }).text(`Session Id: ${result.sid}`));
 
-          if (typeof result.sid === 'string') {
-            body.push($('<br>'));
-            body.push($('<strong>', { class: 'small' }).text(`Session Id: ${result.sid}`));
-          }
-
+          // Send modal
           tinyModal = btModal({
             title: 'Use "Single Sign On" to continue',
             id: 'new-email-progress',
             dialog: 'modal-lg modal-dialog-centered',
             body: $('<center>', { class: 'small' }).append(body),
-            footer,
+            footer: [
+              $('<button>', { class: 'btn btn-bg mx-2' })
+                .text('Go Back')
+                .on('click', () => tinyModal.hide()),
+
+              $('<button>', { class: `btn btn-primary mx-2` })
+                .text('Sign On')
+                .on('click', () => {
+                  // Check session
+                  tinyModal.hide();
+                  setLoadingPage('Checking session...');
+
+                  // Send bindThreePid
+                  initMatrix.matrixClient
+                    .bindThreePid({
+                      client_secret: initMatrix.matrixClient.generateClientSecret(),
+                      id_access_token: initMatrix.matrixClient.getAccessToken(),
+                      id_server:
+                        initMatrix.matrixClient.getIdentityServerUrl(true) ||
+                        initMatrix.matrixClient.baseUrl.split('://')[1],
+                      sid: result.sid,
+                    })
+
+                    // Complete
+                    .then(() => {
+                      setLoadingPage(false);
+                      alert(`Your ${type} has been successfully verified!`, 'Session Verification');
+                    })
+
+                    // Error Session
+                    .catch((err) => {
+                      setLoadingPage(false);
+                      console.error(err);
+                      alert(err.message, 'Session Verification Error');
+                    });
+                }),
+            ],
           });
         }
       })
+
+      // Error
       .catch((err) => {
         console.error(err);
         alert(err.message, 'New Account Email Error');

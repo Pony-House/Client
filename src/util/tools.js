@@ -292,7 +292,6 @@ export function btModal(data) {
     modalControl = new bootstrap.Modal(modal.get(0));
   }
 
-  console.log(modalControl._backdrop._element);
   if (__ENV_APP__.ELECTRON_MODE)
     setTimeout(() => $(modalControl._backdrop._element).addClass('root-electron-style'), 1);
 
