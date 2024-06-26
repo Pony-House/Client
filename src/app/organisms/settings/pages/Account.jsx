@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { objType } from 'for-promise/utils/lib.mjs';
+
 import userPid from '@src/util/libs/userPid';
 import { registerValidator } from '@src/util/register';
 
@@ -7,24 +9,32 @@ import SettingsText from '@src/app/molecules/settings-text/SettingsText';
 import Button from '@src/app/atoms/button/Button';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import IconButton from '@src/app/atoms/button/IconButton';
+import { btModal } from '@src/util/tools';
+
+import SettingLoading from '@src/app/molecules/setting-loading/SettingLoading';
+import { setLoadingPage } from '@src/app/templates/client/Loading';
+import { openUrl } from '@src/util/message/urlProtection';
 
 import initMatrix from '../../../../client/initMatrix';
-import SettingLoading from '@src/app/molecules/setting-loading/SettingLoading';
 
 function AccountSection() {
+  // Prepare values
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPassword2, setNewPassword2] = useState('');
   const [newEmail, setNewEmail] = useState(null);
   const [newPhone, setNewPhone] = useState(null);
 
+  // Items list
   const [emails, setEmails] = useState(null);
   const [phones, setPhones] = useState(null);
   const [othersAuth, setOthersAuth] = useState(null);
 
+  // Data
   const [loadingEmails, setLoadingEmails] = useState(false);
   const mx = initMatrix.matrixClient;
 
+  // Validator
   const accountValidation = registerValidator({
     username: mx.getUserId().split(':')[0].substring(1),
     password: newPassword,
@@ -32,6 +42,7 @@ function AccountSection() {
     email: newEmail !== null ? newEmail : '',
   });
 
+  // Read Data
   useEffect(() => {
     if (!loadingEmails && emails === null) {
       setLoadingEmails(true);
@@ -61,6 +72,75 @@ function AccountSection() {
     }
   });
 
+  // Request a new email, phone, and more...
+  const requestTokenProgress = (type, loadingTitle, request, value, wscript) => () => {
+    setLoadingPage(loadingTitle);
+    const tinyValue = value();
+    request(tinyValue, mx.generateClientSecret())
+      .then((result) => {
+        if (objType(result, 'object')) {
+          const fastCache = wscript();
+          fastCache.where.push({
+            address: tinyValue,
+            added_at: new Date(),
+            validated_at: null,
+          });
+
+          fastCache.setWhere(fastCache.where);
+          fastCache.complete(null);
+          setLoadingPage(false);
+
+          let tinyModal;
+          const footer = [
+            $('<button>', { class: 'btn btn-bg mx-2' })
+              .text('Go Back')
+              .on('click', () => tinyModal.hide()),
+            ,
+          ];
+
+          const body = [
+            $('<h6>', { class: 'mb-4 noselect' }).text(
+              `The request to add a new ${type} was successfully sent!`,
+            ),
+          ];
+
+          if (typeof result.submit_url === 'string') {
+            footer.push(
+              $('<button>', { class: `btn btn-primary mx-2` })
+                .text('Sign On')
+                .on('click', () => {
+                  openUrl(result.submit_url);
+                }),
+            );
+
+            body.push(
+              $('<span>').text(
+                `Confirm the inclusion of this ${type} using Single Sign On to prove your identity.`,
+              ),
+            );
+          }
+
+          body.push($('<br>'));
+
+          if (typeof result.sid === 'string')
+            body.push($('<strong>', { class: 'small' }).text(`Session Id: ${result.sid}`));
+
+          tinyModal = btModal({
+            title: 'Use "Single Sign On" to continue',
+            id: 'new-email-progress',
+            dialog: 'modal-lg modal-dialog-centered',
+            body: $('<center>', { class: 'small' }).append(body),
+            footer,
+          });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        alert(err.message, 'New Account Email Error');
+      });
+  };
+
+  // Load emails, phones, and more...
   const loadItemsList = (where, title, removeClick) =>
     Array.isArray(where) && where.length > 0 ? (
       where.map((email, index) => (
@@ -108,6 +188,7 @@ function AccountSection() {
       <center className="very-small p-3 border-bottom border-bg"> No {title} found.</center>
     );
 
+  // Complete
   return (
     <>
       <div className="card noselect mb-3">
@@ -208,7 +289,21 @@ function AccountSection() {
                     <Button
                       variant="primary"
                       disabled={typeof newEmail !== 'string' || newEmail.length < 1}
-                      onClick={() => {}}
+                      onClick={requestTokenProgress(
+                        // Text
+                        'email address',
+                        'Adding new email...',
+                        // Send Request
+                        (value, secretCode) => mx.requestAdd3pidEmailToken(value, secretCode, 1),
+                        // Get Value
+                        () => newEmail,
+                        // Final Confirm
+                        () => ({
+                          where: emails,
+                          setWhere: setEmails,
+                          complete: setNewEmail,
+                        }),
+                      )}
                     >
                       Add Email
                     </Button>
@@ -222,7 +317,7 @@ function AccountSection() {
 
       <div className="card mb-3">
         <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Phones number</li>
+          <li className="list-group-item very-small text-gray">Phone numbers</li>
 
           {!loadingEmails ? (
             loadItemsList(phones, 'phone number', () => {})
@@ -249,7 +344,9 @@ function AccountSection() {
                     <Button
                       variant="primary"
                       disabled={typeof newPhone !== 'string' || newPhone.length < 1}
-                      onClick={() => {}}
+                      onClick={() => {
+                        // mx.requestAdd3pidMsisdnToken();
+                      }}
                     >
                       Add phone
                     </Button>

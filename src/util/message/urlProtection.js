@@ -7,7 +7,7 @@ import convertProtocols from '../libs/convertProtocols';
 import { setLoadingPage } from '../../app/templates/client/Loading';
 // import { isMobile } from '../libs/mobile';
 
-const openUrl = (url) =>
+export const openUrl = (url) =>
   new Promise((resolve, reject) => {
     // Mobile
     /* if (isMobile(true)) {
