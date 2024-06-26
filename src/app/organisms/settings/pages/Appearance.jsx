@@ -20,7 +20,7 @@ import matrixAppearance, {
   toggleAppearanceAction,
   setAppearance,
 } from '../../../../util/libs/appearance';
-import SettingNumber from '@src/app/molecules/settings-number/SettingsNumber';
+import SettingNumber from '@src/app/molecules/setting-number/SettingNumber';
 
 function AppearanceSection() {
   const [, updateState] = useState({});

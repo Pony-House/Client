@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-export const SettingsText = React.forwardRef(
+export const SettingPhone = React.forwardRef(
   (
     {
       value = '',
@@ -72,7 +72,7 @@ export const SettingsText = React.forwardRef(
   },
 );
 
-SettingsText.propTypes = {
+SettingPhone.propTypes = {
   disabled: PropTypes.bool,
   isEmail: PropTypes.bool,
   isPassword: PropTypes.bool,
@@ -83,4 +83,4 @@ SettingsText.propTypes = {
   content: PropTypes.node,
 };
 
-export default SettingsText;
+export default SettingPhone;

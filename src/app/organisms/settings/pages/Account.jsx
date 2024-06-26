@@ -5,7 +5,7 @@ import userPid from '@src/util/libs/userPid';
 import { registerValidator } from '@src/util/register';
 
 import SettingTile from '@src/app/molecules/setting-tile/SettingTile';
-import SettingsText from '@src/app/molecules/settings-text/SettingsText';
+import SettingText from '@src/app/molecules/setting-text/SettingText';
 
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import { btModal, tinyConfirm } from '@src/util/tools';
@@ -367,7 +367,7 @@ function AccountSection() {
             title="Current password"
             content={
               <>
-                <SettingsText
+                <SettingText
                   placeHolder="Your password"
                   value={currentPassword}
                   onChange={setCurrentPassword}
@@ -389,7 +389,7 @@ function AccountSection() {
             title="Set a new account password…"
             content={
               <>
-                <SettingsText
+                <SettingText
                   ref={submitNewPassword}
                   placeHolder="New password"
                   value={newPassword}
@@ -397,7 +397,7 @@ function AccountSection() {
                   maxLength={100}
                   isPassword
                 />
-                <SettingsText
+                <SettingText
                   ref={submitNewPassword2}
                   placeHolder="Confirm the new password"
                   value={newPassword2}
@@ -495,7 +495,7 @@ function AccountSection() {
           <SettingTile
             title="Add a new account email"
             content={
-              <SettingsText
+              <SettingText
                 placeHolder="Email address"
                 value={newEmail}
                 onChange={updateValue(setNewEmail, submitEmail, accountValidation.email)}
@@ -558,13 +558,12 @@ function AccountSection() {
           <SettingTile
             title="Add a new phone number"
             content={
-              <SettingsText
+              <SettingText
                 placeHolder="Phone number"
                 value={newPhone}
                 onChange={updateValue(setNewPhone, submitPhone, accountValidation.phone)}
                 maxLength={100}
                 isPhone
-                disabled
                 content={
                   <>
                     {accountValidation.phone ? (
@@ -575,7 +574,11 @@ function AccountSection() {
                     <Button
                       ref={submitPhone}
                       variant="primary"
-                      disabled
+                      disabled={
+                        typeof newPhone !== 'string' ||
+                        newPhone.length < 1 ||
+                        accountValidation.phone
+                      }
                       onClick={() => {
                         // mx.requestAdd3pidMsisdnToken();
                       }}

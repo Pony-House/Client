@@ -4,7 +4,7 @@ import clone from 'clone';
 import libreTranslate from '@src/util/libs/libreTranslate';
 import SegmentedControls from '@src/app/atoms/segmented-controls/SegmentedControls';
 import { getAppearance } from '@src/util/libs/appearance';
-import SettingsText from '@src/app/molecules/settings-text/SettingsText';
+import SettingText from '@src/app/molecules/setting-text/SettingText';
 
 import SettingTile from '../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../atoms/button/Toggle';
@@ -92,7 +92,7 @@ function LibreTranslateSection() {
             <SettingTile
               title="Host domain"
               content={
-                <SettingsText
+                <SettingText
                   value={host || libreTranslate.getDefaultHost()}
                   onChange={(value, target, queryTarget) => {
                     if (libreTranslate.testUrl(value)) {
@@ -117,7 +117,7 @@ function LibreTranslateSection() {
           <SettingTile
             title="API Key"
             content={
-              <SettingsText
+              <SettingText
                 value={apiKey}
                 onChange={(value) => {
                   libreTranslate.set('apiKey', value);
