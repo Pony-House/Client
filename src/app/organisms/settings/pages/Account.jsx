@@ -276,23 +276,25 @@ function AccountSection() {
           }
           content={
             <>
-              {typeof email.added_at === 'number' && (
-                <div className="very-small text-gray">
-                  Added at
-                  <span style={{ color: 'var(--tc-surface-normal)' }}>
-                    {moment(email.added_at).format(
-                      ` ${momentFormat.clock()}, ${momentFormat.calendar()}`,
-                    )}
-                  </span>
-                </div>
-              )}
+              {typeof email.added_at === 'number' &&
+                (typeof email.validated_at !== 'number' ||
+                  email.added_at !== email.validated_at) && (
+                  <div className="very-small text-gray">
+                    Added at
+                    <span style={{ color: 'var(--tc-surface-normal)' }}>
+                      {moment(email.added_at).format(
+                        ` ${momentFormat.clock2()}, ${momentFormat.calendar()}`,
+                      )}
+                    </span>
+                  </div>
+                )}
 
               {typeof email.validated_at === 'number' && (
                 <div className="very-small text-gray">
                   Validated at
                   <span style={{ color: 'var(--tc-surface-normal)' }}>
                     {moment(email.validated_at).format(
-                      ` ${momentFormat.clock()}, ${momentFormat.calendar()}`,
+                      ` ${momentFormat.clock2()}, ${momentFormat.calendar()}`,
                     )}
                   </span>
                 </div>
