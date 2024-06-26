@@ -473,7 +473,11 @@ function AccountSection() {
                     <Button
                       ref={submitEmail}
                       variant="primary"
-                      disabled={newEmail.length < 1 || accountValidation.email}
+                      disabled={
+                        typeof newEmail !== 'string' ||
+                        newEmail.length < 1 ||
+                        accountValidation.email
+                      }
                       onClick={requestTokenProgress(
                         // Text
                         'email address',
