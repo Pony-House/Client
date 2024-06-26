@@ -9,7 +9,7 @@ import SettingsText from '@src/app/molecules/settings-text/SettingsText';
 import Button from '@src/app/atoms/button/Button';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import IconButton from '@src/app/atoms/button/IconButton';
-import { btModal } from '@src/util/tools';
+import { btModal, tinyConfirm } from '@src/util/tools';
 
 import SettingLoading from '@src/app/molecules/setting-loading/SettingLoading';
 import { setLoadingPage } from '@src/app/templates/client/Loading';
@@ -106,9 +106,7 @@ function AccountSection() {
             ];
 
             body.push(
-              $('<span>').text(
-                `Confirm the inclusion of this ${type} using Single Sign On to prove your identity.`,
-              ),
+              $('<span>').text(`Confirm the inclusion of this ${type} to prove your identity.`),
             );
 
             body.push($('<br>'));
@@ -116,7 +114,7 @@ function AccountSection() {
 
             // Send modal
             tinyModal = btModal({
-              title: 'Use "Single Sign On" to continue',
+              title: `Adding a new ${type}`,
               id: 'new-email-progress',
               dialog: 'modal-lg modal-dialog-centered',
               body: $('<center>', { class: 'small' }).append(body),
@@ -129,7 +127,7 @@ function AccountSection() {
                   }),
 
                 $('<button>', { class: `btn btn-primary mx-2` })
-                  .text('Sign On')
+                  .text('Continue')
                   .on('click', () => {
                     // Final step
                     const finishProgress = () => {
@@ -258,7 +256,7 @@ function AccountSection() {
   };
 
   // Load emails, phones, and more...
-  const loadItemsList = (where, title, removeClick) =>
+  const loadItemsList = (where, setWhere, title, medium) =>
     Array.isArray(where) && where.length > 0 ? (
       where.map((email, index) => (
         <SettingTile
@@ -269,7 +267,37 @@ function AccountSection() {
               size="small"
               className="mx-1"
               iconColor="var(--tc-danger-normal)"
-              onClick={removeClick}
+              onClick={async () => {
+                const isConfirmed = await tinyConfirm(
+                  `Are you sure? This decision is inreversible!\n${email.address}`,
+                  `Removing ${title}`,
+                );
+                if (isConfirmed) {
+                  setLoadingPage(`Removing ${title}...`);
+                  return initMatrix.matrixClient
+                    .deleteThreePid(medium, email.address)
+                    .then((result) => {
+                      const tinyIndex = where.findIndex((item) => item.address);
+                      if (tinyIndex > -1) where.splice(tinyIndex, 1);
+
+                      if (
+                        objType(result, 'object') &&
+                        typeof result.id_server_unbind_result === 'string' &&
+                        result.id_server_unbind_result === 'success'
+                      )
+                        alert(`Your ${title} was successfully removed.`, 'Complete!');
+                      else alert(`It was not possible to remove your ${title}.`, 'Error!');
+
+                      if (tinyIndex > -1) setWhere(where);
+                      setLoadingPage(false);
+                    })
+                    .catch((err) => {
+                      console.error(err);
+                      alert(err.message, 'Remove ThreePid Error');
+                      setLoadingPage(false);
+                    });
+                }
+              }}
               fa="fa-solid fa-trash-can"
               tooltip={`Remove ${title}`}
             />
@@ -392,7 +420,7 @@ function AccountSection() {
           <li className="list-group-item very-small text-gray">Email addresses</li>
 
           {!loadingEmails ? (
-            loadItemsList(emails, 'email', () => {})
+            loadItemsList(emails, setEmails, 'email', 'email')
           ) : (
             <SettingLoading title="Loading emails..." />
           )}
@@ -446,7 +474,7 @@ function AccountSection() {
           <li className="list-group-item very-small text-gray">Phone numbers</li>
 
           {!loadingEmails ? (
-            loadItemsList(phones, 'phone number', () => {})
+            loadItemsList(phones, setPhones, 'phone number', 'msisdn')
           ) : (
             <SettingLoading title="Loading phone numbers..." />
           )}
@@ -490,7 +518,7 @@ function AccountSection() {
           <li className="list-group-item very-small text-gray">Other Auth</li>
 
           {!loadingEmails ? (
-            loadItemsList(othersAuth, 'auth', () => {})
+            loadItemsList(othersAuth, setOthersAuth, 'auth', null)
           ) : (
             <SettingLoading title="Loading auth stuff..." />
           )}
