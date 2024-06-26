@@ -39,6 +39,10 @@ function AccountSection() {
   const submitEmail = useRef(null);
   const submitPhone = useRef(null);
 
+  const submitNewPassword = useRef(null);
+  const submitNewPassword2 = useRef(null);
+  const submitPassword = useRef(null);
+
   // Data
   const [loadingEmails, setLoadingEmails] = useState(false);
   const mx = initMatrix.matrixClient;
@@ -386,16 +390,22 @@ function AccountSection() {
             content={
               <>
                 <SettingsText
+                  ref={submitNewPassword}
                   placeHolder="New password"
                   value={newPassword}
-                  onChange={setNewPassword}
+                  onChange={updateValue(setNewPassword, newPassword2, accountValidation.password)}
                   maxLength={100}
                   isPassword
                 />
                 <SettingsText
+                  ref={submitNewPassword2}
                   placeHolder="Confirm the new password"
                   value={newPassword2}
-                  onChange={setNewPassword2}
+                  onChange={updateValue(
+                    setNewPassword2,
+                    submitPassword,
+                    accountValidation.confirmPassword,
+                  )}
                   maxLength={100}
                   isPassword
                   content={
@@ -421,6 +431,7 @@ function AccountSection() {
                         </div>
                       ) : null}
                       <Button
+                        ref={submitPassword}
                         variant="primary"
                         disabled={
                           newPassword.length < 1 ||
@@ -448,11 +459,14 @@ function AccountSection() {
                             )
                             .then(() => {
                               setCurrentPassword('');
+                              setNewPassword('');
+                              setNewPassword2('');
                               setLoadingPage(false);
                               alert(`You successfully changed your password!`, 'Change Password');
                             })
                             .catch((err) => {
                               console.error(err);
+                              setNewPassword2('');
                               alert(err.message, 'Change Password Error');
                             });
                         }}
