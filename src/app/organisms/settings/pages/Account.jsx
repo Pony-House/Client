@@ -75,161 +75,183 @@ function AccountSection() {
 
   // Request a new email, phone, and more...
   const requestTokenProgress = (type, loadingTitle, request, value, wscript) => () => {
-    setLoadingPage(loadingTitle);
     const tinyValue = value();
-    const clientSecret = mx.generateClientSecret();
-    request(tinyValue, clientSecret)
-      .then((result) => {
-        if (objType(result, 'object')) {
-          // Process data
-          const fastCache = wscript();
-          fastCache.where.push({
-            address: tinyValue,
-            added_at: new Date(),
-            validated_at: null,
-          });
+    if (typeof tinyValue === 'string' && tinyValue.length > 0) {
+      setLoadingPage(loadingTitle);
+      const clientSecret = mx.generateClientSecret();
+      request(tinyValue, clientSecret)
+        .then((result) => {
+          if (objType(result, 'object')) {
+            // Process data
+            const fastCache = wscript();
+            fastCache.where.push({
+              address: tinyValue,
+              added_at: new Date(),
+              validated_at: null,
+            });
 
-          fastCache.setWhere(fastCache.where);
-          fastCache.complete(null);
-          setLoadingPage(false);
+            fastCache.setWhere(fastCache.where);
+            fastCache.complete(null);
+            setLoadingPage(false);
 
-          // Prepare modal
-          let tinyModal;
-          const body = [
-            $('<h6>', { class: 'mb-4 noselect' }).text(
-              `The request to add a new ${type} was successfully sent!`,
-            ),
-          ];
+            // Prepare modal
+            let tinyModal;
+            const body = [
+              $('<h6>', { class: 'mb-4 noselect' }).text(
+                `The request to add a new ${type} was successfully sent!`,
+              ),
+            ];
 
-          body.push(
-            $('<span>').text(
-              `Confirm the inclusion of this ${type} using Single Sign On to prove your identity.`,
-            ),
-          );
+            body.push(
+              $('<span>').text(
+                `Confirm the inclusion of this ${type} using Single Sign On to prove your identity.`,
+              ),
+            );
 
-          body.push($('<br>'));
-          body.push($('<strong>', { class: 'small' }).text(`Session Id: ${result.sid}`));
+            body.push($('<br>'));
+            body.push($('<strong>', { class: 'small' }).text(`Session Id: ${result.sid}`));
 
-          // Send modal
-          tinyModal = btModal({
-            title: 'Use "Single Sign On" to continue',
-            id: 'new-email-progress',
-            dialog: 'modal-lg modal-dialog-centered',
-            body: $('<center>', { class: 'small' }).append(body),
-            footer: [
-              $('<button>', { class: 'btn btn-bg mx-2' })
-                .text('Go Back')
-                .on('click', () => {
-                  setCurrentPassword('');
-                  tinyModal.hide();
-                }),
-
-              $('<button>', { class: `btn btn-primary mx-2` })
-                .text('Sign On')
-                .on('click', () => {
-                  // Final step
-                  const finishProgress = () => {
-                    // Check session
+            // Send modal
+            tinyModal = btModal({
+              title: 'Use "Single Sign On" to continue',
+              id: 'new-email-progress',
+              dialog: 'modal-lg modal-dialog-centered',
+              body: $('<center>', { class: 'small' }).append(body),
+              footer: [
+                $('<button>', { class: 'btn btn-bg mx-2' })
+                  .text('Go Back')
+                  .on('click', () => {
+                    setCurrentPassword('');
                     tinyModal.hide();
-                    setLoadingPage('Checking session...');
+                  }),
 
-                    // Send bindThreePid
+                $('<button>', { class: `btn btn-primary mx-2` })
+                  .text('Sign On')
+                  .on('click', () => {
+                    // Final step
+                    const finishProgress = () => {
+                      // Check session
+                      tinyModal.hide();
+                      setLoadingPage('Checking session...');
 
-                    const threePidAction = bind ? 'bindThreePid' : 'addThreePidOnly';
-                    const threePidOptions = bind
-                      ? // bindThreePid
-                        {
-                          client_secret: clientSecret,
-                          id_access_token: initMatrix.matrixClient.getAccessToken(),
-                          id_server:
-                            initMatrix.matrixClient.getIdentityServerUrl(true) ||
-                            initMatrix.matrixClient.baseUrl.split('://')[1],
-                          sid: result.sid,
-                        }
-                      : // addThreePidOnly
-                        {
-                          sid: result.sid,
-                          client_secret: clientSecret,
-                        };
+                      // Send bindThreePid
 
-                    // Error
-                    const sessionError = (err) => {
-                      setCurrentPassword('');
-                      setLoadingPage(false);
-                      console.error(err);
-                      alert(err.message, 'Session Verification Error');
-                    };
-
-                    // Complete
-                    const sessionComplete = () => {
-                      setCurrentPassword('');
-                      setLoadingPage(false);
-                      alert(`Your ${type} has been successfully verified!`, 'Session Verification');
-                    };
-
-                    initMatrix.matrixClient[threePidAction](threePidOptions)
-                      .then(sessionComplete)
-
-                      // Error Session
-                      .catch((err) => {
-                        if (!bind && objType(err.data, 'object') && Array.isArray(err.data.flows)) {
-                          // err.data.session
-                          // err.data.params
-
-                          // Can Password
-                          const canPassword = err.data.flows.find(
-                            (item) =>
-                              Array.isArray(item.stages) && item.stages[0] === 'm.login.password',
-                          );
-
-                          // Can SSO
-                          const canSSO = err.data.flows.find(
-                            (item) =>
-                              Array.isArray(item.stages) && item.stages[0] === 'm.login.sso',
-                          );
-
-                          // Use password
-                          if (canPassword && currentPassword) {
-                            threePidOptions.auth = {
-                              type: 'm.login.password',
-                              identifier: {
-                                type: 'm.id.user',
-                                user: initMatrix.matrixClient
-                                  .getUserId()
-                                  .split(':')[0]
-                                  .substring(1),
-                              },
-                              password: currentPassword,
-                            };
-
-                            // Last try
-                            initMatrix.matrixClient[threePidAction](threePidOptions)
-                              .then(sessionComplete)
-                              .catch(sessionError);
+                      const threePidAction = bind ? 'bindThreePid' : 'addThreePidOnly';
+                      const threePidOptions = bind
+                        ? // bindThreePid
+                          {
+                            client_secret: clientSecret,
+                            id_access_token: initMatrix.matrixClient.getAccessToken(),
+                            id_server:
+                              initMatrix.matrixClient.getIdentityServerUrl(true) ||
+                              initMatrix.matrixClient.baseUrl.split('://')[1],
+                            sid: result.sid,
                           }
-                        }
+                        : // addThreePidOnly
+                          {
+                            sid: result.sid,
+                            client_secret: clientSecret,
+                          };
 
-                        // Fail
-                        else {
-                          sessionError(err);
-                        }
-                      });
-                  };
+                      // Error
+                      const sessionError = (err) => {
+                        setCurrentPassword('');
+                        setLoadingPage(false);
+                        console.error(err);
+                        alert(err.message, 'Session Verification Error');
+                      };
 
-                  // Finish
-                  finishProgress();
-                }),
-            ],
-          });
-        }
-      })
+                      // Complete
+                      const sessionComplete = () => {
+                        setCurrentPassword('');
+                        setLoadingPage(false);
+                        alert(
+                          `Your ${type} has been successfully verified!`,
+                          'Session Verification',
+                        );
+                      };
 
-      // Error
-      .catch((err) => {
-        setLoadingPage(false);
-        console.error(err);
-        alert(err.message, 'New Account Email Error');
-      });
+                      initMatrix.matrixClient[threePidAction](threePidOptions)
+                        .then(sessionComplete)
+
+                        // Error Session
+                        .catch((err) => {
+                          if (
+                            !bind &&
+                            objType(err.data, 'object') &&
+                            Array.isArray(err.data.flows)
+                          ) {
+                            // err.data.session
+                            // err.data.params
+
+                            // Can Password
+                            const canPassword = err.data.flows.find(
+                              (item) =>
+                                Array.isArray(item.stages) && item.stages[0] === 'm.login.password',
+                            );
+
+                            // Can SSO
+                            const canSSO = err.data.flows.find(
+                              (item) =>
+                                Array.isArray(item.stages) && item.stages[0] === 'm.login.sso',
+                            );
+
+                            // Use password
+                            if (canPassword && currentPassword) {
+                              threePidOptions.auth = {
+                                type: 'm.login.password',
+                                identifier: {
+                                  type: 'm.id.user',
+                                  user: initMatrix.matrixClient
+                                    .getUserId()
+                                    .split(':')[0]
+                                    .substring(1),
+                                },
+                                password: currentPassword,
+                              };
+
+                              // Last try
+                              initMatrix.matrixClient[threePidAction](threePidOptions)
+                                .then(sessionComplete)
+                                .catch(sessionError);
+                            }
+
+                            // Use SSO
+                            /* else if (canSSO) {
+                              threePidOptions.auth = {
+                                type: 'm.login.token',
+                                token: '',
+                              };
+  
+                              // Last try
+                              initMatrix.matrixClient[threePidAction](threePidOptions)
+                                .then(sessionComplete)
+                                .catch(sessionError);
+                            }*/
+                          }
+
+                          // Fail
+                          else {
+                            sessionError(err);
+                          }
+                        });
+                    };
+
+                    // Finish
+                    finishProgress();
+                  }),
+              ],
+            });
+          }
+        })
+
+        // Error
+        .catch((err) => {
+          setLoadingPage(false);
+          console.error(err);
+          alert(err.message, 'New Account Email Error');
+        });
+    }
   };
 
   // Load emails, phones, and more...
@@ -380,7 +402,6 @@ function AccountSection() {
                   ) : (
                     <Button
                       variant="primary"
-                      disabled={typeof newEmail !== 'string' || newEmail.length < 1}
                       onClick={requestTokenProgress(
                         // Text
                         'email address',
@@ -435,7 +456,7 @@ function AccountSection() {
                   ) : (
                     <Button
                       variant="primary"
-                      disabled={typeof newPhone !== 'string' || newPhone.length < 1}
+                      disabled
                       onClick={() => {
                         // mx.requestAdd3pidMsisdnToken();
                       }}
