@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import parsePhoneNumber from 'libphonenumber-js';
 
 export const SettingPhone = React.forwardRef(
   (
@@ -9,8 +10,6 @@ export const SettingPhone = React.forwardRef(
       maxLength = null,
       onChange = null,
       content = null,
-      isPassword = false,
-      isEmail = false,
       disabled = false,
     },
     ref,
@@ -61,7 +60,7 @@ export const SettingPhone = React.forwardRef(
         <input
           disabled={disabled}
           ref={inputRef}
-          type={!isPassword ? (!isEmail ? 'text' : 'email') : 'password'}
+          type="text"
           maxLength={maxLength}
           placeholder={placeHolder}
           className={`form-control form-control-bg mt-2 mb-1${disabled ? ' disabled' : ''}`}
@@ -74,8 +73,6 @@ export const SettingPhone = React.forwardRef(
 
 SettingPhone.propTypes = {
   disabled: PropTypes.bool,
-  isEmail: PropTypes.bool,
-  isPassword: PropTypes.bool,
   placeHolder: PropTypes.string,
   maxLength: PropTypes.number,
   onChange: PropTypes.func,

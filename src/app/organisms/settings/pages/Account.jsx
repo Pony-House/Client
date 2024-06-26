@@ -6,6 +6,7 @@ import { registerValidator } from '@src/util/register';
 
 import SettingTile from '@src/app/molecules/setting-tile/SettingTile';
 import SettingText from '@src/app/molecules/setting-text/SettingText';
+import SettingPhone from '@src/app/molecules/setting-phone/SettingPhone';
 
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import { btModal, tinyConfirm } from '@src/util/tools';
@@ -52,6 +53,7 @@ function AccountSection() {
     username: mx.getUserId().split(':')[0].substring(1),
     password: newPassword,
     confirmPassword: newPassword2,
+    phone: newPhone !== null ? newPhone : '',
     email: newEmail !== null ? newEmail : '',
   });
 
@@ -558,12 +560,11 @@ function AccountSection() {
           <SettingTile
             title="Add a new phone number"
             content={
-              <SettingText
+              <SettingPhone
                 placeHolder="Phone number"
                 value={newPhone}
                 onChange={updateValue(setNewPhone, submitPhone, accountValidation.phone)}
                 maxLength={100}
-                isPhone
                 content={
                   <>
                     {accountValidation.phone ? (
