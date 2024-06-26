@@ -23,3 +23,4 @@
 - ContextMenu fixed.
 - modals css - positions class fixed.
 - Version Checker fixed in the electron version.
+- Translate error added.

@@ -41,7 +41,7 @@ function SettingNumber({
       }
     };
 
-    if (inputNumber.val().length < 1) inputNumber.val(value);
+    inputNumber.val(value);
     inputNumber.on('change keyup keydown keypress', numberValidator);
     return () => {
       inputNumber.off('change keyup keydown keypress', numberValidator);

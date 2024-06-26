@@ -927,24 +927,36 @@ const MessageOptions = React.memo(
       (hideMenu = () => {}) =>
       () => {
         hideMenu();
-        setLoadingPage();
-        libreTranslate
-          .translate(
-            customHTML
-              ? html(customHTML, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain
-              : plain(body, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain,
-          )
-          .then((text) => {
-            setLoadingPage(false);
-            if (typeof text === 'string') {
-              setTranslateText(text);
-            }
-          })
-          .catch((err) => {
-            setLoadingPage(false);
-            console.error(err);
-            alert(err.message, 'Libre Translate Progress Error');
-          });
+        let sourceText = '';
+        try {
+          sourceText = customHTML
+            ? html(customHTML, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain
+            : plain(body, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain;
+          if (typeof sourceText !== 'string') sourceText = '';
+        } catch (err) {
+          console.error(err);
+          alert(err.message, 'Translate get text error');
+          sourceText = '';
+        }
+
+        if (sourceText.length > 0) {
+          setLoadingPage('Translating message...');
+          libreTranslate
+            .translate(sourceText)
+            .then((text) => {
+              setLoadingPage(false);
+              if (typeof text === 'string') {
+                setTranslateText(text);
+              }
+            })
+            .catch((err) => {
+              setLoadingPage(false);
+              console.error(err);
+              alert(err.message, 'Libre Translate Progress Error');
+            });
+        } else {
+          alert('There is no text to translate here.', 'Libre Translate Progress Error');
+        }
       };
 
     const removeTranslateMessage =

@@ -45,7 +45,7 @@ function SettingsText({
       }
     };
 
-    if (inputText.val().length < 1) inputText.val(value);
+    inputText.val(value);
     inputText.on('change keyup keydown keypress', textValidator);
     return () => {
       inputText.off('change keyup keydown keypress', textValidator);
