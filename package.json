@@ -60,7 +60,7 @@
     "devtools-detect": "4.0.2",
     "emojibase-data": "7.0.1",
     "eth-provider": "0.13.6",
-    "ethers": "6.13.0",
+    "ethers": "6.13.1",
     "exifreader": "4.23.3",
     "file-saver": "2.0.5",
     "flux": "4.0.4",
