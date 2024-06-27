@@ -20,6 +20,7 @@ import { setLoadingPage } from '@src/app/templates/client/Loading';
 import { openUrl } from '@src/util/message/urlProtection';
 
 import initMatrix from '../../../../client/initMatrix';
+import { parsePhoneNumber } from 'libphonenumber-js';
 
 function AccountSection() {
   // Prepare values
@@ -27,7 +28,9 @@ function AccountSection() {
   const [newPassword, setNewPassword] = useState('');
   const [newPassword2, setNewPassword2] = useState('');
   const [newEmail, setNewEmail] = useState(null);
+
   const [newPhone, setNewPhone] = useState(null);
+  const [newPhoneCountry, setNewPhoneCountry] = useState(null);
 
   const [logoutDevices, setLogoutDevices] = useState(false);
   const [bind] = useState(false);
@@ -358,6 +361,16 @@ function AccountSection() {
       }
     };
 
+  const updatePhone =
+    (refItem, err = null) =>
+    (value, target, el, method) => {
+      setNewPhone(value);
+      setNewPhoneCountry(method.country);
+      if (method.isEnter && !err) {
+        $(refItem.current).focus();
+      }
+    };
+
   // Complete
   return (
     <>
@@ -563,7 +576,7 @@ function AccountSection() {
               <SettingPhone
                 placeHolder="Phone number"
                 value={newPhone}
-                onChange={updateValue(setNewPhone, submitPhone, accountValidation.phone)}
+                onChange={updatePhone(submitPhone, accountValidation.phone)}
                 maxLength={100}
                 content={
                   <>
@@ -581,6 +594,11 @@ function AccountSection() {
                         accountValidation.phone
                       }
                       onClick={() => {
+                        const phoneNumber = parsePhoneNumber(
+                          newPhone,
+                          newPhoneCountry !== null ? newPhoneCountry : undefined,
+                        );
+                        console.log(phoneNumber);
                         // mx.requestAdd3pidMsisdnToken();
                       }}
                     >

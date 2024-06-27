@@ -62,7 +62,7 @@ export const SettingPhone = React.forwardRef(
               const isChange = event.type === 'change';
               const isEnter = event.type === 'keypress' && event.which === 13;
               if (onChange) {
-                onChange(phoneNumber, event.target, el, { isChange, isEnter });
+                onChange(phoneNumber, event.target, el, { country, isChange, isEnter });
               }
             }
 
