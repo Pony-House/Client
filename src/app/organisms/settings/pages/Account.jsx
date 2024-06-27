@@ -91,60 +91,60 @@ function AccountSection() {
   });
 
   // Request a new email, phone, and more...
-  const requestTokenProgress = (type, loadingTitle, request, value, wscript) => () => {
-    const tinyValue = value();
-    if (typeof tinyValue === 'string' && tinyValue.length > 0) {
-      setLoadingPage(loadingTitle);
-      const clientSecret = mx.generateClientSecret();
-      request(tinyValue, clientSecret)
-        .then((result) => {
-          if (objType(result, 'object')) {
-            // Process data
-            const fastCache = wscript();
-            fastCache.where.push({
-              address: tinyValue,
-              added_at: new Date(),
-              validated_at: null,
-            });
+  const requestTokenProgress =
+    (type, loadingTitle, request, value, value2, wscript, tokenVerification) => () => {
+      const tinyValue = value();
+      const tinyValue2 = value2();
+      if (typeof tinyValue === 'string' && tinyValue.length > 0) {
+        setLoadingPage(loadingTitle);
+        const clientSecret = mx.generateClientSecret();
+        request(tinyValue, tinyValue2, clientSecret)
+          .then((result) => {
+            if (objType(result, 'object')) {
+              // Process data
+              const fastCache = wscript();
+              fastCache.where.push({
+                address: tinyValue,
+                added_at: new Date(),
+                validated_at: null,
+              });
 
-            fastCache.setWhere(fastCache.where);
-            fastCache.complete(null);
-            setLoadingPage(false);
+              fastCache.setWhere(fastCache.where);
+              fastCache.complete(null);
+              setLoadingPage(false);
 
-            // Prepare modal
-            let tinyModal;
-            const body = [
-              $('<h6>').text(`The request to add a new ${type} was successfully sent!`),
-            ];
+              // Prepare modal
+              let tinyModal;
+              const body = [
+                $('<h6>').text(`The request to add a new ${type} was successfully sent!`),
+              ];
 
-            body.push(
-              $('<span>', { class: 'small' }).text(
-                `Confirm the inclusion of this ${type} to prove your identity.`,
-              ),
-            );
+              body.push(
+                $('<span>', { class: 'small' }).text(
+                  `Confirm the inclusion of this ${type} to prove your identity.`,
+                ),
+              );
 
-            body.push($('<br>'));
-            body.push($('<strong>', { class: 'very-small' }).text(`Session Id: ${result.sid}`));
+              body.push($('<br>'));
+              body.push($('<strong>', { class: 'very-small' }).text(`Session Id: ${result.sid}`));
 
-            // Send modal
-            tinyModal = btModal({
-              title: `Adding a new ${type}`,
-              id: 'new-email-progress',
-              dialog: 'modal-lg modal-dialog-centered',
-              body: $('<center>', { class: 'small' }).append(body),
-              footer: [
-                $('<button>', { class: 'btn btn-bg mx-2' })
-                  .text('Go Back')
-                  .on('click', () => {
-                    setCurrentPassword('');
-                    tinyModal.hide();
-                  }),
+              // Send modal
+              tinyModal = btModal({
+                title: `Adding a new ${type}`,
+                id: 'new-email-progress',
+                dialog: 'modal-lg modal-dialog-centered',
+                body: $('<center>', { class: 'small' }).append(body),
+                footer: [
+                  $('<button>', { class: 'btn btn-bg mx-2' })
+                    .text('Go Back')
+                    .on('click', () => {
+                      setCurrentPassword('');
+                      tinyModal.hide();
+                    }),
 
-                $('<button>', { class: `btn btn-primary mx-2` })
-                  .text('Continue')
-                  .on('click', () => {
-                    // Final step
-                    const finishProgress = () => {
+                  $('<button>', { class: `btn btn-primary mx-2` })
+                    .text('Continue')
+                    .on('click', () => {
                       // Check session
                       tinyModal.hide();
                       setLoadingPage('Checking session...');
@@ -186,53 +186,59 @@ function AccountSection() {
                         );
                       };
 
-                      initMatrix.matrixClient[threePidAction](threePidOptions)
-                        .then(sessionComplete)
+                      // Get token validator
+                      const tokenVd = tokenVerification();
 
-                        // Error Session
-                        .catch((err) => {
-                          if (
-                            !bind &&
-                            objType(err.data, 'object') &&
-                            Array.isArray(err.data.flows)
-                          ) {
-                            // err.data.session
-                            // err.data.params
+                      // Final step
+                      const tinyComplete = () =>
+                        initMatrix.matrixClient[threePidAction](threePidOptions)
+                          .then(sessionComplete)
 
-                            // Can Password
-                            const canPassword = err.data.flows.find(
-                              (item) =>
-                                Array.isArray(item.stages) && item.stages[0] === 'm.login.password',
-                            );
+                          // Error Session
+                          .catch((err) => {
+                            if (
+                              !bind &&
+                              objType(err.data, 'object') &&
+                              Array.isArray(err.data.flows)
+                            ) {
+                              // err.data.session
+                              // err.data.params
 
-                            // Can SSO
-                            const canSSO = err.data.flows.find(
-                              (item) =>
-                                Array.isArray(item.stages) && item.stages[0] === 'm.login.sso',
-                            );
+                              // Can Password
+                              const canPassword = err.data.flows.find(
+                                (item) =>
+                                  Array.isArray(item.stages) &&
+                                  item.stages[0] === 'm.login.password',
+                              );
 
-                            // Use password
-                            if (canPassword && currentPassword) {
-                              threePidOptions.auth = {
-                                type: 'm.login.password',
-                                identifier: {
-                                  type: 'm.id.user',
-                                  user: initMatrix.matrixClient
-                                    .getUserId()
-                                    .split(':')[0]
-                                    .substring(1),
-                                },
-                                password: currentPassword,
-                              };
+                              // Can SSO
+                              const canSSO = err.data.flows.find(
+                                (item) =>
+                                  Array.isArray(item.stages) && item.stages[0] === 'm.login.sso',
+                              );
 
-                              // Last try
-                              initMatrix.matrixClient[threePidAction](threePidOptions)
-                                .then(sessionComplete)
-                                .catch(sessionError);
-                            }
+                              // Use password
+                              if (canPassword && currentPassword) {
+                                threePidOptions.auth = {
+                                  type: 'm.login.password',
+                                  identifier: {
+                                    type: 'm.id.user',
+                                    user: initMatrix.matrixClient
+                                      .getUserId()
+                                      .split(':')[0]
+                                      .substring(1),
+                                  },
+                                  password: currentPassword,
+                                };
 
-                            // Use SSO
-                            /* else if (canSSO) {
+                                // Last try
+                                initMatrix.matrixClient[threePidAction](threePidOptions)
+                                  .then(sessionComplete)
+                                  .catch(sessionError);
+                              }
+
+                              // Use SSO
+                              /* else if (canSSO) {
                               threePidOptions.auth = {
                                 type: 'm.login.token',
                                 token: '',
@@ -244,35 +250,75 @@ function AccountSection() {
                                 .catch(sessionError);
                             }*/
 
-                            // Nothing
+                              // Nothing
+                              else {
+                                sessionError(err);
+                              }
+                            }
+
+                            // Fail
                             else {
                               sessionError(err);
                             }
-                          }
+                          });
 
-                          // Fail
-                          else {
-                            sessionError(err);
-                          }
+                      // Exist token validator
+                      if (objType(tokenVd, 'object')) {
+                        const tokenInput = $('<input>', {
+                          class: 'form-control form-control-bg mt-2',
+                          type: 'text',
                         });
-                    };
+                        const tokenModal = btModal({
+                          title: `Adding a new ${type}`,
+                          id: 'new-token-progress',
+                          dialog: 'modal-lg modal-dialog-centered',
+                          body: $('<center>', { class: 'small' }).append(
+                            $('<center>', { class: 'small' }).text(tokenVd.message),
+                            tokenInput,
+                          ),
+                          footer: [
+                            $('<button>', { class: 'btn btn-bg mx-2' })
+                              .text('Go Back')
+                              .on('click', () => {
+                                setCurrentPassword('');
+                                tokenModal.hide();
+                              }),
 
-                    // Finish
-                    finishProgress();
-                  }),
-              ],
-            });
-          }
-        })
+                            $('<button>', { class: 'btn btn-bg mx-2' })
+                              .text('Continue')
+                              .on('click', () => {
+                                tokenVd
+                                  .request(
+                                    tokenInput.val(),
+                                    clientSecret,
+                                    result.sid,
+                                    result.submit_url,
+                                  )
+                                  .then((result2) => tinyComplete(result2))
+                                  .catch(sessionError);
+                              }),
+                          ],
+                        });
+                      }
 
-        // Error
-        .catch((err) => {
-          setLoadingPage(false);
-          console.error(err);
-          alert(err.message, 'New Account Email Error');
-        });
-    }
-  };
+                      // Nope. Complete!
+                      else {
+                        tinyComplete({ success: true });
+                      }
+                    }),
+                ],
+              });
+            }
+          })
+
+          // Error
+          .catch((err) => {
+            setLoadingPage(false);
+            console.error(err);
+            alert(err.message, 'New Account Email Error');
+          });
+      }
+    };
 
   // Load emails, phones, and more...
   const loadItemsList = (where, setWhere, title, medium) =>
@@ -543,9 +589,11 @@ function AccountSection() {
                         'email address',
                         'Adding new email...',
                         // Send Request
-                        (value, secretCode) => mx.requestAdd3pidEmailToken(value, secretCode, 1),
+                        (value, value2, secretCode) =>
+                          mx.requestAdd3pidEmailToken(value, secretCode, 1),
                         // Get Value
                         () => newEmail,
+                        () => null,
                         // Final Confirm
                         () => ({
                           where: emails,
@@ -575,7 +623,7 @@ function AccountSection() {
           )}
 
           <SettingTile
-            title="Add a new phone number"
+            title="Add a new phone number (Beta)"
             content={
               <SettingPhone
                 placeHolder="Phone number"
@@ -604,8 +652,35 @@ function AccountSection() {
                           newPhone,
                           newPhoneCountry !== null ? newPhoneCountry : undefined,
                         );
-                        console.log(phoneNumber);
-                        // mx.requestAdd3pidMsisdnToken();
+                        console.log('[phone-number]', phoneNumber);
+                        requestTokenProgress(
+                          // Text
+                          'phone number',
+                          'Adding new phone...',
+                          // Send Request
+                          (value, value2, secretCode) =>
+                            mx.requestAdd3pidMsisdnToken(value2, value, secretCode, 1),
+                          // Get Value
+                          () => phoneNumber.number,
+                          () => phoneNumber.country,
+                          // Final Confirm
+                          () => ({
+                            where: phones,
+                            setWhere: setPhones,
+                            complete: setNewPhone,
+                          }),
+                          // Code Validator
+                          () => ({
+                            message: 'Please enter the code sent to your mobile.',
+                            request: (msisdnToken, secretCode, sessionId, submitUrl) =>
+                              mx.submitMsisdnTokenOtherUrl(
+                                submitUrl,
+                                sessionId,
+                                secretCode,
+                                msisdnToken,
+                              ),
+                          }),
+                        );
                       }}
                     >
                       Add phone
