@@ -187,7 +187,8 @@ function AccountSection() {
                       };
 
                       // Get token validator
-                      const tokenVd = tokenVerification();
+                      const tokenVd =
+                        typeof tokenVerification === 'function' ? tokenVerification() : null;
 
                       // Final step
                       const tinyComplete = () =>
