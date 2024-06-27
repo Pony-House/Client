@@ -453,6 +453,8 @@ function AccountSection() {
                           newPassword2.length < 1 ||
                           accountValidation.password ||
                           accountValidation.confirmPassword
+                            ? true
+                            : false
                         }
                         onClick={() => {
                           setLoadingPage('Changing password...');
@@ -533,6 +535,8 @@ function AccountSection() {
                         typeof newEmail !== 'string' ||
                         newEmail.length < 1 ||
                         accountValidation.email
+                          ? true
+                          : false
                       }
                       onClick={requestTokenProgress(
                         // Text
@@ -592,6 +596,8 @@ function AccountSection() {
                         typeof newPhone !== 'string' ||
                         newPhone.length < 1 ||
                         accountValidation.phone
+                          ? true
+                          : false
                       }
                       onClick={() => {
                         const phoneNumber = parsePhoneNumber(

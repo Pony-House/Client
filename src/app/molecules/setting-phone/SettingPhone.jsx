@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { AsYouType, getCountries, getCountryCallingCode } from 'libphonenumber-js';
+import {
+  AsYouType,
+  getCountries,
+  getCountryCallingCode,
+  parsePhoneNumber,
+} from 'libphonenumber-js';
 
 export const SettingPhone = React.forwardRef(
   (
@@ -61,9 +66,27 @@ export const SettingPhone = React.forwardRef(
               // Complete
               const isChange = event.type === 'change';
               const isEnter = event.type === 'keypress' && event.which === 13;
-              if (onChange) {
-                onChange(phoneNumber, event.target, el, { country, isChange, isEnter });
+              let newSelectedCountry = country;
+
+              // Change Country
+              if (isChange || isEnter) {
+                try {
+                  const phoneParsed = parsePhoneNumber(phoneNumber);
+                  if (typeof phoneParsed.country === 'string')
+                    newSelectedCountry = phoneParsed.country;
+                } catch {}
               }
+
+              // Send Change
+              if (onChange) {
+                onChange(phoneNumber, event.target, el, {
+                  country: newSelectedCountry,
+                  isChange,
+                  isEnter,
+                });
+              }
+
+              if (country !== newSelectedCountry) setCountry(newSelectedCountry);
             }
 
             // Invalid
@@ -91,15 +114,15 @@ export const SettingPhone = React.forwardRef(
     return (
       <>
         <div className="input-group input-group-phone">
-          <span class="form-phone-code input-group-text">
-            <select
-              ref={selectChange}
-              className="form-select form-control-bg"
-              defaultValue={country}
-            >
+          <span className="form-phone-code input-group-text">
+            <select disabled={disabled} ref={selectChange} className="form-select form-control-bg">
               <option>??</option>
               {countries.map((item, index) => (
-                <option key={`${item}_${index}`} value={item}>
+                <option
+                  key={`${item}_${index}`}
+                  value={item}
+                  selected={item === country ? true : false}
+                >
                   {item}
                 </option>
               ))}

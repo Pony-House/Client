@@ -38,9 +38,13 @@ export const registerValidator = (values) => {
 
   // Extra inputs
   if (typeof values.phone === 'string' && values.phone.length > 0) {
-    const phoneNumber = parsePhoneNumber(values.phone);
+    try {
+      const phoneNumber = parsePhoneNumber(values.phone);
 
-    if (!phoneNumber || !phoneNumber.isPossible() || !phoneNumber.isValid()) {
+      if (!phoneNumber || !phoneNumber.isPossible() || !phoneNumber.isValid()) {
+        errors.phone = BAD_PHONE_ERROR;
+      }
+    } catch {
       errors.phone = BAD_PHONE_ERROR;
     }
   }
