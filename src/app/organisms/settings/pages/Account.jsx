@@ -681,7 +681,7 @@ function AccountSection() {
                                 msisdnToken,
                               ),
                           }),
-                        );
+                        )();
                       }}
                     >
                       Add phone
