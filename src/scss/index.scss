@@ -130,6 +130,26 @@ audio:not([controls]) {
   padding: 12px;
 }
 
+.input-group-phone {
+  align-items: flex-start;
+  justify-content: flex-start;
+  .form-phone-code {
+    height: 44px !important;
+    margin-top: 8px;
+    margin-bottom: 4px;
+    width: 100px;
+    padding: 0px;
+    border: 0px solid transparent;
+    > .form-select {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+  [type='tel'] {
+    width: auto;
+  }
+}
+
 .form-control-bg[type='file'] {
   padding-left: 25px;
 }

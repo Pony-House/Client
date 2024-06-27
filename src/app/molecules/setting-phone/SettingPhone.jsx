@@ -90,22 +90,31 @@ export const SettingPhone = React.forwardRef(
     const countries = getCountries();
     return (
       <>
-        <select ref={selectChange} className="form-select form-control-bg" defaultValue={country}>
-          <option>??</option>
-          {countries.map((item, index) => (
-            <option key={`${item}_${index}`} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
-        <input
-          disabled={disabled}
-          ref={inputRef}
-          type="tel"
-          maxLength={maxLength}
-          placeholder={placeHolder}
-          className={`form-control form-control-bg mt-2 mb-1${disabled ? ' disabled' : ''}`}
-        />
+        <div className="input-group input-group-phone">
+          <span class="form-phone-code input-group-text">
+            <select
+              ref={selectChange}
+              className="form-select form-control-bg"
+              defaultValue={country}
+            >
+              <option>??</option>
+              {countries.map((item, index) => (
+                <option key={`${item}_${index}`} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </span>
+
+          <input
+            disabled={disabled}
+            ref={inputRef}
+            type="tel"
+            maxLength={maxLength}
+            placeholder={placeHolder}
+            className={`form-control form-control-bg mt-2 mb-1${disabled ? ' disabled' : ''}`}
+          />
+        </div>
         {content}
       </>
     );
