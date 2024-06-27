@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import parsePhoneNumber from 'libphonenumber-js';
+import { AsYouType } from 'libphonenumber-js';
 
 export const SettingPhone = React.forwardRef(
   (
@@ -19,35 +19,57 @@ export const SettingPhone = React.forwardRef(
     useEffect(() => {
       const inputText = $(inputRef.current);
       const textValidator = (event) => {
+        // Start script
         const el = $(event.target);
+        if (el.length > 0) {
+          // Get values
+          const selectionStart = el.get(0).selectionStart;
+          const selectionEnd = el.get(0).selectionEnd;
+          const oldValue = el.val();
+          const diffValues = typeof value === 'string' ? value.length : 0 - oldValue.length;
 
-        const textValue = el.val();
-        let tinyValue = '';
-        let validated = true;
+          // Fix Selection
+          const fixSelection = (extraAmount = 0) => {
+            el.get(0).setSelectionRange(
+              selectionStart + extraAmount + diffValues,
+              selectionEnd + extraAmount + diffValues,
+            );
+          };
 
-        if (
-          typeof textValue === 'string' &&
-          typeof maxLength === 'number' &&
-          !Number.isNaN(maxLength) &&
-          Number.isFinite(maxLength) &&
-          maxLength > -1 &&
-          textValue.length > maxLength
-        ) {
-          tinyValue = textValue.substring(0, maxLength);
-          el.val(tinyValue);
-        } else if (typeof textValue === 'string') {
-          tinyValue = textValue;
-        } else {
-          validated = false;
-        }
+          // Continue script
+          if (
+            (oldValue.length === selectionStart &&
+              oldValue.length === selectionEnd &&
+              selectionStart == selectionEnd) ||
+            oldValue !== value
+          ) {
+            // Okay
+            if (oldValue.startsWith('+')) {
+              const phoneNumber = new AsYouType().input(oldValue);
 
-        const isChange = event.type === 'change';
-        const isEnter = event.type === 'keypress' && event.which === 13;
-        if (validated && (isChange || isEnter) && onChange) {
-          onChange(tinyValue, event.target, el, { isChange, isEnter });
+              // Value
+              el.focus().val('').val(phoneNumber);
+              fixSelection();
+
+              // Complete
+              const isChange = event.type === 'change';
+              const isEnter = event.type === 'keypress' && event.which === 13;
+              if (onChange) {
+                onChange(phoneNumber, event.target, el, { isChange, isEnter });
+              }
+            }
+
+            // Invalid
+            else {
+              el.focus().val(`+${oldValue}`);
+              fixSelection(1);
+              return textValidator(event);
+            }
+          }
         }
       };
 
+      // Inputs
       inputText.val(value);
       inputText.on('change keyup keydown keypress', textValidator);
       return () => {
@@ -60,7 +82,7 @@ export const SettingPhone = React.forwardRef(
         <input
           disabled={disabled}
           ref={inputRef}
-          type="text"
+          type="tel"
           maxLength={maxLength}
           placeholder={placeHolder}
           className={`form-control form-control-bg mt-2 mb-1${disabled ? ' disabled' : ''}`}
