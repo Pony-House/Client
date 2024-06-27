@@ -6,6 +6,7 @@ import {
   getCountryCallingCode,
   parsePhoneNumber,
 } from 'libphonenumber-js';
+import { getFlagEmoji } from '@src/util/tools';
 
 export const SettingPhone = React.forwardRef(
   (
@@ -116,7 +117,7 @@ export const SettingPhone = React.forwardRef(
         <div className="input-group input-group-phone">
           <span className="form-phone-code input-group-text">
             <select disabled={disabled} ref={selectChange} className="form-select form-control-bg">
-              <option>??</option>
+              <option>?? 🌐</option>
               {countries.map((item, index) => (
                 <option
                   key={`${item}_${index}`}
@@ -124,6 +125,8 @@ export const SettingPhone = React.forwardRef(
                   selected={item === country ? true : false}
                 >
                   {item}
+                  {` `}
+                  {getFlagEmoji(item)}
                 </option>
               ))}
             </select>

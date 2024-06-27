@@ -585,6 +585,14 @@ export function cyrb128(str) {
   return [h1 >>> 0, h2 >>> 0, h3 >>> 0, h4 >>> 0];
 }
 
+export function getFlagEmoji(countryCode) {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split('')
+    .map((char) => 127397 + char.charCodeAt());
+  return String.fromCodePoint(...codePoints);
+}
+
 // eslint-disable-next-line no-extend-native
 Date.prototype.isValid = function () {
   // If the date object is invalid it
