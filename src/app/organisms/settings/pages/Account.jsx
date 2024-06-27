@@ -684,7 +684,7 @@ function AccountSection() {
                         )();
                       }}
                     >
-                      Add phone
+                      Add Phone
                     </Button>
                   </>
                 }
