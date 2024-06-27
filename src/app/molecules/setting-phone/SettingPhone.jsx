@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { AsYouType } from 'libphonenumber-js';
+import { AsYouType, getCountries, getCountryCallingCode } from 'libphonenumber-js';
 
 export const SettingPhone = React.forwardRef(
   (
@@ -11,13 +11,18 @@ export const SettingPhone = React.forwardRef(
       onChange = null,
       content = null,
       disabled = false,
+      filter = null,
     },
     ref,
   ) => {
+    const selectChange = useRef(null);
     const inputRef = ref || useRef(null);
+    const [country, setCountry] = useState(null);
 
     useEffect(() => {
       const inputText = $(inputRef.current);
+      const selectInput = $(selectChange.current);
+      const countryChanger = () => setCountry(selectInput.val());
       const textValidator = (event) => {
         // Start script
         const el = $(event.target);
@@ -45,7 +50,9 @@ export const SettingPhone = React.forwardRef(
           ) {
             // Okay
             if (oldValue.startsWith('+')) {
-              const phoneNumber = new AsYouType().input(oldValue);
+              const phoneNumber = new AsYouType(country !== null ? country : undefined).input(
+                oldValue,
+              );
 
               // Value
               el.focus().val('').val(phoneNumber);
@@ -61,8 +68,9 @@ export const SettingPhone = React.forwardRef(
 
             // Invalid
             else {
-              el.focus().val(`+${oldValue}`);
-              fixSelection(1);
+              const defaultCountry = country ? getCountryCallingCode(country) : '';
+              el.focus().val(`+${String(defaultCountry)}${oldValue}`);
+              fixSelection(1 + String(defaultCountry).length);
               return textValidator(event);
             }
           }
@@ -72,13 +80,24 @@ export const SettingPhone = React.forwardRef(
       // Inputs
       inputText.val(value);
       inputText.on('change keyup keydown keypress', textValidator);
+      selectInput.on('change', countryChanger);
       return () => {
+        selectInput.off('change', countryChanger);
         inputText.off('change keyup keydown keypress', textValidator);
       };
     });
 
+    const countries = getCountries();
     return (
       <>
+        <select ref={selectChange} className="form-select form-control-bg" defaultValue={country}>
+          <option>??</option>
+          {countries.map((item, index) => (
+            <option key={`${item}_${index}`} value={item}>
+              {item}
+            </option>
+          ))}
+        </select>
         <input
           disabled={disabled}
           ref={inputRef}
@@ -94,6 +113,7 @@ export const SettingPhone = React.forwardRef(
 );
 
 SettingPhone.propTypes = {
+  filter: PropTypes.func,
   disabled: PropTypes.bool,
   placeHolder: PropTypes.string,
   maxLength: PropTypes.number,
