@@ -30,16 +30,16 @@ const Iframe = React.forwardRef(
       if (iframeRef.current && onMessage) {
         const msgFilter = (event) => {
           if (event.origin === url.origin) {
+            let data;
             if (typeof event.data === 'string') {
               try {
-                const data = JSON.parse(event.data);
-                if (objType(data, 'object') || Array.isArray(data)) {
-                  event.data = data;
-                }
-              } catch {}
-            }
+                data = JSON.parse(event.data);
+              } catch {
+                data = event.data;
+              }
+            } else data = event.data;
 
-            onMessage(event);
+            onMessage(event, data);
           }
         };
         window.addEventListener('message', msgFilter, false);
