@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 export const postMessage = (current, msg = null) => current.contentWindow.postMessage(msg);
 
@@ -29,6 +30,15 @@ const Iframe = React.forwardRef(
       if (iframeRef.current && onMessage) {
         const msgFilter = (event) => {
           if (event.origin === url.origin) {
+            if (typeof event.data === 'string') {
+              try {
+                const data = JSON.parse(event.data);
+                if (objType(data, 'object') || Array.isArray(data)) {
+                  event.data = data;
+                }
+              } catch {}
+            }
+
             onMessage(event);
           }
         };
