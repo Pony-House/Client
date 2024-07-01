@@ -716,7 +716,7 @@ function AccountSection() {
         </ul>
       </div>
 
-      <div className="card noselect mb-3">
+      <div className="card noselect">
         <ul className="list-group list-group-flush">
           <li className="list-group-item very-small text-danger">Danger zone</li>
 
