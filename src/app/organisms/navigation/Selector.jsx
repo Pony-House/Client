@@ -23,195 +23,199 @@ import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearanc
 import { getDataList } from '../../../util/selectedRoom';
 
 // Selector Function
-function Selector({
-  roomId,
-  threadId,
-  isDM = true,
-  drawerPostie,
-  onClick,
-  roomObject,
-  isProfile = false,
-  notSpace = false,
-}) {
-  // Base Script
-  const mx = initMatrix.matrixClient;
-  const noti = initMatrix.notifications;
-  const appearanceSettings = getAppearance();
+const Selector = React.forwardRef(
+  (
+    {
+      roomId,
+      threadId,
+      isDM = true,
+      drawerPostie,
+      onClick,
+      roomObject,
+      isProfile = false,
+      notSpace = false,
+    },
+    ref,
+  ) => {
+    // Base Script
+    const mx = initMatrix.matrixClient;
+    const noti = initMatrix.notifications;
+    const appearanceSettings = getAppearance();
 
-  // Room Data
-  let room;
+    // Room Data
+    let room;
 
-  if (!roomObject) {
-    room = mx.getRoom(roomId);
-  } else {
-    room = roomObject;
-  }
+    if (!roomObject) {
+      room = mx.getRoom(roomId);
+    } else {
+      room = roomObject;
+    }
 
-  // Is Room
-  if (!isDM && !room.nameCinny) {
-    updateName(room);
-  }
+    // Is Room
+    if (!isDM && !room.nameCinny) {
+      updateName(room);
+    }
 
-  // Get User room
-  let allowCustomUsername = false;
-  let user;
-  let roomName = room.name;
-  if (isDM) {
-    const usersCount = room.getJoinedMemberCount();
-    if (usersCount === 2) {
-      const members = room.getMembersWithMembership('join');
-      const member = members.find((m) => m.userId !== mx.getUserId());
-      if (member) {
-        user = mx.getUser(member.userId);
-        roomName = muteUserManager.getSelectorName(user);
-        allowCustomUsername = true;
+    // Get User room
+    let allowCustomUsername = false;
+    let user;
+    let roomName = room.name;
+    if (isDM) {
+      const usersCount = room.getJoinedMemberCount();
+      if (usersCount === 2) {
+        const members = room.getMembersWithMembership('join');
+        const member = members.find((m) => m.userId !== mx.getUserId());
+        if (member) {
+          user = mx.getUser(member.userId);
+          roomName = muteUserManager.getSelectorName(user);
+          allowCustomUsername = true;
+        }
       }
     }
-  }
 
-  // Image
-  let imageSrc =
-    user && user.avatarUrl
-      ? mx.mxcUrlToHttp(user.avatarUrl, 32, 32, 'crop')
-      : room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
-  if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
+    // Image
+    let imageSrc =
+      user && user.avatarUrl
+        ? mx.mxcUrlToHttp(user.avatarUrl, 32, 32, 'crop')
+        : room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
+    if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
 
-  let imageAnimSrc =
-    user && user.avatarUrl
-      ? !appearanceSettings.enableAnimParams
-        ? mx.mxcUrlToHttp(user.avatarUrl)
-        : getAnimatedImageUrl(mx.mxcUrlToHttp(user.avatarUrl, 32, 32, 'crop'))
-      : !appearanceSettings.enableAnimParams
-        ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)
-        : getAnimatedImageUrl(
-            room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'),
-          ) || null;
-  if (imageAnimSrc === null)
-    imageAnimSrc = !appearanceSettings.enableAnimParams
-      ? room.getAvatarUrl(mx.baseUrl)
-      : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
+    let imageAnimSrc =
+      user && user.avatarUrl
+        ? !appearanceSettings.enableAnimParams
+          ? mx.mxcUrlToHttp(user.avatarUrl)
+          : getAnimatedImageUrl(mx.mxcUrlToHttp(user.avatarUrl, 32, 32, 'crop'))
+        : !appearanceSettings.enableAnimParams
+          ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)
+          : getAnimatedImageUrl(
+              room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'),
+            ) || null;
+    if (imageAnimSrc === null)
+      imageAnimSrc = !appearanceSettings.enableAnimParams
+        ? room.getAvatarUrl(mx.baseUrl)
+        : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) || null;
 
-  // Is Muted
-  const isMuted = noti.getNotiType(roomId) === cons.notifs.MUTE;
+    // Is Muted
+    const isMuted = noti.getNotiType(roomId) === cons.notifs.MUTE;
 
-  // Force Update
-  const [, forceUpdate] = useForceUpdate();
-  const [lastThreads, setLastThreads] = useState(
-    canSupport('Thread') ? threadsList.getActives() : null,
-  );
+    // Force Update
+    const [, forceUpdate] = useForceUpdate();
+    const [lastThreads, setLastThreads] = useState(
+      canSupport('Thread') ? threadsList.getActives() : null,
+    );
 
-  // Effects
-  useEffect(() => {
-    const threadsListUpdate = () => setLastThreads(threadsList.getActives());
-    const unSub1 = drawerPostie.subscribe('selector-change', roomId, threadId, forceUpdate);
-    const unSub2 = drawerPostie.subscribe('unread-change', roomId, threadId, forceUpdate);
-    if (canSupport('Thread')) threadsList.on('updatedActiveThreads', threadsListUpdate);
-    return () => {
-      unSub1();
-      unSub2();
-      if (canSupport('Thread')) threadsList.off('updatedActiveThreads', threadsListUpdate);
-    };
-  }, []);
+    // Effects
+    useEffect(() => {
+      const threadsListUpdate = () => setLastThreads(threadsList.getActives());
+      const unSub1 = drawerPostie.subscribe('selector-change', roomId, threadId, forceUpdate);
+      const unSub2 = drawerPostie.subscribe('unread-change', roomId, threadId, forceUpdate);
+      if (canSupport('Thread')) threadsList.on('updatedActiveThreads', threadsListUpdate);
+      return () => {
+        unSub1();
+        unSub2();
+        if (canSupport('Thread')) threadsList.off('updatedActiveThreads', threadsListUpdate);
+      };
+    }, []);
 
-  // Options
-  if (!room) {
-    console.warn(`Selector: Room ${roomId} not found`);
-    return null;
-  }
-
-  const openOptions = (e, tId) => {
-    // Get Cords
-    const cords = getEventCords(e, '.room-selector');
-
-    // Mobile Screen - Viewport
-    if (window.matchMedia('screen and (max-width: 768px)').matches) {
-      cords.x -= 290;
+    // Options
+    if (!room) {
+      console.warn(`Selector: Room ${roomId} not found`);
+      return null;
     }
 
-    e.preventDefault();
-    openReusableContextMenu(
-      'right',
-      cords,
-      room.isSpaceRoom()
-        ? (closeMenu) => <SpaceOptions roomId={roomId} afterOptionSelect={closeMenu} />
-        : (closeMenu) => (
-            <RoomOptions threadId={tId} roomId={roomId} afterOptionSelect={closeMenu} />
-          ),
-    );
-  };
+    const openOptions = (e, tId) => {
+      // Get Cords
+      const cords = getEventCords(e, '.room-selector');
 
-  const getThreads = room.getThreads();
-  const openThreads = getThreads.filter(
-    (thread) =>
-      thread.id === navigation.selectedThreadId ||
-      (objType(lastThreads, 'object') &&
-        Array.isArray(lastThreads.actives) &&
-        lastThreads.actives.find(
-          (ac1) =>
-            Array.isArray(ac1) &&
-            ac1.find(
-              (ac2) =>
-                objType(ac2, 'object') &&
-                typeof ac2.id === 'string' &&
-                ac2.id.replace(`${roomId}:`, '') === thread.id,
+      // Mobile Screen - Viewport
+      if (window.matchMedia('screen and (max-width: 768px)').matches) {
+        cords.x -= 290;
+      }
+
+      e.preventDefault();
+      openReusableContextMenu(
+        'right',
+        cords,
+        room.isSpaceRoom()
+          ? (closeMenu) => <SpaceOptions roomId={roomId} afterOptionSelect={closeMenu} />
+          : (closeMenu) => (
+              <RoomOptions threadId={tId} roomId={roomId} afterOptionSelect={closeMenu} />
             ),
-        )),
-  );
+      );
+    };
 
-  return (
-    <>
-      <RoomSelector
-        allowCustomUsername={allowCustomUsername}
-        notSpace={notSpace}
-        key={roomId}
-        isProfile={isProfile}
-        name={roomName}
-        roomId={roomId}
-        animParentsCount={3}
-        user={user}
-        room={room}
-        imageAnimSrc={isDM || notSpace ? imageAnimSrc : null}
-        imageSrc={isDM || notSpace ? imageSrc : null}
-        iconSrc={isDM ? null : joinRuleToIconSrc(room.getJoinRule(), room.isSpaceRoom())}
-        isSelected={navigation.selectedRoomId === roomId && navigation.selectedThreadId === null}
-        isMuted={isMuted}
-        isUnread={!isMuted && noti.hasNoti(roomId)}
-        notificationCount={abbreviateNumber(noti.getTotalNoti(roomId))}
-        isAlert={noti.getHighlightNoti(roomId) !== 0}
-        onClick={onClick}
-        onContextMenu={(evt) => openOptions(evt)}
-        options={
-          <IconButton
-            size="extra-small"
-            tooltip="Options"
-            tooltipPlacement="left"
-            fa="bi bi-three-dots-vertical"
-            onClick={(evt) => openOptions(evt)}
-          />
-        }
-      />
-      {openThreads.map((thread) => (
-        <ThreadSelector
-          key={thread.id}
+    const getThreads = room.getThreads();
+    const openThreads = getThreads.filter(
+      (thread) =>
+        thread.id === navigation.selectedThreadId ||
+        (objType(lastThreads, 'object') &&
+          Array.isArray(lastThreads.actives) &&
+          lastThreads.actives.find(
+            (ac1) =>
+              Array.isArray(ac1) &&
+              ac1.find(
+                (ac2) =>
+                  objType(ac2, 'object') &&
+                  typeof ac2.id === 'string' &&
+                  ac2.id.replace(`${roomId}:`, '') === thread.id,
+              ),
+          )),
+    );
+
+    return (
+      <>
+        <RoomSelector
+          allowCustomUsername={allowCustomUsername}
+          notSpace={notSpace}
+          isProfile={isProfile}
+          name={roomName}
+          roomId={roomId}
+          animParentsCount={3}
+          user={user}
           room={room}
-          thread={thread}
+          imageAnimSrc={isDM || notSpace ? imageAnimSrc : null}
+          imageSrc={isDM || notSpace ? imageSrc : null}
+          iconSrc={isDM ? null : joinRuleToIconSrc(room.getJoinRule(), room.isSpaceRoom())}
+          isSelected={navigation.selectedRoomId === roomId && navigation.selectedThreadId === null}
           isMuted={isMuted}
-          isSelected={navigation.selectedThreadId === thread.id}
-          onContextMenu={(evt) => openOptions(evt, thread.id)}
+          isUnread={!isMuted && noti.hasNoti(roomId)}
+          notificationCount={abbreviateNumber(noti.getTotalNoti(roomId))}
+          isAlert={noti.getHighlightNoti(roomId) !== 0}
+          onClick={onClick}
+          onContextMenu={(evt) => openOptions(evt)}
           options={
             <IconButton
               size="extra-small"
               tooltip="Options"
               tooltipPlacement="left"
               fa="bi bi-three-dots-vertical"
-              onClick={(evt) => openOptions(evt, thread.id)}
+              onClick={(evt) => openOptions(evt)}
             />
           }
         />
-      ))}
-    </>
-  );
-}
+        {openThreads.map((thread) => (
+          <ThreadSelector
+            key={`Selector_ThreadSelector_${thread.id}`}
+            room={room}
+            thread={thread}
+            isMuted={isMuted}
+            isSelected={navigation.selectedThreadId === thread.id}
+            onContextMenu={(evt) => openOptions(evt, thread.id)}
+            options={
+              <IconButton
+                size="extra-small"
+                tooltip="Options"
+                tooltipPlacement="left"
+                fa="bi bi-three-dots-vertical"
+                onClick={(evt) => openOptions(evt, thread.id)}
+              />
+            }
+          />
+        ))}
+      </>
+    );
+  },
+);
 
 // Default
 Selector.propTypes = {

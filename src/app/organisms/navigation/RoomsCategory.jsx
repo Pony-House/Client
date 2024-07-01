@@ -98,7 +98,7 @@ function RoomsCategory({
         notSpace={notSpace}
         isProfile={isProfile}
         roomReady={roomReady}
-        key={roomId}
+        key={`roomCategory_renderSelector_${roomId}`}
         roomId={roomId}
         roomObject={room}
         isDM={isTinyDM}
@@ -201,7 +201,10 @@ function RoomsCategory({
     }
 
     rooms.push(
-      <div className="category-button generated-category">
+      <div
+        key={`roomsCategory_room_roomName_${roomDivId}`}
+        className="category-button generated-category"
+      >
         <button
           className={`py-2${tinyIsOpen ? ' category-open' : ''}`}
           id={roomIdB1}
@@ -224,6 +227,7 @@ function RoomsCategory({
 
     rooms.push(
       <div
+        key={`roomsCategory_room_roomName_${roomIdB2}`}
         className={
           tinyIsOpen ? 'room-sub-category-content' : 'room-sub-category-content category-hide'
         }

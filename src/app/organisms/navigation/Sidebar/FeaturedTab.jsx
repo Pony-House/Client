@@ -191,6 +191,7 @@ export default function FeaturedTab() {
         if (selectedUser !== room.roomId && objType(room, 'object')) {
           return (
             <SidebarAvatar
+              key={`featuredTab_${room.roomId}`}
               active={false}
               tooltip={room.name}
               onClick={() => {
