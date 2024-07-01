@@ -40,28 +40,32 @@ const tabItems = [
   {
     faSrc: 'fa-solid fa-gear',
     text: tabText.GENERAL,
+    key: 'general',
     disabled: false,
   },
 
-  { type: 'divider' },
+  { type: 'divider', key: '1' },
 
   {
     faSrc: 'fa-solid fa-user',
     text: tabText.MEMBERS,
+    key: 'members',
     disabled: false,
   },
 
   {
     faSrc: 'fa-solid fa-face-smile',
     text: tabText.EMOJIS,
+    key: 'emojis',
     disabled: false,
   },
 
-  { type: 'divider' },
+  { type: 'divider', key: '2' },
 
   {
     faSrc: 'fa-solid fa-shield',
     text: tabText.PERMISSIONS,
+    key: 'permissions',
     disabled: false,
   },
 ];

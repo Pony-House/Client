@@ -4,31 +4,36 @@ import PropTypes from 'prop-types';
 import RawIcon from '../system-icons/RawIcon';
 import Button from '../button/Button';
 
-function TabItem({
-  selected = false,
-  iconSrc = null,
-  faSrc = null,
-  onClick = null,
-  children,
-  disabled = false,
-  className = '',
-}) {
-  const isSelected = selected ? 'active' : '';
+const TabItem = React.forwardRef(
+  (
+    {
+      selected = false,
+      iconSrc = null,
+      faSrc = null,
+      onClick = null,
+      children,
+      disabled = false,
+      className = '',
+    },
+    ref,
+  ) => {
+    const isSelected = selected ? 'active' : '';
 
-  return (
-    <td className="p-0 border-0" style={{ minWidth: '150px' }}>
-      <Button
-        className={`btn-outline-theme-bg py-2 rounded-0 rounded-top w-100 ${isSelected} ${className}`}
-        iconSrc={iconSrc}
-        faSrc={faSrc}
-        onClick={onClick}
-        disabled={disabled}
-      >
-        {children}
-      </Button>
-    </td>
-  );
-}
+    return (
+      <td ref={ref} className="p-0 border-0" style={{ minWidth: '150px' }}>
+        <Button
+          className={`btn-outline-theme-bg py-2 rounded-0 rounded-top w-100 ${isSelected} ${className}`}
+          iconSrc={iconSrc}
+          faSrc={faSrc}
+          onClick={onClick}
+          disabled={disabled}
+        >
+          {children}
+        </Button>
+      </td>
+    );
+  },
+);
 
 TabItem.propTypes = {
   selected: PropTypes.bool,
@@ -80,7 +85,7 @@ function Tabs({
               (item, index) =>
                 item.type !== 'divider' && (
                   <TabItem
-                    key={`tabs_${item.text}`}
+                    key={`tabs_${id}_tabItem_${item.key}`}
                     selected={selectedItem.text === item.text}
                     iconSrc={item.iconSrc}
                     faSrc={item.faSrc}
@@ -138,7 +143,7 @@ function Tabs({
           if (item.type !== 'divider') {
             return (
               <button
-                key={item.text}
+                key={`tabs_items_${item.key}`}
                 className={`nav-link small ${item.className} ${selectedItem.text === item.text ? 'active' : ''}`}
                 data-bs-toggle="pill"
                 type="button"
@@ -169,7 +174,7 @@ function Tabs({
             );
           }
 
-          return <hr className="border-bg2" />;
+          return <hr key={`tabs_items_divider_${item.key}`} className="border-bg2" />;
         })}
       </div>
     </div>
