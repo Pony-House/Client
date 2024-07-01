@@ -277,7 +277,11 @@ function Web3Section() {
 
           {networks && Array.isArray(networks.values) && networks.values.length > 0 ? (
             networks.values.map((item, index) => (
-              <Web3Item item={item} networkId={networks.keys[index]} />
+              <Web3Item
+                key={`web3Section_${networks.keys[index]}`}
+                item={item}
+                networkId={networks.keys[index]}
+              />
             ))
           ) : (
             <p className="placeholder-glow m-0">

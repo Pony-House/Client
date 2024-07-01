@@ -254,7 +254,7 @@ function ProfileSection() {
             <MenuItem
               className={profileStatus === item.type ? 'text-start btn-text-success' : 'text-start'}
               faSrc={`user-status-icon ${item.faSrc}`}
-              key={item.type}
+              key={`profileSection_user_status_${item.type}`}
               onClick={() => sendSetStatus(item)}
             >
               {item.text}
@@ -375,7 +375,9 @@ function ProfileSection() {
             >
               <option>Choose...</option>
               {moment.tz.names().map((item) => (
-                <option value={item}>{item}</option>
+                <option key={`profileSection_timezone_${item}`} value={item}>
+                  {item}
+                </option>
               ))}
             </select>
             <Button className="mt-2" onClick={sendTimezone} variant="primary">

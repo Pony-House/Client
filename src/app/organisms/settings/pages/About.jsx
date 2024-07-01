@@ -75,9 +75,9 @@ function AboutSection() {
       <div className="card mt-3">
         <ul className="list-group list-group-flush">
           <li className="list-group-item very-small text-gray">Matrix Client</li>
-          {deps.map((dep) =>
+          {deps.map((dep, index) =>
             Array.isArray(dep) ? (
-              <li className="list-group-item border-0">
+              <li key={`aboutSection_dep${index}`} className="list-group-item border-0">
                 <div className="small">
                   <strong>{dep[0]}</strong> - {dep[1]}
                 </div>

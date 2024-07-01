@@ -371,7 +371,10 @@ function VoiceVideoSection() {
                   <option>Choose...</option>
                   {devicesItem && Array.isArray(devicesItem.audio) && devicesItem.audio.length > 0
                     ? devicesItem.audio.map((item) => (
-                        <option key={`input_audio_${item.deviceId}`} value={item.deviceId}>
+                        <option
+                          key={`voiceVideoSection_input_audio_${item.deviceId}`}
+                          value={item.deviceId}
+                        >
                           {item.label}
                         </option>
                       ))
@@ -387,7 +390,10 @@ function VoiceVideoSection() {
                   Array.isArray(devicesItem.speaker) &&
                   devicesItem.speaker.length > 0
                     ? devicesItem.speaker.map((item) => (
-                        <option key={`input_speak_${item.deviceId}`} value={item.deviceId}>
+                        <option
+                          key={`voiceVideoSection_input_speak_${item.deviceId}`}
+                          value={item.deviceId}
+                        >
                           {item.label}
                         </option>
                       ))
@@ -475,7 +481,12 @@ function VoiceVideoSection() {
               <option selected>Choose...</option>
               {devicesItem && Array.isArray(devicesItem.video) && devicesItem.video.length > 0
                 ? devicesItem.video.map((item) => (
-                    <option value={item.deviceId}>{item.label}</option>
+                    <option
+                      key={`voiceVideoSection_input_camera_${item.deviceId}`}
+                      value={item.deviceId}
+                    >
+                      {item.label}
+                    </option>
                   ))
                 : null}
             </select>
