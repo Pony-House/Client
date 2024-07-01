@@ -13,8 +13,6 @@ Buttons in the picture viewer to go to the next/previous image in the chat
 
 ---------------> Botão para migrar o emoji para outro homeserver.
 
-Botão de desativar conta --> https://matrix-org.github.io/matrix-js-sdk/classes/matrix.MatrixClient.html#deactivateAccount
-
 Criar emoji list com o mesmo nome da crash
 
 Buscador de emojis de custom status fica gelado.
