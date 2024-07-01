@@ -694,9 +694,9 @@ function AccountSection() {
         </ul>
       </div>
 
-      <div className="card">
+      <div className="card mb-3">
         <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Other Auth</li>
+          <li className="list-group-item very-small text-gray">Other auth</li>
 
           {!loadingEmails ? (
             loadItemsList(othersAuth, setOthersAuth, 'auth', null)
@@ -711,6 +711,138 @@ function AccountSection() {
                 The contents of this list are not compatible to be managed. This list is only
                 available for you is aware of what is running on your account.
               </div>
+            }
+          />
+        </ul>
+      </div>
+
+      <div className="card noselect mb-3">
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item very-small text-danger">Danger zone</li>
+
+          <SettingTile
+            title="Deactivate account"
+            content={
+              <div className="very-small text-gray">
+                Disable your account temporarily to activate again later.
+              </div>
+            }
+            options={
+              <Button
+                variant="danger"
+                className="d-inline-flex"
+                onClick={async () => {
+                  const confirm1 = await tinyConfirm(
+                    'Are you sure? That decision is inreversible!',
+                    'Deactivate account',
+                  );
+                  if (confirm1) {
+                    const confirm2 = await tinyConfirm(
+                      "Are you sure? I'm serious. You'll lose everything!",
+                      'Deactivate account',
+                    );
+                    if (confirm2) {
+                      const confirm3 = await tinyConfirm(
+                        "You're gonna lose everything! But if you know what you're doing, you might get it back in the future. Are you sure?",
+                        'Deactivate account',
+                      );
+                      if (confirm3) {
+                        const confirm4 = await tinyConfirm(
+                          "So you won't regret it? Right?",
+                          'Deactivate account',
+                        );
+                        if (confirm4) {
+                          const confirm4 = await tinyConfirm(
+                            'All right! Go ahead, I will no longer try to stop you from committing any possible accident.',
+                            'Deactivate account',
+                          );
+                          if (confirm4) {
+                            mx.deactivateAccount(
+                              {
+                                type: 'm.login.password',
+                                identifier: {
+                                  type: 'm.id.user',
+                                  user: initMatrix.matrixClient
+                                    .getUserId()
+                                    .split(':')[0]
+                                    .substring(1),
+                                },
+                                password: currentPassword,
+                              },
+                              false,
+                            );
+                          }
+                        }
+                      }
+                    }
+                  }
+                }}
+              >
+                Deactivate
+              </Button>
+            }
+          />
+
+          <SettingTile
+            title="Erase account"
+            content={
+              <div className="very-small text-gray">
+                This option will erase your account forever. Think twice before clicking here!
+              </div>
+            }
+            options={
+              <Button
+                variant="danger"
+                className="d-inline-flex"
+                onClick={async () => {
+                  const confirm1 = await tinyConfirm(
+                    'Are you sure? That decision is inreversible!',
+                    'Erase account',
+                  );
+                  if (confirm1) {
+                    const confirm2 = await tinyConfirm(
+                      "Are you sure? I'm serious. You'll lose everything!",
+                      'Erase account',
+                    );
+                    if (confirm2) {
+                      const confirm3 = await tinyConfirm(
+                        "You're gonna lose everything, it's all going to explode! Are you sure?",
+                        'Erase account',
+                      );
+                      if (confirm3) {
+                        const confirm4 = await tinyConfirm(
+                          "So you won't regret it? Right?",
+                          'Erase account',
+                        );
+                        if (confirm4) {
+                          const confirm4 = await tinyConfirm(
+                            'All right! Go ahead, I will no longer try to stop you from committing any possible accident.',
+                            'Erase account',
+                          );
+                          if (confirm4) {
+                            mx.deactivateAccount(
+                              {
+                                type: 'm.login.password',
+                                identifier: {
+                                  type: 'm.id.user',
+                                  user: initMatrix.matrixClient
+                                    .getUserId()
+                                    .split(':')[0]
+                                    .substring(1),
+                                },
+                                password: currentPassword,
+                              },
+                              true,
+                            );
+                          }
+                        }
+                      }
+                    }
+                  }
+                }}
+              >
+                Erase
+              </Button>
             }
           />
         </ul>

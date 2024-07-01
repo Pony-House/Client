@@ -1,0 +1,1 @@
+- Account page - danger zone added.
