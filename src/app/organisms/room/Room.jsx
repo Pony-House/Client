@@ -173,16 +173,6 @@ function Room() {
 
   // Checker is User List
   const cloneIsUserList = clone(isUserList);
-  const peopleDrawer = (isDrawer || isHoverSidebar || sidebarTransition) && (
-    <PeopleDrawer
-      isDrawer={isDrawer}
-      sidebarTransition={sidebarTransition}
-      isHoverSidebar={isHoverSidebar}
-      isUserList={isUserList}
-      setIsUserList={setIsUserList}
-      roomId={roomTimeline.roomId}
-    />
-  );
   if (cloneIsUserList === isUserList) {
     // Complete
     return (
@@ -196,7 +186,16 @@ function Room() {
             isLoading={isLoading}
           />
         </div>
-        {peopleDrawer}
+        {(isDrawer || isHoverSidebar || sidebarTransition) && (
+          <PeopleDrawer
+            isDrawer={isDrawer}
+            sidebarTransition={sidebarTransition}
+            isHoverSidebar={isHoverSidebar}
+            isUserList={isUserList}
+            setIsUserList={setIsUserList}
+            roomId={roomTimeline.roomId}
+          />
+        )}
       </div>
     );
   }
