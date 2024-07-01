@@ -154,19 +154,19 @@ function AccountSection() {
                       const threePidAction = bind ? 'bindThreePid' : 'addThreePidOnly';
                       const threePidOptions = bind
                         ? // bindThreePid
-                          {
-                            client_secret: clientSecret,
-                            id_access_token: initMatrix.matrixClient.getAccessToken(),
-                            id_server:
-                              initMatrix.matrixClient.getIdentityServerUrl(true) ||
-                              initMatrix.matrixClient.baseUrl.split('://')[1],
-                            sid: result.sid,
-                          }
+                        {
+                          client_secret: clientSecret,
+                          id_access_token: initMatrix.matrixClient.getAccessToken(),
+                          id_server:
+                            initMatrix.matrixClient.getIdentityServerUrl(true) ||
+                            initMatrix.matrixClient.baseUrl.split('://')[1],
+                          sid: result.sid,
+                        }
                         : // addThreePidOnly
-                          {
-                            sid: result.sid,
-                            client_secret: clientSecret,
-                          };
+                        {
+                          sid: result.sid,
+                          client_secret: clientSecret,
+                        };
 
                       // Error
                       const sessionError = (err) => {
@@ -401,22 +401,22 @@ function AccountSection() {
 
   const updateValue =
     (callback, refItem, err = null) =>
-    (value, target, el, method) => {
-      callback(value);
-      if (method.isEnter && !err) {
-        $(refItem.current).focus();
-      }
-    };
+      (value, target, el, method) => {
+        callback(value);
+        if (method.isEnter && !err) {
+          $(refItem.current).focus();
+        }
+      };
 
   const updatePhone =
     (refItem, err = null) =>
-    (value, target, el, method) => {
-      setNewPhone(value);
-      setNewPhoneCountry(method.country);
-      if (method.isEnter && !err) {
-        $(refItem.current).focus();
-      }
-    };
+      (value, target, el, method) => {
+        setNewPhone(value);
+        setNewPhoneCountry(method.country);
+        if (method.isEnter && !err) {
+          $(refItem.current).focus();
+        }
+      };
 
   // Complete
   return (
@@ -497,9 +497,9 @@ function AccountSection() {
                         variant="primary"
                         disabled={
                           newPassword.length < 1 ||
-                          newPassword2.length < 1 ||
-                          accountValidation.password ||
-                          accountValidation.confirmPassword
+                            newPassword2.length < 1 ||
+                            accountValidation.password ||
+                            accountValidation.confirmPassword
                             ? true
                             : false
                         }
@@ -580,8 +580,8 @@ function AccountSection() {
                       variant="primary"
                       disabled={
                         typeof newEmail !== 'string' ||
-                        newEmail.length < 1 ||
-                        accountValidation.email
+                          newEmail.length < 1 ||
+                          accountValidation.email
                           ? true
                           : false
                       }
@@ -643,8 +643,8 @@ function AccountSection() {
                       variant="primary"
                       disabled={
                         typeof newPhone !== 'string' ||
-                        newPhone.length < 1 ||
-                        accountValidation.phone
+                          newPhone.length < 1 ||
+                          accountValidation.phone
                           ? true
                           : false
                       }
@@ -724,7 +724,7 @@ function AccountSection() {
             title="Deactivate account"
             content={
               <div className="very-small text-gray">
-                Disable your account temporarily to activate again later.
+                Deactivate your account temporarily to activate again later. Maybe you will need the help of some administrator to do this!
               </div>
             }
             options={
