@@ -1,2 +1,3 @@
 - Account page - danger zone added.
 - React key issues fixed.
+- Room intro container added to threads.
