@@ -743,7 +743,7 @@ function AccountSection() {
                     );
                     if (confirm2) {
                       const confirm3 = await tinyConfirm(
-                        "You're gonna lose everything! But if you know what you're doing, you might get it back in the future. Are you sure?",
+                        "You're gonna lose everything! But if you know what you're doing, maybe you recover that account in the future. Are you sure?",
                         'Deactivate account',
                       );
                       if (confirm3) {
