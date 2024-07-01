@@ -62,10 +62,13 @@ function RoomIntroContainer({ event, timeline }) {
   const { roomList } = initMatrix;
   const { room, thread } = timeline;
 
-  // threads don't have a header
-  if (thread !== undefined) {
-    return null;
-  }
+  const rootContent = thread && thread.rootEvent ? thread.rootEvent.getContent() : null;
+  const roomTitle =
+    !thread || !rootContent || typeof rootContent.body !== 'string'
+      ? room.name
+      : rootContent.body.length < 100
+        ? rootContent.body
+        : rootContent.body.substring(0, 100);
 
   const roomTopic = getCurrentState(room).getStateEvents('m.room.topic')[0]?.getContent().topic;
   const isDM = roomList.directs.has(timeline.roomId);
@@ -74,23 +77,26 @@ function RoomIntroContainer({ event, timeline }) {
     ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 80, 80, 'crop')
     : avatarSrc;
 
-  const heading = isDM ? room.name : `Welcome to ${room.name}`;
-  const topic = twemojifyReact(roomTopic || '', undefined, true);
-  const nameJsx = twemojifyReact(room.name);
-  const desc = isDM ? (
-    <>
-      This is the beginning of your direct message history with @<strong>{nameJsx}</strong>
-      {'. '}
-      {topic}
-    </>
-  ) : (
-    <>
-      {'This is the beginning of the '}
-      <strong>{nameJsx}</strong>
-      {' room. '}
-      {topic}
-    </>
-  );
+  const heading = isDM ? roomTitle : `Welcome to ${roomTitle}`;
+  const topic = !thread
+    ? twemojifyReact(roomTopic || '', undefined, true)
+    : twemojifyReact('', undefined, true);
+  const nameJsx = twemojifyReact(roomTitle);
+  const desc =
+    isDM && !thread ? (
+      <>
+        This is the beginning of your direct message history with @<strong>{nameJsx}</strong>
+        {'. '}
+        {topic}
+      </>
+    ) : (
+      <>
+        {'This is the beginning of the '}
+        <strong>{nameJsx}</strong>
+        {` ${!thread ? 'room' : 'thread'}.${!thread ? ' ' : ''}`}
+        {topic}
+      </>
+    );
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
@@ -106,7 +112,7 @@ function RoomIntroContainer({ event, timeline }) {
     <RoomIntro
       roomId={timeline.roomId}
       avatarSrc={avatarSrc}
-      name={room.name}
+      name={roomTitle}
       heading={twemojifyReact(heading)}
       desc={desc}
       time={
