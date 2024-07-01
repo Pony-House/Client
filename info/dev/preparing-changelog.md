@@ -1,1 +1,2 @@
 - Account page - danger zone added.
+- React key issues fixed.

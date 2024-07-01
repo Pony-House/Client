@@ -82,7 +82,9 @@ function PeopleDrawer({
   const searchRef = useRef(null);
 
   const newIsUserList = !isDM || usersCount !== 2 || membership.value !== 'join';
-  if (isUserList !== newIsUserList) setIsUserList(newIsUserList);
+  useEffect(() => {
+    if (isUserList !== newIsUserList) setIsUserList(newIsUserList);
+  })
 
   const getMembersWithMembership = useCallback(
     (mship) => room.getMembersWithMembership(mship),
@@ -208,15 +210,15 @@ function PeopleDrawer({
         onMouseEnter={
           isHoverSidebar
             ? () => {
-                if (isHoverSidebar) $('body').addClass('people-drawer-hover');
-              }
+              if (isHoverSidebar) $('body').addClass('people-drawer-hover');
+            }
             : null
         }
         onMouseLeave={
           isHoverSidebar
             ? () => {
-                if (isHoverSidebar) $('body').removeClass('people-drawer-hover');
-              }
+              if (isHoverSidebar) $('body').removeClass('people-drawer-hover');
+            }
             : null
         }
       >
@@ -376,15 +378,15 @@ function PeopleDrawer({
         onMouseEnter={
           isHoverSidebar
             ? () => {
-                if (isHoverSidebar) $('body').addClass('people-drawer-hover');
-              }
+              if (isHoverSidebar) $('body').addClass('people-drawer-hover');
+            }
             : null
         }
         onMouseLeave={
           isHoverSidebar
             ? () => {
-                if (isHoverSidebar) $('body').removeClass('people-drawer-hover');
-              }
+              if (isHoverSidebar) $('body').removeClass('people-drawer-hover');
+            }
             : null
         }
       >
