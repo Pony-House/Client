@@ -120,7 +120,7 @@
     "download-git-repo": "3.0.2",
     "electron": "^31.0.2",
     "electron-builder": "^24.9.1",
-    "eslint": "9.5.0",
+    "eslint": "9.6.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.29.1",
