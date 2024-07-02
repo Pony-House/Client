@@ -725,7 +725,7 @@ function AccountSection() {
             content={
               <div className="very-small text-gray">
                 Deactivate your account temporarily to activate again later. Maybe you will need the
-                help of some administrator to do this!
+                help of some administrator to recover your account!
               </div>
             }
             options={

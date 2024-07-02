@@ -1293,22 +1293,38 @@ class RoomTimeline extends EventEmitter {
       this.emit(cons.events.roomTimeline.TYPING_MEMBERS_UPDATED, new Set([...this.typingMembers]));
     };
 
-    this._listenReciptEvent = (event, room) => {
-      // we only process receipt for latest message here.
-      if (room.roomId !== this.roomId) return;
-      const receiptContent = event.getContent();
+    this._tryListenReciptEvent = (event, room, tinyTry = 0) => {
+      try {
+        // we only process receipt for latest message here.
+        if (room.roomId !== this.roomId) return;
+        const receiptContent = event.getContent();
 
-      const mEvents = this.liveTimeline.getEvents();
-      const lastMEvent = mEvents[mEvents.length - 1];
-      const lastEventId = lastMEvent.getId();
-      const lastEventRecipt = receiptContent[lastEventId];
+        const mEvents = this.liveTimeline.getEvents();
+        const lastMEvent = mEvents[mEvents.length - 1];
 
-      if (typeof lastEventRecipt === 'undefined') return;
-      if (lastEventRecipt['m.read']) {
-        this.emit(cons.events.roomTimeline.LIVE_RECEIPT);
+        if (tinyTry < 1000 && lastMEvent) {
+          const lastEventId = lastMEvent.getId();
+          const lastEventRecipt = receiptContent[lastEventId];
+
+          if (typeof lastEventRecipt === 'undefined') return;
+          if (lastEventRecipt['m.read']) {
+            this.emit(cons.events.roomTimeline.LIVE_RECEIPT);
+          }
+        } else {
+          const tinyThis = this;
+          setTimeout(() => {
+            tinyThis._tryListenReciptEvent(event, room, tinyTry + 1);
+          }, 100);
+        }
+      } catch (err) {
+        console.error(err);
+        alert(err.message, 'Listen Recipt Event Error');
       }
+
       tinyFixScrollChat();
     };
+
+    this._listenReciptEvent = (event, room) => this._tryListenReciptEvent(event, room);
 
     // Insert events
     this.matrixClient.on(RoomEvent.Timeline, this._preListenRoomTimeline);
