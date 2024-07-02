@@ -161,4 +161,11 @@
       flex-shrink: 0;
     }
   }
+  .spinner {
+    .spinner-border {
+      height: 15px;
+      width: 15px;
+      margin-right: 4px;
+    }
+  }
 }

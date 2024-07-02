@@ -842,13 +842,19 @@ function isMedia(mE) {
 }
 
 function shouldShowThreadSummary(mEvent, roomTimeline) {
-  return (
-    mEvent.isThreadRoot &&
-    // there must be events in the threadW
-    (mEvent.getThread()?.length ?? 0) > 0 &&
-    // don't show the thread summary if we're in a thread
-    roomTimeline.thread === undefined
-  );
+  if (mEvent.isThreadRoot) {
+    const thread = mEvent.getThread();
+    return (
+      // there must be events in the threadW
+      (thread?.length ?? 0) > 0 &&
+      Array.isArray(roomTimeline.timeline) &&
+      roomTimeline.timeline.length > 0 &&
+      // thread.lastEvent &&
+      // don't show the thread summary if we're in a thread
+      roomTimeline.thread === undefined
+    );
+  }
+  return false;
 }
 
 // if editedTimeline has mEventId then pass editedMEvent else pass mEvent to openViewSource
@@ -1280,6 +1286,8 @@ MessageOptions.propTypes = {
 // Thread
 const MessageThreadSummary = React.memo(({ thread }) => {
   const [lastReply, setLastReply] = useState(thread.lastReply());
+  const [show, setShow] = useState(false);
+  thread.setMaxListeners(eventMaxListeners);
 
   // can't have empty threads
   if (thread.length === 0) return null;
@@ -1310,7 +1318,12 @@ const MessageThreadSummary = React.memo(({ thread }) => {
 
   // Stuff
   useEffect(() => {
-    const threadTimelineUpdate = () => setLastReply(thread.lastReply());
+    const threadTimelineUpdate = (event, room, toStartOfTimeline, removed, data) => {
+      setShow(
+        typeof event.thread.liveTimeline !== 'undefined' && event.thread.liveTimeline !== null,
+      );
+      setLastReply(thread.lastReply());
+    };
     thread.on(RoomEvent.Timeline, threadTimelineUpdate);
     return () => {
       thread.off(RoomEvent.Timeline, threadTimelineUpdate);
@@ -1319,7 +1332,12 @@ const MessageThreadSummary = React.memo(({ thread }) => {
 
   // Complete
   return (
-    <button className="message__threadSummary p-2 small" onClick={selectThread} type="button">
+    <button
+      disabled={!show}
+      className={`message__threadSummary p-2 small${!show ? ' disabled' : ''}`}
+      onClick={selectThread}
+      type="button"
+    >
       <div className="message__threadSummary-count">
         <Text>
           {thread.length} message{thread.length > 1 ? 's' : ''} ›
@@ -1347,7 +1365,18 @@ const MessageThreadSummary = React.memo(({ thread }) => {
               </span>
             )}
             <span className="message__threadSummary-lastReply-body very-small text-truncate">
-              {lastReply.getContent().body}
+              {show ? (
+                lastReply.getContent().body
+              ) : (
+                <>
+                  <div className="d-flex justify-content-center align-items-center spinner">
+                    <div class="spinner-border" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>{' '}
+                    Loading...
+                  </div>
+                </>
+              )}
             </span>
           </>
         ) : (
