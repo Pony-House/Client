@@ -166,6 +166,7 @@ function renderEvent(
   disableActions,
   usernameHover,
   refRoomInput,
+  useManualCheck,
 ) {
   const isBodyOnly =
     prevMEvent !== null &&
@@ -193,6 +194,7 @@ function renderEvent(
   // tinyFixScrollChat();
   return (
     <Message
+      useManualCheck={useManualCheck}
       refRoomInput={refRoomInput}
       usernameHover={usernameHover}
       isGuest={isGuest}
@@ -483,6 +485,7 @@ function useEventArrive(roomTimeline, readUptoEvtStore, timelineScrollRef, event
 let jumpToItemIndex = -1;
 
 function RoomViewContent({
+  roomId = null,
   eventId = null,
   roomTimeline,
   isUserList,
@@ -496,6 +499,7 @@ function RoomViewContent({
   const [throttle] = useState(new Throttle());
   const [embedHeight, setEmbedHeight] = useState(null);
   const [pageLimit, setPageLimit] = useState(getAppearance('pageLimit'));
+  const [useManualCheck] = useState(true);
 
   const timelineSVRef = useRef(null);
   const timelineScrollRef = useRef(null);
@@ -529,6 +533,21 @@ function RoomViewContent({
   const newEvent = useEventArrive(roomTimeline, readUptoEvtStore, timelineScrollRef, eventLimitRef);
 
   const { timeline } = roomTimeline;
+
+  /* useEffect(() => {
+    const tinyRoomUpdate = (beforeIds) => {
+      if (beforeIds.threadId && beforeIds.roomId === roomId) {
+        setUseManualCheck(true);
+      } else {
+        setUseManualCheck(false);
+      }
+    };
+
+    navigation.on(cons.events.navigation.SELECTED_ROOM_BEFORE, tinyRoomUpdate);
+    return () => {
+      navigation.off(cons.events.navigation.SELECTED_ROOM_BEFORE, tinyRoomUpdate);
+    };
+  }); */
 
   useLayoutEffect(() => {
     if (!roomTimeline.initialized) {
@@ -811,6 +830,7 @@ function RoomViewContent({
           disableActions,
           usernameHover,
           refRoomInput,
+          useManualCheck,
         ),
       );
       itemCountIndex += 1;
@@ -888,6 +908,7 @@ function RoomViewContent({
 }
 
 RoomViewContent.propTypes = {
+  roomId: PropTypes.string,
   eventId: PropTypes.string,
   isGuest: PropTypes.bool,
   disableActions: PropTypes.bool,

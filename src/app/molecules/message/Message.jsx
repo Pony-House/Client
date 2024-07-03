@@ -1284,8 +1284,9 @@ MessageOptions.propTypes = {
 };
 
 // Thread
-const MessageThreadSummary = React.memo(({ thread }) => {
+const MessageThreadSummary = React.memo(({ thread, useManualCheck = false }) => {
   const [lastReply, setLastReply] = useState(thread.lastReply());
+  const [manualCheck, setManualCheck] = useState(false);
   const [show, setShow] = useState(false);
   thread.setMaxListeners(eventMaxListeners);
 
@@ -1324,16 +1325,31 @@ const MessageThreadSummary = React.memo(({ thread }) => {
       );
       setLastReply(thread.lastReply());
     };
+    const threadTimelineUpdate2 = () => {
+      setShow(typeof thread.liveTimeline !== 'undefined' && thread.liveTimeline !== null);
+      setLastReply(thread.lastReply());
+    };
+
+    if (useManualCheck && !manualCheck) {
+      setManualCheck(true);
+      setShow(thread.liveTimeline !== 'undefined' && thread.liveTimeline !== null);
+    }
+
     thread.on(RoomEvent.Timeline, threadTimelineUpdate);
+    thread.on(RoomEvent.TimelineRefresh, threadTimelineUpdate2);
+    thread.on(RoomEvent.TimelineReset, threadTimelineUpdate2);
     return () => {
       thread.off(RoomEvent.Timeline, threadTimelineUpdate);
+      thread.off(RoomEvent.TimelineRefresh, threadTimelineUpdate2);
+      thread.off(RoomEvent.TimelineReset, threadTimelineUpdate2);
     };
   });
 
   // Complete
+  // Couldn&apos;t load latest message
   return (
     <button
-      disabled={!show}
+      disabled={!show || !lastReply}
       className={`message__threadSummary p-2 small${!show ? ' disabled' : ''}`}
       onClick={selectThread}
       type="button"
@@ -1370,8 +1386,8 @@ const MessageThreadSummary = React.memo(({ thread }) => {
               ) : (
                 <>
                   <div className="d-flex justify-content-center align-items-center spinner">
-                    <div class="spinner-border" role="status">
-                      <span class="visually-hidden">Loading...</span>
+                    <div className="spinner-border" role="status">
+                      <span className="visually-hidden">Loading...</span>
                     </div>{' '}
                     Loading...
                   </div>
@@ -1380,7 +1396,14 @@ const MessageThreadSummary = React.memo(({ thread }) => {
             </span>
           </>
         ) : (
-          <Text>Couldn&apos;t load latest message</Text>
+          <>
+            <div className="d-flex justify-content-center align-items-center spinner">
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>{' '}
+              Loading latest message...
+            </div>
+          </>
         )}
       </div>
     </button>
@@ -1590,6 +1613,7 @@ function Message({
   disableActions = false,
   usernameHover,
   refRoomInput,
+  useManualCheck = false,
 }) {
   // Get Room Data
   const { notifications } = initMatrix;
@@ -2064,7 +2088,7 @@ function Message({
             {haveReactions && <MessageReactionGroup roomTimeline={roomTimeline} mEvent={mEvent} />}
 
             {roomTimeline && shouldShowThreadSummary(mEvent, roomTimeline) && (
-              <MessageThreadSummary thread={mEvent.thread} />
+              <MessageThreadSummary useManualCheck={useManualCheck} thread={mEvent.thread} />
             )}
           </td>
 
@@ -2183,7 +2207,7 @@ function Message({
         {haveReactions && <MessageReactionGroup roomTimeline={roomTimeline} mEvent={mEvent} />}
 
         {roomTimeline && shouldShowThreadSummary(mEvent, roomTimeline) && (
-          <MessageThreadSummary thread={mEvent.thread} />
+          <MessageThreadSummary useManualCheck={useManualCheck} thread={mEvent.thread} />
         )}
       </td>
     </tr>
@@ -2192,6 +2216,7 @@ function Message({
 
 // Message Default Data
 Message.propTypes = {
+  useManualCheck: PropTypes.bool,
   focusTime: PropTypes.number,
   classNameMessage: PropTypes.string,
   className: PropTypes.string,

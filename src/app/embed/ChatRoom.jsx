@@ -296,6 +296,7 @@ function ChatRoom({ roomId, homeserver = null, joinGuest, refreshTime, theme, us
           disableActions
         />
         <RoomViewContent
+          roomId={roomId}
           roomTimeline={roomTimeline}
           isGuest={!isAuthenticated()}
           usernameHover={usernameHover}

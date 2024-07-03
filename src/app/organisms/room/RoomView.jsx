@@ -58,6 +58,7 @@ function RoomView({
       <div className="room-view__content-wrapper">
         <div className="room-view__scrollable">
           <RoomViewContent
+            roomId={roomId}
             isLoading={isLoading}
             refRoomInput={refRoomInput}
             isUserList={isUserList}

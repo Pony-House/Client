@@ -7,7 +7,13 @@ import appDispatcher from '../dispatcher';
 import cons from './cons';
 import tinyAPI from '../../util/mods';
 import urlParams from '../../util/libs/urlParams';
-import { setSelectRoom, setSelectThread, setSelectSpace } from '../../util/selectedRoom';
+import {
+  setSelectRoom,
+  setSelectThread,
+  setSelectSpace,
+  getSelectThread,
+  getSelectRoom,
+} from '../../util/selectedRoom';
 import { tinyCrypto } from '../../util/web3';
 
 class Navigation extends EventEmitter {
@@ -438,6 +444,20 @@ class Navigation extends EventEmitter {
       },
 
       [cons.actions.navigation.SELECT_ROOM]: () => {
+        this.emit(
+          cons.events.navigation.SELECTED_ROOM_BEFORE,
+          {
+            roomId: getSelectRoom(),
+            threadId: getSelectThread(),
+          },
+          {
+            roomId: action.roomId,
+            eventId: action.eventId,
+            threadId: action.threadId,
+          },
+          action.forceScroll,
+        );
+
         $('.space-drawer-menu-item').removeClass('active');
         setSelectRoom(action.roomId);
         setSelectThread(action.threadId);
