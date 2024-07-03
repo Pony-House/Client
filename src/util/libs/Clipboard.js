@@ -1,34 +1,24 @@
-import EventEmitter from 'events';
-import { eventMaxListeners } from '../matrixUtil';
 import forPromise from 'for-promise';
 
 // Emitter
-class TinyClipboard extends EventEmitter {
+class TinyClipboard {
   constructor() {
-    super();
-  }
-
-  // API Validator
-  existNavigatorClipboard() {
-    return typeof navigator.clipboard !== 'undefined' && navigator.clipboard !== null;
-  }
-
-  existExecCommand() {
-    return typeof document.execCommand !== 'undefined' && document.execCommand !== null;
+    this.existNavigator =
+      typeof navigator.clipboard !== 'undefined' && navigator.clipboard !== null;
+    this.existExecCommand =
+      typeof document.execCommand !== 'undefined' && document.execCommand !== null;
+    return this;
   }
 
   // Copy text
   copyText(text) {
     // Clipboard API
-    if (this.existNavigatorClipboard()) {
+    if (this.existNavigator) {
       const tinyThis = this;
-      return navigator.clipboard.writeText(text).then((result) => {
-        tinyThis.emit('copyText', text, result);
-        return result;
-      });
+      return navigator.clipboard.writeText(text);
     }
     // Classic API
-    else if (this.existExecCommand()) {
+    else if (this.existExecCommand) {
       const host = document.body;
       const copyInput = document.createElement('input');
       copyInput.style.position = 'fixed';
@@ -40,8 +30,7 @@ class TinyClipboard extends EventEmitter {
       copyInput.setSelectionRange(0, 99999);
       const result = document.execCommand('Copy');
       copyInput.remove();
-      this.emit('copyText', text, null);
-      return result;
+      return new Promise((resolve) => resolve(result));
     }
     throw new Error('Clipboard API not found!');
   }
@@ -50,18 +39,11 @@ class TinyClipboard extends EventEmitter {
   async copyBlobText(text) {
     const tinyThis = this;
     return new Promise((resolve, reject) => {
-      if (tinyThis.existNavigatorClipboard()) {
+      if (tinyThis.existNavigator) {
         const type = 'text/plain';
         const blob = new Blob([text], { type });
         const data = [new ClipboardItem({ [type]: blob })];
-        navigator.clipboard
-          .write(data)
-          .then((result) => {
-            tinyThis.emit('copyBlob', text, result);
-            return result;
-          })
-          .then(resolve)
-          .catch(reject);
+        navigator.clipboard.write(data).then(resolve).catch(reject);
       } else {
         reject(new Error('Clipboard API not found!'));
       }
@@ -72,17 +54,13 @@ class TinyClipboard extends EventEmitter {
   copyBlob(blob) {
     const tinyThis = this;
     return new Promise((resolve, reject) => {
-      if (tinyThis.existNavigatorClipboard()) {
+      if (tinyThis.existNavigator) {
         navigator.clipboard
           .write([
             new ClipboardItem({
               [blob.type]: blob,
             }),
           ])
-          .then((result) => {
-            tinyThis.emit('copyBlob', text, result);
-            return result;
-          })
           .then(resolve)
           .catch(reject);
       } else {
@@ -235,7 +213,7 @@ class TinyClipboard extends EventEmitter {
   read(index = 0) {
     const tinyThis = this;
     return new Promise((resolve, reject) => {
-      if (tinyThis.existNavigatorClipboard()) {
+      if (tinyThis.existNavigator) {
         navigator.clipboard
           .read()
           .then((items) => {
@@ -248,8 +226,6 @@ class TinyClipboard extends EventEmitter {
                   if (items[index]) resolve(items[index]);
                   // Not found again
                   else resolve(null);
-                  // Complete
-                  tinyThis.emit('readData', items);
                   return;
                 }
                 // Not found
@@ -272,7 +248,6 @@ class TinyClipboard extends EventEmitter {
 
 // Export
 const tinyClipboard = new TinyClipboard();
-tinyClipboard.setMaxListeners(eventMaxListeners);
 export default tinyClipboard;
 
 // DEV
