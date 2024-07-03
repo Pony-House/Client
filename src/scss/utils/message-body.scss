@@ -168,4 +168,7 @@
       margin-right: 4px;
     }
   }
+  &.disabled {
+    cursor: not-allowed !important;
+  }
 }

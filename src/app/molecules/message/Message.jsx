@@ -1350,7 +1350,7 @@ const MessageThreadSummary = React.memo(({ thread, useManualCheck = false }) => 
   return (
     <button
       disabled={!show || !lastReply}
-      className={`message__threadSummary p-2 small${!show ? ' disabled' : ''}`}
+      className={`message__threadSummary p-2 small${!show || !lastReply ? ' disabled' : ''}`}
       onClick={selectThread}
       type="button"
     >
