@@ -43,7 +43,7 @@ class TinyClipboard extends EventEmitter {
   async copyBlobText(text) {
     const tinyThis = this;
     return new Promise((resolve, reject) => {
-      if (this.existNavigatorClipboard()) {
+      if (tinyThis.existNavigatorClipboard()) {
         const type = 'text/plain';
         const blob = new Blob([text], { type });
         const data = [new ClipboardItem({ [type]: blob })];
@@ -64,43 +64,51 @@ class TinyClipboard extends EventEmitter {
   copyBlob(blob) {
     const tinyThis = this;
     return new Promise((resolve, reject) => {
-      navigator.clipboard
-        .write([
-          new ClipboardItem({
-            [blob.type]: blob,
-          }),
-        ])
-        .then((result) => {
-          tinyThis.emit('copyBlob', text, result);
-          return result;
-        })
-        .then(resolve)
-        .catch(reject);
+      if (tinyThis.existNavigatorClipboard()) {
+        navigator.clipboard
+          .write([
+            new ClipboardItem({
+              [blob.type]: blob,
+            }),
+          ])
+          .then((result) => {
+            tinyThis.emit('copyBlob', text, result);
+            return result;
+          })
+          .then(resolve)
+          .catch(reject);
+      } else {
+        reject(new Error('Clipboard API not found!'));
+      }
     });
   }
 
   parseData(index = null) {
     const tinyThis = this;
     return new Promise((resolve, reject) => {
-      navigator.clipboard
-        .read()
-        .then((items) => {
-          try {
-            if (typeof index === 'number') {
-              if (!Number.isNaN(index) && Number.isFinite(index) && index > -1) {
-                if (items[index]) resolve(items[index]);
-                else resolve(null);
-                tinyThis.emit('readData', items);
-                return;
+      if (tinyThis.existNavigatorClipboard()) {
+        navigator.clipboard
+          .read()
+          .then((items) => {
+            try {
+              if (typeof index === 'number') {
+                if (!Number.isNaN(index) && Number.isFinite(index) && index > -1) {
+                  if (items[index]) resolve(items[index]);
+                  else resolve(null);
+                  tinyThis.emit('readData', items);
+                  return;
+                }
+                return resolve(null);
               }
-              return resolve(null);
+              return resolve(items);
+            } catch (err) {
+              reject(err);
             }
-            return resolve(items);
-          } catch (err) {
-            reject(err);
-          }
-        })
-        .catch(reject);
+          })
+          .catch(reject);
+      } else {
+        reject(new Error('Clipboard API not found!'));
+      }
     });
   }
 }
