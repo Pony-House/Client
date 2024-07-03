@@ -26,6 +26,7 @@ import {
   getEventReactions,
   reactionImgjQuery,
 } from '@src/util/libs/reactions';
+import tinyClipboard from '@src/util/libs/Clipboard';
 
 import Text from '../../atoms/text/Text';
 import { btModal, hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
@@ -43,7 +44,7 @@ import {
 } from '../../../util/matrixUtil';
 
 import { colorMXID, backgroundColorMXID } from '../../../util/colorMXID';
-import { getEventCords, copyToClipboard } from '../../../util/common';
+import { getEventCords } from '../../../util/common';
 import { redactEvent, sendReaction } from '../../../client/action/roomTimeline';
 import {
   openEmojiBoard,
@@ -1164,7 +1165,7 @@ const MessageOptions = React.memo(
                     `[roomid='${roomid}'][senderid='${senderid}'][eventid='${eventid}'][msgtype='${msgtype}'] .message-body`,
                   );
                   if (messageBody.length > 0) {
-                    copyToClipboard(
+                    tinyClipboard.copyText(
                       customHTML
                         ? html(customHTML, roomId, threadId, { kind: 'edit', onlyPlain: true })
                             .plain

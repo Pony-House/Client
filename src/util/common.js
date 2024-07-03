@@ -124,24 +124,6 @@ export function setFavicon(url) {
   favicon.setAttribute('href', url);
 }
 
-export function copyToClipboard(text) {
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(text);
-  } else {
-    const host = document.body;
-    const copyInput = document.createElement('input');
-    copyInput.style.position = 'fixed';
-    copyInput.style.opacity = '0';
-    copyInput.value = text;
-    host.append(copyInput);
-
-    copyInput.select();
-    copyInput.setSelectionRange(0, 99999);
-    document.execCommand('Copy');
-    copyInput.remove();
-  }
-}
-
 export function suffixRename(name, validator) {
   let suffix = 2;
   let newName = name;

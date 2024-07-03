@@ -1,7 +1,8 @@
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import { readImageUrl } from '@src/util/libs/mediaCache';
+import tinyClipboard from '@src/util/libs/Clipboard';
+
 import { twemojify } from '../../../../util/twemojify';
-import { copyToClipboard } from '../../../../util/common';
 import { toast } from '../../../../util/tools';
 
 const timezoneAutoUpdate = { text: null, html: null, value: null };
@@ -53,7 +54,7 @@ export default function renderAbout(
       ethereumIcon
         .on('click', () => {
           try {
-            copyToClipboard(content.presenceStatusMsg.ethereum.address);
+            tinyClipboard.copyText(content.presenceStatusMsg.ethereum.address);
             toast('Ethereum address successfully copied to the clipboard.');
           } catch (err) {
             console.error(err);

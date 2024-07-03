@@ -8,6 +8,7 @@ import { readImageUrl } from '@src/util/libs/mediaCache';
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 import { openProfileViewer } from '@src/client/action/navigation';
 
+import tinyClipboard from '@src/util/libs/Clipboard';
 import { twemojifyReact, twemojify } from '../../../util/twemojify';
 
 import Avatar from '../../atoms/avatar/Avatar';
@@ -16,7 +17,6 @@ import initMatrix from '../../../client/initMatrix';
 import { colorMXID, cssColorMXID } from '../../../util/colorMXID';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 import { toast } from '../../../util/tools';
-import { copyToClipboard } from '../../../util/common';
 import copyText from '../../organisms/profile-viewer/copyText';
 import matrixAppearance, {
   getAppearance,
@@ -86,7 +86,7 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
           ethereumIcon
             .on('click', () => {
               try {
-                copyToClipboard(presence.ethereum.address);
+                tinyClipboard.copyText(presence.ethereum.address);
                 toast('Ethereum address successfully copied to the clipboard.');
               } catch (err) {
                 console.error(err);

@@ -1,4 +1,4 @@
-import { copyToClipboard } from '../../../util/common';
+import tinyClipboard from '@src/util/libs/Clipboard';
 import { toast } from '../../../util/tools';
 
 export default function copyText(event, text) {
@@ -7,7 +7,7 @@ export default function copyText(event, text) {
     const tinyUsername = target.text().trim();
 
     if (tinyUsername.length > 0) {
-      copyToClipboard(tinyUsername);
+      tinyClipboard.copyText(tinyUsername);
       toast(text);
     }
   } catch (err) {

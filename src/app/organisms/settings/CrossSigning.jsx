@@ -2,11 +2,12 @@
 import React, { useState } from 'react';
 import FileSaver from 'file-saver';
 import { Formik } from 'formik';
+
+import tinyClipboard from '@src/util/libs/Clipboard';
 import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
 import { openReusableDialog } from '../../../client/action/navigation';
-import { copyToClipboard } from '../../../util/common';
 import { clearSecretStorageKeys } from '../../../client/state/secretStorageKeys';
 
 import Text from '../../atoms/text/Text';
@@ -43,7 +44,7 @@ const securityKeyDialog = (key) => {
     FileSaver.saveAs(blob, 'security-key.txt');
   };
   const copyKey = () => {
-    copyToClipboard(key.encodedPrivateKey);
+    tinyClipboard.copyText(key.encodedPrivateKey);
   };
 
   const renderSecurityKey = () => (
