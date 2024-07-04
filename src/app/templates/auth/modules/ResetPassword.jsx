@@ -3,6 +3,7 @@ import React, { useState, useRef } from 'react';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import Checkbox from '@src/app/atoms/button/Checkbox';
+import hsWellKnown from '@src/util/libs/HsWellKnown';
 
 import {
   EMAIL_REGEX,
@@ -24,7 +25,7 @@ import { setLoadingPage } from '../../client/Loading';
 
 let tempClient;
 let clientSecret;
-function ResetPassword({ baseUrl, serverName }) {
+function ResetPassword() {
   const [process] = useState({});
   const [step, setStep] = useState('send');
 
@@ -38,6 +39,9 @@ function ResetPassword({ baseUrl, serverName }) {
   const [email, setEmail] = useState(null);
 
   const formRef = useRef(null);
+
+  const baseUrl = hsWellKnown.getBaseUrl();
+  const serverName = hsWellKnown.getServerName();
 
   const refreshWindow = () => window.location.reload();
   const initialValues = {
@@ -308,8 +312,5 @@ function ResetPassword({ baseUrl, serverName }) {
     </>
   );
 }
-ResetPassword.propTypes = {
-  baseUrl: PropTypes.string.isRequired,
-};
 
 export default ResetPassword;

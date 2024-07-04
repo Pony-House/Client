@@ -20,12 +20,14 @@ import SSOButtons from '../../../molecules/sso-buttons/SSOButtons';
 
 import LoadingScreen from './LoadingScreen';
 
-function Login({ baseUrl }) {
+function Login() {
   const [typeIndex, setTypeIndex] = useState(0);
   const [passVisible, setPassVisible] = useState(false);
   const loginTypes = ['Username', 'Email'];
+
   const isPassword = hsWellKnown.getIsPassword();
   const ssoProviders = hsWellKnown.getSsoProviders();
+  const baseUrl = hsWellKnown.getBaseUrl();
 
   const [WEB3, setWEB3] = useState(envAPI.get('WEB3'));
   const [IPFS, setIPFS] = useState(envAPI.get('IPFS'));
@@ -247,9 +249,6 @@ function Login({ baseUrl }) {
     </>
   );
 }
-Login.propTypes = {
-  baseUrl: PropTypes.string.isRequired,
-};
 
 export default Login;
 

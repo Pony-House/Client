@@ -94,6 +94,38 @@ class HsWellKnown extends EventEmitter {
     if (sendEmit) this.emit('changeData', this.getData());
   }
 
+  getServerName() {
+    return this.serverName;
+  }
+
+  getBaseUrl() {
+    return this.baseUrl;
+  }
+
+  getLoginFlows() {
+    if (objType(this._login, 'object') && Array.isArray(this._login.flows))
+      return this._login.flows;
+  }
+
+  getRegister() {
+    return this._register;
+  }
+
+  getRegisterSession() {
+    if (objType(this._register, 'object') && typeof this._register.session === 'string')
+      return this._register.session;
+  }
+
+  getRegisterFlows() {
+    if (objType(this._register, 'object') && Array.isArray(this._register.flows))
+      return this._register.flows;
+  }
+
+  getRegisterParams() {
+    if (objType(this._register, 'object') && objType(this._register.params, 'object'))
+      return this._register.params;
+  }
+
   getData() {
     return {
       serverName: this.serverName,

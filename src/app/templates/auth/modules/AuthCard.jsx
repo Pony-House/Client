@@ -32,22 +32,18 @@ function AuthCard() {
         hsConfig.baseUrl &&
         (type === 'login' ? (
           objType(hsConfig.login, 'object') && Array.isArray(hsConfig.login.flows) ? (
-            <Login baseUrl={hsConfig.baseUrl} />
+            <Login />
           ) : (
             <center className="small text-danger">No login flows!</center>
           )
         ) : type === 'register' ? (
           objType(hsConfig.login, 'object') && objType(hsConfig.register, 'object') ? (
-            <Register
-              registerInfo={hsConfig.register}
-              loginFlow={hsConfig.login.flows}
-              baseUrl={hsConfig.baseUrl}
-            />
+            <Register />
           ) : (
             <center className="small text-danger">No register flows!</center>
           )
         ) : hsConfig.baseUrl && hsConfig.serverName ? (
-          <ResetPassword serverName={hsConfig.serverName} baseUrl={hsConfig.baseUrl} />
+          <ResetPassword />
         ) : null)}
 
       {objType(hsConfig, 'object') && (
