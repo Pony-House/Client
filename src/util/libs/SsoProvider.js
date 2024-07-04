@@ -5,21 +5,17 @@ import * as auth from '@src/client/action/auth';
 import { getBaseUrl, eventMaxListeners } from '../matrixUtil';
 
 // Emitter
-class SsoProvider extends EventEmitter {
+class HsWellKnown extends EventEmitter {
   constructor() {
     super();
     this.resetAll();
   }
 
   resetAll() {
-    this.searchingHs = null;
-    this.serverName = null;
-    this.baseUrl = null;
-    this.login = null;
-    this.register = null;
-    this.emit('changeData', this.getData());
-    this.resetProviders();
-    this.emit('resetData', this.getData(), this.getProviders());
+    this.resetData();
+    this.resetSsoProviders();
+    this.resetIsPassword();
+    this.emit('resetData');
   }
 
   setSearchingHs(searchingHs) {
@@ -51,15 +47,20 @@ class SsoProvider extends EventEmitter {
           register: registerFlow,
         });
 
-        if (typeof setProcess === 'function') setProcess({ isLoading: false });
-        if (
-          objType(loginFlow, 'object') &&
-          objType(loginFlow.login, 'object') &&
-          Array.isArray(loginFlow.login.flows)
-        )
-          tinyThis.setProviders(loginFlow.login.flows);
+        if (objType(loginFlow, 'object') && Array.isArray(loginFlow.flows)) {
+          tinyThis.setSsoProviders(loginFlow.flows);
+          tinyThis.setIsPassword(loginFlow.flows);
+        }
 
-        return { data: tinyThis.getData(), providers: tinyThis.getProviders() };
+        if (typeof setProcess === 'function') setProcess({ isLoading: false });
+        const finalData = {
+          data: tinyThis.getData(),
+          ssoProviders: tinyThis.getSsoProviders(),
+          isPassword: tinyThis.getIsPassword(),
+        };
+
+        this.emit('ready', finalData);
+        return finalData;
       })
       .catch((err) => {
         if (servername) console.error(err);
@@ -81,6 +82,14 @@ class SsoProvider extends EventEmitter {
     this.emit('changeData', this.getData());
   }
 
+  resetData() {
+    this.serverName = null;
+    this.baseUrl = null;
+    this.login = null;
+    this.register = null;
+    this.emit('changeData', this.getData());
+  }
+
   getData() {
     return {
       serverName: this.serverName,
@@ -90,32 +99,50 @@ class SsoProvider extends EventEmitter {
     };
   }
 
-  resetProviders() {
-    this._pVanilla = {
+  setIsPassword(loginFlow) {
+    this._isPassword = loginFlow?.filter((flow) => flow.type === 'm.login.password')[0];
+    this.isPassword =
+      objType(this._isPassword, 'object') &&
+      typeof this._isPassword.type === 'string' &&
+      this._isPassword.type === 'm.login.password';
+  }
+
+  resetIsPassword() {
+    this._isPassword = null;
+    this.isPassword = null;
+    this.emit('changeSsoProviders', this.getSsoProviders());
+  }
+
+  getIsPassword() {
+    return this.isPassword;
+  }
+
+  setSsoProviders(loginFlow) {
+    this._ssoProviders = loginFlow?.filter((flow) => flow.type === 'm.login.sso')[0];
+    this.ssoProviders = this._ssoProviders.identity_providers;
+    this.emit('changeSsoProviders', this.getSsoProviders());
+  }
+
+  resetSsoProviders() {
+    this._ssoProviders = {
       type: 'm.login.sso',
       identity_providers: [],
     };
-    this.providers = this._pVanilla.identity_providers;
-    this.emit('changeProviders', this.getProviders());
+    this.ssoProviders = this._ssoProviders.identity_providers;
+    this.emit('changeSsoProviders', this.getSsoProviders());
   }
 
-  setProviders(loginFlow) {
-    this._pVanilla = loginFlow?.filter((flow) => flow.type === 'm.login.sso')[0];
-    this.providers = this._pVanilla.identity_providers;
-    this.emit('changeProviders', this.getProviders());
-  }
-
-  getProviders() {
-    return this.providers;
+  getSsoProviders() {
+    return this.ssoProviders;
   }
 }
 
 // Export
-const ssoProvider = new SsoProvider();
-ssoProvider.setMaxListeners(eventMaxListeners);
-export default ssoProvider;
+const hsWellKnown = new HsWellKnown();
+hsWellKnown.setMaxListeners(eventMaxListeners);
+export default hsWellKnown;
 
 // DEV
 if (__ENV_APP__.MODE === 'development') {
-  global.ssoProvider = ssoProvider;
+  global.hsWellKnown = hsWellKnown;
 }

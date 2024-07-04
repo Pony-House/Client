@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import PropTypes from 'prop-types';
 import envAPI from '@src/util/libs/env';
-import ssoProvider from '@src/util/libs/SsoProvider';
+import hsWellKnown from '@src/util/libs/SsoProvider';
 
 import Text from '../../../atoms/text/Text';
 import { Debounce } from '../../../../util/common';
@@ -25,16 +25,16 @@ function Homeserver({ className }) {
       setProcess({ isLoading: true, message: 'Loading local database...' });
       await envAPI.startDB();
       setProcess({ isLoading: true, message: 'Looking for homeserver...' });
-      await ssoProvider.fetch(servername, setProcess);
+      await hsWellKnown.fetch(servername, setProcess);
     } else {
       setProcess({ isLoading: false });
     }
   };
 
   useEffect(() => {
-    ssoProvider.resetAll();
+    hsWellKnown.resetAll();
     if (hs === null) return;
-    ssoProvider.setSearchingHs(hs.selected);
+    hsWellKnown.setSearchingHs(hs.selected);
     setupHsConfig(hs.selected);
   }, [hs]);
 
