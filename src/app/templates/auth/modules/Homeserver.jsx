@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import PropTypes from 'prop-types';
 import envAPI from '@src/util/libs/env';
-import hsWellKnown from '@src/util/libs/SsoProvider';
+import hsWellKnown from '@src/util/libs/HsWellKnown';
 
 import Text from '../../../atoms/text/Text';
 import { Debounce } from '../../../../util/common';

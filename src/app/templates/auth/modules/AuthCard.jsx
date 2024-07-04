@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { objType } from 'for-promise/utils/lib.mjs';
 
-import hsWellKnown from '@src/util/libs/SsoProvider';
+import hsWellKnown from '@src/util/libs/HsWellKnown';
 import Homeserver from './Homeserver';
 import Login from './Login';
 import Register from './Register';
