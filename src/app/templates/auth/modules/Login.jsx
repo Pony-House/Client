@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import envAPI from '@src/util/libs/env';
+import hsWellKnown from '@src/util/libs/HsWellKnown';
 
 import { EMAIL_REGEX, BAD_EMAIL_ERROR } from '@src/util/register/regex';
 import { normalizeUsername, isValidInput } from '@src/util/register/validator';
@@ -19,12 +20,12 @@ import SSOButtons from '../../../molecules/sso-buttons/SSOButtons';
 
 import LoadingScreen from './LoadingScreen';
 
-function Login({ loginFlow, baseUrl }) {
+function Login({ baseUrl }) {
   const [typeIndex, setTypeIndex] = useState(0);
   const [passVisible, setPassVisible] = useState(false);
   const loginTypes = ['Username', 'Email'];
-  const isPassword = loginFlow?.filter((flow) => flow.type === 'm.login.password')[0];
-  const ssoProviders = loginFlow?.filter((flow) => flow.type === 'm.login.sso')[0];
+  const isPassword = hsWellKnown.getIsPassword();
+  const ssoProviders = hsWellKnown.getSsoProviders();
 
   const [WEB3, setWEB3] = useState(envAPI.get('WEB3'));
   const [IPFS, setIPFS] = useState(envAPI.get('IPFS'));
@@ -239,19 +240,14 @@ function Login({ loginFlow, baseUrl }) {
           )}
         </Formik>
       )}
-      {ssoProviders && isPassword && <Text className="sso__divider">OR</Text>}
-      {ssoProviders && (
-        <SSOButtons
-          type="sso"
-          identityProviders={ssoProviders.identity_providers}
-          baseUrl={baseUrl}
-        />
+      {ssoProviders.length > 0 && isPassword && <Text className="sso__divider">OR</Text>}
+      {ssoProviders.length > 0 && (
+        <SSOButtons type="sso" identityProviders={ssoProviders} baseUrl={baseUrl} />
       )}
     </>
   );
 }
 Login.propTypes = {
-  loginFlow: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   baseUrl: PropTypes.string.isRequired,
 };
 

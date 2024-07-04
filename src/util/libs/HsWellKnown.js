@@ -75,19 +75,23 @@ class HsWellKnown extends EventEmitter {
   }
 
   setData(data = { serverName: null, baseUrl: null, login: null, register: null }) {
-    this.serverName = data.serverName;
-    this.baseUrl = data.baseUrl;
-    this.login = data.login;
-    this.register = data.register;
+    try {
+      this.serverName = data.serverName;
+      this.baseUrl = data.baseUrl;
+      this.login = data.login;
+      this.register = data.register;
+    } catch {
+      this.resetData(false);
+    }
     this.emit('changeData', this.getData());
   }
 
-  resetData() {
+  resetData(sendEmit = true) {
     this.serverName = null;
     this.baseUrl = null;
     this.login = null;
     this.register = null;
-    this.emit('changeData', this.getData());
+    if (sendEmit) this.emit('changeData', this.getData());
   }
 
   getData() {
@@ -100,17 +104,22 @@ class HsWellKnown extends EventEmitter {
   }
 
   setIsPassword(loginFlow) {
-    this._isPassword = loginFlow?.filter((flow) => flow.type === 'm.login.password')[0];
-    this.isPassword =
-      objType(this._isPassword, 'object') &&
-      typeof this._isPassword.type === 'string' &&
-      this._isPassword.type === 'm.login.password';
+    try {
+      this._isPassword = loginFlow?.filter((flow) => flow.type === 'm.login.password')[0];
+      this.isPassword =
+        objType(this._isPassword, 'object') &&
+        typeof this._isPassword.type === 'string' &&
+        this._isPassword.type === 'm.login.password';
+    } catch {
+      this.resetIsPassword(false);
+    }
+    this.emit('changeIsPassword', this.getIsPassword());
   }
 
-  resetIsPassword() {
+  resetIsPassword(sendEmit = true) {
     this._isPassword = null;
     this.isPassword = null;
-    this.emit('changeSsoProviders', this.getSsoProviders());
+    if (sendEmit) this.emit('changeIsPassword', this.getIsPassword());
   }
 
   getIsPassword() {
@@ -118,18 +127,26 @@ class HsWellKnown extends EventEmitter {
   }
 
   setSsoProviders(loginFlow) {
-    this._ssoProviders = loginFlow?.filter((flow) => flow.type === 'm.login.sso')[0];
-    this.ssoProviders = this._ssoProviders.identity_providers;
+    try {
+      this._ssoProviders = loginFlow?.filter((flow) => flow.type === 'm.login.sso')[0];
+      try {
+        this.ssoProviders = this._ssoProviders.identity_providers;
+      } catch {
+        this.ssoProviders = [];
+      }
+    } catch {
+      this.resetSsoProviders(false);
+    }
     this.emit('changeSsoProviders', this.getSsoProviders());
   }
 
-  resetSsoProviders() {
+  resetSsoProviders(sendEmit = true) {
     this._ssoProviders = {
       type: 'm.login.sso',
       identity_providers: [],
     };
     this.ssoProviders = this._ssoProviders.identity_providers;
-    this.emit('changeSsoProviders', this.getSsoProviders());
+    if (sendEmit) this.emit('changeSsoProviders', this.getSsoProviders());
   }
 
   getSsoProviders() {

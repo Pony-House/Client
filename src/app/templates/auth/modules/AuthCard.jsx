@@ -32,7 +32,7 @@ function AuthCard() {
         hsConfig.baseUrl &&
         (type === 'login' ? (
           objType(hsConfig.login, 'object') && Array.isArray(hsConfig.login.flows) ? (
-            <Login loginFlow={hsConfig.login.flows} baseUrl={hsConfig.baseUrl} />
+            <Login baseUrl={hsConfig.baseUrl} />
           ) : (
             <center className="small text-danger">No login flows!</center>
           )
