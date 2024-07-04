@@ -431,7 +431,9 @@ function AccountSection() {
   // Complete
   return (
     <>
-      <div className="card noselect mb-3">
+      <div
+        className={`card noselect${__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.EMAIL_ADDRESS || __ENV_APP__.ACCOUNT_MANAGER.SUPPORT.PHONE_NUMBER || __ENV_APP__.ACCOUNT_MANAGER.SUPPORT.OTHER_AUTH_LIST || dangerZoneEnabled ? ' mb-3' : ''}`}
+      >
         <ul className="list-group list-group-flush">
           <li className="list-group-item very-small text-gray">Password</li>
 
@@ -558,7 +560,7 @@ function AccountSection() {
 
       {__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.EMAIL_ADDRESS ? (
         <div
-          className={`card${__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.PHONE_NUMBER || __ENV_APP__.ACCOUNT_MANAGER.SUPPORT.OTHER_AUTH_LIST || dangerZoneEnabled ? ' mb-3' : ''}`}
+          className={`card noselect${__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.PHONE_NUMBER || __ENV_APP__.ACCOUNT_MANAGER.SUPPORT.OTHER_AUTH_LIST || dangerZoneEnabled ? ' mb-3' : ''}`}
         >
           <ul className="list-group list-group-flush">
             <li className="list-group-item very-small text-gray">Email addresses</li>
@@ -629,7 +631,7 @@ function AccountSection() {
 
       {__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.PHONE_NUMBER ? (
         <div
-          className={`card${__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.OTHER_AUTH_LIST || dangerZoneEnabled ? ' mb-3' : ''}`}
+          className={`card noselect${__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.OTHER_AUTH_LIST || dangerZoneEnabled ? ' mb-3' : ''}`}
         >
           <ul className="list-group list-group-flush">
             <li className="list-group-item very-small text-gray">Phone numbers</li>
@@ -713,7 +715,7 @@ function AccountSection() {
       ) : null}
 
       {__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.OTHER_AUTH_LIST ? (
-        <div className={`card${dangerZoneEnabled ? ' mb-3' : ''}`}>
+        <div className={`card noselect${dangerZoneEnabled ? ' mb-3' : ''}`}>
           <ul className="list-group list-group-flush">
             <li className="list-group-item very-small text-gray">Other auth</li>
 
