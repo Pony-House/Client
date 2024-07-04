@@ -58,6 +58,8 @@ class SsoProvider extends EventEmitter {
           Array.isArray(loginFlow.login.flows)
         )
           tinyThis.setProviders(loginFlow.login.flows);
+
+        return { data: tinyThis.getData(), providers: tinyThis.getProviders() };
       })
       .catch((err) => {
         if (servername) console.error(err);
