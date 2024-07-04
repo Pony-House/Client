@@ -62,7 +62,13 @@ function AccountSection() {
 
   // Read Data
   useEffect(() => {
-    if (!loadingEmails && emails === null) {
+    if (
+      (__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.EMAIL_ADDRESS ||
+        __ENV_APP__.ACCOUNT_MANAGER.SUPPORT.PHONE_NUMBER ||
+        __ENV_APP__.ACCOUNT_MANAGER.SUPPORT.OTHER_AUTH_LIST) &&
+      !loadingEmails &&
+      emails === null
+    ) {
       setLoadingEmails(true);
       userPid
         .fetch()
@@ -546,308 +552,321 @@ function AccountSection() {
         </ul>
       </div>
 
-      <div className="card mb-3">
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Email addresses</li>
+      {__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.EMAIL_ADDRESS ? (
+        <div className="card mb-3">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item very-small text-gray">Email addresses</li>
 
-          {!loadingEmails ? (
-            loadItemsList(emails, setEmails, 'email', 'email')
-          ) : (
-            <SettingLoading title="Loading emails..." />
-          )}
+            {!loadingEmails ? (
+              loadItemsList(emails, setEmails, 'email', 'email')
+            ) : (
+              <SettingLoading title="Loading emails..." />
+            )}
 
-          <SettingTile
-            title="Add a new account email"
-            content={
-              <SettingText
-                placeHolder="Email address"
-                value={newEmail}
-                onChange={updateValue(setNewEmail, submitEmail, accountValidation.email)}
-                maxLength={100}
-                isEmail
-                content={
-                  <>
-                    {accountValidation.email ? (
-                      <div className="very-small text-danger mb-1">
-                        <span className="email">
-                          <i class="fa-solid fa-triangle-exclamation me-1" />
-                          {accountValidation.email}
-                        </span>
-                      </div>
-                    ) : null}
-                    <Button
-                      ref={submitEmail}
-                      variant="primary"
-                      disabled={
-                        typeof newEmail !== 'string' ||
-                        newEmail.length < 1 ||
-                        accountValidation.email
-                          ? true
-                          : false
-                      }
-                      onClick={requestTokenProgress(
-                        // Text
-                        'email address',
-                        'Adding new email...',
-                        // Send Request
-                        (value, value2, secretCode) =>
-                          mx.requestAdd3pidEmailToken(value, secretCode, 1),
-                        // Get Value
-                        () => newEmail,
-                        () => null,
-                        // Final Confirm
-                        () => ({
-                          where: emails,
-                          setWhere: setEmails,
-                          complete: setNewEmail,
-                        }),
-                      )}
-                    >
-                      Add Email
-                    </Button>
-                  </>
-                }
-              />
-            }
-          />
-        </ul>
-      </div>
-
-      <div className="card mb-3">
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Phone numbers</li>
-
-          {!loadingEmails ? (
-            loadItemsList(phones, setPhones, 'phone number', 'msisdn')
-          ) : (
-            <SettingLoading title="Loading phone numbers..." />
-          )}
-
-          <SettingTile
-            title="Add a new phone number (Beta)"
-            content={
-              <SettingPhone
-                placeHolder="Phone number"
-                value={newPhone}
-                onChange={updatePhone(submitPhone, accountValidation.phone)}
-                maxLength={100}
-                content={
-                  <>
-                    {accountValidation.phone ? (
-                      <div className="very-small text-danger mb-1">
-                        <span className="phone">{accountValidation.phone}</span>
-                      </div>
-                    ) : null}
-                    <Button
-                      ref={submitPhone}
-                      variant="primary"
-                      disabled={
-                        typeof newPhone !== 'string' ||
-                        newPhone.length < 1 ||
-                        accountValidation.phone
-                          ? true
-                          : false
-                      }
-                      onClick={() => {
-                        const phoneNumber = parsePhoneNumber(
-                          newPhone,
-                          newPhoneCountry !== null ? newPhoneCountry : undefined,
-                        );
-                        console.log('[phone-number]', phoneNumber);
-                        requestTokenProgress(
+            <SettingTile
+              title="Add a new account email"
+              content={
+                <SettingText
+                  placeHolder="Email address"
+                  value={newEmail}
+                  onChange={updateValue(setNewEmail, submitEmail, accountValidation.email)}
+                  maxLength={100}
+                  isEmail
+                  content={
+                    <>
+                      {accountValidation.email ? (
+                        <div className="very-small text-danger mb-1">
+                          <span className="email">
+                            <i class="fa-solid fa-triangle-exclamation me-1" />
+                            {accountValidation.email}
+                          </span>
+                        </div>
+                      ) : null}
+                      <Button
+                        ref={submitEmail}
+                        variant="primary"
+                        disabled={
+                          typeof newEmail !== 'string' ||
+                          newEmail.length < 1 ||
+                          accountValidation.email
+                            ? true
+                            : false
+                        }
+                        onClick={requestTokenProgress(
                           // Text
-                          'phone number',
-                          'Adding new phone...',
+                          'email address',
+                          'Adding new email...',
                           // Send Request
                           (value, value2, secretCode) =>
-                            mx.requestAdd3pidMsisdnToken(value2, value, secretCode, 1),
+                            mx.requestAdd3pidEmailToken(value, secretCode, 1),
                           // Get Value
-                          () => phoneNumber.number,
-                          () => phoneNumber.country,
+                          () => newEmail,
+                          () => null,
                           // Final Confirm
                           () => ({
-                            where: phones,
-                            setWhere: setPhones,
-                            complete: setNewPhone,
+                            where: emails,
+                            setWhere: setEmails,
+                            complete: setNewEmail,
                           }),
-                          // Code Validator
-                          () => ({
-                            message: 'Please enter the code sent to your mobile.',
-                            request: (msisdnToken, secretCode, sessionId, submitUrl) =>
-                              mx.submitMsisdnTokenOtherUrl(
-                                submitUrl,
-                                sessionId,
-                                secretCode,
-                                msisdnToken,
-                              ),
-                          }),
-                        )();
-                      }}
-                    >
-                      Add Phone
-                    </Button>
-                  </>
+                        )}
+                      >
+                        Add Email
+                      </Button>
+                    </>
+                  }
+                />
+              }
+            />
+          </ul>
+        </div>
+      ) : null}
+
+      {__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.PHONE_NUMBER ? (
+        <div className="card mb-3">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item very-small text-gray">Phone numbers</li>
+
+            {!loadingEmails ? (
+              loadItemsList(phones, setPhones, 'phone number', 'msisdn')
+            ) : (
+              <SettingLoading title="Loading phone numbers..." />
+            )}
+
+            <SettingTile
+              title="Add a new phone number (Beta)"
+              content={
+                <SettingPhone
+                  placeHolder="Phone number"
+                  value={newPhone}
+                  onChange={updatePhone(submitPhone, accountValidation.phone)}
+                  maxLength={100}
+                  content={
+                    <>
+                      {accountValidation.phone ? (
+                        <div className="very-small text-danger mb-1">
+                          <span className="phone">{accountValidation.phone}</span>
+                        </div>
+                      ) : null}
+                      <Button
+                        ref={submitPhone}
+                        variant="primary"
+                        disabled={
+                          typeof newPhone !== 'string' ||
+                          newPhone.length < 1 ||
+                          accountValidation.phone
+                            ? true
+                            : false
+                        }
+                        onClick={() => {
+                          const phoneNumber = parsePhoneNumber(
+                            newPhone,
+                            newPhoneCountry !== null ? newPhoneCountry : undefined,
+                          );
+                          console.log('[phone-number]', phoneNumber);
+                          requestTokenProgress(
+                            // Text
+                            'phone number',
+                            'Adding new phone...',
+                            // Send Request
+                            (value, value2, secretCode) =>
+                              mx.requestAdd3pidMsisdnToken(value2, value, secretCode, 1),
+                            // Get Value
+                            () => phoneNumber.number,
+                            () => phoneNumber.country,
+                            // Final Confirm
+                            () => ({
+                              where: phones,
+                              setWhere: setPhones,
+                              complete: setNewPhone,
+                            }),
+                            // Code Validator
+                            () => ({
+                              message: 'Please enter the code sent to your mobile.',
+                              request: (msisdnToken, secretCode, sessionId, submitUrl) =>
+                                mx.submitMsisdnTokenOtherUrl(
+                                  submitUrl,
+                                  sessionId,
+                                  secretCode,
+                                  msisdnToken,
+                                ),
+                            }),
+                          )();
+                        }}
+                      >
+                        Add Phone
+                      </Button>
+                    </>
+                  }
+                />
+              }
+            />
+          </ul>
+        </div>
+      ) : null}
+
+      {__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.OTHER_AUTH_LIST ? (
+        <div className="card mb-3">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item very-small text-gray">Other auth</li>
+
+            {!loadingEmails ? (
+              loadItemsList(othersAuth, setOthersAuth, 'auth', null)
+            ) : (
+              <SettingLoading title="Loading auth stuff..." />
+            )}
+
+            <SettingTile
+              title="Why am I seeing that?"
+              content={
+                <div className="very-small text-gray">
+                  The contents of this list are not compatible to be managed. This list is only
+                  available for you is aware of what is running on your account.
+                </div>
+              }
+            />
+          </ul>
+        </div>
+      ) : null}
+
+      {__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.DEACTIVATE_ACCOUNT ||
+      __ENV_APP__.ACCOUNT_MANAGER.SUPPORT.ERASE_ACCOUNT ? (
+        <div className="card noselect">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item very-small text-danger">Danger zone</li>
+
+            {__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.DEACTIVATE_ACCOUNT ? (
+              <SettingTile
+                title="Deactivate account"
+                content={
+                  <div className="very-small text-gray">
+                    Deactivate your account temporarily to activate again later. Maybe you will need
+                    the help of some administrator to recover your account!
+                  </div>
                 }
-              />
-            }
-          />
-        </ul>
-      </div>
-
-      <div className="card mb-3">
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Other auth</li>
-
-          {!loadingEmails ? (
-            loadItemsList(othersAuth, setOthersAuth, 'auth', null)
-          ) : (
-            <SettingLoading title="Loading auth stuff..." />
-          )}
-
-          <SettingTile
-            title="Why am I seeing that?"
-            content={
-              <div className="very-small text-gray">
-                The contents of this list are not compatible to be managed. This list is only
-                available for you is aware of what is running on your account.
-              </div>
-            }
-          />
-        </ul>
-      </div>
-
-      <div className="card noselect">
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-danger">Danger zone</li>
-
-          <SettingTile
-            title="Deactivate account"
-            content={
-              <div className="very-small text-gray">
-                Deactivate your account temporarily to activate again later. Maybe you will need the
-                help of some administrator to recover your account!
-              </div>
-            }
-            options={
-              <Button
-                variant="danger"
-                className="d-inline-flex"
-                onClick={async () => {
-                  const confirm1 = await tinyConfirm(
-                    'Are you sure? That decision is inreversible!',
-                    'Deactivate account',
-                  );
-                  if (confirm1) {
-                    const confirm2 = await tinyConfirm(
-                      "Are you sure? I'm serious. You'll lose everything!",
-                      'Deactivate account',
-                    );
-                    if (confirm2) {
-                      const confirm3 = await tinyConfirm(
-                        "You're gonna lose everything! But if you know what you're doing, maybe you recover that account in the future. Are you sure?",
+                options={
+                  <Button
+                    variant="danger"
+                    className="d-inline-flex"
+                    onClick={async () => {
+                      const confirm1 = await tinyConfirm(
+                        'Are you sure? That decision is inreversible!',
                         'Deactivate account',
                       );
-                      if (confirm3) {
-                        const confirm4 = await tinyConfirm(
-                          "So you won't regret it? Right?",
+                      if (confirm1) {
+                        const confirm2 = await tinyConfirm(
+                          "Are you sure? I'm serious. You'll lose everything!",
                           'Deactivate account',
                         );
-                        if (confirm4) {
-                          const confirm4 = await tinyConfirm(
-                            'All right! Go ahead, I will no longer try to stop you from committing any possible accident.',
+                        if (confirm2) {
+                          const confirm3 = await tinyConfirm(
+                            "You're gonna lose everything! But if you know what you're doing, maybe you recover that account in the future. Are you sure?",
                             'Deactivate account',
                           );
-                          if (confirm4) {
-                            mx.deactivateAccount(
-                              {
-                                type: 'm.login.password',
-                                identifier: {
-                                  type: 'm.id.user',
-                                  user: initMatrix.matrixClient
-                                    .getUserId()
-                                    .split(':')[0]
-                                    .substring(1),
-                                },
-                                password: currentPassword,
-                              },
-                              false,
+                          if (confirm3) {
+                            const confirm4 = await tinyConfirm(
+                              "So you won't regret it? Right?",
+                              'Deactivate account',
                             );
+                            if (confirm4) {
+                              const confirm4 = await tinyConfirm(
+                                'All right! Go ahead, I will no longer try to stop you from committing any possible accident.',
+                                'Deactivate account',
+                              );
+                              if (confirm4) {
+                                mx.deactivateAccount(
+                                  {
+                                    type: 'm.login.password',
+                                    identifier: {
+                                      type: 'm.id.user',
+                                      user: initMatrix.matrixClient
+                                        .getUserId()
+                                        .split(':')[0]
+                                        .substring(1),
+                                    },
+                                    password: currentPassword,
+                                  },
+                                  false,
+                                );
+                              }
+                            }
                           }
                         }
                       }
-                    }
-                  }
-                }}
-              >
-                Deactivate
-              </Button>
-            }
-          />
+                    }}
+                  >
+                    Deactivate
+                  </Button>
+                }
+              />
+            ) : null}
 
-          <SettingTile
-            title="Erase account"
-            content={
-              <div className="very-small text-gray">
-                This option will erase your account forever. Think twice before clicking here!
-              </div>
-            }
-            options={
-              <Button
-                variant="danger"
-                className="d-inline-flex"
-                onClick={async () => {
-                  const confirm1 = await tinyConfirm(
-                    'Are you sure? That decision is inreversible!',
-                    'Erase account',
-                  );
-                  if (confirm1) {
-                    const confirm2 = await tinyConfirm(
-                      "Are you sure? I'm serious. You'll lose everything!",
-                      'Erase account',
-                    );
-                    if (confirm2) {
-                      const confirm3 = await tinyConfirm(
-                        "You're gonna lose everything, it's all going to explode! Are you sure?",
+            {__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.ERASE_ACCOUNT ? (
+              <SettingTile
+                title="Erase account"
+                content={
+                  <div className="very-small text-gray">
+                    This option will erase your account forever. Think twice before clicking here!
+                  </div>
+                }
+                options={
+                  <Button
+                    variant="danger"
+                    className="d-inline-flex"
+                    onClick={async () => {
+                      const confirm1 = await tinyConfirm(
+                        'Are you sure? That decision is inreversible!',
                         'Erase account',
                       );
-                      if (confirm3) {
-                        const confirm4 = await tinyConfirm(
-                          "So you won't regret it? Right?",
+                      if (confirm1) {
+                        const confirm2 = await tinyConfirm(
+                          "Are you sure? I'm serious. You'll lose everything!",
                           'Erase account',
                         );
-                        if (confirm4) {
-                          const confirm4 = await tinyConfirm(
-                            'All right! Go ahead, I will no longer try to stop you from committing any possible accident.',
+                        if (confirm2) {
+                          const confirm3 = await tinyConfirm(
+                            "You're gonna lose everything, it's all going to explode! Are you sure?",
                             'Erase account',
                           );
-                          if (confirm4) {
-                            mx.deactivateAccount(
-                              {
-                                type: 'm.login.password',
-                                identifier: {
-                                  type: 'm.id.user',
-                                  user: initMatrix.matrixClient
-                                    .getUserId()
-                                    .split(':')[0]
-                                    .substring(1),
-                                },
-                                password: currentPassword,
-                              },
-                              true,
+                          if (confirm3) {
+                            const confirm4 = await tinyConfirm(
+                              "So you won't regret it? Right?",
+                              'Erase account',
                             );
+                            if (confirm4) {
+                              const confirm4 = await tinyConfirm(
+                                'All right! Go ahead, I will no longer try to stop you from committing any possible accident.',
+                                'Erase account',
+                              );
+                              if (confirm4) {
+                                mx.deactivateAccount(
+                                  {
+                                    type: 'm.login.password',
+                                    identifier: {
+                                      type: 'm.id.user',
+                                      user: initMatrix.matrixClient
+                                        .getUserId()
+                                        .split(':')[0]
+                                        .substring(1),
+                                    },
+                                    password: currentPassword,
+                                  },
+                                  true,
+                                );
+                              }
+                            }
                           }
                         }
                       }
-                    }
-                  }
-                }}
-              >
-                Erase
-              </Button>
-            }
-          />
-        </ul>
-      </div>
+                    }}
+                  >
+                    Erase
+                  </Button>
+                }
+              />
+            ) : null}
+          </ul>
+        </div>
+      ) : null}
     </>
   );
 }

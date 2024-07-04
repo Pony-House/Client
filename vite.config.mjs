@@ -194,6 +194,16 @@ export default defineConfig(({ command, mode }) => {
       }
     },
 
+    ACCOUNT_MANAGER: {
+      SUPPORT: {
+        PHONE_NUMBER: addBooleanToEnv('PHONE_NUMBER_SUPPORT'),
+        EMAIL_ADDRESS: addBooleanToEnv('EMAIL_ADDRESS_SUPPORT'),
+        DEACTIVATE_ACCOUNT: addBooleanToEnv('DEACTIVATE_ACCOUNT_SUPPORT'),
+        ERASE_ACCOUNT: addBooleanToEnv('ERASE_ACCOUNT_SUPPORT'),
+        OTHER_AUTH_LIST: addBooleanToEnv('OTHER_AUTH_LIST_SUPPORT'),
+      }
+    },
+
     LOGIN: {
       DEFAULT_HOMESERVER: Number(env.DEFAULT_HOMESERVER),
       ALLOW_CUSTOM_HOMESERVERS: addBooleanToEnv('ALLOW_CUSTOM_HOMESERVERS'),
