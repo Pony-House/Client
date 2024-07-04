@@ -1,44 +1,56 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { objType } from 'for-promise/utils/lib.mjs';
 
+import ssoProvider from '@src/util/libs/SsoProvider';
 import Homeserver from './Homeserver';
 import Login from './Login';
 import Register from './Register';
 import ResetPassword from './ResetPassword';
 
-global.authPublicData = {};
+if (__ENV_APP__.MODE === 'development') global.authPublicData = {};
 function AuthCard() {
   const [hsConfig, setHsConfig] = useState(null);
   const [type, setType] = useState('login');
 
-  const handleHsChange = (info) => {
-    setHsConfig(info);
-  };
+  useEffect(() => {
+    const handleHsChange = (info) => setHsConfig(info);
+    ssoProvider.on('changeData', handleHsChange);
+    return () => {
+      ssoProvider.off('changeData', handleHsChange);
+    };
+  });
 
-  global.authPublicData.register = { params: hsConfig?.register?.params };
-
+  if (__ENV_APP__.MODE === 'development')
+    global.authPublicData.register = { params: hsConfig?.register?.params };
   return (
     <>
       <div className="mb-4">
-        <Homeserver
-          className={type === 'reset-password' ? 'd-none' : null}
-          onChange={handleHsChange}
-        />
+        <Homeserver className={type === 'reset-password' ? 'd-none' : null} />
       </div>
 
-      {hsConfig !== null &&
+      {objType(hsConfig, 'object') &&
+        hsConfig.baseUrl &&
         (type === 'login' ? (
-          <Login loginFlow={hsConfig.login.flows} baseUrl={hsConfig.baseUrl} />
+          objType(hsConfig.login, 'object') && Array.isArray(hsConfig.login.flows) ? (
+            <Login loginFlow={hsConfig.login.flows} baseUrl={hsConfig.baseUrl} />
+          ) : (
+            <center className="small text-danger">No login flows!</center>
+          )
         ) : type === 'register' ? (
-          <Register
-            registerInfo={hsConfig.register}
-            loginFlow={hsConfig.login.flows}
-            baseUrl={hsConfig.baseUrl}
-          />
-        ) : (
+          objType(hsConfig.login, 'object') && objType(hsConfig.register, 'object') ? (
+            <Register
+              registerInfo={hsConfig.register}
+              loginFlow={hsConfig.login.flows}
+              baseUrl={hsConfig.baseUrl}
+            />
+          ) : (
+            <center className="small text-danger">No register flows!</center>
+          )
+        ) : hsConfig.baseUrl && hsConfig.serverName ? (
           <ResetPassword serverName={hsConfig.serverName} baseUrl={hsConfig.baseUrl} />
-        ))}
+        ) : null)}
 
-      {hsConfig !== null && (
+      {objType(hsConfig, 'object') && (
         <center>
           {type === 'login' && (
             <a

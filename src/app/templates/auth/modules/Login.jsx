@@ -177,48 +177,48 @@ function Login({ loginFlow, baseUrl }) {
                 )}
 
                 {__ENV_APP__.WEB3 ? (
-                  <div class="form-check form-switch">
+                  <div className="form-check form-switch">
                     <input
-                      class="form-check-input"
+                      className="form-check-input"
                       type="checkbox"
                       role="switch"
                       id="web3Check"
                       checked={WEB3}
                       onClick={() => editENV('WEB3')}
                     />
-                    <label class="form-check-label" htmlFor="web3Check">
+                    <label className="form-check-label" htmlFor="web3Check">
                       Enable Web3 features
                     </label>
                   </div>
                 ) : null}
 
                 {__ENV_APP__.IPFS ? (
-                  <div class="form-check form-switch">
+                  <div className="form-check form-switch">
                     <input
-                      class="form-check-input"
+                      className="form-check-input"
                       type="checkbox"
                       role="switch"
                       id="ipfsCheck"
                       checked={IPFS}
                       onClick={() => editENV('IPFS')}
                     />
-                    <label class="form-check-label" htmlFor="ipfsCheck">
+                    <label className="form-check-label" htmlFor="ipfsCheck">
                       Enable IPFS features
                     </label>
                   </div>
                 ) : null}
 
                 {__ENV_APP__.ELECTRON_MODE && __ENV_APP__.SAVE_ROOM_DB ? (
-                  <div class="form-check form-switch">
+                  <div className="form-check form-switch">
                     <input
-                      class="form-check-input"
+                      className="form-check-input"
                       type="checkbox"
                       role="switch"
                       id="saveRoomDbCheck"
                       checked={SAVE_ROOM_DB}
                       onClick={() => editENV('SAVE_ROOM_DB')}
                     />
-                    <label class="form-check-label" htmlFor="saveRoomDbCheck">
+                    <label className="form-check-label" htmlFor="saveRoomDbCheck">
                       Enable room local DB features
                     </label>
                   </div>

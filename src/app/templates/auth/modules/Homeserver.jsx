@@ -2,18 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import PropTypes from 'prop-types';
 import envAPI from '@src/util/libs/env';
+import ssoProvider from '@src/util/libs/SsoProvider';
 
 import Text from '../../../atoms/text/Text';
-import * as auth from '../../../../client/action/auth';
 import { Debounce } from '../../../../util/common';
-import { getBaseUrl } from '../../../../util/matrixUtil';
 import IconButton from '../../../atoms/button/IconButton';
 import Input from '../../../atoms/input/Input';
 import Spinner from '../../../atoms/spinner/Spinner';
 import ContextMenu, { MenuItem, MenuHeader } from '../../../atoms/context-menu/ContextMenu';
 
-let searchingHs = null;
-function Homeserver({ onChange, className }) {
+function Homeserver({ className }) {
   const [hs, setHs] = useState(null);
   const [debounce] = useState(new Debounce());
   const [process, setProcess] = useState({
@@ -28,38 +26,16 @@ function Homeserver({ onChange, className }) {
       await envAPI.startDB();
 
       setProcess({ isLoading: true, message: 'Looking for homeserver...' });
-      let baseUrl = null;
-      baseUrl = await getBaseUrl(servername);
-
-      if (searchingHs !== servername) return;
-      setProcess({ isLoading: true, message: `Connecting to ${baseUrl}...` });
-      const tempClient = auth.createTemporaryClient(baseUrl);
-
-      Promise.allSettled([tempClient.loginFlows(), tempClient.register()])
-        .then((values) => {
-          const loginFlow = values[0].status === 'fulfilled' ? values[0]?.value : undefined;
-          const registerFlow =
-            values[1].status === 'rejected' ? values[1]?.reason?.data : undefined;
-          if (loginFlow === undefined || registerFlow === undefined) throw new Error();
-
-          if (searchingHs !== servername) return;
-          onChange({ serverName: servername, baseUrl, login: loginFlow, register: registerFlow });
-          setProcess({ isLoading: false });
-        })
-        .catch(() => {
-          if (searchingHs !== servername) return;
-          onChange(null);
-          setProcess({ isLoading: false, error: 'Unable to connect. Please check your input.' });
-        });
+      await ssoProvider.fetchProviders(servername, setProcess);
     } else {
       setProcess({ isLoading: false });
     }
   };
 
   useEffect(() => {
-    onChange(null);
+    ssoProvider.resetAll();
     if (hs === null) return;
-    searchingHs = hs.selected;
+    ssoProvider.setSearchingHs(hs.selected);
     setupHsConfig(hs.selected);
   }, [hs]);
 
@@ -154,7 +130,6 @@ function Homeserver({ onChange, className }) {
   );
 }
 Homeserver.propTypes = {
-  onChange: PropTypes.func.isRequired,
   className: PropTypes.string,
 };
 
