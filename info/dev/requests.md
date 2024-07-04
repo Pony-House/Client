@@ -1,4 +1,5 @@
 ===> Editor de homepage do client
+===> Arrumar o arrastador de itens
 
 Ajeitar PowerLevelSelector.jsx
 Ajeitar o selecionador de custom status icon.
