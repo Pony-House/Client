@@ -24,9 +24,8 @@ function Homeserver({ className }) {
     if (servername !== '') {
       setProcess({ isLoading: true, message: 'Loading local database...' });
       await envAPI.startDB();
-
       setProcess({ isLoading: true, message: 'Looking for homeserver...' });
-      await ssoProvider.fetchProviders(servername, setProcess);
+      await ssoProvider.fetch(servername, setProcess);
     } else {
       setProcess({ isLoading: false });
     }

@@ -27,7 +27,7 @@ class SsoProvider extends EventEmitter {
     this.emit('changeSearchingHs', this.searchingHs);
   }
 
-  async fetchProviders(servername, setProcess) {
+  async fetch(servername, setProcess) {
     const tinyThis = this;
     let baseUrl = null;
     baseUrl = await getBaseUrl(servername);
