@@ -424,6 +424,10 @@ function AccountSection() {
       }
     };
 
+  const dangerZoneEnabled =
+    __ENV_APP__.ACCOUNT_MANAGER.SUPPORT.DEACTIVATE_ACCOUNT ||
+    __ENV_APP__.ACCOUNT_MANAGER.SUPPORT.ERASE_ACCOUNT;
+
   // Complete
   return (
     <>
@@ -553,7 +557,9 @@ function AccountSection() {
       </div>
 
       {__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.EMAIL_ADDRESS ? (
-        <div className="card mb-3">
+        <div
+          className={`card${__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.PHONE_NUMBER || __ENV_APP__.ACCOUNT_MANAGER.SUPPORT.OTHER_AUTH_LIST || dangerZoneEnabled ? ' mb-3' : ''}`}
+        >
           <ul className="list-group list-group-flush">
             <li className="list-group-item very-small text-gray">Email addresses</li>
 
@@ -622,7 +628,9 @@ function AccountSection() {
       ) : null}
 
       {__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.PHONE_NUMBER ? (
-        <div className="card mb-3">
+        <div
+          className={`card${__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.OTHER_AUTH_LIST || dangerZoneEnabled ? ' mb-3' : ''}`}
+        >
           <ul className="list-group list-group-flush">
             <li className="list-group-item very-small text-gray">Phone numbers</li>
 
@@ -705,7 +713,7 @@ function AccountSection() {
       ) : null}
 
       {__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.OTHER_AUTH_LIST ? (
-        <div className="card mb-3">
+        <div className={`card${dangerZoneEnabled ? ' mb-3' : ''}`}>
           <ul className="list-group list-group-flush">
             <li className="list-group-item very-small text-gray">Other auth</li>
 
@@ -728,8 +736,7 @@ function AccountSection() {
         </div>
       ) : null}
 
-      {__ENV_APP__.ACCOUNT_MANAGER.SUPPORT.DEACTIVATE_ACCOUNT ||
-      __ENV_APP__.ACCOUNT_MANAGER.SUPPORT.ERASE_ACCOUNT ? (
+      {dangerZoneEnabled ? (
         <div className="card noselect">
           <ul className="list-group list-group-flush">
             <li className="list-group-item very-small text-danger">Danger zone</li>
