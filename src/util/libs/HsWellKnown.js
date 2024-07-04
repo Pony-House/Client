@@ -19,8 +19,8 @@ class HsWellKnown extends EventEmitter {
   }
 
   setSearchingHs(searchingHs) {
-    this.searchingHs = searchingHs;
-    this.emit('changeSearchingHs', this.searchingHs);
+    this._searchingHs = searchingHs;
+    this.emit('changeSearchingHs', this._searchingHs);
   }
 
   async fetch(servername, setProcess) {
@@ -28,7 +28,7 @@ class HsWellKnown extends EventEmitter {
     let baseUrl = null;
     baseUrl = await getBaseUrl(servername);
 
-    if (this.searchingHs !== servername) return;
+    if (this._searchingHs !== servername) return;
     if (typeof setProcess === 'function')
       setProcess({ isLoading: true, message: `Connecting to ${baseUrl}...` });
     const tempClient = auth.createTemporaryClient(baseUrl);
@@ -39,7 +39,7 @@ class HsWellKnown extends EventEmitter {
         const registerFlow = values[1].status === 'rejected' ? values[1]?.reason?.data : undefined;
         if (loginFlow === undefined || registerFlow === undefined) throw new Error();
 
-        if (tinyThis.searchingHs !== servername) return;
+        if (tinyThis._searchingHs !== servername) return;
         tinyThis.setData({
           serverName: servername,
           baseUrl,
@@ -64,7 +64,7 @@ class HsWellKnown extends EventEmitter {
       })
       .catch((err) => {
         if (servername) console.error(err);
-        if (tinyThis.searchingHs !== servername) return;
+        if (tinyThis._searchingHs !== servername) return;
         tinyThis.resetAll();
         if (typeof setProcess === 'function')
           setProcess({
@@ -78,8 +78,8 @@ class HsWellKnown extends EventEmitter {
     try {
       this.serverName = data.serverName;
       this.baseUrl = data.baseUrl;
-      this.login = data.login;
-      this.register = data.register;
+      this._login = data.login;
+      this._register = data.register;
     } catch {
       this.resetData(false);
     }
@@ -89,8 +89,8 @@ class HsWellKnown extends EventEmitter {
   resetData(sendEmit = true) {
     this.serverName = null;
     this.baseUrl = null;
-    this.login = null;
-    this.register = null;
+    this._login = null;
+    this._register = null;
     if (sendEmit) this.emit('changeData', this.getData());
   }
 
@@ -98,8 +98,8 @@ class HsWellKnown extends EventEmitter {
     return {
       serverName: this.serverName,
       baseUrl: this.baseUrl,
-      login: this.login,
-      register: this.register,
+      login: this._login,
+      register: this._register,
     };
   }
 
