@@ -46,12 +46,15 @@ function AuthCard() {
           <ResetPassword />
         ) : null)}
 
-      {objType(hsConfig, 'object') && (
+      {objType(hsConfig, 'object') && hsWellKnown.getBaseUrl() && (
         <center>
           {type === 'login' && (
             <a
               className="very-small"
-              onClick={() => setType(type === 'reset-password' ? 'login' : 'reset-password')}
+              onClick={(e) => {
+                setType(type === 'reset-password' ? 'login' : 'reset-password');
+                e.preventDefault();
+              }}
               href="#!"
             >
               Forgot password?
@@ -59,7 +62,13 @@ function AuthCard() {
           )}
           <p className="mb-4 pb-lg-2 small">
             {`${type === 'login' ? "Don't have" : 'Already have'} an account?`}{' '}
-            <a href="#!" onClick={() => setType(type === 'login' ? 'register' : 'login')}>
+            <a
+              href="#!"
+              onClick={(e) => {
+                setType(type === 'login' ? 'register' : 'login');
+                e.preventDefault();
+              }}
+            >
               {type === 'login' ? 'Register here' : 'Login here'}
             </a>
           </p>
