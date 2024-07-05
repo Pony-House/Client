@@ -38,7 +38,6 @@ export const SettingPhone = React.forwardRef(
           const selectionEnd = el.get(0).selectionEnd;
 
           const oldValue = el.val();
-
           const diffValues = typeof value === 'string' ? value.length : 0 - oldValue.length;
 
           // Fix Selection
