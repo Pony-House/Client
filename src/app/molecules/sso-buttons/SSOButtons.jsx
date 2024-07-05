@@ -19,9 +19,9 @@ function SSOButtons({ type, identityProviders, baseUrl }) {
           if (typeof idp.icon !== 'string') return -1;
           return idp.name.toLowerCase() > idp2.name.toLowerCase() ? 1 : -1;
         })
-        .map((idp) => (
-          <Tooltip placement="top" content={<div className="small">{idp.name}</div>}>
-            {idp.icon ? (
+        .map((idp) =>
+          idp.icon ? (
+            <Tooltip placement="top" content={<div className="small">{idp.name}</div>}>
               <button
                 key={idp.id}
                 type="button"
@@ -34,15 +34,15 @@ function SSOButtons({ type, identityProviders, baseUrl }) {
                   alt={idp.name}
                 />
               </button>
-            ) : (
-              <Button
-                key={idp.id}
-                className="sso-btn__text-only"
-                onClick={() => handleClick(idp.id)}
-              >{`Login with ${idp.name}`}</Button>
-            )}
-          </Tooltip>
-        ))}
+            </Tooltip>
+          ) : (
+            <Button
+              key={idp.id}
+              className="sso-btn__text-only"
+              onClick={() => handleClick(idp.id)}
+            >{`Login with ${idp.name}`}</Button>
+          ),
+        )}
     </div>
   );
 }
