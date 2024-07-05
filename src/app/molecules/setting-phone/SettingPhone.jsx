@@ -38,10 +38,6 @@ export const SettingPhone = React.forwardRef(
           const selectionEnd = el.get(0).selectionEnd;
 
           const oldValue = el.val();
-          /* const filteredContent = oldValue.replace(/\D+/g, (text) => {
-            if (text === ' ') return text;
-            else return '';
-          }); */
 
           const diffValues = typeof value === 'string' ? value.length : 0 - oldValue.length;
 
