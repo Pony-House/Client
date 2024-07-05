@@ -1,7 +1,9 @@
- 
 ## oi.mp3
 Tiny sound made by tiny me :3
 
+Made by Yasmin Seidel (JasminDreasond)
+
+## fatal_beep.ogg
 Made by Yasmin Seidel (JasminDreasond)
 
 ## micro_off.ogg
