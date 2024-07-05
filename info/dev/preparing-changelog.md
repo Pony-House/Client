@@ -3,3 +3,4 @@
 - Room intro container added to threads.
 - Thread loading mode added to fix issues.
 - Account page - ENV values added. You can now set which values can be managed within this page.
+- SSOButtons visible in the register now.

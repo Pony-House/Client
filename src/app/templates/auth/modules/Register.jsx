@@ -291,7 +291,7 @@ function Register() {
         </Formik>
       )}
 
-      {isDisabled && ssoProviders.length > 0 && (
+      {!isDisabled && ssoProviders.length > 0 && (
         <SSOButtons type="sso" identityProviders={ssoProviders} baseUrl={baseUrl} />
       )}
     </>
