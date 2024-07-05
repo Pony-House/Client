@@ -76,11 +76,13 @@ function Homeserver({ className }) {
     }, 700)();
   };
 
+  const useHomeserverList = Array.isArray(hs?.list) && hs.list.length > 1;
   return (
     <>
       <div className={`homeserver-form${typeof className === 'string' ? ` ${className}` : ''}`}>
         <div className="w-100">
           <Input
+            className={!useHomeserverList ? 'no-homeserver-list' : null}
             placeholder="Type the homeserver address here"
             name="homeserver"
             onChange={handleHsInput}
@@ -90,7 +92,7 @@ function Homeserver({ className }) {
             disabled={hs === null || !hs.allowCustom}
           />
         </div>
-        {Array.isArray(hs?.list) && hs.list.length > 1 ? (
+        {useHomeserverList ? (
           <ContextMenu
             placement="right"
             content={(hideMenu) => (

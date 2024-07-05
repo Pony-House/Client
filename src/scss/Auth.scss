@@ -28,6 +28,7 @@
   & .ic-btn {
     height: 44px;
     border: 1px solid var(--bg-surface-border);
+    border-left: 0px solid transparent;
     @include dir.prop(
       border-radius,
       0 var(--bo-radius) var(--bo-radius) 0,
@@ -134,7 +135,7 @@
     padding-top: 2px;
   }
 
-  input[name='homeserver'] {
+  input[name='homeserver']:not(.no-homeserver-list) {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
   }
