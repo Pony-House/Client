@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import clone from 'clone';
 import jReact from '@mods/lib/jReact';
 import { readImageUrl } from '@src/util/libs/mediaCache';
+import { getSound } from '@src/util/soundFiles';
 
 import IconButton from '../../atoms/button/IconButton';
 import { twemojifyReact } from '../../../util/twemojify';
@@ -20,7 +21,6 @@ import { openSettings } from '../../../client/action/navigation';
 import tinyAPI from '../../../util/mods';
 import { enableAfkSystem } from '../../../util/userStatusEffects';
 import { getUserWeb3Account } from '../../../util/web3';
-import { getSound } from '../../../client/state/Notifications';
 
 import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 

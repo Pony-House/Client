@@ -43,6 +43,7 @@ import {
   selectTab,
 } from '../../../client/action/navigation';
 import ElectronSidebar from './ElectronSidebar';
+import { getSound } from '@src/util/soundFiles';
 
 let versionChecked = false;
 
@@ -337,6 +338,12 @@ function Client({ isDevToolsOpen = false }) {
       </>
     );
   } else {
+    const fatalBeep = getSound('fatal_beep');
+    if (fatalBeep) {
+      fatalBeep.pause();
+      fatalBeep.currentTime = 0;
+      fatalBeep.play();
+    }
     return (
       <>
         <ElectronSidebar isDevToolsOpen={isDevToolsOpen} />
