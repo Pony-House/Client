@@ -10,6 +10,7 @@ import AuthDivBase from '@src/app/templates/auth/modules/AuthDivBase';
     the components in the right way in the HTML.
 
     If you're looking to place custom CSS, edit the index.js file.
+    Pony House is using Bootstrap CSS. That means all bootstrap components will work here.
 */
 
 const WelcomePage = {};

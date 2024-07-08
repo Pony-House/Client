@@ -1,9 +1,0 @@
-- Account page - danger zone added.
-- React key issues fixed.
-- Room intro container added to threads.
-- Thread loading mode added to fix issues.
-- Account page - ENV values added. You can now set which values can be managed within this page.
-- SSOButtons visible in the register now.
-- sso-buttons - Tooltip added.
-- Login page - homeserver list css fixed.
-- New Welcome data added to the mods folder.
