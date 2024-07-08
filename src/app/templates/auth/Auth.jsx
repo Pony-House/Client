@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import WelcomePage from '@mods/WelcomePage';
 
 import * as auth from '../../../client/action/auth';
 import cons from '../../../client/state/cons';
@@ -9,9 +10,12 @@ import Avatar from '../../atoms/avatar/Avatar';
 import LoadingScreen from './modules/LoadingScreen';
 import AuthCard from './modules/AuthCard';
 import ElectronSidebar from '../client/ElectronSidebar';
+import { AuthDivBaseWithBanner } from './modules/AuthDivBase';
 
 function Auth({ isDevToolsOpen = false }) {
   const [loginToken, setLoginToken] = useState(getUrlParams('loginToken'));
+  const [type, setType] = useState('login');
+  const [isWelcome, setIsWelcome] = useState(WelcomePage.enabled);
 
   useEffect(() => {
     const authSync = async () => {
@@ -34,19 +38,18 @@ function Auth({ isDevToolsOpen = false }) {
     authSync();
   }, []);
 
+  const showLoginPage = !isWelcome || !WelcomePage.html || loginToken;
   return (
     <>
       <ElectronSidebar isDevToolsOpen={isDevToolsOpen} />
       <section className={`vh-100 auth-base${isDevToolsOpen ? ' devtools-open' : ''}`}>
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
-            <div className="col col-xl-10 tiny-box">
+            <div className={`col col-xl-10 tiny-box${showLoginPage ? ' tiny-box-login' : ''}`}>
               <div className="card">
                 <div className="row g-0">
-                  <div className="col-md-6 col-lg-5 d-none d-md-block banner" />
-
-                  <div className="col-md-6 col-lg-7 d-flex align-items-center card-fullscren-base">
-                    <div className="card-body p-lg-4 px-lg-5">
+                  {showLoginPage ? (
+                    <AuthDivBaseWithBanner>
                       {loginToken && <LoadingScreen message="Redirecting..." />}
                       {!loginToken && (
                         <>
@@ -55,7 +58,7 @@ function Auth({ isDevToolsOpen = false }) {
                             <span className="ms-3 h2 fw-bold mb-0">{__ENV_APP__.INFO.name}</span>
                           </div>
 
-                          <AuthCard />
+                          <AuthCard type={type} setType={setType} />
                         </>
                       )}
 
@@ -93,8 +96,10 @@ function Auth({ isDevToolsOpen = false }) {
                           </div>
                         </div>
                       </section>
-                    </div>
-                  </div>
+                    </AuthDivBaseWithBanner>
+                  ) : (
+                    <WelcomePage.html setIsWelcome={setIsWelcome} setType={setType} />
+                  )}
                 </div>
               </div>
             </div>

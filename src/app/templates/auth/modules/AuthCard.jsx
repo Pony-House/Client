@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import hsWellKnown from '@src/util/libs/HsWellKnown';
@@ -8,9 +10,8 @@ import Register from './Register';
 import ResetPassword from './ResetPassword';
 
 if (__ENV_APP__.MODE === 'development') global.authPublicData = {};
-function AuthCard() {
+function AuthCard({ type = 'login', setType }) {
   const [hsConfig, setHsConfig] = useState(null);
-  const [type, setType] = useState('login');
 
   useEffect(() => {
     const handleHsChange = (info) => setHsConfig(info);
@@ -77,5 +78,10 @@ function AuthCard() {
     </>
   );
 }
+
+AuthCard.propTypes = {
+  type: PropTypes.string.isRequired,
+  setType: PropTypes.func.isRequired,
+};
 
 export default AuthCard;

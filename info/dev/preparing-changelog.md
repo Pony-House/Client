@@ -6,3 +6,4 @@
 - SSOButtons visible in the register now.
 - sso-buttons - Tooltip added.
 - Login page - homeserver list css fixed.
+- New Welcome data added to the mods folder.
