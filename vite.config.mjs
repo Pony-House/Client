@@ -176,6 +176,7 @@ export default defineConfig(({ command, mode }) => {
       API_KEY: typeof env.LIBRE_TRANSLATE_API_KEY === 'string' && env.LIBRE_TRANSLATE_API_KEY.length > 0 ?
         env.LIBRE_TRANSLATE_API_KEY : '',
       ENABLED: addBooleanToEnv('LIBRE_TRANSLATE_ENABLED'),
+      VISIBLE: addBooleanToEnv('LIBRE_TRANSLATE_VISIBLE'),
     },
 
     EMOJIBOARD: {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import envAPI from '@src/util/libs/env';
+import libreTranslate from '@src/util/libs/libreTranslate';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -154,15 +155,18 @@ const buildTabItems = () => {
       });
     }
 
-    tabItems.push({ type: 'divider', key: '2' });
-    tabItems.push({
-      badge: { text: 'Beta', color: 'secondary' },
-      text: tabText.LIBRETRANSLATE,
-      key: 'libretranslate',
-      faSrc: 'fa-solid fa-globe',
-      disabled: false,
-      render: () => <LibreTranslateSection />,
-    });
+    if (libreTranslate.get('visible') || envAPI.get('WEB3') || envAPI.get('IPFS'))
+      tabItems.push({ type: 'divider', key: '2' });
+
+    if (libreTranslate.get('visible'))
+      tabItems.push({
+        badge: { text: 'Beta', color: 'secondary' },
+        text: tabText.LIBRETRANSLATE,
+        key: 'libretranslate',
+        faSrc: 'fa-solid fa-globe',
+        disabled: false,
+        render: () => <LibreTranslateSection />,
+      });
 
     if (envAPI.get('WEB3') || envAPI.get('IPFS')) {
       if (envAPI.get('IPFS')) {

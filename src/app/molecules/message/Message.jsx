@@ -1015,22 +1015,24 @@ const MessageOptions = React.memo(
           />
         )}
 
-        {allowTranslate ? (
-          <IconButton
-            className="need-shift"
-            onClick={translateMessage()}
-            fa="fa-solid fa-language btn-text-info"
-            size="normal"
-            tooltip="Translate message"
-          />
-        ) : typeof translateText === 'string' ? (
-          <IconButton
-            className="need-shift"
-            onClick={removeTranslateMessage()}
-            fa="fa-solid fa-language btn-text-warning"
-            size="normal"
-            tooltip="Original message"
-          />
+        {libreTranslate.get('visible') ? (
+          allowTranslate ? (
+            <IconButton
+              className="need-shift"
+              onClick={translateMessage()}
+              fa="fa-solid fa-language btn-text-info"
+              size="normal"
+              tooltip="Translate message"
+            />
+          ) : typeof translateText === 'string' ? (
+            <IconButton
+              className="need-shift"
+              onClick={removeTranslateMessage()}
+              fa="fa-solid fa-language btn-text-warning"
+              size="normal"
+              tooltip="Original message"
+            />
+          ) : null
         ) : null}
 
         <ContextMenu

@@ -58,6 +58,11 @@ class LibreTranslate extends EventEmitter {
           ? this.content.enabled
           : !!__ENV_APP__.LIBRE_TRANSLATE.ENABLED;
 
+      this.content.visible =
+        typeof this.content.visible === 'boolean'
+          ? this.content.visible
+          : !!__ENV_APP__.LIBRE_TRANSLATE.VISIBLE;
+
       this.defaultHost =
         typeof __ENV_APP__.LIBRE_TRANSLATE.DEFAULT_HOST === 'string' &&
         __ENV_APP__.LIBRE_TRANSLATE.DEFAULT_HOST.length > 0 &&

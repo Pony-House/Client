@@ -106,7 +106,8 @@ function LibreTranslateSection() {
                   content={
                     <div className="very-small text-gray">
                       Enter the host domain of your LibreTranslate instance. You can just type the
-                      domain, or type your address into a http or https protocol.
+                      domain, or type your address into a http or https protocol. If you are using
+                      localhost, place the address starting with "http://".
                     </div>
                   }
                 />

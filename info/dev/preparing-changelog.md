@@ -1,0 +1,1 @@
+- Libre Translate visible option added into the ".env" file.
