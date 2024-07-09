@@ -22,8 +22,8 @@ class SoundFiles {
   }
 
   get(file) {
-    if (soundFiles && soundFiles[file]) {
-      return soundFiles[file];
+    if (this.files[file]) {
+      return this.files[file];
     }
   }
 
@@ -56,3 +56,5 @@ class SoundFiles {
 
 const soundFiles = new SoundFiles();
 export default soundFiles;
+
+if (__ENV_APP__.MODE === 'development') global.soundFiles = soundFiles;
