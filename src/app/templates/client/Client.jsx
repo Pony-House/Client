@@ -6,6 +6,8 @@ import { canSupport } from '@src/util/matrixUtil';
 
 import settings from '@src/client/state/settings';
 import matrixAppearance from '@src/util/libs/appearance';
+import soundFiles from '@src/util/soundFiles';
+
 import { initHotkeys } from '../../../client/event/hotkeys';
 import { initRoomListListener } from '../../../client/event/roomList';
 
@@ -43,7 +45,6 @@ import {
   selectTab,
 } from '../../../client/action/navigation';
 import ElectronSidebar from './ElectronSidebar';
-import { getSound } from '@src/util/soundFiles';
 
 let versionChecked = false;
 
@@ -124,6 +125,7 @@ function Client({ isDevToolsOpen = false }) {
   const roomId = urlParams.get('room_id');
   const eventId = urlParams.get('event_id');
   const threadId = urlParams.get('thread_id');
+  const playFatalBeep = () => soundFiles.playNow('fatal_beep');
 
   useEffect(() => {
     startUserAfk();
@@ -195,6 +197,7 @@ function Client({ isDevToolsOpen = false }) {
         selectRoomMode(roomType);
 
       setTimeout(() => {
+        if (!startWorked) playFatalBeep();
         if (typeof roomId === 'string' && roomId.length > 0) {
           if (typeof roomType !== 'string') selectRoomMode('room');
           selectRoom(
@@ -211,13 +214,18 @@ function Client({ isDevToolsOpen = false }) {
     initMatrix
       .init()
       .then((tinyResult) => {
-        if (tinyResult.err && typeof tinyResult.err.message === 'string')
+        if (tinyResult.err && typeof tinyResult.err.message === 'string') {
           setErrorMessage(tinyResult.err.message);
+          playFatalBeep();
+        }
         setStartWorked(tinyResult.userId !== null);
       })
       .catch((err) => {
         console.error(err);
-        if (typeof err.message === 'string') setErrorMessage(err.message);
+        if (typeof err.message === 'string')
+          setErrorMessage(`${err.message}${err.code ? ` CODE: ${err.code}` : ''}`);
+        else setErrorMessage(`Unknown Error ${err.code ? err.code : '???'}`);
+        playFatalBeep();
         setStartWorked(null);
       });
   }, []);
@@ -337,50 +345,44 @@ function Client({ isDevToolsOpen = false }) {
         </DragDrop>
       </>
     );
-  } else {
-    const fatalBeep = getSound('fatal_beep');
-    if (fatalBeep) {
-      fatalBeep.pause();
-      fatalBeep.currentTime = 0;
-      fatalBeep.play();
-    }
-    return (
-      <>
-        <ElectronSidebar isDevToolsOpen={isDevToolsOpen} />
-        <div
-          className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}${isDevToolsOpen ? ' devtools-open' : ''}`}
-        >
-          <div className="loading__menu">
-            <ContextMenu
-              placement="bottom"
-              content={
-                <>
-                  <MenuItem onClick={() => initMatrix.clearCacheAndReload()}>
-                    Clear cache & reload
-                  </MenuItem>
-                  <MenuItem onClick={() => initMatrix.logout()}>Logout</MenuItem>
-                </>
-              }
-              render={(toggle) => (
-                <IconButton size="extra-small" onClick={toggle} fa="bi bi-three-dots-vertical" />
-              )}
-            />
-          </div>
-          <p className="loading__message h2 text-danger">
-            <i class="fa-solid fa-triangle-exclamation" />
-          </p>
-          <div className="small fw-bold text-uppercase mt-3 text-danger">CLIENT ERROR</div>
-          <div className="very-small fw-bold text-uppercase mt-3">{errorMessage}</div>
-
-          <div className="loading__appname">
-            <Text variant="h2" weight="medium">
-              {__ENV_APP__.INFO.name}
-            </Text>
-          </div>
-        </div>
-      </>
-    );
   }
+
+  return (
+    <>
+      <ElectronSidebar isDevToolsOpen={isDevToolsOpen} />
+      <div
+        className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}${isDevToolsOpen ? ' devtools-open' : ''}`}
+      >
+        <div className="loading__menu">
+          <ContextMenu
+            placement="bottom"
+            content={
+              <>
+                <MenuItem onClick={() => initMatrix.clearCacheAndReload()}>
+                  Clear cache & reload
+                </MenuItem>
+                <MenuItem onClick={() => initMatrix.logout()}>Logout</MenuItem>
+              </>
+            }
+            render={(toggle) => (
+              <IconButton size="extra-small" onClick={toggle} fa="bi bi-three-dots-vertical" />
+            )}
+          />
+        </div>
+        <p className="loading__message h2 text-danger">
+          <i className="fa-solid fa-triangle-exclamation" />
+        </p>
+        <div className="small fw-bold text-uppercase mt-3 text-danger">CLIENT ERROR</div>
+        <div className="very-small fw-bold text-uppercase mt-3">{errorMessage}</div>
+
+        <div className="loading__appname">
+          <Text variant="h2" weight="medium">
+            {__ENV_APP__.INFO.name}
+          </Text>
+        </div>
+      </div>
+    </>
+  );
 }
 
 Client.propTypes = {

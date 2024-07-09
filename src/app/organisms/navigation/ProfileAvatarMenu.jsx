@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import clone from 'clone';
 import jReact from '@mods/lib/jReact';
 import { readImageUrl } from '@src/util/libs/mediaCache';
-import { getSound } from '@src/util/soundFiles';
+import soundFiles from '@src/util/soundFiles';
 
 import IconButton from '../../atoms/button/IconButton';
 import { twemojifyReact } from '../../../util/twemojify';
@@ -187,25 +187,7 @@ function ProfileAvatarMenu() {
       setNewProfile(info.avatar_url, info.displayname, info.userId);
     });
 
-    const playMuteSound = (muted) => {
-      let sound;
-
-      try {
-        sound = getSound(muted ? 'micro_off' : 'micro_on');
-      } catch {
-        sound = null;
-      }
-
-      try {
-        if (sound) {
-          sound.pause();
-          sound.currentTime = 0;
-          sound.play();
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
+    const playMuteSound = (muted) => soundFiles.playNow(muted ? 'micro_off' : 'micro_on');
 
     const updateAudioMute = (muted) => {
       playMuteSound(muted);
