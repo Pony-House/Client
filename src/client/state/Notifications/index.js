@@ -510,19 +510,11 @@ class Notifications extends EventEmitter {
   }
 
   _playNotiSound() {
-    if (!this._notiAudio) {
-      this._notiAudio = soundFiles.notification;
-    }
-
-    this._notiAudio.play();
+    soundFiles.play('notification');
   }
 
   _playInviteSound() {
-    if (!this._inviteAudio) {
-      this._inviteAudio = soundFiles.invite;
-    }
-
-    this._inviteAudio.play();
+    soundFiles.play('invite');
   }
 
   _listenEvents() {
