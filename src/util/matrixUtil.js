@@ -67,7 +67,7 @@ export function getUsername(userId) {
 }
 
 export function getUsernameOfRoomMember(roomMember) {
-  return roomMember.name || roomMember.userId;
+  return roomMember.name || getUserId(roomMember.userId);
 }
 
 export async function isRoomAliasAvailable(alias) {
@@ -297,9 +297,50 @@ export async function hasDevice(userId, deviceId) {
   }
 }
 
+export function getHomeServer(yourUserId) {
+  return yourUserId.slice(yourUserId.indexOf(':') + 1);
+}
+
+export function getUserId(id = null) {
+  const mx = initMatrix.matrixClient;
+  const userId = id || mx.getUserId();
+  const homeserver = getHomeServer(mx.getUserId());
+
+  if (typeof userId === 'string') {
+    if (userId.startsWith('@')) {
+      const newUserId = userId.split(':');
+      if (newUserId.length > 1 && homeserver === newUserId[1]) {
+        return newUserId[0];
+      }
+      return newUserId.join(':');
+    }
+    return userId;
+  }
+  return '';
+}
+
+export function getUserIdReverse(id = null) {
+  const mx = initMatrix.matrixClient;
+  const userId = id || mx.getUserId();
+  if (typeof userId === 'string') {
+    if (userId.startsWith('@')) {
+      const newUserId = userId.split(':');
+      if (newUserId.length < 2) {
+        const yourUserId = mx.getUserId();
+        return `${newUserId[0]}:${getHomeServer(yourUserId)}`;
+      }
+      return newUserId.join(':');
+    }
+    return userId;
+  }
+  return '';
+}
+
 if (__ENV_APP__.MODE === 'development') {
   global.matrixUtil = {
     eventMaxListeners,
+    getUserId,
+    getUserIdReverse,
     getBaseUrl,
     getUsername,
     getUsernameOfRoomMember,

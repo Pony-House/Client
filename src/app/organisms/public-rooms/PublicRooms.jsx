@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { getHomeServer } from '@src/util/matrixUtil';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -324,7 +325,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
             <div className="mb-3">
               <Input
                 forwardRef={hsRef}
-                value={userId.slice(userId.indexOf(':') + 1)}
+                value={getHomeServer(userId)}
                 className2="mb-3"
                 className="text-center"
                 required
