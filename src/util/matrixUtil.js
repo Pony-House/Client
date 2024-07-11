@@ -300,47 +300,57 @@ export function getHomeServer(yourUserId) {
   return yourUserId.slice(yourUserId.indexOf(':') + 1);
 }
 
-export function convertUserId(id = null, forceMode = false) {
-  const mx = initMatrix.matrixClient;
-  const userId = id || mx.getUserId();
-  const homeserver = getHomeServer(mx.getUserId());
+const convertBaseId =
+  (where) =>
+  (id = null, forceMode = false) => {
+    const mx = initMatrix.matrixClient;
+    const userId = id || mx.getUserId();
+    const homeserver = getHomeServer(mx.getUserId());
 
-  if (typeof userId === 'string') {
-    if (userId.startsWith('@')) {
-      const newUserId = userId.split(':');
-      if (
-        newUserId.length > 1 &&
-        homeserver === newUserId[1] &&
-        (matrixAppearance.get('simplerHashtagSameHomeServer') || forceMode)
-      ) {
-        return newUserId[0];
+    if (typeof userId === 'string') {
+      if (userId.startsWith(where)) {
+        const newUserId = userId.split(':');
+        if (
+          newUserId.length > 1 &&
+          homeserver === newUserId[1] &&
+          (matrixAppearance.get('simplerHashtagSameHomeServer') || forceMode)
+        ) {
+          return newUserId[0];
+        }
+        return newUserId.join(':');
       }
-      return newUserId.join(':');
+      return userId;
     }
-    return userId;
-  }
-  return '';
-}
+    return '';
+  };
 
-export function convertUserIdReverse(id = null, forceMode = false) {
-  const mx = initMatrix.matrixClient;
-  const userId = id || mx.getUserId();
-  if (typeof userId === 'string') {
-    if (userId.startsWith('@')) {
-      const newUserId = userId.split(':');
-      if (
-        newUserId.length < 2 &&
-        (matrixAppearance.get('simplerHashtagSameHomeServer') || forceMode)
-      ) {
-        const yourUserId = mx.getUserId();
-        return `${newUserId[0]}:${getHomeServer(yourUserId)}`;
+export const convertUserId = convertBaseId('@');
+export const convertRoomId = convertBaseId('#');
+
+const convertBaseIdReverse =
+  (where) =>
+  (id = null, forceMode = false) => {
+    const mx = initMatrix.matrixClient;
+    const userId = id || mx.getUserId();
+    if (typeof userId === 'string') {
+      if (userId.startsWith(where)) {
+        const newUserId = userId.split(':');
+        if (
+          newUserId.length < 2 &&
+          (matrixAppearance.get('simplerHashtagSameHomeServer') || forceMode)
+        ) {
+          const yourUserId = mx.getUserId();
+          return `${newUserId[0]}:${getHomeServer(yourUserId)}`;
+        }
+        return newUserId.join(':');
       }
-      return newUserId.join(':');
+      return userId;
     }
-    return userId;
-  }
-  return '';
-}
+    return '';
+  };
+
+export const convertUserIdReverse = convertBaseIdReverse('@');
+export const convertRoomIdReverse = convertBaseIdReverse('#');
 
 if (__ENV_APP__.MODE === 'development') {
   global.matrixUtil = {

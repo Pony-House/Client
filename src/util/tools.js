@@ -10,6 +10,7 @@ import cons from '@src/client/state/cons';
 import tinyAPI from './mods';
 import { twemojify } from './twemojify';
 import mobileEvents, { isMobile } from './libs/mobile';
+import { convertRoomId } from './matrixUtil';
 
 let resizePlace = null;
 let resizeTimeout = null;
@@ -591,7 +592,7 @@ export function isBrowser() {
 }
 
 export function getShareUrl(aliasId) {
-  return `${__ENV_APP__.SHARE_URL.endsWith('/') ? __ENV_APP__.SHARE_URL : `${__ENV_APP__.SHARE_URL}/`}?room_id=${encodeURIComponent(aliasId)}`;
+  return `${__ENV_APP__.SHARE_URL.endsWith('/') ? __ENV_APP__.SHARE_URL : `${__ENV_APP__.SHARE_URL}/`}?room_id=${encodeURIComponent(!__ENV_APP__.FORCE_SIMPLER_SAME_HASHTAG ? aliasId : convertRoomId(aliasId))}`;
 }
 
 export function getFlagEmoji(countryCode) {
