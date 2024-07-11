@@ -196,17 +196,18 @@ function ProfileFooter({ roomId, userId, onRequestClose }) {
 
   const isMountedRef = useRef(true);
   const mx = initMatrix.matrixClient;
-  const room = mx.getRoom(roomId);
-  const member = room.getMember(userId);
+  const room = mx.getRoom(roomId) || {};
+  const member = room?.getMember(userId) || {};
   const isInvitable = member?.membership !== 'join' && member?.membership !== 'ban';
 
   const [isInviting, setIsInviting] = useState(false);
   const [isInvited, setIsInvited] = useState(member?.membership === 'invite');
 
-  const myPowerlevel = room.getMember(mx.getUserId())?.powerLevel || 0;
-  const userPL = room.getMember(userId)?.powerLevel || 0;
+  const myPowerlevel = room?.getMember(mx.getUserId())?.powerLevel || 0;
+  const userPL = room?.getMember(userId)?.powerLevel || 0;
   const canIKick =
-    getCurrentState(room).hasSufficientPowerLevelFor('kick', myPowerlevel) && userPL < myPowerlevel;
+    getCurrentState(room)?.hasSufficientPowerLevelFor('kick', myPowerlevel) &&
+    userPL < myPowerlevel;
 
   const isBanned = member?.membership === 'ban';
 
@@ -306,7 +307,7 @@ function ProfileFooter({ roomId, userId, onRequestClose }) {
         </Button>
       )}
 
-      {(isInvited ? canIKick : room.canInvite(mx.getUserId())) && isInvitable && (
+      {(isInvited ? canIKick : room?.canInvite(mx.getUserId())) && isInvitable && (
         <Button className="mx-2" variant="secondary" onClick={toggleInvite} disabled={isInviting}>
           {isInvited
             ? `${isInviting ? 'Disinviting...' : 'Disinvite'}`
@@ -789,15 +790,17 @@ function ProfileViewer() {
 
           <div className="card bg-bg">
             <div className="card-body">
-              <div className="profile-viewer__user__role float-end noselect">
-                <div className="very-small text-gray">Role</div>
-                <Button
-                  onClick={canChangeRole ? handlePowerSelector : null}
-                  faSrc={canChangeRole ? 'fa-solid fa-check' : null}
-                >
-                  {`${getPowerLabel(powerLevel) || 'Member'} - ${powerLevel}`}
-                </Button>
-              </div>
+              {roomId ? (
+                <div className="profile-viewer__user__role float-end noselect">
+                  <div className="very-small text-gray">Role</div>
+                  <Button
+                    onClick={canChangeRole ? handlePowerSelector : null}
+                    faSrc={canChangeRole ? 'fa-solid fa-check' : null}
+                  >
+                    {`${getPowerLabel(powerLevel) || 'Member'} - ${powerLevel}`}
+                  </Button>
+                </div>
+              ) : null}
 
               <h6 ref={displayNameRef} className="emoji-size-fix m-0 mb-1 fw-bold display-name">
                 <span className="button">{twemojifyReact(username)}</span>
@@ -852,7 +855,7 @@ function ProfileViewer() {
               />
             </div>
 
-            <ModerationTools roomId={roomId} userId={userId} />
+            {roomId ? <ModerationTools roomId={roomId} userId={userId} /> : null}
           </div>
 
           <SessionInfo userId={userId} />

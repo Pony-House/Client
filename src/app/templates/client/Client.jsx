@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import appLoadMsg from '@mods/appLoadMsg';
-import { canSupport, convertRoomIdReverse } from '@src/util/matrixUtil';
+import { appearRoomProfile, canSupport, convertRoomIdReverse } from '@src/util/matrixUtil';
 
 import settings from '@src/client/state/settings';
 import matrixAppearance from '@src/util/libs/appearance';
@@ -211,10 +211,7 @@ function Client({ isDevToolsOpen = false }) {
                 : null,
             );
           } else {
-            const openRoomId = !__ENV_APP__.FORCE_SIMPLER_SAME_HASHTAG
-              ? roomId
-              : convertRoomIdReverse(roomId);
-            openRoomViewer(openRoomId, openRoomId, true);
+            appearRoomProfile(roomId);
           }
         }
       }, 100);
