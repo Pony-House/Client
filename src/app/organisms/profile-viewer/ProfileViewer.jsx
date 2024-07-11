@@ -197,15 +197,16 @@ function ProfileFooter({ roomId, userId, onRequestClose }) {
   const isMountedRef = useRef(true);
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId) || {};
-  const member = room?.getMember(userId) || {};
+  const member = (room && room.getMember && room.getMember(userId)) || {};
   const isInvitable = member?.membership !== 'join' && member?.membership !== 'ban';
 
   const [isInviting, setIsInviting] = useState(false);
   const [isInvited, setIsInvited] = useState(member?.membership === 'invite');
 
-  const myPowerlevel = room?.getMember(mx.getUserId())?.powerLevel || 0;
-  const userPL = room?.getMember(userId)?.powerLevel || 0;
+  const myPowerlevel = (room && room.getMember && room.getMember(mx.getUserId())?.powerLevel) || 0;
+  const userPL = (room && room.getMember && room.getMember(userId)?.powerLevel) || 0;
   const canIKick =
+    room?.getLiveTimeline &&
     getCurrentState(room)?.hasSufficientPowerLevelFor('kick', myPowerlevel) &&
     userPL < myPowerlevel;
 
@@ -307,13 +308,14 @@ function ProfileFooter({ roomId, userId, onRequestClose }) {
         </Button>
       )}
 
-      {(isInvited ? canIKick : room?.canInvite(mx.getUserId())) && isInvitable && (
-        <Button className="mx-2" variant="secondary" onClick={toggleInvite} disabled={isInviting}>
-          {isInvited
-            ? `${isInviting ? 'Disinviting...' : 'Disinvite'}`
-            : `${isInviting ? 'Inviting...' : 'Invite'}`}
-        </Button>
-      )}
+      {(isInvited ? canIKick : room && room.canInvite && room.canInvite(mx.getUserId())) &&
+        isInvitable && (
+          <Button className="mx-2" variant="secondary" onClick={toggleInvite} disabled={isInviting}>
+            {isInvited
+              ? `${isInviting ? 'Disinviting...' : 'Disinvite'}`
+              : `${isInviting ? 'Inviting...' : 'Invite'}`}
+          </Button>
+        )}
 
       <Button
         className="ms-2"
@@ -410,8 +412,8 @@ function ProfileViewer() {
   const mx = initMatrix.matrixClient;
 
   const user = mx.getUser(userId);
-  const room = mx.getRoom(roomId);
-  const roomMember = room ? room.getMember(userId) : null;
+  const room = mx.getRoom(roomId) || {};
+  const roomMember = room && room.getMember ? room.getMember(userId) : null;
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [username, setUsername] = useState(null);
 
@@ -643,7 +645,7 @@ function ProfileViewer() {
         .on('keypress keyup keydown', tinyNoteSpacing)
         .val(tinyNote);
 
-      tinyNoteSpacing({ target: noteRef.current });
+      if (noteRef.current) tinyNoteSpacing({ target: noteRef.current });
       if (user) updateProfileStatus(null, user);
 
       return () => {
@@ -705,10 +707,11 @@ function ProfileViewer() {
   // Render Profile
   const renderProfile = () => {
     const powerLevel = roomMember?.powerLevel || 0;
-    const myPowerLevel = room.getMember(mx.getUserId())?.powerLevel || 0;
+    const myPowerLevel = (room.getMember && room.getMember(mx.getUserId())?.powerLevel) || 0;
 
     const canChangeRole =
-      getCurrentState(room).maySendEvent('m.room.power_levels', mx.getUserId()) &&
+      room.getLiveTimeline &&
+      getCurrentState(room)?.maySendEvent('m.room.power_levels', mx.getUserId()) &&
       (powerLevel < myPowerLevel || userId === mx.getUserId());
 
     const handleChangePowerLevel = async (newPowerLevel) => {
@@ -874,7 +877,7 @@ function ProfileViewer() {
       onAfterClose={handleAfterClose}
       onRequestClose={closeDialog}
     >
-      {roomId ? renderProfile() : <div />}
+      {userId ? renderProfile() : null}
     </Dialog>
   );
 }

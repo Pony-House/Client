@@ -2,7 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import appLoadMsg from '@mods/appLoadMsg';
-import { appearRoomProfile, canSupport, convertRoomIdReverse } from '@src/util/matrixUtil';
+import {
+  appearRoomProfile,
+  appearUserProfile,
+  canSupport,
+  convertRoomIdReverse,
+} from '@src/util/matrixUtil';
 
 import settings from '@src/client/state/settings';
 import matrixAppearance from '@src/util/libs/appearance';
@@ -126,6 +131,7 @@ function Client({ isDevToolsOpen = false }) {
   const roomId = urlParams.get('room_id');
   const eventId = urlParams.get('event_id');
   const threadId = urlParams.get('thread_id');
+  const userId = urlParams.get('user_id');
   const playFatalBeep = () => soundFiles.playNow('fatal_beep');
 
   useEffect(() => {
@@ -197,10 +203,17 @@ function Client({ isDevToolsOpen = false }) {
       if ((typeof roomType === 'string' && roomType === 'room') || roomType === 'navigation')
         selectRoomMode(roomType);
 
+      // Read params
       setTimeout(() => {
+        // Beep
         if (!startWorked) playFatalBeep();
+
+        // Room Id
         if (typeof roomId === 'string' && roomId.length > 0) {
+          // Exist room
           const room = initMatrix.matrixClient.getRoom(roomId);
+
+          // Open room
           if (room) {
             if (typeof roomType !== 'string') selectRoomMode('room');
             selectRoom(
@@ -210,9 +223,17 @@ function Client({ isDevToolsOpen = false }) {
                 ? threadId
                 : null,
             );
-          } else {
+          }
+
+          // Show room profile
+          else {
             appearRoomProfile(roomId);
           }
+        }
+
+        // User Id
+        else if (typeof userId === 'string' && userId.length > 0) {
+          appearUserProfile(userId);
         }
       }, 100);
     });
