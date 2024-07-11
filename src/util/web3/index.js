@@ -13,7 +13,6 @@ import { objType } from 'for-promise/utils/lib.mjs';
 import startStatus from './status';
 import initMatrix from '../../client/initMatrix';
 import envAPI from '../libs/env';
-import { eventMaxListeners } from '../matrixUtil';
 
 const tinyCrypto = {};
 let web3;
@@ -228,7 +227,7 @@ const startWeb3 = (/* tcall */) => {
     // Emitter
     class MyEmitter extends EventEmitter {}
     const myEmitter = new MyEmitter();
-    myEmitter.setMaxListeners(eventMaxListeners);
+    myEmitter.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
     tinyCrypto.on = (where, callback) => myEmitter.on(where, callback);
 

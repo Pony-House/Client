@@ -117,7 +117,9 @@ function ProfileEditor({ userId = null }) {
           onClick={() => setIsEditing(true)}
         />
       </div>
-      <div className="small">{convertUserId(mx.getUserId())}</div>
+      <div className="small">
+        {__ENV_APP__.FORCE_SIMPLER_SAME_HASHTAG ? convertUserId(mx.getUserId()) : mx.getUserId()}
+      </div>
     </div>
   );
 

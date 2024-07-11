@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useReducer } from 'react';
 import PropTypes from 'prop-types';
+import matrixAppearance from '@src/util/libs/appearance';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -20,6 +21,7 @@ import PopupWindow from '../../molecules/popup-window/PopupWindow';
 import RoomTile from '../../molecules/room-tile/RoomTile';
 
 function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
+  const [, forceUpdate] = useReducer((count) => count + 1, 0);
   const [isSearching, updateIsSearching] = useState(false);
   const [searchQuery, updateSearchQuery] = useState({});
   const [users, updateUsers] = useState([]);
@@ -254,6 +256,14 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
       };
     }
   }, [isOpen, procUsers, createdDM, roomIdToUserId]);
+
+  useEffect(() => {
+    const tinyUpdate = () => forceUpdate();
+    matrixAppearance.off('simplerHashtagSameHomeServer', tinyUpdate);
+    return () => {
+      matrixAppearance.off('simplerHashtagSameHomeServer', tinyUpdate);
+    };
+  });
 
   return (
     <PopupWindow

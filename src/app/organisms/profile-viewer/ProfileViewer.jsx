@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import clone from 'clone';
 import envAPI from '@src/util/libs/env';
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
+import matrixAppearance from '@src/util/libs/appearance';
 
 import { twemojifyReact } from '../../../util/twemojify';
 import { getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
@@ -53,6 +54,7 @@ import copyText from './copyText';
 import tinyAPI from '../../../util/mods';
 
 function ModerationTools({ roomId, userId }) {
+  const [, forceUpdate] = useReducer((count) => count + 1, 0);
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
   const roomMember = room.getMember(userId);
@@ -79,6 +81,14 @@ function ModerationTools({ roomId, userId }) {
     const banReason = e.target.elements['ban-reason']?.value.trim();
     roomActions.ban(roomId, userId, banReason !== '' ? banReason : undefined);
   };
+
+  useEffect(() => {
+    const tinyUpdate = () => forceUpdate();
+    matrixAppearance.off('simplerHashtagSameHomeServer', tinyUpdate);
+    return () => {
+      matrixAppearance.off('simplerHashtagSameHomeServer', tinyUpdate);
+    };
+  });
 
   return (
     (canIKick || canIBan) && (

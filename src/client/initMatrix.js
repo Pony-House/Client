@@ -14,7 +14,6 @@ import {
 } from '@src/app/atoms/avatar/defaultAvatar';
 
 import MatrixVoiceChat from '@src/util/libs/voiceChat';
-import { eventMaxListeners } from '@src/util/matrixUtil';
 
 import { secret } from './state/auth';
 import RoomList from './state/RoomList';
@@ -167,7 +166,7 @@ class InitMatrix extends EventEmitter {
         await this.matrixClient.initRustCrypto();
       }
 
-      this.matrixClient.setMaxListeners(eventMaxListeners);
+      this.matrixClient.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
       await this.matrixClient.startClient({
         lazyLoadMembers: true,
@@ -212,11 +211,11 @@ class InitMatrix extends EventEmitter {
           this.notifications = new Notifications(this.roomList);
           this.voiceChat = new MatrixVoiceChat(this.matrixClient);
 
-          this.matrixClient.setMaxListeners(eventMaxListeners);
-          this.accountData.setMaxListeners(eventMaxListeners);
-          this.roomList.setMaxListeners(eventMaxListeners);
-          this.roomsInput.setMaxListeners(eventMaxListeners);
-          this.notifications.setMaxListeners(eventMaxListeners);
+          this.matrixClient.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
+          this.accountData.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
+          this.roomList.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
+          this.roomsInput.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
+          this.notifications.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
           this.emit('init_loading_finished');
           this.notifications._initNoti();
@@ -281,6 +280,6 @@ class InitMatrix extends EventEmitter {
 }
 
 const initMatrix = new InitMatrix();
-initMatrix.setMaxListeners(eventMaxListeners);
+initMatrix.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
 export default initMatrix;

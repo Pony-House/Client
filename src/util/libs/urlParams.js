@@ -1,6 +1,5 @@
 // Module
 import EventEmitter from 'events';
-import { eventMaxListeners } from '../matrixUtil';
 
 // Events
 (function (history) {
@@ -118,7 +117,7 @@ class MatrixUrlParams extends EventEmitter {
 
 // Functions and class
 const urlParams = new MatrixUrlParams();
-urlParams.setMaxListeners(eventMaxListeners);
+urlParams.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 export default urlParams;
 
 if (__ENV_APP__.MODE === 'development') {

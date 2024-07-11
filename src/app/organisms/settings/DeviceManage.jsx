@@ -3,7 +3,7 @@ import moment, { momentFormat } from '@src/util/libs/momentjs';
 import SettingLoading from '@src/app/molecules/setting-loading/SettingLoading';
 
 import initMatrix from '../../../client/initMatrix';
-import { eventMaxListeners, isCrossVerified } from '../../../util/matrixUtil';
+import { isCrossVerified } from '../../../util/matrixUtil';
 import { openReusableDialog, openEmojiVerification } from '../../../client/action/navigation';
 
 import Text from '../../atoms/text/Text';
@@ -126,7 +126,7 @@ function DeviceManage() {
     try {
       const updateList = () => setDevicesChecked(false);
       const crypto = mx.getCrypto();
-      crypto.setMaxListeners(eventMaxListeners);
+      crypto.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
       crypto.on('deviceVerificationChanged', updateList);
       crypto.on('userCrossSigningUpdated', updateList);
       crypto.on('userTrustStatusChanged', updateList);

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 import { readImageUrl } from '@src/util/libs/mediaCache';
-import { eventMaxListeners } from '@src/util/matrixUtil';
 
 import { twemojifyReact, TWEMOJI_BASE_URL } from '../../../util/twemojify';
 
@@ -169,7 +168,7 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
 }
 
 const asyncSearch = new AsyncSearch();
-asyncSearch.setMaxListeners(eventMaxListeners);
+asyncSearch.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 let cmdPrefix;
 let cmdOption;
 function RoomViewCmdBar({ roomId, roomTimeline, viewEvent, refcmdInput }) {

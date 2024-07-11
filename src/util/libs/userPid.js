@@ -2,7 +2,6 @@ import EventEmitter from 'events';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import initMatrix from '@src/client/initMatrix';
-import { eventMaxListeners } from '../matrixUtil';
 
 // Emitter
 class UserPid extends EventEmitter {
@@ -71,7 +70,7 @@ class UserPid extends EventEmitter {
 
 // Functions and class
 const userPid = new UserPid();
-userPid.setMaxListeners(eventMaxListeners);
+userPid.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 export default userPid;
 
 if (__ENV_APP__.MODE === 'development') {

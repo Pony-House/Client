@@ -1,5 +1,4 @@
 import { EventEmitter } from 'events';
-import { eventMaxListeners } from '../matrixUtil';
 
 class FavIconManager extends EventEmitter {
   constructor() {
@@ -148,5 +147,5 @@ class FavIconManager extends EventEmitter {
 }
 
 const favIconManager = new FavIconManager();
-favIconManager.setMaxListeners(eventMaxListeners);
+favIconManager.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 export default favIconManager;

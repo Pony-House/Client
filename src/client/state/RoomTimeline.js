@@ -6,7 +6,6 @@ import { objType } from 'for-promise/utils/lib.mjs';
 
 import moment from '@src/util/libs/momentjs';
 import attemptDecryption from '@src/util/libs/attemptDecryption';
-import { eventMaxListeners } from '@src/util/matrixUtil';
 // import { insertIntoRoomEventsDB } from '@src/util/libs/roomEventsDB';
 
 import {
@@ -165,7 +164,7 @@ class RoomTimeline extends EventEmitter {
     super();
 
     // These are local timelines
-    this.setMaxListeners(eventMaxListeners);
+    this.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
     this.timeline = [];
     this.crdt = {};
     this.editedTimeline = new Map();
@@ -189,7 +188,7 @@ class RoomTimeline extends EventEmitter {
           timelineSupport: true,
         });
 
-    this.room.setMaxListeners(eventMaxListeners);
+    this.room.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
     // Nothing! Tiny cancel time.
     if (this.room === null) {
@@ -317,10 +316,10 @@ class RoomTimeline extends EventEmitter {
 
   static newFromThread(threadId, roomId) {
     const roomTimeline = new RoomTimeline(roomId);
-    roomTimeline.setMaxListeners(eventMaxListeners);
+    roomTimeline.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
     const thread = roomTimeline.room.getThread(threadId);
     if (!thread) return null;
-    thread.setMaxListeners(eventMaxListeners);
+    thread.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
     roomTimeline.liveTimeline = thread.liveTimeline;
     roomTimeline.activeTimeline = thread.liveTimeline;

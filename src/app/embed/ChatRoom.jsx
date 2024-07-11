@@ -6,8 +6,6 @@ import { objType } from 'for-promise/utils/lib.mjs';
 
 import Olm from '@matrix-org/olm';
 
-import { eventMaxListeners } from '@src/util/matrixUtil';
-
 import { isAuthenticated } from '../../client/state/auth';
 import RoomTimeline from '../../client/state/RoomTimeline';
 import initMatrix from '../../client/initMatrix';
@@ -195,7 +193,7 @@ function ChatRoom({ roomId, homeserver = null, joinGuest, refreshTime, theme, us
 
                   join(roomId, false, via).then((tinyRoom) => {
                     const newTimeline = new RoomTimeline(tinyRoom);
-                    newTimeline.setMaxListeners(eventMaxListeners);
+                    newTimeline.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
                     setTimeline(newTimeline);
                     setIsLoading(0);
                   });
@@ -211,7 +209,7 @@ function ChatRoom({ roomId, homeserver = null, joinGuest, refreshTime, theme, us
                       : null,
                   );
 
-                  newTimeline.setMaxListeners(eventMaxListeners);
+                  newTimeline.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
                   setTimeline(newTimeline);
                   setIsLoading(0);
                 }

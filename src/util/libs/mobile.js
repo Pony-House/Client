@@ -2,7 +2,6 @@
 // import { Capacitor } from '@capacitor/core';
 // import { LocalNotifications } from '@capacitor/local-notifications';
 import EventEmitter from 'events';
-import { eventMaxListeners } from '../matrixUtil';
 
 // Emitter
 class MobileEvents extends EventEmitter {
@@ -80,7 +79,7 @@ class MobileEvents extends EventEmitter {
 }
 
 const mobileEvents = new MobileEvents();
-mobileEvents.setMaxListeners(eventMaxListeners);
+mobileEvents.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
 export function isMobile(isNative = false) {
   // if (!isNative) {

@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 import { addToDataFolder, getDataList } from '../selectedRoom';
-import { eventMaxListeners, getUsername, getUsernameOfRoomMember } from '../matrixUtil';
+import { getUsername, getUsernameOfRoomMember } from '../matrixUtil';
 
 class MuteUserManager extends EventEmitter {
   constructor() {
@@ -152,5 +152,5 @@ class MuteUserManager extends EventEmitter {
 }
 
 const muteUserManager = new MuteUserManager();
-muteUserManager.setMaxListeners(eventMaxListeners);
+muteUserManager.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 export default muteUserManager;

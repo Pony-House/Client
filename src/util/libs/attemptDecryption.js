@@ -1,7 +1,6 @@
 import initMatrix from '@src/client/initMatrix';
 import EventEmitter from 'events';
 import { objType } from 'for-promise/utils/lib.mjs';
-import { eventMaxListeners } from '../matrixUtil';
 
 // Emitter
 class AttemptDecryption extends EventEmitter {
@@ -31,5 +30,5 @@ class AttemptDecryption extends EventEmitter {
 }
 
 const attemptDecryption = new AttemptDecryption();
-attemptDecryption.setMaxListeners(eventMaxListeners);
+attemptDecryption.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 export default attemptDecryption;

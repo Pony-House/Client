@@ -4,11 +4,7 @@ import PropTypes from 'prop-types';
 import initMatrix from '../../../client/initMatrix';
 import { colorMXID } from '../../../util/colorMXID';
 import { openProfileViewer, openReusableContextMenu } from '../../../client/action/navigation';
-import {
-  getUsernameOfRoomMember,
-  getPowerLabel,
-  eventMaxListeners,
-} from '../../../util/matrixUtil';
+import { getUsernameOfRoomMember, getPowerLabel } from '../../../util/matrixUtil';
 import AsyncSearch from '../../../util/AsyncSearch';
 import { memberByAtoZ, memberByPowerLevel } from '../../../util/sort';
 
@@ -75,7 +71,7 @@ function useMemberOfMembership(roomId, membership) {
 function useSearchMembers(members) {
   const [searchMembers, setSearchMembers] = useState(null);
   const [asyncSearch] = useState(new AsyncSearch());
-  if (asyncSearch) asyncSearch.setMaxListeners(eventMaxListeners);
+  if (asyncSearch) asyncSearch.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
   const reSearch = useCallback(() => {
     if (searchMembers) {

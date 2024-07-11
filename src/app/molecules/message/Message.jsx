@@ -39,7 +39,6 @@ import {
   parseReply,
   trimHTMLReply,
   getCurrentState,
-  eventMaxListeners,
   canSupport,
 } from '../../../util/matrixUtil';
 
@@ -1291,7 +1290,7 @@ const MessageThreadSummary = React.memo(({ thread, useManualCheck = false }) => 
   const [lastReply, setLastReply] = useState(thread.lastReply());
   const [manualCheck, setManualCheck] = useState(false);
   const [show, setShow] = useState(false);
-  thread.setMaxListeners(eventMaxListeners);
+  thread.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
   // can't have empty threads
   if (thread.length === 0) return null;
@@ -1655,7 +1654,7 @@ function Message({
   // make the message transparent while sending and red if it failed sending
   const [messageStatus, setMessageStatus] = useState(mEvent.status);
 
-  mEvent.setMaxListeners(eventMaxListeners);
+  mEvent.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
   mEvent.once(MatrixEventEvent.Status, (e) => {
     setMessageStatus(e.status);
   });

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { convertUserId } from '@src/util/matrixUtil';
+import matrixAppearance from '@src/util/libs/appearance';
 
 import { twemojifyReact } from '../../../util/twemojify';
 
@@ -19,6 +20,16 @@ function RoomTile({
   desc = null,
   options = null,
 }) {
+  const [, forceUpdate] = useReducer((count) => count + 1, 0);
+
+  useEffect(() => {
+    const tinyUpdate = () => forceUpdate();
+    matrixAppearance.off('simplerHashtagSameHomeServer', tinyUpdate);
+    return () => {
+      matrixAppearance.off('simplerHashtagSameHomeServer', tinyUpdate);
+    };
+  });
+
   return (
     <div className="room-tile">
       <div className="room-tile__avatar">

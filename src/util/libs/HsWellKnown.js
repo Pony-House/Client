@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import * as auth from '@src/client/action/auth';
-import { getBaseUrl, eventMaxListeners } from '../matrixUtil';
+import { getBaseUrl } from '../matrixUtil';
 
 // Emitter
 class HsWellKnown extends EventEmitter {
@@ -188,7 +188,7 @@ class HsWellKnown extends EventEmitter {
 
 // Export
 const hsWellKnown = new HsWellKnown();
-hsWellKnown.setMaxListeners(eventMaxListeners);
+hsWellKnown.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 export default hsWellKnown;
 
 // DEV

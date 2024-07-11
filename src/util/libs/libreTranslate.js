@@ -2,7 +2,6 @@ import EventEmitter from 'events';
 import * as linkify from 'linkifyjs';
 import { objType } from 'for-promise/utils/lib.mjs';
 
-import { eventMaxListeners } from '../matrixUtil';
 import { fetchFn } from '@src/client/initMatrix';
 import i18 from './locale';
 
@@ -248,7 +247,7 @@ class LibreTranslate extends EventEmitter {
 
 // Functions and class
 const libreTranslate = new LibreTranslate();
-libreTranslate.setMaxListeners(eventMaxListeners);
+libreTranslate.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 export default libreTranslate;
 
 if (__ENV_APP__.MODE === 'development') {

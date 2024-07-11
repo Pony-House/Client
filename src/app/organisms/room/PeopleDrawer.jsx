@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import settings from '@src/client/state/settings';
 
 import initMatrix from '../../../client/initMatrix';
-import {
-  eventMaxListeners,
-  getPowerLabel,
-  getUsernameOfRoomMember,
-} from '../../../util/matrixUtil';
+import { getPowerLabel, getUsernameOfRoomMember } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
 import {
   openInviteUser,
@@ -44,7 +40,7 @@ function simplyfiMembers(members) {
 }
 
 const asyncSearch = new AsyncSearch();
-asyncSearch.setMaxListeners(eventMaxListeners);
+asyncSearch.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 function PeopleDrawer({
   roomId,
   isUserList,

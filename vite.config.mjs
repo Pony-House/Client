@@ -149,6 +149,8 @@ export default defineConfig(({ command, mode }) => {
 
     SAVE_ROOM_DB: addBooleanToEnv('SAVE_ROOM_DB'),
     DISCORD_STYLE: addBooleanToEnv('DISCORD_STYLE'),
+    SIMPLER_HASHTAG_SAME_HOMESERVER: addBooleanToEnv('SIMPLER_HASHTAG_SAME_HOMESERVER'),
+    FORCE_SIMPLER_SAME_HASHTAG: addBooleanToEnv('FORCE_SIMPLER_SAME_HASHTAG'),
     SHOW_STICKERS: addBooleanToEnv('SHOW_STICKERS'),
     USE_CUSTOM_EMOJIS: addBooleanToEnv('USE_CUSTOM_EMOJIS'),
     USE_ANIM_PARAMS: addBooleanToEnv('USE_ANIM_PARAMS'),

@@ -286,10 +286,12 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
     const updateClock = () => forceUpdate();
     matrixAppearance.on('is24hours', updateClock);
     matrixAppearance.on('calendarFormat', updateClock);
+    matrixAppearance.on('simplerHashtagSameHomeServer', updateClock);
 
     return () => {
       matrixAppearance.off('is24hours', updateClock);
       matrixAppearance.off('calendarFormat', updateClock);
+      matrixAppearance.off('simplerHashtagSameHomeServer', updateClock);
     };
   });
 

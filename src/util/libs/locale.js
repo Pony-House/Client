@@ -1,8 +1,6 @@
 import { objType } from 'for-promise/utils/lib.mjs';
 import EventEmitter from 'events';
 
-import { eventMaxListeners } from '../matrixUtil';
-
 // Emitter
 class TinyLocale extends EventEmitter {
   constructor() {
@@ -38,7 +36,7 @@ class TinyLocale extends EventEmitter {
 
 // Functions and class
 const i18 = new TinyLocale();
-i18.setMaxListeners(eventMaxListeners);
+i18.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 export default i18;
 
 if (__ENV_APP__.MODE === 'development') {

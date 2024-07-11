@@ -4,7 +4,6 @@ import clone from 'clone';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import moment, { calendarFormat, localeIs12Hours } from './momentjs';
-import { eventMaxListeners } from '../matrixUtil';
 
 // Animated Image Url
 export function getAnimatedImageUrl(url) {
@@ -129,6 +128,12 @@ class MatrixAppearance extends EventEmitter {
           ? this.content.enableAnimParams
           : !!__ENV_APP__.USE_ANIM_PARAMS;
 
+      this.content.simplerHashtagSameHomeServer = !__ENV_APP__.FORCE_SIMPLER_SAME_HASHTAG
+        ? typeof this.content.simplerHashtagSameHomeServer === 'boolean'
+          ? this.content.simplerHashtagSameHomeServer
+          : !!__ENV_APP__.SIMPLER_HASHTAG_SAME_HOMESERVER
+        : true;
+
       this.content.isDiscordStyleEnabled =
         typeof this.content.isDiscordStyleEnabled === 'boolean'
           ? this.content.isDiscordStyleEnabled
@@ -211,7 +216,7 @@ const toggleAppearanceAction = (dataFolder, setToggle) => (data) => {
   setToggle(data === true);
 };
 
-matrixAppearance.setMaxListeners(eventMaxListeners);
+matrixAppearance.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
 export { toggleAppearanceAction };
 export default matrixAppearance;

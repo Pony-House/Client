@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useReducer } from 'react';
 
 import clone from 'clone';
 import jReact from '@mods/lib/jReact';
@@ -23,7 +23,10 @@ import tinyAPI from '../../../util/mods';
 import { enableAfkSystem } from '../../../util/userStatusEffects';
 import { getUserWeb3Account } from '../../../util/web3';
 
-import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
+import matrixAppearance, {
+  getAppearance,
+  getAnimatedImageUrl,
+} from '../../../util/libs/appearance';
 
 // Account Status
 const accountStatus = { status: null, data: null };
@@ -49,6 +52,7 @@ function ProfileAvatarMenu() {
   const customStatusRef = useRef(null);
   const statusRef = useRef(null);
 
+  const [, forceUpdate] = useReducer((count) => count + 1, 0);
   const [microphoneMuted, setMicrophoneMuted] = useState(voiceChat.getMicrophoneMute());
   const [audioMuted, setAudioMuted] = useState(voiceChat.getAudioMute());
 
@@ -221,6 +225,14 @@ function ProfileAvatarMenu() {
   const newStatus = `user-status-icon ${getUserStatus(user)}`;
 
   const appearanceSettings = getAppearance();
+
+  useEffect(() => {
+    const tinyUpdate = () => forceUpdate();
+    matrixAppearance.off('simplerHashtagSameHomeServer', tinyUpdate);
+    return () => {
+      matrixAppearance.off('simplerHashtagSameHomeServer', tinyUpdate);
+    };
+  });
 
   // Complete
   return (

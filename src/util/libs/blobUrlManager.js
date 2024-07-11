@@ -1,7 +1,6 @@
 import { EventEmitter } from 'events';
 import { generateApiKey } from 'generate-api-key';
 import md5 from 'md5';
-import { eventMaxListeners } from '../matrixUtil';
 
 class BlobUrlManager extends EventEmitter {
   // Constructor
@@ -208,7 +207,7 @@ export function blobToBase64(blob) {
 
 // Module
 const blobUrlManager = new BlobUrlManager();
-blobUrlManager.setMaxListeners(eventMaxListeners);
+blobUrlManager.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 export default blobUrlManager;
 
 if (__ENV_APP__.MODE === 'development') {

@@ -4,7 +4,6 @@ import { objType } from 'for-promise/utils/lib.mjs';
 
 import blobUrlManager from '@src/util/libs/blobUrlManager';
 import matrixAppearance from '@src/util/libs/appearance';
-import { eventMaxListeners } from '@src/util/matrixUtil';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -70,7 +69,7 @@ function Room() {
     const setRoomSelected = (roomId, threadId, eventId, forceScroll) => {
       const threadTimeline = threadId ? RoomTimeline.newFromThread(threadId, roomId) : null;
       const roomTimeline = threadTimeline ?? new RoomTimeline(roomId);
-      roomTimeline.setMaxListeners(eventMaxListeners);
+      roomTimeline.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
       sendRoomInfo({
         roomTimeline,
