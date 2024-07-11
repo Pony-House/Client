@@ -100,10 +100,11 @@ export default defineConfig(({ command, mode }) => {
   console.log(`[vite-config] [electron] ${electronMode}`);
   const addBooleanToEnv = (valueName) =>
     !!(env[valueName] === true || env[valueName] === 'true');
+  const forceDevMode = addBooleanToEnv('FORCE_DEV_MODE');
 
   const envData = {
 
-    MODE: mode,
+    MODE: !forceDevMode ? mode : 'development',
     COMMAND: command,
     ELECTRON_MODE: electronMode,
     VERSION: pkg.version,
