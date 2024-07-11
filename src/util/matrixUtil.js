@@ -67,7 +67,7 @@ export function getUsername(userId) {
 }
 
 export function getUsernameOfRoomMember(roomMember) {
-  return roomMember.name || getUserId(roomMember.userId);
+  return roomMember.name || convertUserId(roomMember.userId);
 }
 
 export async function isRoomAliasAvailable(alias) {
@@ -301,7 +301,9 @@ export function getHomeServer(yourUserId) {
   return yourUserId.slice(yourUserId.indexOf(':') + 1);
 }
 
-export function getUserId(id = null) {
+let useLessUsername = true;
+
+export function convertUserId(id = null, forceMode = false) {
   const mx = initMatrix.matrixClient;
   const userId = id || mx.getUserId();
   const homeserver = getHomeServer(mx.getUserId());
@@ -309,7 +311,7 @@ export function getUserId(id = null) {
   if (typeof userId === 'string') {
     if (userId.startsWith('@')) {
       const newUserId = userId.split(':');
-      if (newUserId.length > 1 && homeserver === newUserId[1]) {
+      if (newUserId.length > 1 && homeserver === newUserId[1] && (useLessUsername || forceMode)) {
         return newUserId[0];
       }
       return newUserId.join(':');
@@ -319,13 +321,13 @@ export function getUserId(id = null) {
   return '';
 }
 
-export function getUserIdReverse(id = null) {
+export function convertUserIdReverse(id = null, forceMode = false) {
   const mx = initMatrix.matrixClient;
   const userId = id || mx.getUserId();
   if (typeof userId === 'string') {
     if (userId.startsWith('@')) {
       const newUserId = userId.split(':');
-      if (newUserId.length < 2) {
+      if (newUserId.length < 2 && (useLessUsername || forceMode)) {
         const yourUserId = mx.getUserId();
         return `${newUserId[0]}:${getHomeServer(yourUserId)}`;
       }
@@ -339,8 +341,8 @@ export function getUserIdReverse(id = null) {
 if (__ENV_APP__.MODE === 'development') {
   global.matrixUtil = {
     eventMaxListeners,
-    getUserId,
-    getUserIdReverse,
+    convertUserId,
+    convertUserIdReverse,
     getBaseUrl,
     getUsername,
     getUsernameOfRoomMember,
