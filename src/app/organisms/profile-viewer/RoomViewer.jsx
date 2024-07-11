@@ -15,7 +15,7 @@ import navigation from '../../../client/state/navigation';
 import { selectRoom, selectRoomMode, selectTab } from '../../../client/action/navigation';
 import * as roomActions from '../../../client/action/room';
 
-import { getCurrentState, hasDMWith, hasDevices } from '../../../util/matrixUtil';
+import { convertRoomId, getCurrentState, hasDMWith, hasDevices } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
 
 import Avatar, { avatarDefaultColor } from '../../atoms/avatar/Avatar';
@@ -355,7 +355,13 @@ function RoomViewer() {
                 </h6>
               ) : null}
               <small ref={userNameRef} className="text-gray emoji-size-fix username">
-                <span className="button">{twemojifyReact(originalRoomId)}</span>
+                <span className="button">
+                  {twemojifyReact(
+                    !__ENV_APP__.FORCE_SIMPLER_SAME_HASHTAG
+                      ? originalRoomId
+                      : convertRoomId(originalRoomId),
+                  )}
+                </span>
               </small>
 
               {typeof profileData.topic === 'string' && profileData.topic.length > 0 ? (
