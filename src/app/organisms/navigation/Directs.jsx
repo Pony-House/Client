@@ -75,7 +75,7 @@ function Directs({ size }) {
   return (
     <>
       <div className="px-3 pe-2 pb-2 pt-4 text-truncate noselect">
-        <span className="no-category-button text-gray very-small text-uppercase text-truncate ms-2">
+        <span className="no-category-button text-gray very-small text-uppercase text-truncate ms-2 noselect">
           Rooms
         </span>
       </div>

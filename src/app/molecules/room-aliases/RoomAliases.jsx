@@ -256,7 +256,7 @@ function RoomAliases({ roomId }) {
     if (deleteAlias?.alias === alias) {
       const isError = deleteAlias.status === cons.status.ERROR;
       return (
-        <div className="room-aliases__item-btns">
+        <div className="room-aliases__item-btns noselect">
           <Text variant="b2">
             <span style={{ color: isError ? 'var(--tc-danger-high' : 'inherit' }}>
               {deleteAlias.msg}
@@ -306,7 +306,7 @@ function RoomAliases({ roomId }) {
           />
           <div className="ms-3">
             {alias}
-            {isMain && <span className="ms-1 badge bg-secondary">Main</span>}
+            {isMain && <span className="ms-1 badge bg-secondary noselect">Main</span>}
           </div>
         </div>
         {isActive && renderAliasBtns(alias)}
@@ -320,6 +320,7 @@ function RoomAliases({ roomId }) {
   return (
     <>
       <SettingTile
+        className="noselect"
         title="Publish to room directory"
         content={
           <div className="very-small text-gray">{`Publish this ${room.isSpaceRoom() ? 'space' : 'room'} to the ${hsString}'s public room directory?`}</div>
@@ -334,39 +335,41 @@ function RoomAliases({ roomId }) {
         }
       />
 
-      <li className="list-group-item very-small text-gray">Published addresses</li>
+      <li className="list-group-item very-small text-gray noselect">Published addresses</li>
 
       <li className="list-group-item very-small">
         {aliases.published.length === 0 && (
-          <Text className="room-aliases__message">No published addresses</Text>
+          <Text className="room-aliases__message noselect">No published addresses</Text>
         )}
         {aliases.published.length > 0 && !aliases.main && (
-          <Text className="room-aliases__message">No Main address (select one from below)</Text>
+          <Text className="room-aliases__message noselect">
+            No Main address (select one from below)
+          </Text>
         )}
         {aliases.published.map(renderAlias)}
-        <Text className="room-aliases__message" variant="b3">
+        <Text className="room-aliases__message noselect" variant="b3">
           {`Published addresses can be used by anyone on any server to join your ${room.isSpaceRoom() ? 'space' : 'room'}. To publish an address, it needs to be set as a local address first.`}
         </Text>
       </li>
 
       {isLocalVisible && (
         <>
-          <li className="list-group-item very-small text-gray">Local addresses</li>
+          <li className="list-group-item very-small text-gray noselect">Local addresses</li>
 
           <li className="list-group-item very-small">
             {aliases.local.length === 0 && (
-              <Text className="room-aliases__message">No local addresses</Text>
+              <Text className="room-aliases__message noselect">No local addresses</Text>
             )}
             {aliases.local.map(renderAlias)}
 
-            <Text className="room-aliases__message" variant="b3">
+            <Text className="room-aliases__message noselect" variant="b3">
               {`Set local addresses for this ${room.isSpaceRoom() ? 'space' : 'room'} so users can find this ${room.isSpaceRoom() ? 'space' : 'room'} through your homeserver.`}
             </Text>
 
-            <Text className="room-aliases__form-label" variant="b2">
+            <Text className="room-aliases__form-label noselect" variant="b2">
               Add local address
             </Text>
-            <form className="room-aliases__form" onSubmit={handleAliasSubmit}>
+            <form className="room-aliases__form noselect" onSubmit={handleAliasSubmit}>
               <div className="room-aliases__input-wrapper">
                 <div>
                   <Input
@@ -383,7 +386,7 @@ function RoomAliases({ roomId }) {
               </Button>
             </form>
 
-            <div className="room-aliases__input-status">
+            <div className="room-aliases__input-status noselect">
               {validate.status === cons.status.SUCCESS && (
                 <Text className="room-aliases__valid" variant="b2">
                   {validate.msg}
@@ -399,7 +402,7 @@ function RoomAliases({ roomId }) {
         </>
       )}
 
-      <li className="list-group-item very-small">
+      <li className="list-group-item very-small noselect">
         <Button onClick={() => setIsLocalVisible(!isLocalVisible)}>
           {`${isLocalVisible ? 'Hide' : 'Add / View'} local address`}
         </Button>

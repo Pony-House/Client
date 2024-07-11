@@ -72,7 +72,7 @@ function Tabs({
     <div
       id={id}
       ref={tabRef}
-      className={`table-responsive hide-scrollbar ${className}`}
+      className={`table-responsive hide-scrollbar noselect ${className}`}
       onWheel={(e) => {
         const scrollContainer = tabRef.current;
         scrollContainer.scrollLeft -= e.deltaY;
@@ -117,7 +117,7 @@ function Tabs({
       </table>
     </div>
   ) : (
-    <div id={id} ref={tabRef} className={`d-flex align-items-start ${className}`}>
+    <div id={id} ref={tabRef} className={`d-flex align-items-start noselect ${className}`}>
       <div
         className="nav flex-column nav-pills me-3 w-100"
         id="tabs-scroll-pills-tab"

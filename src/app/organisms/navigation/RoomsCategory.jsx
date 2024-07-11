@@ -254,7 +254,7 @@ function RoomsCategory({
 
   // Complete
   return (
-    <div className={`${type !== 'directs' ? 'p-3 ' : 'px-3 pb-3 '}px-2`}>
+    <div className={`${type !== 'directs' ? 'p-3 ' : 'px-3 pb-3 '}px-2 noselect`}>
       {!hideHeader && (
         <table className="category-button space-buttons w-100 m-0 p-0">
           <tbody>

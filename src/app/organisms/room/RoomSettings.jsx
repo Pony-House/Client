@@ -132,9 +132,9 @@ function GeneralSettings({ roomId }) {
         </ul>
       </div>
 
-      <div className="card noselect">
+      <div className="card">
         <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Room addresses</li>
+          <li className="list-group-item very-small text-gray noselect">Room addresses</li>
           <RoomAliases roomId={roomId} />
         </ul>
       </div>
