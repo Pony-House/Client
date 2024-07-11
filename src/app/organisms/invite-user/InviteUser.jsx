@@ -291,11 +291,11 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
           {typeof searchQuery.username !== 'undefined' && isSearching && (
             <div className="flex--center">
               <Spinner size="small" />
-              <small className="ms-3">{`Searching for user "${convertUserId(searchQuery.username)}"...`}</small>
+              <small className="ms-3">{`Searching for user "${__ENV_APP__.FORCE_SIMPLER_SAME_HASHTAG ? convertUserId(searchQuery.username) : searchQuery.username}"...`}</small>
             </div>
           )}
           {typeof searchQuery.username !== 'undefined' && !isSearching && (
-            <small>{`Search result for user "${convertUserId(searchQuery.username)}"`}</small>
+            <small>{`Search result for user "${__ENV_APP__.FORCE_SIMPLER_SAME_HASHTAG ? convertUserId(searchQuery.username) : searchQuery.username}"`}</small>
           )}
           {searchQuery.error && (
             <Text className="invite-user__search-error" variant="b2">
