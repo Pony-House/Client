@@ -153,7 +153,7 @@ function ProfileAvatarMenu() {
 
         // Nope
         else {
-          $(customStatusRef.current).html(jReact(twemojifyReact(user2.userId)));
+          $(customStatusRef.current).html(jReact(twemojifyReact(convertUserId(user2.userId))));
           accountStatus.data = null;
           accountStatus.status = null;
         }
