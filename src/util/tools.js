@@ -592,7 +592,11 @@ export function isBrowser() {
 }
 
 export function getShareUrl(aliasId) {
-  return `${__ENV_APP__.SHARE_URL.endsWith('/') ? __ENV_APP__.SHARE_URL : `${__ENV_APP__.SHARE_URL}/`}?room_id=${encodeURIComponent(!__ENV_APP__.FORCE_SIMPLER_SAME_HASHTAG ? aliasId : convertRoomId(aliasId))}`;
+  const finalValue =
+    !__ENV_APP__.FORCE_SIMPLER_SAME_HASHTAG || __ENV_APP__.SHARE_URL_FULL_HASHTAG
+      ? aliasId
+      : convertRoomId(aliasId);
+  return `${__ENV_APP__.SHARE_URL}${__ENV_APP__.SHARE_URL_IS_PARAM ? encodeURIComponent(finalValue) : finalValue}`;
 }
 
 export function getFlagEmoji(countryCode) {
