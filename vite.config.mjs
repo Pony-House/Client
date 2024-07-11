@@ -145,7 +145,10 @@ export default defineConfig(({ command, mode }) => {
 
     SHARE_URL: typeof env.SHARE_URL === 'string' && env.SHARE_URL.length > 0 ? env.SHARE_URL : null,
     SHARE_URL_IS_PARAM: addBooleanToEnv('SHARE_URL_IS_PARAM'),
-    SHARE_URL_FULL_HASHTAG: addBooleanToEnv('SHARE_URL_IS_PARAM'),
+    SHARE_URL_FULL_HASHTAG: addBooleanToEnv('SHARE_URL_FULL_HASHTAG'),
+
+    SIMPLER_HASHTAG_SAME_HOMESERVER: addBooleanToEnv('SIMPLER_HASHTAG_SAME_HOMESERVER'),
+    FORCE_SIMPLER_SAME_HASHTAG: addBooleanToEnv('FORCE_SIMPLER_SAME_HASHTAG'),
 
     WEB3: addBooleanToEnv('WEB3'),
     IPFS: addBooleanToEnv('IPFS'),
@@ -154,8 +157,6 @@ export default defineConfig(({ command, mode }) => {
 
     SAVE_ROOM_DB: addBooleanToEnv('SAVE_ROOM_DB'),
     DISCORD_STYLE: addBooleanToEnv('DISCORD_STYLE'),
-    SIMPLER_HASHTAG_SAME_HOMESERVER: addBooleanToEnv('SIMPLER_HASHTAG_SAME_HOMESERVER'),
-    FORCE_SIMPLER_SAME_HASHTAG: addBooleanToEnv('FORCE_SIMPLER_SAME_HASHTAG'),
     SHOW_STICKERS: addBooleanToEnv('SHOW_STICKERS'),
     USE_CUSTOM_EMOJIS: addBooleanToEnv('USE_CUSTOM_EMOJIS'),
     USE_ANIM_PARAMS: addBooleanToEnv('USE_ANIM_PARAMS'),
