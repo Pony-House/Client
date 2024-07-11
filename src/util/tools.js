@@ -590,6 +590,10 @@ export function isBrowser() {
   return !__ENV_APP__.ELECTRON_MODE; // && !Capacitor.isNativePlatform()
 }
 
+export function getShareUrl(aliasId) {
+  return `${__ENV_APP__.SHARE_URL.endsWith('/') ? __ENV_APP__.SHARE_URL : `${__ENV_APP__.SHARE_URL}/`}?room_id=${encodeURIComponent(aliasId)}`;
+}
+
 export function getFlagEmoji(countryCode) {
   const codePoints = countryCode
     .toUpperCase()

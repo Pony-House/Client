@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import tinyClipboard from '@src/util/libs/Clipboard';
+import { getShareUrl } from '@src/util/tools';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -307,6 +309,19 @@ function RoomAliases({ roomId }) {
           <div className="ms-3">
             {alias}
             {isMain && <span className="ms-1 badge bg-secondary noselect">Main</span>}
+            {__ENV_APP__.SHARE_URL && (
+              <a
+                className="ms-1 badge bg-primary text-bg-force noselect"
+                href="#"
+                onClick={(event) => {
+                  event.preventDefault();
+                  tinyClipboard.copyText(getShareUrl(alias));
+                  alert('The share link was successfully copied!', 'Room Viewer');
+                }}
+              >
+                Share
+              </a>
+            )}
           </div>
         </div>
         {isActive && renderAliasBtns(alias)}
