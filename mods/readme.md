@@ -294,8 +294,9 @@ Use the msgOptions.custom object to customize the final result of your message. 
 
 ### roomViewerOpened (Not ready for production)
 
-    roomId
+    roomAlias/roomId
     originalRoomid
+    isId
 
 ### settingsOpened (Not ready for production)
 

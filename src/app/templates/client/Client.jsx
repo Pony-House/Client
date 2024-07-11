@@ -39,6 +39,7 @@ import Mods from './Mods';
 import LoadingPage from './Loading';
 import urlParams from '../../../util/libs/urlParams';
 import {
+  openRoomViewer,
   selectRoom,
   selectRoomMode,
   selectSpace,
@@ -199,14 +200,19 @@ function Client({ isDevToolsOpen = false }) {
       setTimeout(() => {
         if (!startWorked) playFatalBeep();
         if (typeof roomId === 'string' && roomId.length > 0) {
-          if (typeof roomType !== 'string') selectRoomMode('room');
-          selectRoom(
-            roomId,
-            typeof eventId === 'string' && eventId.length > 0 ? eventId : null,
-            canSupport('Thread') && typeof threadId === 'string' && threadId.length > 0
-              ? threadId
-              : null,
-          );
+          const room = initMatrix.matrixClient.getRoom(roomId);
+          if (room) {
+            if (typeof roomType !== 'string') selectRoomMode('room');
+            selectRoom(
+              roomId,
+              typeof eventId === 'string' && eventId.length > 0 ? eventId : null,
+              canSupport('Thread') && typeof threadId === 'string' && threadId.length > 0
+                ? threadId
+                : null,
+            );
+          } else {
+            openRoomViewer(roomId, roomId, true);
+          }
         }
       }, 100);
     });
