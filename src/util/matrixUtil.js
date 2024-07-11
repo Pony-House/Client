@@ -301,7 +301,7 @@ export function getHomeServer(yourUserId) {
   return yourUserId.slice(yourUserId.indexOf(':') + 1);
 }
 
-let useLessUsername = true;
+let useLessUsername = false;
 
 export function convertUserId(id = null, forceMode = false) {
   const mx = initMatrix.matrixClient;

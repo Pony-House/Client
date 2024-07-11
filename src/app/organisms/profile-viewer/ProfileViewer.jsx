@@ -27,6 +27,7 @@ import {
   hasDMWith,
   hasDevices,
   getCurrentState,
+  convertUserId,
 } from '../../../util/matrixUtil';
 import { getEventCords } from '../../../util/common';
 import { colorMXID, cssColorMXID } from '../../../util/colorMXID';
@@ -792,7 +793,7 @@ function ProfileViewer() {
                 <span className="button">{twemojifyReact(username)}</span>
               </h6>
               <small ref={userNameRef} className="text-gray emoji-size-fix username">
-                <span className="button">{twemojifyReact(userId)}</span>
+                <span className="button">{twemojifyReact(convertUserId(userId))}</span>
               </small>
               <div
                 ref={userPronounsRef}

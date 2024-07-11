@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { convertUserId } from '@src/util/matrixUtil';
 
 import { twemojifyReact } from '../../../util/twemojify';
 
@@ -35,7 +36,7 @@ function RoomTile({
         <div className="very-small text-gray">
           {inviterName !== null
             ? `Invited by ${inviterName} to ${id}${memberCount === null ? '' : ` • ${memberCount} members`}`
-            : id + (memberCount === null ? '' : ` • ${memberCount} members`)}
+            : convertUserId(id) + (memberCount === null ? '' : ` • ${memberCount} members`)}
         </div>
         {desc !== null && typeof desc === 'string' ? (
           <Text className="room-tile__content__desc emoji-size-fix" variant="b2">

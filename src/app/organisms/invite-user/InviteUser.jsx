@@ -5,7 +5,12 @@ import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import * as roomActions from '../../../client/action/room';
 import { selectRoom } from '../../../client/action/navigation';
-import { hasDMWith, hasDevices } from '../../../util/matrixUtil';
+import {
+  convertUserId,
+  convertUserIdReverse,
+  hasDMWith,
+  hasDevices,
+} from '../../../util/matrixUtil';
 
 import Text from '../../atoms/text/Text';
 import Button from '../../atoms/button/Button';
@@ -262,7 +267,7 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
           className="invite-user__form noselect"
           onSubmit={(e) => {
             e.preventDefault();
-            searchUser(usernameRef.current.value);
+            searchUser(convertUserIdReverse(usernameRef.current.value));
           }}
         >
           <div>
@@ -276,11 +281,11 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
           {typeof searchQuery.username !== 'undefined' && isSearching && (
             <div className="flex--center">
               <Spinner size="small" />
-              <small className="ms-3">{`Searching for user "${searchQuery.username}"...`}</small>
+              <small className="ms-3">{`Searching for user "${convertUserId(searchQuery.username)}"...`}</small>
             </div>
           )}
           {typeof searchQuery.username !== 'undefined' && !isSearching && (
-            <small>{`Search result for user "${searchQuery.username}"`}</small>
+            <small>{`Search result for user "${convertUserId(searchQuery.username)}"`}</small>
           )}
           {searchQuery.error && (
             <Text className="invite-user__search-error" variant="b2">

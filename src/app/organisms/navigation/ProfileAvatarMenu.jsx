@@ -4,6 +4,7 @@ import clone from 'clone';
 import jReact from '@mods/lib/jReact';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import soundFiles from '@src/util/soundFiles';
+import { convertUserId } from '@src/util/matrixUtil';
 
 import IconButton from '../../atoms/button/IconButton';
 import { twemojifyReact } from '../../../util/twemojify';
@@ -260,10 +261,10 @@ function ProfileAvatarMenu() {
                 className="very-small ps-2 text-truncate emoji-size-fix-2 user-custom-status"
                 id="user-presence"
               >
-                {profile.userId}
+                {convertUserId(profile.userId)}
               </div>
               <div className="very-small ps-2 text-truncate emoji-size-fix-2" id="user-id">
-                {profile.userId}
+                {convertUserId(profile.userId)}
               </div>
             </button>
           </td>
