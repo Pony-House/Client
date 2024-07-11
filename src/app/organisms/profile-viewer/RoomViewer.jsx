@@ -96,7 +96,6 @@ function RoomFooter({ roomId, originalRoomId, publicData, onRequestClose }) {
   ) : null;
 }
 RoomFooter.propTypes = {
-  isSpace: PropTypes.bool.isRequired,
   roomId: PropTypes.string.isRequired,
   room: PropTypes.object.isRequired,
   publicData: PropTypes.object.isRequire,
@@ -341,7 +340,6 @@ function RoomViewer() {
                   roomId={aliasId}
                   originalRoomId={originalRoomId}
                   room={room}
-                  isSpace={isSpace}
                   onRequestClose={closeDialog}
                 />
               </div>
