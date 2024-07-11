@@ -43,6 +43,10 @@ function AppearanceSection() {
 
   const [isUNhoverEnabled, setUNhoverEnabled] = useState(appearanceSettings.isUNhoverEnabled);
 
+  const [simplerHashtagSameHomeServer, setSimplerHashtagSameHomeServer] = useState(
+    appearanceSettings.simplerHashtagSameHomeServer,
+  );
+
   const [showRoomIdInSpacesManager, setShowRoomIdInSpacesManager] = useState(
     appearanceSettings.showRoomIdInSpacesManager,
   );
@@ -605,6 +609,25 @@ function AppearanceSection() {
             content={
               <div className="very-small text-gray">
                 When you hover over a user nickname, the username will be displayed.
+              </div>
+            }
+          />
+
+          <SettingTile
+            title="Simplify same homeserver hashtag"
+            options={
+              <Toggle
+                className="d-inline-flex"
+                isActive={simplerHashtagSameHomeServer}
+                onToggle={toggleAppearanceAction(
+                  'simplerHashtagSameHomeServer',
+                  setSimplerHashtagSameHomeServer,
+                )}
+              />
+            }
+            content={
+              <div className="very-small text-gray">
+                Simplify the hashtag view of users who belong to the same homserver as you.
               </div>
             }
           />
