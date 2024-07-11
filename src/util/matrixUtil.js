@@ -356,6 +356,8 @@ if (__ENV_APP__.MODE === 'development') {
   global.matrixUtil = {
     convertUserId,
     convertUserIdReverse,
+    convertRoomId,
+    convertRoomIdReverse,
     getBaseUrl,
     getUsername,
     getUsernameOfRoomMember,
