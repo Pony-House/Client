@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { objType } from 'for-promise/utils/lib.mjs';
+import tinyClipboard from '@src/util/libs/Clipboard';
 
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 import { setLoadingPage } from '@src/app/templates/client/Loading';
@@ -68,6 +69,20 @@ function RoomFooter({ roomId, publicData, onRequestClose }) {
 
   return roomId ? (
     <>
+      {__ENV_APP__.SHARE_URL && roomId ? (
+        <Button
+          onClick={() => {
+            tinyClipboard.copyText(
+              `${__ENV_APP__.SHARE_URL.endsWith('/') ? __ENV_APP__.SHARE_URL : `${__ENV_APP__.SHARE_URL}/`}?room_id=${encodeURIComponent(roomId)}`,
+            );
+            alert('The share link was successfully copied!', 'Room Viewer');
+          }}
+          variant="secondary"
+          className="me-2"
+        >
+          Share Url
+        </Button>
+      ) : null}
       {isJoined && (
         <Button onClick={handleViewRoom} variant="secondary">
           Open

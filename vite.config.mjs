@@ -142,6 +142,8 @@ export default defineConfig(({ command, mode }) => {
       ]
     },
 
+    SHARE_URL: typeof env.SHARE_URL === 'string' && env.SHARE_URL.length > 0 ? env.SHARE_URL : null,
+
     WEB3: addBooleanToEnv('WEB3'),
     IPFS: addBooleanToEnv('IPFS'),
 

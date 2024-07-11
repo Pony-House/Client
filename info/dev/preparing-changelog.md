@@ -1,3 +1,4 @@
 - Libre Translate visible option added into the ".env" file.
 - New appearance setting to simplify the hashtag view of users who belong to the same homserver as you.
 - some css classes "noselect" is fixed.
+- Share room url button added.

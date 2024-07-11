@@ -1,4 +1,5 @@
 // import { Toast } from '@capacitor/toast';
+// import { Capacitor } from '@capacitor/core';
 import { objType } from 'for-promise/utils/lib.mjs';
 import { compareVersions } from 'compare-versions';
 
@@ -583,6 +584,10 @@ export function cyrb128(str) {
   // eslint-disable-next-line no-unused-expressions, no-sequences
   (h1 ^= h2 ^ h3 ^ h4), (h2 ^= h1), (h3 ^= h1), (h4 ^= h1);
   return [h1 >>> 0, h2 >>> 0, h3 >>> 0, h4 >>> 0];
+}
+
+export function isBrowser() {
+  return !__ENV_APP__.ELECTRON_MODE; // && !Capacitor.isNativePlatform()
 }
 
 export function getFlagEmoji(countryCode) {
