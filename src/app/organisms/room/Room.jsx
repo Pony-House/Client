@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import clone from 'clone';
 import { objType } from 'for-promise/utils/lib.mjs';
 
+import { isMobile } from '@src/util/libs/mobile';
 import blobUrlManager from '@src/util/libs/blobUrlManager';
 import matrixAppearance from '@src/util/libs/appearance';
 
@@ -33,6 +34,7 @@ function Room() {
     forceScroll: null,
   };
 
+  const [isRoomMode, setIsRoomMode] = useState(false);
   const [roomInfo, setRoomInfo] = useState(defaultRoomInfo);
   tinyAPI.emit('setRoomInfo', defaultRoomInfo);
 
@@ -66,6 +68,9 @@ function Room() {
   };
 
   useEffect(() => {
+    const onRoomModeSelected = (roomType) => {
+      setIsRoomMode(roomType === 'room' ? true : false);
+    };
     const setRoomSelected = (roomId, threadId, eventId, forceScroll) => {
       const threadTimeline = threadId ? RoomTimeline.newFromThread(threadId, roomId) : null;
       const roomTimeline = threadTimeline ?? new RoomTimeline(roomId);
@@ -137,8 +142,10 @@ function Room() {
       }
     };
 
+    navigation.on(cons.events.navigation.SELECTED_ROOM_MODE, onRoomModeSelected);
     navigation.on(cons.events.navigation.ROOM_SELECTED, handleRoomSelected);
     return () => {
+      navigation.removeListener(cons.events.navigation.SELECTED_ROOM_MODE, onRoomModeSelected);
       navigation.removeListener(cons.events.navigation.ROOM_SELECTED, handleRoomSelected);
     };
   }, [mx, roomInfo]);
@@ -172,7 +179,10 @@ function Room() {
 
   // Checker is User List
   const cloneIsUserList = clone(isUserList);
-  if (cloneIsUserList === isUserList) {
+  if (
+    cloneIsUserList === isUserList &&
+    (!isMobile() || window.matchMedia('screen and (min-width: 768px)').matches || isRoomMode)
+  ) {
     // Complete
     return (
       <div className="room">

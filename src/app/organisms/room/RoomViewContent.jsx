@@ -230,40 +230,42 @@ function useTimeline(roomTimeline, eventId, readUptoEvtStore, eventLimitRef) {
 
   useEffect(() => {
     const limit = eventLimitRef.current;
-    const initTimeline = (eId) => {
-      // NOTICE: eId can be id of readUpto, reply or specific event.
-      // readUpTo: when user click jump to unread message button.
-      // reply: when user click reply from timeline.
-      // specific event when user open a link of event. behave same as ^^^^
-      const readUpToId = roomTimeline.getReadUpToEventId();
-      let focusEventIndex = -1;
-      const isSpecificEvent = eId && eId !== readUpToId;
+    if (limit) {
+      const initTimeline = (eId) => {
+        // NOTICE: eId can be id of readUpto, reply or specific event.
+        // readUpTo: when user click jump to unread message button.
+        // reply: when user click reply from timeline.
+        // specific event when user open a link of event. behave same as ^^^^
+        const readUpToId = roomTimeline.getReadUpToEventId();
+        let focusEventIndex = -1;
+        const isSpecificEvent = eId && eId !== readUpToId;
 
-      if (isSpecificEvent) {
-        focusEventIndex = roomTimeline.getEventIndex(eId);
-      }
-      if (!readUptoEvtStore.getItem() && roomTimeline.hasEventInTimeline(readUpToId)) {
-        // either opening live timeline or jump to unread.
-        readUptoEvtStore.setItem(roomTimeline.findEventByIdInTimelineSet(readUpToId));
-      }
-      if (readUptoEvtStore.getItem() && !isSpecificEvent) {
-        focusEventIndex = roomTimeline.getUnreadEventIndex(readUptoEvtStore.getItem().getId());
-      }
+        if (isSpecificEvent) {
+          focusEventIndex = roomTimeline.getEventIndex(eId);
+        }
+        if (!readUptoEvtStore.getItem() && roomTimeline.hasEventInTimeline(readUpToId)) {
+          // either opening live timeline or jump to unread.
+          readUptoEvtStore.setItem(roomTimeline.findEventByIdInTimelineSet(readUpToId));
+        }
+        if (readUptoEvtStore.getItem() && !isSpecificEvent) {
+          focusEventIndex = roomTimeline.getUnreadEventIndex(readUptoEvtStore.getItem().getId());
+        }
 
-      if (focusEventIndex > -1) {
-        limit.setFrom(focusEventIndex - Math.round(limit.maxEvents / 2));
-      } else {
-        limit.setFrom(roomTimeline.timeline.length - limit.maxEvents);
-      }
-      setTimelineInfo({ focusEventId: isSpecificEvent ? eId : null });
-    };
+        if (focusEventIndex > -1) {
+          limit.setFrom(focusEventIndex - Math.round(limit.maxEvents / 2));
+        } else {
+          limit.setFrom(roomTimeline.timeline.length - limit.maxEvents);
+        }
+        setTimelineInfo({ focusEventId: isSpecificEvent ? eId : null });
+      };
 
-    roomTimeline.on(cons.events.roomTimeline.READY, initTimeline);
-    setEventTimeline(eventId);
-    return () => {
-      roomTimeline.removeListener(cons.events.roomTimeline.READY, initTimeline);
-      limit.setFrom(0);
-    };
+      roomTimeline.on(cons.events.roomTimeline.READY, initTimeline);
+      setEventTimeline(eventId);
+      return () => {
+        roomTimeline.removeListener(cons.events.roomTimeline.READY, initTimeline);
+        limit.setFrom(0);
+      };
+    }
   }, [roomTimeline, eventId]);
 
   return timelineInfo;
@@ -289,68 +291,74 @@ function usePaginate(
   });
 
   useEffect(() => {
-    const handlePaginatedFromServer = (backwards, loaded) => {
-      const limit = eventLimitRef.current;
-      if (loaded === 0) return;
-      if (!readUptoEvtStore.getItem()) {
-        const readUpToId = roomTimeline.getReadUpToEventId();
-        readUptoEvtStore.setItem(roomTimeline.findEventByIdInTimelineSet(readUpToId));
-      }
-      limit.paginate(backwards, pageLimit, roomTimeline.timeline.length);
-      setTimeout(() =>
-        setInfo({
-          backwards,
-          loaded,
-        }),
-      );
-    };
-    roomTimeline.on(cons.events.roomTimeline.PAGINATED, handlePaginatedFromServer);
-    return () => {
-      roomTimeline.removeListener(cons.events.roomTimeline.PAGINATED, handlePaginatedFromServer);
-    };
+    if (eventLimitRef.current) {
+      const handlePaginatedFromServer = (backwards, loaded) => {
+        const limit = eventLimitRef.current;
+        if (loaded === 0) return;
+        if (!readUptoEvtStore.getItem()) {
+          const readUpToId = roomTimeline.getReadUpToEventId();
+          readUptoEvtStore.setItem(roomTimeline.findEventByIdInTimelineSet(readUpToId));
+        }
+        limit.paginate(backwards, pageLimit, roomTimeline.timeline.length);
+        setTimeout(() =>
+          setInfo({
+            backwards,
+            loaded,
+          }),
+        );
+      };
+      roomTimeline.on(cons.events.roomTimeline.PAGINATED, handlePaginatedFromServer);
+      return () => {
+        roomTimeline.removeListener(cons.events.roomTimeline.PAGINATED, handlePaginatedFromServer);
+      };
+    }
   }, [roomTimeline]);
 
   const autoPaginate = useCallback(async () => {
-    loadingPage = true;
-    const timelineScroll = timelineScrollRef.current;
-    const limit = eventLimitRef.current;
+    if (timelineScrollRef.current && eventLimitRef.current) {
+      loadingPage = true;
+      const timelineScroll = timelineScrollRef.current;
+      const limit = eventLimitRef.current;
 
-    if (roomTimeline.isOngoingPagination) {
-      loadingPage = false;
-      return;
-    }
-
-    const tLength =
-      roomTimeline && roomTimeline.timeline && typeof roomTimeline.timeline.length === 'number'
-        ? roomTimeline.timeline.length
-        : 0;
-
-    if (timelineScroll.bottom < SCROLL_TRIGGER_POS) {
-      if (limit.length < tLength) {
-        // paginate from memory
-        limit.paginate(false, pageLimit, tLength);
-        //
-        forceUpdateLimit();
-      } else if (roomTimeline.canPaginateForward()) {
-        // paginate from server.
-        await roomTimeline.paginateTimeline(false, pageLimit);
+      if (roomTimeline.isOngoingPagination) {
         loadingPage = false;
         return;
       }
-    }
 
-    if (timelineScroll.top < SCROLL_TRIGGER_POS || roomTimeline.timeline.length < 1) {
-      if (limit.from > 0) {
-        // paginate from memory
-        limit.paginate(true, pageLimit, tLength);
-        forceUpdateLimit();
-      } else if (roomTimeline.canPaginateBackward()) {
-        // paginate from server.
-        await roomTimeline.paginateTimeline(true, pageLimit);
+      const tLength =
+        roomTimeline && roomTimeline.timeline && typeof roomTimeline.timeline.length === 'number'
+          ? roomTimeline.timeline.length
+          : 0;
+
+      if (timelineScroll) {
+        if (timelineScroll.bottom < SCROLL_TRIGGER_POS) {
+          if (limit.length < tLength) {
+            // paginate from memory
+            limit.paginate(false, pageLimit, tLength);
+            //
+            forceUpdateLimit();
+          } else if (roomTimeline.canPaginateForward()) {
+            // paginate from server.
+            await roomTimeline.paginateTimeline(false, pageLimit);
+            loadingPage = false;
+            return;
+          }
+        }
+
+        if (timelineScroll.top < SCROLL_TRIGGER_POS || roomTimeline.timeline.length < 1) {
+          if (limit.from > 0) {
+            // paginate from memory
+            limit.paginate(true, pageLimit, tLength);
+            forceUpdateLimit();
+          } else if (roomTimeline.canPaginateBackward()) {
+            // paginate from server.
+            await roomTimeline.paginateTimeline(true, pageLimit);
+          }
+        }
       }
-    }
 
-    loadingPage = false;
+      loadingPage = false;
+    }
   }, [roomTimeline]);
 
   return [info, autoPaginate];
@@ -368,38 +376,41 @@ function useHandleScroll(
   const handleScroll = useCallback(() => {
     const timelineScroll = timelineScrollRef.current;
     const limit = eventLimitRef.current;
+    if (timelineScroll) {
+      requestAnimationFrame(() => {
+        // emit event to toggle scrollToBottom button visibility
+        const isAtBottom =
+          timelineScroll.bottom < 16 &&
+          !roomTimeline.canPaginateForward() &&
+          limit.length >= roomTimeline.timeline.length;
 
-    requestAnimationFrame(() => {
-      // emit event to toggle scrollToBottom button visibility
-      const isAtBottom =
-        timelineScroll.bottom < 16 &&
-        !roomTimeline.canPaginateForward() &&
-        limit.length >= roomTimeline.timeline.length;
+        roomTimeline.emit(cons.events.roomTimeline.AT_BOTTOM, isAtBottom);
+        if (isAtBottom && readUptoEvtStore.getItem()) {
+          requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
+        }
+      });
 
-      roomTimeline.emit(cons.events.roomTimeline.AT_BOTTOM, isAtBottom);
-      if (isAtBottom && readUptoEvtStore.getItem()) {
-        requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
-      }
-    });
-
-    autoPaginate();
+      autoPaginate();
+    }
   }, [roomTimeline]);
 
   const handleScrollToLive = useCallback(() => {
     const timelineScroll = timelineScrollRef.current;
-    const limit = eventLimitRef.current;
-    if (readUptoEvtStore.getItem()) {
-      requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
-    }
+    if (timelineScroll) {
+      const limit = eventLimitRef.current;
+      if (readUptoEvtStore.getItem()) {
+        requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
+      }
 
-    if (roomTimeline.isServingLiveTimeline()) {
-      limit.setFrom(roomTimeline.timeline.length - limit.maxEvents);
-      timelineScroll.scrollToBottom();
-      forceUpdateLimit();
-      return;
-    }
+      if (roomTimeline.isServingLiveTimeline()) {
+        limit.setFrom(roomTimeline.timeline.length - limit.maxEvents);
+        if (timelineScroll) timelineScroll.scrollToBottom();
+        forceUpdateLimit();
+        return;
+      }
 
-    roomTimeline.loadLiveTimeline();
+      roomTimeline.loadLiveTimeline();
+    }
   }, [roomTimeline]);
 
   return [handleScroll, handleScrollToLive];
@@ -411,72 +422,78 @@ function useEventArrive(roomTimeline, readUptoEvtStore, timelineScrollRef, event
 
   useEffect(() => {
     const timelineScroll = timelineScrollRef.current;
-    const limit = eventLimitRef.current;
-    const trySendReadReceipt = (event) => {
-      if (myUserId === event.getSender()) {
-        requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
-        return;
-      }
-
-      const readUpToEvent = readUptoEvtStore.getItem();
-      const readUpToId = roomTimeline.getReadUpToEventId();
-      const isUnread = readUpToEvent ? readUpToEvent?.getId() === readUpToId : true;
-
-      if (isUnread === false) {
-        if (document.visibilityState === 'visible' && timelineScroll.bottom < 16) {
+    if (timelineScroll) {
+      const limit = eventLimitRef.current;
+      const trySendReadReceipt = (event) => {
+        if (myUserId === event.getSender()) {
           requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
-        } else {
-          readUptoEvtStore.setItem(roomTimeline.findEventByIdInTimelineSet(readUpToId));
+          return;
         }
-        return;
-      }
 
-      const { timeline } = roomTimeline;
-      const unreadMsgIsLast =
-        timeline[timeline.length - 2] && timeline[timeline.length - 2].getId() === readUpToId;
-      if (unreadMsgIsLast) {
-        requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
-      }
-    };
+        const readUpToEvent = readUptoEvtStore.getItem();
+        const readUpToId = roomTimeline.getReadUpToEventId();
+        const isUnread = readUpToEvent ? readUpToEvent?.getId() === readUpToId : true;
 
-    const handleEvent = (event) => {
-      const tLength =
-        roomTimeline && roomTimeline.timeline && typeof roomTimeline.timeline.length === 'number'
-          ? roomTimeline.timeline.length
-          : 0;
-      const isViewingLive = roomTimeline.isServingLiveTimeline() && limit.length >= tLength - 1;
-      const isAttached = timelineScroll.bottom < SCROLL_TRIGGER_POS;
+        if (isUnread === false) {
+          if (
+            document.visibilityState === 'visible' &&
+            timelineScroll &&
+            timelineScroll.bottom < 16
+          ) {
+            requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
+          } else {
+            readUptoEvtStore.setItem(roomTimeline.findEventByIdInTimelineSet(readUpToId));
+          }
+          return;
+        }
 
-      if (isViewingLive && isAttached && document.hasFocus()) {
-        limit.setFrom(tLength - limit.maxEvents);
-        trySendReadReceipt(event);
-        setEvent(event);
-        return;
-      }
+        const { timeline } = roomTimeline;
+        const unreadMsgIsLast =
+          timeline[timeline.length - 2] && timeline[timeline.length - 2].getId() === readUpToId;
+        if (unreadMsgIsLast) {
+          requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
+        }
+      };
 
-      const isRelates =
-        event.getType() === 'm.reaction' || event.getRelation()?.rel_type === 'm.replace';
-      if (isRelates) {
-        setEvent(event);
-        return;
-      }
+      const handleEvent = (event) => {
+        const tLength =
+          roomTimeline && roomTimeline.timeline && typeof roomTimeline.timeline.length === 'number'
+            ? roomTimeline.timeline.length
+            : 0;
+        const isViewingLive = roomTimeline.isServingLiveTimeline() && limit.length >= tLength - 1;
+        const isAttached = timelineScroll.bottom < SCROLL_TRIGGER_POS;
 
-      if (isViewingLive) {
-        // This stateUpdate will help to put the
-        // loading msg placeholder at bottom
-        setEvent(event);
-      }
-    };
+        if (isViewingLive && isAttached && document.hasFocus()) {
+          limit.setFrom(tLength - limit.maxEvents);
+          trySendReadReceipt(event);
+          setEvent(event);
+          return;
+        }
 
-    const handleEventRedact = (event) => setEvent(event);
+        const isRelates =
+          event.getType() === 'm.reaction' || event.getRelation()?.rel_type === 'm.replace';
+        if (isRelates) {
+          setEvent(event);
+          return;
+        }
 
-    roomTimeline.on(cons.events.roomTimeline.EVENT, handleEvent);
-    roomTimeline.on(cons.events.roomTimeline.EVENT_REDACTED, handleEventRedact);
+        if (isViewingLive) {
+          // This stateUpdate will help to put the
+          // loading msg placeholder at bottom
+          setEvent(event);
+        }
+      };
 
-    return () => {
-      roomTimeline.removeListener(cons.events.roomTimeline.EVENT, handleEvent);
-      roomTimeline.removeListener(cons.events.roomTimeline.EVENT_REDACTED, handleEventRedact);
-    };
+      const handleEventRedact = (event) => setEvent(event);
+
+      roomTimeline.on(cons.events.roomTimeline.EVENT, handleEvent);
+      roomTimeline.on(cons.events.roomTimeline.EVENT_REDACTED, handleEventRedact);
+
+      return () => {
+        roomTimeline.removeListener(cons.events.roomTimeline.EVENT, handleEvent);
+        roomTimeline.removeListener(cons.events.roomTimeline.EVENT_REDACTED, handleEventRedact);
+      };
+    }
   }, [roomTimeline]);
 
   return newEvent;
@@ -560,32 +577,33 @@ function RoomViewContent({
   useEffect(() => {
     if (!roomTimeline.initialized) return;
     const timelineScroll = timelineScrollRef.current;
-
-    if (timeline.length > 0) {
-      if (jumpToItemIndex === -1) {
-        timelineScroll.scrollToBottom();
-      } else {
-        timelineScroll.scrollToIndex(jumpToItemIndex, 80);
-      }
-
-      if (timelineScroll.bottom < 16 && !roomTimeline.canPaginateForward()) {
-        const readUpToId = roomTimeline.getReadUpToEventId();
-        if (readUptoEvtStore.getItem()?.getId() === readUpToId || readUpToId === null) {
-          requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
+    if (timelineScroll) {
+      if (timeline.length > 0) {
+        if (jumpToItemIndex === -1) {
+          timelineScroll.scrollToBottom();
+        } else {
+          timelineScroll.scrollToIndex(jumpToItemIndex, 80);
         }
+
+        if (timelineScroll.bottom < 16 && !roomTimeline.canPaginateForward()) {
+          const readUpToId = roomTimeline.getReadUpToEventId();
+          if (readUptoEvtStore.getItem()?.getId() === readUpToId || readUpToId === null) {
+            requestAnimationFrame(() => markAsRead(roomTimeline.roomId, roomTimeline.threadId));
+          }
+        }
+
+        jumpToItemIndex = -1;
       }
 
-      jumpToItemIndex = -1;
+      autoPaginate();
+
+      mediaFix(null, embedHeight, setEmbedHeight);
+      roomTimeline.on(cons.events.roomTimeline.SCROLL_TO_LIVE, handleScrollToLive);
+      return () => {
+        if (timelineSVRef.current === null) return;
+        roomTimeline.removeListener(cons.events.roomTimeline.SCROLL_TO_LIVE, handleScrollToLive);
+      };
     }
-
-    autoPaginate();
-
-    mediaFix(null, embedHeight, setEmbedHeight);
-    roomTimeline.on(cons.events.roomTimeline.SCROLL_TO_LIVE, handleScrollToLive);
-    return () => {
-      if (timelineSVRef.current === null) return;
-      roomTimeline.removeListener(cons.events.roomTimeline.SCROLL_TO_LIVE, handleScrollToLive);
-    };
   }, [timelineInfo]);
 
   // when paginating from server
@@ -593,9 +611,11 @@ function RoomViewContent({
     if (!roomTimeline.initialized) return;
 
     const timelineScroll = timelineScrollRef.current;
-    timelineScroll.tryRestoringScroll();
+    if (timelineScroll) {
+      timelineScroll.tryRestoringScroll();
 
-    autoPaginate();
+      autoPaginate();
+    }
   }, [paginateInfo]);
 
   // when paginating locally
@@ -603,7 +623,9 @@ function RoomViewContent({
     if (!roomTimeline.initialized) return;
 
     const timelineScroll = timelineScrollRef.current;
-    timelineScroll.tryRestoringScroll();
+    if (timelineScroll) {
+      timelineScroll.tryRestoringScroll();
+    }
   }, [onLimitUpdate]);
 
   useEffect(() => {
@@ -647,6 +669,7 @@ function RoomViewContent({
       const limit = eventLimitRef.current;
       if (activeTimeline !== liveTimeline) return;
       if (tl.length > limit.length) return;
+      if (!limit) return;
 
       e.preventDefault();
 
@@ -690,14 +713,16 @@ function RoomViewContent({
 
   const handleTimelineScroll = (event) => {
     const timelineScroll = timelineScrollRef.current;
-    const timelineSV = $(timelineSVRef.current);
-    if ((!event || !event.target) && timelineSV.length < 1) return;
+    if (timelineScroll) {
+      const timelineSV = $(timelineSVRef.current);
+      if ((!event || !event.target) && timelineSV.length < 1) return;
 
-    throttle._(() => {
-      const backwards = timelineScroll?.calcScroll();
-      if (typeof backwards !== 'boolean') return;
-      handleScroll(backwards);
-    }, 200)();
+      throttle._(() => {
+        const backwards = timelineScroll?.calcScroll();
+        if (typeof backwards !== 'boolean') return;
+        handleScroll(backwards);
+      }, 200)();
+    }
   };
 
   const handleTimelineScrollJquery = (event) => handleTimelineScroll(event.originalEvent);

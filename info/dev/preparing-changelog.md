@@ -3,3 +3,4 @@
 - some css classes `noselect` is fixed.
 - Share room url button added.
 - Force Dev Mode option added into the `.env` file.
+- New room viewer script to mobile.
