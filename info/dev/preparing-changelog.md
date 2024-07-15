@@ -4,3 +4,4 @@
 - Share room url button added.
 - Force Dev Mode option added into the `.env` file.
 - New room viewer script to mobile.
+- Mobile css content place fixed.

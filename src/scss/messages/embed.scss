@@ -1,0 +1,116 @@
+.message-embed {
+  max-width: 450px;
+}
+
+.message__threadSummary {
+  width: 350px;
+}
+
+@media (max-width: 450px) {
+  .message-embed {
+    max-width: 300px;
+  }
+  .message__threadSummary {
+    width: 300px;
+  }
+}
+@media (max-width: 400px) {
+  .message-embed {
+    max-width: 250px;
+  }
+  .message__threadSummary {
+    width: 250px;
+  }
+}
+@media (max-width: 350px) {
+  .message-embed {
+    max-width: 200px;
+  }
+  .message__threadSummary {
+    width: 200px;
+  }
+}
+@media (max-width: 300px) {
+  .message-embed {
+    max-width: 150px;
+  }
+  .message__threadSummary {
+    width: 150px;
+  }
+}
+@media (max-width: 250px) {
+  .message-embed {
+    max-width: 100px;
+  }
+}
+@media (max-width: 200px) {
+  .message-embed {
+    max-width: 50px;
+  }
+}
+@media (max-width: 150px) {
+  .message-embed,
+  .message__threadSummary {
+    display: none !important;
+  }
+}
+
+.message-embed {
+  .card {
+    border-left-width: 5px;
+    border-left-color: var(--default-embed-color);
+    border-right: 0px;
+    border-top: 0px;
+    border-bottom: 0px;
+
+    .card-text {
+      color: var(--tc-surface-low);
+    }
+  }
+  .embed-img,
+  .embed-thumb {
+    max-width: unset !important;
+    .image-container {
+      height: auto !important;
+      img {
+        max-width: 100% !important;
+      }
+    }
+  }
+  .embed-img {
+    background-color: transparent !important;
+  }
+  .embed-thumb {
+    background-color: transparent !important;
+    margin-left: 10px;
+    img {
+      height: 72px !important;
+    }
+  }
+  .embed-video {
+    background-color: #000;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+
+    .play-button {
+      transition: background-color 0.1s;
+      transition-timing-function: ease-in-out;
+      background-color: rgba(255, 255, 255, 0.7);
+      background-size: 50px;
+      -webkit-filter: invert(100%);
+      filter: invert(100%);
+      background-position: center;
+      background-repeat: no-repeat;
+      pointer-events: none;
+    }
+  }
+
+  .embed-video:hover {
+    cursor: pointer;
+    .play-button {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
