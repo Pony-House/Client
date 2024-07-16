@@ -34,7 +34,7 @@ export function getPinnedMessagesRaw(room, filterLimit = true) {
     const pinEvent =
       typeof room !== 'string'
         ? getCurrentState(room).getStateEvents(eventName)
-        : getCurrentState(mx.getRoom(room)).getStateEvents(eventName) ?? [];
+        : (getCurrentState(mx.getRoom(room)).getStateEvents(eventName) ?? []);
 
     // Get Content
     if (Array.isArray(pinEvent) && pinEvent[0]) {

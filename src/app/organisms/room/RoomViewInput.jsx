@@ -933,8 +933,8 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
       return (
         <Text className="room-input__alert">
           {tombstoneEvent
-            ? tombstoneEvent.getContent()?.body ??
-              'This room has been replaced and is no longer active.'
+            ? (tombstoneEvent.getContent()?.body ??
+              'This room has been replaced and is no longer active.')
             : 'You do not have permission to post to this room'}
         </Text>
       );

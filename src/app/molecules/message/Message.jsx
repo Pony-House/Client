@@ -1068,9 +1068,9 @@ const MessageOptions = React.memo(
                         const avatarAnimSrc = user
                           ? !appearanceSettings.enableAnimParams
                             ? mx.mxcUrlToHttp(user.avatarUrl)
-                            : getAnimatedImageUrl(
+                            : (getAnimatedImageUrl(
                                 mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop'),
-                              ) ?? avatarDefaultColor(color)
+                              ) ?? avatarDefaultColor(color))
                           : avatarDefaultColor(color);
 
                         const ct = $('<div>', {
@@ -1673,8 +1673,8 @@ function Message({
     mEvent.sender?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop') ?? avatarDefaultColor(color);
   const avatarAnimSrc = !appearanceSettings.enableAnimParams
     ? mEvent.sender?.getAvatarUrl(mx.baseUrl)
-    : getAnimatedImageUrl(mEvent.sender?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop')) ??
-      avatarDefaultColor(color);
+    : (getAnimatedImageUrl(mEvent.sender?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop')) ??
+      avatarDefaultColor(color));
 
   // Content Data
   let isCustomHTML = content.format === 'org.matrix.custom.html';
@@ -2039,7 +2039,7 @@ function Message({
                   body={
                     isMedia(mEvent)
                       ? genMediaContent(mEvent, seeHiddenData, setSeeHiddenData)
-                      : customHTML ?? body
+                      : (customHTML ?? body)
                   }
                   content={content}
                   msgType={msgType}

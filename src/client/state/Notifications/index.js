@@ -47,7 +47,7 @@ function findMutedRule(overrideRules, roomId) {
 
 export const getRoomTitle = (room, sender, thread) => {
   let title;
-  const threadTitle = !thread ? '' : thread.rootEvent?.getContent()?.body ?? 'Unknown thread';
+  const threadTitle = !thread ? '' : (thread.rootEvent?.getContent()?.body ?? 'Unknown thread');
   if (!sender || room.name === sender.name) {
     title = `${room.name}${threadTitle.length > 0 ? ` - ${threadTitle}` : ''}`;
   } else if (sender) {
