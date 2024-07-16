@@ -163,10 +163,10 @@
   }
 
   background-color: var(--bg-surface-hover);
-  -webkit-animation: avatar-container-loading 1.5s infinite ease-in-out;
-  -moz-animation: avatar-container-loading 1.5s infinite ease-in-out;
-  -o-animation: avatar-container-loading 1.5s infinite ease-in-out;
-  animation: avatar-container-loading 1.5s infinite ease-in-out;
+  -webkit-animation: avatar-container-loading 2s infinite ease-in-out;
+  -moz-animation: avatar-container-loading 2s infinite ease-in-out;
+  -o-animation: avatar-container-loading 2s infinite ease-in-out;
+  animation: avatar-container-loading 2s infinite ease-in-out;
 
   &.avatar-react-loaded {
     background-color: transparent !important;
