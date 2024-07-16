@@ -89,32 +89,55 @@ import { canPinMessage, isPinnedMessage, setPinMessage } from '../../../util/lib
 import { mediaFix, tinyFixScrollChat } from '../media/mediaFix';
 import { everyoneTags } from '../global-notification/KeywordNotification';
 
-function PlaceholderMessage() {
-  return (
+function PlaceholderMessage({
+  // loadingPage = false,
+  showAvatar = false,
+}) {
+  const renderPlaceHolder = () => (
+    <p className="placeholder-glow">
+      <span className="placeholder col-12" />
+    </p>
+  );
+
+  const renderPlaceHolder2 = () => (
     <tr className="ph-msg">
-      <td colSpan="2">
-        <p className="placeholder-glow">
-          <span className="placeholder col-12" />
-        </p>
-        <p className="placeholder-glow">
-          <span className="placeholder col-12" />
-        </p>
-        <p className="placeholder-glow">
-          <span className="placeholder col-12" />
-        </p>
-        <p className="placeholder-glow">
-          <span className="placeholder col-12" />
-        </p>
-        <p className="placeholder-glow">
-          <span className="placeholder col-12" />
-        </p>
-        <p className="placeholder-glow">
-          <span className="placeholder col-12" />
-        </p>
+      <td className="p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base">
+        <center>
+          <div className="avatar-container" />
+        </center>
+      </td>
+      <td className="p-0 pe-3 py-1">
+        {renderPlaceHolder()}
+        {renderPlaceHolder()}
+        {renderPlaceHolder()}
       </td>
     </tr>
   );
+
+  return !showAvatar ? (
+    <tr className="ph-msg">
+      <td colSpan="2">
+        {renderPlaceHolder()}
+        {renderPlaceHolder()}
+        {renderPlaceHolder()}
+        {renderPlaceHolder()}
+        {renderPlaceHolder()}
+        {renderPlaceHolder()}
+      </td>
+    </tr>
+  ) : (
+    <>
+      {renderPlaceHolder2()}
+      {renderPlaceHolder2()}
+      {renderPlaceHolder2()}
+    </>
+  );
 }
+
+PlaceholderMessage.propTypes = {
+  loadingPage: PropTypes.bool,
+  showAvatar: PropTypes.bool,
+};
 
 // Avatar Generator
 const MessageAvatar = React.memo(

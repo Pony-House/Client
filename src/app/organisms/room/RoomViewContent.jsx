@@ -40,7 +40,7 @@ import matrixAppearance, { getAppearance } from '../../../util/libs/appearance';
 let forceDelay = false;
 let loadingPage = false;
 const MAX_MSG_DIFF_MINUTES = 5;
-const PLACEHOLDER_COUNT = 2;
+const PLACEHOLDER_COUNT = 3;
 const PLACEHOLDERS_HEIGHT = 96 * PLACEHOLDER_COUNT;
 const SCROLL_TRIGGER_POS = PLACEHOLDERS_HEIGHT / 2;
 
@@ -48,7 +48,13 @@ function loadingMsgPlaceholders(key, count = 2) {
   const pl = [];
   const genPlaceholders = () => {
     for (let i = 0; i < count; i += 1) {
-      pl.push(<PlaceholderMessage loadingPage={loadingPage} key={`placeholder-${i}${key}`} />);
+      pl.push(
+        <PlaceholderMessage
+          loadingPage={loadingPage}
+          showAvatar
+          key={`RoomViewContent-placeholder-${i}${key}`}
+        />,
+      );
     }
     return pl;
   };

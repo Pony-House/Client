@@ -1,0 +1,1 @@
+- placeholder style in the chatbox was updated.

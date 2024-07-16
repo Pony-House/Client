@@ -4,9 +4,15 @@
     animation: none !important;
   } */
 
-  &:hover .placeholder-glow .placeholder {
-    cursor: pointer !important;
-    background-color: var(--tc-link) !important;
+  &:hover {
+    .placeholder-glow .placeholder {
+      background-color: var(--tc-link) !important;
+    }
+
+    .avatar-container,
+    .placeholder-glow .placeholder {
+      cursor: wait !important;
+    }
   }
 }
 
