@@ -102,7 +102,7 @@
     "slate-react": "0.107.0",
     "tippy.js": "6.3.7",
     "twemoji": "14.0.2",
-    "web3-providers-ws": "4.0.7",
+    "web3-providers-ws": "4.0.8",
     "yjs": "13.6.18"
   },
   "devDependencies": {
