@@ -4,10 +4,10 @@
 
 .room-aliases {
   &__message,
-  & .setting-tile {
+  .setting-tile {
     margin: var(--sp-tight) var(--sp-normal);
   }
-  & .setting-tile {
+  .setting-tile {
     margin-bottom: var(--sp-loose);
   }
 
@@ -17,7 +17,7 @@
     &.checkbox {
       @include dir.side(margin, 0, var(--sp-tight));
     }
-    & .text {
+    .text {
       @extend .cp-fx__item-one;
       @extend .cp-txt__ellipsis;
       color: var(--tc-surface-high);
@@ -32,7 +32,7 @@
   }
   &__item-btns {
     @include dir.side(margin, 48px, 0);
-    & button {
+    button {
       padding: var(--sp-ultra-tight) var(--sp-tight);
       margin-bottom: var(--sp-tight);
       @include dir.side(margin, 0, var(--sp-tight));
@@ -42,11 +42,11 @@
   &__content {
     margin-bottom: var(--sp-normal);
 
-    & .checkbox {
+    .checkbox {
       @include dir.side(margin, 0, var(--sp-tight));
       min-width: 20px;
     }
-    & > button {
+    > button {
       margin: 0 var(--sp-normal);
     }
   }
@@ -65,7 +65,7 @@
     @extend .cp-fx__item-one;
     @include dir.side(margin, 0, var(--sp-tight));
 
-    & .input-container {
+    .input-container {
       @extend .cp-fx__item-one;
     }
   }

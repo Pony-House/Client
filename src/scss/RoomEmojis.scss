@@ -8,16 +8,16 @@
     box-shadow: var(--bs-surface-border);
     overflow: hidden;
 
-    & > .context-menu__header:first-child {
+    > .context-menu__header:first-child {
       margin-top: 2px;
     }
   }
   &__add-pack {
-    & form {
+    form {
       margin: var(--sp-normal);
       display: flex;
       gap: var(--sp-normal);
-      & .input-container {
+      .input-container {
         flex-grow: 1;
       }
     }

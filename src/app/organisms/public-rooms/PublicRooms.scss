@@ -8,7 +8,7 @@
     display: flex;
     align-items: flex-end;
 
-    & .btn-primary {
+    .btn-primary {
       padding: {
         top: 11px;
         bottom: 11px;
@@ -22,11 +22,11 @@
     display: flex;
     @include dir.side(margin, 0, var(--sp-normal));
 
-    & > div:first-child {
+    > div:first-child {
       flex: 1;
       min-width: 0;
 
-      & .input {
+      .input {
         @include dir.prop(
           border-radius,
           var(--bo-radius) 0 0 var(--bo-radius),
@@ -35,7 +35,7 @@
       }
     }
 
-    & > div:last-child .input {
+    > div:last-child .input {
       width: 120px;
       @include dir.prop(border-left-width, 0, 1px);
       @include dir.prop(border-right-width, 1px, 0);
@@ -50,7 +50,7 @@
   &__search-status {
     margin-top: var(--sp-extra-loose);
     margin-bottom: var(--sp-tight);
-    & .donut-spinner {
+    .donut-spinner {
       margin: 0 var(--sp-tight);
     }
 
@@ -69,7 +69,7 @@
     @include dir.side(margin, calc(var(--av-normal) + var(--sp-normal)), 0);
   }
 
-  & .room-tile {
+  .room-tile {
     margin-top: var(--sp-normal);
     &__options {
       align-self: flex-end;
@@ -81,7 +81,7 @@
   display: flex;
   align-items: center;
 
-  & > .text:nth-child(2) {
+  > .text:nth-child(2) {
     margin: 0 var(--sp-normal);
   }
 }

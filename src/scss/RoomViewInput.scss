@@ -27,13 +27,13 @@
     box-shadow: var(--bs-surface-border);
     border-radius: var(--bo-radius);
 
-    & > .ic-fa,
+    > .ic-fa,
     .ic-raw {
       transform: scale(0.8);
       margin: 0 var(--sp-extra-tight);
     }
 
-    & .scrollbar {
+    .scrollbar {
       max-height: 50vh;
       flex: 1;
 
@@ -52,7 +52,7 @@
     display: flex;
     align-items: center;
 
-    & textarea {
+    textarea {
       resize: none;
       width: 100%;
       min-width: 0;
@@ -121,15 +121,15 @@
   &__option button {
     transition: transform 200ms ease-in-out;
     transform: translateY(-48px);
-    & .ic-fa,
-    & .ic-raw {
+    .ic-fa,
+    .ic-raw {
       transition: transform 200ms ease-in-out;
       transform: rotate(45deg);
     }
-    & .ic-raw {
+    .ic-raw {
       background-color: var(--bg-caution);
     }
-    & .ic-fa {
+    .ic-fa {
       color: var(--bg-caution);
     }
   }
@@ -140,7 +140,7 @@
   display: flex;
   align-items: center;
 
-  & .ic-btn-surface {
+  .ic-btn-surface {
     @include dir.side(margin, 17px, 13px);
     border-radius: 0;
   }

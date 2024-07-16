@@ -1,15 +1,15 @@
 @use './partials/dir.scss';
 
 .space-settings {
-  & .pw {
+  .pw {
     background-color: var(--bg-surface-low);
   }
 
-  & .room-profile {
+  .room-profile {
     padding: var(--sp-loose) var(--sp-extra-loose);
   }
 
-  & .tabs__content {
+  .tabs__content {
     padding: 0 var(--sp-normal);
   }
 
@@ -26,7 +26,7 @@
   box-shadow: var(--bs-surface-border);
   overflow: hidden;
 
-  & > .context-menu__header:first-child {
+  > .context-menu__header:first-child {
     margin-top: 2px;
   }
 }

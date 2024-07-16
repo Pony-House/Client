@@ -260,11 +260,13 @@
   }
 
   /* transition curves */
-  --fluid-push: cubic-bezier(0, 0.8, 0.67, 0.97);
-  --fluid-slide-down: cubic-bezier(0.02, 0.82, 0.4, 0.96);
-  --fluid-slide-up: cubic-bezier(0.13, 0.56, 0.25, 0.99);
+  & {
+    --fluid-push: cubic-bezier(0, 0.8, 0.67, 0.97);
+    --fluid-slide-down: cubic-bezier(0.02, 0.82, 0.4, 0.96);
+    --fluid-slide-up: cubic-bezier(0.13, 0.56, 0.25, 0.99);
 
-  --bg-profile-banner: #f3f3f3;
+    --bg-profile-banner: #f3f3f3;
+  }
 }
 
 .btn-theme {

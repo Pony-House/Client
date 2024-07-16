@@ -15,7 +15,7 @@
     height: var(--emoji-board-height);
     width: var(--emoji-board-width);
   }
-  & > .scrollbar {
+  > .scrollbar {
     width: initial;
     height: var(--emoji-board-height);
   }
@@ -29,7 +29,7 @@
 
     position: relative;
 
-    & .ic-btn-surface {
+    .ic-btn-surface {
       opacity: 0.8;
     }
     .emoji-group-button > span {
@@ -59,7 +59,7 @@
   padding: var(--sp-extra-tight);
   position: relative;
 
-  & .ic-raw {
+  .ic-raw {
     position: absolute;
     @include dir.prop(left, var(--sp-normal), unset);
     @include dir.prop(right, unset, var(--sp-normal));
@@ -67,8 +67,8 @@
     transform: translateY(1px);
   }
 
-  & .input-container {
-    & .input {
+  .input-container {
+    .input {
       min-width: 100%;
       width: 0;
       padding: var(--sp-extra-tight) 36px;
@@ -88,7 +88,7 @@
   display: flex;
   align-items: center;
 
-  & > div:first-child {
+  > div:first-child {
     line-height: 0;
     .emoji {
       width: 32px;
@@ -96,7 +96,7 @@
       object-fit: contain;
     }
   }
-  & > p:last-child {
+  > p:last-child {
     @extend .cp-fx__item-one;
     @extend .cp-txt__ellipsis;
     margin: 0 var(--sp-tight);
@@ -124,14 +124,14 @@
     box-shadow: 0 -4px 0 0 var(--bg-surface);
     border-bottom: 1px solid var(--bg-surface-border);
   }
-  & .emoji-set {
+  .emoji-set {
     --left-margin: calc(var(--sp-normal) - var(--emoji-padding));
     --right-margin: calc(var(--sp-extra-tight) - var(--emoji-padding));
     margin: var(--sp-extra-tight);
     @include dir.side(margin, var(--left-margin), var(--right-margin));
   }
 
-  & .emoji {
+  .emoji {
     background-position: center;
     background-repeat: no-repeat;
     background-size: 66%;
@@ -162,7 +162,7 @@
 }
 
 [board-type='emoji'] .emoji-group {
-  & .emoji {
+  .emoji {
     max-width: 38px;
     max-height: 38px;
     min-width: 38px;
@@ -171,7 +171,7 @@
 }
 
 [board-type='sticker'] .emoji-group {
-  & .emoji {
+  .emoji {
     max-width: 87px;
     max-height: 87px;
     min-width: 87px;

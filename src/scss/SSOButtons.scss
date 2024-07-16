@@ -18,7 +18,7 @@
   &__text-only {
     margin-top: var(--sp-normal);
     flex-basis: 100%;
-    & .text {
+    .text {
       color: var(--tc-link);
     }
   }

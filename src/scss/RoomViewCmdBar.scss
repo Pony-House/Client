@@ -23,7 +23,7 @@
     width: 40px;
     @include dir.side(margin, 14px, 10px);
 
-    & > * {
+    > * {
       margin: auto;
     }
   }
@@ -38,7 +38,7 @@
       display: flex;
       align-items: center;
 
-      & > .text {
+      > .text {
         @extend .cp-txt__ellipsis;
       }
     }

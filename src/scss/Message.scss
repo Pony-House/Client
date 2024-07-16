@@ -115,7 +115,7 @@
     display: flex;
     flex-wrap: wrap;
 
-    & .ic-btn-surface {
+    .ic-btn-surface {
       display: none;
       padding: var(--sp-ultra-tight);
       margin-top: var(--sp-extra-tight);
@@ -141,7 +141,7 @@
     cursor: pointer;
 
     /* First fix */
-    & .react-emoji {
+    .react-emoji {
       height: 13px;
       padding-left: 3px;
       padding-right: 3px;
@@ -225,15 +225,15 @@
     display: none;
   }
 
-  & a {
+  a {
     word-break: break-word;
   }
-  & > .text > a {
+  > .text > a {
     white-space: initial !important;
   }
 
-  & span[data-mx-pill],
-  & .everyone-mention {
+  span[data-mx-pill],
+  .everyone-mention {
     background-color: hsla(0, 0%, 64%, 0.15);
     padding: 0 2px;
     border-radius: 4px;
@@ -252,7 +252,7 @@
     }
   }
 
-  & span[data-mx-spoiler] {
+  span[data-mx-spoiler] {
     border-radius: 4px;
     background-color: rgba(124, 124, 124, 0.5);
     color: transparent;
@@ -263,7 +263,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    & > * {
+    > * {
       opacity: 0;
     }
   }
@@ -279,7 +279,7 @@
     background-color: var(--bg-surface-active) !important;
     color: inherit !important;
     user-select: initial !important;
-    & > * {
+    > * {
       opacity: inherit !important;
     }
   }

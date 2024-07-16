@@ -15,7 +15,7 @@
 
 .profile-editor__info {
   flex-direction: column;
-  & > div:first-child {
+  > div:first-child {
     display: flex;
     align-items: center;
   }
@@ -29,10 +29,10 @@
   flex-wrap: wrap;
   align-items: flex-end;
 
-  & > .input-container {
+  > .input-container {
     @extend .cp-fx__item-one;
   }
-  & > button {
+  > button {
     height: 46px;
     margin-top: var(--sp-normal);
     @include dir.side(margin, var(--sp-normal), 0);

@@ -28,14 +28,14 @@
     left: 0;
     right: 0;
     z-index: 1;
-    & .text {
+    .text {
       text-transform: uppercase;
       color: white;
     }
     &--stopped {
       display: none;
     }
-    & .donut-spinner {
+    .donut-spinner {
       border-color: rgb(255, 255, 255, 0.3);
       border-left-color: white;
     }
@@ -47,7 +47,7 @@
   &__btn-cancel {
     margin-top: var(--sp-extra-tight);
     cursor: pointer;
-    & .text {
+    .text {
       color: var(--tc-danger-normal);
     }
   }

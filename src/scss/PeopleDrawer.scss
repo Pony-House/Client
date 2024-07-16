@@ -36,7 +36,7 @@
   }
 
   &__sticky {
-    & .people-search {
+    .people-search {
       --search-input-height: 40px;
       min-height: var(--search-input-height);
 
@@ -47,25 +47,25 @@
       display: flex;
       align-items: center;
 
-      & > .ic-fa,
-      & > .ic-raw,
-      & > .ic-btn {
+      > .ic-fa,
+      > .ic-raw,
+      > .ic-btn {
         position: absolute;
         z-index: 99;
       }
-      & > .ic-fa,
-      & > .ic-raw {
+      > .ic-fa,
+      > .ic-raw {
         @include dir.prop(left, var(--sp-tight), unset);
         @include dir.prop(right, unset, var(--sp-tight));
       }
-      & > .ic-btn {
+      > .ic-btn {
         @include dir.prop(right, 2px, unset);
         @include dir.prop(left, unset, 2px);
       }
-      & .input-container {
+      .input-container {
         flex: 1;
       }
-      & .input {
+      .input {
         padding: 0 44px;
         height: var(--search-input-height);
       }
@@ -81,7 +81,7 @@
   padding-top: var(--sp-extra-tight);
   padding-bottom: calc(2 * var(--sp-normal));
 
-  & .people-selector {
+  .people-selector {
     padding: var(--sp-extra-tight);
     border-radius: var(--bo-radius);
     &__container {
@@ -89,12 +89,12 @@
     }
   }
 
-  & .segmented-controls {
+  .segmented-controls {
     display: flex;
     margin-bottom: var(--sp-extra-tight);
     @include dir.side(margin, var(--sp-extra-tight), 0);
   }
-  & .segment-btn {
+  .segment-btn {
     flex: 1;
     padding: var(--sp-ultra-tight) 0;
   }
@@ -103,7 +103,7 @@
   padding: var(--sp-normal) 0 0;
   @include dir.side(padding, var(--sp-normal), var(--sp-extra-tight));
 
-  & .btn-surface {
+  .btn-surface {
     width: 100%;
   }
 }

@@ -1,7 +1,7 @@
 .confirm-dialog {
   padding: var(--sp-normal);
 
-  & > .text {
+  > .text {
     padding-bottom: var(--sp-normal);
   }
   &__btn {

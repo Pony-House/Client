@@ -18,26 +18,26 @@
     align-items: center;
     position: relative;
 
-    & > .ic-fa,
+    > .ic-fa,
     .ic-raw {
       position: absolute;
       --away: calc(var(--sp-normal) + var(--sp-tight));
       @include dir.prop(left, var(--away), unset);
       @include dir.prop(right, unset, var(--away));
     }
-    & > .ic-btn {
+    > .ic-btn {
       border-radius: calc(var(--bo-radius) / 2);
       position: absolute;
       --away: calc(var(--sp-normal) + var(--sp-extra-tight));
       @include dir.prop(right, var(--away), unset);
       @include dir.prop(left, unset, var(--away));
     }
-    & .input-container {
+    .input-container {
       min-width: 0;
       flex: 1;
     }
 
-    & input {
+    input {
       padding-left: 40px !important;
       padding-right: 40px !important;
       font-size: var(--fs-s1 !important);

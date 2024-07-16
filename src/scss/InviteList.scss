@@ -6,7 +6,7 @@
   &__subheading {
     margin-top: var(--sp-extra-loose);
 
-    & .text {
+    .text {
       text-transform: uppercase;
     }
     &:first-child {
@@ -14,13 +14,13 @@
     }
   }
 
-  & .room-tile {
+  .room-tile {
     margin-top: var(--sp-normal);
     &__options {
       align-self: flex-end;
     }
   }
-  & .invite-btn__container .btn-surface {
+  .invite-btn__container .btn-surface {
     @include dir.side(margin, 0, var(--sp-normal));
   }
 }

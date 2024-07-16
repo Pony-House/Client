@@ -1,11 +1,11 @@
 .auth-request {
   padding: var(--sp-normal);
 
-  & form > *:not(:first-child) {
+  form > *:not(:first-child) {
     margin-top: var(--sp-normal);
   }
 
-  & .text-b3 {
+  .text-b3 {
     color: var(--tc-danger-high);
     margin-top: var(--sp-ultra-tight) !important;
   }

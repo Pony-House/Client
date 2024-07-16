@@ -8,14 +8,14 @@
     position: relative;
     top: 40px;
 
-    & strong {
+    strong {
       color: var(--tc-surface-high);
     }
 
     &--open {
       display: flex;
-      & .bouncing-loader {
-        & > *,
+      .bouncing-loader {
+        > *,
         &::after,
         &::before {
           animation: bouncing-loader 0.6s infinite alternate;
@@ -68,16 +68,16 @@
     background-color: var(--bg-surface-low);
     border-radius: var(--bo-radius);
 
-    & button {
+    button {
       justify-content: flex-start;
       border-radius: 0;
       box-shadow: none;
       padding: 6px var(--sp-tight);
-      & .ic-raw {
+      .ic-raw {
         width: 16px;
         height: 16px;
       }
-      & .ic-fa {
+      .ic-fa {
         font-size: 16px;
         height: 16px;
       }
@@ -115,7 +115,7 @@
     &--open {
       display: flex;
     }
-    & button:first-child {
+    button:first-child {
       @extend .cp-fx__item-one;
     }
   }

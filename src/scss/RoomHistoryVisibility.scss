@@ -3,22 +3,22 @@
 @use './partials/text';
 
 .room-history-visibility {
-  & .context-menu__item .text {
+  .context-menu__item .text {
     margin: 0 !important;
     @extend .cp-fx__item-one;
     @extend .cp-fx__row--s-c;
 
-    & span:first-child {
+    span:first-child {
       @extend .cp-fx__item-one;
       @extend .cp-txt__ellipsis;
     }
 
-    & .radio-btn {
+    .radio-btn {
       @include dir.side(margin, var(--sp-tight), 0);
     }
   }
 
-  & > .text {
+  > .text {
     margin: var(--sp-normal);
     margin-top: var(--sp-ultra-tight);
   }

@@ -23,7 +23,7 @@
     justify-content: center;
     @include dir.side(border, 1px solid var(--bg-surface-border), none);
 
-    & .text:nth-child(2) {
+    .text:nth-child(2) {
       margin: 0 var(--sp-extra-tight);
     }
   }
@@ -36,7 +36,7 @@
     border: 1px solid var(--bg-surface-border);
     border-width: 0 1px 0 1px;
 
-    & .segment-btn__base,
+    .segment-btn__base,
     & + .segment-btn .segment-btn__base {
       border: none;
     }

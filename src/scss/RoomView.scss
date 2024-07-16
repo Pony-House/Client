@@ -17,7 +17,7 @@
 
   transition: transform 200ms var(--fluid-slide-down);
 
-  & .room-view__content-wrapper {
+  .room-view__content-wrapper {
     background: var(--bg-surface);
     background: var(--bg-surface-gradient);
   }
@@ -29,13 +29,13 @@
     box-shadow: var(--bs-popup);
   }
 
-  & .header {
+  .header {
     @media screen and (max-width: 750px) {
       background-color: var(--bg-surface-low) !important;
     }
   }
 
-  & .header {
+  .header {
     background-color: var(--bg-surface);
     @include screen.smallerThan(mobileBreakpoint) {
       padding: 0 var(--sp-tight);

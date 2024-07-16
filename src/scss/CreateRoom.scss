@@ -12,7 +12,7 @@
     }
   }
 
-  & .segment-btn {
+  .segment-btn {
     padding: var(--sp-ultra-tight) 0;
     &__base {
       padding: 0 var(--sp-tight);
@@ -29,7 +29,7 @@
       margin-top: var(--sp-ultra-tight);
       @include dir.side(margin, 46px, 0);
     }
-    & .text {
+    .text {
       display: flex;
       align-items: center;
       padding: 0 var(--sp-normal);
@@ -37,14 +37,14 @@
       border-radius: var(--bo-radius);
       color: var(--tc-surface-low);
     }
-    & *:nth-child(2) {
+    *:nth-child(2) {
       flex: 1;
       min-width: 0;
-      & .input {
+      .input {
         border-radius: 0;
       }
     }
-    & .text:first-child {
+    .text:first-child {
       @include dir.prop(border-width, 1px 0 1px 1px, 1px 1px 1px 0);
       @include dir.prop(
         border-radius,
@@ -52,7 +52,7 @@
         0 var(--bo-radius) var(--bo-radius) 0
       );
     }
-    & .text:last-child {
+    .text:last-child {
       @include dir.prop(border-width, 1px 1px 1px 0, 1px 0 1px 1px);
       @include dir.prop(
         border-radius,
@@ -66,12 +66,12 @@
     display: flex;
     align-items: flex-end;
 
-    & .input-container {
+    .input-container {
       flex: 1;
       min-width: 0;
       @include dir.side(margin, 0, var(--sp-normal));
     }
-    & .btn-primary {
+    .btn-primary {
       padding-top: 11px;
       padding-bottom: 11px;
     }
@@ -79,7 +79,7 @@
 
   &__loading {
     @extend .cp-fx__row--c-c;
-    & .text {
+    .text {
       @include dir.side(margin, var(--sp-normal), 0);
     }
   }

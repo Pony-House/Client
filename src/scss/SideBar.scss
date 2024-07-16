@@ -38,8 +38,8 @@
 .sticky-container {
   padding: var(--sp-ultra-tight) 0;
 
-  & > .sidebar-avatar,
-  & > .avatar-container {
+  > .sidebar-avatar,
+  > .avatar-container {
     margin: calc(var(--sp-tight) / 2) 0;
   }
 }
@@ -95,15 +95,15 @@
   }
 
   .action-button {
-    & i,
-    & i::before {
+    i,
+    i::before {
       font-size: 11pt;
     }
   }
 
   .action-button-2 {
-    & i,
-    & i::before {
+    i,
+    i::before {
       font-size: 15pt;
       margin-left: -2px;
       margin-right: -2px;

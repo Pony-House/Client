@@ -8,8 +8,8 @@
   align-items: center;
   gap: var(--sp-normal);
 
-  & .avatar-container img,
-  & .avatar-container canvas {
+  .avatar-container img,
+  .avatar-container canvas {
     object-fit: contain;
     border-radius: 0;
   }
@@ -21,10 +21,10 @@
   &__usage {
     display: flex;
     gap: var(--sp-ultra-tight);
-    & button {
+    button {
       padding: 6px;
     }
-    & > button.btn-surface {
+    > button.btn-surface {
       padding: 6px var(--sp-tight);
       min-width: 0;
       @include dir.side(margin, var(--sp-ultra-tight), 0);

@@ -95,7 +95,7 @@
   --ic-surface-low: rgba(255, 255, 255, 64%);
   --ic-primary-normal: #ffffff;
 
-  & .text {
+  .text {
     /* override user mxid colors for texts */
     --mx-uc-1: hsl(208, 100%, 58%);
     --mx-uc-2: hsl(301, 80%, 70%);
@@ -107,37 +107,39 @@
     --mx-uc-8: hsl(94, 66%, 50%);
   }
 
-  /* sound bar */
-  --sound-bar-base: rgb(235, 235, 235);
+  & {
+    /* sound bar */
+    --sound-bar-base: rgb(235, 235, 235);
 
-  /* shadow and overlay */
-  --bg-overlay: rgba(0, 0, 0, 60%);
-  --bg-overlay-low: rgba(0, 0, 0, 80%);
+    /* shadow and overlay */
+    --bg-overlay: rgba(0, 0, 0, 60%);
+    --bg-overlay-low: rgba(0, 0, 0, 80%);
 
-  --bs-popup: 0 0 16px rgba(0, 0, 0, 25%);
+    --bs-popup: 0 0 16px rgba(0, 0, 0, 25%);
 
-  --bs-surface-border: inset 0 0 0 1px var(--bg-surface-border);
-  --bs-surface-outline: 0 0 0 2px var(--bg-surface-border);
+    --bs-surface-border: inset 0 0 0 1px var(--bg-surface-border);
+    --bs-surface-outline: 0 0 0 2px var(--bg-surface-border);
 
-  --bs-primary-border: inset 0 0 0 1px var(--bg-primary-border);
-  --bs-primary-outline: 0 0 0 2px var(--bg-primary-border);
+    --bs-primary-border: inset 0 0 0 1px var(--bg-primary-border);
+    --bs-primary-outline: 0 0 0 2px var(--bg-primary-border);
 
-  /* font styles: font-size, letter-spacing, line-hight */
-  --fs-h1: 35.6px;
+    /* font styles: font-size, letter-spacing, line-hight */
+    --fs-h1: 35.6px;
 
-  --fs-h2: 23.6px;
+    --fs-h2: 23.6px;
 
-  --fs-s1: 17.6px;
+    --fs-s1: 17.6px;
 
-  --fs-b1: 14.6px;
-  --ls-b1: 0.14px;
+    --fs-b1: 14.6px;
+    --ls-b1: 0.14px;
 
-  --fs-b2: 13.2px;
+    --fs-b2: 13.2px;
 
-  --fs-b3: 11.2px;
+    --fs-b3: 11.2px;
 
-  /* override normal font weight for dark mode */
-  --fw-normal: 350;
+    /* override normal font weight for dark mode */
+    --fw-normal: 350;
+  }
 
   /* Code Dark Mode */
   /* Dracula Theme v1.2.5
@@ -339,5 +341,7 @@
     --bs-gradient: none;
   }
 
-  --bg-profile-banner: #1b1b1b;
+  & {
+    --bg-profile-banner: #1b1b1b;
+  }
 }

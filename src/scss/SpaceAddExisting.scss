@@ -9,13 +9,13 @@
     padding-bottom: 80px;
     @include dir.side(padding, var(--sp-extra-tight), 0);
 
-    & > .text {
+    > .text {
       margin: var(--sp-loose) var(--sp-normal);
       text-align: center;
     }
   }
 
-  & form {
+  form {
     @extend .cp-fx__row--s-c;
     padding: var(--sp-extra-tight);
     padding-top: var(--sp-normal);
@@ -25,21 +25,21 @@
     z-index: 999;
     background-color: var(--bg-surface);
 
-    & > .ic-fa,
-    & > .ic-raw,
-    & > .ic-btn {
+    > .ic-fa,
+    > .ic-raw,
+    > .ic-btn {
       position: absolute;
     }
-    & > .ic-fa,
-    & > .ic-raw {
+    > .ic-fa,
+    > .ic-raw {
       margin: 0 var(--sp-tight);
     }
-    & > .ic-btn {
+    > .ic-btn {
       border-radius: calc(var(--bo-radius) / 2);
       @include dir.prop(right, var(--sp-tight), unset);
       @include dir.prop(left, unset, var(--sp-tight));
     }
-    & input {
+    input {
       padding: var(--sp-tight) 40px;
     }
   }

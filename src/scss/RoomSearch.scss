@@ -3,23 +3,23 @@
 
 .room-search {
   &__form {
-    & div:nth-child(2) {
+    div:nth-child(2) {
       display: flex;
       align-items: flex-end;
       padding: var(--sp-normal);
 
-      & .input-container {
+      .input-container {
         @extend .cp-fx__item-one;
         @include dir.side(margin, 0, var(--sp-normal));
       }
-      & button {
+      button {
         height: 46px;
       }
     }
-    & .context-menu__header {
+    .context-menu__header {
       margin-bottom: 0;
     }
-    & > .text {
+    > .text {
       padding: 0 var(--sp-normal) var(--sp-tight);
     }
   }
@@ -28,8 +28,8 @@
     height: 248px;
     @extend .cp-fx__column--c-c;
 
-    & .ic-fa,
-    & .ic-raw {
+    .ic-fa,
+    .ic-raw {
       opacity: 0.5;
     }
     .text {

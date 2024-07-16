@@ -2,11 +2,11 @@
   margin-top: var(--sp-extra-tight);
   &__form {
     display: flex;
-    & > .input-container {
+    > .input-container {
       flex: 1;
       min-width: 0;
     }
-    & > *:nth-child(2) {
+    > *:nth-child(2) {
       margin: 0 var(--sp-tight);
     }
   }
@@ -16,7 +16,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    & .text {
+    .text {
       margin: 0 var(--sp-tight);
     }
   }

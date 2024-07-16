@@ -3,10 +3,10 @@
 @use './partials/flex';
 
 .space-manage {
-  & .pw__content-wrapper {
+  .pw__content-wrapper {
     position: relative;
   }
-  & .pw__content-container {
+  .pw__content-container {
     padding-top: 0;
     padding-bottom: 73px;
   }
@@ -24,7 +24,7 @@
 .space-manage__content {
   margin-bottom: var(--sp-extra-loose);
 
-  & > .text {
+  > .text {
     margin-top: var(--sp-extra-tight);
     padding: var(--sp-extra-tight) var(--sp-normal);
     text-transform: uppercase;
@@ -32,12 +32,12 @@
 
   &-items {
     @include dir.side(padding, var(--sp-extra-tight), 0);
-    & > .text:first-child {
+    > .text:first-child {
       padding: var(--sp-extra-tight);
     }
   }
 
-  & > button {
+  > button {
     margin: var(--sp-normal);
   }
 
@@ -46,7 +46,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    & .text {
+    .text {
       margin: 0 var(--sp-normal);
     }
   }
@@ -64,16 +64,16 @@
     z-index: 99;
     background-color: var(--bg-surface);
   }
-  & > * {
+  > * {
     flex-shrink: 0;
   }
 
-  & > .btn-surface {
+  > .btn-surface {
     min-width: 0;
     padding: var(--sp-extra-tight) 10px;
     white-space: nowrap;
     box-shadow: none;
-    & p {
+    p {
       @extend .cp-txt__ellipsis;
       max-width: 200px;
     }
@@ -89,7 +89,7 @@
   padding: 0 var(--sp-extra-tight);
   border-radius: var(--bo-radius);
 
-  & > div {
+  > div {
     min-height: 40px;
     display: flex;
     align-items: center;
@@ -97,7 +97,7 @@
 
   &--space {
     @extend .space-manage-item;
-    & .space-manage-item__btn {
+    .space-manage-item__btn {
       cursor: pointer;
     }
   }
@@ -106,7 +106,7 @@
     background-color: var(--bg-surface-hover);
   }
 
-  & .checkbox {
+  .checkbox {
     @include dir.side(margin, 0, var(--sp-tight));
   }
 
@@ -115,16 +115,16 @@
     display: flex;
     align-items: center;
 
-    & .avatar__border--active {
+    .avatar__border--active {
       box-shadow: none;
     }
-    & > .text-b1 {
+    > .text-b1 {
       @extend .cp-fx__item-one;
       @extend .cp-txt__ellipsis;
       min-width: 0;
       margin: 0 var(--sp-extra-tight);
     }
-    & > .text-b2 {
+    > .text-b2 {
       margin: 0 var(--sp-extra-tight);
       padding: 1px var(--sp-ultra-tight);
       color: var(--bg-positive);
@@ -133,19 +133,19 @@
     }
   }
 
-  & .ic-btn {
+  .ic-btn {
     padding: 7px;
     @include dir.side(margin, 0, var(--sp-extra-tight));
     opacity: 0.7;
   }
 
-  & .btn-surface,
-  & .btn-primary {
+  .btn-surface,
+  .btn-primary {
     padding: var(--sp-ultra-tight) var(--sp-extra-tight);
     min-width: 60px;
   }
 
-  & > .text {
+  > .text {
     padding: 32px;
     padding-top: 0;
     padding-bottom: var(--sp-normal);

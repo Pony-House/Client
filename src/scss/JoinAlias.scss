@@ -4,7 +4,7 @@
   padding: var(--sp-normal);
   @include dir.side(padding, var(--sp-normal), var(--sp-extra-tight));
 
-  & > *:not(:first-child) {
+  > *:not(:first-child) {
     margin-top: var(--sp-normal);
   }
 

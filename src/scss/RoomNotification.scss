@@ -3,16 +3,16 @@
 @use './partials/text';
 
 .room-notification {
-  & .context-menu__item .text {
+  .context-menu__item .text {
     @extend .cp-fx__item-one;
     @extend .cp-fx__row--s-c;
 
-    & span:first-child {
+    span:first-child {
       @extend .cp-fx__item-one;
       @extend .cp-txt__ellipsis;
     }
 
-    & .radio-btn {
+    .radio-btn {
       @include dir.side(margin, var(--sp-tight), 0);
     }
   }

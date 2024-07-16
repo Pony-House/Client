@@ -9,7 +9,7 @@
   @include dir.prop(border-left, 4px solid transparent, none);
   @include dir.prop(border-right, none, 4px solid transparent);
 
-  & > .ic-btn {
+  > .ic-btn {
     padding: 0;
     border-radius: 4;
   }
@@ -18,7 +18,7 @@
     margin: 0 var(--sp-tight);
     @extend .cp-fx__item-one;
 
-    & > *:nth-child(2) {
+    > *:nth-child(2) {
       margin-top: var(--sp-ultra-tight);
     }
   }
@@ -38,7 +38,7 @@
   &--primary {
     border-color: var(--bg-primary);
     background-color: var(--bg-primary-hover);
-    & .text {
+    .text {
       color: var(--tc-primary-high);
       &-b3 {
         color: var(--tc-primary-normal);
@@ -48,7 +48,7 @@
   &--positive {
     border-color: var(--bg-positive-border);
     background-color: var(--bg-positive-hover);
-    & .text {
+    .text {
       color: var(--tc-positive-high);
       &-b3 {
         color: var(--tc-positive-normal);
@@ -58,7 +58,7 @@
   &--caution {
     border-color: var(--bg-caution-border);
     background-color: var(--bg-caution-hover);
-    & .text {
+    .text {
       color: var(--tc-caution-high);
       &-b3 {
         color: var(--tc-caution-normal);
@@ -68,7 +68,7 @@
   &--danger {
     border-color: var(--bg-danger-border);
     background-color: var(--bg-danger-hover);
-    & .text {
+    .text {
       color: var(--tc-danger-high);
       &-b3 {
         color: var(--tc-danger-normal);

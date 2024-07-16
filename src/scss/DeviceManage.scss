@@ -12,14 +12,14 @@
   &__info {
     margin: var(--sp-normal);
   }
-  & .setting-tile:last-of-type {
+  .setting-tile:last-of-type {
     border-bottom: none;
   }
-  & .setting-tile__options {
+  .setting-tile__options {
     display: flex;
     align-items: center;
     gap: var(--sp-ultra-tight);
-    & .btn-positive {
+    .btn-positive {
       padding: 6px var(--sp-tight);
       min-width: 0;
     }
@@ -35,7 +35,7 @@
 
   &__rename {
     padding: var(--sp-normal);
-    & > *:not(:last-child) {
+    > *:not(:last-child) {
       margin-bottom: var(--sp-normal);
     }
     &-btn {

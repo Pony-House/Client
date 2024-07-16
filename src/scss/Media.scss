@@ -6,13 +6,13 @@
   padding: var(--sp-ultra-tight) var(--sp-tight);
   min-height: 42px;
 
-  & .file-name {
+  .file-name {
     @extend .cp-txt__ellipsis;
     flex: 1;
     color: var(--tc-surface-low);
   }
 
-  & a {
+  a {
     line-height: 0;
   }
 }
@@ -38,7 +38,7 @@
   display: inline-flex;
   max-width: 170px;
   width: 100%;
-  & img {
+  img {
     width: 100% !important;
   }
 }
@@ -60,8 +60,8 @@
 
 .image-container,
 .video-container {
-  & img,
-  & canvas {
+  img,
+  canvas {
     max-width: unset !important;
     width: 100% !important;
     height: 100%;
@@ -79,11 +79,11 @@
 
 .video-container {
   position: relative;
-  & .ic-btn-surface {
+  .ic-btn-surface {
     background-color: var(--bg-surface-low);
   }
-  & .ic-btn-surface,
-  & .donut-spinner {
+  .ic-btn-surface,
+  .donut-spinner {
     position: absolute;
   }
   video {

@@ -11,7 +11,7 @@
   &:focus {
     outline: none;
   }
-  & .tippy-content > div > .scrollbar {
+  .tippy-content > div > .scrollbar {
     max-height: 90vh;
   }
 }
@@ -53,8 +53,8 @@
     white-space: nowrap;
     padding: var(--sp-extra-tight) var(--sp-normal);
 
-    & > .ic-fa,
-    & > .ic-raw {
+    > .ic-fa,
+    > .ic-raw {
       @include dir.side(margin, 0, var(--sp-tight));
     }
 
