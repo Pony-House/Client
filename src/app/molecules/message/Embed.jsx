@@ -23,6 +23,7 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
   // URL Ref
   const tinyUrl = useRef(null);
   const itemEmbed = useRef(null);
+  const [useVideo, setUseVideo] = useState(false);
   const [embedHeight, setEmbedHeight] = useState(null);
 
   const imgType =
@@ -196,26 +197,33 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
           ) : null}
 
           {isVideo && typeof imgUrl === 'string' && imgUrl.length > 0 ? (
-            <div
-              className="mt-2 ratio ratio-16x9 embed-video"
-              style={{
-                backgroundImage: `url('${imgUrl !== defaultVideoAvatar ? mx.mxcUrlToHttp(imgUrl, 2000, 2000) : defaultVideoAvatar}')`,
-              }}
-              onClick={(e) => {
-                $(e.target).replaceWith(
-                  jReact(
-                    <div className="mt-2 ratio ratio-16x9 embed-video enabled">
-                      <embed title={String(embed['og:title'])} src={videoUrl} allowfullscreen="" />
-                    </div>,
-                  ),
-                );
-              }}
-            >
+            !useVideo ? (
               <div
-                className="play-button w-100 h-100"
-                style={{ backgroundImage: `url('./img/svg/play-circle-fill.svg')` }}
-              />
-            </div>
+                className="mt-2 ratio ratio-16x9 embed-video"
+                style={{
+                  backgroundImage: `url('${imgUrl !== defaultVideoAvatar ? mx.mxcUrlToHttp(imgUrl, 2000, 2000) : defaultVideoAvatar}')`,
+                }}
+                onClick={() => {
+                  setUseVideo(true);
+                }}
+              >
+                <div
+                  className="play-button w-100 h-100"
+                  style={{ backgroundImage: `url('./img/svg/play-circle-fill.svg')` }}
+                />
+              </div>
+            ) : (
+              <div className="mt-2 ratio ratio-16x9 embed-video enabled">
+                <iframe
+                  title={String(embed['og:title'])}
+                  src={videoUrl}
+                  allowFullScreen
+                  frameborder="0"
+                  webkitallowfullscreen="true"
+                  mozallowfullscreen="true"
+                />
+              </div>
+            )
           ) : null}
         </span>
       </div>

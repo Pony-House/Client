@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import tinyClipboard from '@src/util/libs/Clipboard';
+import { getShareUrl } from '@src/util/tools';
 
 import { twemojifyReact } from '../../../util/twemojify';
 
@@ -293,50 +295,71 @@ function RoomProfile({ roomId, isSpace }) {
   );
 
   // Render Panel
-  const renderNameAndTopic = () => (
-    <div
-      className="emoji-size-fix"
-      style={{ marginBottom: avatarSrc && canChangeAvatar ? '24px' : '0' }}
-    >
-      <div>
-        <h4 className="d-inline-block m-0 my-1">{twemojifyReact(roomName)}</h4>
+  const renderNameAndTopic = () => {
+    const isAlias = typeof room.getCanonicalAlias() === 'string';
+    const roomId = room.getCanonicalAlias() || room.roomId;
+    return (
+      <div
+        className="emoji-size-fix"
+        style={{ marginBottom: avatarSrc && canChangeAvatar ? '24px' : '0' }}
+      >
+        <div>
+          <h4 className="d-inline-block m-0 my-1">{twemojifyReact(roomName)}</h4>
 
-        {nameCinny.category.length > 0 && (
-          <div className="d-inline-block m-0 my-1">
-            <span style={{ marginRight: '8px', marginLeft: '18px' }}>
-              <RawIcon fa="fa-solid fa-grip-lines-vertical" />
-            </span>
-            <span>{twemojifyReact(nameCinny.category)}</span>
+          {nameCinny.category.length > 0 && (
+            <div className="d-inline-block m-0 my-1">
+              <span style={{ marginRight: '8px', marginLeft: '18px' }}>
+                <RawIcon fa="fa-solid fa-grip-lines-vertical" />
+              </span>
+              <span>{twemojifyReact(nameCinny.category)}</span>
+            </div>
+          )}
+
+          {nameCinny.index.length > 0 && (
+            <div className="d-inline-block m-0 my-1">
+              <span style={{ marginRight: '8px', marginLeft: '8px' }}>
+                <RawIcon fa="fa-solid fa-grip-lines-vertical" />
+              </span>
+              <span>{twemojifyReact(nameCinny.index)}</span>
+            </div>
+          )}
+
+          <span> </span>
+
+          {(canChangeName || canChangeTopic) && (
+            <IconButton
+              fa="fa-solid fa-pencil"
+              size="extra-small"
+              tooltip="Edit"
+              onClick={() => setIsEditing(true)}
+            />
+          )}
+        </div>
+
+        <div className="very-small text-gray">
+          {roomId}
+          {isAlias ? (
+            <a
+              className="ms-1 badge bg-primary text-bg-force noselect"
+              href="#"
+              onClick={(event) => {
+                event.preventDefault();
+                tinyClipboard.copyText(getShareUrl(roomId));
+                alert('The share link was successfully copied!', 'Room Viewer');
+              }}
+            >
+              Share
+            </a>
+          ) : null}
+        </div>
+        {roomTopic && (
+          <div className="very-small text-freedom">
+            {twemojifyReact(roomTopic, undefined, true)}
           </div>
-        )}
-
-        {nameCinny.index.length > 0 && (
-          <div className="d-inline-block m-0 my-1">
-            <span style={{ marginRight: '8px', marginLeft: '8px' }}>
-              <RawIcon fa="fa-solid fa-grip-lines-vertical" />
-            </span>
-            <span>{twemojifyReact(nameCinny.index)}</span>
-          </div>
-        )}
-
-        <span> </span>
-
-        {(canChangeName || canChangeTopic) && (
-          <IconButton
-            fa="fa-solid fa-pencil"
-            size="extra-small"
-            tooltip="Edit"
-            onClick={() => setIsEditing(true)}
-          />
         )}
       </div>
-
-      <div className="very-small text-gray">{room.getCanonicalAlias() || room.roomId}</div>
-      {roomTopic && (
-        <div className="very-small text-freedom">{twemojifyReact(roomTopic, undefined, true)}</div>
-      )}
-    </div>
-  );
+    );
+  };
 
   // Complete
   return (

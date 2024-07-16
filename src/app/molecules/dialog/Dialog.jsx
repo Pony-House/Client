@@ -13,7 +13,7 @@ function Dialog({
   onAfterOpen = null,
   onAfterClose = null,
   onRequestClose = null,
-  children,
+  children = null,
   bodyClass = '',
 }) {
   useEffect(() => {
@@ -57,7 +57,7 @@ Dialog.propTypes = {
   onAfterOpen: PropTypes.func,
   onAfterClose: PropTypes.func,
   onRequestClose: PropTypes.func,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
 };
 
 export default Dialog;
