@@ -226,7 +226,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
 
   function renderRoomList(rooms) {
     // const appearanceSettings = getAppearance();
-    return rooms.map((room) => {
+    return rooms.map((room, index) => {
       const alias = typeof room.canonical_alias === 'string' ? room.canonical_alias : room.room_id;
       const name = typeof room.name === 'string' ? room.name : alias;
       const isJoined = initMatrix.matrixClient.getRoom(room.room_id)?.getMyMembership() === 'join';
@@ -240,7 +240,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
       */
 
       return (
-        <div className="col-md-4">
+        <div key={`publicRooms_renderRoomList_${index}`} className="col-md-4">
           <div className="card p-3 m-2" style={{ height: '350px' }}>
             <h4 className="card-title">
               <Avatar
