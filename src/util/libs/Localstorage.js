@@ -36,23 +36,19 @@ class StorageManager extends EventEmitter {
     }
   }
 
-  async checkStoragePersisted(ignoreEmit = false) {
+  async checkStoragePersisted() {
     // Check if site's storage has been marked as persistent
     if (navigator.storage && navigator.storage.persist) {
       this.isPersisted = await navigator.storage.persisted();
     } else this.isPersisted = null;
-    if (!ignoreEmit) this.emit('isPersisted', this.isPersisted);
     return this.isPersisted;
   }
 
   async requestStoragePersisted() {
     // Request persistent storage for site
-    await this.checkStoragePersisted(true);
-    if (!this.isPersisted) {
-      if (navigator.storage && navigator.storage.persist) {
-        this.isPersisted = await navigator.storage.persist();
-      } else this.isPersisted = null;
-    }
+    if (navigator.storage && navigator.storage.persist) {
+      this.isPersisted = await navigator.storage.persist();
+    } else this.isPersisted = null;
     this.emit('isPersisted', this.isPersisted);
     return this.isPersisted;
   }
