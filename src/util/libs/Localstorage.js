@@ -10,6 +10,11 @@ class StorageManager extends EventEmitter {
     this.content = this.getJson('ponyHouse-storage-manager', 'obj');
     this.content.isPersistedLocal =
       typeof this.content.isPersistedLocal === 'boolean' ? this.content.isPersistedLocal : true;
+
+    const tinyThis = this;
+    window.addEventListener('storage', function (e) {
+      tinyThis.emit('storage', e);
+    });
   }
 
   getLocalStorage() {
