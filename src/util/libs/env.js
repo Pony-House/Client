@@ -3,6 +3,7 @@
 */
 
 import EventEmitter from 'events';
+import storageManager from './Localstorage';
 
 // Emitter
 class EnvAPI extends EventEmitter {
@@ -44,14 +45,8 @@ class EnvAPI extends EventEmitter {
       this.Initialized = true;
 
       this.content = !__ENV_APP__.ELECTRON_MODE
-        ? global.localStorage.getItem('ponyHouse-env')
-        : '{}';
-
-      try {
-        this.content = JSON.parse(this.content) ?? {};
-      } catch (err) {
-        this.content = {};
-      }
+        ? storageManager.getJson('ponyHouse-env', 'obj')
+        : {};
 
       if (typeof __ENV_APP__.WEB3 === 'boolean' && __ENV_APP__.WEB3) {
         this.content.WEB3 = typeof this.content.WEB3 === 'boolean' ? this.content.WEB3 : true;
@@ -101,7 +96,7 @@ class EnvAPI extends EventEmitter {
         this.content[folder] = value;
 
         if (!__ENV_APP__.ELECTRON_MODE) {
-          global.localStorage.setItem('ponyHouse-env', JSON.stringify(this.content));
+          storageManager.setJson('ponyHouse-env', this.content);
         } else {
           global.tinyJsonDB.update('envData', folder, value);
         }

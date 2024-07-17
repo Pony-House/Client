@@ -12,6 +12,7 @@ import {
 import settings from '@src/client/state/settings';
 import matrixAppearance from '@src/util/libs/appearance';
 import soundFiles from '@src/util/soundFiles';
+import storageManager from '@src/util/libs/Localstorage';
 
 import { initHotkeys } from '../../../client/event/hotkeys';
 import { initRoomListListener } from '../../../client/event/roomList';
@@ -274,7 +275,8 @@ function Client({ isDevToolsOpen = false }) {
     };
   }, []);
 
-  if (startWorked) {
+  const acceptLocalStorage = storageManager.localStorageExist();
+  if (acceptLocalStorage && startWorked) {
     if (isLoading) {
       return (
         <>
@@ -317,10 +319,7 @@ function Client({ isDevToolsOpen = false }) {
       versionChecker();
     }
 
-    $('body').css(
-      'zoom',
-      `${tinyAppZoomValidator(Number(global.localStorage.getItem('pony-house-zoom')))}%`,
-    );
+    $('body').css('zoom', `${tinyAppZoomValidator(storageManager.getNumber('pony-house-zoom'))}%`);
     const tinyMod = <Mods />;
 
     resizeWindowChecker();
@@ -400,7 +399,9 @@ function Client({ isDevToolsOpen = false }) {
           <i className="fa-solid fa-triangle-exclamation" />
         </p>
         <div className="small fw-bold text-uppercase mt-3 text-danger">CLIENT ERROR</div>
-        <div className="very-small fw-bold text-uppercase mt-3">{errorMessage}</div>
+        <div className="very-small fw-bold text-uppercase mt-3">
+          {errorMessage || !acceptLocalStorage ? 'Unsupported localstorage!' : 'Unknown error.'}
+        </div>
 
         <div className="loading__appname">
           <Text variant="h2" weight="medium">

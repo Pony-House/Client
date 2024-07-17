@@ -13,6 +13,7 @@ import { objType } from 'for-promise/utils/lib.mjs';
 import startStatus from './status';
 import initMatrix from '../../client/initMatrix';
 import envAPI from '../libs/env';
+import storageManager from '../libs/Localstorage';
 
 const tinyCrypto = {};
 let web3;
@@ -144,13 +145,7 @@ export function getDefaultNetworks() {
 
 // Config
 export function getWeb3Cfg(folder, getDefault = true) {
-  let content = global.localStorage.getItem('ponyHouse-web3');
-
-  try {
-    content = JSON.parse(content) ?? {};
-  } catch (err) {
-    content = {};
-  }
+  const content = storageManager.getJson('ponyHouse-web3', 'obj');
 
   if (getDefault) {
     content.web3Enabled = typeof content.web3Enabled === 'boolean' ? content.web3Enabled : true;
@@ -174,13 +169,13 @@ export function getWeb3Cfg(folder, getDefault = true) {
 export function setWeb3Cfg(folder, value) {
   const content = getWeb3Cfg(null, false);
   content[folder] = value;
-  global.localStorage.setItem('ponyHouse-web3', JSON.stringify(content));
+  storageManager.setJson('ponyHouse-web3', content);
 }
 
 export function deleteWeb3Cfg(folder) {
   const content = getWeb3Cfg(null, false);
   if (typeof content[folder] !== 'undefined') delete content[folder];
-  global.localStorage.setItem('ponyHouse-web3', JSON.stringify(content));
+  storageManager.setJson('ponyHouse-web3', content);
 }
 
 tinyCrypto.connected = false;

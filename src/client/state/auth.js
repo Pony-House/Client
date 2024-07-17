@@ -1,7 +1,8 @@
+import storageManager from '@src/util/libs/Localstorage';
 import cons from './cons';
 
 function getSecret(key) {
-  return localStorage.getItem(key);
+  return storageManager.getItem(key);
 }
 
 const isAuthenticated = () => getSecret(cons.secretKey.ACCESS_TOKEN) !== null;

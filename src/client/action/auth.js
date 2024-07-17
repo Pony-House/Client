@@ -1,12 +1,13 @@
 import * as sdk from 'matrix-js-sdk';
+import storageManager from '@src/util/libs/Localstorage';
 import cons from '../state/cons';
 import { fetchFn } from '../initMatrix';
 
 function updateLocalStore(accessToken, deviceId, userId, baseUrl) {
-  localStorage.setItem(cons.secretKey.ACCESS_TOKEN, accessToken);
-  localStorage.setItem(cons.secretKey.DEVICE_ID, deviceId);
-  localStorage.setItem(cons.secretKey.USER_ID, userId);
-  localStorage.setItem(cons.secretKey.BASE_URL, baseUrl);
+  storageManager.setItem(cons.secretKey.ACCESS_TOKEN, accessToken);
+  storageManager.setItem(cons.secretKey.DEVICE_ID, deviceId);
+  storageManager.setItem(cons.secretKey.USER_ID, userId);
+  storageManager.setItem(cons.secretKey.BASE_URL, baseUrl);
 }
 
 function createTemporaryClient(baseUrl) {
@@ -19,7 +20,7 @@ function createTemporaryClientId(baseUrl) {
 
 async function startSsoLogin(baseUrl, type, idpId) {
   const client = createTemporaryClient(baseUrl);
-  localStorage.setItem(cons.secretKey.BASE_URL, client.baseUrl);
+  storageManager.setItem(cons.secretKey.BASE_URL, client.baseUrl);
   window.location.href = client.getSsoLoginUrl(window.location.href, type, idpId);
 }
 

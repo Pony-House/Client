@@ -1,4 +1,5 @@
 import { toggleActionLocal } from '../app/organisms/settings/Api';
+import storageManager from './libs/Localstorage';
 
 // Console Values
 const prefixConsole = (text, type = 'log') => console[type](`[audioRec.js] ${text}`);
@@ -33,7 +34,7 @@ const audioRecorder = {
     // Feature is supported in browser
 
     // create an audio stream
-    const tinyAudioDeviceUse = global.localStorage.getItem('tinyAudioDevice');
+    const tinyAudioDeviceUse = storageManager.getItem('tinyAudioDevice');
     const audioMediaSettings = toggleActionLocal('ponyHouse-usermedia')();
     return (
       navigator.mediaDevices

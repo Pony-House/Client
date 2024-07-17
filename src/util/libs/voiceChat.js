@@ -3,6 +3,7 @@
 // https://matrix-org.github.io/matrix-js-sdk/stable/classes/MatrixCall.html
 import { createNewMatrixCall } from 'matrix-js-sdk';
 import { EventEmitter } from 'events';
+import storageManager from './Localstorage';
 
 // Emitter
 class MyEmitter extends EventEmitter {}
@@ -65,20 +66,17 @@ class MatrixVoiceChat {
 
   /* Audio */
   getAudioMute() {
-    return global.localStorage.getItem('pony-house-muted-audio') === 'true';
+    return storageManager.getBool('pony-house-muted-audio');
   }
 
   getMicrophoneMute() {
-    return global.localStorage.getItem('pony-house-muted-microphone') === 'true';
+    return storageManager.getBool('pony-house-muted-microphone');
   }
 
   setAudioMute(value) {
     if (typeof value === 'boolean') {
       myEmitter.emit('pony_house_muted_audio', value);
-      return global.localStorage.setItem(
-        'pony-house-muted-audio',
-        value === true ? 'true' : 'false',
-      );
+      return storageManager.setBool('pony-house-muted-audio', value);
     }
     return null;
   }
@@ -86,10 +84,7 @@ class MatrixVoiceChat {
   setMicrophoneMute(value) {
     if (typeof value === 'boolean') {
       myEmitter.emit('pony_house_muted_microphone', value);
-      return global.localStorage.setItem(
-        'pony-house-muted-microphone',
-        value === true ? 'true' : 'false',
-      );
+      return storageManager.setBool('pony-house-muted-microphone', value);
     }
     return null;
   }

@@ -4,6 +4,7 @@ import EventEmitter from 'events';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import { isMobile, notificationStatus } from '@src/util/libs/mobile';
+import storageManager from '@src/util/libs/Localstorage';
 
 import appDispatcher from '../dispatcher';
 
@@ -60,16 +61,14 @@ const themes = {
 };
 
 function getSettings() {
-  const settings = localStorage.getItem('settings');
-  if (settings === null) return null;
-  return JSON.parse(settings);
+  return storageManager.getJson('settings', 'null');
 }
 
 function setSettings(key, value) {
   let settings = getSettings();
   if (settings === null) settings = {};
   settings[key] = value;
-  localStorage.setItem('settings', JSON.stringify(settings));
+  storageManager.setJson('settings', settings);
 }
 
 class Settings extends EventEmitter {

@@ -3,6 +3,9 @@ import { calendarFormat } from '@src/util/libs/momentjs';
 import { isMobile } from '@src/util/libs/mobile';
 import Button from '@src/app/atoms/button/Button';
 
+import SettingNumber from '@src/app/molecules/setting-number/SettingNumber';
+import storageManager from '@src/util/libs/Localstorage';
+
 import settings from '../../../../client/state/settings';
 import Toggle from '../../../atoms/button/Toggle';
 import SegmentedControls from '../../../atoms/segmented-controls/SegmentedControls';
@@ -20,7 +23,6 @@ import matrixAppearance, {
   toggleAppearanceAction,
   setAppearance,
 } from '../../../../util/libs/appearance';
-import SettingNumber from '@src/app/molecules/setting-number/SettingNumber';
 
 function AppearanceSection() {
   const [, updateState] = useState({});
@@ -83,7 +85,7 @@ function AppearanceSection() {
   const ponyHouseZoomRangeRef = useRef(null);
 
   useEffect(() => {
-    const zoomApp = Number(global.localStorage.getItem('pony-house-zoom'));
+    const zoomApp = storageManager.getNumber('pony-house-zoom');
 
     const ponyHouseZoom = $(ponyHouseZoomRef.current);
     const ponyHouseZoomRange = $(ponyHouseZoomRangeRef.current);
@@ -235,7 +237,7 @@ function AppearanceSection() {
                   const newValue = Number(ponyHouseZoomRange.val());
                   const value = tinyAppZoomValidator(newValue);
 
-                  global.localStorage.setItem('pony-house-zoom', value);
+                  storageManager.setItem('pony-house-zoom', value);
                   $('body').css('zoom', `${value}%`);
                 }}
               >

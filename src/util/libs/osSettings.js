@@ -1,11 +1,7 @@
-export function getOsSettings(folder, getDefault = true) {
-  let content = global.localStorage.getItem('ponyHouse-os-settings');
+import storageManager from './Localstorage';
 
-  try {
-    content = JSON.parse(content) ?? {};
-  } catch (err) {
-    content = {};
-  }
+export function getOsSettings(folder, getDefault = true) {
+  const content = storageManager.getJson('ponyHouse-os-settings', 'obj');
 
   if (getDefault) {
     content.startMinimized =
@@ -23,7 +19,7 @@ export function getOsSettings(folder, getDefault = true) {
 export function setOsSettings(folder, value) {
   const content = getOsSettings(null, false);
   content[folder] = value;
-  global.localStorage.setItem('ponyHouse-os-settings', JSON.stringify(content));
+  storageManager.setJson('ponyHouse-os-settings', content);
 }
 
 const toggleOsSettingsAction = (dataFolder, setToggle) => (data) => {

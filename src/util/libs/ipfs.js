@@ -1,14 +1,9 @@
 import CIDTool from 'cid-tool';
 import envAPI from './env';
+import storageManager from './Localstorage';
 
 export function getIpfsCfg(folder, getDefault = true, domainsParse = false) {
-  let content = global.localStorage.getItem('ponyHouse-ipfs');
-
-  try {
-    content = JSON.parse(content) ?? {};
-  } catch (err) {
-    content = {};
-  }
+  const content = storageManager.getJson('ponyHouse-ipfs', 'obj');
 
   if (getDefault) {
     content.ipfsEnabled = typeof content.ipfsEnabled === 'boolean' ? content.ipfsEnabled : true;
@@ -81,7 +76,7 @@ export function getIpfsCfg(folder, getDefault = true, domainsParse = false) {
 export function setIpfsCfg(folder, value) {
   const content = getIpfsCfg(null, false);
   content[folder] = value;
-  global.localStorage.setItem('ponyHouse-ipfs', JSON.stringify(content));
+  storageManager.setJson('ponyHouse-ipfs', content);
 }
 
 export function convertIpfsGateway(tinyUrl, vanillaUrl, type = 'base32') {

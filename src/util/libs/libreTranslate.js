@@ -4,6 +4,7 @@ import { objType } from 'for-promise/utils/lib.mjs';
 
 import { fetchFn } from '@src/client/initMatrix';
 import i18 from './locale';
+import storageManager from './Localstorage';
 
 // Emitter
 class LibreTranslate extends EventEmitter {
@@ -43,13 +44,7 @@ class LibreTranslate extends EventEmitter {
       this.Initialized = true;
 
       // Get Content
-      this.content = global.localStorage.getItem('ponyHouse-libre-translate');
-
-      try {
-        this.content = JSON.parse(this.content) ?? {};
-      } catch (err) {
-        this.content = {};
-      }
+      this.content = storageManager.getJson('ponyHouse-libre-translate', 'obj');
 
       // Data
       this.content.enabled =
@@ -239,7 +234,7 @@ class LibreTranslate extends EventEmitter {
     this.start();
     if (typeof folder === 'string') {
       this.content[folder] = value;
-      global.localStorage.setItem('ponyHouse-libre-translate', JSON.stringify(this.content));
+      storageManager.setJson('ponyHouse-libre-translate', this.content);
       this.emit(folder, value);
     }
   }

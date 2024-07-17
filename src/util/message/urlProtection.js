@@ -5,6 +5,7 @@ import { btModal } from '../tools';
 import tinyAPI from '../mods';
 import convertProtocols from '../libs/convertProtocols';
 import { setLoadingPage } from '../../app/templates/client/Loading';
+import storageManager from '../libs/Localstorage';
 // import { isMobile } from '../libs/mobile';
 
 export const openUrl = (url) =>
@@ -23,7 +24,7 @@ export const openUrl = (url) =>
 export default async (url, vanillaUrl) => {
   try {
     // Prepare Whitelist
-    const whiteList = JSON.parse(localStorage.getItem('pony-house-urls-whitelist') ?? '[]');
+    const whiteList = storageManager.getJson('pony-house-urls-whitelist', 'array');
     let urlAllowed = false;
 
     // Checker Value
@@ -102,7 +103,7 @@ export default async (url, vanillaUrl) => {
                 $('#whitelist-the-domain').is(':checked')
               ) {
                 whiteList.push(tinyValue);
-                global.localStorage.setItem('pony-house-urls-whitelist', JSON.stringify(whiteList));
+                storageManager.setJson('pony-house-urls-whitelist', whiteList);
               }
 
               openUrl(tinyUrl.href)

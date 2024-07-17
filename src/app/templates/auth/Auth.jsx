@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import WelcomePage from '@mods/WelcomePage';
+import storageManager from '@src/util/libs/Localstorage';
 
 import * as auth from '../../../client/action/auth';
 import cons from '../../../client/state/cons';
@@ -20,11 +21,11 @@ function Auth({ isDevToolsOpen = false }) {
   useEffect(() => {
     const authSync = async () => {
       if (!loginToken) return;
-      if (localStorage.getItem(cons.secretKey.BASE_URL) === undefined) {
+      if (storageManager.getItem(cons.secretKey.BASE_URL) === undefined) {
         setLoginToken(null);
         return;
       }
-      const baseUrl = localStorage.getItem(cons.secretKey.BASE_URL);
+      const baseUrl = storageManager.getItem(cons.secretKey.BASE_URL);
       try {
         await auth.loginWithToken(baseUrl, loginToken);
 

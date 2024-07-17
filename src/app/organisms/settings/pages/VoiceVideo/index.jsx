@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import storageManager from '@src/util/libs/Localstorage';
+
 import VolumeMeter from '../../../../../util/libs/volumeMeter';
 import SettingTile from '../../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../../atoms/button/Toggle';
@@ -140,7 +142,7 @@ function VoiceVideoSection() {
     const tinyTestWebcam = () => {
       // Start
       testWebcamButton.addClass('disabled');
-      const tinyVideoDeviceUse = global.localStorage.getItem('tinyVideoDevice');
+      const tinyVideoDeviceUse = storageManager.getItem('tinyVideoDevice');
 
       // Start Media
       navigator.getUserMedia =
@@ -182,7 +184,7 @@ function VoiceVideoSection() {
           .then(() => {
             // Get Value
             testMicroButton.addClass('disabled');
-            const tinyAudioDeviceUse = global.localStorage.getItem('tinyAudioDevice');
+            const tinyAudioDeviceUse = storageManager.getItem('tinyAudioDevice');
 
             // Start Media
             navigator.getUserMedia =
@@ -219,7 +221,7 @@ function VoiceVideoSection() {
                 // Prepare Audio
                 microphone = new VolumeMeter();
                 microphone.connectToSource(stream, true, () => {
-                  microphone.setVolume(global.localStorage.getItem('tinyAudioVolume'));
+                  microphone.setVolume(storageManager.getItem('tinyAudioVolume'));
                   microInterval = setInterval(() => {
                     let volumeValue = microphone.volume * 1000;
                     volumeValue = volumeValue < 100 ? (volumeValue > 0 ? volumeValue : 0) : 100;
@@ -264,8 +266,8 @@ function VoiceVideoSection() {
     };
 
     // Insert Volume
-    let tinyAudioVolume = global.localStorage.getItem('tinyAudioVolume');
-    let tinySpeakerVolume = global.localStorage.getItem('tinySpeakerVolume');
+    let tinyAudioVolume = storageManager.getItem('tinyAudioVolume');
+    let tinySpeakerVolume = storageManager.getItem('tinySpeakerVolume');
 
     tinyAudioVolume = validatorVolume(tinyAudioVolume);
     tinySpeakerVolume = validatorVolume(tinySpeakerVolume);
@@ -273,10 +275,10 @@ function VoiceVideoSection() {
     const updateTinyVolume =
       (target, where, updateVolume = false, forceUpdate = false) =>
       () => {
-        const oldValue = global.localStorage.getItem(where);
+        const oldValue = storageManager.getItem(where);
         const newValue = target.val();
 
-        if (oldValue !== newValue) global.localStorage.setItem(where, newValue);
+        if (oldValue !== newValue) storageManager.setItem(where, newValue);
         if (updateVolume && microphone) microphone.setVolume(newValue);
 
         if (testingMicro && microphone && forceUpdate) {
@@ -291,9 +293,9 @@ function VoiceVideoSection() {
     const updateSpeakerAudio = updateTinyVolume(speakerVolume, 'tinySpeakerVolume');
 
     // Insert Selectors
-    let tinyAudioDevice = global.localStorage.getItem('tinyAudioDevice');
-    let tinySpeakerDevice = global.localStorage.getItem('tinySpeakerDevice');
-    let tinyVideoDevice = global.localStorage.getItem('tinyVideoDevice');
+    let tinyAudioDevice = storageManager.getItem('tinyAudioDevice');
+    let tinySpeakerDevice = storageManager.getItem('tinySpeakerDevice');
+    let tinyVideoDevice = storageManager.getItem('tinyVideoDevice');
 
     if (typeof tinyAudioDevice !== 'string' || tinyAudioDevice.length < 1)
       tinyAudioDevice = 'default';

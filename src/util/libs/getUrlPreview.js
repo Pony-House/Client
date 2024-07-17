@@ -5,6 +5,7 @@ import initMatrix from '../../client/initMatrix';
 import convertProtocols from './convertProtocols';
 import moment from './momentjs';
 import { getAppearance } from './appearance';
+import storageManager from './Localstorage';
 
 const tinyCache = {};
 const urlConvert = {
@@ -14,20 +15,7 @@ const urlConvert = {
 const localStoragePlace = 'pony-house-url-preview';
 const urlPreviewStore = {
   using: false,
-  getRaw: () => {
-    try {
-      const rawStorage = global.localStorage.getItem(localStoragePlace);
-      if (typeof rawStorage === 'string' && rawStorage.length > 0) {
-        const storage = JSON.parse(rawStorage);
-        return storage;
-      }
-
-      return {};
-    } catch (err) {
-      console.error(err);
-      return {};
-    }
-  },
+  getRaw: () => storageManager.getJson(localStoragePlace, 'obj'),
 
   validator: (value) =>
     objType(value, 'object') &&
@@ -78,7 +66,7 @@ const urlPreviewStore = {
           delete storage[url];
         }
 
-        return global.localStorage.setItem(localStoragePlace, JSON.stringify(storage));
+        return storageManager.setJson(localStoragePlace, storage);
       }
     } catch (err) {
       console.error(err);

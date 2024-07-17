@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+// import storageManager from '@src/util/libs/Localstorage';
+
 import { getAppearance, toggleAppearanceAction } from '../../../../util/libs/appearance';
 import SettingTile from '../../../molecules/setting-tile/SettingTile';
 import Toggle from '../../../atoms/button/Toggle';
@@ -18,12 +20,12 @@ import Toggle from '../../../atoms/button/Toggle';
                         className='d-inline-flex'
                         isActive={isUsingUseGPU}
                         onToggle={() => {
-                            const isEnabled = global.localStorage.getItem('usingUseGPU');
+                            const isEnabled = storageManager.getItem('usingUseGPU');
                             if (typeof isEnabled === 'string' && isEnabled === 'on') {
-                                global.localStorage.removeItem('usingUseGPU');
+                                storageManager.removeItem('usingUseGPU');
                                 setUsingUseGPU(false);
                             } else {
-                                global.localStorage.setItem('usingUseGPU', 'on');
+                                storageManager.setItem('usingUseGPU', 'on');
                                 setUsingUseGPU(true);
                             }
                         }}
@@ -45,7 +47,7 @@ function ExperimentalSection() {
   );
 
   useEffect(() => {
-    // const isEnabledgpu = global.localStorage.getItem('usingUseGPU');
+    // const isEnabledgpu = storageManager.getItem('usingUseGPU');
     // setUsingUseGPU((typeof isEnabledgpu === 'string' && isEnabledgpu === 'on'));
   }, []);
 

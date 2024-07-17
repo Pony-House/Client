@@ -2,6 +2,7 @@ import EventEmitter from 'events';
 import * as sdk from 'matrix-js-sdk';
 
 import Olm from '@matrix-org/olm';
+import storageManager from '@src/util/libs/Localstorage';
 
 import envAPI from '@src/util/libs/env';
 import { startTimestamp } from '@src/util/markdown';
@@ -116,8 +117,8 @@ class InitMatrix extends EventEmitter {
       preloadImages(avatarsToLoad);
 
       const indexedDBStore = new sdk.IndexedDBStore({
-        indexedDB: global.indexedDB,
-        localStorage: global.localStorage,
+        indexedDB: storageManager.getIndexedDB(),
+        localStorage: storageManager.getLocalStorage(),
         dbName: 'web-sync-store',
       });
 
@@ -244,7 +245,7 @@ class InitMatrix extends EventEmitter {
     this.matrixClient.on('Session.logged_out', async () => {
       this.matrixClient.stopClient();
       await this.matrixClient.clearStores();
-      window.localStorage.clear();
+      storageManager.clearLocalStorage();
       window.location.reload();
     });
   }
@@ -260,7 +261,7 @@ class InitMatrix extends EventEmitter {
     await this.matrixClient.clearStores();
     if (global.tinyJsonDB && typeof global.tinyJsonDB.clearData === 'function')
       await global.tinyJsonDB.clearData();
-    window.localStorage.clear();
+    storageManager.clearLocalStorage();
     window.location.reload();
   }
 

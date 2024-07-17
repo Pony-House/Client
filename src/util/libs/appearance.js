@@ -4,6 +4,7 @@ import clone from 'clone';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import moment, { calendarFormat, localeIs12Hours } from './momentjs';
+import storageManager from './Localstorage';
 
 // Animated Image Url
 export function getAnimatedImageUrl(url) {
@@ -23,13 +24,7 @@ class MatrixAppearance extends EventEmitter {
       this.Initialized = true;
 
       // Get Content
-      this.content = global.localStorage.getItem('ponyHouse-appearance');
-
-      try {
-        this.content = JSON.parse(this.content) ?? {};
-      } catch (err) {
-        this.content = {};
-      }
+      this.content = storageManager.getJson('ponyHouse-appearance', 'obj');
 
       // Calendar Format
       let needSetCalendarFormat = true;
@@ -195,7 +190,7 @@ class MatrixAppearance extends EventEmitter {
     this.start();
     if (typeof folder === 'string') {
       this.content[folder] = value;
-      global.localStorage.setItem('ponyHouse-appearance', JSON.stringify(this.content));
+      storageManager.setJson('ponyHouse-appearance', this.content);
       this.emit(folder, value);
     }
   }
