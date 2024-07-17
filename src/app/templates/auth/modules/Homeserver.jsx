@@ -96,48 +96,55 @@ function Homeserver({ className }) {
   const useHomeserverList = Array.isArray(hs?.list) && hs.list.length > 1;
   return (
     <>
-      {storageManager.localStorageExist() ? (
-        <div className={`homeserver-form${typeof className === 'string' ? ` ${className}` : ''}`}>
-          <div className="w-100">
-            <Input
-              className={!useHomeserverList ? 'no-homeserver-list' : null}
-              placeholder="Type the homeserver address here"
-              name="homeserver"
-              onChange={handleHsInput}
-              value={hs?.selected}
-              forwardRef={hsRef}
-              label="Homeserver"
-              disabled={hs === null || !hs.allowCustom}
-            />
+      {checkLocalStorage > 0 ? (
+        storageManager.localStorageExist() ? (
+          <div className={`homeserver-form${typeof className === 'string' ? ` ${className}` : ''}`}>
+            <div className="w-100">
+              <Input
+                className={!useHomeserverList ? 'no-homeserver-list' : null}
+                placeholder="Type the homeserver address here"
+                name="homeserver"
+                onChange={handleHsInput}
+                value={hs?.selected}
+                forwardRef={hsRef}
+                label="Homeserver"
+                disabled={hs === null || !hs.allowCustom}
+              />
+            </div>
+            {useHomeserverList ? (
+              <ContextMenu
+                placement="right"
+                content={(hideMenu) => (
+                  <>
+                    <MenuHeader>Homeserver list</MenuHeader>
+                    {hs?.list.map((hsName) => (
+                      <MenuItem
+                        key={hsName}
+                        onClick={() => {
+                          hideMenu();
+                          hsRef.current.value = hsName;
+                          setHs({ ...hs, selected: hsName });
+                        }}
+                      >
+                        {hsName}
+                      </MenuItem>
+                    ))}
+                  </>
+                )}
+                render={(toggleMenu) => <IconButton onClick={toggleMenu} fa="fa-solid fa-server" />}
+              />
+            ) : null}
           </div>
-          {useHomeserverList ? (
-            <ContextMenu
-              placement="right"
-              content={(hideMenu) => (
-                <>
-                  <MenuHeader>Homeserver list</MenuHeader>
-                  {hs?.list.map((hsName) => (
-                    <MenuItem
-                      key={hsName}
-                      onClick={() => {
-                        hideMenu();
-                        hsRef.current.value = hsName;
-                        setHs({ ...hs, selected: hsName });
-                      }}
-                    >
-                      {hsName}
-                    </MenuItem>
-                  ))}
-                </>
-              )}
-              render={(toggleMenu) => <IconButton onClick={toggleMenu} fa="fa-solid fa-server" />}
-            />
-          ) : null}
-        </div>
+        ) : (
+          <Text className="homeserver-form__error" variant="b3">
+            Unsupported localstorage!
+          </Text>
+        )
       ) : (
-        <Text className="homeserver-form__error" variant="b3">
-          Unsupported localstorage!
-        </Text>
+        <div className="homeserver-form__status flex--center">
+          <Spinner size="small" />
+          <Text variant="b2">Checking storage settings...</Text>
+        </div>
       )}
       {process.error !== undefined && (
         <Text className="homeserver-form__error" variant="b3">
