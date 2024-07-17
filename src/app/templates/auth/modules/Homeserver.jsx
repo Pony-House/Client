@@ -14,6 +14,7 @@ import ContextMenu, { MenuItem, MenuHeader } from '../../../atoms/context-menu/C
 
 function Homeserver({ className }) {
   const [hs, setHs] = useState(null);
+  const [checkLocalStorage, setCheckLocalStorage] = useState(0);
   const [debounce] = useState(new Debounce());
   const [process, setProcess] = useState({
     isLoading: true,
@@ -76,6 +77,21 @@ function Homeserver({ className }) {
       setHs({ ...hs, selected: value.trim() });
     }, 700)();
   };
+
+  useEffect(() => {
+    if (!checkLocalStorage) {
+      setCheckLocalStorage(1);
+      storageManager
+        .checkStoragePersisted()
+        .then(() => {
+          setCheckLocalStorage(2);
+        })
+        .catch((err) => {
+          alert(err.message, 'Error Storage Persisted');
+          setCheckLocalStorage(2);
+        });
+    }
+  });
 
   const useHomeserverList = Array.isArray(hs?.list) && hs.list.length > 1;
   return (
