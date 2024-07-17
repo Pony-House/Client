@@ -88,6 +88,7 @@ function Homeserver({ className }) {
         })
         .catch((err) => {
           alert(err.message, 'Error Storage Persisted');
+          console.error(err);
           setCheckLocalStorage(2);
         });
     }
