@@ -343,5 +343,9 @@
 
   & {
     --bg-profile-banner: #1b1b1b;
+
+    /* Grow Animation */
+    --avatar-grow-animation-1: rgb(119, 119, 119);
+    --avatar-grow-animation-2: hsl(0, 0%, 25%);
   }
 }

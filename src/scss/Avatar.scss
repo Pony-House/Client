@@ -109,13 +109,13 @@
 
 @keyframes avatar-container-loading {
   0% {
-    background-color: var(--bg-surface-hover);
+    background-color: var(--avatar-grow-animation-1);
   }
   50% {
-    background-color: var(--bg-surface-transparent);
+    background-color: var(--avatar-grow-animation-2);
   }
   100% {
-    background-color: var(--bg-surface-hover);
+    background-color: var(--avatar-grow-animation-1);
   }
 }
 
@@ -162,11 +162,13 @@
     opacity: 0;
   }
 
-  background-color: var(--bg-surface-hover);
-  -webkit-animation: avatar-container-loading 2s infinite ease-in-out;
-  -moz-animation: avatar-container-loading 2s infinite ease-in-out;
-  -o-animation: avatar-container-loading 2s infinite ease-in-out;
-  animation: avatar-container-loading 2s infinite ease-in-out;
+  & {
+    background-color: var(--avatar-grow-animation-1);
+    -webkit-animation: avatar-container-loading 2s infinite ease-in-out;
+    -moz-animation: avatar-container-loading 2s infinite ease-in-out;
+    -o-animation: avatar-container-loading 2s infinite ease-in-out;
+    animation: avatar-container-loading 2s infinite ease-in-out;
+  }
 
   &.avatar-react-loaded {
     background-color: transparent !important;

@@ -28,4 +28,10 @@
   #settings-base #setting-tab .nav-link:hover {
     background-color: #222 !important;
   }
+
+  & {
+    /* Grow Animation */
+    --avatar-grow-animation-1: rgb(129, 127, 111);
+    --avatar-grow-animation-2: hsl(60, 7%, 27%);
+  }
 }

@@ -70,6 +70,12 @@
   .modal-dialog-modal-dialog-user-profile .avatar-container {
     background-color: #f6f6f6;
   }
+
+  & {
+    /* Grow Animation */
+    --avatar-grow-animation-1: hsl(246, 9%, 58%);
+    --avatar-grow-animation-2: rgb(196, 196, 196);
+  }
 }
 
 /* Dark Theme */
@@ -106,6 +112,10 @@
   --bg-input: #262936;
   --bg-surface-low-semi-transparent: rgba(11, 11, 11, 0.9);
   --bg-surface-border: rgba(173, 173, 173, 0.2);
+
+  /* Grow Animation */
+  --avatar-grow-animation-1: #6c738c;
+  --avatar-grow-animation-2: #494d62;
 }
 
 /* Dark Theme */
@@ -142,6 +152,10 @@
   --bg-input: #1a1c2b;
   --bg-surface-low-semi-transparent: rgba(11, 11, 11, 0.9);
   --bg-surface-border: rgba(173, 173, 173, 0.2);
+
+  /* Grow Animation */
+  --avatar-grow-animation-1: #6c738c;
+  --avatar-grow-animation-2: #494d62;
 }
 
 /* Dark Theme */
@@ -178,6 +192,10 @@
   --bg-input: #161622;
   --bg-surface-low-semi-transparent: rgba(11, 11, 11, 0.9);
   --bg-surface-border: rgba(173, 173, 173, 0.2);
+
+  /* Grow Animation */
+  --avatar-grow-animation-1: #6e7287;
+  --avatar-grow-animation-2: #494b5c;
 }
 
 .catppuccin-theme-latte,

@@ -1,3 +1,4 @@
 - placeholder style in the chatbox was updated.
 - avatar-container-loading - animation speed updated to 2s.
 - Storage persisted support added.
+- Avatar grow animation colors fixed.
