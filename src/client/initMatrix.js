@@ -104,10 +104,12 @@ class InitMatrix extends EventEmitter {
 
   async startClient(isGuest = false) {
     try {
-      await storageManager.requestStoragePersisted().catch((err) => {
-        alert(err.message, 'Error Storage Persisted');
-        console.error(err);
-      });
+      const isPersisted = await storageManager.checkStoragePersisted();
+      if (!isPersisted)
+        await storageManager.requestStoragePersisted().catch((err) => {
+          alert(err.message, 'Error Storage Persisted');
+          console.error(err);
+        });
 
       startCustomDNS();
       startTimestamp();
