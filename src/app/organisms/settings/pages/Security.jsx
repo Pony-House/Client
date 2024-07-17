@@ -1,4 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+import storageManager from '@src/util/libs/Localstorage';
+import { isMobile } from '@src/util/libs/mobile';
+
+import Toggle from '@src/app/atoms/button/Toggle';
+import Button from '@src/app/atoms/button/Button';
 
 import SettingTile from '../../../molecules/setting-tile/SettingTile';
 import ImportE2ERoomKeys from '../../../molecules/import-export-e2e-room-keys/ImportE2ERoomKeys';
@@ -7,10 +13,70 @@ import ExportE2ERoomKeys from '../../../molecules/import-export-e2e-room-keys/Ex
 import CrossSigning from '../CrossSigning';
 import KeyBackup from '../KeyBackup';
 import DeviceManage from '../DeviceManage';
+import matrixAppearance from '@src/util/libs/appearance';
 
 function SecuritySection() {
+  const [storagePersisted, setStoragePersisted] = useState(storageManager.getIsPersisted());
+  const [storagePersistedLocal, setStoragePersistedLocal] = useState(
+    storageManager.getIsPersistedLocal(),
+  );
+
+  const renderOptions = () => {
+    if (storagePersisted) {
+      return (
+        <Toggle
+          className="d-inline-flex"
+          isActive={storagePersistedLocal}
+          disabled={!matrixAppearance.get('advancedUserMode')}
+          onToggle={(value) => {
+            storageManager.setIsPersistedLocal(value);
+            setStoragePersistedLocal(value);
+          }}
+        />
+      );
+    }
+
+    return (
+      <Button
+        variant="primary"
+        onClick={() =>
+          storageManager
+            .requestStoragePersisted()
+            .then(setStoragePersisted)
+            .catch((err) => {
+              console.error(err);
+              alert(err.message, 'Error Storage Persisted');
+            })
+        }
+      >
+        Request permission
+      </Button>
+    );
+  };
+
   return (
     <div className="noselect">
+      <div className="card noselect mb-3">
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item very-small text-gray">Storage application</li>
+
+          <SettingTile
+            title={`Storage persisted`}
+            options={renderOptions()}
+            content={
+              <div className="very-small text-gray">
+                {`If the persistent storage permission is granted, the ${isMobile() ? 'app' : __ENV_APP__.ELECTRON_MODE ? 'software' : 'browser'} will not evict data stored.`}{' '}
+                If you are already using the application for a long time, the recommendation is to
+                keep this setting enabled to avoid glitches. This option is only for you to disable
+                some app storage features. This is not a guarantee that will completely shut down
+                all the features that use this permission. If you are in advanced mode disabled,
+                this setting cannot be modified for your security.
+              </div>
+            }
+          />
+        </ul>
+      </div>
+
       <div className="card noselect mb-3">
         <ul className="list-group list-group-flush">
           <li className="list-group-item very-small text-gray">Cross signing and backup</li>

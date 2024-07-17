@@ -5,6 +5,11 @@ class StorageManager extends EventEmitter {
   constructor() {
     super();
     this.isPersisted = null;
+
+    // Get Content
+    this.content = this.getJson('ponyHouse-storage-manager', 'obj');
+    this.content.isPersistedLocal =
+      typeof this.content.isPersistedLocal === 'boolean' ? this.content.isPersistedLocal : true;
   }
 
   getLocalStorage() {
@@ -19,22 +24,36 @@ class StorageManager extends EventEmitter {
     return this.isPersisted;
   }
 
-  async checkStoragePersisted() {
+  getIsPersistedLocal() {
+    return this.isPersisted ? this.content.isPersistedLocal : false;
+  }
+
+  setIsPersistedLocal(value) {
+    if (typeof value === 'boolean') {
+      this.content.isPersistedLocal = value;
+      this.setJson('ponyHouse-storage-manager', this.content);
+      this.emit('isPersistedLocal', value);
+    }
+  }
+
+  async checkStoragePersisted(ignoreEmit = false) {
     // Check if site's storage has been marked as persistent
     if (navigator.storage && navigator.storage.persist) {
       this.isPersisted = await navigator.storage.persisted();
     } else this.isPersisted = null;
+    if (!ignoreEmit) this.emit('isPersisted', this.isPersisted);
     return this.isPersisted;
   }
 
   async requestStoragePersisted() {
     // Request persistent storage for site
-    await this.checkStoragePersisted();
+    await this.checkStoragePersisted(true);
     if (!this.isPersisted) {
       if (navigator.storage && navigator.storage.persist) {
         this.isPersisted = await navigator.storage.persist();
       } else this.isPersisted = null;
     }
+    this.emit('isPersisted', this.isPersisted);
     return this.isPersisted;
   }
 
