@@ -156,6 +156,7 @@ class InitMatrix extends EventEmitter {
         //  await global.startMediaCacheElectron();
       }
 
+      await storageManager.requestStoragePersisted();
       await envAPI.startDB();
       await indexedDBStore.startup();
 

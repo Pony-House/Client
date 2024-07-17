@@ -82,7 +82,7 @@ function Homeserver({ className }) {
     if (!checkLocalStorage) {
       setCheckLocalStorage(1);
       storageManager
-        .checkStoragePersisted()
+        .requestStoragePersisted()
         .then(() => {
           setCheckLocalStorage(2);
         })
