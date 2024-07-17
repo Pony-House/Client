@@ -97,7 +97,7 @@ function Homeserver({ className }) {
   const useHomeserverList = Array.isArray(hs?.list) && hs.list.length > 1;
   return (
     <>
-      {checkLocalStorage > 0 ? (
+      {checkLocalStorage > 1 ? (
         storageManager.localStorageExist() ? (
           <div className={`homeserver-form${typeof className === 'string' ? ` ${className}` : ''}`}>
             <div className="w-100">
