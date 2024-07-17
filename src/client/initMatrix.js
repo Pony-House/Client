@@ -104,6 +104,11 @@ class InitMatrix extends EventEmitter {
 
   async startClient(isGuest = false) {
     try {
+      await storageManager.requestStoragePersisted().catch((err) => {
+        alert(err.message, 'Error Storage Persisted');
+        console.error(err);
+      });
+
       startCustomDNS();
       startTimestamp();
 
@@ -155,11 +160,6 @@ class InitMatrix extends EventEmitter {
         // if (typeof global.startMediaCacheElectron === 'function')
         //  await global.startMediaCacheElectron();
       }
-
-      await storageManager.requestStoragePersisted().catch((err) => {
-        alert(err.message, 'Error Storage Persisted');
-        console.error(err);
-      });
 
       await envAPI.startDB();
       await indexedDBStore.startup();
