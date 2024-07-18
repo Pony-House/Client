@@ -22,7 +22,7 @@ export default function RoomWidget() {
       </div>
       <Iframe
         className={`chatbox-top-embed${!expandTopIframe ? '' : ' expand-embed'}`}
-        alt="spaceship embed"
+        alt="room-widget"
         src={topEmbedUrl}
       />
     </>
