@@ -7,6 +7,7 @@ export const postMessage = (current, msg = null) => current.contentWindow.postMe
 const Iframe = React.forwardRef(
   (
     {
+      title = null,
       id = null,
       src = null,
       alt = null,
@@ -20,6 +21,7 @@ const Iframe = React.forwardRef(
       width = null,
       seamless = null,
       style = null,
+      frameborder = null,
     },
     ref,
   ) => {
@@ -51,6 +53,7 @@ const Iframe = React.forwardRef(
 
     return (
       <iframe
+        title={title}
         style={style}
         id={id}
         src={src}
@@ -64,6 +67,11 @@ const Iframe = React.forwardRef(
         sandbox={sandbox}
         width={width}
         seamless={seamless}
+        frameborder={typeof frameborder !== 'undefined' ? String(frameborder) : null}
+        webkitallowfullscreen={
+          typeof allowFullScreen !== 'undefined' ? String(allowFullScreen) : null
+        }
+        mozallowfullscreen={typeof allowFullScreen !== 'undefined' ? String(allowFullScreen) : null}
       />
     );
   },
@@ -83,6 +91,7 @@ Iframe.propTypes = {
   className: PropTypes.string,
   id: PropTypes.string,
   onMessage: PropTypes.func,
+  frameborder: PropTypes.number,
 };
 
 export default Iframe;

@@ -37,6 +37,7 @@ import copyText from '../profile-viewer/copyText';
 import { openPinMessageModal } from '../../../util/libs/pinMessage';
 import { openThreadsMessageModal } from '../../../util/libs/thread';
 import { getRoomInfo } from './Room';
+import RoomWidget from './RoomWidget';
 
 function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions = false }) {
   const [, forceUpdate] = useForceUpdate();
@@ -46,6 +47,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
 
   const [isIconsColored, setIsIconsColored] = useState(settings.isSelectedThemeColored());
   settings.isThemeColoredDetector(useEffect, setIsIconsColored);
+  const [topEmbedVisible, setTopEmbedVisible] = useState(false);
 
   const getAvatarUrl = () =>
     isDM
@@ -280,6 +282,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
           </li>
         </ul>
       ) : null}
+      {topEmbedVisible ? <RoomWidget /> : null}
     </Header>
   );
 }

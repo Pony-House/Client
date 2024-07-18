@@ -10,6 +10,7 @@ import { twemojifyReact } from '../../../util/twemojify';
 import openTinyURL from '../../../util/message/urlProtection';
 import { defaultAvatar } from '../../atoms/avatar/defaultAvatar';
 import { mediaFix } from '../media/mediaFix';
+import Iframe from '../iframe/Iframe';
 
 const tinyUrlAction = (event) => {
   const e = event.originalEvent;
@@ -214,13 +215,11 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
               </div>
             ) : (
               <div className="mt-2 ratio ratio-16x9 embed-video enabled">
-                <iframe
+                <Iframe
                   title={String(embed['og:title'])}
                   src={videoUrl}
                   allowFullScreen
-                  frameborder="0"
-                  webkitallowfullscreen="true"
-                  mozallowfullscreen="true"
+                  frameborder={0}
                 />
               </div>
             )
