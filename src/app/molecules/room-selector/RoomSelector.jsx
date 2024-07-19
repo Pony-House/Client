@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { UserEvent } from 'matrix-js-sdk';
+
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import cons from '@src/client/state/cons';
@@ -158,16 +160,16 @@ function RoomSelector({
         setPresenceStatus(content);
       };
 
-      user.on('User.avatarUrl', updateProfileStatus);
-      user.on('User.currentlyActive', updateProfileStatus);
-      user.on('User.lastPresenceTs', updateProfileStatus);
-      user.on('User.presence', updateProfileStatus);
+      user.on(UserEvent.AvatarUrl, updateProfileStatus);
+      user.on(UserEvent.CurrentlyActive, updateProfileStatus);
+      user.on(UserEvent.LastPresenceTs, updateProfileStatus);
+      user.on(UserEvent.Presence, updateProfileStatus);
 
       return () => {
-        user.removeListener('User.currentlyActive', updateProfileStatus);
-        user.removeListener('User.lastPresenceTs', updateProfileStatus);
-        user.removeListener('User.presence', updateProfileStatus);
-        user.removeListener('User.avatarUrl', updateProfileStatus);
+        user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
+        user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
+        user.removeListener(UserEvent.Presence, updateProfileStatus);
+        user.removeListener(UserEvent.AvatarUrl, updateProfileStatus);
       };
     }
   });

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { RoomMemberEvent } from 'matrix-js-sdk';
+
 import { objType } from 'for-promise/utils/lib.mjs';
 import settings from '@src/client/state/settings';
 import { openInviteList } from '../../../../client/action/navigation';
@@ -107,9 +109,9 @@ export default function InviteSidebar() {
       }
     };
 
-    mx.on('RoomMember.membership', roomJoinValidator);
+    mx.on(RoomMemberEvent.Membership, roomJoinValidator);
     return () => {
-      mx.removeListener('RoomMember.membership', roomJoinValidator);
+      mx.removeListener(RoomMemberEvent.Membership, roomJoinValidator);
     };
   });
 

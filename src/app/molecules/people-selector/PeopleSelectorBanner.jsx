@@ -1,8 +1,9 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react';
-import moment, { momentFormat } from '@src/util/libs/momentjs';
 import PropTypes from 'prop-types';
+import { UserEvent } from 'matrix-js-sdk';
 import { objType } from 'for-promise/utils/lib.mjs';
 
+import moment, { momentFormat } from '@src/util/libs/momentjs';
 import envAPI from '@src/util/libs/env';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
@@ -258,10 +259,10 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
       };
 
       // Read Events
-      user.on('User.avatarUrl', updateProfileStatus);
-      user.on('User.currentlyActive', updateProfileStatus);
-      user.on('User.lastPresenceTs', updateProfileStatus);
-      user.on('User.presence', updateProfileStatus);
+      user.on(UserEvent.AvatarUrl, updateProfileStatus);
+      user.on(UserEvent.CurrentlyActive, updateProfileStatus);
+      user.on(UserEvent.LastPresenceTs, updateProfileStatus);
+      user.on(UserEvent.Presence, updateProfileStatus);
       $(displayNameRef.current).find('> .button').on('click', profileViewer);
       $(userNameRef.current).find('> .button').on('click', profileViewer);
       $(noteRef.current)
@@ -274,10 +275,10 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
         $(noteRef.current)
           .off('change', tinyNoteUpdate)
           .off('keypress keyup keydown', tinyNoteSpacing);
-        user.removeListener('User.currentlyActive', updateProfileStatus);
-        user.removeListener('User.lastPresenceTs', updateProfileStatus);
-        user.removeListener('User.presence', updateProfileStatus);
-        user.removeListener('User.avatarUrl', updateProfileStatus);
+        user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
+        user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
+        user.removeListener(UserEvent.Presence, updateProfileStatus);
+        user.removeListener(UserEvent.AvatarUrl, updateProfileStatus);
       };
     }
   }, [user]);

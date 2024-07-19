@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useReducer } from 'react';
+import { UserEvent } from 'matrix-js-sdk';
 
 import clone from 'clone';
 import jReact from '@mods/lib/jReact';
@@ -204,14 +205,14 @@ function ProfileAvatarMenu() {
     };
 
     // Socket
-    user2.on('User.avatarUrl', onAvatarChange);
-    user2.on('User.displayName', onAvatarChange);
+    user2.on(UserEvent.AvatarUrl, onAvatarChange);
+    user2.on(UserEvent.DisplayName, onAvatarChange);
     navigation.on(cons.events.navigation.PROFILE_UPDATED, onProfileUpdate);
     voiceChat.on('pony_house_muted_audio', updateAudioMute);
     voiceChat.on('pony_house_muted_microphone', updateMicrophoneMute);
     return () => {
-      user2.removeListener('User.avatarUrl', onAvatarChange);
-      user2.removeListener('User.displayName', onAvatarChange);
+      user2.removeListener(UserEvent.AvatarUrl, onAvatarChange);
+      user2.removeListener(UserEvent.DisplayName, onAvatarChange);
       voiceChat.off('pony_house_muted_audio', updateAudioMute);
       voiceChat.off('pony_house_muted_microphone', updateMicrophoneMute);
       navigation.removeListener(cons.events.navigation.PROFILE_UPDATED, onProfileUpdate);

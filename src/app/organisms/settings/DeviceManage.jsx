@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { CryptoEvent } from 'matrix-js-sdk';
+
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import SettingLoading from '@src/app/molecules/setting-loading/SettingLoading';
 
@@ -127,19 +129,19 @@ function DeviceManage() {
       const updateList = () => setDevicesChecked(false);
       const crypto = mx.getCrypto();
       crypto.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
-      crypto.on('deviceVerificationChanged', updateList);
-      crypto.on('userCrossSigningUpdated', updateList);
-      crypto.on('userTrustStatusChanged', updateList);
-      crypto.on('crypto.devicesUpdated', updateList);
-      crypto.on('crypto.verificationRequestReceived', updateList);
-      crypto.on('crypto.willUpdateDevices', updateList);
+      crypto.on(CryptoEvent.DeviceVerificationChanged, updateList);
+      crypto.on(CryptoEvent.UserCrossSigningUpdated, updateList);
+      crypto.on(CryptoEvent.UserTrustStatusChanged, updateList);
+      crypto.on(CryptoEvent.DevicesUpdated, updateList);
+      crypto.on(CryptoEvent.VerificationRequestReceived, updateList);
+      crypto.on(CryptoEvent.WillUpdateDevices, updateList);
       return () => {
-        crypto.off('deviceVerificationChanged', updateList);
-        crypto.off('userCrossSigningUpdated', updateList);
-        crypto.off('userTrustStatusChanged', updateList);
-        crypto.off('crypto.devicesUpdated', updateList);
-        crypto.off('crypto.verificationRequestReceived', updateList);
-        crypto.off('crypto.willUpdateDevices', updateList);
+        crypto.off(CryptoEvent.DeviceVerificationChanged, updateList);
+        crypto.off(CryptoEvent.UserCrossSigningUpdated, updateList);
+        crypto.off(CryptoEvent.UserTrustStatusChanged, updateList);
+        crypto.off(CryptoEvent.DevicesUpdated, updateList);
+        crypto.off(CryptoEvent.VerificationRequestReceived, updateList);
+        crypto.off(CryptoEvent.WillUpdateDevices, updateList);
       };
     } catch (err) {
       console.error(err);

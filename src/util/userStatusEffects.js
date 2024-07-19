@@ -1,6 +1,8 @@
 import clone from 'clone';
-import moment from '@src/util/libs/momentjs';
+import { CryptoEvent } from 'matrix-js-sdk';
+
 import { countObj, objType } from 'for-promise/utils/lib.mjs';
+import moment from '@src/util/libs/momentjs';
 
 import initMatrix from '../client/initMatrix';
 import { emitUpdateProfile } from '../client/action/navigation';
@@ -161,7 +163,7 @@ export function startUserAfk() {
   if (userInteractions.afkTime.interval) {
     clearInterval(userInteractions.afkTime.interval);
     userInteractions.afkTime.interval = null;
-    matrixDevices.off('devicesUpdated', devicesUpdater);
+    matrixDevices.off(CryptoEvent.DevicesUpdated, devicesUpdater);
   }
 
   if (!__ENV_APP__.ELECTRON_MODE) {
@@ -171,7 +173,7 @@ export function startUserAfk() {
 
   userInteractions.devices = matrixDevices.getDevices();
   userInteractions.afkTime.interval = setInterval(intervalTimestamp, 1000);
-  matrixDevices.on('devicesUpdated', devicesUpdater);
+  matrixDevices.on(CryptoEvent.DevicesUpdated, devicesUpdater);
   matrixDevices.on('devicePing', devicePingChecker);
 }
 
@@ -181,7 +183,7 @@ export function stopUserAfk() {
   if (userInteractions.afkTime.interval) {
     clearInterval(userInteractions.afkTime.interval);
     userInteractions.afkTime.interval = null;
-    matrixDevices.off('devicesUpdated', devicesUpdater);
+    matrixDevices.off(CryptoEvent.DevicesUpdated, devicesUpdater);
     matrixDevices.off('devicePing', devicePingChecker);
   }
 

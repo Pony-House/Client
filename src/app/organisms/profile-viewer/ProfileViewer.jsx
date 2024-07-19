@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useReducer } from 'react';
 import PropTypes from 'prop-types';
+import { RoomMemberEvent, UserEvent } from 'matrix-js-sdk';
+
 import clone from 'clone';
 import envAPI from '@src/util/libs/env';
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
@@ -375,11 +377,11 @@ function useRerenderOnProfileChange(roomId, userId) {
         forceUpdate();
       }
     };
-    mx.on('RoomMember.powerLevel', handleProfileChange);
-    mx.on('RoomMember.membership', handleProfileChange);
+    mx.on(RoomMemberEvent.PowerLevel, handleProfileChange);
+    mx.on(RoomMemberEvent.Membership, handleProfileChange);
     return () => {
-      mx.removeListener('RoomMember.powerLevel', handleProfileChange);
-      mx.removeListener('RoomMember.membership', handleProfileChange);
+      mx.removeListener(RoomMemberEvent.PowerLevel, handleProfileChange);
+      mx.removeListener(RoomMemberEvent.Membership, handleProfileChange);
     };
   }, [roomId, userId]);
 }
@@ -632,9 +634,9 @@ function ProfileViewer() {
       // Read Events
       const tinyNote = getDataList('user_cache', 'note', userId);
 
-      if (user) user.on('User.currentlyActive', updateProfileStatus);
-      if (user) user.on('User.lastPresenceTs', updateProfileStatus);
-      if (user) user.on('User.presence', updateProfileStatus);
+      if (user) user.on(UserEvent.CurrentlyActive, updateProfileStatus);
+      if (user) user.on(UserEvent.LastPresenceTs, updateProfileStatus);
+      if (user) user.on(UserEvent.Presence, updateProfileStatus);
 
       $(displayNameRef.current).find('> .button').on('click', copyUsername.display);
       $(userNameRef.current).find('> .button').on('click', copyUsername.tag);
@@ -656,9 +658,9 @@ function ProfileViewer() {
           .off('change', tinyNoteUpdate)
           .off('keypress keyup keydown', tinyNoteSpacing);
         $(profileAvatar.current).off('click', tinyAvatarPreview);
-        if (user) user.removeListener('User.currentlyActive', updateProfileStatus);
-        if (user) user.removeListener('User.lastPresenceTs', updateProfileStatus);
-        if (user) user.removeListener('User.presence', updateProfileStatus);
+        if (user) user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.Presence, updateProfileStatus);
       };
     } else if (!userId) {
       setAvatarUrl(defaultAvatar(0));

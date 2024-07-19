@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { RoomMemberEvent } from 'matrix-js-sdk';
 
 import initMatrix from '../../../client/initMatrix';
 import { colorMXID } from '../../../util/colorMXID';
@@ -56,12 +57,12 @@ function useMemberOfMembership(roomId, membership) {
       updateMemberList();
     });
 
-    mx.on('RoomMember.membership', updateMemberList);
-    mx.on('RoomMember.powerLevel', updateMemberList);
+    mx.on(RoomMemberEvent.Membership, updateMemberList);
+    mx.on(RoomMemberEvent.PowerLevel, updateMemberList);
     return () => {
       isMounted = false;
-      mx.removeListener('RoomMember.membership', updateMemberList);
-      mx.removeListener('RoomMember.powerLevel', updateMemberList);
+      mx.removeListener(RoomMemberEvent.Membership, updateMemberList);
+      mx.removeListener(RoomMemberEvent.PowerLevel, updateMemberList);
     };
   }, [membership]);
 

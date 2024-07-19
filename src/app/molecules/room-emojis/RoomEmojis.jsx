@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { RoomStateEvent } from 'matrix-js-sdk';
 
 import initMatrix from '../../../client/initMatrix';
 import { suffixRename } from '../../../util/common';
@@ -34,9 +35,9 @@ function useRoomPacks(room) {
       }
     };
 
-    mx.on('RoomState.events', handleEvent);
+    mx.on(RoomStateEvent.Events, handleEvent);
     return () => {
-      mx.removeListener('RoomState.events', handleEvent);
+      mx.removeListener(RoomStateEvent.Events, handleEvent);
     };
   }, [room, mx]);
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { RoomStateEvent } from 'matrix-js-sdk';
 
 import { twemojifyReact } from '../../../util/twemojify';
 
@@ -328,10 +329,10 @@ function useChildUpdate(roomId, roomsHierarchy) {
         forceUpdate();
       }, 500)();
     };
-    mx.on('RoomState.events', handleStateEvent);
+    mx.on(RoomStateEvent.Events, handleStateEvent);
     return () => {
       isMounted = false;
-      mx.removeListener('RoomState.events', handleStateEvent);
+      mx.removeListener(RoomStateEvent.Events, handleStateEvent);
     };
   }, [roomId, roomsHierarchy]);
 }

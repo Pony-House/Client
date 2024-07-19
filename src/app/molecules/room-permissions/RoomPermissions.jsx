@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { RoomStateEvent } from 'matrix-js-sdk';
 
 import initMatrix from '../../../client/initMatrix';
 import { getPowerLabel, getCurrentState } from '../../../util/matrixUtil';
@@ -244,9 +245,9 @@ function useRoomStateUpdate(roomId) {
       forceUpdate();
     };
 
-    mx.on('RoomState.events', handleStateEvent);
+    mx.on(RoomStateEvent.Events, handleStateEvent);
     return () => {
-      mx.removeListener('RoomState.events', handleStateEvent);
+      mx.removeListener(RoomStateEvent.Events, handleStateEvent);
     };
   }, [roomId]);
 }

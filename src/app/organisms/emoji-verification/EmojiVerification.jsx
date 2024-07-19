@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { CryptoEvent } from 'matrix-js-sdk';
+
 import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
@@ -163,10 +165,10 @@ function useVisibilityToggle() {
       setData({ request, targetDevice });
     };
     navigation.on(cons.events.navigation.EMOJI_VERIFICATION_OPENED, handleOpen);
-    mx.on('crypto.verification.request', handleOpen);
+    mx.on(CryptoEvent.VerificationRequestReceived, handleOpen);
     return () => {
       navigation.removeListener(cons.events.navigation.EMOJI_VERIFICATION_OPENED, handleOpen);
-      mx.removeListener('crypto.verification.request', handleOpen);
+      mx.removeListener(CryptoEvent.VerificationRequestReceived, handleOpen);
     };
   }, []);
 

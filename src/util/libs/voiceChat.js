@@ -1,7 +1,9 @@
 /* eslint-disable class-methods-use-this */
 // Example --> https://github.com/matrix-org/matrix-js-sdk/blob/develop/examples/voip/browserTest.js
 // https://matrix-org.github.io/matrix-js-sdk/stable/classes/MatrixCall.html
-import { createNewMatrixCall } from 'matrix-js-sdk';
+import { CallEvent, createNewMatrixCall } from 'matrix-js-sdk';
+import { CallEventHandlerEvent } from 'matrix-js-sdk/lib/webrtc/callEventHandler';
+
 import { EventEmitter } from 'events';
 import storageManager from './Localstorage';
 
@@ -36,7 +38,7 @@ class MatrixVoiceChat {
     const tinyThis = this;
 
     // Incoming...
-    this.mx.on('Call.incoming', (c) => {
+    this.mx.on(CallEventHandlerEvent.Incoming, (c) => {
       console.log('Call ringing', c);
 
       /*
@@ -52,7 +54,7 @@ class MatrixVoiceChat {
         // c.reject();
       }
 
-      myEmitter.emit('incoming', c);
+      myEmitter.emit(CallEventHandlerEvent.Incoming, c);
     });
   }
 
@@ -97,7 +99,7 @@ class MatrixVoiceChat {
       this.roomId = roomId;
       this.call = createNewMatrixCall(this.mx, roomId);
       this.call.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
-      myEmitter.emit('state', 'call_created');
+      myEmitter.emit(CallEvent.State, 'call_created');
 
       this.start();
 
@@ -125,7 +127,7 @@ class MatrixVoiceChat {
     this.toDeviceSeq = null;
     this.started = false;
 
-    myEmitter.emit('state', 'call_stopped');
+    myEmitter.emit(CallEvent.State, 'call_stopped');
     return true;
   }
 
@@ -143,7 +145,7 @@ class MatrixVoiceChat {
             }
             */
 
-      this.call.on('hangup', (data) => {
+      this.call.on(CallEvent.Hangup, (data) => {
         console.error('Call hangup', data);
 
         /*
@@ -151,10 +153,10 @@ class MatrixVoiceChat {
                 document.getElementById('result').innerHTML = '<p>Call ended. Last error: ' + tinyThis.err + '</p>';
                 */
 
-        myEmitter.emit('hangup', tinyThis.err, data);
+        myEmitter.emit(CallEvent.Hangup, tinyThis.err, data);
       });
 
-      this.call.on('error', (err) => {
+      this.call.on(CallEvent.Error, (err) => {
         console.error('Call Error', err);
 
         tinyThis.err = err;
@@ -163,10 +165,10 @@ class MatrixVoiceChat {
                 disableButtons(false, true, true);
                 */
 
-        myEmitter.emit('error', err);
+        myEmitter.emit(CallEvent.Error, err);
       });
 
-      this.call.on('feeds_changed', (feeds) => {
+      this.call.on(CallEvent.FeedsChanged, (feeds) => {
         const localFeed = feeds.find((feed) => feed.isLocal());
         const remoteFeed = feeds.find((feed) => !feed.isLocal());
 
@@ -187,43 +189,43 @@ class MatrixVoiceChat {
                 }
                 */
 
-        myEmitter.emit('feeds_changed', feeds);
+        myEmitter.emit(CallEvent.FeedsChanged, feeds);
       });
 
-      this.call.on('hold_unhold', (data) => {
+      this.call.on(CallEvent.HoldUnhold, (data) => {
         console.log('Call hold_unhold', data);
-        myEmitter.emit('hold_unhold', data);
+        myEmitter.emit(CallEvent.HoldUnhold, data);
       });
 
-      this.call.on('length_changed', (data) => {
+      this.call.on(CallEvent.LengthChanged, (data) => {
         console.log('Call length_changed', data);
-        myEmitter.emit('length_changed', data);
+        myEmitter.emit(CallEvent.LengthChanged, data);
       });
 
-      this.call.on('peer_connection_created', (data) => {
+      this.call.on(CallEvent.PeerConnectionCreated, (data) => {
         console.log('Call peer_connection_created', data);
-        myEmitter.emit('peer_connection_created', data);
+        myEmitter.emit(CallEvent.PeerConnectionCreated, data);
       });
 
-      this.call.on('remote_hold_unhold', (data) => {
+      this.call.on(CallEvent.RemoteHoldUnhold, (data) => {
         console.log('Call remote_hold_unhold', data);
-        myEmitter.emit('remote_hold_unhold', data);
+        myEmitter.emit(CallEvent.RemoteHoldUnhold, data);
       });
 
-      this.call.on('replaced', (data) => {
+      this.call.on(CallEvent.Replaced, (data) => {
         console.log('Call replaced', data);
-        myEmitter.emit('replaced', data);
+        myEmitter.emit(CallEvent.Replaced, data);
       });
 
-      this.call.on('send_voip_event', (data) => {
+      this.call.on(CallEvent.SendVoipEvent, (data) => {
         console.log('Call send_voip_event', data);
-        myEmitter.emit('send_voip_event', data);
+        myEmitter.emit(CallEvent.SendVoipEvent, data);
       });
 
       // https://matrix-org.github.io/matrix-js-sdk/stable/enums/_internal_.CallState.html
-      this.call.on('state', (state) => {
+      this.call.on(CallEvent.State, (state) => {
         console.log('Call state', state);
-        myEmitter.emit('state', state);
+        myEmitter.emit(CallEvent.State, state);
 
         /*
                     connected
@@ -238,7 +240,7 @@ class MatrixVoiceChat {
                 */
       });
 
-      myEmitter.emit('state', 'call_started');
+      myEmitter.emit(CallEvent.State, 'call_started');
       return true;
     }
     return null;

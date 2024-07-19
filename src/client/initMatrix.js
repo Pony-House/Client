@@ -244,12 +244,12 @@ class InitMatrix extends EventEmitter {
         console.log(`STOPPED state`);
       },
     };
-    this.matrixClient.on('sync', (state, prevState) => sync[state](prevState));
+    this.matrixClient.on(sdk.ClientEvent.Sync, (state, prevState) => sync[state](prevState));
   }
 
   listenEvents() {
     startCustomDNS();
-    this.matrixClient.on('Session.logged_out', async () => {
+    this.matrixClient.on(sdk.HttpApiEvent.SessionLoggedOut, async () => {
       this.matrixClient.stopClient();
       await this.matrixClient.clearStores();
       storageManager.clearLocalStorage();

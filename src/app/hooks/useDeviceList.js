@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ClientEvent } from 'matrix-js-sdk';
+import { ClientEvent, CryptoEvent } from 'matrix-js-sdk';
 import EventEmitter from 'events';
 
 import moment from 'moment-timezone';
@@ -158,10 +158,10 @@ export function useDeviceList() {
     };
 
     mx.on(ClientEvent.AccountData, handleAccountData);
-    mx.on('crypto.devicesUpdated', handleDevicesUpdate);
+    mx.on(CryptoEvent.DevicesUpdated, handleDevicesUpdate);
     return () => {
       mx.removeListener(ClientEvent.AccountData, handleAccountData);
-      mx.removeListener('crypto.devicesUpdated', handleDevicesUpdate);
+      mx.removeListener(CryptoEvent.DevicesUpdated, handleDevicesUpdate);
       isMounted = false;
     };
   }, []);

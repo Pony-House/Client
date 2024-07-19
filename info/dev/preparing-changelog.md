@@ -3,3 +3,4 @@
 - Storage persisted support added.
 - Avatar grow animation colors fixed.
 - Sidebar - css fix.
+- Matrix Events name fixed.

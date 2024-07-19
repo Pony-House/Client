@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { ClientEvent } from 'matrix-js-sdk';
+
 import Modal from 'react-bootstrap/Modal';
 import objectHash from 'object-hash';
 import { objType } from 'for-promise/utils/lib.mjs';
@@ -80,9 +82,9 @@ function useSystemState() {
     if (objectHash(systemState) !== objectHash(oldSystemState)) setOldSystemState(systemState);
 
     // Sync
-    initMatrix.matrixClient.on('sync', handleSystemState);
+    initMatrix.matrixClient.on(ClientEvent.Sync, handleSystemState);
     return () => {
-      initMatrix.matrixClient.removeListener('sync', handleSystemState);
+      initMatrix.matrixClient.removeListener(ClientEvent.Sync, handleSystemState);
     };
   }, [systemState]);
 
