@@ -219,7 +219,7 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
                   title={String(embed['og:title'])}
                   src={videoUrl}
                   allowFullScreen
-                  frameborder={0}
+                  frameBorder={0}
                 />
               </div>
             )

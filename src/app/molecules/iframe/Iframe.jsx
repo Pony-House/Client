@@ -21,7 +21,7 @@ const Iframe = React.forwardRef(
       width = null,
       seamless = null,
       style = null,
-      frameborder = null,
+      frameBorder = null,
     },
     ref,
   ) => {
@@ -67,7 +67,7 @@ const Iframe = React.forwardRef(
         sandbox={sandbox}
         width={width}
         seamless={seamless}
-        frameborder={typeof frameborder !== 'undefined' ? String(frameborder) : null}
+        frameBorder={typeof frameBorder !== 'undefined' ? String(frameBorder) : null}
         webkitallowfullscreen={
           typeof allowFullScreen !== 'undefined' ? String(allowFullScreen) : null
         }
@@ -91,7 +91,7 @@ Iframe.propTypes = {
   className: PropTypes.string,
   id: PropTypes.string,
   onMessage: PropTypes.func,
-  frameborder: PropTypes.number,
+  frameBorder: PropTypes.number,
 };
 
 export default Iframe;
