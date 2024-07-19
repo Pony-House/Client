@@ -14,7 +14,6 @@ import AsyncSearch from '../../../util/AsyncSearch';
 import { memberByStatus, memberByPowerLevel } from '../../../util/sort';
 
 import Text from '../../atoms/text/Text';
-import { Header } from '../../atoms/header/Header';
 import IconButton from '../../atoms/button/IconButton';
 import Button from '../../atoms/button/Button';
 import Input from '../../atoms/input/Input';
@@ -25,6 +24,7 @@ import tinyAPI from '../../../util/mods';
 
 import { getEventCords } from '../../../util/common';
 import UserOptions from '../../molecules/user-options/UserOptions';
+import PeopleDrawerBase from './PeopleDrawerBase';
 
 function simplyfiMembers(members) {
   const mx = initMatrix.matrixClient;
@@ -201,8 +201,8 @@ function PeopleDrawer({
 
   return (
     <>
-      <div
-        className={`people-drawer${!isUserList ? ' people-drawer-banner' : ''}${showPeopleDrawer ? ' d-hide-drawer' : ''}`}
+      <PeopleDrawerBase
+        className={`${!isUserList ? 'people-drawer-banner' : showPeopleDrawer ? ' ' : ''}${showPeopleDrawer ? 'd-hide-drawer' : ''}`}
         onMouseEnter={
           isHoverSidebar
             ? () => {
@@ -217,37 +217,33 @@ function PeopleDrawer({
               }
             : null
         }
-      >
-        <Header>
-          <ul className="navbar-nav mr-auto pb-1">
-            {isUserList ? (
-              <li className="nav-item ps-2">
-                People
-                <div className="very-small text-gray">{`${usersCount} members`}</div>
-              </li>
-            ) : (
-              <li className="nav-item ps-2">
-                User Room
-                <div className="very-small text-gray">The user private room</div>
-              </li>
-            )}
-          </ul>
-
-          <ul className="navbar-nav ms-auto mb-0 small">
-            <li className="nav-item">
-              <IconButton
-                neonColor
-                iconColor={!isIconsColored ? null : 'rgb(164, 42, 212)'}
-                onClick={() => openInviteUser(roomId)}
-                tooltipPlacement="bottom"
-                tooltip="Invite"
-                fa="fa-solid fa-user-plus"
-                disabled={!canInvite}
-              />
+        contentLeft={
+          isUserList ? (
+            <li className="nav-item ps-2">
+              People
+              <div className="very-small text-gray">{`${usersCount} members`}</div>
             </li>
-          </ul>
-        </Header>
-
+          ) : (
+            <li className="nav-item ps-2">
+              User Room
+              <div className="very-small text-gray">The user private room</div>
+            </li>
+          )
+        }
+        contentRight={
+          <li className="nav-item">
+            <IconButton
+              neonColor
+              iconColor={!isIconsColored ? null : 'rgb(164, 42, 212)'}
+              onClick={() => openInviteUser(roomId)}
+              tooltipPlacement="bottom"
+              tooltip="Invite"
+              fa="fa-solid fa-user-plus"
+              disabled={!canInvite}
+            />
+          </li>
+        }
+      >
         <div className={`people-drawer__content-wrapper people-drawer-select-${membership.value}`}>
           <center
             className={`${isUserList ? 'p-3 ' : ''} w-100`}
@@ -368,7 +364,7 @@ function PeopleDrawer({
             </div>
           ) : null}
         </div>
-      </div>
+      </PeopleDrawerBase>
       <div
         className={`${isHoverSidebar ? 'people-drawer-hidden' : ''}${!showPeopleDrawer && isHoverSidebar ? ' d-none' : ''}`}
         onMouseEnter={
