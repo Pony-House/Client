@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { ClientEvent } from 'matrix-js-sdk';
 
 import initMatrix from '../../client/initMatrix';
 import { hasCrossSigningAccountData } from '../../util/matrixUtil';
@@ -15,9 +16,9 @@ export function useCrossSigningStatus() {
       }
     };
 
-    mx.on('accountData', handleAccountData);
+    mx.on(ClientEvent.AccountData, handleAccountData);
     return () => {
-      mx.removeListener('accountData', handleAccountData);
+      mx.removeListener(ClientEvent.AccountData, handleAccountData);
     };
   }, [isCSEnabled === false]);
   return isCSEnabled;

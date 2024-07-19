@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { ClientEvent } from 'matrix-js-sdk';
+import EventEmitter from 'events';
+
 import moment from 'moment-timezone';
 import objectHash from 'object-hash';
-import EventEmitter from 'events';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import initMatrix from '../../client/initMatrix';
@@ -155,10 +157,10 @@ export function useDeviceList() {
       }
     };
 
-    mx.on('accountData', handleAccountData);
+    mx.on(ClientEvent.AccountData, handleAccountData);
     mx.on('crypto.devicesUpdated', handleDevicesUpdate);
     return () => {
-      mx.removeListener('accountData', handleAccountData);
+      mx.removeListener(ClientEvent.AccountData, handleAccountData);
       mx.removeListener('crypto.devicesUpdated', handleDevicesUpdate);
       isMounted = false;
     };

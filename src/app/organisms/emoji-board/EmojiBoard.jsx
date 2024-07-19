@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useEffect, useRef, useReducer } from 'react';
 import PropTypes from 'prop-types';
+import { ClientEvent } from 'matrix-js-sdk';
 
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
@@ -402,7 +403,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
       forceUpdate();
     };
 
-    mx.addListener('accountData', handleEvent);
+    mx.addListener(ClientEvent.AccountData, handleEvent);
     matrixAppearance.on('useCustomEmojis', handleEvent2);
     matrixAppearance.on('showStickers', handleEvent2);
     navigation.on(cons.events.navigation.UPDATED_EMOJI_LIST_DATA, handleEvent2);
@@ -411,7 +412,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     $(scrollEmojisRef.current).on('scroll', onScroll);
     return () => {
       $(scrollEmojisRef.current).off('scroll', onScroll);
-      mx.removeListener('accountData', handleEvent);
+      mx.removeListener(ClientEvent.AccountData, handleEvent);
       matrixAppearance.off('useCustomEmojis', handleEvent2);
       matrixAppearance.off('showStickers', handleEvent2);
       navigation.removeListener(cons.events.navigation.UPDATED_EMOJI_LIST_DATA, handleEvent2);

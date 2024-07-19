@@ -1,5 +1,5 @@
 // import { LocalNotifications } from '@capacitor/local-notifications';
-import { MatrixEventEvent, NotificationCountType } from 'matrix-js-sdk';
+import { ClientEvent, MatrixEventEvent, NotificationCountType } from 'matrix-js-sdk';
 import EventEmitter from 'events';
 
 import mobileEvents, { isMobile } from '@src/util/libs/mobile';
@@ -635,7 +635,7 @@ class Notifications extends EventEmitter {
     );
     */
 
-    this.matrixClient.on('accountData', (mEvent, oldMEvent) => {
+    this.matrixClient.on(ClientEvent.AccountData, (mEvent, oldMEvent) => {
       if (mEvent.getType() === 'm.push_rules') {
         const override = mEvent?.getContent()?.global?.override;
         const oldOverride = oldMEvent?.getContent()?.global?.override;

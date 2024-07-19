@@ -1,5 +1,7 @@
 import React, { useState, useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { ClientEvent } from 'matrix-js-sdk';
+
 import {
   emojiExport,
   getEmojiUsage,
@@ -371,9 +373,9 @@ function useGlobalImagePack() {
     const handleEvent = (event) => {
       if (event.getType() === 'im.ponies.emote_rooms') forceUpdate();
     };
-    mx.addListener('accountData', handleEvent);
+    mx.addListener(ClientEvent.AccountData, handleEvent);
     return () => {
-      mx.removeListener('accountData', handleEvent);
+      mx.removeListener(ClientEvent.AccountData, handleEvent);
     };
   }, []);
 

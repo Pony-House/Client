@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { ClientEvent } from 'matrix-js-sdk';
+
 import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';
@@ -206,9 +208,9 @@ function KeyBackup() {
       }
     };
 
-    mx.on('accountData', handleAccountData);
+    mx.on(ClientEvent.AccountData, handleAccountData);
     return () => {
-      mx.removeListener('accountData', handleAccountData);
+      mx.removeListener(ClientEvent.AccountData, handleAccountData);
     };
   }, [isCSEnabled]);
 

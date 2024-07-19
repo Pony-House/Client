@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { ClientEvent } from 'matrix-js-sdk';
 
 import initMatrix from '../../client/initMatrix';
 
@@ -11,9 +12,9 @@ export function useAccountData(eventType) {
       if (mEvent.getType() !== eventType) return;
       setEvent(mEvent);
     };
-    mx.on('accountData', handleChange);
+    mx.on(ClientEvent.AccountData, handleChange);
     return () => {
-      mx.removeListener('accountData', handleChange);
+      mx.removeListener(ClientEvent.AccountData, handleChange);
     };
   }, [eventType]);
 

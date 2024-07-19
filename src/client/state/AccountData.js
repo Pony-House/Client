@@ -1,4 +1,6 @@
 import EventEmitter from 'events';
+import { ClientEvent } from 'matrix-js-sdk';
+
 import appDispatcher from '../dispatcher';
 import cons from './cons';
 import tinyAPI from '../../util/mods';
@@ -135,7 +137,7 @@ class AccountData extends EventEmitter {
   }
 
   _listenEvents() {
-    this.matrixClient.on('accountData', (event) => {
+    this.matrixClient.on(ClientEvent.AccountData, (event) => {
       if (event.getType() !== cons.IN_CINNY_SPACES) return;
 
       this._populateSpaceShortcut();
