@@ -205,7 +205,7 @@ function ChatRoom({ roomId, homeserver = null, joinGuest, refreshTime, theme, us
                     true,
                     mx.getUserId(),
                     (typeof refreshTime === 'string' && refreshTime.length > 0) ||
-                      (typeof refreshTime === 'number' && refreshTime > 0)
+                    (typeof refreshTime === 'number' && refreshTime > 0)
                       ? Number(refreshTime)
                       : null,
                   );
@@ -227,7 +227,7 @@ function ChatRoom({ roomId, homeserver = null, joinGuest, refreshTime, theme, us
 
       // Start user
       if (isAuthenticated()) {
-        const iId = setInterval(() => { }, 15000);
+        const iId = setInterval(() => {}, 15000);
 
         initMatrix.once('init_loading_finished', () => {
           clearInterval(iId);

@@ -1,8 +1,8 @@
 import React from 'react';
 
 import initMatrix from '@src/client/initMatrix';
-import muteUserManager from './muteUserManager';
-import { twemojify, twemojifyReact } from '../twemojify';
+import muteUserManager from '@src/util/libs/muteUserManager';
+import { twemojify, twemojifyReact } from '@src/util/twemojify';
 
 export const getCustomEmojiUrl = (reaction) => {
   let customEmojiUrl = null;

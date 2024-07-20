@@ -24,7 +24,7 @@ import {
   getCustomEmojiUrl,
   getEventReactions,
   reactionImgjQuery,
-} from '@src/util/libs/reactions';
+} from '@src/app/molecules/reactions/Reactions';
 import tinyClipboard from '@src/util/libs/Clipboard';
 
 import Text from '../../atoms/text/Text';
