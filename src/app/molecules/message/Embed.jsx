@@ -11,7 +11,7 @@ import { twemojifyReact } from '../../../util/twemojify';
 import openTinyURL from '../../../util/message/urlProtection';
 import { defaultAvatar } from '../../atoms/avatar/defaultAvatar';
 import { mediaFix } from '../media/mediaFix';
-import Iframe from '../iframe/Iframe';
+import Iframe from '../../atoms/iframe/Iframe';
 
 const tinyUrlAction = (event) => {
   const e = event.originalEvent;
@@ -164,14 +164,14 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
           {embed['og:type'] === 'article' ? (
             <>
               {typeof embed['article:publisher'] === 'string' &&
-              embed['article:publisher'].length > 0 ? (
+                embed['article:publisher'].length > 0 ? (
                 <p className="card-text very-small emoji-size-fix-2 mt-2">
                   {twemojifyReact(embed['article:publisher'])}
                 </p>
               ) : null}
 
               {typeof embed['article:section'] === 'string' &&
-              embed['article:section'].length > 0 ? (
+                embed['article:section'].length > 0 ? (
                 <p className="card-text very-small emoji-size-fix-2 mt-2">
                   {twemojifyReact(embed['article:section'])}
                 </p>

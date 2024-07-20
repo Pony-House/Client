@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Button from '@src/app/atoms/button/Button';
-import Iframe from '@src/app/molecules/iframe/Iframe';
+import Iframe from '@src/app/atoms/iframe/Iframe';
 
 export default function RoomWidget() {
   const [topEmbedUrl, setTopEmbedUrl] = useState(null);
