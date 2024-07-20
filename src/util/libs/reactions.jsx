@@ -3,7 +3,6 @@ import React from 'react';
 import initMatrix from '@src/client/initMatrix';
 import muteUserManager from './muteUserManager';
 import { twemojify, twemojifyReact } from '../twemojify';
-import { readImageUrl } from './mediaCache';
 
 export const getCustomEmojiUrl = (reaction) => {
   let customEmojiUrl = null;
@@ -83,7 +82,7 @@ export const ReactionImgReact = ({ reaction, shortcode, customEmojiUrl }) => {
       className="react-emoji"
       draggable="false"
       alt={shortcode ?? reaction}
-      src={readImageUrl(customEmojiUrl)}
+      src={customEmojiUrl}
     />
   ) : (
     twemojifyReact(reaction, { className: 'react-emoji' })
@@ -96,7 +95,7 @@ export const reactionImgjQuery = (reaction, shortcode, customEmojiUrl) => {
         class: 'react-emoji',
         draggable: false,
         alt: shortcode ?? reaction,
-        src: readImageUrl(customEmojiUrl),
+        src: customEmojiUrl,
       })
     : twemojify(reaction, { className: 'react-emoji' });
 };

@@ -6,7 +6,6 @@ import { ClientEvent } from 'matrix-js-sdk';
 
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
-import { readImageUrl } from '@src/util/libs/mediaCache';
 import matrixAppearance from '@src/util/libs/appearance';
 
 import { emojis } from './emoji';
@@ -480,7 +479,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
                 <IconButton
                   className="emoji-group-button"
                   onClick={() => openGroup(recentOffset + favOffset + pack.packIndex)}
-                  src={readImageUrl(src)}
+                  src={src}
                   key={pack.packIndex}
                   tooltip={pack.displayName ?? 'Unknown'}
                   tooltipPlacement="left"

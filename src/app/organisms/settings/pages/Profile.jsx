@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import moment from '@src/util/libs/momentjs';
-import { readImageUrl } from '@src/util/libs/mediaCache';
 import { avatarDefaultColor } from '@src/app/atoms/avatar/Avatar';
 import { colorMXID } from '@src/util/colorMXID';
 
@@ -283,7 +282,7 @@ function ProfileSection() {
                 <img
                   id="change-custom-status-img"
                   className="img-fluid"
-                  src={readImageUrl(customStatusIcon)}
+                  src={customStatusIcon}
                   alt="custom-status"
                   onClick={(e) => {
                     if (!$(e.target).hasClass('disabled')) {

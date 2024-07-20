@@ -13,7 +13,6 @@ import forPromise from 'for-promise';
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 import cons from '@src/client/state/cons';
 import { isMobile } from '@src/util/libs/mobile';
-import { readImageUrl } from '@src/util/libs/mediaCache';
 import muteUserManager from '@src/util/libs/muteUserManager';
 import attemptDecryption from '@src/util/libs/attemptDecryption';
 
@@ -1108,7 +1107,7 @@ const MessageOptions = React.memo(
                                 $('<img>', {
                                   class: 'avatar-react',
                                   draggable: false,
-                                  src: readImageUrl(avatarAnimSrc),
+                                  src: avatarAnimSrc,
                                   alt: 'avatar',
                                 })
                                   .on('load', (event) => {

@@ -59,8 +59,14 @@ function useRoomPacks(room) {
         stateKey = suffixRename(stateKey, isStateKeyAvailable);
       }
     }
-    await mx.sendStateEvent(room.roomId, 'im.ponies.room_emotes', packContent, stateKey);
+    const result = await mx.sendStateEvent(
+      room.roomId,
+      'im.ponies.room_emotes',
+      packContent,
+      stateKey,
+    );
     updateEmojiList(room.roomId);
+    return result;
   };
 
   const deletePack = async (stateKey) => {
@@ -85,14 +91,16 @@ function RoomEmojis({ roomId }) {
     mx.getUserId(),
   );
 
+  const createPackBase = (name, nameInput) => {
+    if (name === '') return new Promise((resolve) => resolve(null));
+    if (nameInput) nameInput.value = '';
+    return createPack(name);
+  };
+
   const handlePackCreate = (e) => {
     e.preventDefault();
     const { nameInput } = e.target;
-    const name = nameInput.value.trim();
-    if (name === '') return;
-    nameInput.value = '';
-
-    createPack(name);
+    createPackBase(nameInput.value.trim(), nameInput);
   };
 
   return (
@@ -110,9 +118,20 @@ function RoomEmojis({ roomId }) {
                   </div>
                 </div>
                 <div className="col-2">
-                  <center className="h-100">
-                    <Button className="h-100" variant="primary" type="submit">
+                  <center className="h-100 align-items-center d-flex">
+                    <Button className="m-1" variant="primary" type="submit">
                       Create pack
+                    </Button>
+                    <Button
+                      className="m-1"
+                      variant="primary"
+                      onClick={() => {
+                        createPackBase('').then(() => {
+                          console.log('yay');
+                        });
+                      }}
+                    >
+                      Import pack
                     </Button>
                   </center>
                 </div>

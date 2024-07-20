@@ -3,7 +3,6 @@ import { UserEvent } from 'matrix-js-sdk';
 
 import clone from 'clone';
 import jReact from '@mods/lib/jReact';
-import { readImageUrl } from '@src/util/libs/mediaCache';
 import soundFiles from '@src/util/soundFiles';
 import { convertUserId } from '@src/util/matrixUtil';
 
@@ -126,7 +125,7 @@ function ProfileAvatarMenu() {
           ) {
             htmlStatus.push(
               $('<img>', {
-                src: readImageUrl(content.presenceStatusMsg.msgIcon),
+                src: content.presenceStatusMsg.msgIcon,
                 alt: 'icon',
                 class: 'emoji me-1',
               }),

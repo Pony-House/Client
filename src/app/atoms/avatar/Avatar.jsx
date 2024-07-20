@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Freezeframe from 'freezeframe';
-import { readImageUrl } from '@src/util/libs/mediaCache';
 
 import { loadAvatar, forceLoadAvatars } from './load';
 import { twemojifyReact } from '../../../util/twemojify';
@@ -138,11 +137,7 @@ const Avatar = React.forwardRef(
                 ref={theRef}
                 className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
                 draggable="false"
-                src={
-                  typeof imageSrc === 'string' && imageSrc.length > 0
-                    ? readImageUrl(imageSrc)
-                    : tinyDa
-                }
+                src={typeof imageSrc === 'string' && imageSrc.length > 0 ? imageSrc : tinyDa}
                 onLoad={onLoadAvatar}
                 onError={(e) => {
                   e.target.src = ImageBrokenSVG;
@@ -158,7 +153,7 @@ const Avatar = React.forwardRef(
                   onLoad={onLoadAvatar}
                   src={
                     typeof imageAnimSrc === 'string' && imageAnimSrc.length > 0
-                      ? readImageUrl(imageAnimSrc)
+                      ? imageAnimSrc
                       : tinyDa
                   }
                   alt={text || 'avatar'}
@@ -174,7 +169,7 @@ const Avatar = React.forwardRef(
                 animsrc={imageAnimSrc}
                 normalsrc={imageSrc}
                 defaultavatar={tinyDa}
-                src={readImageUrl(tinyDa)}
+                src={tinyDa}
                 onLoad={(e) => {
                   onLoadAvatar(e);
                   loadAvatar(e);
