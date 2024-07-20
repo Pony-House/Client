@@ -21,12 +21,10 @@ class MxcUrl {
 
   fetch(link = null, ignoreCustomUrl = false) {
     const tinyLink = !ignoreCustomUrl ? readCustomUrl(link) : link;
-    return fetchFn(tinyLink, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${this.mx.getAccessToken()}`,
-      },
-    });
+    const accessToken = typeof this.mx.getAccessToken === 'function' && this.mx.getAccessToken();
+    const options = { method: 'GET', headers: {} };
+    if (accessToken) options.headers['Authorization'] = `Bearer ${accessToken}`;
+    return fetchFn(tinyLink, options);
   }
 
   async getBlob(response = null, type = null, tinyLink = '', decryptData = null) {
