@@ -56,7 +56,7 @@ class MxcUrl {
     );
   }
 
-  _getAvatarUrl(user, width, height, resizeMethod, allowDefault, allowDirectLinks) {
+  getAvatarUrlClassic(user, width, height, resizeMethod, allowDefault, allowDirectLinks) {
     return user?.getAvatarUrl(
       this.mx.baseUrl,
       width,
