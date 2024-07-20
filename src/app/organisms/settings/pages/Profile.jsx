@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import moment from '@src/util/libs/momentjs';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import { avatarDefaultColor } from '@src/app/atoms/avatar/Avatar';
+import { colorMXID } from '@src/util/colorMXID';
+import { mxcUrlToHttp } from '@src/util/matrixUtil';
 
 import initMatrix from '../../../../client/initMatrix';
 import { getEventCords } from '../../../../util/common';
@@ -16,7 +18,6 @@ import ImageUpload from '../../../molecules/image-upload/ImageUpload';
 import { toast } from '../../../../util/tools';
 import { getStatusCSS } from '../../../../util/onlineStatus';
 import { confirmDialog } from '../../../molecules/confirm-dialog/ConfirmDialog';
-import { colorMXID } from '@src/util/colorMXID';
 
 function ProfileSection() {
   const userProfile =
@@ -33,7 +34,7 @@ function ProfileSection() {
     typeof userProfile.msgIcon === 'string'
       ? userProfile.msgIcon.length <= 2
         ? twemojifyToUrl(userProfile.msgIcon)
-        : initMatrix.matrixClient.mxcUrlToHttp(userProfile.msgIcon)
+        : mxcUrlToHttp(userProfile.msgIcon)
       : avatarDefaultColor(color),
   );
 
@@ -187,7 +188,7 @@ function ProfileSection() {
 
   let bannerSrc;
   if (typeof banner === 'string' && banner.length > 0) {
-    bannerSrc = initMatrix.matrixClient.mxcUrlToHttp(banner, 400, 227);
+    bannerSrc = mxcUrlToHttp(banner, 400, 227);
   }
 
   const handleBannerUpload = async (url) => {
@@ -221,9 +222,9 @@ function ProfileSection() {
       emitUpdateProfile(content);
 
       bannerPlace
-        .css('background-image', `url('${initMatrix.matrixClient.mxcUrlToHttp(url, 660, 227)}')`)
+        .css('background-image', `url('${mxcUrlToHttp(url, 660, 227)}')`)
         .addClass('banner-added');
-      bannerImg.attr('src', initMatrix.matrixClient.mxcUrlToHttp(url, 400, 227));
+      bannerImg.attr('src', mxcUrlToHttp(url, 400, 227));
     }
   };
 
@@ -296,7 +297,7 @@ function ProfileSection() {
                       const tinyOpenEmojis = () => {
                         openEmojiBoard(null, cords, 'emoji', (emoji) => {
                           if (emoji.mxc) {
-                            setcustomStatusIcon(initMatrix.matrixClient.mxcUrlToHttp(emoji.mxc));
+                            setcustomStatusIcon(mxcUrlToHttp(emoji.mxc));
                             setcustomStatusValue(emoji.mxc);
                           } else if (emoji.unicode) {
                             setcustomStatusIcon(twemojifyUrl(emoji.hexcode));

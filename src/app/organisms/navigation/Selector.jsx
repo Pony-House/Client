@@ -10,7 +10,7 @@ import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import { openReusableContextMenu } from '../../../client/action/navigation';
 import { getEventCords, abbreviateNumber } from '../../../util/common';
-import { canSupport, joinRuleToIconSrc } from '../../../util/matrixUtil';
+import { canSupport, joinRuleToIconSrc, mxcUrlToHttp } from '../../../util/matrixUtil';
 import { updateName } from '../../../util/roomName';
 
 import IconButton from '../../atoms/button/IconButton';
@@ -76,15 +76,15 @@ const Selector = React.forwardRef(
     // Image
     let imageSrc =
       user && user.avatarUrl
-        ? mx.mxcUrlToHttp(user.avatarUrl, 32, 32, 'crop')
+        ? mxcUrlToHttp(user.avatarUrl, 32, 32, 'crop')
         : room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
     if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
 
     let imageAnimSrc =
       user && user.avatarUrl
         ? !appearanceSettings.enableAnimParams
-          ? mx.mxcUrlToHttp(user.avatarUrl)
-          : getAnimatedImageUrl(mx.mxcUrlToHttp(user.avatarUrl, 32, 32, 'crop'))
+          ? mxcUrlToHttp(user.avatarUrl)
+          : getAnimatedImageUrl(mxcUrlToHttp(user.avatarUrl, 32, 32, 'crop'))
         : !appearanceSettings.enableAnimParams
           ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)
           : getAnimatedImageUrl(

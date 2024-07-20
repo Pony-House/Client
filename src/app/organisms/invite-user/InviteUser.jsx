@@ -11,6 +11,7 @@ import {
   convertUserIdReverse,
   hasDMWith,
   hasDevices,
+  mxcUrlToHttp,
 } from '../../../util/matrixUtil';
 
 import Text from '../../atoms/text/Text';
@@ -222,7 +223,7 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
           key={userId}
           avatarSrc={
             typeof user.avatar_url === 'string'
-              ? mx.mxcUrlToHttp(user.avatar_url, 42, 42, 'crop')
+              ? mxcUrlToHttp(user.avatar_url, 42, 42, 'crop')
               : null
           }
           name={name}

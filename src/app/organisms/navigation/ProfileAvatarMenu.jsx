@@ -5,7 +5,7 @@ import clone from 'clone';
 import jReact from '@mods/lib/jReact';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import soundFiles from '@src/util/soundFiles';
-import { convertUserId } from '@src/util/matrixUtil';
+import { convertUserId, mxcUrlToHttp } from '@src/util/matrixUtil';
 
 import IconButton from '../../atoms/button/IconButton';
 import { twemojifyReact } from '../../../util/twemojify';
@@ -254,13 +254,13 @@ function ProfileAvatarMenu() {
                 imageAnimSrc={
                   profile.avatarUrl !== null
                     ? !appearanceSettings.enableAnimParams
-                      ? mx.mxcUrlToHttp(profile.avatarUrl)
-                      : getAnimatedImageUrl(mx.mxcUrlToHttp(profile.avatarUrl, 42, 42, 'crop'))
+                      ? mxcUrlToHttp(profile.avatarUrl)
+                      : getAnimatedImageUrl(mxcUrlToHttp(profile.avatarUrl, 42, 42, 'crop'))
                     : null
                 }
                 imageSrc={
                   profile.avatarUrl !== null
-                    ? mx.mxcUrlToHttp(profile.avatarUrl, 42, 42, 'crop')
+                    ? mxcUrlToHttp(profile.avatarUrl, 42, 42, 'crop')
                     : null
                 }
                 isDefaultImage

@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { UserEvent } from 'matrix-js-sdk';
 
+import { mxcUrlToHttp } from '@src/util/matrixUtil';
+
 import { twemojifyReact } from '../../../util/twemojify';
 
 import { blurOnBubbling } from '../../atoms/button/script';
@@ -54,16 +56,16 @@ function PeopleSelector({
         // Image
         const newImageSrc =
           tinyUser && tinyUser.avatarUrl
-            ? mx.mxcUrlToHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop')
+            ? mxcUrlToHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop')
             : null;
         setImageSrc(newImageSrc);
 
         const newImageAnimSrc =
           tinyUser && tinyUser.avatarUrl
             ? !appearanceSettings.enableAnimParams
-              ? mx.mxcUrlToHttp(tinyUser.avatarUrl)
+              ? mxcUrlToHttp(tinyUser.avatarUrl)
               : getAnimatedImageUrl(
-                  mx.mxcUrlToHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop'),
+                  mxcUrlToHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop'),
                 )
             : null;
         setImageAnimSrc(newImageAnimSrc);

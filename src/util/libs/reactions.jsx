@@ -4,11 +4,12 @@ import initMatrix from '@src/client/initMatrix';
 import muteUserManager from './muteUserManager';
 import { twemojify, twemojifyReact } from '../twemojify';
 import { readImageUrl } from './mediaCache';
+import { mxcUrlToHttp } from '../matrixUtil';
 
 export const getCustomEmojiUrl = (reaction) => {
   let customEmojiUrl = null;
   if (reaction.match(/^mxc:\/\/\S+$/)) {
-    customEmojiUrl = initMatrix.matrixClient.mxcUrlToHttp(reaction);
+    customEmojiUrl = mxcUrlToHttp(reaction);
   }
   return customEmojiUrl;
 };

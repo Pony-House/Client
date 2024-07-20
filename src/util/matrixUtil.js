@@ -371,6 +371,23 @@ export function appearUserProfile(userId) {
   openProfileViewer(openUserId);
 }
 
+// useAuthentication
+export const mxcUrlToHttpCreator =
+  (mxBase) => (mxcUrl, width, height, resizeMethod, allowDirectLinks, allowRedirects) => {
+    const mx = mxBase || initMatrix.matrixClient;
+    return mx.mxcUrlToHttp(
+      mxcUrl,
+      width,
+      height,
+      resizeMethod,
+      allowDirectLinks,
+      allowRedirects,
+      true,
+    );
+  };
+
+export const mxcUrlToHttp = mxcUrlToHttpCreator();
+
 if (__ENV_APP__.MODE === 'development') {
   global.matrixUtil = {
     convertUserId,

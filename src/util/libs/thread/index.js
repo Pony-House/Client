@@ -12,7 +12,7 @@ import {
   getDataList,
   removeFromDataFolder,
 } from '@src/util/selectedRoom';
-import { canSupport } from '@src/util/matrixUtil';
+import { canSupport, mxcUrlToHttp } from '@src/util/matrixUtil';
 
 import { openProfileViewer, selectRoom } from '@src/client/action/navigation';
 import { createMessageData } from '@src/app/molecules/message/Message';
@@ -212,7 +212,7 @@ export function openThreadsMessageModal(room) {
               const roomId = room.roomId;
               const tinyUsername = twemojify(user.userId);
 
-              const imageSrc = user ? mx.mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop') : null;
+              const imageSrc = user ? mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop') : null;
 
               const content = events[item].content;
               const msgBody =

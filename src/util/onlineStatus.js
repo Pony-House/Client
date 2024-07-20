@@ -2,6 +2,7 @@ import initMatrix from '../client/initMatrix';
 import { twemojifyToUrl } from './twemojify';
 import { getUserWeb3Account } from './web3';
 import { getAppearance, getAnimatedImageUrl } from './libs/appearance';
+import { mxcUrlToHttp } from './matrixUtil';
 
 // Status Builder
 const statusList = {
@@ -86,22 +87,15 @@ export function parsePresenceStatus(presence, userId) {
           } else {
             const appearanceSettings = getAppearance();
             tinyResult.msgIcon = !appearanceSettings.enableAnimParams
-              ? initMatrix.matrixClient.mxcUrlToHttp(tinyParse.msgIcon)
-              : getAnimatedImageUrl(
-                  initMatrix.matrixClient.mxcUrlToHttp(tinyParse.msgIcon, 50, 50, 'crop'),
-                );
-            tinyResult.msgIconThumb = initMatrix.matrixClient.mxcUrlToHttp(
-              tinyParse.msgIcon,
-              50,
-              50,
-              'crop',
-            );
+              ? mxcUrlToHttp(tinyParse.msgIcon)
+              : getAnimatedImageUrl(mxcUrlToHttp(tinyParse.msgIcon, 50, 50, 'crop'));
+            tinyResult.msgIconThumb = mxcUrlToHttp(tinyParse.msgIcon, 50, 50, 'crop');
           }
         }
 
         // User Banner
         if (typeof tinyParse.banner === 'string' && tinyParse.banner.length > 0) {
-          tinyResult.banner = mx.mxcUrlToHttp(tinyParse.banner);
+          tinyResult.banner = mxcUrlToHttp(tinyParse.banner);
         }
 
         // Pronouns

@@ -17,7 +17,7 @@ import settings from '../../../client/state/settings';
 import { openEmojiBoard, openReusableContextMenu } from '../../../client/action/navigation';
 import navigation from '../../../client/state/navigation';
 import { bytesToSize, getEventCords } from '../../../util/common';
-import { getUsername, getCurrentState, canSupport } from '../../../util/matrixUtil';
+import { getUsername, getCurrentState, canSupport, mxcUrlToHttp } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
 import { shiftNuller } from '../../../util/shortcut';
 import audioRecorder from '../../../util/audioRec';
@@ -1032,7 +1032,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
                   openEmojiBoard(roomId, cords, 'sticker', (data) => {
                     handleSendSticker({
                       body: data.unicode.substring(1, data.unicode.length - 1),
-                      httpUrl: mx.mxcUrlToHttp(data.mxc),
+                      httpUrl: mxcUrlToHttp(data.mxc),
                       mxc: data.mxc,
                     });
 

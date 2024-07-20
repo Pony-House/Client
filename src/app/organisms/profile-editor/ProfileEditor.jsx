@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { convertUserId } from '@src/util/matrixUtil';
+import { convertUserId, mxcUrlToHttp } from '@src/util/matrixUtil';
 
 import { twemojifyReact } from '../../../util/twemojify';
 
@@ -22,9 +22,7 @@ function ProfileEditor({ userId = null }) {
 
   // Config Base
   const displayNameRef = useRef(null);
-  const [avatarSrc, setAvatarSrc] = useState(
-    user.avatarUrl ? mx.mxcUrlToHttp(user.avatarUrl) : null,
-  );
+  const [avatarSrc, setAvatarSrc] = useState(user.avatarUrl ? mxcUrlToHttp(user.avatarUrl) : null);
   const [username, setUsername] = useState(user.displayName);
   const [disabled, setDisabled] = useState(true);
 
@@ -33,7 +31,7 @@ function ProfileEditor({ userId = null }) {
     let isMounted = true;
     mx.getProfileInfo(mx.getUserId()).then((info) => {
       if (!isMounted) return;
-      setAvatarSrc(info.avatar_url ? mx.mxcUrlToHttp(info.avatar_url) : null);
+      setAvatarSrc(info.avatar_url ? mxcUrlToHttp(info.avatar_url) : null);
       setUsername(info.displayname);
     });
 
@@ -58,7 +56,7 @@ function ProfileEditor({ userId = null }) {
       return;
     }
     mx.setAvatarUrl(url);
-    setAvatarSrc(mx.mxcUrlToHttp(url));
+    setAvatarSrc(mxcUrlToHttp(url));
   };
 
   // Display Name

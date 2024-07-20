@@ -27,7 +27,7 @@ import ImagePackProfile from './ImagePackProfile';
 import ImagePackItem from './ImagePackItem';
 import ImagePackUpload from './ImagePackUpload';
 import { getSelectRoom } from '../../../util/selectedRoom';
-import { getCurrentState } from '../../../util/matrixUtil';
+import { getCurrentState, mxcUrlToHttp } from '../../../util/matrixUtil';
 
 const renameImagePackItem = (shortcode) =>
   new Promise((resolve) => {
@@ -205,7 +205,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
   return (
     <li className="list-group-item image-pack">
       <ImagePackProfile
-        avatarUrl={pack.avatarUrl ? mx.mxcUrlToHttp(pack.avatarUrl, 42, 42, 'crop') : null}
+        avatarUrl={pack.avatarUrl ? mxcUrlToHttp(pack.avatarUrl, 42, 42, 'crop') : null}
         displayName={pack.displayName ?? 'Unknown'}
         attribution={pack.attribution}
         usage={getEmojiUsage(pack.usage)}
@@ -225,7 +225,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
           {images.map(([shortcode, image]) => (
             <ImagePackItem
               key={shortcode}
-              url={mx.mxcUrlToHttp(image.mxc)}
+              url={mxcUrlToHttp(image.mxc)}
               shortcode={shortcode}
               usage={getEmojiUsage(image.usage)}
               onUsageChange={canChange ? handleUsageItem : undefined}
@@ -301,7 +301,7 @@ function ImagePackUser() {
     <div className="card noselect">
       <ul className="list-group list-group-flush">
         <ImagePackProfile
-          avatarUrl={pack.avatarUrl ? mx.mxcUrlToHttp(pack.avatarUrl, 42, 42, 'crop') : null}
+          avatarUrl={pack.avatarUrl ? mxcUrlToHttp(pack.avatarUrl, 42, 42, 'crop') : null}
           displayName={pack.displayName ?? 'Personal'}
           attribution={pack.attribution}
           usage={getEmojiUsage(pack.usage)}
@@ -322,7 +322,7 @@ function ImagePackUser() {
             {images.map(([shortcode, image]) => (
               <ImagePackItem
                 key={shortcode}
-                url={mx.mxcUrlToHttp(image.mxc)}
+                url={mxcUrlToHttp(image.mxc)}
                 shortcode={shortcode}
                 usage={getEmojiUsage(image.usage)}
                 onUsageChange={handleUsageItem}

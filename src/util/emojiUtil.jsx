@@ -5,7 +5,7 @@ import FileSaver from 'file-saver';
 import initMatrix, { fetchFn } from '@src/client/initMatrix';
 import { setLoadingPage } from '@src/app/templates/client/Loading';
 
-import { getCurrentState } from './matrixUtil';
+import { getCurrentState, mxcUrlToHttp } from './matrixUtil';
 import { ImagePack as ImagePackBuilder } from '@src/app/organisms/emoji-board/custom-emoji';
 import moment from './libs/momentjs';
 
@@ -136,7 +136,7 @@ export function emojiExport(title, images, roomId = null) {
       };
 
       images.map(([shortcode, image]) => {
-        const fileUrl = new URL(mx.mxcUrlToHttp(image.mxc));
+        const fileUrl = new URL(mxcUrlToHttp(image.mxc));
         const filename = encodeURIComponent(shortcode);
         fetchFn(fileUrl.href)
           .then((res) => {

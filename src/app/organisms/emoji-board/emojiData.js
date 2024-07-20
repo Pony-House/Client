@@ -1,4 +1,7 @@
 import objectHash from 'object-hash';
+import { getAppearance } from '@src/util/libs/appearance';
+import { mxcUrlToHttp } from '@src/util/matrixUtil';
+
 import { getRelevantPacks } from './custom-emoji';
 import initMatrix from '../../../client/initMatrix';
 
@@ -11,7 +14,6 @@ import {
   addStickerToList,
   resetStickersList,
 } from './emoji';
-import { getAppearance } from '@src/util/libs/appearance';
 
 const ROW_EMOJIS_COUNT = 7;
 const ROW_STICKERS_COUNT = 3;
@@ -105,7 +107,7 @@ export function loadEmojiData(selectedRoomId) {
         shortcode: emoji.shortcode,
         shortcodes: [emoji.shortcode],
         tags: [emoji.shortcode, 'custom'],
-        src: initMatrix.matrixClient.mxcUrlToHttp(emoji.mxc),
+        src: mxcUrlToHttp(emoji.mxc),
         mxc: emoji.mxc,
         unicode: null,
       });

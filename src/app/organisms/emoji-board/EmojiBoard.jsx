@@ -8,6 +8,7 @@ import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import matrixAppearance from '@src/util/libs/appearance';
+import { mxcUrlToHttp } from '@src/util/matrixUtil';
 
 import { emojis } from './emoji';
 import { loadEmojiData, getEmojiData, ROW_EMOJIS_COUNT, ROW_STICKERS_COUNT } from './emojiData';
@@ -66,7 +67,7 @@ const EmojiGroup = React.memo(({ name, groupEmojis, className, isFav }) => {
                 unicode={`:${emoji.shortcode}:`}
                 shortcodes={emoji.shortcode}
                 style={{
-                  backgroundImage: `url("${initMatrix.matrixClient.mxcUrlToHttp(emoji.mxc)}")`,
+                  backgroundImage: `url("${mxcUrlToHttp(emoji.mxc)}")`,
                 }}
                 data-mx-emoticon={emoji.mxc}
               />
@@ -472,7 +473,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
           <div className="emoji-board__nav-custom">
             {emojiData.map((pack) => {
               const packItems = pack[boardType !== 'sticker' ? 'getEmojis' : 'getStickers']();
-              const src = initMatrix.matrixClient.mxcUrlToHttp(pack.avatarUrl ?? packItems[0].mxc);
+              const src = mxcUrlToHttp(pack.avatarUrl ?? packItems[0].mxc);
 
               return (
                 <IconButton

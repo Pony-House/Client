@@ -1,4 +1,5 @@
 import initMatrix from '@src/client/initMatrix';
+import { mxcUrlToHttp } from '@src/util/matrixUtil';
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
 export const handleBannerUpload = async (url, roomId) => {
@@ -33,11 +34,11 @@ export const handleBannerUpload = async (url, roomId) => {
     spaceHeaderBody.addClass('drawer-with-banner');
     spaceHeader
       .addClass('banner-mode')
-      .css('background-image', `url("${mx.mxcUrlToHttp(url, 960, 540)}")`);
+      .css('background-image', `url("${mxcUrlToHttp(url, 960, 540)}")`);
 
     bannerPlace
-      .css('background-image', `url('${mx.mxcUrlToHttp(url, 400, 227)}')`)
+      .css('background-image', `url('${mxcUrlToHttp(url, 400, 227)}')`)
       .addClass('banner-added');
-    bannerImg.attr('src', mx.mxcUrlToHttp(url, 400, 227));
+    bannerImg.attr('src', mxcUrlToHttp(url, 400, 227));
   }
 };
