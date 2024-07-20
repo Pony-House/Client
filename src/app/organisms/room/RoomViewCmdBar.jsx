@@ -4,7 +4,6 @@ import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 
 import { readImageUrl } from '@src/util/libs/mediaCache';
-import { mxcUrlToHttp } from '@src/util/matrixUtil';
 
 import { twemojifyReact, TWEMOJI_BASE_URL } from '../../../util/twemojify';
 
@@ -57,6 +56,7 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
 
   function renderEmojiSuggestion(emPrefix, emos) {
     const mx = initMatrix.matrixClient;
+    const mxcUrl = initMatrix.mxcUrl;
 
     // Renders a small Twemoji
     function renderTwemoji(emoji) {
@@ -76,7 +76,7 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
       return (
         <img
           className="emoji"
-          src={readImageUrl(mxcUrlToHttp(emoji.mxc))}
+          src={readImageUrl(mxcUrl.toHttp(emoji.mxc))}
           data-mx-emoticon=""
           alt={`:${emoji.shortcode}:`}
         />

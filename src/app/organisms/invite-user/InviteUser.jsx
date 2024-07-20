@@ -11,7 +11,6 @@ import {
   convertUserIdReverse,
   hasDMWith,
   hasDevices,
-  mxcUrlToHttp,
 } from '../../../util/matrixUtil';
 
 import Text from '../../atoms/text/Text';
@@ -38,6 +37,7 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
   const usernameRef = useRef(null);
 
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
 
   function getMapCopy(myMap) {
     const newMap = new Map();
@@ -223,7 +223,7 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
           key={userId}
           avatarSrc={
             typeof user.avatar_url === 'string'
-              ? mxcUrlToHttp(user.avatar_url, 42, 42, 'crop')
+              ? mxcUrl.toHttp(user.avatar_url, 42, 42, 'crop')
               : null
           }
           name={name}

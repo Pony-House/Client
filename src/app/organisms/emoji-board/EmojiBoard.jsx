@@ -8,7 +8,6 @@ import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import matrixAppearance from '@src/util/libs/appearance';
-import { mxcUrlToHttp } from '@src/util/matrixUtil';
 
 import { emojis } from './emoji';
 import { loadEmojiData, getEmojiData, ROW_EMOJIS_COUNT, ROW_STICKERS_COUNT } from './emojiData';
@@ -35,6 +34,7 @@ const EmojiGroup = React.memo(({ name, groupEmojis, className, isFav }) => {
   function getEmojiBoard() {
     const emojiBoard = [];
     const totalEmojis = groupEmojis.length;
+    const mxcUrl = initMatrix.mxcUrl;
 
     for (let r = 0; r < totalEmojis; r += ROW_COUNT) {
       const emojiRow = [];
@@ -67,7 +67,7 @@ const EmojiGroup = React.memo(({ name, groupEmojis, className, isFav }) => {
                 unicode={`:${emoji.shortcode}:`}
                 shortcodes={emoji.shortcode}
                 style={{
-                  backgroundImage: `url("${mxcUrlToHttp(emoji.mxc)}")`,
+                  backgroundImage: `url("${mxcUrl.toHttp(emoji.mxc)}")`,
                 }}
                 data-mx-emoticon={emoji.mxc}
               />
@@ -175,6 +175,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
   const [emojiRecent, setEmojiRecent] = useState([]);
 
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
 
   ROW_COUNT = boardType !== 'sticker' ? ROW_EMOJIS_COUNT : ROW_STICKERS_COUNT;
   loadEmojiData(selectedRoomId);
@@ -473,7 +474,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
           <div className="emoji-board__nav-custom">
             {emojiData.map((pack) => {
               const packItems = pack[boardType !== 'sticker' ? 'getEmojis' : 'getStickers']();
-              const src = mxcUrlToHttp(pack.avatarUrl ?? packItems[0].mxc);
+              const src = mxcUrl.toHttp(pack.avatarUrl ?? packItems[0].mxc);
 
               return (
                 <IconButton

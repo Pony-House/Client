@@ -11,7 +11,7 @@ import SettingTile from '../../molecules/setting-tile/SettingTile';
 import initMatrix from '../../../client/initMatrix';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
-import { getCurrentState, mxcUrlToHttp } from '../../../util/matrixUtil';
+import { getCurrentState } from '../../../util/matrixUtil';
 import { handleBannerUpload } from './handleBannerUpload';
 
 function PonyHouseSettings({ roomId, room }) {
@@ -33,7 +33,7 @@ function PonyHouseSettings({ roomId, room }) {
   const bannerCfg =
     getCurrentState(room).getStateEvents('pony.house.settings', 'banner')?.getContent() ?? {};
   if (typeof bannerCfg?.url === 'string' && bannerCfg?.url.length > 0) {
-    avatarSrc = mxcUrlToHttp(bannerCfg.url, 400, 227);
+    avatarSrc = (bannerCfg.url, 400, 227);
   }
 
   useEffect(() => {

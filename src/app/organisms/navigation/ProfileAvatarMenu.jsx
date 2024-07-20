@@ -5,7 +5,7 @@ import clone from 'clone';
 import jReact from '@mods/lib/jReact';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import soundFiles from '@src/util/soundFiles';
-import { convertUserId, mxcUrlToHttp } from '@src/util/matrixUtil';
+import { convertUserId } from '@src/util/matrixUtil';
 
 import IconButton from '../../atoms/button/IconButton';
 import { twemojifyReact } from '../../../util/twemojify';
@@ -47,6 +47,7 @@ export function getAccountStatus(where) {
 function ProfileAvatarMenu() {
   // Data
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
   const voiceChat = initMatrix.voiceChat;
 
   const user = mx.getUser(mx.getUserId());
@@ -254,13 +255,13 @@ function ProfileAvatarMenu() {
                 imageAnimSrc={
                   profile.avatarUrl !== null
                     ? !appearanceSettings.enableAnimParams
-                      ? mxcUrlToHttp(profile.avatarUrl)
-                      : getAnimatedImageUrl(mxcUrlToHttp(profile.avatarUrl, 42, 42, 'crop'))
+                      ? mxcUrl.toHttp(profile.avatarUrl)
+                      : getAnimatedImageUrl(mxcUrl.toHttp(profile.avatarUrl, 42, 42, 'crop'))
                     : null
                 }
                 imageSrc={
                   profile.avatarUrl !== null
-                    ? mxcUrlToHttp(profile.avatarUrl, 42, 42, 'crop')
+                    ? mxcUrl.toHttp(profile.avatarUrl, 42, 42, 'crop')
                     : null
                 }
                 isDefaultImage

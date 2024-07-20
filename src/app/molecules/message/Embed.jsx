@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { countObj, objType } from 'for-promise/utils/lib.mjs';
 
 import jReact from '@mods/lib/jReact';
-import { mxcUrlToHttp } from '@src/util/matrixUtil';
 
 import * as Media from '../media/Media';
 import initMatrix from '../../../client/initMatrix';
@@ -46,6 +45,7 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
 
   // Matrix
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
 
   // Image
   let imgUrl = null;
@@ -77,7 +77,7 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
         }
         width={embed['og:image:width']}
         height={embed['og:image:height']}
-        link={mxcUrlToHttp(imgUrl)}
+        link={mxcUrl.toHttp(imgUrl)}
         type={embed['og:image:type']}
       />
     );
@@ -130,7 +130,7 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
               className="embed-thumb"
               width={Number(embed['og:image:width'])}
               height={Number(embed['og:image:height'])}
-              link={mxcUrlToHttp(imgUrl, 2000, 2000)}
+              link={mxcUrl.toHttp(imgUrl, 2000, 2000)}
               type={String(embed['og:image:type'])}
             />
           </span>
@@ -194,7 +194,7 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
               className="mt-2 embed-img"
               width={Number(embed['og:image:width'])}
               height={Number(embed['og:image:height'])}
-              link={mxcUrlToHttp(imgUrl, 2000, 2000)}
+              link={mxcUrl.toHttp(imgUrl, 2000, 2000)}
               type={String(embed['og:image:type'])}
             />
           ) : null}
@@ -204,7 +204,7 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
               <div
                 className="mt-2 ratio ratio-16x9 embed-video"
                 style={{
-                  backgroundImage: `url('${imgUrl !== defaultVideoAvatar ? mxcUrlToHttp(imgUrl, 2000, 2000) : defaultVideoAvatar}')`,
+                  backgroundImage: `url('${imgUrl !== defaultVideoAvatar ? mxcUrl.toHttp(imgUrl, 2000, 2000) : defaultVideoAvatar}')`,
                 }}
                 onClick={() => {
                   setUseVideo(true);

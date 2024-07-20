@@ -3,7 +3,6 @@ import moment from '@src/util/libs/momentjs';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import { avatarDefaultColor } from '@src/app/atoms/avatar/Avatar';
 import { colorMXID } from '@src/util/colorMXID';
-import { mxcUrlToHttp } from '@src/util/matrixUtil';
 
 import initMatrix from '../../../../client/initMatrix';
 import { getEventCords } from '../../../../util/common';
@@ -34,7 +33,7 @@ function ProfileSection() {
     typeof userProfile.msgIcon === 'string'
       ? userProfile.msgIcon.length <= 2
         ? twemojifyToUrl(userProfile.msgIcon)
-        : mxcUrlToHttp(userProfile.msgIcon)
+        : userProfile.msgIcon
       : avatarDefaultColor(color),
   );
 
@@ -188,7 +187,7 @@ function ProfileSection() {
 
   let bannerSrc;
   if (typeof banner === 'string' && banner.length > 0) {
-    bannerSrc = mxcUrlToHttp(banner, 400, 227);
+    bannerSrc = (banner, 400, 227);
   }
 
   const handleBannerUpload = async (url) => {
@@ -221,10 +220,8 @@ function ProfileSection() {
       initMatrix.matrixClient.setAccountData('pony.house.profile', content);
       emitUpdateProfile(content);
 
-      bannerPlace
-        .css('background-image', `url('${mxcUrlToHttp(url, 660, 227)}')`)
-        .addClass('banner-added');
-      bannerImg.attr('src', mxcUrlToHttp(url, 400, 227));
+      bannerPlace.css('background-image', `url('${(url, 660, 227)}')`).addClass('banner-added');
+      bannerImg.attr('src', (url, 400, 227));
     }
   };
 
@@ -297,7 +294,7 @@ function ProfileSection() {
                       const tinyOpenEmojis = () => {
                         openEmojiBoard(null, cords, 'emoji', (emoji) => {
                           if (emoji.mxc) {
-                            setcustomStatusIcon(mxcUrlToHttp(emoji.mxc));
+                            setcustomStatusIcon(emoji.mxc);
                             setcustomStatusValue(emoji.mxc);
                           } else if (emoji.unicode) {
                             setcustomStatusIcon(twemojifyUrl(emoji.hexcode));

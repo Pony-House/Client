@@ -68,8 +68,9 @@ class InitMatrix extends EventEmitter {
 
   setMatrixClient(mx) {
     this.matrixClient = mx;
+    this.mxcUrl = new MxcUrl(mx);
     if (__ENV_APP__.MODE === 'development') {
-      global.initMatrix = { matrixClient: mx };
+      global.initMatrix = { matrixClient: mx, mxcUrl: this.mxcUrl };
     }
   }
 

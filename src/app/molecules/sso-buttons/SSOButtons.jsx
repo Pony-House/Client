@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import Tooltip from '@src/app/atoms/tooltip/Tooltip';
-import { mxcUrlToHttpCreator } from '@src/util/matrixUtil';
+import MxcUrl from '@src/util/libs/MxcUrl';
 
 import { createTemporaryClient, startSsoLogin } from '../../../client/action/auth';
 
@@ -10,7 +10,7 @@ import Button from '../../atoms/button/Button';
 
 function SSOButtons({ type, identityProviders, baseUrl }) {
   const tempClient = createTemporaryClient(baseUrl);
-  const mxcUrlToHttp = mxcUrlToHttpCreator(tempClient);
+  const mxcUrl = new MxcUrl(tempClient);
   function handleClick(id) {
     startSsoLogin(baseUrl, type, id);
   }
@@ -32,7 +32,7 @@ function SSOButtons({ type, identityProviders, baseUrl }) {
               >
                 <img
                   className="sso-btn__img rounded-circle"
-                  src={readImageUrl(mxcUrlToHttp(idp.icon))}
+                  src={readImageUrl(mxcUrl.toHttp(idp.icon))}
                   alt={idp.name}
                 />
               </button>

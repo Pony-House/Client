@@ -7,7 +7,6 @@ import { objType } from 'for-promise/utils/lib.mjs';
 import cons from '@src/client/state/cons';
 import { abbreviateNumber } from '@src/util/common';
 import muteUserManager from '@src/util/libs/muteUserManager';
-import { mxcUrlToHttp } from '@src/util/matrixUtil';
 
 import { twemojifyReact } from '../../../util/twemojify';
 import { colorMXID } from '../../../util/colorMXID';
@@ -94,6 +93,7 @@ function RoomSelector({
   const customStatusRef = useRef(null);
 
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
 
   if (user && !userData) {
     const content = getPresence(user);
@@ -124,7 +124,7 @@ function RoomSelector({
         // Image
         let newImageSrc =
           tinyUser && tinyUser.avatarUrl
-            ? mxcUrlToHttp(tinyUser.avatarUrl, 32, 32, 'crop')
+            ? mxcUrl.toHttp(tinyUser.avatarUrl, 32, 32, 'crop')
             : (room && room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop')) ||
               null;
         if (room && newImageSrc === null)
@@ -133,7 +133,7 @@ function RoomSelector({
 
         let newImageAnimSrc =
           tinyUser && tinyUser.avatarUrl
-            ? mxcUrlToHttp(tinyUser.avatarUrl)
+            ? mxcUrl.toHttp(tinyUser.avatarUrl)
             : (room && !appearanceSettings.enableAnimParams
                 ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)
                 : getAnimatedImageUrl(

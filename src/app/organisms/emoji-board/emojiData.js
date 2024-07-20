@@ -1,6 +1,5 @@
 import objectHash from 'object-hash';
 import { getAppearance } from '@src/util/libs/appearance';
-import { mxcUrlToHttp } from '@src/util/matrixUtil';
 
 import { getRelevantPacks } from './custom-emoji';
 import initMatrix from '../../../client/initMatrix';
@@ -38,6 +37,7 @@ export function loadEmojiData(selectedRoomId) {
   const showStickers = getAppearance('showStickers');
 
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
   if (!selectedRoomId) {
     const emojiPacks = useCustomEmojis
       ? getRelevantPacks(mx).filter((pack) => pack.getEmojis().length !== 0)
@@ -107,7 +107,7 @@ export function loadEmojiData(selectedRoomId) {
         shortcode: emoji.shortcode,
         shortcodes: [emoji.shortcode],
         tags: [emoji.shortcode, 'custom'],
-        src: mxcUrlToHttp(emoji.mxc),
+        src: mxcUrl.toHttp(emoji.mxc),
         mxc: emoji.mxc,
         unicode: null,
       });

@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { UserEvent } from 'matrix-js-sdk';
 
-import { mxcUrlToHttp } from '@src/util/matrixUtil';
-
 import { twemojifyReact } from '../../../util/twemojify';
 
 import { blurOnBubbling } from '../../atoms/button/script';
@@ -45,6 +43,7 @@ function PeopleSelector({
   useEffect(() => {
     if (user) {
       const mx = initMatrix.matrixClient;
+      const mxcUrl = initMatrix.mxcUrl;
 
       // Update Status Profile
       const updateProfileStatus = (mEvent, tinyData) => {
@@ -56,16 +55,16 @@ function PeopleSelector({
         // Image
         const newImageSrc =
           tinyUser && tinyUser.avatarUrl
-            ? mxcUrlToHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop')
+            ? mxcUrl.toHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop')
             : null;
         setImageSrc(newImageSrc);
 
         const newImageAnimSrc =
           tinyUser && tinyUser.avatarUrl
             ? !appearanceSettings.enableAnimParams
-              ? mxcUrlToHttp(tinyUser.avatarUrl)
+              ? mxcUrl.toHttp(tinyUser.avatarUrl)
               : getAnimatedImageUrl(
-                  mxcUrlToHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop'),
+                  mxcUrl.toHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop'),
                 )
             : null;
         setImageAnimSrc(newImageAnimSrc);

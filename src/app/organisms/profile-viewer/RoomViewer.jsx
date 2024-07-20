@@ -15,7 +15,7 @@ import navigation from '../../../client/state/navigation';
 import { selectRoom, selectRoomMode, selectTab } from '../../../client/action/navigation';
 import * as roomActions from '../../../client/action/room';
 
-import { getCurrentState, hasDMWith, hasDevices, mxcUrlToHttp } from '../../../util/matrixUtil';
+import { getCurrentState, hasDMWith, hasDevices } from '../../../util/matrixUtil';
 import { colorMXID } from '../../../util/colorMXID';
 
 import Avatar, { avatarDefaultColor } from '../../atoms/avatar/Avatar';
@@ -210,6 +210,7 @@ function RoomViewer() {
 
   // Get Data
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
 
   const room = mx.getRoom(aliasId);
   let isSpace = room ? room.isSpaceRoom() : null;
@@ -270,7 +271,7 @@ function RoomViewer() {
   if (!isDefaultAvatar || publicData === null || typeof publicData.avatar_url !== 'string') {
     imageSrc = avatarUrl;
   } else {
-    imageSrc = mxcUrlToHttp(publicData.avatar_url);
+    imageSrc = mxcUrl.toHttp(publicData.avatar_url);
   }
 
   // Get username

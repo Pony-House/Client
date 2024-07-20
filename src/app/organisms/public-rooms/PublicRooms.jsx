@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { getHomeServer, mxcUrlToHttp } from '@src/util/matrixUtil';
+import { getHomeServer } from '@src/util/matrixUtil';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -117,6 +117,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
   const roomNameRef = useRef(null);
   const hsRef = useRef(null);
   const userId = initMatrix.matrixClient.getUserId();
+  const mxcUrl = initMatrix.mxcUrl;
 
   async function searchRooms(viewMore) {
     let inputRoomName = roomNameRef?.current?.value || searchTerm;
@@ -235,7 +236,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
       /*
             animParentsCount={3}
       imageAnimSrc={typeof room.avatar_url === 'string' ?
-        !appearanceSettings.enableAnimParams ? mxcUrlToHttp(room.avatar_url) : getAnimatedImageUrl(mxcUrlToHttp(room.avatar_url, 42, 42, 'crop'))
+        !appearanceSettings.enableAnimParams ? mxcUrl.toHttp(room.avatar_url) : getAnimatedImageUrl(mxcUrl.toHttp(room.avatar_url, 42, 42, 'crop'))
         : null}
       */
 
@@ -247,7 +248,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
                 className="profile-image-container"
                 imageSrc={
                   typeof room.avatar_url === 'string'
-                    ? mxcUrlToHttp(room.avatar_url, 42, 42, 'crop')
+                    ? mxcUrl.toHttp(room.avatar_url, 42, 42, 'crop')
                     : null
                 }
                 bgColor={colorMXID(alias)}

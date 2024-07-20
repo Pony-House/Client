@@ -8,7 +8,7 @@ import envAPI from '@src/util/libs/env';
 import { readImageUrl } from '@src/util/libs/mediaCache';
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 import { openProfileViewer } from '@src/client/action/navigation';
-import { convertUserId, mxcUrlToHttp } from '@src/util/matrixUtil';
+import { convertUserId } from '@src/util/matrixUtil';
 
 import tinyClipboard from '@src/util/libs/Clipboard';
 import { twemojifyReact, twemojify } from '../../../util/twemojify';
@@ -62,6 +62,7 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
   );
 
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
 
   const getCustomStatus = (content) => {
     // Get Status
@@ -310,11 +311,11 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
           <Avatar
             className="profile-image-container"
             ref={profileAvatar}
-            imageSrc={mxcUrlToHttp(avatarUrl, 100, 100, 'crop')}
+            imageSrc={mxcUrl.toHttp(avatarUrl, 100, 100, 'crop')}
             imageAnimSrc={
               !appearanceSettings.enableAnimParams
-                ? mxcUrlToHttp(avatarUrl)
-                : getAnimatedImageUrl(mxcUrlToHttp(avatarUrl, 100, 100, 'crop'))
+                ? mxcUrl.toHttp(avatarUrl)
+                : getAnimatedImageUrl(mxcUrl.toHttp(avatarUrl, 100, 100, 'crop'))
             }
             text={name}
             bgColor={color}

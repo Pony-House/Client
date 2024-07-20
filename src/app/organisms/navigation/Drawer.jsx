@@ -26,7 +26,7 @@ import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { useSelectedTab } from '../../hooks/useSelectedTab';
 import { useSelectedSpace } from '../../hooks/useSelectedSpace';
 import { getSelectRoom, getSelectSpace } from '../../../util/selectedRoom';
-import { getCurrentState, mxcUrlToHttp } from '../../../util/matrixUtil';
+import { getCurrentState } from '../../../util/matrixUtil';
 import { selectRoomMode } from '../../../client/action/navigation';
 import { setLoadingPage } from '../../templates/client/Loading';
 
@@ -126,6 +126,7 @@ function Drawer() {
   }, [selectedTab]);
 
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
   const room = mx.getRoom(spaceId);
 
   let bannerCfg;
@@ -135,7 +136,7 @@ function Drawer() {
 
   let avatarSrc = '';
   if (bannerCfg && typeof bannerCfg?.url === 'string' && bannerCfg?.url.length > 0) {
-    avatarSrc = mxcUrlToHttp(bannerCfg.url, 960, 540);
+    avatarSrc = mxcUrl.toHttp(bannerCfg.url, 960, 540);
   } else {
     $('.space-drawer-body').removeClass('drawer-with-banner');
     $('#space-header > .navbar').removeClass('banner-mode').css('background-image', '');

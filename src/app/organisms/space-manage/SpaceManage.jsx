@@ -10,7 +10,7 @@ import navigation from '../../../client/state/navigation';
 import { colorMXID } from '../../../util/colorMXID';
 import { selectRoom, selectTab, selectRoomMode } from '../../../client/action/navigation';
 import RoomsHierarchy from '../../../client/state/RoomsHierarchy';
-import { joinRuleToIconSrc, getCurrentState, mxcUrlToHttp } from '../../../util/matrixUtil';
+import { joinRuleToIconSrc, getCurrentState } from '../../../util/matrixUtil';
 import { join } from '../../../client/action/room';
 import { Debounce } from '../../../util/common';
 
@@ -87,15 +87,15 @@ function SpaceManageItem({
   const isJoined = !!(room?.getMyMembership() === 'join' || null);
   const name = room?.name || roomInfo.name || roomInfo.canonical_alias || roomId;
 
-  let imageSrc = mxcUrlToHttp(roomInfo.avatar_url, 32, 32, 'crop') || null;
+  let imageSrc = (roomInfo.avatar_url, 32, 32, 'crop') || null;
   if (!imageSrc && room) {
     imageSrc = room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
     if (imageSrc === null) imageSrc = room.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
   }
 
   let imageAnimSrc = !appearanceSettings.enableAnimParams
-    ? mxcUrlToHttp(roomInfo.avatar_url)
-    : mxcUrlToHttp(roomInfo.avatar_url, 32, 32, 'crop') || null;
+    ? roomInfo.avatar_url
+    : (roomInfo.avatar_url, 32, 32, 'crop') || null;
   if (!imageAnimSrc && room) {
     imageAnimSrc = !appearanceSettings.enableAnimParams
       ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)

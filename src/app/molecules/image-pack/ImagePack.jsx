@@ -27,7 +27,7 @@ import ImagePackProfile from './ImagePackProfile';
 import ImagePackItem from './ImagePackItem';
 import ImagePackUpload from './ImagePackUpload';
 import { getSelectRoom } from '../../../util/selectedRoom';
-import { getCurrentState, mxcUrlToHttp } from '../../../util/matrixUtil';
+import { getCurrentState } from '../../../util/matrixUtil';
 
 const renameImagePackItem = (shortcode) =>
   new Promise((resolve) => {
@@ -161,6 +161,7 @@ function useImagePackHandles(pack, sendPackContent) {
 
 function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
   const room = mx.getRoom(roomId);
   const [viewMore, setViewMore] = useState(false);
   const [isGlobal, setIsGlobal] = useState(isGlobalPack(roomId, stateKey));
@@ -205,7 +206,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
   return (
     <li className="list-group-item image-pack">
       <ImagePackProfile
-        avatarUrl={pack.avatarUrl ? mxcUrlToHttp(pack.avatarUrl, 42, 42, 'crop') : null}
+        avatarUrl={pack.avatarUrl ? mxcUrl.toHttp(pack.avatarUrl, 42, 42, 'crop') : null}
         displayName={pack.displayName ?? 'Unknown'}
         attribution={pack.attribution}
         usage={getEmojiUsage(pack.usage)}
@@ -225,7 +226,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
           {images.map(([shortcode, image]) => (
             <ImagePackItem
               key={shortcode}
-              url={mxcUrlToHttp(image.mxc)}
+              url={mxcUrl.toHttp(image.mxc)}
               shortcode={shortcode}
               usage={getEmojiUsage(image.usage)}
               onUsageChange={canChange ? handleUsageItem : undefined}
@@ -281,6 +282,7 @@ ImagePack.propTypes = {
 
 function ImagePackUser() {
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
   const [viewMore, setViewMore] = useState(false);
 
   const { pack, sendPackContent } = useUserImagePack();
@@ -301,7 +303,7 @@ function ImagePackUser() {
     <div className="card noselect">
       <ul className="list-group list-group-flush">
         <ImagePackProfile
-          avatarUrl={pack.avatarUrl ? mxcUrlToHttp(pack.avatarUrl, 42, 42, 'crop') : null}
+          avatarUrl={pack.avatarUrl ? mxcUrl.toHttp(pack.avatarUrl, 42, 42, 'crop') : null}
           displayName={pack.displayName ?? 'Personal'}
           attribution={pack.attribution}
           usage={getEmojiUsage(pack.usage)}
@@ -322,7 +324,7 @@ function ImagePackUser() {
             {images.map(([shortcode, image]) => (
               <ImagePackItem
                 key={shortcode}
-                url={mxcUrlToHttp(image.mxc)}
+                url={mxcUrl.toHttp(image.mxc)}
                 shortcode={shortcode}
                 usage={getEmojiUsage(image.usage)}
                 onUsageChange={handleUsageItem}

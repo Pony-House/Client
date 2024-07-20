@@ -303,56 +303,56 @@ export function getHomeServer(yourUserId) {
 
 const convertBaseId =
   (where) =>
-    (id = null, forceMode = false) => {
-      const mx = initMatrix.matrixClient;
-      const userId = id || mx.getUserId();
-      const homeserver = getHomeServer(mx.getUserId());
+  (id = null, forceMode = false) => {
+    const mx = initMatrix.matrixClient;
+    const userId = id || mx.getUserId();
+    const homeserver = getHomeServer(mx.getUserId());
 
-      if (typeof userId === 'string') {
-        if (userId.startsWith(where)) {
-          const newUserId = userId.split(':');
-          if (
-            newUserId.length > 1 &&
-            homeserver === newUserId[1] &&
-            (matrixAppearance.get('simplerHashtagSameHomeServer') ||
-              forceMode ||
-              __ENV_APP__.FORCE_SIMPLER_SAME_HASHTAG)
-          ) {
-            return newUserId[0];
-          }
-          return newUserId.join(':');
+    if (typeof userId === 'string') {
+      if (userId.startsWith(where)) {
+        const newUserId = userId.split(':');
+        if (
+          newUserId.length > 1 &&
+          homeserver === newUserId[1] &&
+          (matrixAppearance.get('simplerHashtagSameHomeServer') ||
+            forceMode ||
+            __ENV_APP__.FORCE_SIMPLER_SAME_HASHTAG)
+        ) {
+          return newUserId[0];
         }
-        return userId;
+        return newUserId.join(':');
       }
-      return '';
-    };
+      return userId;
+    }
+    return '';
+  };
 
 export const convertUserId = convertBaseId('@');
 export const convertRoomId = convertBaseId('#');
 
 const convertBaseIdReverse =
   (where) =>
-    (id = null, forceMode = false) => {
-      const mx = initMatrix.matrixClient;
-      const userId = id || mx.getUserId();
-      if (typeof userId === 'string') {
-        if (userId.startsWith(where)) {
-          const newUserId = userId.split(':');
-          if (
-            newUserId.length < 2 &&
-            (matrixAppearance.get('simplerHashtagSameHomeServer') ||
-              forceMode ||
-              __ENV_APP__.FORCE_SIMPLER_SAME_HASHTAG)
-          ) {
-            const yourUserId = mx.getUserId();
-            return `${newUserId[0]}:${getHomeServer(yourUserId)}`;
-          }
-          return newUserId.join(':');
+  (id = null, forceMode = false) => {
+    const mx = initMatrix.matrixClient;
+    const userId = id || mx.getUserId();
+    if (typeof userId === 'string') {
+      if (userId.startsWith(where)) {
+        const newUserId = userId.split(':');
+        if (
+          newUserId.length < 2 &&
+          (matrixAppearance.get('simplerHashtagSameHomeServer') ||
+            forceMode ||
+            __ENV_APP__.FORCE_SIMPLER_SAME_HASHTAG)
+        ) {
+          const yourUserId = mx.getUserId();
+          return `${newUserId[0]}:${getHomeServer(yourUserId)}`;
         }
-        return userId;
+        return newUserId.join(':');
       }
-      return '';
-    };
+      return userId;
+    }
+    return '';
+  };
 
 export const convertUserIdReverse = convertBaseIdReverse('@');
 export const convertRoomIdReverse = convertBaseIdReverse('#');
@@ -370,23 +370,6 @@ export function appearUserProfile(userId) {
     : convertUserIdReverse(userId);
   openProfileViewer(openUserId);
 }
-
-// useAuthentication
-export const mxcUrlToHttpCreator =
-  (mxBase) => (mxcUrl, width, height, resizeMethod, allowDirectLinks, allowRedirects) => {
-    const mx = mxBase || initMatrix.matrixClient;
-    return mx.mxcUrlToHttp(
-      mxcUrl,
-      width,
-      height,
-      resizeMethod,
-      allowDirectLinks,
-      allowRedirects,
-      // true,
-    );
-  };
-
-export const mxcUrlToHttp = mxcUrlToHttpCreator();
 
 if (__ENV_APP__.MODE === 'development') {
   global.matrixUtil = {

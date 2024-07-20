@@ -40,7 +40,6 @@ import {
   trimHTMLReply,
   getCurrentState,
   canSupport,
-  mxcUrlToHttp,
 } from '../../../util/matrixUtil';
 
 import { colorMXID, backgroundColorMXID } from '../../../util/colorMXID';
@@ -917,6 +916,7 @@ const MessageOptions = React.memo(
     );
     const { roomId, room } = roomTimeline;
     const mx = initMatrix.matrixClient;
+    const mxcUrl = initMatrix.mxcUrl;
     const senderId = mEvent.getSender();
     const eventId = mEvent.getId();
     if (!eventId) {
@@ -1091,8 +1091,8 @@ const MessageOptions = React.memo(
                         const username = user ? muteUserManager.getSelectorName(user) : userId;
                         const avatarAnimSrc = user
                           ? !appearanceSettings.enableAnimParams
-                            ? mxcUrlToHttp(user.avatarUrl)
-                            : (getAnimatedImageUrl(mxcUrlToHttp(user.avatarUrl, 36, 36, 'crop')) ??
+                            ? mxcUrl.toHttp(user.avatarUrl)
+                            : (getAnimatedImageUrl(mxcUrl.toHttp(user.avatarUrl, 36, 36, 'crop')) ??
                               avatarDefaultColor(color))
                           : avatarDefaultColor(color);
 
@@ -1439,6 +1439,7 @@ const MessageThreadSummary = React.memo(({ thread, useManualCheck = false }) => 
 function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
   // Client
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
   const mContent = mE.getContent();
   if (!mContent || !mContent.body)
     return <span style={{ color: 'var(--bg-danger)' }}>Malformed event</span>;
@@ -1480,7 +1481,7 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
           roomId={mE.getRoomId()}
           threadId={mE.getThread()?.id}
           name={mContent.body}
-          link={mxcUrlToHttp(mediaMXC)}
+          link={mxcUrl.toHttp(mediaMXC)}
           type={mContent.info?.mimetype}
           file={mContent.file || null}
         />
@@ -1495,7 +1496,7 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
           name={mContent.body}
           width={typeof mContent.info?.w === 'number' ? mContent.info?.w : null}
           height={typeof mContent.info?.h === 'number' ? mContent.info?.h : null}
-          link={mxcUrlToHttp(mediaMXC)}
+          link={mxcUrl.toHttp(mediaMXC)}
           file={isEncryptedFile ? mContent.file : null}
           type={mContent.info?.mimetype}
           blurhash={blurhash}
@@ -1534,8 +1535,8 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
           }
           link={
             !enableAnimParams
-              ? mxcUrlToHttp(mediaMXC)
-              : getAnimatedImageUrl(mxcUrlToHttp(mediaMXC, 170, 170, 'crop'))
+              ? mxcUrl.toHttp(mediaMXC)
+              : getAnimatedImageUrl(mxcUrl.toHttp(mediaMXC, 170, 170, 'crop'))
           }
           file={isEncryptedFile ? mContent.file : null}
           type={mContent.info?.mimetype}
@@ -1561,7 +1562,7 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
           roomId={mE.getRoomId()}
           threadId={mE.getThread()?.id}
           name={mContent.body}
-          link={mxcUrlToHttp(mediaMXC)}
+          link={mxcUrl.toHttp(mediaMXC)}
           type={mContent.info?.mimetype}
           file={mContent.file || null}
         />
@@ -1577,8 +1578,8 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
           roomId={mE.getRoomId()}
           threadId={mE.getThread()?.id}
           name={mContent.body}
-          link={mxcUrlToHttp(mediaMXC)}
-          thumbnail={thumbnailMXC === null ? null : mxcUrlToHttp(thumbnailMXC)}
+          link={mxcUrl.toHttp(mediaMXC)}
+          thumbnail={thumbnailMXC === null ? null : mxcUrl.toHttp(thumbnailMXC)}
           thumbnailFile={isEncryptedFile ? mContent.info?.thumbnail_file : null}
           thumbnailType={mContent.info?.thumbnail_info?.mimetype || null}
           width={typeof mContent.info?.w === 'number' ? mContent.info?.w : null}

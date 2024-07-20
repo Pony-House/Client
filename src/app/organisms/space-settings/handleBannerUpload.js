@@ -1,5 +1,4 @@
 import initMatrix from '@src/client/initMatrix';
-import { mxcUrlToHttp } from '@src/util/matrixUtil';
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
 export const handleBannerUpload = async (url, roomId) => {
@@ -32,13 +31,9 @@ export const handleBannerUpload = async (url, roomId) => {
     await mx.sendStateEvent(roomId, 'pony.house.settings', { url }, 'banner');
 
     spaceHeaderBody.addClass('drawer-with-banner');
-    spaceHeader
-      .addClass('banner-mode')
-      .css('background-image', `url("${mxcUrlToHttp(url, 960, 540)}")`);
+    spaceHeader.addClass('banner-mode').css('background-image', `url("${(url, 960, 540)}")`);
 
-    bannerPlace
-      .css('background-image', `url('${mxcUrlToHttp(url, 400, 227)}')`)
-      .addClass('banner-added');
-    bannerImg.attr('src', mxcUrlToHttp(url, 400, 227));
+    bannerPlace.css('background-image', `url('${(url, 400, 227)}')`).addClass('banner-added');
+    bannerImg.attr('src', (url, 400, 227));
   }
 };
