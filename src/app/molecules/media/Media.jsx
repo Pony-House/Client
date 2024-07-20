@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import encrypt from 'matrix-encrypt-attachment';
-import { readCustomUrl } from '@src/util/libs/mediaCache';
-import { fetchFn } from '@src/client/initMatrix';
+import initMatrix, { fetchFn } from '@src/client/initMatrix';
 import blobUrlManager from '@src/util/libs/blobUrlManager';
 
 import { BlurhashCanvas } from 'react-blurhash';
@@ -16,13 +14,6 @@ import Spinner from '../../atoms/spinner/Spinner';
 import { getBlobSafeMimeType } from '../../../util/mimetypes';
 import { mediaFix } from './mediaFix';
 
-async function getDecryptedBlob(response, type, decryptData) {
-  const arrayBuffer = await response.arrayBuffer();
-  const dataArray = await encrypt.decryptAttachment(arrayBuffer, decryptData);
-  const blob = new Blob([dataArray], { type: getBlobSafeMimeType(type) });
-  return blob;
-}
-
 async function getUrl(link, type, decryptData, roomId /* , threadId */) {
   try {
     const blobSettings = {
@@ -30,14 +21,8 @@ async function getUrl(link, type, decryptData, roomId /* , threadId */) {
       // group: `roomMedia:${roomId}${typeof threadId === 'string' ? `:${threadId}` : ''}`,
       group: `roomMedia:${roomId}`,
     };
-    const tinyLink = readCustomUrl(link);
-    const response = await fetchFn(tinyLink, { method: 'GET' });
-    if (decryptData !== null && !tinyLink.startsWith('ponyhousetemp://')) {
-      const blob = await getDecryptedBlob(response, type, decryptData);
-      const result = await blobUrlManager.insert(blob, blobSettings);
-      return result;
-    }
-    const blob = await response.blob();
+
+    const blob = await initMatrix.mxcUrl.fetchBlob(link, type, decryptData);
     const result = await blobUrlManager.insert(blob, blobSettings);
     return result;
   } catch (e) {
