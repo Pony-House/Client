@@ -26,6 +26,8 @@ import { getAppearance, getAnimatedImageUrl } from '../../../../util/libs/appear
 function DraggableSpaceShortcut({ isActive, spaceId, index, moveShortcut, onDrop }) {
   // Data
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
+
   const { notifications } = initMatrix;
   const room = mx.getRoom(spaceId);
   const shortcutRef = useRef(null);
@@ -111,12 +113,10 @@ function DraggableSpaceShortcut({ isActive, spaceId, index, moveShortcut, onDrop
           animParentsCount={2}
           imageAnimSrc={
             !appearanceSettings.enableAnimParams
-              ? room.getAvatarUrl(initMatrix.matrixClient.baseUrl)
-              : getAnimatedImageUrl(
-                  room.getAvatarUrl(initMatrix.matrixClient.baseUrl, 42, 42, 'crop'),
-                ) || null
+              ? mxcUrl.getAvatarUrl(room)
+              : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 42, 42, 'crop')) || null
           }
-          imageSrc={room.getAvatarUrl(initMatrix.matrixClient.baseUrl, 42, 42, 'crop') || null}
+          imageSrc={mxcUrl.getAvatarUrl(room, 42, 42, 'crop') || null}
           isDefaultImage
         />
       }

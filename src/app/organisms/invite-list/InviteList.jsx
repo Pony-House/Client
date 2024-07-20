@@ -55,6 +55,7 @@ function InviteList({ isOpen, onRequestClose }) {
 
   function renderRoomTile(roomId) {
     const mx = initMatrix.matrixClient;
+    const mxcUrl = initMatrix.mxcUrl;
     const myRoom = mx.getRoom(roomId);
     if (!myRoom) return null;
     const roomName = myRoom.name;
@@ -65,9 +66,7 @@ function InviteList({ isOpen, onRequestClose }) {
       <RoomTile
         key={myRoom.roomId}
         name={roomName}
-        avatarSrc={initMatrix.matrixClient
-          .getRoom(roomId)
-          .getAvatarUrl(initMatrix.matrixClient.baseUrl, 42, 42, 'crop')}
+        avatarSrc={mxcUrl.getAvatarUrl(initMatrix.matrixClient.getRoom(roomId), 42, 42, 'crop')}
         id={roomAlias}
         inviterName={inviterName}
         options={

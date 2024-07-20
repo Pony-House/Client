@@ -41,7 +41,10 @@ import RoomWidget from './RoomWidget';
 
 function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions = false }) {
   const [, forceUpdate] = useForceUpdate();
+
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
+
   const isDM = initMatrix.roomList && initMatrix.roomList.directs.has(roomId);
   const room = !roomItem ? mx.getRoom(roomId) : roomItem;
 
@@ -51,8 +54,8 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
 
   const getAvatarUrl = () =>
     isDM
-      ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop')
-      : room.getAvatarUrl(mx.baseUrl, 36, 36, 'crop');
+      ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 36, 36, 'crop')
+      : mxcUrl.getAvatarUrl(room, 36, 36, 'crop');
   const [avatarSrc, setAvatarSrc] = useState(getAvatarUrl());
   const [roomName, setRoomName] = useState(roomAlias || room.name);
 

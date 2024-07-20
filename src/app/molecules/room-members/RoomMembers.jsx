@@ -21,11 +21,12 @@ const PER_PAGE_MEMBER = 50;
 
 function normalizeMembers(members) {
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
   return members.map((member) => ({
     userId: member.userId,
     name: getUsernameOfRoomMember(member),
     username: member.userId.slice(1, member.userId.indexOf(':')),
-    avatarSrc: member.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'),
+    avatarSrc: mxcUrl.getAvatarUrl(member, 32, 32, 'crop'),
     peopleRole: getPowerLabel(member.powerLevel),
     powerLevel: members.powerLevel,
   }));

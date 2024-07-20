@@ -33,12 +33,11 @@ function RoomProfile({ roomId, isSpace }) {
 
   // First Values
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
   const isDM = initMatrix.roomList.directs.has(roomId);
 
-  let avatarSrc = mx.getRoom(roomId).getAvatarUrl(mx.baseUrl);
-  avatarSrc = isDM
-    ? mx.getRoom(roomId).getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)
-    : avatarSrc;
+  let avatarSrc = mxcUrl.getAvatarUrl(mx.getRoom(roomId));
+  avatarSrc = isDM ? mxcUrl.getAvatarUrl(mx.getRoom(roomId).getAvatarFallbackMember()) : avatarSrc;
 
   const room = mx.getRoom(roomId);
   const currentState = getCurrentState(room);

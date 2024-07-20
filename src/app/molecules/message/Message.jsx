@@ -1320,6 +1320,7 @@ const MessageThreadSummary = React.memo(({ thread, useManualCheck = false }) => 
 
   // Matrix
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
 
   // Sender
   const lastSender =
@@ -1330,7 +1331,7 @@ const MessageThreadSummary = React.memo(({ thread, useManualCheck = false }) => 
     lastSender && typeof lastSender?.userId === 'string' ? colorMXID(lastSender?.userId) : null;
 
   // Avatar
-  const newAvatar = lastSender?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop', true, false);
+  const newAvatar = mxcUrl.getAvatarUrl(lastSender, 36, 36, 'crop', true, false);
   const lastSenderAvatarSrc = newAvatar
     ? newAvatar
     : typeof color === 'string'
@@ -1646,6 +1647,7 @@ function Message({
   const appearanceSettings = getAppearance();
   $(timelineSVRef?.current).trigger('scroll');
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
   const roomId = mEvent.getRoomId();
   const threadId = mEvent.getThread()?.id;
   const { editedTimeline, reactionTimeline } = roomTimeline ?? {};
@@ -1693,11 +1695,10 @@ function Message({
 
   const color = colorMXID(senderId);
   const username = muteUserManager.getMessageName(mEvent, isDM);
-  const avatarSrc =
-    mEvent.sender?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop') ?? avatarDefaultColor(color);
+  const avatarSrc = mxcUrl.getAvatarUrl(mEvent.sender, 36, 36, 'crop') ?? avatarDefaultColor(color);
   const avatarAnimSrc = !appearanceSettings.enableAnimParams
-    ? mEvent.sender?.getAvatarUrl(mx.baseUrl)
-    : (getAnimatedImageUrl(mEvent.sender?.getAvatarUrl(mx.baseUrl, 36, 36, 'crop')) ??
+    ? mxcUrl.getAvatarUrl(mEvent.sender)
+    : (getAnimatedImageUrl(mxcUrl.getAvatarUrl(mEvent.sender, 36, 36, 'crop')) ??
       avatarDefaultColor(color));
 
   // Content Data

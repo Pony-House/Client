@@ -42,6 +42,8 @@ export default function FeaturedTab() {
   settings.isThemeColoredDetector(useEffect, setIsIconsColored);
 
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
+
   const appearanceSettings = getAppearance();
 
   // Home
@@ -209,18 +211,16 @@ export default function FeaturedTab() {
                   animParentsCount={2}
                   imageAnimSrc={
                     !appearanceSettings.enableAnimParams
-                      ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)
+                      ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember())
                       : getAnimatedImageUrl(
-                            room
-                              .getAvatarFallbackMember()
-                              ?.getAvatarUrl(mx.baseUrl, 42, 42, 'crop'),
+                            mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 42, 42, 'crop'),
                           ) || !appearanceSettings.enableAnimParams
-                        ? room.getAvatarUrl(mx.baseUrl)
-                        : getAnimatedImageUrl(room.getAvatarUrl(mx.baseUrl, 42, 42, 'crop')) || null
+                        ? mxcUrl.getAvatarUrl(room)
+                        : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 42, 42, 'crop')) || null
                   }
                   imageSrc={
-                    room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 42, 42, 'crop') ||
-                    room.getAvatarUrl(mx.baseUrl, 42, 42, 'crop') ||
+                    mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 42, 42, 'crop') ||
+                    mxcUrl.getAvatarUrl(room, 42, 42, 'crop') ||
                     null
                   }
                   isDefaultImage

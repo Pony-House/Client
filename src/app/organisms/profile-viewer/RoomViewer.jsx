@@ -221,7 +221,7 @@ function RoomViewer() {
 
   useEffect(() => {
     if (room) {
-      const theAvatar = room.getAvatarUrl(initMatrix.matrixClient.baseUrl);
+      const theAvatar = mxcUrl.getAvatarUrl(room);
       const newAvatar = theAvatar ? theAvatar : avatarDefaultColor(colorMXID(roomId));
 
       setIsDefaultAvatar(!theAvatar);

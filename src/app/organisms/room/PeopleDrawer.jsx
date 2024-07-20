@@ -30,12 +30,14 @@ import PeopleDrawerBase from './PeopleDrawerBase';
 
 function simplyfiMembers(members) {
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
+
   return members.map((member) => ({
     user: mx.getUser(member.userId),
     userId: member.userId,
     name: getUsernameOfRoomMember(member),
     username: member.userId.slice(1, member.userId.indexOf(':')),
-    avatarSrc: member.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'),
+    avatarSrc: mxcUrl.getAvatarUrl(member, 32, 32, 'crop'),
     peopleRole: getPowerLabel(member.powerLevel),
     powerLevel: members.powerLevel,
   }));

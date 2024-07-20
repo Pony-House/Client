@@ -35,6 +35,7 @@ function ReadReceipts() {
 
   function renderPeople(userId) {
     const room = initMatrix.matrixClient.getRoom(roomId);
+    const mxcUrl = initMatrix.mxcUrl;
     const member = room.getMember(userId);
     const getUserDisplayName = () => {
       if (room?.getMember(userId)) return getUsernameOfRoomMember(room.getMember(userId));
@@ -49,7 +50,7 @@ function ReadReceipts() {
           setIsOpen(false);
           openProfileViewer(userId, roomId);
         }}
-        avatarSrc={member?.getAvatarUrl(initMatrix.matrixClient.baseUrl, 32, 32, 'crop')}
+        avatarSrc={mxcUrl.getAvatarUrl(member, 32, 32, 'crop')}
         name={getUserDisplayName(userId)}
         color={colorMXID(userId)}
       />

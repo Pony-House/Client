@@ -14,6 +14,17 @@ class MxcUrl {
       // true,
     );
   }
+
+  getAvatarUrl(user, width, height, resizeMethod, allowDefault, allowDirectLinks) {
+    return user?.getAvatarUrl(
+      this.mx.baseUrl,
+      width,
+      height,
+      resizeMethod,
+      allowDefault,
+      allowDirectLinks,
+    );
+  }
 }
 
 export default MxcUrl;

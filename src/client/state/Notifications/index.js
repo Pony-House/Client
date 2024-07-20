@@ -429,6 +429,7 @@ class Notifications extends EventEmitter {
 
     // Show Notification
     if (settings.showNotifications) {
+      const mxcUrl = initMatrix.mxcUrl;
       const title = getRoomTitle(room, mEvent.sender, mEvent.thread);
       updateName(room);
 
@@ -436,12 +437,7 @@ class Notifications extends EventEmitter {
       const icon = await renderAvatar({
         text: mEvent.sender.name,
         bgColor: cssColorMXID(mEvent.getSender()),
-        imageSrc: mEvent.sender?.getAvatarUrl(
-          this.matrixClient.baseUrl,
-          iconSize,
-          iconSize,
-          'crop',
-        ),
+        imageSrc: mxcUrl.getAvatarUrl(mEvent.sender, iconSize, iconSize, 'crop'),
         size: iconSize,
         borderRadius: 8,
         scale: 8,

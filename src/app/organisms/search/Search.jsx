@@ -77,7 +77,9 @@ function Search() {
   if (asyncSearch) asyncSearch.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
   const [isOpen, requestClose] = useVisiblityToggle(setResult);
   const searchRef = useRef(null);
+
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
 
   const handleSearchResults = (chunk, term) => {
     setResult({
@@ -176,12 +178,11 @@ function Search() {
     let iconSrc = null;
 
     if (item.type === 'direct') {
-      imageSrc =
-        item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop') || null;
+      imageSrc = mxcUrl.getAvatarUrl(item.room.getAvatarFallbackMember(), 32, 32, 'crop') || null;
       imageAnimSrc = !appearanceSettings.enableAnimParams
-        ? item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl)
+        ? mxcUrl.getAvatarUrl(item.room.getAvatarFallbackMember())
         : getAnimatedImageUrl(
-            item.room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 32, 32, 'crop'),
+            mxcUrl.getAvatarUrl(item.room.getAvatarFallbackMember(), 32, 32, 'crop'),
           ) || null;
     } else {
       iconSrc = joinRuleToIconSrc(item.room.getJoinRule(), item.type === 'space');

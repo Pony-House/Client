@@ -64,7 +64,10 @@ function loadingMsgPlaceholders(key, count = 2) {
 
 function RoomIntroContainer({ event, timeline }) {
   const [, nameForceUpdate] = useForceUpdate();
+
   const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
+
   const { roomList } = initMatrix;
   const { room, thread } = timeline;
 
@@ -78,9 +81,9 @@ function RoomIntroContainer({ event, timeline }) {
 
   const roomTopic = getCurrentState(room).getStateEvents('m.room.topic')[0]?.getContent().topic;
   const isDM = roomList.directs.has(timeline.roomId);
-  let avatarSrc = room.getAvatarUrl(mx.baseUrl, 80, 80, 'crop');
+  let avatarSrc = mxcUrl.getAvatarUrl(room, 80, 80, 'crop');
   avatarSrc = isDM
-    ? room.getAvatarFallbackMember()?.getAvatarUrl(mx.baseUrl, 80, 80, 'crop')
+    ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 80, 80, 'crop')
     : avatarSrc;
 
   const heading = isDM ? roomTitle : `Welcome to ${roomTitle}`;
