@@ -3,6 +3,7 @@ import * as sdk from 'matrix-js-sdk';
 
 import Olm from '@matrix-org/olm';
 import storageManager from '@src/util/libs/Localstorage';
+import MxcUrl from '@src/util/libs/MxcUrl';
 
 import envAPI from '@src/util/libs/env';
 import { startTimestamp } from '@src/util/markdown';
@@ -68,7 +69,6 @@ class InitMatrix extends EventEmitter {
 
   setMatrixClient(mx) {
     this.matrixClient = mx;
-    this.mxcUrl = new MxcUrl(mx);
     if (__ENV_APP__.MODE === 'development') {
       global.initMatrix = { matrixClient: mx, mxcUrl: this.mxcUrl };
     }
@@ -155,6 +155,7 @@ class InitMatrix extends EventEmitter {
       }
 
       this.matrixClient = sdk.createClient(clientOps);
+      this.mxcUrl = new MxcUrl(this.matrixClient);
       attemptDecryption.start();
       if (__ENV_APP__.ELECTRON_MODE) {
         if (global.tinyJsonDB && typeof global.tinyJsonDB.startClient === 'function')
