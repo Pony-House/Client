@@ -1,3 +1,6 @@
+import { avatarDefaultColor } from '@src/app/atoms/avatar/Avatar';
+import { colorMXID } from '../colorMXID';
+
 class MxcUrl {
   constructor(mxBase) {
     this.mx = mxBase;
@@ -15,7 +18,7 @@ class MxcUrl {
     );
   }
 
-  getAvatarUrl(user, width, height, resizeMethod, allowDefault, allowDirectLinks) {
+  _getAvatarUrl(user, width, height, resizeMethod, allowDefault, allowDirectLinks) {
     return user?.getAvatarUrl(
       this.mx.baseUrl,
       width,
@@ -24,6 +27,23 @@ class MxcUrl {
       allowDefault,
       allowDirectLinks,
     );
+  }
+
+  getAvatarUrl(user, width, height, resizeMethod, allowDefault, allowDirectLinks) {
+    if (user) {
+      let avatarUrl = this.toHttp(
+        user?.getMxcAvatarUrl(),
+        width,
+        height,
+        resizeMethod,
+        allowDirectLinks,
+      );
+      if (!avatarUrl && allowDefault) {
+        avatarUrl = avatarDefaultColor(colorMXID(user.userId || user.roomId));
+      }
+      return avatarUrl;
+    }
+    return null;
   }
 }
 
