@@ -3,7 +3,6 @@ import EventEmitter from 'events';
 import initMatrix from '@src/client/initMatrix';
 import { ImagePack as ImagePackBuilder } from '@src/app/organisms/emoji-board/custom-emoji';
 
-import { useRoomImagePack, useUserImagePack } from './emojiUtil';
 import { suffixRename } from '../../common';
 
 // Class Base
@@ -18,23 +17,23 @@ class EmojiEditor extends EventEmitter {
     const packEvent = mx.getAccountData('im.ponies.user_emotes');
     const pack = isReact
       ? useMemo(
-        () =>
-          ImagePackBuilder.parsePack(
-            mx.getUserId(),
-            packEvent?.getContent() ?? {
-              pack: { display_name: 'Personal' },
-              images: {},
-            },
-          ),
-        [],
-      )
+          () =>
+            ImagePackBuilder.parsePack(
+              mx.getUserId(),
+              packEvent?.getContent() ?? {
+                pack: { display_name: 'Personal' },
+                images: {},
+              },
+            ),
+          [],
+        )
       : ImagePackBuilder.parsePack(
-        mx.getUserId(),
-        packEvent?.getContent() ?? {
-          pack: { display_name: 'Personal' },
-          images: {},
-        },
-      );
+          mx.getUserId(),
+          packEvent?.getContent() ?? {
+            pack: { display_name: 'Personal' },
+            images: {},
+          },
+        );
 
     const sendPackContent = (content) =>
       new Promise((resolve, reject) =>
@@ -61,9 +60,9 @@ class EmojiEditor extends EventEmitter {
     const packEvent = getCurrentState(room).getStateEvents('im.ponies.room_emotes', stateKey);
     const pack = isReact
       ? useMemo(
-        () => ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent()),
-        [room, stateKey],
-      )
+          () => ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent()),
+          [room, stateKey],
+        )
       : ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent());
 
     const sendPackContent = (content) =>
@@ -91,32 +90,32 @@ class EmojiEditor extends EventEmitter {
       newKey = suffixRename(newKey, (suffixedKey) => pack.getImages().get(suffixedKey));
     }
     return newKey;
-  };
+  }
 
   // Change Emoji Avatar
   handleEmojiAvatarChange(url, roomId, stateKey) {
     const { pack, sendPackContent } = !roomId
-      ? useUserImagePack(false)
-      : useRoomImagePack(roomId, stateKey, false);
+      ? this.useUserImagePack(false)
+      : this.useRoomImagePack(roomId, stateKey, false);
     pack.setAvatarUrl(url);
     return sendPackContent(pack.getContent());
-  };
+  }
 
   // Edit Emoji Profile
   handleEditEmojiProfile(name, attribution, roomId, stateKey) {
     const { pack, sendPackContent } = !roomId
-      ? useUserImagePack(false)
-      : useRoomImagePack(roomId, stateKey, false);
+      ? this.useUserImagePack(false)
+      : this.useRoomImagePack(roomId, stateKey, false);
     pack.setDisplayName(name);
     pack.setAttribution(attribution);
     return sendPackContent(pack.getContent());
-  };
+  }
 
   // Emoji Usage Change
   handleEmojiUsageChange(newUsage, roomId, stateKey) {
     const { pack, sendPackContent } = !roomId
-      ? useUserImagePack(false)
-      : useRoomImagePack(roomId, stateKey, false);
+      ? this.useUserImagePack(false)
+      : this.useRoomImagePack(roomId, stateKey, false);
     const usage = [];
     if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
     if (newUsage === 'sticker' || newUsage === 'both') usage.push('sticker');
@@ -124,35 +123,35 @@ class EmojiEditor extends EventEmitter {
     pack.getImages().forEach((img) => pack.setImageUsage(img.shortcode, undefined));
 
     return sendPackContent(pack.getContent());
-  };
+  }
 
   // Rename Emoji
   handleRenameEmoji(key, newKeyValue, roomId, stateKey) {
     const { pack, sendPackContent } = !roomId
-      ? useUserImagePack(false)
-      : useRoomImagePack(roomId, stateKey, false);
+      ? this.useUserImagePack(false)
+      : this.useRoomImagePack(roomId, stateKey, false);
     const newKey = this.getNewEmojiKey(pack, newKeyValue);
 
     if (!newKey || newKey === key) return;
     pack.updateImageKey(key, newKey);
 
     return sendPackContent(pack.getContent());
-  };
+  }
 
   // Delete Emoji
   handleDeleteEmoji(key, roomId, stateKey) {
     const { pack, sendPackContent } = !roomId
-      ? useUserImagePack(false)
-      : useRoomImagePack(roomId, stateKey, false);
+      ? this.useUserImagePack(false)
+      : this.useRoomImagePack(roomId, stateKey, false);
     pack.removeImage(key);
     return sendPackContent(pack.getContent());
-  };
+  }
 
   // Usage Emoji
   handleUsageEmoji(key, newUsage, roomId, stateKey) {
     const { pack, sendPackContent } = !roomId
-      ? useUserImagePack(false)
-      : useRoomImagePack(roomId, stateKey, false);
+      ? this.useUserImagePack(false)
+      : this.useRoomImagePack(roomId, stateKey, false);
 
     const usage = [];
     if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
@@ -160,13 +159,13 @@ class EmojiEditor extends EventEmitter {
     pack.setImageUsage(key, usage);
 
     return sendPackContent(pack.getContent());
-  };
+  }
 
   // Add Emoji
   handleAddEmoji(key, url, roomId, stateKey) {
     const { pack, sendPackContent } = !roomId
-      ? useUserImagePack(false)
-      : useRoomImagePack(roomId, stateKey, false);
+      ? this.useUserImagePack(false)
+      : this.useRoomImagePack(roomId, stateKey, false);
 
     const newKey = this.getNewEmojiKey(pack, key);
     if (!newKey || !url) return;
@@ -176,9 +175,7 @@ class EmojiEditor extends EventEmitter {
     });
 
     return sendPackContent(pack.getContent());
-  };
-
-
+  }
 }
 
 // Functions and class
