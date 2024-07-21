@@ -33,14 +33,16 @@ class EmojiEditor extends EventEmitter {
     const tinyThis = this;
 
     mx.addListener(ClientEvent.AccountData, (event) => {
-      if (event.getType() === EmojiEvents.UserEmotes)
-        tinyThis.personalPack = tinyThis.useUserImagePack(false);
+      if (event.getType() !== EmojiEvents.UserEmotes) return;
+      console.log('[matrix-emoji-editor] [personal-emojis] Updated!');
+      tinyThis.personalPack = tinyThis.useUserImagePack(false);
     });
 
     mx.on(RoomStateEvent.Events, (event) => {
       if (event.getType() !== EmojiEvents.RoomEmotes) return;
       const roomId = event.getRoomId();
       const stateKey = event.getStateKey();
+      console.log('[matrix-emoji-editor] [room-emojis] Updated!', roomId, stateKey);
 
       if (!tinyThis.roomsPack[roomId]) tinyThis.roomsPack[roomId] = {};
       if (stateKey)
