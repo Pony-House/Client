@@ -6,6 +6,7 @@ import { avatarDefaultColor } from '@src/app/atoms/avatar/Avatar';
 import { colorMXID } from '../colorMXID';
 import { getBlobSafeMimeType } from '../mimetypes';
 
+// getAnimatedImageUrl
 // Mxc Url
 class MxcUrl {
   // Constructor
