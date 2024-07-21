@@ -3,7 +3,10 @@ import EventEmitter from 'events';
 import initMatrix from '@src/client/initMatrix';
 import { ImagePack as ImagePackBuilder } from '@src/app/organisms/emoji-board/custom-emoji';
 
+import { getCurrentState } from '../../matrixUtil';
 import { suffixRename } from '../../common';
+import { getSelectRoom } from '../../selectedRoom';
+import { updateEmojiList } from '@src/client/action/navigation';
 
 // Class Base
 class EmojiEditor extends EventEmitter {
