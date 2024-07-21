@@ -139,6 +139,16 @@ function useImagePackHandles(forceUpdate, roomId, stateKey) {
   };
 }
 
+const emojiEventListen = (forceUpdate) => () => {
+  const tinyUpdate = () => forceUpdate();
+  emojiEditor.on('personalUpdated', tinyUpdate);
+  emojiEditor.on('roomUpdated', tinyUpdate);
+  return () => {
+    emojiEditor.off('personalUpdated', tinyUpdate);
+    emojiEditor.off('roomUpdated', tinyUpdate);
+  };
+};
+
 function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
   const mx = initMatrix.matrixClient;
   const mxcUrl = initMatrix.mxcUrl;
@@ -146,8 +156,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
   const [viewMore, setViewMore] = useState(false);
   const [isGlobal, setIsGlobal] = useState(isGlobalPack(roomId, stateKey));
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
-
-  const { pack } = emojiEditor.useRoomImagePack(roomId, stateKey, false);
+  const { pack } = emojiEditor.getRoom(roomId, stateKey);
 
   const {
     handleAvatarChange,
@@ -180,6 +189,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
   };
 
   const images = [...pack.images].slice(0, viewMore ? pack.images.size : 2);
+  useEffect(emojiEventListen(forceUpdate));
 
   return (
     <li className="list-group-item image-pack">
@@ -263,8 +273,7 @@ function ImagePackUser() {
   const mxcUrl = initMatrix.mxcUrl;
   const [viewMore, setViewMore] = useState(false);
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
-
-  const { pack } = emojiEditor.useUserImagePack(false);
+  const { pack } = emojiEditor.getPersonal();
 
   const {
     handleAvatarChange,
@@ -277,6 +286,7 @@ function ImagePackUser() {
   } = useImagePackHandles(forceUpdate);
 
   const images = [...pack.images].slice(0, viewMore ? pack.images.size : 2);
+  useEffect(emojiEventListen(forceUpdate));
 
   return (
     <div className="card noselect">
