@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { supportedEmojiFiles } from '@src/util/emojiUtil';
+import { supportedEmojiFiles } from '@src/util/libs/emoji/util';
 // import { scaleDownImage } from '../../../util/common';
 
 import Text from '../../atoms/text/Text';

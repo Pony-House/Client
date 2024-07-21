@@ -8,12 +8,12 @@ import FileSaver from 'file-saver';
 import initMatrix, { fetchFn } from '@src/client/initMatrix';
 import { setLoadingPage } from '@src/app/templates/client/Loading';
 import { updateEmojiList } from '@src/client/action/navigation';
-
-import { getCurrentState } from './matrixUtil';
 import { ImagePack as ImagePackBuilder } from '@src/app/organisms/emoji-board/custom-emoji';
-import moment from './libs/momentjs';
-import { suffixRename } from './common';
-import { getSelectRoom } from './selectedRoom';
+
+import { getCurrentState } from '../../matrixUtil';
+import moment from '../momentjs';
+import { suffixRename } from '../../common';
+import { getSelectRoom } from '../../selectedRoom';
 
 export const supportedEmojiFiles = [
   'image/png',
@@ -42,23 +42,23 @@ export function useUserImagePack(isReact = true) {
   const packEvent = mx.getAccountData('im.ponies.user_emotes');
   const pack = isReact
     ? useMemo(
-        () =>
-          ImagePackBuilder.parsePack(
-            mx.getUserId(),
-            packEvent?.getContent() ?? {
-              pack: { display_name: 'Personal' },
-              images: {},
-            },
-          ),
-        [],
-      )
+      () =>
+        ImagePackBuilder.parsePack(
+          mx.getUserId(),
+          packEvent?.getContent() ?? {
+            pack: { display_name: 'Personal' },
+            images: {},
+          },
+        ),
+      [],
+    )
     : ImagePackBuilder.parsePack(
-        mx.getUserId(),
-        packEvent?.getContent() ?? {
-          pack: { display_name: 'Personal' },
-          images: {},
-        },
-      );
+      mx.getUserId(),
+      packEvent?.getContent() ?? {
+        pack: { display_name: 'Personal' },
+        images: {},
+      },
+    );
 
   const sendPackContent = (content) =>
     new Promise((resolve, reject) =>
@@ -84,9 +84,9 @@ export function useRoomImagePack(roomId, stateKey, isReact = true) {
   const packEvent = getCurrentState(room).getStateEvents('im.ponies.room_emotes', stateKey);
   const pack = isReact
     ? useMemo(
-        () => ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent()),
-        [room, stateKey],
-      )
+      () => ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent()),
+      [room, stateKey],
+    )
     : ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent());
 
   const sendPackContent = (content) =>
@@ -283,7 +283,7 @@ export function getEmojiImport(zipFile) {
 
                   data.items[fileName[0]].usage =
                     typeof file.usage === 'string' &&
-                    (file.usage === 'emoticon' || file.usage === 'sticker' || file.usage === 'both')
+                      (file.usage === 'emoticon' || file.usage === 'sticker' || file.usage === 'both')
                       ? file.usage
                       : null;
 

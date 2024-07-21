@@ -6,7 +6,7 @@ import {
   supportedEmojiFiles,
   getEmojiImport,
   supportedEmojiImportFiles,
-} from '@src/util/emojiUtil';
+} from '@src/util/libs/emoji/util';
 import initMatrix from '../../../client/initMatrix';
 import { suffixRename } from '../../../util/common';
 
@@ -120,9 +120,11 @@ function RoomEmojis({ roomId }) {
 
     getEmojiImport(zipFile)
       .then((data) => {
-        // createPackBase('').then(() => {
-        console.log(data);
-        // }).catch(errorFile);
+        if (data.title && data.client === 'pony-house') {
+          createPackBase(data.title).then(() => {
+
+          }).catch(errorFile);
+        }
       })
       .catch(errorFile);
 
