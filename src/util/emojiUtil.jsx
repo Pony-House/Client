@@ -7,11 +7,13 @@ import FileSaver from 'file-saver';
 
 import initMatrix, { fetchFn } from '@src/client/initMatrix';
 import { setLoadingPage } from '@src/app/templates/client/Loading';
+import { updateEmojiList } from '@src/client/action/navigation';
 
 import { getCurrentState } from './matrixUtil';
 import { ImagePack as ImagePackBuilder } from '@src/app/organisms/emoji-board/custom-emoji';
 import moment from './libs/momentjs';
 import { suffixRename } from './common';
+import { getSelectRoom } from './selectedRoom';
 
 export const supportedEmojiFiles = [
   'image/png',
@@ -35,20 +37,28 @@ export const supportedEmojiImportFiles = [
   'multipart/x-zip',
 ];
 
-export function useUserImagePack() {
+export function useUserImagePack(isReact = true) {
   const mx = initMatrix.matrixClient;
   const packEvent = mx.getAccountData('im.ponies.user_emotes');
-  const pack = useMemo(
-    () =>
-      ImagePackBuilder.parsePack(
+  const pack = isReact
+    ? useMemo(
+        () =>
+          ImagePackBuilder.parsePack(
+            mx.getUserId(),
+            packEvent?.getContent() ?? {
+              pack: { display_name: 'Personal' },
+              images: {},
+            },
+          ),
+        [],
+      )
+    : ImagePackBuilder.parsePack(
         mx.getUserId(),
         packEvent?.getContent() ?? {
           pack: { display_name: 'Personal' },
           images: {},
         },
-      ),
-    [],
-  );
+      );
 
   const sendPackContent = (content) => {
     mx.setAccountData('im.ponies.user_emotes', content).then(() =>
@@ -62,15 +72,17 @@ export function useUserImagePack() {
   };
 }
 
-export function useRoomImagePack(roomId, stateKey) {
+export function useRoomImagePack(roomId, stateKey, isReact = true) {
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
 
   const packEvent = getCurrentState(room).getStateEvents('im.ponies.room_emotes', stateKey);
-  const pack = useMemo(
-    () => ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent()),
-    [room, stateKey],
-  );
+  const pack = isReact
+    ? useMemo(
+        () => ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent()),
+        [room, stateKey],
+      )
+    : ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent());
 
   const sendPackContent = (content) => {
     mx.sendStateEvent(roomId, 'im.ponies.room_emotes', content, stateKey).then(() =>
@@ -137,8 +149,8 @@ export const getNewEmojiKey = (pack, key) => {
 // Change Emoji Avatar
 export const handleEmojiAvatarChange = (url, roomId, stateKey) => {
   const { pack, sendPackContent } = !roomId
-    ? useUserImagePack()
-    : useRoomImagePack(roomId, stateKey);
+    ? useUserImagePack(false)
+    : useRoomImagePack(roomId, stateKey, false);
   pack.setAvatarUrl(url);
   sendPackContent(pack.getContent());
 };
@@ -146,8 +158,8 @@ export const handleEmojiAvatarChange = (url, roomId, stateKey) => {
 // Edit Emoji Profile
 export const handleEditEmojiProfile = (name, attribution, roomId, stateKey) => {
   const { pack, sendPackContent } = !roomId
-    ? useUserImagePack()
-    : useRoomImagePack(roomId, stateKey);
+    ? useUserImagePack(false)
+    : useRoomImagePack(roomId, stateKey, false);
   pack.setDisplayName(name);
   pack.setAttribution(attribution);
   sendPackContent(pack.getContent());
@@ -156,8 +168,8 @@ export const handleEditEmojiProfile = (name, attribution, roomId, stateKey) => {
 // Emoji Usage Change
 export const handleEmojiUsageChange = (newUsage, roomId, stateKey) => {
   const { pack, sendPackContent } = !roomId
-    ? useUserImagePack()
-    : useRoomImagePack(roomId, stateKey);
+    ? useUserImagePack(false)
+    : useRoomImagePack(roomId, stateKey, false);
   const usage = [];
   if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
   if (newUsage === 'sticker' || newUsage === 'both') usage.push('sticker');
@@ -170,8 +182,8 @@ export const handleEmojiUsageChange = (newUsage, roomId, stateKey) => {
 // Rename Emoji
 export const handleRenameEmoji = async (key, newKeyValue, roomId, stateKey) => {
   const { pack, sendPackContent } = !roomId
-    ? useUserImagePack()
-    : useRoomImagePack(roomId, stateKey);
+    ? useUserImagePack(false)
+    : useRoomImagePack(roomId, stateKey, false);
   const newKey = getNewEmojiKey(pack, newKeyValue);
 
   if (!newKey || newKey === key) return;
@@ -183,8 +195,8 @@ export const handleRenameEmoji = async (key, newKeyValue, roomId, stateKey) => {
 // Delete Emoji
 export const handleDeleteEmoji = async (key, roomId, stateKey) => {
   const { pack, sendPackContent } = !roomId
-    ? useUserImagePack()
-    : useRoomImagePack(roomId, stateKey);
+    ? useUserImagePack(false)
+    : useRoomImagePack(roomId, stateKey, false);
   pack.removeImage(key);
   sendPackContent(pack.getContent());
 };
@@ -192,8 +204,8 @@ export const handleDeleteEmoji = async (key, roomId, stateKey) => {
 // Usage Emoji
 export const handleUsageEmoji = (key, newUsage, roomId, stateKey) => {
   const { pack, sendPackContent } = !roomId
-    ? useUserImagePack()
-    : useRoomImagePack(roomId, stateKey);
+    ? useUserImagePack(false)
+    : useRoomImagePack(roomId, stateKey, false);
 
   const usage = [];
   if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
@@ -206,8 +218,8 @@ export const handleUsageEmoji = (key, newUsage, roomId, stateKey) => {
 // Add Emoji
 export const handleAddEmoji = (key, url, roomId, stateKey) => {
   const { pack, sendPackContent } = !roomId
-    ? useUserImagePack()
-    : useRoomImagePack(roomId, stateKey);
+    ? useUserImagePack(false)
+    : useRoomImagePack(roomId, stateKey, false);
 
   const newKey = getNewEmojiKey(pack, key);
   if (!newKey || !url) return;
