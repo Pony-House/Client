@@ -20,23 +20,23 @@ class EmojiEditor extends EventEmitter {
     const packEvent = mx.getAccountData('im.ponies.user_emotes');
     const pack = isReact
       ? useMemo(
-          () =>
-            ImagePackBuilder.parsePack(
-              mx.getUserId(),
-              packEvent?.getContent() ?? {
-                pack: { display_name: 'Personal' },
-                images: {},
-              },
-            ),
-          [],
-        )
+        () =>
+          ImagePackBuilder.parsePack(
+            mx.getUserId(),
+            packEvent?.getContent() ?? {
+              pack: { display_name: 'Personal' },
+              images: {},
+            },
+          ),
+        [],
+      )
       : ImagePackBuilder.parsePack(
-          mx.getUserId(),
-          packEvent?.getContent() ?? {
-            pack: { display_name: 'Personal' },
-            images: {},
-          },
-        );
+        mx.getUserId(),
+        packEvent?.getContent() ?? {
+          pack: { display_name: 'Personal' },
+          images: {},
+        },
+      );
 
     const sendPackContent = (content) =>
       new Promise((resolve, reject) =>
@@ -63,9 +63,9 @@ class EmojiEditor extends EventEmitter {
     const packEvent = getCurrentState(room).getStateEvents('im.ponies.room_emotes', stateKey);
     const pack = isReact
       ? useMemo(
-          () => ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent()),
-          [room, stateKey],
-        )
+        () => ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent()),
+        [room, stateKey],
+      )
       : ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent());
 
     const sendPackContent = (content) =>
@@ -86,7 +86,7 @@ class EmojiEditor extends EventEmitter {
   }
 
   // Get new emoji key
-  getNewEmojiKey(pack, key) {
+  getNewKey(pack, key) {
     if (typeof key !== 'string') return undefined;
     let newKey = key?.replace(/\s/g, '_');
     if (pack.getImages().get(newKey)) {
@@ -96,7 +96,7 @@ class EmojiEditor extends EventEmitter {
   }
 
   // Change Emoji Avatar
-  handleEmojiAvatarChange(url, roomId, stateKey) {
+  avatarChange(url, roomId, stateKey) {
     const { pack, sendPackContent } = !roomId
       ? this.useUserImagePack(false)
       : this.useRoomImagePack(roomId, stateKey, false);
@@ -105,7 +105,7 @@ class EmojiEditor extends EventEmitter {
   }
 
   // Edit Emoji Profile
-  handleEditEmojiProfile(name, attribution, roomId, stateKey) {
+  editProfile(name, attribution, roomId, stateKey) {
     const { pack, sendPackContent } = !roomId
       ? this.useUserImagePack(false)
       : this.useRoomImagePack(roomId, stateKey, false);
@@ -115,7 +115,7 @@ class EmojiEditor extends EventEmitter {
   }
 
   // Emoji Usage Change
-  handleEmojiUsageChange(newUsage, roomId, stateKey) {
+  usageChange(newUsage, roomId, stateKey) {
     const { pack, sendPackContent } = !roomId
       ? this.useUserImagePack(false)
       : this.useRoomImagePack(roomId, stateKey, false);
@@ -129,11 +129,11 @@ class EmojiEditor extends EventEmitter {
   }
 
   // Rename Emoji
-  handleRenameEmoji(key, newKeyValue, roomId, stateKey) {
+  rename(key, newKeyValue, roomId, stateKey) {
     const { pack, sendPackContent } = !roomId
       ? this.useUserImagePack(false)
       : this.useRoomImagePack(roomId, stateKey, false);
-    const newKey = this.getNewEmojiKey(pack, newKeyValue);
+    const newKey = this.getNewKey(pack, newKeyValue);
 
     if (!newKey || newKey === key) return;
     pack.updateImageKey(key, newKey);
@@ -142,7 +142,7 @@ class EmojiEditor extends EventEmitter {
   }
 
   // Delete Emoji
-  handleDeleteEmoji(key, roomId, stateKey) {
+  delete(key, roomId, stateKey) {
     const { pack, sendPackContent } = !roomId
       ? this.useUserImagePack(false)
       : this.useRoomImagePack(roomId, stateKey, false);
@@ -151,7 +151,7 @@ class EmojiEditor extends EventEmitter {
   }
 
   // Usage Emoji
-  handleUsageEmoji(key, newUsage, roomId, stateKey) {
+  usage(key, newUsage, roomId, stateKey) {
     const { pack, sendPackContent } = !roomId
       ? this.useUserImagePack(false)
       : this.useRoomImagePack(roomId, stateKey, false);
@@ -165,12 +165,12 @@ class EmojiEditor extends EventEmitter {
   }
 
   // Add Emoji
-  handleAddEmoji(key, url, roomId, stateKey) {
+  add(key, url, roomId, stateKey) {
     const { pack, sendPackContent } = !roomId
       ? this.useUserImagePack(false)
       : this.useRoomImagePack(roomId, stateKey, false);
 
-    const newKey = this.getNewEmojiKey(pack, key);
+    const newKey = this.getNewKey(pack, key);
     if (!newKey || !url) return;
 
     pack.addImage(newKey, {
