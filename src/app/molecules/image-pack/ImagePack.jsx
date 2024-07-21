@@ -10,11 +10,18 @@ import {
   addGlobalImagePack,
   removeGlobalImagePack,
   isGlobalPack,
+  getNewEmojiKey,
+  handleAddEmoji,
+  handleUsageEmoji,
+  handleDeleteEmoji,
+  handleRenameEmoji,
+  handleEmojiUsageChange,
+  handleEditEmojiProfile,
+  handleEmojiAvatarChange,
 } from '@src/util/emojiUtil';
 
 import initMatrix from '../../../client/initMatrix';
 import { openReusableDialog, updateEmojiList } from '../../../client/action/navigation';
-import { suffixRename } from '../../../util/common';
 
 import Button from '../../atoms/button/Button';
 import Text from '../../atoms/text/Text';
@@ -66,49 +73,27 @@ const renameImagePackItem = (shortcode) =>
     );
   });
 
-function useImagePackHandles(pack, sendPackContent) {
+function useImagePackHandles(pack, sendPackContent, roomId, stateKey) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
-  const getNewKey = (key) => {
-    if (typeof key !== 'string') return undefined;
-    let newKey = key?.replace(/\s/g, '_');
-    if (pack.getImages().get(newKey)) {
-      newKey = suffixRename(newKey, (suffixedKey) => pack.getImages().get(suffixedKey));
-    }
-    return newKey;
-  };
-
   const handleAvatarChange = (url) => {
-    pack.setAvatarUrl(url);
-    sendPackContent(pack.getContent());
+    handleEmojiAvatarChange(url, roomId, stateKey);
     forceUpdate();
   };
 
   const handleEditProfile = (name, attribution) => {
-    pack.setDisplayName(name);
-    pack.setAttribution(attribution);
-    sendPackContent(pack.getContent());
+    handleEditEmojiProfile(name, attribution, roomId, stateKey);
     forceUpdate();
   };
 
   const handleUsageChange = (newUsage) => {
-    const usage = [];
-    if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
-    if (newUsage === 'sticker' || newUsage === 'both') usage.push('sticker');
-    pack.setUsage(usage);
-    pack.getImages().forEach((img) => pack.setImageUsage(img.shortcode, undefined));
-
-    sendPackContent(pack.getContent());
+    handleEmojiUsageChange(newUsage, roomId, stateKey);
     forceUpdate();
   };
 
   const handleRenameItem = async (key) => {
-    const newKey = getNewKey(await renameImagePackItem(key));
-
-    if (!newKey || newKey === key) return;
-    pack.updateImageKey(key, newKey);
-
-    sendPackContent(pack.getContent());
+    const newKeyValue = await renameImagePackItem(key);
+    handleRenameEmoji(key, newKeyValue, roomId, stateKey);
     forceUpdate();
   };
 
@@ -120,31 +105,17 @@ function useImagePackHandles(pack, sendPackContent) {
       'danger',
     );
     if (!isConfirmed) return;
-    pack.removeImage(key);
-
-    sendPackContent(pack.getContent());
+    handleDeleteEmoji(key, roomId, stateKey);
     forceUpdate();
   };
 
   const handleUsageItem = (key, newUsage) => {
-    const usage = [];
-    if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
-    if (newUsage === 'sticker' || newUsage === 'both') usage.push('sticker');
-    pack.setImageUsage(key, usage);
-
-    sendPackContent(pack.getContent());
+    handleUsageEmoji(key, newUsage, roomId, stateKey);
     forceUpdate();
   };
 
   const handleAddItem = (key, url) => {
-    const newKey = getNewKey(key);
-    if (!newKey || !url) return;
-
-    pack.addImage(newKey, {
-      url,
-    });
-
-    sendPackContent(pack.getContent());
+    handleAddEmoji(key, url, roomId, stateKey);
     forceUpdate();
   };
 
@@ -176,7 +147,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
     handleDeleteItem,
     handleUsageItem,
     handleAddItem,
-  } = useImagePackHandles(pack, sendPackContent);
+  } = useImagePackHandles(pack, sendPackContent, roomId, stateKey);
 
   const handleGlobalChange = (isG) => {
     setIsGlobal(isG);

@@ -11,6 +11,7 @@ import { setLoadingPage } from '@src/app/templates/client/Loading';
 import { getCurrentState } from './matrixUtil';
 import { ImagePack as ImagePackBuilder } from '@src/app/organisms/emoji-board/custom-emoji';
 import moment from './libs/momentjs';
+import { suffixRename } from './common';
 
 export const supportedEmojiFiles = [
   'image/png',
@@ -122,6 +123,101 @@ export function isGlobalPack(roomId, stateKey) {
 
   return rooms[roomId]?.[stateKey] !== undefined;
 }
+
+// Get new emoji key
+export const getNewEmojiKey = (pack, key) => {
+  if (typeof key !== 'string') return undefined;
+  let newKey = key?.replace(/\s/g, '_');
+  if (pack.getImages().get(newKey)) {
+    newKey = suffixRename(newKey, (suffixedKey) => pack.getImages().get(suffixedKey));
+  }
+  return newKey;
+};
+
+// Change Emoji Avatar
+export const handleEmojiAvatarChange = (url, roomId, stateKey) => {
+  const { pack, sendPackContent } = !roomId
+    ? useUserImagePack()
+    : useRoomImagePack(roomId, stateKey);
+  pack.setAvatarUrl(url);
+  sendPackContent(pack.getContent());
+};
+
+// Edit Emoji Profile
+export const handleEditEmojiProfile = (name, attribution, roomId, stateKey) => {
+  const { pack, sendPackContent } = !roomId
+    ? useUserImagePack()
+    : useRoomImagePack(roomId, stateKey);
+  pack.setDisplayName(name);
+  pack.setAttribution(attribution);
+  sendPackContent(pack.getContent());
+};
+
+// Emoji Usage Change
+export const handleEmojiUsageChange = (newUsage, roomId, stateKey) => {
+  const { pack, sendPackContent } = !roomId
+    ? useUserImagePack()
+    : useRoomImagePack(roomId, stateKey);
+  const usage = [];
+  if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
+  if (newUsage === 'sticker' || newUsage === 'both') usage.push('sticker');
+  pack.setUsage(usage);
+  pack.getImages().forEach((img) => pack.setImageUsage(img.shortcode, undefined));
+
+  sendPackContent(pack.getContent());
+};
+
+// Rename Emoji
+export const handleRenameEmoji = async (key, newKeyValue, roomId, stateKey) => {
+  const { pack, sendPackContent } = !roomId
+    ? useUserImagePack()
+    : useRoomImagePack(roomId, stateKey);
+  const newKey = getNewEmojiKey(pack, newKeyValue);
+
+  if (!newKey || newKey === key) return;
+  pack.updateImageKey(key, newKey);
+
+  sendPackContent(pack.getContent());
+};
+
+// Delete Emoji
+export const handleDeleteEmoji = async (key, roomId, stateKey) => {
+  const { pack, sendPackContent } = !roomId
+    ? useUserImagePack()
+    : useRoomImagePack(roomId, stateKey);
+  pack.removeImage(key);
+  sendPackContent(pack.getContent());
+};
+
+// Usage Emoji
+export const handleUsageEmoji = (key, newUsage, roomId, stateKey) => {
+  const { pack, sendPackContent } = !roomId
+    ? useUserImagePack()
+    : useRoomImagePack(roomId, stateKey);
+
+  const usage = [];
+  if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
+  if (newUsage === 'sticker' || newUsage === 'both') usage.push('sticker');
+  pack.setImageUsage(key, usage);
+
+  sendPackContent(pack.getContent());
+};
+
+// Add Emoji
+export const handleAddEmoji = (key, url, roomId, stateKey) => {
+  const { pack, sendPackContent } = !roomId
+    ? useUserImagePack()
+    : useRoomImagePack(roomId, stateKey);
+
+  const newKey = getNewEmojiKey(pack, key);
+  if (!newKey || !url) return;
+
+  pack.addImage(newKey, {
+    url,
+  });
+
+  sendPackContent(pack.getContent());
+};
 
 // Import Emoji
 export function getEmojiImport(zipFile) {
