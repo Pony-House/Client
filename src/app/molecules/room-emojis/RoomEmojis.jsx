@@ -6,7 +6,7 @@ import {
   supportedEmojiFiles,
   getEmojiImport,
   supportedEmojiImportFiles,
-} from '@src/util/libs/emoji/util';
+} from '@src/util/libs/emoji/emojiUtil';
 import initMatrix from '../../../client/initMatrix';
 import { suffixRename } from '../../../util/common';
 

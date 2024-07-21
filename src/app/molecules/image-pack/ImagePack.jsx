@@ -18,7 +18,7 @@ import {
   handleEmojiUsageChange,
   handleEditEmojiProfile,
   handleEmojiAvatarChange,
-} from '@src/util/libs/emoji/util';
+} from '@src/util/libs/emoji/emojiUtil';
 
 import initMatrix from '../../../client/initMatrix';
 import { openReusableDialog, updateEmojiList } from '../../../client/action/navigation';
