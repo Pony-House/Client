@@ -2,6 +2,8 @@ import React, { useMemo } from 'react';
 import EventEmitter from 'events';
 import { ClientEvent } from 'matrix-js-sdk';
 
+import { objType } from 'for-promise/utils/lib.mjs';
+
 import initMatrix from '@src/client/initMatrix';
 import { ImagePack as ImagePackBuilder } from '@src/app/organisms/emoji-board/custom-emoji';
 
@@ -15,18 +17,36 @@ import EmojiEvents from './EmojiEvents';
 class EmojiEditor extends EventEmitter {
   constructor() {
     super();
+    this.personalPack = null;
+    this.roomsPack = {};
   }
 
+  // Is Emoji Event
   isEmojiEvent(event) {
     const eventType = event.getType();
     return eventType === EmojiEvents.RoomEmotes || eventType === EmojiEvents.UserEmotes;
   }
 
+  // Start events
   start() {
     const mx = initMatrix.matrixClient;
     mx.addListener(ClientEvent.AccountData, (event) => {
-      // if (this.isEmojiEvent(event))
-      // To do
+      const eventType = event.getType();
+
+      // Personal emojis
+      if (eventType === EmojiEvents.UserEmotes) this.personalPack = this.useUserImagePack(false);
+      // Room emojis
+      else if (eventType === EmojiEvents.RoomEmotes) {
+        const content = event.getContent();
+        if (objType(content, 'object') && objType(content.rooms, 'object')) {
+          for (const roomId in content) {
+            for (const stateKey in content[roomId]) {
+              if (!this.roomsPack[roomId]) this.roomsPack[roomId] = {};
+              this.roomsPack[roomId][stateKey] = this.useRoomImagePack(roomId, stateKey, false);
+            }
+          }
+        }
+      }
     });
   }
 
@@ -75,30 +95,34 @@ class EmojiEditor extends EventEmitter {
   useRoomImagePack(roomId, stateKey, isReact = true) {
     const mx = initMatrix.matrixClient;
     const room = mx.getRoom(roomId);
+    if (room) {
+      const packEvent = getCurrentState(room).getStateEvents('im.ponies.room_emotes', stateKey);
+      if (packEvent) {
+        const pack = isReact
+          ? useMemo(
+              () => ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent()),
+              [room, stateKey],
+            )
+          : ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent());
 
-    const packEvent = getCurrentState(room).getStateEvents('im.ponies.room_emotes', stateKey);
-    const pack = isReact
-      ? useMemo(
-          () => ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent()),
-          [room, stateKey],
-        )
-      : ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent());
+        const sendPackContent = (content) =>
+          new Promise((resolve, reject) =>
+            mx
+              .sendStateEvent(roomId, 'im.ponies.room_emotes', content, stateKey)
+              .then(() => {
+                updateEmojiList(roomId);
+                resolve(true);
+              })
+              .catch(reject),
+          );
 
-    const sendPackContent = (content) =>
-      new Promise((resolve, reject) =>
-        mx
-          .sendStateEvent(roomId, 'im.ponies.room_emotes', content, stateKey)
-          .then(() => {
-            updateEmojiList(roomId);
-            resolve(true);
-          })
-          .catch(reject),
-      );
-
-    return {
-      pack,
-      sendPackContent,
-    };
+        return {
+          pack,
+          sendPackContent,
+        };
+      }
+    }
+    return null;
   }
 
   // Get new emoji key

@@ -16,6 +16,7 @@ import {
 } from '@src/app/atoms/avatar/defaultAvatar';
 
 import MatrixVoiceChat from '@src/util/libs/voiceChat';
+import emojiEditor from '@src/util/libs/emoji/EmojiEditor';
 
 import { secret } from './state/auth';
 import RoomList from './state/RoomList';
@@ -156,6 +157,7 @@ class InitMatrix extends EventEmitter {
 
       this.matrixClient = sdk.createClient(clientOps);
       this.mxcUrl = new MxcUrl(this.matrixClient);
+      emojiEditor.start();
       attemptDecryption.start();
       if (__ENV_APP__.ELECTRON_MODE) {
         if (global.tinyJsonDB && typeof global.tinyJsonDB.startClient === 'function')
