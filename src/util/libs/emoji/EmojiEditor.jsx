@@ -27,6 +27,17 @@ class EmojiEditor extends EventEmitter {
     return eventType === EmojiEvents.EmoteRooms || eventType === EmojiEvents.UserEmotes;
   }
 
+  getPersonal() {
+    if (objType(this.personalPack, 'object')) return this.personalPack;
+    return null;
+  }
+
+  getRoom(roomId, stateKey) {
+    if (objType(this.roomsPack[roomId], 'object') && this.roomsPack[roomId][stateKey])
+      return this.roomsPack[roomId][stateKey];
+    return null;
+  }
+
   // Start events
   start() {
     const mx = initMatrix.matrixClient;
@@ -36,22 +47,26 @@ class EmojiEditor extends EventEmitter {
       if (event.getType() !== EmojiEvents.UserEmotes) return;
       console.log('[matrix-emoji-editor] [personal-emojis] Updated!');
       tinyThis.personalPack = tinyThis.useUserImagePack(false);
+      tinyThis.emit('personalUpdated', tinyThis.personalPack);
     });
 
     mx.on(RoomStateEvent.Events, (event) => {
       if (event.getType() !== EmojiEvents.RoomEmotes) return;
       const roomId = event.getRoomId();
       const stateKey = event.getStateKey();
-      console.log('[matrix-emoji-editor] [room-emojis] Updated!', roomId, stateKey);
+      if (roomId && stateKey) {
+        console.log('[matrix-emoji-editor] [room-emojis] Updated!', roomId, stateKey);
 
-      if (!tinyThis.roomsPack[roomId]) tinyThis.roomsPack[roomId] = {};
-      if (stateKey)
+        if (!tinyThis.roomsPack[roomId]) tinyThis.roomsPack[roomId] = {};
         tinyThis.roomsPack[roomId][stateKey] = tinyThis.useRoomImagePack(
           roomId,
           stateKey,
           event,
           false,
         );
+
+        tinyThis.emit('roomUpdated', tinyThis.roomsPack[roomId][stateKey], roomId, stateKey);
+      }
     });
 
     mx.addListener(ClientEvent.DeleteRoom, (roomId) => {
