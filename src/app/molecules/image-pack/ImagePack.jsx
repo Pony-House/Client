@@ -10,6 +10,7 @@ import {
   isGlobalPack,
 } from '@src/util/libs/emoji/emojiUtil';
 import emojiEditor from '@src/util/libs/emoji/EmojiEditor';
+import EmojiEvents from '@src/util/libs/emoji/EmojiEvents';
 
 import initMatrix from '../../../client/initMatrix';
 import { openReusableDialog, updateEmojiList } from '../../../client/action/navigation';
@@ -341,7 +342,7 @@ function useGlobalImagePack() {
   const mx = initMatrix.matrixClient;
 
   const roomIdToStateKeys = new Map();
-  const globalContent = mx.getAccountData('im.ponies.emote_rooms')?.getContent() ?? { rooms: {} };
+  const globalContent = mx.getAccountData(EmojiEvents.RoomEmotes)?.getContent() ?? { rooms: {} };
   const { rooms } = globalContent;
 
   Object.keys(rooms).forEach((roomId) => {
@@ -354,7 +355,7 @@ function useGlobalImagePack() {
 
   useEffect(() => {
     const handleEvent = (event) => {
-      if (event.getType() === 'im.ponies.emote_rooms') forceUpdate();
+      if (event.getType() === EmojiEvents.RoomEmotes) forceUpdate();
     };
     mx.addListener(ClientEvent.AccountData, handleEvent);
     return () => {

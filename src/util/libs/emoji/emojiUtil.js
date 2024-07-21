@@ -6,6 +6,7 @@ import FileSaver from 'file-saver';
 import initMatrix, { fetchFn } from '@src/client/initMatrix';
 import { setLoadingPage } from '@src/app/templates/client/Loading';
 import moment from '../momentjs';
+import EmojiEvents from './EmojiEvents';
 
 export const supportedEmojiFiles = [
   'image/png',
@@ -40,27 +41,27 @@ export function getEmojiUsage(usage) {
 // Global Pack
 export function addGlobalImagePack(roomId, stateKey) {
   const mx = initMatrix.matrixClient;
-  const content = mx.getAccountData('im.ponies.emote_rooms')?.getContent() ?? {};
+  const content = mx.getAccountData(EmojiEvents.RoomEmotes)?.getContent() ?? {};
   if (!content.rooms) content.rooms = {};
   if (!content.rooms[roomId]) content.rooms[roomId] = {};
   content.rooms[roomId][stateKey] = {};
-  return mx.setAccountData('im.ponies.emote_rooms', content);
+  return mx.setAccountData(EmojiEvents.RoomEmotes, content);
 }
 export function removeGlobalImagePack(roomId, stateKey) {
   const mx = initMatrix.matrixClient;
-  const content = mx.getAccountData('im.ponies.emote_rooms')?.getContent() ?? {};
+  const content = mx.getAccountData(EmojiEvents.RoomEmotes)?.getContent() ?? {};
   if (!content.rooms) return Promise.resolve();
   if (!content.rooms[roomId]) return Promise.resolve();
   delete content.rooms[roomId][stateKey];
   if (Object.keys(content.rooms[roomId]).length === 0) {
     delete content.rooms[roomId];
   }
-  return mx.setAccountData('im.ponies.emote_rooms', content);
+  return mx.setAccountData(EmojiEvents.RoomEmotes, content);
 }
 
 export function isGlobalPack(roomId, stateKey) {
   const mx = initMatrix.matrixClient;
-  const globalContent = mx.getAccountData('im.ponies.emote_rooms')?.getContent();
+  const globalContent = mx.getAccountData(EmojiEvents.RoomEmotes)?.getContent();
   if (typeof globalContent !== 'object') return false;
 
   const { rooms } = globalContent;

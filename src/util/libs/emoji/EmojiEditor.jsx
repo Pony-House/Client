@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 import EventEmitter from 'events';
+import { ClientEvent } from 'matrix-js-sdk';
+
 import initMatrix from '@src/client/initMatrix';
 import { ImagePack as ImagePackBuilder } from '@src/app/organisms/emoji-board/custom-emoji';
 
@@ -7,6 +9,7 @@ import { getCurrentState } from '../../matrixUtil';
 import { suffixRename } from '../../common';
 import { getSelectRoom } from '../../selectedRoom';
 import { updateEmojiList } from '@src/client/action/navigation';
+import EmojiEvents from './EmojiEvents';
 
 // Class Base
 class EmojiEditor extends EventEmitter {
@@ -14,10 +17,23 @@ class EmojiEditor extends EventEmitter {
     super();
   }
 
+  isEmojiEvent(event) {
+    const eventType = event.getType();
+    return eventType === EmojiEvents.RoomEmotes || eventType === EmojiEvents.UserEmotes;
+  }
+
+  start() {
+    const mx = initMatrix.matrixClient;
+    mx.addListener(ClientEvent.AccountData, (event) => {
+      // if (this.isEmojiEvent(event))
+      // To do
+    });
+  }
+
   // User Image Pack
   useUserImagePack(isReact = true) {
     const mx = initMatrix.matrixClient;
-    const packEvent = mx.getAccountData('im.ponies.user_emotes');
+    const packEvent = mx.getAccountData(EmojiEvents.UserEmotes);
     const pack = isReact
       ? useMemo(
           () =>
@@ -41,7 +57,7 @@ class EmojiEditor extends EventEmitter {
     const sendPackContent = (content) =>
       new Promise((resolve, reject) =>
         mx
-          .setAccountData('im.ponies.user_emotes', content)
+          .setAccountData(EmojiEvents.UserEmotes, content)
           .then(() => {
             updateEmojiList(getSelectRoom());
             resolve(true);

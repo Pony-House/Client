@@ -7,6 +7,8 @@ import {
   getEmojiImport,
   supportedEmojiImportFiles,
 } from '@src/util/libs/emoji/emojiUtil';
+import EmojiEvents from '@src/util/libs/emoji/EmojiEvents';
+
 import initMatrix from '../../../client/initMatrix';
 import { suffixRename } from '../../../util/common';
 
@@ -93,10 +95,7 @@ function RoomEmojis({ roomId }) {
 
   const emojiImportRef = useRef(null);
   const { usablePacks, createPack, deletePack } = useRoomPacks(room);
-  const canChange = getCurrentState(room).maySendStateEvent(
-    'im.ponies.emote_rooms',
-    mx.getUserId(),
-  );
+  const canChange = getCurrentState(room).maySendStateEvent(EmojiEvents.RoomEmotes, mx.getUserId());
 
   const createPackBase = (name, nameInput) => {
     if (name === '') return new Promise((resolve) => resolve(null));

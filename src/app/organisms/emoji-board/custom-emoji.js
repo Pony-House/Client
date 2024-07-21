@@ -1,3 +1,5 @@
+import EmojiEvents from '@src/util/libs/emoji/EmojiEvents';
+
 import { defaultEmojis } from './emoji';
 import { getCurrentState } from '../../../util/matrixUtil';
 
@@ -147,7 +149,7 @@ class ImagePack {
 }
 
 function getGlobalImagePacks(mx) {
-  const globalContent = mx.getAccountData('im.ponies.emote_rooms')?.getContent();
+  const globalContent = mx.getAccountData(EmojiEvents.RoomEmotes)?.getContent();
   if (typeof globalContent !== 'object') return [];
 
   const { rooms } = globalContent;
@@ -178,7 +180,7 @@ function getGlobalImagePacks(mx) {
 }
 
 function getUserImagePack(mx) {
-  const accountDataEmoji = mx.getAccountData('im.ponies.user_emotes');
+  const accountDataEmoji = mx.getAccountData(EmojiEvents.UserEmotes);
   if (!accountDataEmoji) {
     return null;
   }
