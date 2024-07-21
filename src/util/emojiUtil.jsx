@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import forPromise from 'for-promise';
+import { countObj } from 'for-promise/utils/lib.mjs';
 
 import JSZip from 'jszip';
 import FileSaver from 'file-saver';
@@ -209,7 +210,7 @@ export function getEmojiImport(zipFile) {
           });
 
           // Delete invalid data
-          if (typeof data.title === 'string' && data.title.length > 0) {
+          if (typeof data.title === 'string' && data.title.length > 0 && countObj(data.items) > 0) {
             for (const item in data.items) {
               if (
                 !data.items[item].file ||
@@ -224,8 +225,8 @@ export function getEmojiImport(zipFile) {
             data.title = null;
             data.client = null;
             delete data.items;
-            data.items = {};
-            data.err = new Error('Invalid pack title!');
+            data.items = null;
+            data.err = new Error('Invalid emoji pack!');
           }
 
           // Complete
