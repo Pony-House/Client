@@ -167,6 +167,9 @@ class EmojiEditor extends EventEmitter {
       ? this.useUserImagePack(false)
       : this.useRoomImagePack(roomId, stateKey, null, false);
     pack.setAvatarUrl(url);
+
+    if (roomId) this.emit('avatarChangeToRoom', { url }, roomId, stateKey);
+    else this.emit('avatarChangeToPersonal', { url });
     return { pack, sendPackContent };
   }
 
@@ -182,6 +185,9 @@ class EmojiEditor extends EventEmitter {
       : this.useRoomImagePack(roomId, stateKey, null, false);
     pack.setDisplayName(name);
     pack.setAttribution(attribution);
+
+    if (roomId) this.emit('editProfileToRoom', { name, attribution }, roomId, stateKey);
+    else this.emit('editProfileToPersonal', { name, attribution });
     return { pack, sendPackContent };
   }
 
@@ -200,6 +206,9 @@ class EmojiEditor extends EventEmitter {
     if (newUsage === 'sticker' || newUsage === 'both') usage.push('sticker');
     pack.setUsage(usage);
     pack.getImages().forEach((img) => pack.setImageUsage(img.shortcode, undefined));
+
+    if (roomId) this.emit('usageChangeToRoom', { usage }, roomId, stateKey);
+    else this.emit('usageChangeToPersonal', { usage });
     return { pack, sendPackContent };
   }
 
@@ -217,6 +226,9 @@ class EmojiEditor extends EventEmitter {
 
     if (!newKey || newKey === key) return;
     pack.updateImageKey(key, newKey);
+
+    if (roomId) this.emit('renameToRoom', { key, newKey }, roomId, stateKey);
+    else this.emit('renameToPersonal', { key, newKey });
     return { pack, sendPackContent };
   }
 
@@ -231,6 +243,9 @@ class EmojiEditor extends EventEmitter {
       ? this.useUserImagePack(false)
       : this.useRoomImagePack(roomId, stateKey, null, false);
     pack.removeImage(key);
+
+    if (roomId) this.emit('deleteToRoom', { key }, roomId, stateKey);
+    else this.emit('deleteToPersonal', { key });
     return { pack, sendPackContent };
   }
 
@@ -249,6 +264,9 @@ class EmojiEditor extends EventEmitter {
     if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
     if (newUsage === 'sticker' || newUsage === 'both') usage.push('sticker');
     pack.setImageUsage(key, usage);
+
+    if (roomId) this.emit('usageToRoom', { key, usage }, roomId, stateKey);
+    else this.emit('usageToPersonal', { key, usage });
     return { pack, sendPackContent };
   }
 
@@ -269,6 +287,9 @@ class EmojiEditor extends EventEmitter {
     pack.addImage(newKey, {
       url,
     });
+
+    if (roomId) this.emit('addToRoom', { key: newKey, url }, roomId, stateKey);
+    else this.emit('addToPersonal', { key: newKey, url });
     return { pack, sendPackContent };
   }
 
