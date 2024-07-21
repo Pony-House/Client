@@ -180,7 +180,7 @@ export const handleEmojiUsageChange = (newUsage, roomId, stateKey) => {
 };
 
 // Rename Emoji
-export const handleRenameEmoji = async (key, newKeyValue, roomId, stateKey) => {
+export const handleRenameEmoji = (key, newKeyValue, roomId, stateKey) => {
   const { pack, sendPackContent } = !roomId
     ? useUserImagePack(false)
     : useRoomImagePack(roomId, stateKey, false);
@@ -193,7 +193,7 @@ export const handleRenameEmoji = async (key, newKeyValue, roomId, stateKey) => {
 };
 
 // Delete Emoji
-export const handleDeleteEmoji = async (key, roomId, stateKey) => {
+export const handleDeleteEmoji = (key, roomId, stateKey) => {
   const { pack, sendPackContent } = !roomId
     ? useUserImagePack(false)
     : useRoomImagePack(roomId, stateKey, false);

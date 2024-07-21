@@ -73,9 +73,7 @@ const renameImagePackItem = (shortcode) =>
     );
   });
 
-function useImagePackHandles(pack, sendPackContent, roomId, stateKey) {
-  const [, forceUpdate] = useReducer((count) => count + 1, 0);
-
+function useImagePackHandles(forceUpdate, roomId, stateKey) {
   const handleAvatarChange = (url) => {
     handleEmojiAvatarChange(url, roomId, stateKey);
     forceUpdate();
@@ -136,8 +134,9 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
   const room = mx.getRoom(roomId);
   const [viewMore, setViewMore] = useState(false);
   const [isGlobal, setIsGlobal] = useState(isGlobalPack(roomId, stateKey));
+  const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
-  const { pack, sendPackContent } = useRoomImagePack(roomId, stateKey);
+  const { pack } = useRoomImagePack(roomId, stateKey, false);
 
   const {
     handleAvatarChange,
@@ -147,7 +146,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
     handleDeleteItem,
     handleUsageItem,
     handleAddItem,
-  } = useImagePackHandles(pack, sendPackContent, roomId, stateKey);
+  } = useImagePackHandles(forceUpdate, roomId, stateKey);
 
   const handleGlobalChange = (isG) => {
     setIsGlobal(isG);
@@ -255,8 +254,9 @@ function ImagePackUser() {
   const mx = initMatrix.matrixClient;
   const mxcUrl = initMatrix.mxcUrl;
   const [viewMore, setViewMore] = useState(false);
+  const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
-  const { pack, sendPackContent } = useUserImagePack();
+  const { pack } = useUserImagePack(false);
 
   const {
     handleAvatarChange,
@@ -266,7 +266,7 @@ function ImagePackUser() {
     handleDeleteItem,
     handleUsageItem,
     handleAddItem,
-  } = useImagePackHandles(pack, sendPackContent);
+  } = useImagePackHandles(forceUpdate);
 
   const images = [...pack.images].slice(0, viewMore ? pack.images.size : 2);
 
