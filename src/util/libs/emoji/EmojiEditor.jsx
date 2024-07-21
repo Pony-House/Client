@@ -101,10 +101,11 @@ class EmojiEditor extends EventEmitter {
       ? this.useUserImagePack(false)
       : this.useRoomImagePack(roomId, stateKey, false);
     pack.setAvatarUrl(url);
+    return { pack, sendPackContent };
   }
 
   avatarChange(url, roomId, stateKey) {
-    this._avatarChange(url, roomId, stateKey);
+    const { pack, sendPackContent } = this._avatarChange(url, roomId, stateKey);
     return sendPackContent(pack.getContent());
   }
 
@@ -115,10 +116,11 @@ class EmojiEditor extends EventEmitter {
       : this.useRoomImagePack(roomId, stateKey, false);
     pack.setDisplayName(name);
     pack.setAttribution(attribution);
+    return { pack, sendPackContent };
   }
 
   editProfile(name, attribution, roomId, stateKey) {
-    this._editProfile(name, attribution, roomId, stateKey);
+    const { pack, sendPackContent } = this._editProfile(name, attribution, roomId, stateKey);
     return sendPackContent(pack.getContent());
   }
 
@@ -132,10 +134,11 @@ class EmojiEditor extends EventEmitter {
     if (newUsage === 'sticker' || newUsage === 'both') usage.push('sticker');
     pack.setUsage(usage);
     pack.getImages().forEach((img) => pack.setImageUsage(img.shortcode, undefined));
+    return { pack, sendPackContent };
   }
 
   usageChange(newUsage, roomId, stateKey) {
-    this._usageChange(newUsage, roomId, stateKey);
+    const { pack, sendPackContent } = this._usageChange(newUsage, roomId, stateKey);
     return sendPackContent(pack.getContent());
   }
 
@@ -148,10 +151,11 @@ class EmojiEditor extends EventEmitter {
 
     if (!newKey || newKey === key) return;
     pack.updateImageKey(key, newKey);
+    return { pack, sendPackContent };
   }
 
   rename(key, newKeyValue, roomId, stateKey) {
-    this._rename(key, newKeyValue, roomId, stateKey);
+    const { pack, sendPackContent } = this._rename(key, newKeyValue, roomId, stateKey);
     return sendPackContent(pack.getContent());
   }
 
@@ -161,10 +165,11 @@ class EmojiEditor extends EventEmitter {
       ? this.useUserImagePack(false)
       : this.useRoomImagePack(roomId, stateKey, false);
     pack.removeImage(key);
+    return { pack, sendPackContent };
   }
 
   delete(key, roomId, stateKey) {
-    this._delete(key, roomId, stateKey);
+    const { pack, sendPackContent } = this._delete(key, roomId, stateKey);
     return sendPackContent(pack.getContent());
   }
 
@@ -178,10 +183,11 @@ class EmojiEditor extends EventEmitter {
     if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
     if (newUsage === 'sticker' || newUsage === 'both') usage.push('sticker');
     pack.setImageUsage(key, usage);
+    return { pack, sendPackContent };
   }
 
   usage(key, newUsage, roomId, stateKey) {
-    this._usage(key, newUsage, roomId, stateKey);
+    const { pack, sendPackContent } = this._usage(key, newUsage, roomId, stateKey);
     return sendPackContent(pack.getContent());
   }
 
@@ -197,10 +203,11 @@ class EmojiEditor extends EventEmitter {
     pack.addImage(newKey, {
       url,
     });
+    return { pack, sendPackContent };
   }
 
   add(key, url, roomId, stateKey) {
-    this._add(key, url, roomId, stateKey);
+    const { pack, sendPackContent } = this._add(key, url, roomId, stateKey);
     return sendPackContent(pack.getContent());
   }
 }
