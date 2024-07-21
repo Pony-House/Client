@@ -165,10 +165,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
     else removeGlobalImagePack(roomId, stateKey);
   };
 
-  const canChange = getCurrentState(room).maySendStateEvent(
-    'im.ponies.room_emotes',
-    mx.getUserId(),
-  );
+  const canChange = getCurrentState(room).maySendStateEvent(EmojiEvents.RoomEmotes, mx.getUserId());
 
   const handleDeletePack = async () => {
     const isConfirmed = await confirmDialog(
@@ -342,7 +339,7 @@ function useGlobalImagePack() {
   const mx = initMatrix.matrixClient;
 
   const roomIdToStateKeys = new Map();
-  const globalContent = mx.getAccountData(EmojiEvents.RoomEmotes)?.getContent() ?? { rooms: {} };
+  const globalContent = mx.getAccountData(EmojiEvents.EmoteRooms)?.getContent() ?? { rooms: {} };
   const { rooms } = globalContent;
 
   Object.keys(rooms).forEach((roomId) => {
@@ -355,7 +352,7 @@ function useGlobalImagePack() {
 
   useEffect(() => {
     const handleEvent = (event) => {
-      if (event.getType() === EmojiEvents.RoomEmotes) forceUpdate();
+      if (event.getType() === EmojiEvents.EmoteRooms) forceUpdate();
     };
     mx.addListener(ClientEvent.AccountData, handleEvent);
     return () => {
@@ -385,10 +382,7 @@ function ImagePackGlobal() {
               const room = mx.getRoom(roomId);
 
               return stateKeys.map((stateKey) => {
-                const data = getCurrentState(room).getStateEvents(
-                  'im.ponies.room_emotes',
-                  stateKey,
-                );
+                const data = getCurrentState(room).getStateEvents(EmojiEvents.RoomEmotes, stateKey);
                 const pack = ImagePackBuilder.parsePack(data?.getId(), data?.getContent());
                 if (!pack) return null;
                 return (

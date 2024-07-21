@@ -24,7 +24,7 @@ function useRoomPacks(room) {
   const mx = initMatrix.matrixClient;
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
-  const packEvents = getCurrentState(room).getStateEvents('im.ponies.room_emotes');
+  const packEvents = getCurrentState(room).getStateEvents(EmojiEvents.RoomEmotes);
   const unUsablePacks = [];
   const usablePacks = packEvents.filter((mEvent) => {
     if (typeof mEvent.getContent()?.images !== 'object') {
@@ -37,7 +37,7 @@ function useRoomPacks(room) {
   useEffect(() => {
     const handleEvent = (event, state, prevEvent) => {
       if (event.getRoomId() !== room.roomId) return;
-      if (event.getType() !== 'im.ponies.room_emotes') return;
+      if (event.getType() !== EmojiEvents.RoomEmotes) return;
       if (!prevEvent?.getContent()?.images || !event.getContent().images) {
         forceUpdate();
       }
@@ -50,7 +50,7 @@ function useRoomPacks(room) {
   }, [room, mx]);
 
   const isStateKeyAvailable = (key) =>
-    !getCurrentState(room).getStateEvents('im.ponies.room_emotes', key);
+    !getCurrentState(room).getStateEvents(EmojiEvents.RoomEmotes, key);
 
   const createPack = async (name) => {
     const packContent = {
@@ -69,7 +69,7 @@ function useRoomPacks(room) {
     }
     const result = await mx.sendStateEvent(
       room.roomId,
-      'im.ponies.room_emotes',
+      EmojiEvents.RoomEmotes,
       packContent,
       stateKey,
     );
@@ -78,7 +78,7 @@ function useRoomPacks(room) {
   };
 
   const deletePack = async (stateKey) => {
-    await mx.sendStateEvent(room.roomId, 'im.ponies.room_emotes', {}, stateKey);
+    await mx.sendStateEvent(room.roomId, EmojiEvents.RoomEmotes, {}, stateKey);
     updateEmojiList(room.roomId);
   };
 
@@ -95,7 +95,7 @@ function RoomEmojis({ roomId }) {
 
   const emojiImportRef = useRef(null);
   const { usablePacks, createPack, deletePack } = useRoomPacks(room);
-  const canChange = getCurrentState(room).maySendStateEvent(EmojiEvents.RoomEmotes, mx.getUserId());
+  const canChange = getCurrentState(room).maySendStateEvent(EmojiEvents.EmoteRooms, mx.getUserId());
 
   const createPackBase = (name, nameInput) => {
     if (name === '') return new Promise((resolve) => resolve(null));

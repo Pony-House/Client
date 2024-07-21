@@ -1,6 +1,7 @@
 import EventEmitter from 'events';
 import clone from 'clone';
 import { ClientEvent, RoomEvent, RoomStateEvent } from 'matrix-js-sdk';
+import EmojiEvents from '@src/util/libs/emoji/EmojiEvents';
 
 import appDispatcher from '../dispatcher';
 import cons from './cons';
@@ -360,7 +361,7 @@ class RoomList extends EventEmitter {
         this.emit(cons.events.roomList.ROOM_PROFILE_UPDATED, state.roomId);
       }
 
-      if (mEvent.getType() === 'im.ponies.room_emotes') {
+      if (mEvent.getType() === EmojiEvents.RoomEmotes) {
         updateEmojiListData(state.roomId);
       }
     });

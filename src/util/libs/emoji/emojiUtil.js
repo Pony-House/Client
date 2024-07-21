@@ -41,27 +41,27 @@ export function getEmojiUsage(usage) {
 // Global Pack
 export function addGlobalImagePack(roomId, stateKey) {
   const mx = initMatrix.matrixClient;
-  const content = mx.getAccountData(EmojiEvents.RoomEmotes)?.getContent() ?? {};
+  const content = mx.getAccountData(EmojiEvents.EmoteRooms)?.getContent() ?? {};
   if (!content.rooms) content.rooms = {};
   if (!content.rooms[roomId]) content.rooms[roomId] = {};
   content.rooms[roomId][stateKey] = {};
-  return mx.setAccountData(EmojiEvents.RoomEmotes, content);
+  return mx.setAccountData(EmojiEvents.EmoteRooms, content);
 }
 export function removeGlobalImagePack(roomId, stateKey) {
   const mx = initMatrix.matrixClient;
-  const content = mx.getAccountData(EmojiEvents.RoomEmotes)?.getContent() ?? {};
+  const content = mx.getAccountData(EmojiEvents.EmoteRooms)?.getContent() ?? {};
   if (!content.rooms) return Promise.resolve();
   if (!content.rooms[roomId]) return Promise.resolve();
   delete content.rooms[roomId][stateKey];
   if (Object.keys(content.rooms[roomId]).length === 0) {
     delete content.rooms[roomId];
   }
-  return mx.setAccountData(EmojiEvents.RoomEmotes, content);
+  return mx.setAccountData(EmojiEvents.EmoteRooms, content);
 }
 
 export function isGlobalPack(roomId, stateKey) {
   const mx = initMatrix.matrixClient;
-  const globalContent = mx.getAccountData(EmojiEvents.RoomEmotes)?.getContent();
+  const globalContent = mx.getAccountData(EmojiEvents.EmoteRooms)?.getContent();
   if (typeof globalContent !== 'object') return false;
 
   const { rooms } = globalContent;

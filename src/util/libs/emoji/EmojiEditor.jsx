@@ -24,29 +24,43 @@ class EmojiEditor extends EventEmitter {
   // Is Emoji Event
   isEmojiEvent(event) {
     const eventType = event.getType();
-    return eventType === EmojiEvents.RoomEmotes || eventType === EmojiEvents.UserEmotes;
+    return eventType === EmojiEvents.EmoteRooms || eventType === EmojiEvents.UserEmotes;
   }
 
   // Start events
   start() {
     const mx = initMatrix.matrixClient;
+    const tinyThis = this;
     mx.addListener(ClientEvent.AccountData, (event) => {
       const eventType = event.getType();
 
       // Personal emojis
-      if (eventType === EmojiEvents.UserEmotes) this.personalPack = this.useUserImagePack(false);
+      if (eventType === EmojiEvents.UserEmotes)
+        tinyThis.personalPack = tinyThis.useUserImagePack(false);
       // Room emojis
-      else if (eventType === EmojiEvents.RoomEmotes) {
+      else if (eventType === EmojiEvents.EmoteRooms) {
         const content = event.getContent();
         if (objType(content, 'object') && objType(content.rooms, 'object')) {
           for (const roomId in content.rooms) {
             for (const stateKey in content.rooms[roomId]) {
-              if (!this.roomsPack[roomId]) this.roomsPack[roomId] = {};
-              this.roomsPack[roomId][stateKey] = this.useRoomImagePack(roomId, stateKey, false);
+              if (!tinyThis.roomsPack[roomId]) tinyThis.roomsPack[roomId] = {};
+              tinyThis.roomsPack[roomId][stateKey] = tinyThis.useRoomImagePack(
+                roomId,
+                stateKey,
+                false,
+              );
             }
           }
         }
       }
+    });
+
+    mx.addListener(ClientEvent.DeleteRoom, (roomId) => {
+      delete tinyThis.roomsPack[roomId];
+    });
+
+    mx.addListener(ClientEvent.Room, (room) => {
+      console.log(room);
     });
   }
 
@@ -96,7 +110,7 @@ class EmojiEditor extends EventEmitter {
     const mx = initMatrix.matrixClient;
     const room = mx.getRoom(roomId);
     if (room) {
-      const packEvent = getCurrentState(room).getStateEvents('im.ponies.room_emotes', stateKey);
+      const packEvent = getCurrentState(room).getStateEvents(EmojiEvents.RoomEmotes, stateKey);
       if (packEvent) {
         const pack = isReact
           ? useMemo(
@@ -108,7 +122,7 @@ class EmojiEditor extends EventEmitter {
         const sendPackContent = (content) =>
           new Promise((resolve, reject) =>
             mx
-              .sendStateEvent(roomId, 'im.ponies.room_emotes', content, stateKey)
+              .sendStateEvent(roomId, EmojiEvents.RoomEmotes, content, stateKey)
               .then(() => {
                 updateEmojiList(roomId);
                 resolve(true);
