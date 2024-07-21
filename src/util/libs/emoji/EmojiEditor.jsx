@@ -39,8 +39,8 @@ class EmojiEditor extends EventEmitter {
       else if (eventType === EmojiEvents.RoomEmotes) {
         const content = event.getContent();
         if (objType(content, 'object') && objType(content.rooms, 'object')) {
-          for (const roomId in content) {
-            for (const stateKey in content[roomId]) {
+          for (const roomId in content.rooms) {
+            for (const stateKey in content.rooms[roomId]) {
               if (!this.roomsPack[roomId]) this.roomsPack[roomId] = {};
               this.roomsPack[roomId][stateKey] = this.useRoomImagePack(roomId, stateKey, false);
             }
