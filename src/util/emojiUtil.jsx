@@ -19,6 +19,13 @@ export const supportedEmojiFiles = [
   'image/webp',
 ];
 
+const imageExtList = [];
+for (const item in supportedEmojiFiles) {
+  imageExtList.push(supportedEmojiFiles[item].split('/')[1]);
+}
+
+export { imageExtList };
+
 export const supportedEmojiImportFiles = [
   'application/zip',
   'application/octet-stream',
@@ -129,7 +136,7 @@ export function getEmojiImport(zipFile) {
                 // Get Data
                 const filePath = zipEntry.name.split('/');
                 const fileType = filePath[0];
-                const fileName = filePath[1] ? filePath[1].split('.') : '';
+                const fileName = filePath[1] ? filePath[1].split('.') : ['', ''];
 
                 // Image
                 if (fileType === 'images') {
@@ -137,8 +144,10 @@ export function getEmojiImport(zipFile) {
                   if (!data.items[fileName[0]]) data.items[fileName[0]] = {};
 
                   // Insert image
-                  data.items[fileName[0]].file = await zip.file(zipEntry.name).async('blob');
-                  data.items[fileName[0]].filename = fileName.join('.');
+                  if (imageExtList.indexOf(fileName[1]) > -1) {
+                    data.items[fileName[0]].file = await zip.file(zipEntry.name).async('blob');
+                    data.items[fileName[0]].filename = fileName.join('.');
+                  }
                 }
 
                 // Json
@@ -187,10 +196,31 @@ export function getEmojiImport(zipFile) {
                 }
               }
             } catch (err) {
+              // Fail
+              data.title = null;
+              data.client = null;
+              data.items = {};
+              data.err = err;
               return fn_error(err);
             }
+
+            // Complete
             fn();
           });
+
+          // Delete invalid data
+          for (const item in data.items) {
+            if (
+              !data.items[item].file ||
+              !data.items[item].filename ||
+              !data.items[item].mxc ||
+              !data.items[item].shortcode ||
+              !data.items[item].usage
+            )
+              delete data.items[item];
+          }
+
+          // Complete
           resolve(data);
         }, reject)
         .catch(reject);
