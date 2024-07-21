@@ -395,7 +395,7 @@ export function emojiExport(title, images, roomId = null) {
       };
 
       images.map(([shortcode, image]) => {
-        const fileUrl = new URL(image.mxc);
+        const fileUrl = new URL(initMatrix.mxcUrl.toHttp(image.mxc));
         const filename = encodeURIComponent(shortcode);
         fetchFn(fileUrl.href)
           .then((res) => {
