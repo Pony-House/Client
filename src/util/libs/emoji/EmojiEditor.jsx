@@ -104,7 +104,7 @@ class EmojiEditor extends EventEmitter {
   }
 
   avatarChange(url, roomId, stateKey) {
-    _avatarChange(url, roomId, stateKey);
+    this._avatarChange(url, roomId, stateKey);
     return sendPackContent(pack.getContent());
   }
 
@@ -118,7 +118,7 @@ class EmojiEditor extends EventEmitter {
   }
 
   editProfile(name, attribution, roomId, stateKey) {
-    _editProfile(name, attribution, roomId, stateKey);
+    this._editProfile(name, attribution, roomId, stateKey);
     return sendPackContent(pack.getContent());
   }
 
@@ -135,7 +135,7 @@ class EmojiEditor extends EventEmitter {
   }
 
   usageChange(newUsage, roomId, stateKey) {
-    _usageChange(newUsage, roomId, stateKey);
+    this._usageChange(newUsage, roomId, stateKey);
     return sendPackContent(pack.getContent());
   }
 
@@ -151,7 +151,7 @@ class EmojiEditor extends EventEmitter {
   }
 
   rename(key, newKeyValue, roomId, stateKey) {
-    _rename(key, newKeyValue, roomId, stateKey);
+    this._rename(key, newKeyValue, roomId, stateKey);
     return sendPackContent(pack.getContent());
   }
 
@@ -164,7 +164,7 @@ class EmojiEditor extends EventEmitter {
   }
 
   delete(key, roomId, stateKey) {
-    _delete(key, roomId, stateKey);
+    this._delete(key, roomId, stateKey);
     return sendPackContent(pack.getContent());
   }
 
@@ -181,7 +181,7 @@ class EmojiEditor extends EventEmitter {
   }
 
   usage(key, newUsage, roomId, stateKey) {
-    _usage(key, newUsage, roomId, stateKey);
+    this._usage(key, newUsage, roomId, stateKey);
     return sendPackContent(pack.getContent());
   }
 
@@ -200,7 +200,7 @@ class EmojiEditor extends EventEmitter {
   }
 
   add(key, url, roomId, stateKey) {
-    _add(key, url, roomId, stateKey);
+    this._add(key, url, roomId, stateKey);
     return sendPackContent(pack.getContent());
   }
 }

@@ -121,9 +121,9 @@ function RoomEmojis({ roomId }) {
     getEmojiImport(zipFile)
       .then((data) => {
         if (data.title && data.client === 'pony-house') {
-          createPackBase(data.title).then(() => {
-
-          }).catch(errorFile);
+          createPackBase(data.title)
+            .then(() => {})
+            .catch(errorFile);
         }
       })
       .catch(errorFile);
