@@ -1,4 +1,6 @@
 import React, { useMemo } from 'react';
+import forPromise from 'for-promise';
+
 import JSZip from 'jszip';
 import FileSaver from 'file-saver';
 
@@ -8,6 +10,21 @@ import { setLoadingPage } from '@src/app/templates/client/Loading';
 import { getCurrentState } from './matrixUtil';
 import { ImagePack as ImagePackBuilder } from '@src/app/organisms/emoji-board/custom-emoji';
 import moment from './libs/momentjs';
+
+export const supportedEmojiFiles = [
+  'image/png',
+  'image/gif',
+  'image/jpg',
+  'image/jpeg',
+  'image/webp',
+];
+
+export const supportedEmojiImportFiles = [
+  'application/zip',
+  'application/octet-stream',
+  'application/x-zip-compressed',
+  'multipart/x-zip',
+];
 
 export function useUserImagePack() {
   const mx = initMatrix.matrixClient;
@@ -96,6 +113,91 @@ export function isGlobalPack(roomId, stateKey) {
   if (typeof rooms !== 'object') return false;
 
   return rooms[roomId]?.[stateKey] !== undefined;
+}
+
+// Import Emoji
+export function getEmojiImport(zipFile) {
+  return new Promise((resolve, reject) => {
+    try {
+      JSZip.loadAsync(zipFile)
+        .then(async (zip) => {
+          const data = { title: null, client: null, items: {} };
+          await forPromise({ data: zip.files }, async (item, fn, fn_error) => {
+            try {
+              const zipEntry = zip.files[item];
+              if (!zipEntry.dir) {
+                // Get Data
+                const filePath = zipEntry.name.split('/');
+                const fileType = filePath[0];
+                const fileName = filePath[1] ? filePath[1].split('.') : '';
+
+                // Image
+                if (fileType === 'images') {
+                  // Create obj
+                  if (!data.items[fileName[0]]) data.items[fileName[0]] = {};
+
+                  // Insert image
+                  data.items[fileName[0]].file = await zip.file(zipEntry.name).async('blob');
+                  data.items[fileName[0]].filename = fileName.join('.');
+                }
+
+                // Json
+                else if (fileType === 'json') {
+                  // Create obj
+                  if (!data.items[fileName[0]]) data.items[fileName[0]] = {};
+                  const file = JSON.parse(await zip.file(zipEntry.name).async('text'));
+
+                  // Insert json
+                  data.items[fileName[0]].shortcode =
+                    typeof file.shortcode === 'string'
+                      ? file.shortcode.trim().replace(/ /g, '')
+                      : null;
+
+                  data.items[fileName[0]].usage =
+                    typeof file.usage === 'string' &&
+                    (file.usage === 'emoticon' || file.usage === 'sticker' || file.usage === 'both')
+                      ? file.usage
+                      : null;
+
+                  // Insert mxc
+                  data.items[fileName[0]].mxc =
+                    typeof file.mxc === 'string' && file.mxc.startsWith('mxc://')
+                      ? file.mxc.trim().replace(/ /g, '').split('/')
+                      : null;
+
+                  if (
+                    data.items[fileName[0]].mxc &&
+                    data.items[fileName[0]].mxc.length === 4 &&
+                    data.items[fileName[0]].mxc[0] &&
+                    data.items[fileName[0]].mxc[1] === '' &&
+                    data.items[fileName[0]].mxc[2] &&
+                    data.items[fileName[0]].mxc[3]
+                  ) {
+                    data.items[fileName[0]].mxc = data.items[fileName[0]].mxc.join('/');
+                  } else {
+                    data.items[fileName[0]].mxc = null;
+                  }
+                }
+
+                // Metadata
+                else if (fileType === 'metadata.json') {
+                  const file = JSON.parse(await zip.file(zipEntry.name).async('text'));
+                  data.title = typeof file.title === 'string' ? file.title : null;
+                  data.client = typeof file.client === 'string' ? file.client : null;
+                }
+              }
+            } catch (err) {
+              return fn_error(err);
+            }
+            fn();
+          });
+          resolve(data);
+        }, reject)
+        .catch(reject);
+    } catch (err) {
+      reject(err);
+    }
+  });
 }
 
 // Export Emoji

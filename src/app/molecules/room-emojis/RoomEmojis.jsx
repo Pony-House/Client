@@ -1,7 +1,12 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { RoomStateEvent } from 'matrix-js-sdk';
 
+import {
+  supportedEmojiFiles,
+  getEmojiImport,
+  supportedEmojiImportFiles,
+} from '@src/util/emojiUtil';
 import initMatrix from '../../../client/initMatrix';
 import { suffixRename } from '../../../util/common';
 
@@ -11,6 +16,7 @@ import Button from '../../atoms/button/Button';
 import ImagePack from '../image-pack/ImagePack';
 import { updateEmojiList } from '../../../client/action/navigation';
 import { getCurrentState } from '../../../util/matrixUtil';
+import FileInput, { fileInputClick, fileInputValue } from '../file-input/FileInput';
 
 function useRoomPacks(room) {
   const mx = initMatrix.matrixClient;
@@ -85,6 +91,7 @@ function RoomEmojis({ roomId }) {
   const mx = initMatrix.matrixClient;
   const room = mx.getRoom(roomId);
 
+  const emojiImportRef = useRef(null);
   const { usablePacks, createPack, deletePack } = useRoomPacks(room);
   const canChange = getCurrentState(room).maySendStateEvent(
     'im.ponies.emote_rooms',
@@ -101,6 +108,25 @@ function RoomEmojis({ roomId }) {
     e.preventDefault();
     const { nameInput } = e.target;
     createPackBase(nameInput.value.trim(), nameInput);
+  };
+
+  const handleEmojisFileChange = (target, getFile) => {
+    const zipFile = getFile(0);
+    if (zipFile === null) return;
+    const errorFile = (err) => {
+      alert(err.message, 'Import Emojis Error');
+      console.error(err);
+    };
+
+    getEmojiImport(zipFile)
+      .then((data) => {
+        // createPackBase('').then(() => {
+        console.log(data);
+        // }).catch(errorFile);
+      })
+      .catch(errorFile);
+
+    fileInputValue(emojiImportRef, null);
   };
 
   return (
@@ -122,14 +148,15 @@ function RoomEmojis({ roomId }) {
                     <Button className="m-1" variant="primary" type="submit">
                       Create pack
                     </Button>
+                    <FileInput
+                      ref={emojiImportRef}
+                      onChange={handleEmojisFileChange}
+                      accept={supportedEmojiImportFiles}
+                    />
                     <Button
                       className="m-1"
                       variant="primary"
-                      onClick={() => {
-                        createPackBase('').then(() => {
-                          console.log('yay');
-                        });
-                      }}
+                      onClick={() => fileInputClick(emojiImportRef, handleEmojisFileChange)}
                     >
                       Import pack
                     </Button>
