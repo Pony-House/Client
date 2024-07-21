@@ -5,20 +5,11 @@ import { ClientEvent } from 'matrix-js-sdk';
 import {
   emojiExport,
   getEmojiUsage,
-  useUserImagePack,
-  useRoomImagePack,
   addGlobalImagePack,
   removeGlobalImagePack,
   isGlobalPack,
-  getNewEmojiKey,
-  handleAddEmoji,
-  handleUsageEmoji,
-  handleDeleteEmoji,
-  handleRenameEmoji,
-  handleEmojiUsageChange,
-  handleEditEmojiProfile,
-  handleEmojiAvatarChange,
 } from '@src/util/libs/emoji/emojiUtil';
+import emojiEditor from '@src/util/libs/emoji/EmojiEditor';
 
 import initMatrix from '../../../client/initMatrix';
 import { openReusableDialog, updateEmojiList } from '../../../client/action/navigation';
@@ -80,26 +71,30 @@ function useImagePackHandles(forceUpdate, roomId, stateKey) {
   };
 
   const handleAvatarChange = (url) => {
-    handleEmojiAvatarChange(url, roomId, stateKey)
+    emojiEditor
+      .avatarChange(url, roomId, stateKey)
       .then(() => forceUpdate())
       .catch(tinyError);
   };
 
   const handleEditProfile = (name, attribution) => {
-    handleEditEmojiProfile(name, attribution, roomId, stateKey)
+    emojiEditor
+      .editProfile(name, attribution, roomId, stateKey)
       .then(() => forceUpdate())
       .catch(tinyError);
   };
 
   const handleUsageChange = (newUsage) => {
-    handleEmojiUsageChange(newUsage, roomId, stateKey)
+    emojiEditor
+      .usageChange(newUsage, roomId, stateKey)
       .then(() => forceUpdate())
       .catch(tinyError);
   };
 
   const handleRenameItem = async (key) => {
     const newKeyValue = await renameImagePackItem(key);
-    handleRenameEmoji(key, newKeyValue, roomId, stateKey)
+    emojiEditor
+      .rename(key, newKeyValue, roomId, stateKey)
       .then(() => forceUpdate())
       .catch(tinyError);
   };
@@ -112,19 +107,22 @@ function useImagePackHandles(forceUpdate, roomId, stateKey) {
       'danger',
     );
     if (!isConfirmed) return;
-    handleDeleteEmoji(key, roomId, stateKey)
+    emojiEditor
+      .delete(key, roomId, stateKey)
       .then(() => forceUpdate())
       .catch(tinyError);
   };
 
   const handleUsageItem = (key, newUsage) => {
-    handleUsageEmoji(key, newUsage, roomId, stateKey)
+    emojiEditor
+      .usage(key, newUsage, roomId, stateKey)
       .then(() => forceUpdate())
       .catch(tinyError);
   };
 
   const handleAddItem = (key, url) => {
-    handleAddEmoji(key, url, roomId, stateKey)
+    emojiEditor
+      .add(key, url, roomId, stateKey)
       .then(() => forceUpdate())
       .catch(tinyError);
   };
@@ -148,7 +146,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
   const [isGlobal, setIsGlobal] = useState(isGlobalPack(roomId, stateKey));
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
-  const { pack } = useRoomImagePack(roomId, stateKey, false);
+  const { pack } = emojiEditor.useRoomImagePack(roomId, stateKey, false);
 
   const {
     handleAvatarChange,
@@ -268,7 +266,7 @@ function ImagePackUser() {
   const [viewMore, setViewMore] = useState(false);
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
-  const { pack } = useUserImagePack(false);
+  const { pack } = emojiEditor.useUserImagePack(false);
 
   const {
     handleAvatarChange,

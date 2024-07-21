@@ -20,23 +20,23 @@ class EmojiEditor extends EventEmitter {
     const packEvent = mx.getAccountData('im.ponies.user_emotes');
     const pack = isReact
       ? useMemo(
-        () =>
-          ImagePackBuilder.parsePack(
-            mx.getUserId(),
-            packEvent?.getContent() ?? {
-              pack: { display_name: 'Personal' },
-              images: {},
-            },
-          ),
-        [],
-      )
+          () =>
+            ImagePackBuilder.parsePack(
+              mx.getUserId(),
+              packEvent?.getContent() ?? {
+                pack: { display_name: 'Personal' },
+                images: {},
+              },
+            ),
+          [],
+        )
       : ImagePackBuilder.parsePack(
-        mx.getUserId(),
-        packEvent?.getContent() ?? {
-          pack: { display_name: 'Personal' },
-          images: {},
-        },
-      );
+          mx.getUserId(),
+          packEvent?.getContent() ?? {
+            pack: { display_name: 'Personal' },
+            images: {},
+          },
+        );
 
     const sendPackContent = (content) =>
       new Promise((resolve, reject) =>
@@ -63,9 +63,9 @@ class EmojiEditor extends EventEmitter {
     const packEvent = getCurrentState(room).getStateEvents('im.ponies.room_emotes', stateKey);
     const pack = isReact
       ? useMemo(
-        () => ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent()),
-        [room, stateKey],
-      )
+          () => ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent()),
+          [room, stateKey],
+        )
       : ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent());
 
     const sendPackContent = (content) =>
