@@ -74,25 +74,34 @@ const renameImagePackItem = (shortcode) =>
   });
 
 function useImagePackHandles(forceUpdate, roomId, stateKey) {
+  const tinyError = (err) => {
+    console.error(err);
+    alert(err.message, 'Emoji Editor Error');
+  };
+
   const handleAvatarChange = (url) => {
-    handleEmojiAvatarChange(url, roomId, stateKey);
-    forceUpdate();
+    handleEmojiAvatarChange(url, roomId, stateKey)
+      .then(() => forceUpdate())
+      .catch(tinyError);
   };
 
   const handleEditProfile = (name, attribution) => {
-    handleEditEmojiProfile(name, attribution, roomId, stateKey);
-    forceUpdate();
+    handleEditEmojiProfile(name, attribution, roomId, stateKey)
+      .then(() => forceUpdate())
+      .catch(tinyError);
   };
 
   const handleUsageChange = (newUsage) => {
-    handleEmojiUsageChange(newUsage, roomId, stateKey);
-    forceUpdate();
+    handleEmojiUsageChange(newUsage, roomId, stateKey)
+      .then(() => forceUpdate())
+      .catch(tinyError);
   };
 
   const handleRenameItem = async (key) => {
     const newKeyValue = await renameImagePackItem(key);
-    handleRenameEmoji(key, newKeyValue, roomId, stateKey);
-    forceUpdate();
+    handleRenameEmoji(key, newKeyValue, roomId, stateKey)
+      .then(() => forceUpdate())
+      .catch(tinyError);
   };
 
   const handleDeleteItem = async (key) => {
@@ -103,18 +112,21 @@ function useImagePackHandles(forceUpdate, roomId, stateKey) {
       'danger',
     );
     if (!isConfirmed) return;
-    handleDeleteEmoji(key, roomId, stateKey);
-    forceUpdate();
+    handleDeleteEmoji(key, roomId, stateKey)
+      .then(() => forceUpdate())
+      .catch(tinyError);
   };
 
   const handleUsageItem = (key, newUsage) => {
-    handleUsageEmoji(key, newUsage, roomId, stateKey);
-    forceUpdate();
+    handleUsageEmoji(key, newUsage, roomId, stateKey)
+      .then(() => forceUpdate())
+      .catch(tinyError);
   };
 
   const handleAddItem = (key, url) => {
-    handleAddEmoji(key, url, roomId, stateKey);
-    forceUpdate();
+    handleAddEmoji(key, url, roomId, stateKey)
+      .then(() => forceUpdate())
+      .catch(tinyError);
   };
 
   return {

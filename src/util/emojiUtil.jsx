@@ -60,11 +60,16 @@ export function useUserImagePack(isReact = true) {
         },
       );
 
-  const sendPackContent = (content) => {
-    mx.setAccountData('im.ponies.user_emotes', content).then(() =>
-      updateEmojiList(getSelectRoom()),
+  const sendPackContent = (content) =>
+    new Promise((resolve, reject) =>
+      mx
+        .setAccountData('im.ponies.user_emotes', content)
+        .then(() => {
+          updateEmojiList(getSelectRoom());
+          resolve(true);
+        })
+        .catch(reject),
     );
-  };
 
   return {
     pack,
@@ -84,11 +89,16 @@ export function useRoomImagePack(roomId, stateKey, isReact = true) {
       )
     : ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent());
 
-  const sendPackContent = (content) => {
-    mx.sendStateEvent(roomId, 'im.ponies.room_emotes', content, stateKey).then(() =>
-      updateEmojiList(roomId),
+  const sendPackContent = (content) =>
+    new Promise((resolve, reject) =>
+      mx
+        .sendStateEvent(roomId, 'im.ponies.room_emotes', content, stateKey)
+        .then(() => {
+          updateEmojiList(roomId);
+          resolve(true);
+        })
+        .catch(reject),
     );
-  };
 
   return {
     pack,
@@ -152,7 +162,7 @@ export const handleEmojiAvatarChange = (url, roomId, stateKey) => {
     ? useUserImagePack(false)
     : useRoomImagePack(roomId, stateKey, false);
   pack.setAvatarUrl(url);
-  sendPackContent(pack.getContent());
+  return sendPackContent(pack.getContent());
 };
 
 // Edit Emoji Profile
@@ -162,7 +172,7 @@ export const handleEditEmojiProfile = (name, attribution, roomId, stateKey) => {
     : useRoomImagePack(roomId, stateKey, false);
   pack.setDisplayName(name);
   pack.setAttribution(attribution);
-  sendPackContent(pack.getContent());
+  return sendPackContent(pack.getContent());
 };
 
 // Emoji Usage Change
@@ -176,7 +186,7 @@ export const handleEmojiUsageChange = (newUsage, roomId, stateKey) => {
   pack.setUsage(usage);
   pack.getImages().forEach((img) => pack.setImageUsage(img.shortcode, undefined));
 
-  sendPackContent(pack.getContent());
+  return sendPackContent(pack.getContent());
 };
 
 // Rename Emoji
@@ -189,7 +199,7 @@ export const handleRenameEmoji = (key, newKeyValue, roomId, stateKey) => {
   if (!newKey || newKey === key) return;
   pack.updateImageKey(key, newKey);
 
-  sendPackContent(pack.getContent());
+  return sendPackContent(pack.getContent());
 };
 
 // Delete Emoji
@@ -198,7 +208,7 @@ export const handleDeleteEmoji = (key, roomId, stateKey) => {
     ? useUserImagePack(false)
     : useRoomImagePack(roomId, stateKey, false);
   pack.removeImage(key);
-  sendPackContent(pack.getContent());
+  return sendPackContent(pack.getContent());
 };
 
 // Usage Emoji
@@ -212,7 +222,7 @@ export const handleUsageEmoji = (key, newUsage, roomId, stateKey) => {
   if (newUsage === 'sticker' || newUsage === 'both') usage.push('sticker');
   pack.setImageUsage(key, usage);
 
-  sendPackContent(pack.getContent());
+  return sendPackContent(pack.getContent());
 };
 
 // Add Emoji
@@ -228,7 +238,7 @@ export const handleAddEmoji = (key, url, roomId, stateKey) => {
     url,
   });
 
-  sendPackContent(pack.getContent());
+  return sendPackContent(pack.getContent());
 };
 
 // Import Emoji
