@@ -209,15 +209,23 @@ export function getEmojiImport(zipFile) {
           });
 
           // Delete invalid data
-          for (const item in data.items) {
-            if (
-              !data.items[item].file ||
-              !data.items[item].filename ||
-              !data.items[item].mxc ||
-              !data.items[item].shortcode ||
-              !data.items[item].usage
-            )
-              delete data.items[item];
+          if (typeof data.title === 'string' && data.title.length > 0) {
+            for (const item in data.items) {
+              if (
+                !data.items[item].file ||
+                !data.items[item].filename ||
+                !data.items[item].mxc ||
+                !data.items[item].shortcode ||
+                !data.items[item].usage
+              )
+                delete data.items[item];
+            }
+          } else {
+            data.title = null;
+            data.client = null;
+            delete data.items;
+            data.items = {};
+            data.err = new Error('Invalid pack title!');
           }
 
           // Complete
