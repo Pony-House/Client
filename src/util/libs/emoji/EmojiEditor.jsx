@@ -91,7 +91,7 @@ class EmojiEditor extends EventEmitter {
         .sendStateEvent(roomId, EmojiEvents.RoomEmotes, packContent, stateKey)
         .then((data) => {
           tinyThis.emit('packCreated', { roomId, pack: packContent, stateKey });
-          resolve(data);
+          resolve({ data, stateKey });
         })
         .catch(reject),
     );
@@ -517,6 +517,7 @@ class EmojiEditor extends EventEmitter {
     }
   }
 
+  // Add Emoji Pack
   async addEmojiPack(data, roomId, stateKey) {
     if (
       objType(data, 'object') &&
@@ -537,6 +538,13 @@ class EmojiEditor extends EventEmitter {
 
       const { pack, sendPackContent } = await this._addMulti(data.items, roomId, stateKey);
       return sendPackContent(pack.getContent());
+    }
+  }
+
+  async createEmojiPack(data, roomId) {
+    if (objType(data, 'object') && typeof data.title === 'string') {
+      const { stateKey } = await this.createPack(roomId, data.title);
+      return this.addEmojiPack(data, roomId, stateKey);
     }
   }
 }
