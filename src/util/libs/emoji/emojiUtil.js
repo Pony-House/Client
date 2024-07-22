@@ -15,14 +15,6 @@ export const supportedEmojiImportFiles = [
   'multipart/x-zip',
 ];
 
-export function getEmojiUsage(usage) {
-  if (usage.includes('emoticon') && usage.includes('sticker')) return 'both';
-  if (usage.includes('emoticon')) return 'emoticon';
-  if (usage.includes('sticker')) return 'sticker';
-
-  return 'both';
-}
-
 // Import Emoji
 export function getEmojiImport(zipFile) {
   return new Promise((resolve, reject) => {
@@ -251,7 +243,7 @@ export function emojiExport(data, images) {
                   JSON.stringify({
                     mxc: image.mxc,
                     shortcode,
-                    usage: getEmojiUsage(image.usage),
+                    usage: emojiEditor.getUsage(image.usage),
                   }),
                 );
               }
@@ -269,7 +261,7 @@ export function emojiExport(data, images) {
                 code: err.code,
                 mxc: image.mxc,
                 shortcode,
-                usage: getEmojiUsage(image.usage),
+                usage: emojiEditor.getUsage(image.usage),
               }),
             );
             count++;

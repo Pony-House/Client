@@ -28,6 +28,23 @@ class EmojiEditor extends EventEmitter {
     }
   }
 
+  // Emoji Usage
+  getUsage(usage) {
+    if (usage.includes('emoticon') && usage.includes('sticker')) return 'both';
+    if (usage.includes('emoticon')) return 'emoticon';
+    if (usage.includes('sticker')) return 'sticker';
+
+    return 'both';
+  }
+
+  // Valid Usage
+  isValidUsage(newUsage) {
+    return (
+      typeof newUsage === 'string' &&
+      (newUsage === 'emoticon' || newUsage === 'sticker' || newUsage === 'both')
+    );
+  }
+
   // Pack Manager
   getPackState(room) {
     const packEvents = getCurrentState(room).getStateEvents(EmojiEvents.RoomEmotes);
@@ -296,14 +313,6 @@ class EmojiEditor extends EventEmitter {
       }
     }
     return null;
-  }
-
-  // Valid Usage
-  isValidUsage(newUsage) {
-    return (
-      typeof newUsage === 'string' &&
-      (newUsage === 'emoticon' || newUsage === 'sticker' || newUsage === 'both')
-    );
   }
 
   // Get new emoji key

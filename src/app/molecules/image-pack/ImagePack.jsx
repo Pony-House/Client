@@ -2,7 +2,7 @@ import React, { useState, useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ClientEvent } from 'matrix-js-sdk';
 
-import { emojiExport, getEmojiUsage } from '@src/util/libs/emoji/emojiUtil';
+import { emojiExport } from '@src/util/libs/emoji/emojiUtil';
 import emojiEditor from '@src/util/libs/emoji/EmojiEditor';
 import EmojiEvents from '@src/util/libs/emoji/EmojiEvents';
 
@@ -190,7 +190,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
   const exportData = {
     displayName: pack.displayName || 'Unknown',
     avatarUrl: pack.avatarUrl,
-    usage: pack.usage,
+    usage: emojiEditor.getUsage(pack.usage),
     stateKey,
     roomId,
   };
@@ -201,7 +201,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
         avatarUrl={pack.avatarUrl ? mxcUrl.toHttp(pack.avatarUrl, 42, 42, 'crop') : null}
         displayName={pack.displayName ?? 'Unknown'}
         attribution={pack.attribution}
-        usage={getEmojiUsage(pack.usage)}
+        usage={emojiEditor.getUsage(pack.usage)}
         onUsageChange={canChange ? handleUsageChange : null}
         onAvatarChange={canChange ? handleAvatarChange : null}
         onEditProfile={canChange ? handleEditProfile : null}
@@ -220,7 +220,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
               key={shortcode}
               url={mxcUrl.toHttp(image.mxc)}
               shortcode={shortcode}
-              usage={getEmojiUsage(image.usage)}
+              usage={emojiEditor.getUsage(image.usage)}
               onUsageChange={canChange ? handleUsageItem : undefined}
               onDelete={canChange ? handleDeleteItem : undefined}
               onRename={canChange ? handleRenameItem : undefined}
@@ -295,7 +295,7 @@ function ImagePackUser() {
           avatarUrl={pack.avatarUrl ? mxcUrl.toHttp(pack.avatarUrl, 42, 42, 'crop') : null}
           displayName={pack.displayName ?? 'Personal'}
           attribution={pack.attribution}
-          usage={getEmojiUsage(pack.usage)}
+          usage={emojiEditor.getUsage(pack.usage)}
           onUsageChange={handleUsageChange}
           onAvatarChange={handleAvatarChange}
           onEditProfile={handleEditProfile}
@@ -315,7 +315,7 @@ function ImagePackUser() {
                 key={shortcode}
                 url={mxcUrl.toHttp(image.mxc)}
                 shortcode={shortcode}
-                usage={getEmojiUsage(image.usage)}
+                usage={emojiEditor.getUsage(image.usage)}
                 onUsageChange={handleUsageItem}
                 onDelete={handleDeleteItem}
                 onRename={handleRenameItem}
@@ -340,7 +340,7 @@ function ImagePackUser() {
                   {
                     displayName: 'Personal Pack',
                     avatarUrl: pack.avatarUrl,
-                    usage: pack.usage,
+                    usage: emojiEditor.getUsage(pack.usage),
                     stateKey: null,
                     roomId: null,
                   },
