@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import * as linkify from 'linkifyjs';
 
 const Img = React.forwardRef(
   (
@@ -23,7 +22,7 @@ const Img = React.forwardRef(
     const imgRef = ref || useRef(null);
     let url = {};
     try {
-      url = src && linkify.test(src) ? new URL(src) : {};
+      url = new URL(src);
     } catch {
       url = {};
     }
@@ -87,7 +86,7 @@ function ImgJquery({
 }) {
   let url = {};
   try {
-    url = src && linkify.test(src) ? new URL(src) : {};
+    url = new URL(src);
   } catch {
     url = {};
   }

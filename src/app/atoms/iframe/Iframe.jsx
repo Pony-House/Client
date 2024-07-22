@@ -29,7 +29,7 @@ const Iframe = React.forwardRef(
     const iframeRef = ref || useRef(null);
     let url = {};
     try {
-      url = src && linkify.test(src) ? new URL(src) : {};
+      url = new URL(src);
     } catch {
       url = {};
     }
