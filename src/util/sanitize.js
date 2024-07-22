@@ -170,13 +170,16 @@ function transformImgTag(tagName, attribs) {
       text: attribs.alt || src,
     };
   }
-  return {
+  const result = {
     tagName,
     attribs: {
       ...attribs,
       src: initMatrix.mxcUrl.toHttp(src),
     },
   };
+
+  result.attribs.draggable = false;
+  return result;
 }
 
 // Filter Custom HTML
