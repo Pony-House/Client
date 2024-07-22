@@ -72,11 +72,6 @@ const FileInput = React.forwardRef(
 
 const uploadContent = (file, ops, forceDefault = false) => {
   const tinyOps = {};
-  if (file) {
-    if (typeof file.type === 'string') tinyOps.type = file.type;
-    if (typeof file.name === 'string') tinyOps.name = file.name;
-  }
-
   if (objType(ops, 'object')) {
     for (const item in ops) {
       tinyOps[item] = ops[item];
@@ -86,6 +81,11 @@ const uploadContent = (file, ops, forceDefault = false) => {
   // if (!Capacitor.isNativePlatform() || forceDefault) {
   return initMatrix.matrixClient.uploadContent(file, tinyOps);
   // }
+
+  if (file) {
+    if (typeof file.type === 'string') tinyOps.type = file.type;
+    if (typeof file.name === 'string') tinyOps.name = file.name;
+  }
 
   /* return initMatrix.matrixClient.uploadContent(Buffer.from(file.data, 'base64'), tinyOps); */
 };
