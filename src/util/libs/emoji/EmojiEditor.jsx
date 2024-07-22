@@ -19,6 +19,22 @@ class EmojiEditor extends EventEmitter {
     super();
     this.personalPack = null;
     this.roomsPack = {};
+    this.fileMimes = ['image/png', 'image/gif', 'image/jpg', 'image/jpeg', 'image/webp'];
+
+    this.imageExt = [];
+    for (const item in this.fileMimes) {
+      this.imageExt.push(this.fileMimes[item].split('/')[1]);
+    }
+  }
+
+  // Supported File
+  allowedExt(filename) {
+    const filenameSplit = filename.split('.');
+    return this.imageExt.indexOf(filenameSplit[filenameSplit.length - 1]) > -1;
+  }
+
+  allowedMime(mime) {
+    return this.fileMimes.indexOf(mime) > -1;
   }
 
   // Is Emoji Event
