@@ -86,9 +86,9 @@ export function parsePresenceStatus(presence, userId) {
           } else {
             const appearanceSettings = getAppearance();
             tinyResult.msgIcon = !appearanceSettings.enableAnimParams
-              ? tinyParse.msgIcon
-              : getAnimatedImageUrl((tinyParse.msgIcon, 50, 50, 'crop'));
-            tinyResult.msgIconThumb = (tinyParse.msgIcon, 50, 50, 'crop');
+              ? initMatrix.mxcUrl.toHttp(tinyParse.msgIcon)
+              : getAnimatedImageUrl(initMatrix.mxcUrl.toHttp(tinyParse.msgIcon, 50, 50, 'crop'));
+            tinyResult.msgIconThumb = initMatrix.mxcUrl.toHttp(tinyParse.msgIcon, 50, 50, 'crop');
           }
         }
 
