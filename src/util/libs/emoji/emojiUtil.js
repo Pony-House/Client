@@ -66,7 +66,7 @@ export function getEmojiImport(zipFile) {
 
                   data.items[fileName[0]].usage =
                     typeof file.usage === 'string' &&
-                      (file.usage === 'emoticon' || file.usage === 'sticker' || file.usage === 'both')
+                    (file.usage === 'emoticon' || file.usage === 'sticker' || file.usage === 'both')
                       ? file.usage
                       : null;
 

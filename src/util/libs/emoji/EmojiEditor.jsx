@@ -29,14 +29,24 @@ class EmojiEditor extends EventEmitter {
 
   // Global Pack
   addGlobalPack(roomId, stateKey) {
+    const tinyThis = this;
     const mx = initMatrix.matrixClient;
     const content = mx.getAccountData(EmojiEvents.EmoteRooms)?.getContent() ?? {};
     if (!content.rooms) content.rooms = {};
     if (!content.rooms[roomId]) content.rooms[roomId] = {};
     content.rooms[roomId][stateKey] = {};
-    return mx.setAccountData(EmojiEvents.EmoteRooms, content);
+    return new Promise((resolve, reject) => {
+      mx.setAccountData(EmojiEvents.EmoteRooms, content)
+        .then((data) => {
+          tinyThis.emit('addGlobalPack', content, roomId, stateKey);
+          resolve(data);
+        })
+        .catch(reject);
+    });
   }
+
   removeGlobalPack(roomId, stateKey) {
+    const tinyThis = this;
     const mx = initMatrix.matrixClient;
     const content = mx.getAccountData(EmojiEvents.EmoteRooms)?.getContent() ?? {};
     if (!content.rooms) return Promise.resolve();
@@ -45,7 +55,14 @@ class EmojiEditor extends EventEmitter {
     if (Object.keys(content.rooms[roomId]).length === 0) {
       delete content.rooms[roomId];
     }
-    return mx.setAccountData(EmojiEvents.EmoteRooms, content);
+    return new Promise((resolve, reject) => {
+      mx.setAccountData(EmojiEvents.EmoteRooms, content)
+        .then((data) => {
+          tinyThis.emit('removeGlobalPack', content, roomId, stateKey);
+          resolve(data);
+        })
+        .catch(reject);
+    });
   }
 
   isGlobalPack(roomId, stateKey) {
