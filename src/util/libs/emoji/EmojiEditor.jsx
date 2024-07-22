@@ -347,11 +347,15 @@ class EmojiEditor extends EventEmitter {
     const { pack, sendPackContent } = !roomId
       ? this.useUserImagePack(false)
       : this.useRoomImagePack(roomId, stateKey, null, false);
-    pack.setDisplayName(name);
-    pack.setAttribution(attribution);
+    if (name) pack.setDisplayName(name);
+    if (attribution) pack.setAttribution(attribution);
+    const newProfile = {
+      name: name ? name : pack.displayName ? pack.displayName : null,
+      attribution: attribution ? attribution : pack.attribution ? pack.attribution : null,
+    };
 
-    if (roomId) this.emit('editProfileToRoom', { name, attribution }, roomId, stateKey);
-    else this.emit('editProfileToPersonal', { name, attribution });
+    if (roomId) this.emit('editProfileToRoom', newProfile, roomId, stateKey);
+    else this.emit('editProfileToPersonal', newProfile);
     return { pack, sendPackContent };
   }
 
@@ -528,9 +532,10 @@ class EmojiEditor extends EventEmitter {
       if (this.isValidUsage(data.usage)) this._usageChange(data.usage, roomId, stateKey);
 
       if (typeof data.attribution === 'string' && data.attribution.length > 0) {
+        this._editProfile(null, data.attribution, roomId, stateKey);
       }
 
-      await this._addMulti(data.items, roomId, stateKey);
+      const { pack, sendPackContent } = await this._addMulti(data.items, roomId, stateKey);
       return sendPackContent(pack.getContent());
     }
   }

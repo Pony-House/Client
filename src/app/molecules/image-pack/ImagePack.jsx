@@ -190,6 +190,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
   const exportData = {
     displayName: pack.displayName || 'Unknown',
     avatarUrl: pack.avatarUrl,
+    attribution: pack.attribution,
     usage: emojiEditor.getUsage(pack.usage),
     stateKey,
     roomId,
@@ -338,7 +339,8 @@ function ImagePackUser() {
               onClick={() =>
                 emojiExport(
                   {
-                    displayName: 'Personal Pack',
+                    displayName: pack.displayName || 'Personal Pack',
+                    attribution: pack.attribution,
                     avatarUrl: pack.avatarUrl,
                     usage: emojiEditor.getUsage(pack.usage),
                     stateKey: null,
