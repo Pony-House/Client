@@ -27,6 +27,38 @@ class EmojiEditor extends EventEmitter {
     }
   }
 
+  // Global Pack
+  addGlobalPack(roomId, stateKey) {
+    const mx = initMatrix.matrixClient;
+    const content = mx.getAccountData(EmojiEvents.EmoteRooms)?.getContent() ?? {};
+    if (!content.rooms) content.rooms = {};
+    if (!content.rooms[roomId]) content.rooms[roomId] = {};
+    content.rooms[roomId][stateKey] = {};
+    return mx.setAccountData(EmojiEvents.EmoteRooms, content);
+  }
+  removeGlobalPack(roomId, stateKey) {
+    const mx = initMatrix.matrixClient;
+    const content = mx.getAccountData(EmojiEvents.EmoteRooms)?.getContent() ?? {};
+    if (!content.rooms) return Promise.resolve();
+    if (!content.rooms[roomId]) return Promise.resolve();
+    delete content.rooms[roomId][stateKey];
+    if (Object.keys(content.rooms[roomId]).length === 0) {
+      delete content.rooms[roomId];
+    }
+    return mx.setAccountData(EmojiEvents.EmoteRooms, content);
+  }
+
+  isGlobalPack(roomId, stateKey) {
+    const mx = initMatrix.matrixClient;
+    const globalContent = mx.getAccountData(EmojiEvents.EmoteRooms)?.getContent();
+    if (typeof globalContent !== 'object') return false;
+
+    const { rooms } = globalContent;
+    if (typeof rooms !== 'object') return false;
+
+    return rooms[roomId]?.[stateKey] !== undefined;
+  }
+
   // Supported File
   allowedExt(filename) {
     const filenameSplit = filename.split('.');

@@ -2,13 +2,7 @@ import React, { useState, useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ClientEvent } from 'matrix-js-sdk';
 
-import {
-  emojiExport,
-  getEmojiUsage,
-  addGlobalImagePack,
-  removeGlobalImagePack,
-  isGlobalPack,
-} from '@src/util/libs/emoji/emojiUtil';
+import { emojiExport, getEmojiUsage } from '@src/util/libs/emoji/emojiUtil';
 import emojiEditor from '@src/util/libs/emoji/EmojiEditor';
 import EmojiEvents from '@src/util/libs/emoji/EmojiEvents';
 
@@ -154,7 +148,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
   const mxcUrl = initMatrix.mxcUrl;
   const room = mx.getRoom(roomId);
   const [viewMore, setViewMore] = useState(false);
-  const [isGlobal, setIsGlobal] = useState(isGlobalPack(roomId, stateKey));
+  const [isGlobal, setIsGlobal] = useState(emojiEditor.isGlobalPack(roomId, stateKey));
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
   const { pack } = emojiEditor.getRoom(roomId, stateKey);
 
@@ -170,8 +164,8 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
 
   const handleGlobalChange = (isG) => {
     setIsGlobal(isG);
-    if (isG) addGlobalImagePack(roomId, stateKey);
-    else removeGlobalImagePack(roomId, stateKey);
+    if (isG) emojiEditor.addGlobalPack(roomId, stateKey);
+    else emojiEditor.removeGlobalPack(roomId, stateKey);
   };
 
   const canChange = getCurrentState(room).maySendStateEvent(EmojiEvents.RoomEmotes, mx.getUserId());
@@ -378,7 +372,7 @@ function ImagePackGlobal() {
   const roomIdToStateKeys = useGlobalImagePack();
 
   const handleChange = (roomId, stateKey) => {
-    removeGlobalImagePack(roomId, stateKey);
+    emojiEditor.removeGlobalPack(roomId, stateKey);
   };
 
   return (
