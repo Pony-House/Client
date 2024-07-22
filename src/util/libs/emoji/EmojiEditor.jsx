@@ -89,6 +89,7 @@ class EmojiEditor extends EventEmitter {
   }
 
   createPack(roomId, name) {
+    const mx = initMatrix.matrixClient;
     const tinyThis = this;
     const { packContent, stateKey } = this._createPack(roomId, name);
     return new Promise((resolve, reject) =>
@@ -332,9 +333,7 @@ class EmojiEditor extends EventEmitter {
 
   // Change Emoji Avatar
   _avatarChange(url, roomId, stateKey) {
-    const { pack, sendPackContent } = !roomId
-      ? this.useUserImagePack(false)
-      : this.useRoomImagePack(roomId, stateKey, null, false);
+    const { pack, sendPackContent } = !roomId ? this.getPersonal() : this.getRoom(roomId, stateKey);
     pack.setAvatarUrl(url);
 
     if (roomId) this.emit('avatarChangeToRoom', { url }, roomId, stateKey);
@@ -349,9 +348,7 @@ class EmojiEditor extends EventEmitter {
 
   // Edit Emoji Profile
   _editProfile(name, attribution, roomId, stateKey) {
-    const { pack, sendPackContent } = !roomId
-      ? this.useUserImagePack(false)
-      : this.useRoomImagePack(roomId, stateKey, null, false);
+    const { pack, sendPackContent } = !roomId ? this.getPersonal() : this.getRoom(roomId, stateKey);
     if (name) pack.setDisplayName(name);
     if (attribution) pack.setAttribution(attribution);
     const newProfile = {
@@ -371,9 +368,7 @@ class EmojiEditor extends EventEmitter {
 
   // Emoji Usage Change
   _usageChange(newUsage, roomId, stateKey) {
-    const { pack, sendPackContent } = !roomId
-      ? this.useUserImagePack(false)
-      : this.useRoomImagePack(roomId, stateKey, null, false);
+    const { pack, sendPackContent } = !roomId ? this.getPersonal() : this.getRoom(roomId, stateKey);
     const usage = [];
     if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
     if (newUsage === 'sticker' || newUsage === 'both') usage.push('sticker');
@@ -392,9 +387,7 @@ class EmojiEditor extends EventEmitter {
 
   // Rename Emoji
   _rename(key, newKeyValue, roomId, stateKey) {
-    const { pack, sendPackContent } = !roomId
-      ? this.useUserImagePack(false)
-      : this.useRoomImagePack(roomId, stateKey, null, false);
+    const { pack, sendPackContent } = !roomId ? this.getPersonal() : this.getRoom(roomId, stateKey);
     const newKey = this._getNewKey(pack, newKeyValue);
 
     if (!newKey || newKey === key) return;
@@ -412,9 +405,7 @@ class EmojiEditor extends EventEmitter {
 
   // Delete Emoji
   _delete(key, roomId, stateKey) {
-    const { pack, sendPackContent } = !roomId
-      ? this.useUserImagePack(false)
-      : this.useRoomImagePack(roomId, stateKey, null, false);
+    const { pack, sendPackContent } = !roomId ? this.getPersonal() : this.getRoom(roomId, stateKey);
     pack.removeImage(key);
 
     if (roomId) this.emit('deleteToRoom', { key }, roomId, stateKey);
@@ -450,9 +441,7 @@ class EmojiEditor extends EventEmitter {
 
   // Usage Emoji
   _usage(key, newUsage, roomId, stateKey) {
-    const { pack, sendPackContent } = !roomId
-      ? this.useUserImagePack(false)
-      : this.useRoomImagePack(roomId, stateKey, null, false);
+    const { pack, sendPackContent } = !roomId ? this.getPersonal() : this.getRoom(roomId, stateKey);
 
     const usage = [];
     if (newUsage === 'emoticon' || newUsage === 'both') usage.push('emoticon');
@@ -471,9 +460,7 @@ class EmojiEditor extends EventEmitter {
 
   // Add Emoji
   _add(key, url, roomId, stateKey) {
-    const { pack, sendPackContent } = !roomId
-      ? this.useUserImagePack(false)
-      : this.useRoomImagePack(roomId, stateKey, null, false);
+    const { pack, sendPackContent } = !roomId ? this.getPersonal() : this.getRoom(roomId, stateKey);
 
     const newKey = this._getNewKey(pack, key);
     if (!newKey || !url) return;
