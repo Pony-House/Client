@@ -112,7 +112,7 @@ function useImagePackHandles(forceUpdate, roomId, stateKey) {
       'danger',
     );
     if (!isConfirmed) return;
-    setLoadingPage('Deleting image pack...');
+    setLoadingPage('Deleting item pack...');
     emojiEditor
       .delete(key, roomId, stateKey)
       .then(() => tinyComplete())

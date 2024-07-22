@@ -49,11 +49,13 @@ function useRoomPacks(room) {
   };
 
   const deletePack = async (stateKey) => {
+    setLoadingPage('Deleting image pack...');
     await emojiEditor.deletePack(room.roomId, stateKey).catch((err) => {
       console.error(err);
       alert(err.message, 'Create Pack Error');
     });
     updateEmojiList(room.roomId);
+    setLoadingPage(false);
   };
 
   return {
