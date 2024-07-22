@@ -192,13 +192,22 @@ class EmojiEditor extends EventEmitter {
 
   getPersonal() {
     if (objType(this.personalPack, 'object')) return this.personalPack;
-    return { pack: null, sendPackContent: null };
+    return {
+      pack: ImagePackBuilder.parsePack(initMatrix.matrixClient.getUserId(), {
+        pack: { display_name: 'Personal' },
+        images: {},
+      }),
+      sendPackContent: (content) => this._sendUserImagePack(content),
+    };
   }
 
   getRoom(roomId, stateKey) {
     if (objType(this.roomsPack[roomId], 'object') && this.roomsPack[roomId][stateKey])
       return this.roomsPack[roomId][stateKey];
-    return { pack: null, sendPackContent: null };
+    return {
+      pack: null,
+      sendPackContent: null,
+    };
   }
 
   // Start events
@@ -245,6 +254,19 @@ class EmojiEditor extends EventEmitter {
   }
 
   // User Image Pack
+  _sendUserImagePack(content) {
+    const mx = initMatrix.matrixClient;
+    return new Promise((resolve, reject) =>
+      mx
+        .setAccountData(EmojiEvents.UserEmotes, content)
+        .then(() => {
+          updateEmojiList(getSelectRoom());
+          resolve(true);
+        })
+        .catch(reject),
+    );
+  }
+
   useUserImagePack(isReact = true) {
     const mx = initMatrix.matrixClient;
     const packEvent = mx.getAccountData(EmojiEvents.UserEmotes);
@@ -267,17 +289,7 @@ class EmojiEditor extends EventEmitter {
             images: {},
           },
         );
-
-    const sendPackContent = (content) =>
-      new Promise((resolve, reject) =>
-        mx
-          .setAccountData(EmojiEvents.UserEmotes, content)
-          .then(() => {
-            updateEmojiList(getSelectRoom());
-            resolve(true);
-          })
-          .catch(reject),
-      );
+    const sendPackContent = (content) => this._sendUserImagePack(content);
 
     return {
       pack,
@@ -286,6 +298,19 @@ class EmojiEditor extends EventEmitter {
   }
 
   // Room Image Pack
+  _sendRoomImagePack(roomId, stateKey) {
+    const mx = initMatrix.matrixClient;
+    return (content) =>
+      new Promise((resolve, reject) =>
+        mx
+          .sendStateEvent(roomId, EmojiEvents.RoomEmotes, content, stateKey)
+          .then(() => {
+            updateEmojiList(roomId);
+            resolve(true);
+          })
+          .catch(reject),
+      );
+  }
   useRoomImagePack(roomId, stateKey, definedPackEvent = null, isReact = true) {
     const mx = initMatrix.matrixClient;
     const room = mx.getRoom(roomId);
@@ -300,17 +325,7 @@ class EmojiEditor extends EventEmitter {
               [room, stateKey],
             )
           : ImagePackBuilder.parsePack(packEvent.getId(), packEvent.getContent());
-
-        const sendPackContent = (content) =>
-          new Promise((resolve, reject) =>
-            mx
-              .sendStateEvent(roomId, EmojiEvents.RoomEmotes, content, stateKey)
-              .then(() => {
-                updateEmojiList(roomId);
-                resolve(true);
-              })
-              .catch(reject),
-          );
+        const sendPackContent = this._sendRoomImagePack(roomId, stateKey);
 
         return {
           pack,
