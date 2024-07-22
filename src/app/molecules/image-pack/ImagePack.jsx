@@ -101,8 +101,8 @@ function useImagePackHandles(forceUpdate, roomId, stateKey) {
   };
 
   const handleRenameItem = async (key) => {
-    setLoadingPage('Changing pack name...');
     const newKeyValue = await renameImagePackItem(key);
+    setLoadingPage('Changing pack name...');
     emojiEditor
       .rename(key, newKeyValue, roomId, stateKey)
       .then(() => tinyComplete())
