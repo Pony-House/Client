@@ -523,8 +523,7 @@ class EmojiEditor extends EventEmitter {
       objType(data, 'object') &&
       objType(data.items, 'object') &&
       typeof data.client === 'string' &&
-      data.client === 'pony-house' &&
-      typeof stateKey === 'string'
+      data.client === 'pony-house'
     ) {
       if (data.avatarFile) {
         const fileSplit = data.avatarFilename.split('.');

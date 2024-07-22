@@ -1,8 +1,12 @@
-import React, { useState, useReducer, useEffect } from 'react';
+import React, { useState, useReducer, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { ClientEvent } from 'matrix-js-sdk';
 
-import { emojiExport } from '@src/util/libs/emoji/emojiUtil';
+import {
+  emojiExport,
+  getEmojiImport,
+  supportedEmojiImportFiles,
+} from '@src/util/libs/emoji/emojiUtil';
 import emojiEditor from '@src/util/libs/emoji/EmojiEditor';
 import EmojiEvents from '@src/util/libs/emoji/EmojiEvents';
 import { setLoadingPage } from '@src/app/templates/client/Loading';
@@ -22,6 +26,7 @@ import ImagePackItem from './ImagePackItem';
 import ImagePackUpload from './ImagePackUpload';
 import { getSelectRoom } from '../../../util/selectedRoom';
 import { getCurrentState } from '../../../util/matrixUtil';
+import FileInput, { fileInputClick, fileInputValue } from '../file-input/FileInput';
 
 const renameImagePackItem = (shortcode) =>
   new Promise((resolve) => {
@@ -289,6 +294,8 @@ function ImagePackUser() {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
   const { pack } = emojiEditor.getPersonal();
 
+  const emojiImportRef = useRef(null);
+
   const {
     handleAvatarChange,
     handleEditProfile,
@@ -301,6 +308,30 @@ function ImagePackUser() {
 
   const images = [...pack.images].slice(0, viewMore ? pack.images.size : 2);
   useEffect(emojiEventListen(forceUpdate));
+
+  const handleEmojisFileChange = (target, getFile) => {
+    const zipFile = getFile(0);
+    if (zipFile === null) return;
+    const errorFile = (err) => {
+      alert(err.message, 'Import Emojis Error');
+      console.error(err);
+      setLoadingPage(false);
+    };
+
+    setLoadingPage('Importing image pack...');
+    getEmojiImport(zipFile)
+      .then((data) => {
+        if (data.title && data.client === 'pony-house') {
+          emojiEditor
+            .addEmojiPack(data)
+            .then(() => setLoadingPage(false))
+            .catch(errorFile);
+        }
+      })
+      .catch(errorFile);
+
+    fileInputValue(emojiImportRef, null);
+  };
 
   return (
     <div className="card noselect">
@@ -315,7 +346,25 @@ function ImagePackUser() {
           onEditProfile={handleEditProfile}
         />
 
-        <ImagePackUpload onUpload={handleAddItem} />
+        <ImagePackUpload
+          buttons={
+            <>
+              <FileInput
+                ref={emojiImportRef}
+                onChange={handleEmojisFileChange}
+                accept={supportedEmojiImportFiles}
+              />
+              <Button
+                className="m-1"
+                variant="primary"
+                onClick={() => fileInputClick(emojiImportRef, handleEmojisFileChange)}
+              >
+                Import pack
+              </Button>
+            </>
+          }
+          onUpload={handleAddItem}
+        />
 
         {images.length === 0 ? null : (
           <div>

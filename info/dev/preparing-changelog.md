@@ -4,3 +4,4 @@
 - Avatar grow animation colors fixed.
 - Sidebar - css fix.
 - Matrix Events name fixed.
+- Import emoji feature added.
