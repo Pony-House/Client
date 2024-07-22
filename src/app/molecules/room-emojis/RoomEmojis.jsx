@@ -20,7 +20,7 @@ function useRoomPacks(room) {
   const mx = initMatrix.matrixClient;
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
-  const { usablePacks } = emojiEditor.getPackState();
+  const { usablePacks } = emojiEditor.getPackState(room);
 
   useEffect(() => {
     const handleEvent = (event, state, prevEvent) => {

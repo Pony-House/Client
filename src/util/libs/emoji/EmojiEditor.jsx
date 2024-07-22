@@ -51,7 +51,6 @@ class EmojiEditor extends EventEmitter {
     const tinyThis = this;
     const mx = initMatrix.matrixClient;
     const room = mx.getRoom(roomId);
-
     const { unUsablePacks } = this.getPackState(room);
 
     const packContent = {
@@ -65,16 +64,16 @@ class EmojiEditor extends EventEmitter {
       stateKey = mEvent.getStateKey();
     } else {
       stateKey = packContent.pack.display_name.replace(/\s/g, '-');
-      if (!this.isStateKeyAvailable(stateKey)) {
-        stateKey = suffixRename(stateKey, (room, key) => this.isStateKeyAvailable(room, key));
+      if (!this.isStateKeyAvailable(room, stateKey)) {
+        stateKey = suffixRename(stateKey, (sRoom, key) => this.isStateKeyAvailable(sRoom, key));
       }
     }
 
     return new Promise((resolve, reject) =>
       mx
-        .sendStateEvent(room.roomId, EmojiEvents.RoomEmotes, packContent, stateKey)
+        .sendStateEvent(roomId, EmojiEvents.RoomEmotes, packContent, stateKey)
         .then((data) => {
-          tinyThis.emit('packCreated', { roomId: room.roomId, packContent, stateKey });
+          tinyThis.emit('packCreated', { roomId, pack: packContent, stateKey });
           resolve(data);
         })
         .catch(reject),
@@ -88,10 +87,15 @@ class EmojiEditor extends EventEmitter {
       mx
         .sendStateEvent(roomId, EmojiEvents.RoomEmotes, {}, stateKey)
         .then((data) => {
-          images.map(([shortcode]) => {
-            tinyThis._delete(shortcode, roomId, stateKey);
-          });
-          tinyThis.emit('packDeleted', { roomId, packContent, stateKey });
+          const { pack } = tinyThis.getRoom(roomId, stateKey);
+          tinyThis.emit('packDeleted', { pack, roomId, stateKey });
+
+          if (pack && pack.images) {
+            [...pack.images].map(([shortcode]) => {
+              tinyThis._delete(shortcode, roomId, stateKey);
+            });
+          }
+
           resolve(data);
         })
         .catch(reject),

@@ -13,8 +13,6 @@ Buttons in the picture viewer to go to the next/previous image in the chat
 
 ---------------> Botão para migrar o emoji para outro homeserver.
 
-Criar emoji list com o mesmo nome da crash
-
 Buscador de emojis de custom status fica gelado.
 
 Usar a mesma lógica de carregar emojis para deixar menos lento o carregamento de imagens do chatbox.
