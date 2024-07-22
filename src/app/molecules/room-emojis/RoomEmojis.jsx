@@ -4,9 +4,9 @@ import { RoomStateEvent } from 'matrix-js-sdk';
 
 import { getEmojiImport, supportedEmojiImportFiles } from '@src/util/libs/emoji/emojiUtil';
 import EmojiEvents from '@src/util/libs/emoji/EmojiEvents';
+import emojiEditor from '@src/util/libs/emoji/EmojiEditor';
 
 import initMatrix from '../../../client/initMatrix';
-import { suffixRename } from '../../../util/common';
 
 import Text from '../../atoms/text/Text';
 import Input from '../../atoms/input/Input';
@@ -20,15 +20,7 @@ function useRoomPacks(room) {
   const mx = initMatrix.matrixClient;
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
-  const packEvents = getCurrentState(room).getStateEvents(EmojiEvents.RoomEmotes);
-  const unUsablePacks = [];
-  const usablePacks = packEvents.filter((mEvent) => {
-    if (typeof mEvent.getContent()?.images !== 'object') {
-      unUsablePacks.push(mEvent);
-      return false;
-    }
-    return true;
-  });
+  const { usablePacks } = emojiEditor.getPackState();
 
   useEffect(() => {
     const handleEvent = (event, state, prevEvent) => {
@@ -45,36 +37,20 @@ function useRoomPacks(room) {
     };
   }, [room, mx]);
 
-  const isStateKeyAvailable = (key) =>
-    !getCurrentState(room).getStateEvents(EmojiEvents.RoomEmotes, key);
-
   const createPack = async (name) => {
-    const packContent = {
-      pack: { display_name: name },
-      images: {},
-    };
-    let stateKey = '';
-    if (unUsablePacks.length > 0) {
-      const mEvent = unUsablePacks[0];
-      stateKey = mEvent.getStateKey();
-    } else {
-      stateKey = packContent.pack.display_name.replace(/\s/g, '-');
-      if (!isStateKeyAvailable(stateKey)) {
-        stateKey = suffixRename(stateKey, isStateKeyAvailable);
-      }
-    }
-    const result = await mx.sendStateEvent(
-      room.roomId,
-      EmojiEvents.RoomEmotes,
-      packContent,
-      stateKey,
-    );
+    const result = await emojiEditor.createPack(room.roomId, name).catch((err) => {
+      console.error(err);
+      alert(err.message, 'Create Pack Error');
+    });
     updateEmojiList(room.roomId);
     return result;
   };
 
   const deletePack = async (stateKey) => {
-    await mx.sendStateEvent(room.roomId, EmojiEvents.RoomEmotes, {}, stateKey);
+    await emojiEditor.deletePack(room.roomId, stateKey).catch((err) => {
+      console.error(err);
+      alert(err.message, 'Create Pack Error');
+    });
     updateEmojiList(room.roomId);
   };
 
@@ -116,6 +92,9 @@ function RoomEmojis({ roomId }) {
     getEmojiImport(zipFile)
       .then((data) => {
         if (data.title && data.client === 'pony-house') {
+          // createPackBase(data.title)
+          //   .then(() => {})
+          //  .catch(errorFile);
           console.log(data);
         }
       })

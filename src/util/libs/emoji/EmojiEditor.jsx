@@ -28,6 +28,76 @@ class EmojiEditor extends EventEmitter {
     }
   }
 
+  // Pack Manager
+  getPackState(room) {
+    const packEvents = getCurrentState(room).getStateEvents(EmojiEvents.RoomEmotes);
+    const unUsablePacks = [];
+    const usablePacks = packEvents.filter((mEvent) => {
+      if (typeof mEvent.getContent()?.images !== 'object') {
+        unUsablePacks.push(mEvent);
+        return false;
+      }
+      return true;
+    });
+
+    return { usablePacks, unUsablePacks };
+  }
+
+  isStateKeyAvailable(room, key) {
+    return !getCurrentState(room).getStateEvents(EmojiEvents.RoomEmotes, key);
+  }
+
+  createPack(roomId, name) {
+    const tinyThis = this;
+    const mx = initMatrix.matrixClient;
+    const room = mx.getRoom(roomId);
+
+    const { unUsablePacks } = this.getPackState(room);
+
+    const packContent = {
+      pack: { display_name: name },
+      images: {},
+    };
+
+    let stateKey = '';
+    if (unUsablePacks.length > 0) {
+      const mEvent = unUsablePacks[0];
+      stateKey = mEvent.getStateKey();
+    } else {
+      stateKey = packContent.pack.display_name.replace(/\s/g, '-');
+      if (!this.isStateKeyAvailable(stateKey)) {
+        stateKey = suffixRename(stateKey, (room, key) => this.isStateKeyAvailable(room, key));
+      }
+    }
+
+    return new Promise((resolve, reject) =>
+      mx
+        .sendStateEvent(room.roomId, EmojiEvents.RoomEmotes, packContent, stateKey)
+        .then((data) => {
+          tinyThis.emit('packCreated', { roomId: room.roomId, packContent, stateKey });
+          resolve(data);
+        })
+        .catch(reject),
+    );
+  }
+
+  deletePack(roomId, stateKey) {
+    const tinyThis = this;
+    const mx = initMatrix.matrixClient;
+    return new Promise((resolve, reject) =>
+      mx
+        .sendStateEvent(roomId, EmojiEvents.RoomEmotes, {}, stateKey)
+        .then((data) => {
+          images.map(([shortcode]) => {
+            tinyThis._delete(shortcode, roomId, stateKey);
+          });
+          tinyThis.emit('packDeleted', { roomId, packContent, stateKey });
+          resolve(data);
+        })
+        .catch(reject),
+    );
+  }
+
   // Global Pack
   addGlobalPack(roomId, stateKey) {
     const tinyThis = this;
@@ -437,10 +507,14 @@ class EmojiEditor extends EventEmitter {
       typeof data.client === 'string' &&
       data.client === 'pony-house'
     ) {
-      if (typeof data.title === 'string' && data.title.length > 0) {
+      if (data.avatarFile) {
+        const { content_uri: url } = await uploadContent(data.avatarFile, null, true);
+        this._avatarChange(url, roomId, stateKey);
       }
 
-      if (typeof data.title === 'string' && data.title.length > 0) {
+      if (this.isValidUsage(data.usage)) this._usageChange(data.usage, roomId, stateKey);
+
+      if (typeof data.attribution === 'string' && data.attribution.length > 0) {
       }
 
       await this._addMulti(data.items, roomId, stateKey);
