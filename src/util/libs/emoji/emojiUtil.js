@@ -34,7 +34,6 @@ export function getEmojiImport(zipFile) {
             client: null,
             roomId: null,
             time: null,
-            date: null,
             items: {},
           };
           await forPromise({ data: zip.files }, async (item, fn, fn_error) => {
@@ -102,8 +101,7 @@ export function getEmojiImport(zipFile) {
                   data.roomId = typeof file.roomId === 'string' ? file.roomId : null;
                   data.title = typeof file.title === 'string' ? file.title : null;
                   data.client = typeof file.client === 'string' ? file.client : null;
-                  data.date = typeof file.timestamp === 'number' ? new Date(data.date) : null;
-                  data.time = moment(data.date);
+                  data.time = typeof file.timestamp === 'number' ? moment(data.timestamp) : null;
                 }
               }
             } catch (err) {
@@ -111,7 +109,6 @@ export function getEmojiImport(zipFile) {
               data.title = null;
               data.client = null;
               data.roomId = null;
-              data.date = null;
               data.time = null;
               data.items = {};
               data.err = err;
@@ -139,7 +136,6 @@ export function getEmojiImport(zipFile) {
             delete data.items;
             data.items = null;
             data.roomId = null;
-            data.date = null;
             data.time = null;
             data.err = new Error('Invalid emoji pack!');
           }
