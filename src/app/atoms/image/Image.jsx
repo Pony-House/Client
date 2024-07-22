@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import * as linkify from 'linkifyjs';
 
 const Img = React.forwardRef(
   (
@@ -20,7 +21,12 @@ const Img = React.forwardRef(
     ref,
   ) => {
     const imgRef = ref || useRef(null);
-    const url = new URL(src || '');
+    let url = {};
+    try {
+      url = src && linkify.test(src) ? new URL(src) : {};
+    } catch {
+      url = {};
+    }
 
     useEffect(() => {
       if (imgRef.current) {
@@ -79,6 +85,13 @@ function ImgJquery({
   onError = null,
   dataMxEmoticon = null,
 }) {
+  let url = {};
+  try {
+    url = src && linkify.test(src) ? new URL(src) : {};
+  } catch {
+    url = {};
+  }
+
   const img = $('<img>', {
     'data-mx-emoticon': dataMxEmoticon,
     id,
