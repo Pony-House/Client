@@ -187,6 +187,14 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
   const images = [...pack.images].slice(0, viewMore ? pack.images.size : 2);
   useEffect(emojiEventListen(forceUpdate));
 
+  const exportData = {
+    displayName: pack.displayName || 'Unknown',
+    avatarUrl: pack.avatarUrl,
+    usage: pack.usage,
+    stateKey,
+    roomId,
+  };
+
   return (
     <li className="list-group-item image-pack">
       <ImagePackProfile
@@ -229,9 +237,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
                 {viewMore ? 'View less' : `View ${pack.images.size - 2} more`}
               </Button>
             )}
-            <Button onClick={() => emojiExport(pack.displayName ?? 'Unknown', [...pack.images])}>
-              Export
-            </Button>
+            <Button onClick={() => emojiExport(exportData, [...pack.images])}>Export</Button>
             {handlePackDelete && (
               <Button variant="danger" onClick={handleDeletePack}>
                 Delete Pack
@@ -239,9 +245,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
             )}
           </>
         ) : (
-          <Button onClick={() => emojiExport(pack.displayName ?? 'Unknown', [...pack.images])}>
-            Export
-          </Button>
+          <Button onClick={() => emojiExport(exportData, [...pack.images])}>Export</Button>
         )}
       </div>
 
@@ -330,7 +334,20 @@ function ImagePackUser() {
                 <br />
               </>
             )}
-            <Button onClick={() => emojiExport('Personal Pack', [...pack.images])}>
+            <Button
+              onClick={() =>
+                emojiExport(
+                  {
+                    displayName: 'Personal Pack',
+                    avatarUrl: pack.avatarUrl,
+                    usage: pack.usage,
+                    stateKey: null,
+                    roomId: null,
+                  },
+                  [...pack.images],
+                )
+              }
+            >
               Export Personal Emojis
             </Button>
           </center>

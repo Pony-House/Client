@@ -31,6 +31,10 @@ export function getEmojiImport(zipFile) {
         .then(async (zip) => {
           const data = {
             title: null,
+            avatarUrl: null,
+            avatarFile: null,
+            stateKey: null,
+            usage: null,
             client: null,
             roomId: null,
             time: null,
@@ -79,14 +83,7 @@ export function getEmojiImport(zipFile) {
                       ? file.mxc.trim().replace(/ /g, '').split('/')
                       : null;
 
-                  if (
-                    data.items[fileName[0]].mxc &&
-                    data.items[fileName[0]].mxc.length === 4 &&
-                    data.items[fileName[0]].mxc[0] &&
-                    data.items[fileName[0]].mxc[1] === '' &&
-                    data.items[fileName[0]].mxc[2] &&
-                    data.items[fileName[0]].mxc[3]
-                  ) {
+                  if (initMatrix.mxcUrl.validUrl(data.items[fileName[0]].mxc)) {
                     data.items[fileName[0]].mxc = data.items[fileName[0]].mxc.join('/');
                   } else {
                     data.items[fileName[0]].mxc = null;
@@ -96,16 +93,35 @@ export function getEmojiImport(zipFile) {
                 // Metadata
                 else if (fileType === 'metadata.json') {
                   const file = JSON.parse(await zip.file(zipEntry.name).async('text'));
+
                   data.roomId = typeof file.roomId === 'string' ? file.roomId : null;
+                  data.stateKey = typeof file.stateKey === 'string' ? file.stateKey : null;
                   data.title = typeof file.title === 'string' ? file.title : null;
                   data.client = typeof file.client === 'string' ? file.client : null;
                   data.time = typeof file.timestamp === 'number' ? moment(data.timestamp) : null;
+                  data.usage = emojiEditor.isValidUsage(file.usage) ? file.usage : null;
+                  data.avatarUrl = initMatrix.mxcUrl.validUrl(data.avatarUrl)
+                    ? data.avatarUrl
+                    : null;
+                }
+
+                // Avatar
+                if (
+                  fileType.startsWith('avatar.') &&
+                  fileType.split('.').length === 2 &&
+                  emojiEditor.allowedExt(fileType)
+                ) {
+                  data.avatarFile = await zip.file(zipEntry.name).async('blob');
                 }
               }
             } catch (err) {
               // Fail
               data.title = null;
+              data.usage = null;
               data.client = null;
+              data.avatarUrl = null;
+              data.avatarFile = null;
+              data.stateKey = null;
               data.roomId = null;
               data.time = null;
               data.items = {};
@@ -130,7 +146,11 @@ export function getEmojiImport(zipFile) {
             }
           } else {
             data.title = null;
+            data.usage = null;
             data.client = null;
+            data.avatarUrl = null;
+            data.avatarFile = null;
+            data.stateKey = null;
             delete data.items;
             data.items = null;
             data.roomId = null;
@@ -149,7 +169,7 @@ export function getEmojiImport(zipFile) {
 }
 
 // Export Emoji
-export function emojiExport(title, images, roomId = null) {
+export function emojiExport(data, images) {
   if (images.length > 0) {
     setLoadingPage('Exporting emojis...');
     try {
@@ -158,9 +178,12 @@ export function emojiExport(title, images, roomId = null) {
       const errorFolder = zip.folder('error');
       const jsons = zip.folder('json');
       const fileData = {
-        title,
+        title: typeof data.displayName === 'string' ? data.displayName : null,
+        stateKey: typeof data.stateKey === 'string' ? data.stateKey : null,
+        avatarUrl: typeof data.avatarUrl === 'string' ? data.avatarUrl : null,
         timestamp: moment().valueOf(),
-        roomId,
+        roomId: typeof data.roomId === 'string' ? data.roomId : null,
+        usage: emojiEditor.isValidUsage(data.usage) ? data.usage : null,
         client: 'pony-house',
       };
 
@@ -170,18 +193,46 @@ export function emojiExport(title, images, roomId = null) {
       const validatorComplete = () => {
         if (count === images.length) {
           zip.file(`metadata.json`, JSON.stringify(fileData));
+          const completeTask = () =>
+            zip
+              .generateAsync({ type: 'blob' })
+              .then((content) => {
+                FileSaver.saveAs(content, `emojipack_${encodeURIComponent(fileData.title)}.zip`);
+                setLoadingPage(false);
+              })
+              .catch((err) => {
+                console.error(err);
+                alert(err.message, 'Emoji Export Save Error');
+                setLoadingPage(false);
+              });
 
-          zip
-            .generateAsync({ type: 'blob' })
-            .then((content) => {
-              FileSaver.saveAs(content, `emojipack_${encodeURIComponent(title)}.zip`);
-              setLoadingPage(false);
-            })
-            .catch((err) => {
-              console.error(err);
-              alert(err.message, 'Emoji Export Save Error');
-              setLoadingPage(false);
-            });
+          if (fileData.avatarUrl) {
+            const fileUrl = new URL(initMatrix.mxcUrl.toHttp(fileData.avatarUrl));
+            fetchFn(fileUrl.href)
+              .then((res) => {
+                res.blob().then((blob) => {
+                  const mime = blob.type.split('/');
+                  if (mime[0] === 'image') {
+                    if (mime[1] === 'jpeg') mime[1] = 'jpg';
+                    zip.file(`avatar.${mime[1]}`, blob);
+                  }
+                  completeTask();
+                });
+              })
+              .catch((err) => {
+                console.error(err);
+                zip.file(
+                  `avatar_error.json`,
+                  JSON.stringify({
+                    message: err.message,
+                    code: err.code,
+                  }),
+                );
+                completeTask();
+              });
+          } else {
+            completeTask();
+          }
         }
       };
 

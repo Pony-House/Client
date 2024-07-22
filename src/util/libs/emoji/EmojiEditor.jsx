@@ -335,6 +335,7 @@ class EmojiEditor extends EventEmitter {
     return sendPackContent(pack.getContent());
   }
 
+  // Delete Multi Emojis
   _deleteMulti(data, roomId, stateKey) {
     if (Array.isArray(data)) {
       for (const item in data) {
@@ -425,6 +426,24 @@ class EmojiEditor extends EventEmitter {
   async addMulti(data, roomId, stateKey) {
     if (objType(data, 'object')) {
       const { pack, sendPackContent } = await this._addMulti(data, roomId, stateKey);
+      return sendPackContent(pack.getContent());
+    }
+  }
+
+  async addEmojiPack(data, roomId, stateKey) {
+    if (
+      objType(data, 'object') &&
+      objType(data.items, 'object') &&
+      typeof data.client === 'string' &&
+      data.client === 'pony-house'
+    ) {
+      if (typeof data.title === 'string' && data.title.length > 0) {
+      }
+
+      if (typeof data.title === 'string' && data.title.length > 0) {
+      }
+
+      await this._addMulti(data.items, roomId, stateKey);
       return sendPackContent(pack.getContent());
     }
   }

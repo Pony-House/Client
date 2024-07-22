@@ -122,6 +122,19 @@ class MxcUrl {
     }
     return null;
   }
+
+  validUrl(mxcUrl) {
+    if (typeof mxcUrl === 'string') {
+      const mxc = mxcUrl.split('/');
+
+      if (mxc.length === 4 && mxc[0] && mxc[1] === '' && mxc[2] && mxc[3]) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
 }
 
 // Class Module
