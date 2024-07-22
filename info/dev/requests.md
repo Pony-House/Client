@@ -1,3 +1,6 @@
+Botão de copiar imagem.
+Ajeitar o glitch de arrastar itens no Electron.
+
 Ajeitar PowerLevelSelector.jsx
 Ajeitar o selecionador de custom status icon.
 

@@ -20,7 +20,7 @@ const Img = React.forwardRef(
     ref,
   ) => {
     const imgRef = ref || useRef(null);
-    const url = new URL(src);
+    const url = new URL(src || '');
 
     useEffect(() => {
       if (imgRef.current) {

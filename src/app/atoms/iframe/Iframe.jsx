@@ -26,7 +26,7 @@ const Iframe = React.forwardRef(
     ref,
   ) => {
     const iframeRef = ref || useRef(null);
-    const url = new URL(src);
+    const url = new URL(src || '');
 
     useEffect(() => {
       if (iframeRef.current && onMessage) {
