@@ -103,16 +103,19 @@ function ImgJquery({
 }) {
   const url = urlCreator(src);
 
-  const img = $('<img>', {
+  const ops = {
     'data-mx-emoticon': dataMxEmoticon,
     id,
     class: className,
-    draggable,
     src: url ? url.toString() : null,
     alt,
     height,
     width,
-  });
+  };
+
+  if (draggable) ops.draggable = true;
+  const img = $('<img>', ops);
+  if (!draggable) img.attr('draggable', 'false');
 
   if (style) img.css(style);
   if (onLoad) img.on('load', onLoad);
