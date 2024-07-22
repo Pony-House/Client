@@ -6,7 +6,6 @@ import FileSaver from 'file-saver';
 import initMatrix, { fetchFn } from '@src/client/initMatrix';
 import { setLoadingPage } from '@src/app/templates/client/Loading';
 import moment from '../momentjs';
-import EmojiEvents from './EmojiEvents';
 import emojiEditor from './EmojiEditor';
 
 export const supportedEmojiImportFiles = [

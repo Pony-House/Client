@@ -135,7 +135,14 @@ class EmojiEditor extends EventEmitter {
     });
 
     mx.addListener(ClientEvent.DeleteRoom, (roomId) => {
-      delete tinyThis.roomsPack[roomId];
+      console.log('[matrix-emoji-editor] [room-emojis] Removed!', roomId);
+      tinyThis.emit(
+        'roomDeleted',
+        roomId,
+        objType(tinyThis.roomsPack[roomId], 'object') ? tinyThis.roomsPack[roomId] : null,
+      );
+
+      if (tinyThis.roomsPack[roomId]) delete tinyThis.roomsPack[roomId];
     });
   }
 
