@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { objType } from 'for-promise/utils/lib.mjs';
-import * as linkify from 'linkifyjs';
 
 export const postMessage = (current, msg = null) => current.contentWindow.postMessage(msg);
 

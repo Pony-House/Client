@@ -192,13 +192,13 @@ class EmojiEditor extends EventEmitter {
 
   getPersonal() {
     if (objType(this.personalPack, 'object')) return this.personalPack;
-    return null;
+    return { pack: null, sendPackContent: null };
   }
 
   getRoom(roomId, stateKey) {
     if (objType(this.roomsPack[roomId], 'object') && this.roomsPack[roomId][stateKey])
       return this.roomsPack[roomId][stateKey];
-    return null;
+    return { pack: null, sendPackContent: null };
   }
 
   // Start events
@@ -343,7 +343,9 @@ class EmojiEditor extends EventEmitter {
 
   avatarChange(url, roomId, stateKey) {
     const { pack, sendPackContent } = this._avatarChange(url, roomId, stateKey);
-    return sendPackContent(pack.getContent());
+    return sendPackContent && pack
+      ? sendPackContent(pack.getContent())
+      : new Promise((resolve) => resolve(null));
   }
 
   // Edit Emoji Profile
@@ -363,7 +365,9 @@ class EmojiEditor extends EventEmitter {
 
   editProfile(name, attribution, roomId, stateKey) {
     const { pack, sendPackContent } = this._editProfile(name, attribution, roomId, stateKey);
-    return sendPackContent(pack.getContent());
+    return sendPackContent && pack
+      ? sendPackContent(pack.getContent())
+      : new Promise((resolve) => resolve(null));
   }
 
   // Emoji Usage Change
@@ -382,7 +386,9 @@ class EmojiEditor extends EventEmitter {
 
   usageChange(newUsage, roomId, stateKey) {
     const { pack, sendPackContent } = this._usageChange(newUsage, roomId, stateKey);
-    return sendPackContent(pack.getContent());
+    return sendPackContent && pack
+      ? sendPackContent(pack.getContent())
+      : new Promise((resolve) => resolve(null));
   }
 
   // Rename Emoji
@@ -400,7 +406,9 @@ class EmojiEditor extends EventEmitter {
 
   rename(key, newKeyValue, roomId, stateKey) {
     const { pack, sendPackContent } = this._rename(key, newKeyValue, roomId, stateKey);
-    return sendPackContent(pack.getContent());
+    return sendPackContent && pack
+      ? sendPackContent(pack.getContent())
+      : new Promise((resolve) => resolve(null));
   }
 
   // Delete Emoji
@@ -415,7 +423,9 @@ class EmojiEditor extends EventEmitter {
 
   delete(key, roomId, stateKey) {
     const { pack, sendPackContent } = this._delete(key, roomId, stateKey);
-    return sendPackContent(pack.getContent());
+    return sendPackContent && pack
+      ? sendPackContent(pack.getContent())
+      : new Promise((resolve) => resolve(null));
   }
 
   // Delete Multi Emojis
@@ -435,7 +445,9 @@ class EmojiEditor extends EventEmitter {
   async deleteMulti(data, roomId, stateKey) {
     if (Array.isArray(data)) {
       const { pack, sendPackContent } = _deleteMulti(data, roomId, stateKey);
-      return sendPackContent(pack.getContent());
+      return sendPackContent && pack
+        ? sendPackContent(pack.getContent())
+        : new Promise((resolve) => resolve(null));
     }
   }
 
@@ -455,7 +467,9 @@ class EmojiEditor extends EventEmitter {
 
   usage(key, newUsage, roomId, stateKey) {
     const { pack, sendPackContent } = this._usage(key, newUsage, roomId, stateKey);
-    return sendPackContent(pack.getContent());
+    return sendPackContent && pack
+      ? sendPackContent(pack.getContent())
+      : new Promise((resolve) => resolve(null));
   }
 
   // Add Emoji
@@ -476,7 +490,9 @@ class EmojiEditor extends EventEmitter {
 
   add(key, url, roomId, stateKey) {
     const { pack, sendPackContent } = this._add(key, url, roomId, stateKey);
-    return sendPackContent(pack.getContent());
+    return sendPackContent && pack
+      ? sendPackContent(pack.getContent())
+      : new Promise((resolve) => resolve(null));
   }
 
   // Add Multi Emojis
@@ -513,7 +529,9 @@ class EmojiEditor extends EventEmitter {
   async addMulti(data, roomId, stateKey) {
     if (objType(data, 'object')) {
       const { pack, sendPackContent } = await this._addMulti(data, roomId, stateKey);
-      return sendPackContent(pack.getContent());
+      return sendPackContent && pack
+        ? sendPackContent(pack.getContent())
+        : new Promise((resolve) => resolve(null));
     }
   }
 
@@ -545,7 +563,9 @@ class EmojiEditor extends EventEmitter {
       }
 
       const { pack, sendPackContent } = await this._addMulti(data.items, roomId, stateKey);
-      return sendPackContent(pack.getContent());
+      return sendPackContent && pack
+        ? sendPackContent(pack.getContent())
+        : new Promise((resolve) => resolve(null));
     }
   }
 

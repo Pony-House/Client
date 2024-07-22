@@ -1,6 +1,8 @@
 Botão de copiar imagem.
 Ajeitar o glitch de arrastar itens no Electron.
 
+Avatares cortando um pedaço no CSS na lista de rooms.
+
 Ajeitar PowerLevelSelector.jsx
 Ajeitar o selecionador de custom status icon.
 
