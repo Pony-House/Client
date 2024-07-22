@@ -9,6 +9,7 @@ import twemoji from 'twemoji';
 import matrixAppearance from '@src/util/libs/appearance';
 import EmojiEvents from '@src/util/libs/emoji/EmojiEvents';
 import emojiEditor from '@src/util/libs/emoji/EmojiEditor';
+import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 
 import { emojis } from './emoji';
 import { loadEmojiData, getEmojiData, ROW_EMOJIS_COUNT, ROW_STICKERS_COUNT } from './emojiData';
@@ -473,7 +474,9 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
           <div className="emoji-board__nav-custom">
             {emojiData.map((pack) => {
               const packItems = pack[boardType !== 'sticker' ? 'getEmojis' : 'getStickers']();
-              const src = mxcUrl.toHttp(pack.avatarUrl ?? packItems[0].mxc);
+              let tinySrc = pack.avatarUrl;
+              if (!tinySrc && packItems && packItems[0]) tinySrc = packItems[0].mxc;
+              const src = tinySrc ? mxcUrl.toHttp(tinySrc) : defaultAvatar(1);
 
               return (
                 <IconButton

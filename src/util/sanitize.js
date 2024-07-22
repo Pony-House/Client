@@ -174,7 +174,7 @@ function transformImgTag(tagName, attribs) {
     tagName,
     attribs: {
       ...attribs,
-      src: src,
+      src: initMatrix.mxcUrl.toHttp(src),
     },
   };
 }
