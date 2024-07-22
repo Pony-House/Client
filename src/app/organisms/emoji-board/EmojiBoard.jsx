@@ -9,7 +9,8 @@ import twemoji from 'twemoji';
 import matrixAppearance from '@src/util/libs/appearance';
 import EmojiEvents from '@src/util/libs/emoji/EmojiEvents';
 import emojiEditor from '@src/util/libs/emoji/EmojiEditor';
-import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
+import { colorMXID } from '@src/util/colorMXID';
+import { avatarDefaultColor } from '@src/app/atoms/avatar/Avatar';
 
 import { emojis } from './emoji';
 import { loadEmojiData, getEmojiData, ROW_EMOJIS_COUNT, ROW_STICKERS_COUNT } from './emojiData';
@@ -476,7 +477,9 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
               const packItems = pack[boardType !== 'sticker' ? 'getEmojis' : 'getStickers']();
               let tinySrc = pack.avatarUrl;
               if (!tinySrc && packItems && packItems[0]) tinySrc = packItems[0].mxc;
-              const src = tinySrc ? mxcUrl.toHttp(tinySrc) : defaultAvatar(1);
+              const src = tinySrc
+                ? mxcUrl.toHttp(tinySrc)
+                : avatarDefaultColor(colorMXID(pack.displayName ?? 'Unknown'));
 
               return (
                 <IconButton
