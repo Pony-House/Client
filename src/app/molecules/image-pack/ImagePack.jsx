@@ -137,9 +137,11 @@ const emojiEventListen = (forceUpdate) => () => {
   const tinyUpdate = () => forceUpdate();
   emojiEditor.on('personalUpdated', tinyUpdate);
   emojiEditor.on('roomUpdated', tinyUpdate);
+  emojiEditor.on('roomDeleted', tinyUpdate);
   return () => {
     emojiEditor.off('personalUpdated', tinyUpdate);
     emojiEditor.off('roomUpdated', tinyUpdate);
+    emojiEditor.off('roomDeleted', tinyUpdate);
   };
 };
 
