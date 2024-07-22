@@ -529,7 +529,6 @@ class EmojiEditor extends EventEmitter {
         this._editProfile(null, data.attribution, roomId, stateKey);
       }
 
-      console.log(data.items);
       const { pack, sendPackContent } = await this._addMulti(data.items, roomId, stateKey);
       return sendPackContent(pack.getContent());
     }
