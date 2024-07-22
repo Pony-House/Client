@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useReducer } from 'react';
 import { UserEvent } from 'matrix-js-sdk';
 
 import clone from 'clone';
+
+import { ImgJquery } from '@src/app/atoms/image/Image';
 import jReact from '@mods/lib/jReact';
 import soundFiles from '@src/util/soundFiles';
 import { convertUserId } from '@src/util/matrixUtil';
@@ -124,10 +126,10 @@ function ProfileAvatarMenu() {
             content.presenceStatusMsg.msgIcon.length > 0
           ) {
             htmlStatus.push(
-              $('<img>', {
+              ImgJquery({
                 src: content.presenceStatusMsg.msgIcon,
                 alt: 'icon',
-                class: 'emoji me-1',
+                className: 'emoji me-1',
               }),
             );
           }

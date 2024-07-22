@@ -6,6 +6,7 @@ import moment from '@src/util/libs/momentjs';
 import { ReactEditor } from 'slate-react';
 import { Editor, Transforms } from 'slate';
 
+import Img from '@src/app/atoms/image/Image';
 import FileInput, { fileInputClick, fileInputValue } from '@src/app/molecules/file-input/FileInput';
 
 import { blobToBase64 } from '@src/util/libs/blobUrlManager';
@@ -1121,7 +1122,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
             fileType !== 'image' ? ' room-attachment__icon' : ''
           }`}
         >
-          {fileType === 'image' && fileSrc && <img alt={attachment.name} src={fileSrc} />}
+          {fileType === 'image' && fileSrc && <Img alt={attachment.name} src={fileSrc} />}
           {fileType === 'video' && <RawIcon fa="fa-solid fa-film" />}
           {fileType === 'audio' && <RawIcon fa="fa-solid fa-volume-high" />}
           {fileType !== 'image' && fileType !== 'video' && fileType !== 'audio' && (

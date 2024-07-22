@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { getHomeServer } from '@src/util/matrixUtil';
+import Img from '@src/app/atoms/image/Image';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -337,7 +338,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
             </Button>
           </center>
 
-          <img src="./img/page/discover.jpg" alt="banner" />
+          <Img src="./img/page/discover.jpg" alt="banner" />
         </form>
 
         <center className="py-3 noselect">

@@ -1,3 +1,4 @@
+import { ImgJquery } from '@src/app/atoms/image/Image';
 import { twemojify } from '../../../util/twemojify';
 
 export default function insertCustomStatus(customStatusRef, content, testMode = false) {
@@ -21,10 +22,10 @@ export default function insertCustomStatus(customStatusRef, content, testMode = 
         typeof content.presenceStatusMsg.msgIcon === 'string' &&
         content.presenceStatusMsg.msgIcon.length > 0
       ) {
-        customStatusImg = $('<img>', {
+        customStatusImg = ImgJquery({
           src: content.presenceStatusMsg.msgIconThumb,
           alt: 'icon',
-          class: 'emoji me-1',
+          className: 'emoji me-1',
         });
         htmlStatus.push(customStatusImg);
 

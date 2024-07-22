@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import clone from 'clone';
 
+import Img from '@src/app/atoms/image/Image';
 import libreTranslate from '@src/util/libs/libreTranslate';
 import SegmentedControls from '@src/app/atoms/segmented-controls/SegmentedControls';
 import { getAppearance } from '@src/util/libs/appearance';
@@ -191,7 +192,7 @@ function LibreTranslateSection() {
           <li className="list-group-item very-small text-gray">Credits</li>
 
           <li className="list-group-item border-0">
-            <img
+            <Img
               src="./img/icon/libre-translate.ico"
               className="logo-white-bg mb-1"
               alt="libre-translate-logo"

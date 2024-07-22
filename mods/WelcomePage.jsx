@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Button from '@src/app/atoms/button/Button';
 import AuthDivBase from '@src/app/templates/auth/modules/AuthDivBase';
+import Img from '@src/app/atoms/image/Image';
 
 /*
     If you want to create a custom welcome page, then edit this file.
@@ -20,7 +21,7 @@ WelcomePage.html = function ({ setIsWelcome, setType }) {
     <AuthDivBase>
       <center>
         <a href="./" target="_blank" rel="noopener">
-          <img src="./img/png/cinny-main.png" alt="logo" height={120} />
+          <Img src="./img/png/cinny-main.png" alt="logo" height={120} />
         </a>
         <h2>Welcome to demo page of pony.house!</h2>
         <div className="mb-2">

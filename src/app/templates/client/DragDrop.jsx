@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
+import Img from '@src/app/atoms/image/Image';
+
 import navigation from '../../../client/state/navigation';
 import cons from '../../../client/state/cons';
 import initMatrix from '../../../client/initMatrix';
@@ -91,7 +93,7 @@ function DragDrop({ children, navWrapperRef, className }) {
         id="dropzone"
       >
         <center>
-          <img
+          <Img
             className="app-welcome__logo noselect"
             src="./img/png/cinny-main.png"
             alt="App logo"

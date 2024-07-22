@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import clone from 'clone';
 import { objType } from 'for-promise/utils/lib.mjs';
 
+import Img from '@src/app/atoms/image/Image';
+
 import { setWeb3Cfg, getWeb3Cfg, getDefaultNetworks } from '../../../../../util/web3';
 import { tinyConfirm } from '../../../../../util/tools';
 
@@ -267,7 +269,7 @@ function Web3Item({ item, networkId }) {
             {blockchainExplorer &&
             typeof blockchainExplorer[0] === 'string' &&
             blockchainExplorer[0].length > 0 ? (
-              <img
+              <Img
                 src={`${blockchainExplorer[0]}images/favicon.ico`}
                 onError={(event) => {
                   $(event.target).remove();

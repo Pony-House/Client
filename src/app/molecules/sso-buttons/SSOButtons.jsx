@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import Img from '@src/app/atoms/image/Image';
 import Tooltip from '@src/app/atoms/tooltip/Tooltip';
 import MxcUrl from '@src/util/libs/MxcUrl';
 
@@ -29,7 +31,7 @@ function SSOButtons({ type, identityProviders, baseUrl }) {
                 className="sso-btn"
                 onClick={() => handleClick(idp.id)}
               >
-                <img
+                <Img
                   className="sso-btn__img rounded-circle"
                   src={mxcUrl.toHttp(idp.icon)}
                   alt={idp.name}

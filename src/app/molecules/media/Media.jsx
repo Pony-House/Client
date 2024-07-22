@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
+import Img from '@src/app/atoms/image/Image';
 import initMatrix, { fetchFn } from '@src/client/initMatrix';
 import blobUrlManager from '@src/util/libs/blobUrlManager';
 
@@ -166,7 +167,7 @@ function Image({
         minHeight: imgHeight,
       }}
     >
-      <img
+      <Img
         className={`${classImage}${ignoreContainer ? ` ${className}` : ''}`}
         draggable="false"
         style={{
@@ -271,7 +272,7 @@ function Sticker({
         className="sticker-container"
         style={{ height: width !== null ? getNativeHeight(width, height, 170) : 'unset' }}
       >
-        {url !== null && <img src={url || link} alt={name} />}
+        {url !== null && <Img src={url || link} alt={name} />}
       </div>
     </Tooltip>
   );
@@ -412,7 +413,7 @@ function Video({
           )}
           {blurhash && blur && <BlurhashCanvas hash={blurhash} punch={1} />}
           {thumbUrl !== null && (
-            <img
+            <Img
               style={{ display: blur ? 'none' : 'unset' }}
               src={thumbUrl}
               onLoad={() => setBlur(false)}

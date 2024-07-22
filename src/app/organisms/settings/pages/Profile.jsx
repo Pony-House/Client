@@ -3,6 +3,8 @@ import moment from '@src/util/libs/momentjs';
 import { avatarDefaultColor } from '@src/app/atoms/avatar/Avatar';
 import { colorMXID } from '@src/util/colorMXID';
 
+import Img from '@src/app/atoms/image/Image';
+
 import initMatrix from '../../../../client/initMatrix';
 import { getEventCords } from '../../../../util/common';
 import { emitUpdateProfile, openEmojiBoard } from '../../../../client/action/navigation';
@@ -279,7 +281,7 @@ function ProfileSection() {
                   />
                 ) : null}
 
-                <img
+                <Img
                   id="change-custom-status-img"
                   className="img-fluid"
                   src={customStatusIcon}

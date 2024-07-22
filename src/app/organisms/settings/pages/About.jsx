@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Img from '@src/app/atoms/image/Image';
 import initMatrix from '../../../../client/initMatrix';
 import cons from '../../../../client/state/cons';
 import Button from '../../../atoms/button/Button';
@@ -34,7 +35,7 @@ function AboutSection() {
           <li className="list-group-item border-0">
             <div className="row m-0 w-100">
               <div className="col-md-1 ps-0">
-                <img width="60" height="60" src="./img/png/cinny-main.png" alt="App logo" />
+                <Img width="60" height="60" src="./img/png/cinny-main.png" alt="App logo" />
               </div>
 
               <div className="col-md-11 pe-0">

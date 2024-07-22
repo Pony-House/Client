@@ -1,6 +1,8 @@
-import favIconManager from '@src/util/libs/favicon';
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+
+import favIconManager from '@src/util/libs/favicon';
+import Img from '@src/app/atoms/image/Image';
 
 let head;
 function ElectronSidebar({ isDevToolsOpen = false }) {
@@ -97,7 +99,7 @@ function ElectronSidebar({ isDevToolsOpen = false }) {
       >
         <div className="title w-100">
           {typeof urlBase === 'string' && typeof icon === 'string' ? (
-            <img className="icon" src={`${urlBase}${icon}`} alt="icon" />
+            <Img className="icon" src={`${urlBase}${icon}`} alt="icon" />
           ) : null}
           <span className="tbase text-truncate">{title}</span>
           {typeof subTitle === 'string' ? (

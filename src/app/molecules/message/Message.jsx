@@ -10,6 +10,8 @@ import hljs from 'highlight.js';
 import * as linkify from 'linkifyjs';
 import forPromise from 'for-promise';
 
+import { ImgJquery } from '@src/app/atoms/image/Image';
+
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 import cons from '@src/client/state/cons';
 import { isMobile } from '@src/util/libs/mobile';
@@ -1104,8 +1106,8 @@ const MessageOptions = React.memo(
                           $('<div>', { class: 'my-2 user-react rounded p-1' })
                             .append(
                               ct.append(
-                                $('<img>', {
-                                  class: 'avatar-react',
+                                ImgJquery({
+                                  className: 'avatar-react',
                                   draggable: false,
                                   src: avatarAnimSrc,
                                   alt: 'avatar',

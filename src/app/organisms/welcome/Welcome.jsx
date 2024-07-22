@@ -1,4 +1,6 @@
 import React from 'react';
+import Img from '@src/app/atoms/image/Image';
+
 import tinyAPI from '../../../util/mods';
 
 function Welcome() {
@@ -9,7 +11,7 @@ function Welcome() {
         style={{ alignItems: 'center' }}
       >
         <center>
-          <img
+          <Img
             className="app-welcome__logo noselect"
             src="./img/png/cinny-main.png"
             alt="App logo"

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { UserEvent } from 'matrix-js-sdk';
 import { objType } from 'for-promise/utils/lib.mjs';
 
+import { ImgJquery } from '@src/app/atoms/image/Image';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import envAPI from '@src/util/libs/env';
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
@@ -167,10 +168,10 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
 
       // Message Icon
       if (typeof presence.msgIcon === 'string' && presence.msgIcon.length > 0) {
-        customStatusImg = $('<img>', {
+        customStatusImg = ImgJquery({
           src: presence.msgIconThumb,
           alt: 'icon',
-          class: 'emoji me-1',
+          className: 'emoji me-1',
         });
         htmlStatus.push(customStatusImg);
 

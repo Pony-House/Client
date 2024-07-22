@@ -3,6 +3,7 @@ import React from 'react';
 import initMatrix from '@src/client/initMatrix';
 import muteUserManager from '@src/util/libs/muteUserManager';
 import { twemojify, twemojifyReact } from '@src/util/twemojify';
+import Img, { ImgJquery } from '@src/app/atoms/image/Image';
 
 export const getCustomEmojiUrl = (reaction) => {
   let customEmojiUrl = null;
@@ -78,7 +79,7 @@ export const getEventReactions = (eventReactions, ignoreMute = true, rLimit = nu
 
 export const ReactionImgReact = ({ reaction, shortcode, customEmojiUrl }) => {
   return customEmojiUrl ? (
-    <img
+    <Img
       className="react-emoji"
       draggable="false"
       alt={shortcode ?? reaction}
@@ -91,8 +92,8 @@ export const ReactionImgReact = ({ reaction, shortcode, customEmojiUrl }) => {
 
 export const reactionImgjQuery = (reaction, shortcode, customEmojiUrl) => {
   return customEmojiUrl
-    ? $('<img>', {
-        class: 'react-emoji',
+    ? ImgJquery({
+        className: 'react-emoji',
         draggable: false,
         alt: shortcode ?? reaction,
         src: customEmojiUrl,

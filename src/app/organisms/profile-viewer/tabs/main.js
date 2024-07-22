@@ -1,5 +1,6 @@
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import tinyClipboard from '@src/util/libs/Clipboard';
+import { ImgJquery } from '@src/app/atoms/image/Image';
 
 import { twemojify } from '../../../../util/twemojify';
 import { toast } from '../../../../util/tools';
@@ -181,10 +182,10 @@ export default function renderAbout(
       content.presenceStatusMsg.msgIcon.length > 0
     ) {
       htmlStatus.push(
-        $('<img>', {
+        ImgJquery({
           src: content.presenceStatusMsg.msgIcon,
           alt: 'icon',
-          class: 'emoji me-1',
+          className: 'emoji me-1',
         }),
       );
     }
