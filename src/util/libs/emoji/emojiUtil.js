@@ -29,7 +29,14 @@ export function getEmojiImport(zipFile) {
     try {
       JSZip.loadAsync(zipFile)
         .then(async (zip) => {
-          const data = { title: null, client: null, items: {} };
+          const data = {
+            title: null,
+            client: null,
+            roomId: null,
+            time: null,
+            date: null,
+            items: {},
+          };
           await forPromise({ data: zip.files }, async (item, fn, fn_error) => {
             try {
               const zipEntry = zip.files[item];
@@ -92,14 +99,20 @@ export function getEmojiImport(zipFile) {
                 // Metadata
                 else if (fileType === 'metadata.json') {
                   const file = JSON.parse(await zip.file(zipEntry.name).async('text'));
+                  data.roomId = typeof file.roomId === 'string' ? file.roomId : null;
                   data.title = typeof file.title === 'string' ? file.title : null;
                   data.client = typeof file.client === 'string' ? file.client : null;
+                  data.date = typeof file.timestamp === 'number' ? new Date(data.date) : null;
+                  data.time = moment(data.date);
                 }
               }
             } catch (err) {
               // Fail
               data.title = null;
               data.client = null;
+              data.roomId = null;
+              data.date = null;
+              data.time = null;
               data.items = {};
               data.err = err;
               return fn_error(err);
@@ -115,7 +128,6 @@ export function getEmojiImport(zipFile) {
               if (
                 !data.items[item].file ||
                 !data.items[item].filename ||
-                !data.items[item].mxc ||
                 !data.items[item].shortcode ||
                 !data.items[item].usage
               )
@@ -126,6 +138,9 @@ export function getEmojiImport(zipFile) {
             data.client = null;
             delete data.items;
             data.items = null;
+            data.roomId = null;
+            data.date = null;
+            data.time = null;
             data.err = new Error('Invalid emoji pack!');
           }
 
