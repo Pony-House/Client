@@ -485,7 +485,15 @@ class EmojiEditor extends EventEmitter {
       const urls = {};
 
       for (const item in data) {
-        const { content_uri: url } = await uploadContent(data[item].file, null, true);
+        const fileSplit = data[item].filename.split('.');
+        const { content_uri: url } = await uploadContent(
+          data[item].file,
+          {
+            name: data[item].filename,
+            type: `image/${fileSplit[fileSplit.length - 1]}`,
+          },
+          true,
+        );
         if (url) urls[item] = url;
       }
 
@@ -519,7 +527,15 @@ class EmojiEditor extends EventEmitter {
       typeof stateKey === 'string'
     ) {
       if (data.avatarFile) {
-        const { content_uri: url } = await uploadContent(data.avatarFile, null, true);
+        const fileSplit = data.avatarFilename.split('.');
+        const { content_uri: url } = await uploadContent(
+          data.avatarFile,
+          {
+            name: data.avatarFilename,
+            type: `image/${fileSplit[fileSplit.length - 1]}`,
+          },
+          true,
+        );
         if (url) this._avatarChange(url, roomId, stateKey);
       }
 

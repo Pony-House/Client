@@ -23,6 +23,7 @@ export function getEmojiImport(zipFile) {
         .then(async (zip) => {
           const data = {
             title: null,
+            avatarFilename: null,
             avatarUrl: null,
             avatarFile: null,
             stateKey: null,
@@ -103,6 +104,7 @@ export function getEmojiImport(zipFile) {
                   fileType.split('.').length === 2 &&
                   emojiEditor.allowedExt(fileType)
                 ) {
+                  data.avatarFilename = fileType;
                   data.avatarFile = await zip.file(zipEntry.name).async('blob');
                 }
               }
@@ -111,6 +113,7 @@ export function getEmojiImport(zipFile) {
               data.title = null;
               data.usage = null;
               data.client = null;
+              data.avatarFilename = null;
               data.avatarUrl = null;
               data.avatarFile = null;
               data.stateKey = null;
@@ -140,6 +143,7 @@ export function getEmojiImport(zipFile) {
             data.title = null;
             data.usage = null;
             data.client = null;
+            data.avatarFilename = null;
             data.avatarUrl = null;
             data.avatarFile = null;
             data.stateKey = null;
