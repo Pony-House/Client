@@ -520,8 +520,7 @@ class EmojiEditor extends EventEmitter {
     ) {
       if (data.avatarFile) {
         const { content_uri: url } = await uploadContent(data.avatarFile, null, true);
-        this._avatarChange(url, roomId, stateKey);
-        console.log('Avatar', url);
+        if (url) this._avatarChange(url, roomId, stateKey);
       }
 
       if (this.isValidUsage(data.usage)) this._usageChange(data.usage, roomId, stateKey);

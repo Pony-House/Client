@@ -6,6 +6,8 @@ import { getEmojiImport, supportedEmojiImportFiles } from '@src/util/libs/emoji/
 import EmojiEvents from '@src/util/libs/emoji/EmojiEvents';
 import emojiEditor from '@src/util/libs/emoji/EmojiEditor';
 
+import { setLoadingPage } from '@src/app/templates/client/Loading';
+
 import initMatrix from '../../../client/initMatrix';
 
 import Text from '../../atoms/text/Text';
@@ -78,7 +80,14 @@ function RoomEmojis({ roomId }) {
   const handlePackCreate = (e) => {
     e.preventDefault();
     const { nameInput } = e.target;
-    createPackBase(nameInput.value.trim(), nameInput);
+    setLoadingPage('Creating image pack...');
+    createPackBase(nameInput.value.trim(), nameInput)
+      .then(() => setLoadingPage(false))
+      .catch((err) => {
+        console.error(err);
+        alert(err.message, 'Image pack creation error');
+        setLoadingPage(false);
+      });
   };
 
   const handleEmojisFileChange = (target, getFile) => {
@@ -87,13 +96,16 @@ function RoomEmojis({ roomId }) {
     const errorFile = (err) => {
       alert(err.message, 'Import Emojis Error');
       console.error(err);
+      setLoadingPage(false);
     };
 
+    setLoadingPage('Importing image pack...');
     getEmojiImport(zipFile)
       .then((data) => {
         if (data.title && data.client === 'pony-house') {
           createPackBase(data.title)
             .then((result) => emojiEditor.addEmojiPack(data, roomId, result.stateKey))
+            .then(() => setLoadingPage(false))
             .catch(errorFile);
         }
       })

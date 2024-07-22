@@ -5,6 +5,7 @@ import { ClientEvent } from 'matrix-js-sdk';
 import { emojiExport } from '@src/util/libs/emoji/emojiUtil';
 import emojiEditor from '@src/util/libs/emoji/EmojiEditor';
 import EmojiEvents from '@src/util/libs/emoji/EmojiEvents';
+import { setLoadingPage } from '@src/app/templates/client/Loading';
 
 import initMatrix from '../../../client/initMatrix';
 import { openReusableDialog, updateEmojiList } from '../../../client/action/navigation';
@@ -60,37 +61,46 @@ const renameImagePackItem = (shortcode) =>
   });
 
 function useImagePackHandles(forceUpdate, roomId, stateKey) {
+  const tinyComplete = () => {
+    forceUpdate();
+    setLoadingPage(false);
+  };
   const tinyError = (err) => {
     console.error(err);
     alert(err.message, 'Emoji Editor Error');
+    setLoadingPage(false);
   };
 
   const handleAvatarChange = (url) => {
+    setLoadingPage('Changing pack avatar...');
     emojiEditor
       .avatarChange(url, roomId, stateKey)
-      .then(() => forceUpdate())
+      .then(() => tinyComplete())
       .catch(tinyError);
   };
 
   const handleEditProfile = (name, attribution) => {
+    setLoadingPage('Changing pack profile...');
     emojiEditor
       .editProfile(name, attribution, roomId, stateKey)
-      .then(() => forceUpdate())
+      .then(() => tinyComplete())
       .catch(tinyError);
   };
 
   const handleUsageChange = (newUsage) => {
+    setLoadingPage('Changing pack usage...');
     emojiEditor
       .usageChange(newUsage, roomId, stateKey)
-      .then(() => forceUpdate())
+      .then(() => tinyComplete())
       .catch(tinyError);
   };
 
   const handleRenameItem = async (key) => {
+    setLoadingPage('Changing pack name...');
     const newKeyValue = await renameImagePackItem(key);
     emojiEditor
       .rename(key, newKeyValue, roomId, stateKey)
-      .then(() => forceUpdate())
+      .then(() => tinyComplete())
       .catch(tinyError);
   };
 
@@ -102,23 +112,26 @@ function useImagePackHandles(forceUpdate, roomId, stateKey) {
       'danger',
     );
     if (!isConfirmed) return;
+    setLoadingPage('Deleting image pack...');
     emojiEditor
       .delete(key, roomId, stateKey)
-      .then(() => forceUpdate())
+      .then(() => tinyComplete())
       .catch(tinyError);
   };
 
   const handleUsageItem = (key, newUsage) => {
+    setLoadingPage('Changing pack usage...');
     emojiEditor
       .usage(key, newUsage, roomId, stateKey)
-      .then(() => forceUpdate())
+      .then(() => tinyComplete())
       .catch(tinyError);
   };
 
   const handleAddItem = (key, url) => {
+    setLoadingPage('Adding image into the pack...');
     emojiEditor
       .add(key, url, roomId, stateKey)
-      .then(() => forceUpdate())
+      .then(() => tinyComplete())
       .catch(tinyError);
   };
 
