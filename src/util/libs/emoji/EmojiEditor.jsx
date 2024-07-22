@@ -64,8 +64,7 @@ class EmojiEditor extends EventEmitter {
     return !getCurrentState(room).getStateEvents(EmojiEvents.RoomEmotes, key);
   }
 
-  createPack(roomId, name) {
-    const tinyThis = this;
+  _createPack(roomId, name) {
     const mx = initMatrix.matrixClient;
     const room = mx.getRoom(roomId);
     const { unUsablePacks } = this.getPackState(room);
@@ -86,12 +85,18 @@ class EmojiEditor extends EventEmitter {
       }
     }
 
+    return { packContent, stateKey };
+  }
+
+  createPack(roomId, name) {
+    const tinyThis = this;
+    const { packContent, stateKey } = this._createPack(roomId, name);
     return new Promise((resolve, reject) =>
       mx
         .sendStateEvent(roomId, EmojiEvents.RoomEmotes, packContent, stateKey)
         .then((data) => {
-          tinyThis.emit('packCreated', { roomId, pack: packContent, stateKey });
-          resolve({ data, stateKey });
+          tinyThis.emit('packCreated', { roomId, packContent, stateKey });
+          resolve({ data, stateKey, packContent });
         })
         .catch(reject),
     );
@@ -523,11 +528,13 @@ class EmojiEditor extends EventEmitter {
       objType(data, 'object') &&
       objType(data.items, 'object') &&
       typeof data.client === 'string' &&
-      data.client === 'pony-house'
+      data.client === 'pony-house' &&
+      typeof stateKey === 'string'
     ) {
       if (data.avatarFile) {
         const { content_uri: url } = await uploadContent(data.avatarFile, null, true);
         this._avatarChange(url, roomId, stateKey);
+        console.log('Avatar', url);
       }
 
       if (this.isValidUsage(data.usage)) this._usageChange(data.usage, roomId, stateKey);
@@ -536,6 +543,7 @@ class EmojiEditor extends EventEmitter {
         this._editProfile(null, data.attribution, roomId, stateKey);
       }
 
+      console.log(data.items);
       const { pack, sendPackContent } = await this._addMulti(data.items, roomId, stateKey);
       return sendPackContent(pack.getContent());
     }

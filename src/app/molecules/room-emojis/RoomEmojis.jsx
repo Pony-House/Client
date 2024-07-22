@@ -92,10 +92,9 @@ function RoomEmojis({ roomId }) {
     getEmojiImport(zipFile)
       .then((data) => {
         if (data.title && data.client === 'pony-house') {
-          // createPackBase(data.title)
-          //   .then(() => {})
-          //  .catch(errorFile);
-          console.log(data);
+          createPackBase(data.title)
+            .then((result) => emojiEditor.addEmojiPack(data, roomId, result.stateKey))
+            .catch(errorFile);
         }
       })
       .catch(errorFile);

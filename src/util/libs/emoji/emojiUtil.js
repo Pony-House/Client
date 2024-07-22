@@ -171,6 +171,7 @@ export function emojiExport(data, images) {
       const jsons = zip.folder('json');
       const fileData = {
         title: typeof data.displayName === 'string' ? data.displayName : null,
+        attribution: typeof data.attribution === 'string' ? data.attribution : null,
         stateKey: typeof data.stateKey === 'string' ? data.stateKey : null,
         avatarUrl: typeof data.avatarUrl === 'string' ? data.avatarUrl : null,
         timestamp: moment().valueOf(),
