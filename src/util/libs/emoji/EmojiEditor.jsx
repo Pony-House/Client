@@ -6,6 +6,7 @@ import { objType } from 'for-promise/utils/lib.mjs';
 
 import initMatrix from '@src/client/initMatrix';
 import { ImagePack as ImagePackBuilder } from '@src/app/organisms/emoji-board/custom-emoji';
+import { uploadContent } from '@src/app/molecules/file-input/FileInput';
 
 import { getCurrentState } from '../../matrixUtil';
 import { suffixRename } from '../../common';
@@ -223,6 +224,14 @@ class EmojiEditor extends EventEmitter {
     return null;
   }
 
+  // Valid Usage
+  isValidUsage(newUsage) {
+    return (
+      typeof newUsage === 'string' &&
+      (newUsage === 'emoticon' || newUsage === 'sticker' || newUsage === 'both')
+    );
+  }
+
   // Get new emoji key
   _getNewKey(pack, key) {
     if (typeof key !== 'string') return undefined;
@@ -301,7 +310,7 @@ class EmojiEditor extends EventEmitter {
 
     if (roomId) this.emit('renameToRoom', { key, newKey }, roomId, stateKey);
     else this.emit('renameToPersonal', { key, newKey });
-    return { pack, sendPackContent };
+    return { pack, sendPackContent, newKey };
   }
 
   rename(key, newKeyValue, roomId, stateKey) {
@@ -324,6 +333,26 @@ class EmojiEditor extends EventEmitter {
   delete(key, roomId, stateKey) {
     const { pack, sendPackContent } = this._delete(key, roomId, stateKey);
     return sendPackContent(pack.getContent());
+  }
+
+  _deleteMulti(data, roomId, stateKey) {
+    if (Array.isArray(data)) {
+      for (const item in data) {
+        this._delete(data[item], roomId, stateKey);
+      }
+
+      const { pack, sendPackContent } = roomId
+        ? this.getRoom(roomId, stateKey)
+        : this.getPersonal();
+      return { pack, sendPackContent };
+    }
+  }
+
+  async deleteMulti(data, roomId, stateKey) {
+    if (Array.isArray(data)) {
+      const { pack, sendPackContent } = _deleteMulti(data, roomId, stateKey);
+      return sendPackContent(pack.getContent());
+    }
   }
 
   // Usage Emoji
@@ -362,12 +391,42 @@ class EmojiEditor extends EventEmitter {
 
     if (roomId) this.emit('addToRoom', { key: newKey, url }, roomId, stateKey);
     else this.emit('addToPersonal', { key: newKey, url });
-    return { pack, sendPackContent };
+    return { pack, sendPackContent, key: newKey };
   }
 
   add(key, url, roomId, stateKey) {
     const { pack, sendPackContent } = this._add(key, url, roomId, stateKey);
     return sendPackContent(pack.getContent());
+  }
+
+  // Add Multi Emojis
+  async _addMulti(data, roomId, stateKey) {
+    if (objType(data, 'object')) {
+      const urls = {};
+
+      for (const item in data) {
+        const { content_uri: url } = await uploadContent(data[item].file, null, true);
+        if (url) urls[item] = url;
+      }
+
+      for (const item in urls) {
+        const { key } = this._add(data[item].shortcode, urls[item], roomId, stateKey);
+        if (this.isValidUsage(data[item].usage))
+          this._usage(key, data[item].usage, roomId, stateKey);
+      }
+
+      const { pack, sendPackContent } = roomId
+        ? this.getRoom(roomId, stateKey)
+        : this.getPersonal();
+      return { pack, sendPackContent };
+    }
+  }
+
+  async addMulti(data, roomId, stateKey) {
+    if (objType(data, 'object')) {
+      const { pack, sendPackContent } = await this._addMulti(data, roomId, stateKey);
+      return sendPackContent(pack.getContent());
+    }
   }
 }
 

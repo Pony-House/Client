@@ -69,11 +69,9 @@ export function getEmojiImport(zipFile) {
                       ? file.shortcode.trim().replace(/ /g, '')
                       : null;
 
-                  data.items[fileName[0]].usage =
-                    typeof file.usage === 'string' &&
-                    (file.usage === 'emoticon' || file.usage === 'sticker' || file.usage === 'both')
-                      ? file.usage
-                      : null;
+                  data.items[fileName[0]].usage = emojiEditor.isValidUsage(file.usage)
+                    ? file.usage
+                    : null;
 
                   // Insert mxc
                   data.items[fileName[0]].mxc =

@@ -28,7 +28,7 @@ function ImagePackUpload({ onUpload, roomId }) {
 
     setProgress(true);
     // const image = await scaleDownImage(imgFile, 512, 512);
-    // const { content_uri: url } = await uploadContent(image, true);
+    // const { content_uri: url } = await uploadContent(image, null, true);
     const { content_uri: url } = await uploadContent(imgFile);
 
     onUpload(shortcode, url);
