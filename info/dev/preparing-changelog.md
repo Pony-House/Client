@@ -5,3 +5,4 @@
 - Sidebar - css fix.
 - Matrix Events name fixed.
 - Import emoji feature added.
+- Image drag issues fixed.
