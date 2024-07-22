@@ -7,21 +7,7 @@ import initMatrix, { fetchFn } from '@src/client/initMatrix';
 import { setLoadingPage } from '@src/app/templates/client/Loading';
 import moment from '../momentjs';
 import EmojiEvents from './EmojiEvents';
-
-export const supportedEmojiFiles = [
-  'image/png',
-  'image/gif',
-  'image/jpg',
-  'image/jpeg',
-  'image/webp',
-];
-
-const imageExtList = [];
-for (const item in supportedEmojiFiles) {
-  imageExtList.push(supportedEmojiFiles[item].split('/')[1]);
-}
-
-export { imageExtList };
+import emojiEditor from './EmojiEditor';
 
 export const supportedEmojiImportFiles = [
   'application/zip',
@@ -92,7 +78,7 @@ export function getEmojiImport(zipFile) {
                   if (!data.items[fileName[0]]) data.items[fileName[0]] = {};
 
                   // Insert image
-                  if (imageExtList.indexOf(fileName[1]) > -1) {
+                  if (emojiEditor.allowedExt(fileName[1])) {
                     data.items[fileName[0]].file = await zip.file(zipEntry.name).async('blob');
                     data.items[fileName[0]].filename = fileName.join('.');
                   }

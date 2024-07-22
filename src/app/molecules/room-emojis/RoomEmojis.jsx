@@ -2,11 +2,7 @@ import React, { useReducer, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { RoomStateEvent } from 'matrix-js-sdk';
 
-import {
-  supportedEmojiFiles,
-  getEmojiImport,
-  supportedEmojiImportFiles,
-} from '@src/util/libs/emoji/emojiUtil';
+import { getEmojiImport, supportedEmojiImportFiles } from '@src/util/libs/emoji/emojiUtil';
 import EmojiEvents from '@src/util/libs/emoji/EmojiEvents';
 
 import initMatrix from '../../../client/initMatrix';
