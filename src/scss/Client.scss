@@ -80,6 +80,10 @@ body.rounded-avatar-mode .profile-image-container {
   }
 }
 
+.room-view--dropped > .navbar {
+  border-top: 1px solid var(--bg-surface-border);
+}
+
 @media (max-width: 768px) {
   #space-drawer-home-button,
   .room-mode .navigation-wrapper,
@@ -125,20 +129,25 @@ body.rounded-avatar-mode .profile-image-container {
     }
   }
 
-  body:not(.navigation-wrapper-hover) .disable-navigation-wrapper {
-    #space-header,
-    #profile-sidebar {
-      display: none;
-    }
-    .navigation-wrapper {
-      width: 80px;
-    }
-    &.theme-type-dark,
-    &.theme-type-dark2,
-    &.theme-type-silver,
-    &.theme-type-light {
+  body:not(.navigation-wrapper-hover) {
+    .disable-navigation-wrapper {
+      #space-header,
+      #profile-sidebar {
+        display: none;
+      }
       .navigation-wrapper {
         width: 72px;
+      }
+    }
+
+    &.theme-type-silver-solid,
+    &.theme-type-light-solid,
+    &.theme-type-dark-solid,
+    &.theme-type-dark2-solid {
+      .disable-navigation-wrapper {
+        .navigation-wrapper {
+          width: 80px;
+        }
       }
     }
   }

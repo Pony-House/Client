@@ -1,6 +1,4 @@
 Botão de copiar imagem.
-Abinha de opções de room flutuando de novo no chrome. (coisa chata)
-Glitch de css quando esconde o sidebar de rooms (coisa chata de novo no chrome)
 
 Ajeitar PowerLevelSelector.jsx
 Ajeitar o selecionador de custom status icon.
