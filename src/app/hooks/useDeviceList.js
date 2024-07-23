@@ -13,7 +13,7 @@ class MatrixDevices extends EventEmitter {
   constructor() {
     super();
     this.devices = [];
-    matrixDevices.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
+    this.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
   }
 
   updateDevices(devices) {
