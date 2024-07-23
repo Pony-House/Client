@@ -29,14 +29,24 @@ const Iframe = React.forwardRef(
   ) => {
     const iframeRef = ref || useRef(null);
     const url =
-      initMatrix.mxcUrl && initMatrix.mxcUrl.getNewUrl
-        ? initMatrix.mxcUrl.getNewUrl(src)
-        : MxcUrl.getNewUrl(src);
+      typeof src === 'string' &&
+      src.startsWith('mxc://') &&
+      initMatrix.mxcUrl &&
+      initMatrix.mxcUrl.toHttp
+        ? initMatrix.mxcUrl.toHttp(src)
+        : src;
+
+    let urlValidator;
+    try {
+      urlValidator = new URL(url);
+    } catch {
+      urlValidator = new URL(location.href);
+    }
 
     useEffect(() => {
       if (iframeRef.current && onMessage) {
         const msgFilter = (event) => {
-          if (event.origin === url.origin) {
+          if (event.origin === urlValidator.origin) {
             let data;
             if (typeof event.data === 'string') {
               try {
@@ -61,7 +71,7 @@ const Iframe = React.forwardRef(
         title={title}
         style={style}
         id={id}
-        src={url ? url.toString() : null}
+        src={url}
         alt={alt}
         ref={iframeRef}
         className={className || 'w-100'}

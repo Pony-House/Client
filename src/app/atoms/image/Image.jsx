@@ -5,9 +5,12 @@ import initMatrix from '@src/client/initMatrix';
 import MxcUrl from '@src/util/libs/MxcUrl';
 
 const getTinyUrl = (src) => {
-  return initMatrix.mxcUrl && initMatrix.mxcUrl.getNewUrl
-    ? initMatrix.mxcUrl.getNewUrl(src)
-    : MxcUrl.getNewUrl(src);
+  return typeof src === 'string' &&
+    src.startsWith('mxc://') &&
+    initMatrix.mxcUrl &&
+    initMatrix.mxcUrl.toHttp
+    ? initMatrix.mxcUrl.toHttp(src)
+    : src;
 };
 
 const Img = React.forwardRef(
@@ -47,7 +50,7 @@ const Img = React.forwardRef(
         onLoad={onLoad}
         style={style}
         id={id}
-        src={url ? url.toString() : null}
+        src={url}
         alt={alt}
         ref={imgRef}
         className={className}
@@ -95,7 +98,7 @@ function ImgJquery({
     'data-mx-emoticon': dataMxEmoticon,
     id,
     class: className,
-    src: url ? url.toString() : null,
+    src: url,
     alt,
     height,
     width,
