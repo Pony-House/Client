@@ -32,7 +32,7 @@ function RoomSelectorWrapper({
   onContextMenu = null,
   className,
 }) {
-  const classes = ['room-selector'];
+  const classes = ['room-selector', 'd-flex'];
   if (isMuted) classes.push('room-selector--muted');
   if (isUnread) classes.push('room-selector--unread');
   if (isSelected) classes.push('room-selector--selected');
@@ -40,7 +40,7 @@ function RoomSelectorWrapper({
   return (
     <div className={classes.join(' ')}>
       <button
-        className={`room-selector__content emoji-size-fix d-block${className ? ` ${className}` : ''}`}
+        className={`room-selector__content emoji-size-fix w-100 d-block${className ? ` ${className}` : ''}`}
         type="button"
         onClick={onClick}
         onMouseUp={(e) => blurOnBubbling(e, '.room-selector__content')}

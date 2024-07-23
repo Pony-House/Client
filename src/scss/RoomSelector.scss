@@ -1,10 +1,4 @@
-@use './partials/flex';
-@use './partials/text';
-@use './partials/dir';
-
 .room-selector {
-  @extend .cp-fx__row--s-c;
-
   border: 1px solid transparent;
   border-radius: var(--bo-radius);
   cursor: pointer;
@@ -59,8 +53,6 @@
 }
 
 .room-selector__content {
-  @extend .cp-fx__item-one;
-  @extend .cp-fx__row--s-c;
   padding: 0 var(--sp-extra-tight);
   min-height: 40px;
   cursor: inherit;
@@ -77,8 +69,6 @@
 
   > .text,
   > .content > .text {
-    @extend .cp-fx__item-one;
-    @extend .cp-txt__ellipsis;
     margin: 0 var(--sp-extra-tight);
 
     color: var(--tc-surface-normal-low);
@@ -86,8 +76,6 @@
 }
 
 .room-selector__options {
-  @extend .cp-fx__row--s-c;
-  @include dir.side(margin, 0, var(--sp-ultra-tight));
   display: none;
 
   &:empty {

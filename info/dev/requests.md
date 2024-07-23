@@ -1,9 +1,6 @@
 Botão de copiar imagem.
-Ajeitar o glitch de arrastar itens no Electron.
 Abinha de opções de room flutuando de novo no chrome. (coisa chata)
 Glitch de css quando esconde o sidebar de rooms (coisa chata de novo no chrome)
-
-Avatares cortando um pedaço no CSS na lista de rooms.
 
 Ajeitar PowerLevelSelector.jsx
 Ajeitar o selecionador de custom status icon.
