@@ -3,24 +3,6 @@ import PropTypes from 'prop-types';
 
 import initMatrix from '@src/client/initMatrix';
 
-// Image Url
-const urlCreator = (src) => {
-  let url = null;
-  try {
-    url =
-      typeof src === 'string'
-        ? src.startsWith('mxc://')
-          ? initMatrix.mxcUrl.toHttp(src)
-          : src
-        : null;
-    url = new URL(url);
-  } catch {
-    url = null;
-  }
-
-  return url;
-};
-
 const Img = React.forwardRef(
   (
     {
@@ -41,7 +23,7 @@ const Img = React.forwardRef(
   ) => {
     // Ref
     const imgRef = ref || useRef(null);
-    const url = urlCreator(src);
+    const url = initMatrix.mxcUrl.getNewUrl(src);
 
     useEffect(() => {
       if (imgRef.current) {
@@ -101,7 +83,7 @@ function ImgJquery({
   onError = null,
   dataMxEmoticon = null,
 }) {
-  const url = urlCreator(src);
+  const url = initMatrix.mxcUrl.getNewUrl(src);
 
   const ops = {
     'data-mx-emoticon': dataMxEmoticon,
@@ -113,7 +95,6 @@ function ImgJquery({
     width,
   };
 
-  if (draggable) ops.draggable = true;
   const img = $('<img>', ops);
   if (!draggable) img.attr('draggable', 'false');
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { objType } from 'for-promise/utils/lib.mjs';
+import initMatrix from '@src/client/initMatrix';
 
 export const postMessage = (current, msg = null) => current.contentWindow.postMessage(msg);
 
@@ -26,12 +27,7 @@ const Iframe = React.forwardRef(
     ref,
   ) => {
     const iframeRef = ref || useRef(null);
-    let url = {};
-    try {
-      url = new URL(src);
-    } catch {
-      url = {};
-    }
+    const url = initMatrix.mxcUrl.getNewUrl(src);
 
     useEffect(() => {
       if (iframeRef.current && onMessage) {
@@ -61,7 +57,7 @@ const Iframe = React.forwardRef(
         title={title}
         style={style}
         id={id}
-        src={src}
+        src={url ? url.toString() : null}
         alt={alt}
         ref={iframeRef}
         className={className || 'w-100'}

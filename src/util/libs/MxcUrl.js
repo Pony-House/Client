@@ -80,6 +80,26 @@ class MxcUrl {
     return this.getBlob(response, type, tinyLink, decryptData);
   }
 
+  // Get Url
+  getNewUrl(src) {
+    let url = null;
+    try {
+      url =
+        typeof src === 'string'
+          ? src.startsWith('mxc://')
+            ? this.toHttp(src)
+            : src.startsWith('./')
+              ? `${location.origin}${location.pathname}${location.pathname.endsWith('/') ? src.substring(2) : src.substring(1)}`
+              : src
+          : null;
+      url = new URL(url);
+    } catch {
+      url = {};
+    }
+
+    return url;
+  }
+
   // MXC Protocol to Http
   toHttp(mxcUrl, width, height, resizeMethod, allowDirectLinks, allowRedirects) {
     return this.mx.mxcUrlToHttp(
