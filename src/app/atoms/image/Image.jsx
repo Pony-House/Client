@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import initMatrix from '@src/client/initMatrix';
+import MxcUrl from '@src/util/libs/MxcUrl';
 
 const Img = React.forwardRef(
   (
@@ -23,7 +24,7 @@ const Img = React.forwardRef(
   ) => {
     // Ref
     const imgRef = ref || useRef(null);
-    const url = initMatrix.mxcUrl.getNewUrl(src);
+    const url = initMatrix.mxcUrl ? initMatrix.mxcUrl.getNewUrl(src) : MxcUrl.getNewUrl(src);
 
     useEffect(() => {
       if (imgRef.current) {
@@ -83,7 +84,7 @@ function ImgJquery({
   onError = null,
   dataMxEmoticon = null,
 }) {
-  const url = initMatrix.mxcUrl.getNewUrl(src);
+  const url = initMatrix.mxcUrl ? initMatrix.mxcUrl.getNewUrl(src) : MxcUrl.getNewUrl(src);
 
   const ops = {
     'data-mx-emoticon': dataMxEmoticon,

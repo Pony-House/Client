@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { objType } from 'for-promise/utils/lib.mjs';
 import initMatrix from '@src/client/initMatrix';
+import MxcUrl from '@src/util/libs/MxcUrl';
 
 export const postMessage = (current, msg = null) => current.contentWindow.postMessage(msg);
 
@@ -27,7 +28,7 @@ const Iframe = React.forwardRef(
     ref,
   ) => {
     const iframeRef = ref || useRef(null);
-    const url = initMatrix.mxcUrl.getNewUrl(src);
+    const url = initMatrix.mxcUrl ? initMatrix.mxcUrl.getNewUrl(src) : MxcUrl.getNewUrl(src);
 
     useEffect(() => {
       if (iframeRef.current && onMessage) {

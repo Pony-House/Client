@@ -81,12 +81,12 @@ class MxcUrl {
   }
 
   // Get Url
-  getNewUrl(src) {
+  static getNewUrl(src) {
     let url = null;
     try {
       url =
         typeof src === 'string'
-          ? src.startsWith('mxc://')
+          ? src.startsWith('mxc://') && this.toHttp
             ? this.toHttp(src)
             : src.startsWith('./')
               ? `${location.origin}${location.pathname}${location.pathname.endsWith('/') ? src.substring(2) : src.substring(1)}`

@@ -3,6 +3,8 @@ Botão de copiar imagem.
 Ajeitar PowerLevelSelector.jsx
 Ajeitar o selecionador de custom status icon.
 
+Opção para ocultar localmente a lista de threads.
+
 Compu
 @Tiny Jasmini do u think u could make it so broken images for space icons fall back to the default colored icons for spaces without images set? preferably change it to show the first letter of the space's name?
 if media breaks then having just a list of identical broken image icons makes things difficult
@@ -12,8 +14,6 @@ like maybe add grab handles in the settings in the emoji tab?
 currently it's just ordered by when u clicked the "use globally" checkbox for each pack
 
 Buttons in the picture viewer to go to the next/previous image in the chat
-
-Buscador de emojis de custom status fica gelado.
 
 Usar a mesma lógica de carregar emojis para deixar menos lento o carregamento de imagens do chatbox.
 
