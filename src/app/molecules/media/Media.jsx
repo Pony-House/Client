@@ -19,12 +19,12 @@ async function getUrl(link, type, decryptData, roomId /* , threadId */) {
   try {
     const blobSettings = {
       freeze: true,
-      id: link,
       // group: `roomMedia:${roomId}${typeof threadId === 'string' ? `:${threadId}` : ''}`,
       group: `roomMedia:${roomId}`,
     };
 
-    const resultById = blobUrlManager.getById(link);
+    blobSettings.id = `${blobSettings.group}:${link}`;
+    const resultById = blobUrlManager.getById(blobSettings.id);
     if (!resultById) {
       const blob = await initMatrix.mxcUrl.fetchBlob(link, type, decryptData);
       const result = await blobUrlManager.insert(blob, blobSettings);
