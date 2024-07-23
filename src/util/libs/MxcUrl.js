@@ -1,5 +1,6 @@
 import encrypt from 'matrix-encrypt-attachment';
 import EventEmitter from 'events';
+import { generateApiKey } from 'generate-api-key';
 
 import { fetchFn } from '@src/client/initMatrix';
 import { avatarDefaultColor } from '@src/app/atoms/avatar/Avatar';
@@ -102,17 +103,41 @@ class MxcUrl extends EventEmitter {
         tinyThis._fetchWait[link] = true;
         tinyThis
           .fetchBlob(link, type, decryptData)
+          // Complete
           .then((result) => {
-            // Complete
-            tinyThis.emit(`fetchBlob:${link}`, result);
+            tinyThis.emit(`fetchBlob:then:${link}`, result);
+            delete tinyThis._fetchWait[link];
+            resolve(result);
           })
+          // Error
           .catch((err) => {
-            // Error
+            tinyThis.emit(`fetchBlob:catch:${link}`, err);
+            delete tinyThis._fetchWait[link];
+            reject(err);
           });
       }
 
       // Wait
       else {
+        const funcs = {};
+        const key = generateApiKey();
+
+        const tinyComplete = (isResolve) => {
+          if (isResolve) tinyThis.off(`fetchBlob:catch:${link}`, funcs[`${key}_TinyReject`]);
+          else tinyThis.off(`fetchBlob:then:${link}`, funcs[`${key}_TinyResolve`]);
+        };
+
+        funcs[`${key}_TinyResolve`] = (result) => {
+          resolve(result);
+          tinyComplete(true);
+        };
+        funcs[`${key}_TinyReject`] = (err) => {
+          reject(err);
+          tinyComplete(false);
+        };
+
+        tinyThis.once(`fetchBlob:then:${link}`, funcs[`${key}_TinyResolve`]);
+        tinyThis.once(`fetchBlob:catch:${link}`, funcs[`${key}_TinyReject`]);
       }
     });
   }
