@@ -12,6 +12,16 @@ class MxcUrl {
   // Constructor
   constructor(mxBase) {
     this.mx = mxBase;
+    this._isAuth = false;
+  }
+
+  // Set Auth Mode
+  setAuthMode(value) {
+    if (typeof value === 'boolean') this._isAuth = value;
+  }
+
+  isAuth() {
+    return this._isAuth;
   }
 
   // Check Url Cache
@@ -89,7 +99,7 @@ class MxcUrl {
       resizeMethod,
       allowDirectLinks,
       allowRedirects,
-      // true,
+      this._isAuth,
     );
   }
 

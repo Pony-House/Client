@@ -5,6 +5,7 @@ Ajeitar o selecionador de custom status icon.
 
 Opção para ocultar localmente a lista de threads.
 Ajeitar o atualizador de perfil para ser em tempo real a atualização de dados.
+Fazer o leitor de timeline no primeiro click ser instantaneo
 
 Compu
 @Tiny Jasmini do u think u could make it so broken images for space icons fall back to the default colored icons for spaces without images set? preferably change it to show the first letter of the space's name?
