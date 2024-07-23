@@ -74,7 +74,6 @@ function Search() {
   const appearanceSettings = getAppearance();
   const [result, setResult] = useState(null);
   const [asyncSearch] = useState(new AsyncSearch());
-  if (asyncSearch) asyncSearch.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
   const [isOpen, requestClose] = useVisiblityToggle(setResult);
   const searchRef = useRef(null);
 

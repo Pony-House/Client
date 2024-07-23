@@ -109,6 +109,7 @@ function getVideoThumbnail(video, width, height, mimeType) {
 class RoomsInput extends EventEmitter {
   constructor(mx, roomList) {
     super();
+    this.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
     this.matrixClient = mx;
     this.roomList = roomList;
     this.roomIdToInput = new Map();

@@ -5,9 +5,8 @@ class AsyncSearch extends EventEmitter {
   // Constructor
   constructor() {
     super();
-
     this._reset();
-
+    this.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
     this.RESULT_SENT = 'RESULT_SENT';
   }
 

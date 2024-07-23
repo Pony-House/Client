@@ -67,6 +67,7 @@ class Notifications extends EventEmitter {
   constructor(roomList) {
     super();
 
+    this.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
     this.initialized = false;
     this.matrixClient = roomList.matrixClient;
     this.roomList = roomList;

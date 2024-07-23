@@ -9,6 +9,7 @@ class AccountData extends EventEmitter {
   constructor(roomList) {
     super();
 
+    this.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
     this.matrixClient = roomList.matrixClient;
     this.roomList = roomList;
     this.spaces = roomList.spaces;

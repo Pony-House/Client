@@ -74,7 +74,6 @@ function Room() {
     const setRoomSelected = (roomId, threadId, eventId, forceScroll) => {
       const threadTimeline = threadId ? RoomTimeline.newFromThread(threadId, roomId) : null;
       const roomTimeline = threadTimeline ?? new RoomTimeline(roomId);
-      roomTimeline.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
       sendRoomInfo({
         roomTimeline,

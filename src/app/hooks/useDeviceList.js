@@ -13,6 +13,7 @@ class MatrixDevices extends EventEmitter {
   constructor() {
     super();
     this.devices = [];
+    matrixDevices.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
   }
 
   updateDevices(devices) {
@@ -25,7 +26,6 @@ class MatrixDevices extends EventEmitter {
 }
 
 const matrixDevices = new MatrixDevices();
-matrixDevices.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 const sendPing = () => {
   const mx = initMatrix.matrixClient;
   if (mx && typeof mx.getAccountData === 'function') {

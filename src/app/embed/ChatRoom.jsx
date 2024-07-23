@@ -194,7 +194,6 @@ function ChatRoom({ roomId, homeserver = null, joinGuest, refreshTime, theme, us
 
                   join(roomId, false, via).then((tinyRoom) => {
                     const newTimeline = new RoomTimeline(tinyRoom);
-                    newTimeline.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
                     setTimeline(newTimeline);
                     setIsLoading(0);
                   });
@@ -210,7 +209,6 @@ function ChatRoom({ roomId, homeserver = null, joinGuest, refreshTime, theme, us
                       : null,
                   );
 
-                  newTimeline.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
                   setTimeline(newTimeline);
                   setIsLoading(0);
                 }

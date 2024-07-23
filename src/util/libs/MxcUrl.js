@@ -1,4 +1,5 @@
 import encrypt from 'matrix-encrypt-attachment';
+import EventEmitter from 'events';
 
 import { fetchFn } from '@src/client/initMatrix';
 import { avatarDefaultColor } from '@src/app/atoms/avatar/Avatar';
@@ -8,11 +9,14 @@ import { getBlobSafeMimeType } from '../mimetypes';
 
 // getAnimatedImageUrl
 // Mxc Url
-class MxcUrl {
+class MxcUrl extends EventEmitter {
   // Constructor
   constructor(mxBase) {
+    super();
     this.mx = mxBase;
+    this._fetchWait = {};
     this._isAuth = false;
+    this.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
   }
 
   // Set Auth Mode
@@ -88,6 +92,29 @@ class MxcUrl {
     const tinyLink = this.readCustomUrl(link);
     const response = await this.fetch(tinyLink, true);
     return this.getBlob(response, type, tinyLink, decryptData);
+  }
+
+  // Focus Fetch Blob
+  async focusFetchBlob(link = null, type = null, decryptData = null) {
+    const tinyThis = this;
+    return new Promise((resolve, reject) => {
+      if (!tinyThis._fetchWait[link]) {
+        tinyThis._fetchWait[link] = true;
+        tinyThis
+          .fetchBlob(link, type, decryptData)
+          .then((result) => {
+            // Complete
+            tinyThis.emit(`fetchBlob:${link}`, result);
+          })
+          .catch((err) => {
+            // Error
+          });
+      }
+
+      // Wait
+      else {
+      }
+    });
   }
 
   // MXC Protocol to Http

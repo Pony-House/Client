@@ -44,7 +44,6 @@ function simplyfiMembers(members) {
 }
 
 const asyncSearch = new AsyncSearch();
-asyncSearch.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 function PeopleDrawer({
   roomId,
   isUserList,

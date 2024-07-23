@@ -31,6 +31,7 @@ async function waitFor(callback, timeout = 400, maxTry = -1) {
 class RoomList extends EventEmitter {
   constructor(matrixClient) {
     super();
+    this.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
     this.matrixClient = matrixClient;
     this.mDirects = this.getMDirects();
 
