@@ -11,6 +11,8 @@ class BlobUrlManager extends EventEmitter {
     this.timeout = {};
     this.groups = {};
     this.queue = {};
+    this.ids = {};
+    this.idsReverse = {};
   }
 
   checkBlob(hash) {
@@ -31,6 +33,11 @@ class BlobUrlManager extends EventEmitter {
       if (tinyCheck) checked = true;
     }
     return checked;
+  }
+
+  getById(id) {
+    if (typeof this.ids[id] === 'string') return this.ids[id];
+    return null;
   }
 
   async insert(file, ops = {}) {
@@ -64,6 +71,11 @@ class BlobUrlManager extends EventEmitter {
         // Blob Url
         const tinyUrl = URL.createObjectURL(file);
         this.hashes[hash] = tinyUrl;
+
+        if (typeof ops.id === 'string' && ops.id.length > 0) {
+          this.ids[ops.id] = tinyUrl;
+          this.idsReverse[tinyUrl] = ops.id;
+        }
 
         // Hash
         this.urls[tinyUrl] = hash;
@@ -132,6 +144,11 @@ class BlobUrlManager extends EventEmitter {
           groupId: typeof groupId === 'string' ? groupId : null,
         });
         setTimeout(() => URL.revokeObjectURL(tinyUrl), 1);
+        if (this.idsReverse[tinyUrl]) {
+          if (this.ids[this.idsReverse[tinyUrl]]) delete this.ids[this.idsReverse[tinyUrl]];
+          delete this.idsReverse[tinyUrl];
+        }
+
         delete this.hashes[hash];
         delete this.timeout[hash];
         delete this.urls[tinyUrl];
