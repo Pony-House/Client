@@ -82,21 +82,33 @@ class MxcUrl {
 
   // Get Url
   static getNewUrl(src) {
-    let url = null;
+    let url;
     try {
-      url =
-        typeof src === 'string'
-          ? src.startsWith('mxc://') && this.toHttp
-            ? this.toHttp(src)
-            : src.startsWith('./')
-              ? `${location.origin}${location.pathname}${location.pathname.endsWith('/') ? src.substring(2) : src.substring(1)}`
-              : src
-          : null;
-      url = new URL(url);
-    } catch {
-      url = {};
-    }
+      if (typeof src === 'string') {
+        if (!src.startsWith('./')) {
+          url = src.startsWith('mxc://') && this.toHttp ? this.toHttp(src) : null;
+        } else {
+          url = `${location.origin}${location.pathname}${location.pathname.endsWith('/') ? src.substring(2) : src.substring(1)}`;
+        }
 
+        url = new URL(url);
+        if (
+          src.startsWith('./') &&
+          __ENV_APP__.ELECTRON_MODE &&
+          __ENV_APP__.MODE !== 'development'
+        ) {
+          const tinyOrigin = location.origin;
+          const pathName = location.pathname;
+          url._VANILLA_toString = url.toString;
+          url.toString = () =>
+            `./${url._VANILLA_toString().replace(tinyOrigin, '').replace(pathName, '')}`;
+        }
+      } else {
+        url = null;
+      }
+    } catch {
+      url = null;
+    }
     return url;
   }
 

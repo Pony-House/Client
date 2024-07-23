@@ -28,7 +28,10 @@ const Iframe = React.forwardRef(
     ref,
   ) => {
     const iframeRef = ref || useRef(null);
-    const url = initMatrix.mxcUrl ? initMatrix.mxcUrl.getNewUrl(src) : MxcUrl.getNewUrl(src);
+    const url =
+      initMatrix.mxcUrl && initMatrix.mxcUrl.getNewUrl
+        ? initMatrix.mxcUrl.getNewUrl(src)
+        : MxcUrl.getNewUrl(src);
 
     useEffect(() => {
       if (iframeRef.current && onMessage) {

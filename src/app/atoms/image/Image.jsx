@@ -4,6 +4,12 @@ import PropTypes from 'prop-types';
 import initMatrix from '@src/client/initMatrix';
 import MxcUrl from '@src/util/libs/MxcUrl';
 
+const getTinyUrl = (src) => {
+  return initMatrix.mxcUrl && initMatrix.mxcUrl.getNewUrl
+    ? initMatrix.mxcUrl.getNewUrl(src)
+    : MxcUrl.getNewUrl(src);
+};
+
 const Img = React.forwardRef(
   (
     {
@@ -24,7 +30,7 @@ const Img = React.forwardRef(
   ) => {
     // Ref
     const imgRef = ref || useRef(null);
-    const url = initMatrix.mxcUrl ? initMatrix.mxcUrl.getNewUrl(src) : MxcUrl.getNewUrl(src);
+    const url = getTinyUrl(src);
 
     useEffect(() => {
       if (imgRef.current) {
@@ -84,8 +90,7 @@ function ImgJquery({
   onError = null,
   dataMxEmoticon = null,
 }) {
-  const url = initMatrix.mxcUrl ? initMatrix.mxcUrl.getNewUrl(src) : MxcUrl.getNewUrl(src);
-
+  const url = getTinyUrl(src);
   const ops = {
     'data-mx-emoticon': dataMxEmoticon,
     id,
