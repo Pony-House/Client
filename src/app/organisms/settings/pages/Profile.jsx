@@ -188,7 +188,7 @@ function ProfileSection() {
 
   let bannerSrc;
   if (typeof banner === 'string' && banner.length > 0) {
-    bannerSrc = (banner, 400, 227);
+    bannerSrc = initMatrix.mxcUrl.toHttp(banner, 400, 227);
   }
 
   const handleBannerUpload = async (url) => {

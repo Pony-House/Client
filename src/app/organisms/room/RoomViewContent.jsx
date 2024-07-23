@@ -40,7 +40,7 @@ import matrixAppearance, { getAppearance } from '../../../util/libs/appearance';
 let forceDelay = false;
 let loadingPage = false;
 const MAX_MSG_DIFF_MINUTES = 5;
-const PLACEHOLDER_COUNT = 1;
+const PLACEHOLDER_COUNT = 2;
 const PLACEHOLDERS_HEIGHT = 96 * PLACEHOLDER_COUNT;
 const SCROLL_TRIGGER_POS = PLACEHOLDERS_HEIGHT / 2;
 

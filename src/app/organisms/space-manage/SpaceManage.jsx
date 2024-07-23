@@ -88,7 +88,7 @@ function SpaceManageItem({
   const isJoined = !!(room?.getMyMembership() === 'join' || null);
   const name = room?.name || roomInfo.name || roomInfo.canonical_alias || roomId;
 
-  let imageSrc = (roomInfo.avatar_url, 32, 32, 'crop') || null;
+  let imageSrc = mxcUrl.toHttp(roomInfo.avatar_url, 32, 32, 'crop') || null;
   if (!imageSrc && room) {
     imageSrc = mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32, 'crop') || null;
     if (imageSrc === null) imageSrc = mxcUrl.getAvatarUrl(room, 32, 32, 'crop') || null;

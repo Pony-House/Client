@@ -56,9 +56,15 @@ export function validatorStatusIcon(presence) {
 // Parse Status
 export function parsePresenceStatus(presence, userId) {
   if (typeof presence === 'string') {
+    // Get data
     const mx = initMatrix.matrixClient;
+    const mxcUrl = initMatrix.mxcUrl;
+    const appearanceSettings = getAppearance();
+
+    // Result
     const tinyResult = { status: null, msg: null, bio: null, timezone: null, banner: null };
     try {
+      // Parse
       const tinyParse = JSON.parse(presence);
       if (tinyParse) {
         // Ethereum
@@ -84,17 +90,19 @@ export function parsePresenceStatus(presence, userId) {
             tinyResult.msgIcon = twemojifyToUrl(tinyParse.msgIcon);
             tinyResult.msgIconThumb = tinyResult.msgIcon;
           } else {
-            const appearanceSettings = getAppearance();
             tinyResult.msgIcon = !appearanceSettings.enableAnimParams
-              ? initMatrix.mxcUrl.toHttp(tinyParse.msgIcon)
-              : getAnimatedImageUrl(initMatrix.mxcUrl.toHttp(tinyParse.msgIcon, 50, 50, 'crop'));
-            tinyResult.msgIconThumb = initMatrix.mxcUrl.toHttp(tinyParse.msgIcon, 50, 50, 'crop');
+              ? mxcUrl.toHttp(tinyParse.msgIcon)
+              : getAnimatedImageUrl(mxcUrl.toHttp(tinyParse.msgIcon, 50, 50, 'crop'));
+            tinyResult.msgIconThumb = mxcUrl.toHttp(tinyParse.msgIcon, 50, 50, 'crop');
           }
         }
 
         // User Banner
         if (typeof tinyParse.banner === 'string' && tinyParse.banner.length > 0) {
-          tinyResult.banner = tinyParse.banner;
+          tinyResult.banner = !appearanceSettings.enableAnimParams
+            ? mxcUrl.toHttp(tinyParse.banner)
+            : getAnimatedImageUrl(mxcUrl.toHttp(tinyParse.banner, 1500, 500, 'crop'));
+          tinyResult.bannerThumb = mxcUrl.toHttp(tinyParse.banner, 1500, 500, 'crop');
         }
 
         // Pronouns
