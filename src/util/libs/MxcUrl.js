@@ -81,7 +81,7 @@ class MxcUrl {
   }
 
   // MXC Protocol to Http
-  static toHttp(mxcUrl, width, height, resizeMethod, allowDirectLinks, allowRedirects) {
+  toHttp(mxcUrl, width, height, resizeMethod, allowDirectLinks, allowRedirects) {
     return this.mx.mxcUrlToHttp(
       mxcUrl,
       width,
