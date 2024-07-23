@@ -13,8 +13,6 @@ currently it's just ordered by when u clicked the "use globally" checkbox for ea
 
 Buttons in the picture viewer to go to the next/previous image in the chat
 
----------------> Botão para migrar o emoji para outro homeserver.
-
 Buscador de emojis de custom status fica gelado.
 
 Usar a mesma lógica de carregar emojis para deixar menos lento o carregamento de imagens do chatbox.
