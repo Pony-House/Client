@@ -37,7 +37,7 @@ function simplyfiMembers(members) {
     userId: member.userId,
     name: getUsernameOfRoomMember(member),
     username: member.userId.slice(1, member.userId.indexOf(':')),
-    avatarSrc: mxcUrl.getAvatarUrl(member, 32, 32, 'crop'),
+    avatarSrc: mxcUrl.getAvatarUrl(member, 32, 32),
     peopleRole: getPowerLabel(member.powerLevel),
     powerLevel: members.powerLevel,
   }));

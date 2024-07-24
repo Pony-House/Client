@@ -50,7 +50,7 @@ function ReadReceipts() {
           setIsOpen(false);
           openProfileViewer(userId, roomId);
         }}
-        avatarSrc={mxcUrl.getAvatarUrl(member, 32, 32, 'crop')}
+        avatarSrc={mxcUrl.getAvatarUrl(member, 32, 32)}
         name={getUserDisplayName(userId)}
         color={colorMXID(userId)}
       />

@@ -83,10 +83,8 @@ function RoomIntroContainer({ event, timeline }) {
 
   const roomTopic = getCurrentState(room).getStateEvents('m.room.topic')[0]?.getContent().topic;
   const isDM = roomList.directs.has(timeline.roomId);
-  let avatarSrc = mxcUrl.getAvatarUrl(room, 80, 80, 'crop');
-  avatarSrc = isDM
-    ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 80, 80, 'crop')
-    : avatarSrc;
+  let avatarSrc = mxcUrl.getAvatarUrl(room, 80, 80);
+  avatarSrc = isDM ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 80, 80) : avatarSrc;
 
   const heading = isDM ? roomTitle : `Welcome to ${roomTitle}`;
   const topic = !thread

@@ -55,7 +55,7 @@ function PeopleSelector({
         // Image
         const newImageSrc =
           tinyUser && tinyUser.avatarUrl
-            ? mxcUrl.toHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop')
+            ? mxcUrl.toHttp(tinyUser.avatarUrl, avatarSize, avatarSize)
             : null;
         setImageSrc(newImageSrc);
 
@@ -63,9 +63,7 @@ function PeopleSelector({
           tinyUser && tinyUser.avatarUrl
             ? !appearanceSettings.enableAnimParams
               ? mxcUrl.toHttp(tinyUser.avatarUrl)
-              : getAnimatedImageUrl(
-                  mxcUrl.toHttp(tinyUser.avatarUrl, avatarSize, avatarSize, 'crop'),
-                )
+              : getAnimatedImageUrl(mxcUrl.toHttp(tinyUser.avatarUrl, avatarSize, avatarSize))
             : null;
         setImageAnimSrc(newImageAnimSrc);
 

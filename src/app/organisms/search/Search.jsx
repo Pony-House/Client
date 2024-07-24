@@ -177,12 +177,11 @@ function Search() {
     let iconSrc = null;
 
     if (item.type === 'direct') {
-      imageSrc = mxcUrl.getAvatarUrl(item.room.getAvatarFallbackMember(), 32, 32, 'crop') || null;
+      imageSrc = mxcUrl.getAvatarUrl(item.room.getAvatarFallbackMember(), 32, 32) || null;
       imageAnimSrc = !appearanceSettings.enableAnimParams
         ? mxcUrl.getAvatarUrl(item.room.getAvatarFallbackMember())
-        : getAnimatedImageUrl(
-            mxcUrl.getAvatarUrl(item.room.getAvatarFallbackMember(), 32, 32, 'crop'),
-          ) || null;
+        : getAnimatedImageUrl(mxcUrl.getAvatarUrl(item.room.getAvatarFallbackMember(), 32, 32)) ||
+          null;
     } else {
       iconSrc = joinRuleToIconSrc(item.room.getJoinRule(), item.type === 'space');
     }

@@ -311,11 +311,11 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
           <Avatar
             className="profile-image-container"
             ref={profileAvatar}
-            imageSrc={mxcUrl.toHttp(avatarUrl, 100, 100, 'crop')}
+            imageSrc={mxcUrl.toHttp(avatarUrl, 100, 100)}
             imageAnimSrc={
               !appearanceSettings.enableAnimParams
                 ? mxcUrl.toHttp(avatarUrl)
-                : getAnimatedImageUrl(mxcUrl.toHttp(avatarUrl, 100, 100, 'crop'))
+                : getAnimatedImageUrl(mxcUrl.toHttp(avatarUrl, 100, 100))
             }
             text={name}
             bgColor={color}

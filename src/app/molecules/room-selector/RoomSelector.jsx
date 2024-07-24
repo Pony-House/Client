@@ -124,10 +124,9 @@ function RoomSelector({
         // Image
         let newImageSrc =
           tinyUser && tinyUser.avatarUrl
-            ? mxcUrl.toHttp(tinyUser.avatarUrl, 32, 32, 'crop')
-            : (room && mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32, 'crop')) || null;
-        if (room && newImageSrc === null)
-          newImageSrc = mxcUrl.getAvatarUrl(room, 32, 32, 'crop') || null;
+            ? mxcUrl.toHttp(tinyUser.avatarUrl, 32, 32)
+            : (room && mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32)) || null;
+        if (room && newImageSrc === null) newImageSrc = mxcUrl.getAvatarUrl(room, 32, 32) || null;
         setImgSrc(newImageSrc);
 
         let newImageAnimSrc =
@@ -136,13 +135,13 @@ function RoomSelector({
             : (room && !appearanceSettings.enableAnimParams
                 ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember())
                 : getAnimatedImageUrl(
-                    mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32, 'crop'),
+                    mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32),
                   )) || null;
 
         if (room && newImageAnimSrc === null)
           newImageAnimSrc = !appearanceSettings.enableAnimParams
             ? mxcUrl.getAvatarUrl(room)
-            : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 32, 32, 'crop')) || null;
+            : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 32, 32)) || null;
         setImgAnimSrc(newImageAnimSrc);
 
         // Room Name

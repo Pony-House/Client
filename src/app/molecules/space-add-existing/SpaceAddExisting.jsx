@@ -130,19 +130,17 @@ function SpaceAddExistingContent({ roomId }) {
         {(searchIds || allRoomIds).map((rId) => {
           const room = mx.getRoom(rId);
 
-          let imageSrc =
-            mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32, 'crop') || null;
-          if (imageSrc === null) imageSrc = mxcUrl.getAvatarUrl(room, 32, 32, 'crop') || null;
+          let imageSrc = mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32) || null;
+          if (imageSrc === null) imageSrc = mxcUrl.getAvatarUrl(room, 32, 32) || null;
 
           let imageAnimSrc = !appearanceSettings.enableAnimParams
             ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember())
-            : getAnimatedImageUrl(
-                mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32, 'crop'),
-              ) || null;
+            : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32)) ||
+              null;
           if (imageAnimSrc === null)
             imageAnimSrc = !appearanceSettings.enableAnimParams
               ? mxcUrl.getAvatarUrl(room)
-              : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 32, 32, 'crop')) || null;
+              : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 32, 32)) || null;
 
           const parentSet = roomIdToParents.get(rId);
           const parentNames = parentSet

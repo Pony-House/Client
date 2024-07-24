@@ -257,13 +257,11 @@ function ProfileAvatarMenu() {
                   profile.avatarUrl !== null
                     ? !appearanceSettings.enableAnimParams
                       ? mxcUrl.toHttp(profile.avatarUrl)
-                      : getAnimatedImageUrl(mxcUrl.toHttp(profile.avatarUrl, 42, 42, 'crop'))
+                      : getAnimatedImageUrl(mxcUrl.toHttp(profile.avatarUrl, 42, 42))
                     : null
                 }
                 imageSrc={
-                  profile.avatarUrl !== null
-                    ? mxcUrl.toHttp(profile.avatarUrl, 42, 42, 'crop')
-                    : null
+                  profile.avatarUrl !== null ? mxcUrl.toHttp(profile.avatarUrl, 42, 42) : null
                 }
                 isDefaultImage
               />

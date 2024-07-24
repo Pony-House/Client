@@ -114,9 +114,9 @@ function DraggableSpaceShortcut({ isActive, spaceId, index, moveShortcut, onDrop
           imageAnimSrc={
             !appearanceSettings.enableAnimParams
               ? mxcUrl.getAvatarUrl(room)
-              : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 42, 42, 'crop')) || null
+              : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 42, 42)) || null
           }
-          imageSrc={mxcUrl.getAvatarUrl(room, 42, 42, 'crop') || null}
+          imageSrc={mxcUrl.getAvatarUrl(room, 42, 42) || null}
           isDefaultImage
         />
       }

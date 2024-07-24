@@ -237,7 +237,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
       /*
             animParentsCount={3}
       imageAnimSrc={typeof room.avatar_url === 'string' ?
-        !appearanceSettings.enableAnimParams ? mxcUrl.toHttp(room.avatar_url) : getAnimatedImageUrl(mxcUrl.toHttp(room.avatar_url, 42, 42, 'crop'))
+        !appearanceSettings.enableAnimParams ? mxcUrl.toHttp(room.avatar_url) : getAnimatedImageUrl(mxcUrl.toHttp(room.avatar_url, 42, 42))
         : null}
       */
 
@@ -249,7 +249,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
                 className="profile-image-container"
                 imageSrc={
                   typeof room.avatar_url === 'string'
-                    ? mxcUrl.toHttp(room.avatar_url, 42, 42, 'crop')
+                    ? mxcUrl.toHttp(room.avatar_url, 42, 42)
                     : null
                 }
                 bgColor={colorMXID(alias)}

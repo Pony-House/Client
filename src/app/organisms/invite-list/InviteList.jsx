@@ -66,7 +66,7 @@ function InviteList({ isOpen, onRequestClose }) {
       <RoomTile
         key={myRoom.roomId}
         name={roomName}
-        avatarSrc={mxcUrl.getAvatarUrl(initMatrix.matrixClient.getRoom(roomId), 42, 42, 'crop')}
+        avatarSrc={mxcUrl.getAvatarUrl(initMatrix.matrixClient.getRoom(roomId), 42, 42)}
         id={roomAlias}
         inviterName={inviterName}
         options={

@@ -92,8 +92,8 @@ export function parsePresenceStatus(presence, userId) {
           } else {
             tinyResult.msgIcon = !appearanceSettings.enableAnimParams
               ? mxcUrl.toHttp(tinyParse.msgIcon)
-              : getAnimatedImageUrl(mxcUrl.toHttp(tinyParse.msgIcon, 50, 50, 'crop'));
-            tinyResult.msgIconThumb = mxcUrl.toHttp(tinyParse.msgIcon, 50, 50, 'crop');
+              : getAnimatedImageUrl(mxcUrl.toHttp(tinyParse.msgIcon, 50, 50));
+            tinyResult.msgIconThumb = mxcUrl.toHttp(tinyParse.msgIcon, 50, 50);
           }
         }
 
@@ -101,8 +101,8 @@ export function parsePresenceStatus(presence, userId) {
         if (typeof tinyParse.banner === 'string' && tinyParse.banner.length > 0) {
           tinyResult.banner = !appearanceSettings.enableAnimParams
             ? mxcUrl.toHttp(tinyParse.banner)
-            : getAnimatedImageUrl(mxcUrl.toHttp(tinyParse.banner, 1500, 500, 'crop'));
-          tinyResult.bannerThumb = mxcUrl.toHttp(tinyParse.banner, 1500, 500, 'crop');
+            : getAnimatedImageUrl(mxcUrl.toHttp(tinyParse.banner, 1500, 500));
+          tinyResult.bannerThumb = mxcUrl.toHttp(tinyParse.banner, 1500, 500);
         }
 
         // Pronouns

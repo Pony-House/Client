@@ -212,7 +212,7 @@ export function openThreadsMessageModal(room) {
               const roomId = room.roomId;
               const tinyUsername = twemojify(user.userId);
 
-              const imageSrc = user ? (user.avatarUrl, 36, 36, 'crop') : null;
+              const imageSrc = user ? (user.avatarUrl, 36, 36) : null;
 
               const content = events[item].content;
               const msgBody =

@@ -143,12 +143,19 @@ class MxcUrl extends EventEmitter {
   }
 
   // MXC Protocol to Http
-  toHttp(mxcUrl, width, height, resizeMethod, allowDirectLinks, allowRedirects) {
+  toHttp(
+    mxcUrl,
+    width,
+    height,
+    resizeMethod = 'crop',
+    allowDirectLinks = undefined,
+    allowRedirects = undefined,
+  ) {
     return this.mx.mxcUrlToHttp(
       mxcUrl,
       width,
       height,
-      resizeMethod,
+      height || width ? resizeMethod : undefined,
       allowDirectLinks,
       allowRedirects,
       this._isAuth,
@@ -156,25 +163,39 @@ class MxcUrl extends EventEmitter {
   }
 
   // Classic getAvatarUrl
-  getAvatarUrlClassic(user, width, height, resizeMethod, allowDefault, allowDirectLinks) {
+  getAvatarUrlClassic(
+    user,
+    width,
+    height,
+    resizeMethod = 'crop',
+    allowDefault = undefined,
+    allowDirectLinks = undefined,
+  ) {
     return user?.getAvatarUrl(
       this.mx.baseUrl,
       width,
       height,
-      resizeMethod,
+      height || width ? resizeMethod : undefined,
       allowDefault,
       allowDirectLinks,
     );
   }
 
   // Get Avatar Url
-  getAvatarUrl(user, width, height, resizeMethod, allowDefault, allowDirectLinks) {
+  getAvatarUrl(
+    user,
+    width,
+    height,
+    resizeMethod = 'crop',
+    allowDefault = undefined,
+    allowDirectLinks = undefined,
+  ) {
     if (user) {
       let avatarUrl = this.toHttp(
         user?.getMxcAvatarUrl(),
         width,
         height,
-        resizeMethod,
+        height || width ? resizeMethod : undefined,
         allowDirectLinks,
       );
       if (!avatarUrl && allowDefault) {

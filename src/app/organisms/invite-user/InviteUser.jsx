@@ -222,9 +222,7 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
         <RoomTile
           key={userId}
           avatarSrc={
-            typeof user.avatar_url === 'string'
-              ? mxcUrl.toHttp(user.avatar_url, 42, 42, 'crop')
-              : null
+            typeof user.avatar_url === 'string' ? mxcUrl.toHttp(user.avatar_url, 42, 42) : null
           }
           name={name}
           id={userId}

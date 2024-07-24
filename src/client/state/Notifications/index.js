@@ -438,7 +438,7 @@ class Notifications extends EventEmitter {
       const icon = await renderAvatar({
         text: mEvent.sender.name,
         bgColor: cssColorMXID(mEvent.getSender()),
-        imageSrc: mxcUrl.getAvatarUrl(mEvent.sender, iconSize, iconSize, 'crop'),
+        imageSrc: mxcUrl.getAvatarUrl(mEvent.sender, iconSize, iconSize),
         size: iconSize,
         borderRadius: 8,
         scale: 8,

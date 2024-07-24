@@ -91,12 +91,12 @@ const Selector = React.forwardRef(
         imageSrc =
           // User Avatar
           user && user.avatarUrl
-            ? mxcUrl.toHttp(user.avatarUrl, 32, 32, 'crop')
+            ? mxcUrl.toHttp(user.avatarUrl, 32, 32)
             : // Room User Avatar
-              mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32, 'crop') || null;
+              mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32) || null;
 
       // Room Avatar
-      if (imageSrc === null) imageSrc = mxcUrl.getAvatarUrl(room, 32, 32, 'crop') || null;
+      if (imageSrc === null) imageSrc = mxcUrl.getAvatarUrl(room, 32, 32) || null;
 
       if (!isSpaces)
         imageAnimSrc =
@@ -106,15 +106,13 @@ const Selector = React.forwardRef(
               !appearanceSettings.enableAnimParams
               ? mxcUrl.toHttp(user.avatarUrl)
               : // Animated Params
-                getAnimatedImageUrl(mxcUrl.toHttp(user.avatarUrl, 32, 32, 'crop'))
+                getAnimatedImageUrl(mxcUrl.toHttp(user.avatarUrl, 32, 32))
             : // Room User Avatar
               !appearanceSettings.enableAnimParams
               ? // Normal Mode
                 mxcUrl.getAvatarUrl(room.getAvatarFallbackMember())
               : // Animated Params
-                getAnimatedImageUrl(
-                  mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32, 'crop'),
-                ) ||
+                getAnimatedImageUrl(mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32)) ||
                 // Nothing
                 null;
 
@@ -124,7 +122,7 @@ const Selector = React.forwardRef(
         imageAnimSrc = !appearanceSettings.enableAnimParams
           ? mxcUrl.getAvatarUrl(room)
           : // Animated Params
-            getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 32, 32, 'crop')) || null;
+            getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 32, 32)) || null;
     }
 
     // Is Muted

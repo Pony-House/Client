@@ -213,14 +213,14 @@ export default function FeaturedTab() {
                     !appearanceSettings.enableAnimParams
                       ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember())
                       : getAnimatedImageUrl(
-                            mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 42, 42, 'crop'),
+                            mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 42, 42),
                           ) || !appearanceSettings.enableAnimParams
                         ? mxcUrl.getAvatarUrl(room)
-                        : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 42, 42, 'crop')) || null
+                        : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 42, 42)) || null
                   }
                   imageSrc={
-                    mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 42, 42, 'crop') ||
-                    mxcUrl.getAvatarUrl(room, 42, 42, 'crop') ||
+                    mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 42, 42) ||
+                    mxcUrl.getAvatarUrl(room, 42, 42) ||
                     null
                   }
                   isDefaultImage

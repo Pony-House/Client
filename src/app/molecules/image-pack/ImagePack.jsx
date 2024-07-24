@@ -217,7 +217,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
   return (
     <li className="list-group-item image-pack">
       <ImagePackProfile
-        avatarUrl={pack.avatarUrl ? mxcUrl.toHttp(pack.avatarUrl, 42, 42, 'crop') : null}
+        avatarUrl={pack.avatarUrl ? mxcUrl.toHttp(pack.avatarUrl, 42, 42) : null}
         displayName={pack.displayName ?? 'Unknown'}
         attribution={pack.attribution}
         usage={emojiEditor.getUsage(pack.usage)}
@@ -337,7 +337,7 @@ function ImagePackUser() {
     <div className="card noselect">
       <ul className="list-group list-group-flush">
         <ImagePackProfile
-          avatarUrl={pack.avatarUrl ? mxcUrl.toHttp(pack.avatarUrl, 42, 42, 'crop') : null}
+          avatarUrl={pack.avatarUrl ? mxcUrl.toHttp(pack.avatarUrl, 42, 42) : null}
           displayName={pack.displayName ?? 'Personal'}
           attribution={pack.attribution}
           usage={emojiEditor.getUsage(pack.usage)}
