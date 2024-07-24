@@ -200,8 +200,7 @@ const Selector = React.forwardRef(
           getCurrentState(space)
             .getStateEvents(PonyRoomEvent.PhSettings, 'roomIcons')
             ?.getContent() ?? {};
-        console.log(roomIconCfg);
-        setRoomIconsActive(roomIconCfg.isActive);
+        if (roomIconCfg.isActive !== roomIconsActive) setRoomIconsActive(roomIconCfg.isActive);
 
         const handleEvent = (event, state, prevEvent) => {
           if (event.getRoomId() !== spaceId) return;
