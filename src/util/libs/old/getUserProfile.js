@@ -1,7 +1,7 @@
 import PonyRoomEvent from '@src/app/organisms/space-settings/PonyRoomEvent';
 
-import initMatrix from '../client/initMatrix';
-import { getCurrentState } from './matrixUtil';
+import initMatrix from '../../../client/initMatrix';
+import { getCurrentState } from '../../matrixUtil';
 
 export function getUserProfile(content, profileRoom) {
   const mx = initMatrix.matrixClient;
