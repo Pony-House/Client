@@ -189,6 +189,8 @@ export function openPinMessageModal(room) {
       // Prepare
       const body = [];
       const mx = initMatrix.matrixClient;
+      const mxcUrl = initMatrix.mxcUrl;
+
       const isCustomHTML = true;
       let modal = null;
 
@@ -209,7 +211,7 @@ export function openPinMessageModal(room) {
 
               const tinyUsername = twemojify(user.userId);
 
-              const imageSrc = user ? (user.avatarUrl, 36, 36) : null;
+              const imageSrc = user ? mxcUrl.toHttp(user.avatarUrl, 36, 36) : null;
 
               const content = events[item].getContent();
               const msgBody =

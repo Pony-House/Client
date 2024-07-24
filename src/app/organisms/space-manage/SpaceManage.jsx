@@ -96,7 +96,7 @@ function SpaceManageItem({
 
   let imageAnimSrc = !appearanceSettings.enableAnimParams
     ? roomInfo.avatar_url
-    : (roomInfo.avatar_url, 32, 32) || null;
+    : mxcUrl.toHttp(roomInfo.avatar_url, 32, 32) || null;
   if (!imageAnimSrc && room) {
     imageAnimSrc = !appearanceSettings.enableAnimParams
       ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember())
