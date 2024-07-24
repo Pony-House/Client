@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import moment from '@src/util/libs/momentjs';
 import { avatarDefaultColor } from '@src/app/atoms/avatar/Avatar';
 import { colorMXID } from '@src/util/colorMXID';
@@ -50,6 +50,8 @@ function ProfileSection() {
   const [userBio, setUserBio] = useState(userProfile.bio);
   const [userPronouns, setUserPronouns] = useState(userProfile.pronouns);
   const [userTimezone, setUserTimezone] = useState(userProfile.timezone);
+
+  const [bannerSrc, setBannerSrc] = useState(null);
 
   const sendSetStatus = (item) => {
     const content =
@@ -186,11 +188,6 @@ function ProfileSection() {
     },
   ];
 
-  let bannerSrc;
-  if (typeof banner === 'string' && banner.length > 0) {
-    bannerSrc = initMatrix.mxcUrl.toHttp(banner, 400, 227);
-  }
-
   const handleBannerUpload = async (url) => {
     const content =
       initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
@@ -225,6 +222,12 @@ function ProfileSection() {
       bannerImg.attr('src', (url, 400, 227));
     }
   };
+
+  useEffect(() => {
+    if (typeof banner === 'string' && banner.length > 0) {
+      setBannerSrc(initMatrix.mxcUrl.toHttp(banner, 400, 227));
+    }
+  });
 
   return (
     <>

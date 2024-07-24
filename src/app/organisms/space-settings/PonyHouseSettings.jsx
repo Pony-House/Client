@@ -19,6 +19,7 @@ function PonyHouseSettings({ roomId, room }) {
   const userId = mx.getUserId();
   const roomName = room?.name;
   const [isRoomIconsVisible, setRoomIconsVisible] = useState(false);
+  const [avatarSrc, setAvatarSrc] = useState(null);
   const color = colorMXID(initMatrix.matrixClient.getUserId());
 
   const toggleShowRoomIcons = async (data) => {
@@ -28,18 +29,18 @@ function PonyHouseSettings({ roomId, room }) {
 
   // Pony Config
   const canPonyHouse = getCurrentState(room).maySendStateEvent('pony.house.settings', userId);
-  let avatarSrc;
-
-  const bannerCfg =
-    getCurrentState(room).getStateEvents('pony.house.settings', 'banner')?.getContent() ?? {};
-  if (typeof bannerCfg?.url === 'string' && bannerCfg?.url.length > 0) {
-    avatarSrc = initMatrix.mxcUrl.toHttp(bannerCfg.url, 400, 227);
-  }
 
   useEffect(() => {
     const roomIconCfg =
       getCurrentState(room).getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ?? {};
     setRoomIconsVisible(roomIconCfg.isActive === true);
+
+    const bannerCfg =
+      getCurrentState(room).getStateEvents('pony.house.settings', 'banner')?.getContent() ?? {};
+
+    if (typeof bannerCfg?.url === 'string' && bannerCfg?.url.length > 0) {
+      setAvatarSrc(initMatrix.mxcUrl.toHttp(bannerCfg.url, 400, 227));
+    }
   }, [room]);
 
   return (

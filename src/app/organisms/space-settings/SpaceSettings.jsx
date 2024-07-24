@@ -85,9 +85,9 @@ function GeneralSettings({ roomId }) {
   return (
     <>
       {window.matchMedia('screen and (min-width: 768px)').matches ? (
-        <div className="card noselect mb-3">
+        <div className="card mb-3">
           <ul className="list-group list-group-flush">
-            <li className="list-group-item very-small text-gray">Space ID</li>
+            <li className="list-group-item very-small text-gray noselect">Space Id</li>
 
             <li className="list-group-item border-0">
               <RoomProfile roomId={roomId} isSpace />

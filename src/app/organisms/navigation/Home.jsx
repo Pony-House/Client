@@ -104,19 +104,11 @@ function Home({ spaceId = null }) {
     };
   });
 
-  const room = mx.getRoom(spaceId);
-
-  if (room) {
-    const roomIconCfg =
-      getCurrentState(room).getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ?? {};
-    roomSettings.notSpace = roomIconCfg.isActive === true;
-  }
-
   return (
     <>
       {!isCategorized && spaceIds.length !== 0 && (
         <RoomsCategory
-          notSpace={roomSettings.notSpace}
+          isSpaces
           type="home"
           name="Spaces"
           roomIds={spaceIds.sort(!spaceId && orderHomeByActivity ? roomIdByActivity : roomIdByAtoZ)}
@@ -126,7 +118,6 @@ function Home({ spaceId = null }) {
 
       {(roomIds.length !== 0 && (
         <RoomsCategory
-          notSpace={roomSettings.notSpace}
           type="home"
           name="Rooms"
           roomIds={roomIds.sort(!spaceId && orderHomeByActivity ? roomIdByActivity : roomIdByAtoZ)}
@@ -151,7 +142,6 @@ function Home({ spaceId = null }) {
 
       {directIds.length !== 0 && (
         <RoomsCategory
-          notSpace={roomSettings.notSpace}
           type="home"
           name="People"
           roomIds={directIds.sort(!spaceId ? roomIdByActivity : roomIdByAtoZ)}
@@ -172,7 +162,6 @@ function Home({ spaceId = null }) {
           return (
             <RoomsCategory
               type="home"
-              notSpace={roomSettings.notSpace}
               key={catId}
               spaceId={catId}
               name={mx.getRoom(catId).name}
