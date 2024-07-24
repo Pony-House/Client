@@ -12,7 +12,7 @@ import initMatrix from '../../../client/initMatrix';
 
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 import { getCurrentState } from '../../../util/matrixUtil';
-import { handleBannerUpload } from './handleBannerUpload';
+import handleBannerUpload from './handleBannerUpload';
 
 function PonyHouseSettings({ roomId, room }) {
   const mx = initMatrix.matrixClient;
@@ -76,8 +76,8 @@ function PonyHouseSettings({ roomId, room }) {
             className="space-banner"
             text="Banner"
             imageSrc={avatarSrc}
-            onUpload={(url) => handleBannerUpload(url, roomId)}
-            onRequestRemove={() => handleBannerUpload(null, roomId)}
+            onUpload={(url) => handleBannerUpload(url, roomId, setAvatarSrc)}
+            onRequestRemove={() => handleBannerUpload(null, roomId, setAvatarSrc)}
             defaultImage={avatarDefaultColor(color, 'space')}
           />
         )}

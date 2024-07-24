@@ -54,15 +54,20 @@ class TimelineScroll {
 
   scrollToIndex(index, offset = 0) {
     const scrollInfo = getScrollInfo(this.scroll);
-    const msgs = document.querySelector('#chatbox > tbody').getElementsByTagName('tr');
-    const offsetTop = msgs[index]?.offsetTop;
+    const tbody = $('#chatbox > tbody');
+    if (tbody.length > 0) {
+      const msgs = tbody.find('> tr');
+      const offsetTop = msgs.get(index)?.offsetTop;
 
-    if (offsetTop === undefined) return;
-    // if msg is already in visible are we don't need to scroll to that
-    if (offsetTop > scrollInfo.top && offsetTop < scrollInfo.top + scrollInfo.viewHeight) return;
-    const to = offsetTop - offset;
+      if (offsetTop === undefined) return;
+      // if msg is already in visible are we don't need to scroll to that
+      if (offsetTop > scrollInfo.top && offsetTop < scrollInfo.top + scrollInfo.viewHeight) return;
+      const to = offsetTop - offset;
 
-    this._scrollTo(scrollInfo, to);
+      this._scrollTo(scrollInfo, to);
+      return true;
+    }
+    return false;
   }
 
   _scrollTo(scrollInfo, scrollTop) {
@@ -88,15 +93,20 @@ class TimelineScroll {
   // to restore the scroll position when
   // messages gets removed from either end and added to other.
   _updateTopBottomMsg() {
-    const msgs = document.querySelector('#chatbox > tbody').getElementsByTagName('tr');
-    const lMsgIndex = msgs.length - 1;
+    const tbody = $('#chatbox > tbody');
+    if (tbody) {
+      const msgs = tbody.find('> tr');
+      const lMsgIndex = msgs.length - 1;
 
-    // TODO: classname 'ph-msg' prevent this class from being used
-    this.topMsg = msgs[0]?.className === 'ph-msg' ? msgs[PLACEHOLDER_COUNT] : msgs[0];
-    this.bottomMsg =
-      msgs[lMsgIndex]?.className === 'ph-msg'
-        ? msgs[lMsgIndex - PLACEHOLDER_COUNT]
-        : msgs[lMsgIndex];
+      // TODO: classname 'ph-msg' prevent this class from being used
+      this.topMsg = msgs.get(0)?.className === 'ph-msg' ? msgs.get(PLACEHOLDER_COUNT) : msgs.get(0);
+      this.bottomMsg =
+        msgs.get(lMsgIndex)?.className === 'ph-msg'
+          ? msgs.get(lMsgIndex - PLACEHOLDER_COUNT)
+          : msgs.get(lMsgIndex);
+      return true;
+    }
+    return false;
   }
 
   // we calculate the difference between first/last message and current scrollTop.

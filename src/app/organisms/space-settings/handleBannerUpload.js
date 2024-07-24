@@ -1,7 +1,7 @@
 import initMatrix from '@src/client/initMatrix';
 import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
-export const handleBannerUpload = async (url, roomId) => {
+const handleBannerUpload = async (url, roomId) => {
   const mx = initMatrix.matrixClient;
 
   const spaceHeaderBody = $('.space-drawer-body');
@@ -37,3 +37,5 @@ export const handleBannerUpload = async (url, roomId) => {
     bannerImg.attr('src', (url, 400, 227));
   }
 };
+
+export default handleBannerUpload;

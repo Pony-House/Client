@@ -5,7 +5,6 @@ Ajeitar o selecionador de custom status icon.
 
 Opção para ocultar localmente a lista de threads.
 Ajeitar o atualizador de perfil para ser em tempo real a atualização de dados.
-Fazer o leitor de timeline no primeiro click ser instantaneo
 
 Compu
 @Tiny Jasmini do u think u could make it so broken images for space icons fall back to the default colored icons for spaces without images set? preferably change it to show the first letter of the space's name?
@@ -47,9 +46,6 @@ that could be useful for future diagnostics
 Ver qual Friend ninkcname está sendo usado.
 
 Ver em quais rooms o usuário está (Pelo perfil)
-
-Tonar isso mais usável ao react events.
-src/app/organisms/space-settings/handleBannerUpload.js
 
 Fazer o load de mensagens no thread
 ENS Ethereum

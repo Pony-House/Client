@@ -147,7 +147,7 @@ class MxcUrl extends EventEmitter {
     mxcUrl,
     width,
     height,
-    resizeMethod = 'crop',
+    resizeMethod = 'scale',
     allowDirectLinks = undefined,
     allowRedirects = undefined,
   ) {
@@ -167,7 +167,7 @@ class MxcUrl extends EventEmitter {
     user,
     width,
     height,
-    resizeMethod = 'crop',
+    resizeMethod = 'scale',
     allowDefault = undefined,
     allowDirectLinks = undefined,
   ) {
@@ -186,7 +186,7 @@ class MxcUrl extends EventEmitter {
     user,
     width,
     height,
-    resizeMethod = 'crop',
+    resizeMethod = 'scale',
     allowDefault = undefined,
     allowDirectLinks = undefined,
   ) {

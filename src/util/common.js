@@ -119,9 +119,9 @@ export function cssVar(name) {
 }
 
 export function setFavicon(url) {
-  const favicon = document.querySelector('#favicon');
+  const favicon = $('#favicon');
   if (!favicon) return;
-  favicon.setAttribute('href', url);
+  favicon.attr('href', url);
 }
 
 export function suffixRename(name, validator) {
