@@ -20,15 +20,17 @@ import { getStatusCSS } from '../../../../util/onlineStatus';
 import { confirmDialog } from '../../../molecules/confirm-dialog/ConfirmDialog';
 
 function ProfileSection() {
-  const userProfile =
-    initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
+  const mx = initMatrix.matrixClient;
+  const mxcUrl = initMatrix.mxcUrl;
+
+  const userProfile = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
 
   const customStatusRef = useRef(null);
   const bioRef = useRef(null);
   const pronounsRef = useRef(null);
   const timezoneRef = useRef(null);
 
-  const color = colorMXID(initMatrix.matrixClient.getUserId());
+  const color = colorMXID(mx.getUserId());
 
   const [customStatusIcon, setcustomStatusIcon] = useState(
     typeof userProfile.msgIcon === 'string'
@@ -45,27 +47,23 @@ function ProfileSection() {
   const [profileStatus, setProfileStatus] = useState(
     userProfile.status ? userProfile.status : 'online',
   );
-  const [banner, setBanner] = useState(userProfile.banner);
+  const [bannerSrc, setBannerSrc] = useState(userProfile.banner);
   const [customStatus, setCustomStatus] = useState(userProfile.msg);
   const [userBio, setUserBio] = useState(userProfile.bio);
   const [userPronouns, setUserPronouns] = useState(userProfile.pronouns);
   const [userTimezone, setUserTimezone] = useState(userProfile.timezone);
 
-  const [bannerSrc, setBannerSrc] = useState(null);
-
   const sendSetStatus = (item) => {
-    const content =
-      initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
+    const content = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
     setProfileStatus(item.type);
     content.status = item.type;
-    initMatrix.matrixClient.setAccountData('pony.house.profile', content);
+    mx.setAccountData('pony.house.profile', content);
     emitUpdateProfile(content);
   };
 
   const sendCustomStatus = () => {
     if (customStatusRef && customStatusRef.current) {
-      const content =
-        initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
+      const content = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
 
       const { value } = customStatusRef.current;
 
@@ -93,7 +91,7 @@ function ProfileSection() {
         content.msgIcon = null;
       }
 
-      initMatrix.matrixClient.setAccountData('pony.house.profile', content);
+      mx.setAccountData('pony.house.profile', content);
       emitUpdateProfile(content);
 
       toast('The custom status of your profile has been successfully defined.');
@@ -102,8 +100,7 @@ function ProfileSection() {
 
   const sendBio = () => {
     if (bioRef && bioRef.current) {
-      const content =
-        initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
+      const content = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
 
       const { value } = bioRef.current;
       if (typeof value === 'string' && value.length > 0) {
@@ -114,7 +111,7 @@ function ProfileSection() {
         content.bio = null;
       }
 
-      initMatrix.matrixClient.setAccountData('pony.house.profile', content);
+      mx.setAccountData('pony.house.profile', content);
       emitUpdateProfile(content);
 
       toast('The biography of your profile has been successfully updated.');
@@ -123,8 +120,7 @@ function ProfileSection() {
 
   const sendPronouns = () => {
     if (pronounsRef && pronounsRef.current) {
-      const content =
-        initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
+      const content = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
 
       const { value } = pronounsRef.current;
       if (typeof value === 'string' && value.length > 0) {
@@ -135,7 +131,7 @@ function ProfileSection() {
         content.pronouns = null;
       }
 
-      initMatrix.matrixClient.setAccountData('pony.house.profile', content);
+      mx.setAccountData('pony.house.profile', content);
       emitUpdateProfile(content);
 
       toast('Your pronouns has been successfully updated.');
@@ -144,8 +140,7 @@ function ProfileSection() {
 
   const sendTimezone = () => {
     if (timezoneRef && timezoneRef.current) {
-      const content =
-        initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
+      const content = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
 
       const { value } = timezoneRef.current;
 
@@ -158,7 +153,7 @@ function ProfileSection() {
         content.timezone = null;
       }
 
-      initMatrix.matrixClient.setAccountData('pony.house.profile', content);
+      mx.setAccountData('pony.house.profile', content);
       emitUpdateProfile(content);
 
       toast('The timezone of your profile has been successfully updated.');
@@ -189,11 +184,7 @@ function ProfileSection() {
   ];
 
   const handleBannerUpload = async (url) => {
-    const content =
-      initMatrix.matrixClient.getAccountData('pony.house.profile')?.getContent() ?? {};
-
-    const bannerPlace = $('.space-banner .avatar__border');
-    const bannerImg = $('.space-banner img');
+    const content = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
 
     if (url === null) {
       const isConfirmed = await confirmDialog(
@@ -204,30 +195,18 @@ function ProfileSection() {
       );
 
       if (isConfirmed) {
-        setBanner(null);
+        setBannerSrc(null);
         content.banner = null;
-        initMatrix.matrixClient.setAccountData('pony.house.profile', content);
+        mx.setAccountData('pony.house.profile', content);
         emitUpdateProfile(content);
-
-        bannerPlace.css('background-image', '').removeClass('banner-added');
-        bannerImg.attr('src', '');
       }
     } else {
-      setBanner(url);
+      setBannerSrc(url);
       content.banner = url;
-      initMatrix.matrixClient.setAccountData('pony.house.profile', content);
+      mx.setAccountData('pony.house.profile', content);
       emitUpdateProfile(content);
-
-      bannerPlace.css('background-image', `url('${(url, 660, 227)}')`).addClass('banner-added');
-      bannerImg.attr('src', (url, 400, 227));
     }
   };
-
-  useEffect(() => {
-    if (typeof banner === 'string' && banner.length > 0) {
-      setBannerSrc(initMatrix.mxcUrl.toHttp(banner, 400, 227));
-    }
-  });
 
   return (
     <>
@@ -237,7 +216,7 @@ function ProfileSection() {
             <li className="list-group-item very-small text-gray noselect">Account ID</li>
 
             <li className="list-group-item border-0">
-              <ProfileEditor userId={initMatrix.matrixClient.getUserId()} />
+              <ProfileEditor userId={mx.getUserId()} />
             </li>
           </ul>
         </div>
@@ -398,7 +377,11 @@ function ProfileSection() {
             <ImageUpload
               className="space-banner profile-banner"
               text="Banner"
-              imageSrc={bannerSrc}
+              imageSrc={
+                typeof bannerSrc === 'string' && bannerSrc.length > 0
+                  ? mxcUrl.toHttp(bannerSrc, 400, 227)
+                  : null
+              }
               onUpload={handleBannerUpload}
               onRequestRemove={() => handleBannerUpload(null)}
               defaultImage={avatarDefaultColor(color, 'profile')}

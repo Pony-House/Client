@@ -6,3 +6,4 @@
 - Matrix Events name fixed.
 - Import emoji feature added.
 - Image drag issues fixed.
+- Profile Banner updater fixed.
