@@ -1,3 +1,5 @@
+import PonyRoomEvent from '@src/app/organisms/space-settings/PonyRoomEvent';
+
 import initMatrix from '../client/initMatrix';
 import { getCurrentState } from './matrixUtil';
 
@@ -21,7 +23,8 @@ export function getUserProfile(content, profileRoom) {
         const roomTopic =
           getCurrentState(room).getStateEvents('m.room.topic')[0]?.getContent() ?? {};
         const bannerCfg =
-          getCurrentState(room).getStateEvents('pony.house.settings', 'banner')?.getContent() ?? {};
+          getCurrentState(room).getStateEvents(PonyRoomEvent.PhSettings, 'banner')?.getContent() ??
+          {};
 
         let bannerSrc = '';
         let topic = '';
@@ -68,7 +71,7 @@ export async function getUserProfileAsync(content) {
       const roomTopic = await getStateEvent(content.presenceStatusMsg.roomId, 'm.room.topic');
       const bannerCfg = await getStateEvent(
         content.presenceStatusMsg.roomId,
-        'pony.house.settings',
+        PonyRoomEvent.PhSettings,
         'banner',
       );
 

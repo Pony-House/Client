@@ -21,6 +21,7 @@ import SpaceOptions from '../../molecules/space-options/SpaceOptions';
 import { useForceUpdate } from '../../hooks/useForceUpdate';
 import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 import { getDataList, getSelectSpace } from '../../../util/selectedRoom';
+import PonyRoomEvent from '../space-settings/PonyRoomEvent';
 
 // Selector Function
 const Selector = React.forwardRef(
@@ -56,7 +57,7 @@ const Selector = React.forwardRef(
     let notSpace = !getSelectSpace();
     if (room && !notSpace) {
       const roomIconCfg =
-        getCurrentState(room).getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ??
+        getCurrentState(room).getStateEvents(PonyRoomEvent.PhSettings, 'roomIcons')?.getContent() ??
         {};
       notSpace = roomIconCfg.isActive === true || isSpaces;
     }

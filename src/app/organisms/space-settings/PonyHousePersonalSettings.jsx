@@ -7,6 +7,7 @@ import SettingTile from '../../molecules/setting-tile/SettingTile';
 import initMatrix from '../../../client/initMatrix';
 
 import { getCurrentState } from '../../../util/matrixUtil';
+import PonyRoomEvent from './PonyRoomEvent';
 
 function PonyHousePersonalSettings({ roomId, room }) {
   const mx = initMatrix.matrixClient;
@@ -14,15 +15,16 @@ function PonyHousePersonalSettings({ roomId, room }) {
   const [isRoomIconsVisible, setRoomIconsVisible] = useState(false);
 
   const toggleShowRoomIcons = async (data) => {
-    await mx.sendStateEvent(roomId, 'pony.house.settings', { isActive: data }, 'roomIcons');
+    await mx.sendStateEvent(roomId, PonyRoomEvent.PhSettings, { isActive: data }, 'roomIcons');
     setRoomIconsVisible(data);
   };
 
   // Pony Config
-  const canPonyHouse = getCurrentState(room).maySendStateEvent('pony.house.settings', userId);
+  const canPonyHouse = getCurrentState(room).maySendStateEvent(PonyRoomEvent.PhSettings, userId);
   useEffect(() => {
     const roomIconCfg =
-      getCurrentState(room).getStateEvents('pony.house.settings', 'roomIcons')?.getContent() ?? {};
+      getCurrentState(room).getStateEvents(PonyRoomEvent.PhSettings, 'roomIcons')?.getContent() ??
+      {};
     setRoomIconsVisible(roomIconCfg.isActive === true);
   }, [room]);
 

@@ -29,6 +29,7 @@ import { getSelectRoom, getSelectSpace } from '../../../util/selectedRoom';
 import { getCurrentState } from '../../../util/matrixUtil';
 import { selectRoomMode } from '../../../client/action/navigation';
 import { setLoadingPage } from '../../templates/client/Loading';
+import PonyRoomEvent from '../space-settings/PonyRoomEvent';
 
 // System State
 function useSystemState() {
@@ -134,7 +135,7 @@ function Drawer() {
   useEffect(() => {
     if (room) {
       const bannerCfg = getCurrentState(room)
-        .getStateEvents('pony.house.settings', 'banner')
+        .getStateEvents(PonyRoomEvent.PhSettings, 'banner')
         ?.getContent();
       if (bannerCfg && typeof bannerCfg?.url === 'string' && bannerCfg?.url.length > 0) {
         setBannerSrc(mxcUrl.toHttp(bannerCfg.url, 960, 540));
@@ -147,7 +148,8 @@ function Drawer() {
 
     const handleEvent = (event, state, prevEvent) => {
       if (event.getRoomId() !== room.roomId) return;
-      if (event.getType() !== EmojiEvents.RoomEmotes) return;
+      if (event.getType() !== PonyRoomEvent.PhSettings) return;
+      if (event.getStateKey() !== 'banner') return;
 
       const oldUrl = prevEvent?.getContent()?.url;
       const newUrl = event.getContent().url;
