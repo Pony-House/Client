@@ -173,7 +173,7 @@ const permissionsInfo = {
   'pony.house.settings': {
     parent: 'events',
     name: `Modify ${__ENV_APP__.INFO.name} settings`,
-    description: `Set minimum power level to modify room ${__ENV_APP__.INFO.name} settings.`,
+    description: `Set minimum power level to modify space banner and rooms icon mode of the ${__ENV_APP__.INFO.name} settings.`,
     default: 50,
   },
 
