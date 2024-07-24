@@ -152,7 +152,7 @@ function Drawer() {
       if (event.getStateKey() !== 'banner') return;
 
       const oldUrl = prevEvent?.getContent()?.url;
-      const newUrl = event.getContent().url;
+      const newUrl = event.getContent()?.url;
 
       if (!oldUrl || !newUrl || newUrl !== oldUrl) {
         setBannerSrc(mxcUrl.toHttp(newUrl, 960, 540));

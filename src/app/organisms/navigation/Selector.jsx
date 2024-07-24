@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import threadsList from '@src/util/libs/thread';
+import { RoomStateEvent } from 'matrix-js-sdk';
 
 import muteUserManager from '@src/util/libs/muteUserManager';
 import initMatrix from '../../../client/initMatrix';
@@ -44,6 +45,7 @@ const Selector = React.forwardRef(
 
     const noti = initMatrix.notifications;
     const appearanceSettings = getAppearance();
+    const [roomIconsActive, setRoomIconsActive] = useState(false);
 
     // Room Data
     let room;
@@ -56,10 +58,7 @@ const Selector = React.forwardRef(
 
     let notSpace = !getSelectSpace();
     if (room && !notSpace) {
-      const roomIconCfg =
-        getCurrentState(room).getStateEvents(PonyRoomEvent.PhSettings, 'roomIcons')?.getContent() ??
-        {};
-      notSpace = roomIconCfg.isActive === true || isSpaces;
+      notSpace = roomIconsActive === true || isSpaces;
     }
 
     // Is Room
@@ -192,6 +191,34 @@ const Selector = React.forwardRef(
               ),
           )),
     );
+
+    useEffect(() => {
+      if (room) {
+        const roomIconCfg =
+          getCurrentState(room)
+            .getStateEvents(PonyRoomEvent.PhSettings, 'roomIcons')
+            ?.getContent() ?? {};
+        setRoomIconsActive(roomIconCfg.isActive);
+      }
+
+      const handleEvent = (event, state, prevEvent) => {
+        if (event.getRoomId() !== room.roomId) return;
+        if (event.getType() !== PonyRoomEvent.PhSettings) return;
+        if (event.getStateKey() !== 'roomIcons') return;
+
+        const oldUrl = prevEvent?.getContent()?.isActive;
+        const newUrl = event.getContent()?.isActive;
+
+        if (newUrl !== oldUrl) {
+          setRoomIconsActive(newUrl);
+        }
+      };
+
+      mx.on(RoomStateEvent.Events, handleEvent);
+      return () => {
+        mx.removeListener(RoomStateEvent.Events, handleEvent);
+      };
+    });
 
     return (
       <>
