@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ClientEvent } from 'matrix-js-sdk';
+import { ClientEvent, RoomStateEvent } from 'matrix-js-sdk';
 
 import Modal from 'react-bootstrap/Modal';
 import objectHash from 'object-hash';
@@ -100,6 +100,8 @@ function Drawer() {
   const [, forceUpdate] = useForceUpdate();
   const scrollRef = useRef(null);
 
+  const [bannerSrc, setBannerSrc] = useState('');
+  const spaceDrawerRef = useRef(null);
   const homeClickRef = useRef(null);
 
   const [isIconsColored, setIsIconsColored] = useState(settings.isSelectedThemeColored());
@@ -129,23 +131,45 @@ function Drawer() {
   const mxcUrl = initMatrix.mxcUrl;
   const room = mx.getRoom(spaceId);
 
-  let bannerCfg;
-  if (room) {
-    bannerCfg = getCurrentState(room).getStateEvents('pony.house.settings', 'banner')?.getContent();
-  }
+  useEffect(() => {
+    if (room) {
+      const bannerCfg = getCurrentState(room)
+        .getStateEvents('pony.house.settings', 'banner')
+        ?.getContent();
+      if (bannerCfg && typeof bannerCfg?.url === 'string' && bannerCfg?.url.length > 0) {
+        setBannerSrc(mxcUrl.toHttp(bannerCfg.url, 960, 540));
+      } else {
+        setBannerSrc('');
+      }
+    } else {
+      setBannerSrc('');
+    }
 
-  let avatarSrc = '';
-  if (bannerCfg && typeof bannerCfg?.url === 'string' && bannerCfg?.url.length > 0) {
-    avatarSrc = mxcUrl.toHttp(bannerCfg.url, 960, 540);
-  } else {
-    $('.space-drawer-body').removeClass('drawer-with-banner');
-    $('#space-header > .navbar').removeClass('banner-mode').css('background-image', '');
-  }
+    const handleEvent = (event, state, prevEvent) => {
+      if (event.getRoomId() !== room.roomId) return;
+      if (event.getType() !== EmojiEvents.RoomEmotes) return;
+
+      const oldUrl = prevEvent?.getContent()?.url;
+      const newUrl = event.getContent().url;
+
+      if (!oldUrl || !newUrl || newUrl !== oldUrl) {
+        setBannerSrc(mxcUrl.toHttp(newUrl, 960, 540));
+      }
+    };
+
+    mx.on(RoomStateEvent.Events, handleEvent);
+    return () => {
+      mx.removeListener(RoomStateEvent.Events, handleEvent);
+    };
+  });
 
   return (
     <>
-      <div className={`space-drawer-body${avatarSrc ? ' drawer-with-banner' : ''}`}>
-        <DrawerHeader selectedTab={selectedTab} spaceId={spaceId} banner={avatarSrc} room={room} />
+      <div
+        ref={spaceDrawerRef}
+        className={`space-drawer-body${bannerSrc ? ' drawer-with-banner' : ''}`}
+      >
+        <DrawerHeader selectedTab={selectedTab} spaceId={spaceId} banner={bannerSrc} room={room} />
 
         <ScrollView ref={scrollRef} autoHide>
           {navigation.selectedSpacePath.length > 1 && selectedTab !== cons.tabs.DIRECTS && (
