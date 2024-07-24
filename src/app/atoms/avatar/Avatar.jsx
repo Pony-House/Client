@@ -1,6 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Freezeframe from 'freezeframe';
+
+import initMatrix from '@src/client/initMatrix';
 
 import { loadAvatar, forceLoadAvatars } from './load';
 import { twemojifyReact } from '../../../util/twemojify';
@@ -58,9 +60,15 @@ const Avatar = React.forwardRef(
     },
     ref,
   ) => {
+    const mxcUrl = initMatrix.mxcUrl;
+
     // Freeze Avatar
     const freezeAvatarRef = useRef(null);
     const ref2 = useRef(null);
+
+    // imageAnimSrc
+    // imageSrc
+    const [imgSrc, setImgSrc] = useState(null);
 
     // Avatar Config
     const appearanceSettings = getAppearance();
@@ -118,93 +126,91 @@ const Avatar = React.forwardRef(
       } else if (ref2.current) ref2.current.classList.add('avatar-react-loaded');
     };
 
-    const isImage = imageSrc !== null || isDefaultImage;
+    // Image
+    const tinyImg = () =>
+      !imageAnimSrc || !appearanceSettings.isAnimateAvatarsEnabled ? (
+        // Default Image
+        <img
+          ref={theRef}
+          className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
+          draggable="false"
+          src={typeof imageSrc === 'string' && imageSrc.length > 0 ? imageSrc : tinyDa}
+          onLoad={onLoadAvatar}
+          onError={(e) => {
+            e.target.src = ImageBrokenSVG;
+          }}
+          alt={text || 'avatar'}
+        />
+      ) : appearanceSettings.useFreezePlugin ? (
+        // Custom Image
+        <div className="react-freezeframe">
+          <img
+            ref={freezeAvatarRef}
+            className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
+            onLoad={onLoadAvatar}
+            src={
+              typeof imageAnimSrc === 'string' && imageAnimSrc.length > 0 ? imageAnimSrc : tinyDa
+            }
+            alt={text || 'avatar'}
+          />
+        </div>
+      ) : (
+        <img
+          className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
+          draggable="false"
+          loadedimg="false"
+          loadingimg="false"
+          animparentscount={animParentsCount}
+          animsrc={imageAnimSrc}
+          normalsrc={imageSrc}
+          defaultavatar={tinyDa}
+          src={tinyDa}
+          onLoad={(e) => {
+            onLoadAvatar(e);
+            loadAvatar(e);
+          }}
+          onError={(e) => {
+            e.target.src = ImageBrokenSVG;
+          }}
+          alt={text || 'avatar'}
+        />
+      );
+
+    // Icons
+    const tinyIcon = () =>
+      faSrc !== null ? (
+        <span
+          style={{ backgroundColor: faSrc === null ? bgColor : 'transparent' }}
+          className={`avatar__border${faSrc !== null ? '--active' : ''}`}
+        >
+          <RawIcon size={size} fa={faSrc} neonColor={neonColor} color={iconColor} />
+        </span>
+      ) : (
+        <span
+          style={{ backgroundColor: iconSrc === null ? bgColor : 'transparent' }}
+          className={`avatar__border${iconSrc !== null ? '--active' : ''}`}
+        >
+          {iconSrc !== null ? (
+            <RawIcon size={size} src={iconSrc} neonColor={neonColor} color={iconColor} />
+          ) : (
+            text !== null && (
+              <Text variant={textSize} primary>
+                {twemojifyReact(true, avatarInitials(text))}
+              </Text>
+            )
+          )}
+        </span>
+      );
 
     // Render
+    const isImage = imageSrc !== null || isDefaultImage;
     return (
       <div
         onClick={onClick}
         ref={ref || ref2}
         className={`avatar-container avatar-container__${size} ${className} noselect${isImage ? '' : ' avatar-react-loaded'}`}
       >
-        {
-          // Exist Image
-          isImage ? (
-            // Image
-            !imageAnimSrc || !appearanceSettings.isAnimateAvatarsEnabled ? (
-              // Default Image
-              <img
-                ref={theRef}
-                className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
-                draggable="false"
-                src={typeof imageSrc === 'string' && imageSrc.length > 0 ? imageSrc : tinyDa}
-                onLoad={onLoadAvatar}
-                onError={(e) => {
-                  e.target.src = ImageBrokenSVG;
-                }}
-                alt={text || 'avatar'}
-              />
-            ) : appearanceSettings.useFreezePlugin ? (
-              // Custom Image
-              <div className="react-freezeframe">
-                <img
-                  ref={freezeAvatarRef}
-                  className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
-                  onLoad={onLoadAvatar}
-                  src={
-                    typeof imageAnimSrc === 'string' && imageAnimSrc.length > 0
-                      ? imageAnimSrc
-                      : tinyDa
-                  }
-                  alt={text || 'avatar'}
-                />
-              </div>
-            ) : (
-              <img
-                className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
-                draggable="false"
-                loadedimg="false"
-                loadingimg="false"
-                animparentscount={animParentsCount}
-                animsrc={imageAnimSrc}
-                normalsrc={imageSrc}
-                defaultavatar={tinyDa}
-                src={tinyDa}
-                onLoad={(e) => {
-                  onLoadAvatar(e);
-                  loadAvatar(e);
-                }}
-                onError={(e) => {
-                  e.target.src = ImageBrokenSVG;
-                }}
-                alt={text || 'avatar'}
-              />
-            )
-          ) : // Icons
-          faSrc !== null ? (
-            <span
-              style={{ backgroundColor: faSrc === null ? bgColor : 'transparent' }}
-              className={`avatar__border${faSrc !== null ? '--active' : ''}`}
-            >
-              <RawIcon size={size} fa={faSrc} neonColor={neonColor} color={iconColor} />
-            </span>
-          ) : (
-            <span
-              style={{ backgroundColor: iconSrc === null ? bgColor : 'transparent' }}
-              className={`avatar__border${iconSrc !== null ? '--active' : ''}`}
-            >
-              {iconSrc !== null ? (
-                <RawIcon size={size} src={iconSrc} neonColor={neonColor} color={iconColor} />
-              ) : (
-                text !== null && (
-                  <Text variant={textSize} primary>
-                    {twemojifyReact(true, avatarInitials(text))}
-                  </Text>
-                )
-              )}
-            </span>
-          )
-        }
+        {isImage ? tinyImg() : tinyIcon()}
       </div>
     );
   },
