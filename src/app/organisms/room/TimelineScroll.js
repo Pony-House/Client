@@ -1,6 +1,11 @@
 import { setMediaHeight } from '../../molecules/media/mediaFix';
 import { getScrollInfo } from '../../../util/common';
 
+export const PLACEHOLDER_COUNT = 2;
+export const MAX_MSG_DIFF_MINUTES = 5;
+export const PLACEHOLDERS_HEIGHT = 96 * PLACEHOLDER_COUNT;
+export const SCROLL_TRIGGER_POS = PLACEHOLDERS_HEIGHT / 2;
+
 class TimelineScroll {
   constructor(target) {
     if (target === null) {
@@ -87,7 +92,6 @@ class TimelineScroll {
     const lMsgIndex = msgs.length - 1;
 
     // TODO: classname 'ph-msg' prevent this class from being used
-    const PLACEHOLDER_COUNT = 2;
     this.topMsg = msgs[0]?.className === 'ph-msg' ? msgs[PLACEHOLDER_COUNT] : msgs[0];
     this.bottomMsg =
       msgs[lMsgIndex]?.className === 'ph-msg'
