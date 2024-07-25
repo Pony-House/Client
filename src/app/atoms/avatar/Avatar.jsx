@@ -83,6 +83,8 @@ const Avatar = React.forwardRef(
     const [waitSrc, setWaitSrc] = useState(tinyImageUrl);
 
     const [imgMime, setImgMime] = useState([]);
+    const [imgMimeAnim, setImgMimeAnim] = useState([]);
+
     const [imgSrc, setImgSrc] = useState(null);
     const [imgAnimSrc, setImgAnimSrc] = useState(null);
 
@@ -93,6 +95,7 @@ const Avatar = React.forwardRef(
     const [blobAnimSrc, setBlobAnimSrc] = useState(null);
 
     const [isLoading, setIsLoading] = useState(0);
+    const [useAnimation, setUseAnimation] = useState(false);
 
     // Avatar Config
     const appearanceSettings = getAppearance();
@@ -120,7 +123,15 @@ const Avatar = React.forwardRef(
         };
 
         // Active load progress
-        const progressLoad = (tnSrc, tinySrc, setTinyBlob, setTnSrc, setError, isAnim) => {
+        const progressLoad = (
+          tnSrc,
+          tinySrc,
+          setTinyBlob,
+          setTnSrc,
+          setError,
+          setTinyMime,
+          isAnim,
+        ) => {
           // Enable loading mode
           setIsLoading(1);
           setError(null);
@@ -131,7 +142,7 @@ const Avatar = React.forwardRef(
             const blobFromId = blobUrlManager.getById(tinySrc);
             if (blobFromId) {
               if (tinyImageUrl === waitSrc) {
-                setImgMime(blobUrlManager.getMime(blobFromId));
+                setTinyMime(blobUrlManager.getMime(blobFromId));
                 setTinyBlob(blobFromId);
                 setTnSrc(tinySrc);
               }
@@ -143,7 +154,7 @@ const Avatar = React.forwardRef(
               if (tinyImageUrl === waitSrc) {
                 setTnSrc(null);
                 setTinyBlob(null);
-                setImgMime([]);
+                setTinyMime([]);
               }
 
               // Is normal image? Reset the animation version too.
@@ -152,6 +163,7 @@ const Avatar = React.forwardRef(
                   setBlobAnimSrc(null);
                   setImgAnimSrc(null);
                   setImgAnimError(null);
+                  setImgMimeAnim([]);
                 }
               }
 
@@ -162,7 +174,7 @@ const Avatar = React.forwardRef(
                 .then((blobFromFetch) => {
                   const mime = blobFromFetch.type.split('/');
                   if (mime[0] === 'image' && imageExts.indexOf(mime[1]) > -1) {
-                    if (tinyImageUrl === waitSrc) setImgMime(mime);
+                    if (tinyImageUrl === waitSrc) setTinyMime(mime);
                     return blobUrlManager.insert(blobFromFetch, {
                       freeze: true,
                       group: `user_avatars`,
@@ -193,7 +205,7 @@ const Avatar = React.forwardRef(
                   if (tinyImageUrl === waitSrc) {
                     setTinyBlob(ImageBrokenSVG);
                     setTnSrc(tinySrc);
-                    setImgMime([]);
+                    setTinyMime([]);
                   }
 
                   // Check the progress
@@ -207,7 +219,7 @@ const Avatar = React.forwardRef(
             if (tinyImageUrl === waitSrc) {
               setTnSrc(null);
               setTinyBlob(null);
-              setImgMime([]);
+              setTinyMime([]);
             }
           }
         };
@@ -219,7 +231,7 @@ const Avatar = React.forwardRef(
           !tinyImageUrl ||
           (!tinyImageUrl.startsWith('blob:') && !tinyImageUrl.startsWith('./'))
         ) {
-          progressLoad(imgSrc, tinyImageUrl, setBlobSrc, setImgSrc, setImgError, false);
+          progressLoad(imgSrc, tinyImageUrl, setBlobSrc, setImgSrc, setImgError, setImgMime, false);
         } else {
           setBlobSrc(tinyImageUrl);
           setImgSrc(tinyImageUrl);
@@ -236,6 +248,7 @@ const Avatar = React.forwardRef(
             setBlobAnimSrc,
             setImgAnimSrc,
             setImgError,
+            setImgMimeAnim,
             true,
           );
         } else {
@@ -245,18 +258,6 @@ const Avatar = React.forwardRef(
 
         // Check the progress
         isComplete();
-
-        // Anim Parents Counter
-        if (typeof imageAnimSrc === 'string' && imageAnimSrc.length > 0) {
-          const img = $(imgRef.current);
-          if (img.length > 0) {
-            let tinyNode = img.get(0);
-            for (let i = 0; i < animParentsCount; i++) {
-              tinyNode = tinyNode.parentNode;
-            }
-            console.log(tinyNode);
-          }
-        }
 
         /* 
         if (freezeAvatarRef.current) {
@@ -295,6 +296,35 @@ const Avatar = React.forwardRef(
           }
         }*/
       }
+
+      // Anim Parents Counter
+      if (blobAnimSrc) {
+        let tinyNode;
+        if (typeof imageAnimSrc === 'string' && imageAnimSrc.length > 0) {
+          const img = $(imgRef.current);
+          if (img.length > 0) {
+            tinyNode = img.get(0);
+            for (let i = 0; i < animParentsCount; i++) {
+              tinyNode = tinyNode.parentNode;
+            }
+          }
+        }
+
+        const animationTransitionIn = () => setUseAnimation(true);
+        const animationTransitionOut = () => setUseAnimation(false);
+        const tinyQuery = tinyNode ? $(tinyNode) : null;
+        if (tinyNode) {
+          tinyQuery.on('mouseover', animationTransitionIn);
+          tinyQuery.on('mouseout', animationTransitionOut);
+        }
+
+        return () => {
+          if (tinyNode) {
+            tinyQuery.off('mouseover', animationTransitionIn);
+            tinyQuery.off('mouseout', animationTransitionOut);
+          }
+        };
+      }
     });
 
     // Image
@@ -306,7 +336,13 @@ const Avatar = React.forwardRef(
           draggable="false"
           src_url={tinyImageUrl}
           src_anim_url={tinyImageAnimUrl}
-          src={blobSrc && imgMime[0] === 'image' ? blobSrc : ImageBrokenSVG}
+          src={
+            blobSrc && Array.isArray(imgMime) && imgMime[0] === 'image'
+              ? !useAnimation || (Array.isArray(imgMimeAnim) && imgMimeAnim[1] !== 'gif')
+                ? blobSrc
+                : blobAnimSrc
+              : ImageBrokenSVG
+          }
           alt={text || 'avatar'}
         />
       );
