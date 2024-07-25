@@ -82,6 +82,7 @@ const Avatar = React.forwardRef(
     // appearanceSettings.useFreezePlugin
     const [waitSrc, setWaitSrc] = useState(tinyImageUrl);
 
+    const [imgMime, setImgMime] = useState([]);
     const [imgSrc, setImgSrc] = useState(null);
     const [imgAnimSrc, setImgAnimSrc] = useState(null);
 
@@ -130,6 +131,7 @@ const Avatar = React.forwardRef(
             const blobFromId = blobUrlManager.getById(tinySrc);
             if (blobFromId) {
               if (tinyImageUrl === waitSrc) {
+                setImgMime(blobUrlManager.getMime(blobFromId));
                 setTinyBlob(blobFromId);
                 setTnSrc(tinySrc);
               }
@@ -141,6 +143,7 @@ const Avatar = React.forwardRef(
               if (tinyImageUrl === waitSrc) {
                 setTnSrc(null);
                 setTinyBlob(null);
+                setImgMime([]);
               }
 
               // Is normal image? Reset the animation version too.
@@ -158,11 +161,13 @@ const Avatar = React.forwardRef(
                 .focusFetchBlob(tinySrc)
                 .then((blobFromFetch) => {
                   const mime = blobFromFetch.type.split('/');
-                  if (mime[0] === 'image' && imageExts.indexOf(mime[1]) > -1)
+                  if (mime[0] === 'image' && imageExts.indexOf(mime[1]) > -1) {
+                    if (tinyImageUrl === waitSrc) setImgMime(mime);
                     return blobUrlManager.insert(blobFromFetch, {
                       freeze: true,
                       group: `user_avatars`,
                     });
+                  }
                   throw new Error(
                     `INVALID IMAGE MIME MXC! The "${tinySrc}" is "${blobFromFetch.type}".`,
                   );
@@ -188,6 +193,7 @@ const Avatar = React.forwardRef(
                   if (tinyImageUrl === waitSrc) {
                     setTinyBlob(ImageBrokenSVG);
                     setTnSrc(tinySrc);
+                    setImgMime([]);
                   }
 
                   // Check the progress
@@ -201,6 +207,7 @@ const Avatar = React.forwardRef(
             if (tinyImageUrl === waitSrc) {
               setTnSrc(null);
               setTinyBlob(null);
+              setImgMime([]);
             }
           }
         };
@@ -299,7 +306,7 @@ const Avatar = React.forwardRef(
           draggable="false"
           src_url={tinyImageUrl}
           src_anim_url={tinyImageAnimUrl}
-          src={blobSrc || ImageBrokenSVG}
+          src={blobSrc && imgMime[0] === 'image' ? blobSrc : ImageBrokenSVG}
           alt={text || 'avatar'}
         />
       );

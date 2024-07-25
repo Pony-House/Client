@@ -12,6 +12,7 @@ class BlobUrlManager extends EventEmitter {
     this.groups = {};
     this.queue = {};
     this.ids = {};
+    this.mime = {};
     this.idsReverse = {};
   }
 
@@ -37,6 +38,11 @@ class BlobUrlManager extends EventEmitter {
 
   getById(id) {
     if (typeof this.ids[id] === 'string') return this.ids[id];
+    return null;
+  }
+
+  getMime(blobUrl) {
+    if (Array.isArray(this.mime[blobUrl])) return this.mime[blobUrl];
     return null;
   }
 
@@ -76,6 +82,9 @@ class BlobUrlManager extends EventEmitter {
           this.ids[ops.id] = tinyUrl;
           this.idsReverse[tinyUrl] = ops.id;
         }
+
+        // Mime
+        this.mime[tinyUrl] = typeof file.type === 'string' ? file.type.split('/') : [];
 
         // Hash
         this.urls[tinyUrl] = hash;
@@ -149,6 +158,7 @@ class BlobUrlManager extends EventEmitter {
           delete this.idsReverse[tinyUrl];
         }
 
+        delete this.mime[tinyUrl];
         delete this.hashes[hash];
         delete this.timeout[hash];
         delete this.urls[tinyUrl];
