@@ -147,7 +147,7 @@ function Drawer() {
     }
 
     const handleEvent = (event, state, prevEvent) => {
-      if (event.getRoomId() !== room.roomId) return;
+      if (room && event.getRoomId() !== room.roomId) return;
       if (event.getType() !== PonyRoomEvent.PhSettings) return;
       if (event.getStateKey() !== 'banner') return;
 

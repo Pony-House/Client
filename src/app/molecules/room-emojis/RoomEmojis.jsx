@@ -26,7 +26,7 @@ function useRoomPacks(room) {
 
   useEffect(() => {
     const handleEvent = (event, state, prevEvent) => {
-      if (event.getRoomId() !== room.roomId) return;
+      if (room && event.getRoomId() !== room.roomId) return;
       if (event.getType() !== EmojiEvents.RoomEmotes) return;
       if (!prevEvent?.getContent()?.images || !event.getContent().images) {
         forceUpdate();
