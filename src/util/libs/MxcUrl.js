@@ -73,7 +73,7 @@ class MxcUrl extends EventEmitter {
   fetch(link = null, ignoreCustomUrl = false) {
     const tinyLink = !ignoreCustomUrl ? this.readCustomUrl(link) : link;
     const options = { method: 'GET', headers: {} };
-    if (link.startsWith(`${this.mx.baseUrl}/`)) {
+    if (this._isAuth && link.startsWith(`${this.mx.baseUrl}/`)) {
       const accessToken = typeof this.mx.getAccessToken === 'function' && this.mx.getAccessToken();
       if (accessToken) options.headers['Authorization'] = `Bearer ${accessToken}`;
     }
