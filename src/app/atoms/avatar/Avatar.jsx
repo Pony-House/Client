@@ -74,11 +74,7 @@ const Avatar = React.forwardRef(
     let tinyImageAnimUrl = imageAnimSrc;
     if (isDefaultImage) {
       const defaultAvatar = avatarDefaultColor(bgColor);
-
       if (typeof tinyImageUrl !== 'string') tinyImageUrl = defaultAvatar;
-
-      if (typeof tinyImageUrl !== 'string' || typeof tinyImageAnimUrl !== 'string')
-        tinyImageAnimUrl = defaultAvatar;
     }
 
     // appearanceSettings.isAnimateAvatarsEnabled
@@ -206,17 +202,27 @@ const Avatar = React.forwardRef(
         // Execute the image loading
 
         // Normal image
-        progressLoad(imgSrc, tinyImageUrl, setBlobSrc, setImgSrc, setImgError, false);
+        if (!tinyImageUrl || !tinyImageUrl.startsWith('blob:')) {
+          progressLoad(imgSrc, tinyImageUrl, setBlobSrc, setImgSrc, setImgError, false);
+        } else {
+          setBlobSrc(tinyImageUrl);
+          setImgSrc(tinyImageUrl);
+        }
 
         // Anim image
-        progressLoad(
-          imgAnimSrc,
-          tinyImageAnimUrl,
-          setBlobAnimSrc,
-          setImgAnimSrc,
-          setImgError,
-          true,
-        );
+        if (!tinyImageAnimUrl || !tinyImageAnimUrl.startsWith('blob:')) {
+          progressLoad(
+            imgAnimSrc,
+            tinyImageAnimUrl,
+            setBlobAnimSrc,
+            setImgAnimSrc,
+            setImgError,
+            true,
+          );
+        } else {
+          setBlobAnimSrc(tinyImageAnimUrl);
+          setBlobAnimSrc(tinyImageAnimUrl);
+        }
 
         // Check the progress
         isComplete();
