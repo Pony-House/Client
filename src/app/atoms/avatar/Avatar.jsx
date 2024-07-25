@@ -436,7 +436,8 @@ const Avatar = React.forwardRef(
           src_url={tinyImageUrl}
           src_anim_url={tinyImageAnimUrl}
           src={
-            blobSrc && Array.isArray(imgMime) && imgMime[0] === 'image'
+            blobSrc &&
+            ((Array.isArray(imgMime) && imgMime[0] === 'image') || tinyImageUrl.startsWith('blob:'))
               ? !blobAnimSrc ||
                 blobAnimSrc === blobSrc ||
                 !useAnimation ||
