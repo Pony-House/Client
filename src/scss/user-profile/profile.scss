@@ -23,8 +23,14 @@
         margin-right: 27px;
       }
 
-      .custom-status-unread {
-        margin-left: -27px;
+      .username-base {
+        .user-custom-status:not(:empty) {
+          margin-top: -7px;
+          font-size: 8pt;
+          .emoji {
+            margin-right: 4px !important;
+          }
+        }
       }
 
       .notification-badge {

@@ -233,14 +233,13 @@ function RoomSelector({
                 {twemojifyReact(parentName)}
               </span>
             )}
+            {user ? (
+              <div
+                ref={customStatusRef}
+                className={`very-small text-gray text-truncate emoji-size-fix-2 user-custom-status${isUnread ? ' custom-status-unread' : ''}`}
+              />
+            ) : null}
           </Text>
-
-          {user ? (
-            <div
-              ref={customStatusRef}
-              className={`very-small text-gray text-truncate emoji-size-fix-2 user-custom-status${isUnread ? ' custom-status-unread' : ''}`}
-            />
-          ) : null}
 
           {isUnread && (
             <NotificationBadge
