@@ -58,7 +58,7 @@ const Avatar = React.forwardRef(
       imgClass = 'img-fluid',
       imageAnimSrc = null,
       isDefaultImage = false,
-      animParentsCount = 4,
+      animParentsCount = 3,
       theRef,
     },
     ref,
@@ -232,6 +232,18 @@ const Avatar = React.forwardRef(
 
         // Check the progress
         isComplete();
+
+        // Anim Parents Counter
+        if (typeof imageAnimSrc === 'string' && imageAnimSrc.length > 0) {
+          const img = $(imgRef.current);
+          if (img.length > 0) {
+            let tinyNode = img.get(0);
+            for (let i = 0; i < animParentsCount; i++) {
+              tinyNode = tinyNode.parentNode;
+            }
+            console.log(tinyNode);
+          }
+        }
 
         /* 
         if (freezeAvatarRef.current) {

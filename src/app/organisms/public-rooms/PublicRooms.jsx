@@ -235,7 +235,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
       const desc = typeof room.topic === 'string' ? room.topic : null;
 
       /*
-            animParentsCount={3}
+            animParentsCount={2}
       imageAnimSrc={typeof room.avatar_url === 'string' ?
         !appearanceSettings.enableAnimParams ? mxcUrl.toHttp(room.avatar_url) : getAnimatedImageUrl(mxcUrl.toHttp(room.avatar_url, 42, 42))
         : null}

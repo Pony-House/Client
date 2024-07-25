@@ -208,7 +208,7 @@ export default function FeaturedTab() {
                   text={room.name}
                   bgColor={colorMXID(room.roomId)}
                   size="normal"
-                  animParentsCount={2}
+                  animParentsCount={1}
                   imageAnimSrc={
                     !appearanceSettings.enableAnimParams
                       ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember())

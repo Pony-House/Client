@@ -194,7 +194,7 @@ function Search() {
         roomId={item.roomId}
         imageAnimSrc={imageAnimSrc}
         imageSrc={imageSrc}
-        animParentsCount={2}
+        animParentsCount={1}
         iconSrc={iconSrc}
         isUnread={noti.hasNoti(item.roomId)}
         notificationCount={noti.getTotalNoti(item.roomId)}
