@@ -298,7 +298,7 @@ const Avatar = React.forwardRef(
       }
 
       // Anim Parents Counter
-      if (blobAnimSrc) {
+      if (blobAnimSrc && blobAnimSrc !== blobSrc) {
         let tinyNode;
         if (typeof imageAnimSrc === 'string' && imageAnimSrc.length > 0) {
           const img = $(imgRef.current);
@@ -339,6 +339,7 @@ const Avatar = React.forwardRef(
           src={
             blobSrc && Array.isArray(imgMime) && imgMime[0] === 'image'
               ? !blobAnimSrc ||
+                blobAnimSrc === blobSrc ||
                 !useAnimation ||
                 (Array.isArray(imgMimeAnim) && imgMimeAnim[1] !== 'gif')
                 ? blobSrc
