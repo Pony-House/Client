@@ -194,7 +194,7 @@
 
 .modal-dialog-user-profile,
 .people-drawer-banner {
-  .avatar-container {
+  .avatar-container.image-react-loaded {
     background-color: var(--bg-profile-banner) !important;
   }
   &.image-react-loaded {
