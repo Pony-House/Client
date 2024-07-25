@@ -69,11 +69,21 @@ const Avatar = React.forwardRef(
     const freezeAvatarRef = useRef(null);
     const imgRef = ref || useRef(null);
 
-    // imageAnimSrc
-    // imageSrc
+    // Get Url
+    let tinyImageUrl = imageSrc;
+    let tinyImageAnimUrl = imageAnimSrc;
+    if (isDefaultImage) {
+      const defaultAvatar = avatarDefaultColor(bgColor);
+
+      if (typeof tinyImageUrl !== 'string') tinyImageUrl = defaultAvatar;
+
+      if (typeof tinyImageUrl !== 'string' || typeof tinyImageAnimUrl !== 'string')
+        tinyImageAnimUrl = defaultAvatar;
+    }
+
     // appearanceSettings.isAnimateAvatarsEnabled
     // appearanceSettings.useFreezePlugin
-    const [waitSrc, setWaitSrc] = useState(imageSrc);
+    const [waitSrc, setWaitSrc] = useState(tinyImageUrl);
 
     const [imgSrc, setImgSrc] = useState(null);
     const [imgAnimSrc, setImgAnimSrc] = useState(null);
@@ -96,147 +106,157 @@ const Avatar = React.forwardRef(
     if (size === 'extra-small') textSize = 'b3';
 
     // Get data
-    const defaultAvatar = avatarDefaultColor(bgColor);
     useEffect(() => {
-      if (waitSrc !== imageSrc) {
-        setWaitSrc(imageSrc);
+      if (waitSrc !== tinyImageUrl) {
+        setWaitSrc(tinyImageUrl);
         setIsLoading(0);
       }
 
-      if (typeof imageSrc === 'string') {
-        if (isLoading < 1) {
-          // Complete checker
-          let isLoadingProgress = 0;
-          const isComplete = () => {
-            if (isLoading < 2 && isLoadingProgress < 1) {
-              setIsLoading(2);
-            }
-          };
+      if (isLoading < 1) {
+        // Complete checker
+        let isLoadingProgress = 0;
+        const isComplete = () => {
+          if (isLoading < 2 && isLoadingProgress < 1) {
+            setIsLoading(2);
+          }
+        };
 
-          // Active load progress
-          const progressLoad = (tnSrc, tinySrc, setTinyBlob, setTnSrc, setError, isAnim) => {
-            // Enable loading mode
-            setIsLoading(1);
-            setError(null);
+        // Active load progress
+        const progressLoad = (tnSrc, tinySrc, setTinyBlob, setTnSrc, setError, isAnim) => {
+          // Enable loading mode
+          setIsLoading(1);
+          setError(null);
 
-            // The new image is string
-            if (typeof tinySrc === 'string') {
-              // Exist blob cache?
-              const blobFromId = blobUrlManager.getById(tinySrc);
-              if (blobFromId) {
-                if (imageSrc === waitSrc) {
-                  setTinyBlob(blobFromId);
-                  setTnSrc(tinySrc);
-                }
-              }
-
-              // Nope. Let's create a new one.
-              else {
-                // Reset image data
-                if (imageSrc === waitSrc) {
-                  setTnSrc(null);
-                  setTinyBlob(null);
-                }
-
-                // Is normal image? Reset the animation version too.
-                if (!isAnim) {
-                  if (imageSrc === waitSrc) {
-                    setBlobAnimSrc(null);
-                    setImgAnimSrc(null);
-                    setImgAnimError(null);
-                  }
-                }
-
-                // Add loading progress...
-                isLoadingProgress++;
-                mxcUrl
-                  .focusFetchBlob(tinySrc)
-                  .then((blobFromFetch) =>
-                    blobUrlManager.insert(blobFromFetch, {
-                      freeze: true,
-                      group: `user_avatars`,
-                    }),
-                  )
-                  // Complete
-                  .then((blobUrl) => {
-                    // Insert data
-                    if (imageSrc === waitSrc) {
-                      setTinyBlob(blobUrl);
-                      setTnSrc(tinySrc);
-                    }
-
-                    // Check the progress
-                    isLoadingProgress--;
-                    isComplete();
-                  })
-                  // Error
-                  .catch((err) => {
-                    // Show console error
-                    console.error(err);
-
-                    // Check the progress
-                    isLoadingProgress--;
-                    isComplete();
-                  });
+          // The new image is string
+          if (typeof tinySrc === 'string' && tinySrc.length > 0) {
+            // Exist blob cache?
+            const blobFromId = blobUrlManager.getById(tinySrc);
+            if (blobFromId) {
+              if (tinyImageUrl === waitSrc) {
+                setTinyBlob(blobFromId);
+                setTnSrc(tinySrc);
               }
             }
-            // Nothing
+
+            // Nope. Let's create a new one.
             else {
-              if (imageSrc === waitSrc) {
+              // Reset image data
+              if (tinyImageUrl === waitSrc) {
                 setTnSrc(null);
                 setTinyBlob(null);
               }
-            }
-          };
 
-          // Execute the image loading
-
-          // Normal image
-          progressLoad(imgSrc, imageSrc, setBlobSrc, setImgSrc, setImgError, false);
-
-          // Anim image
-          progressLoad(imgAnimSrc, imageAnimSrc, setBlobAnimSrc, setImgAnimSrc, setImgError, true);
-
-          // Check the progress
-          isComplete();
-
-          /* 
-          if (freezeAvatarRef.current) {
-            const avatar = new Freezeframe(freezeAvatarRef.current, {
-              responsive: true,
-              trigger: false,
-              overlay: false,
-            });
-    
-            const img = $(avatar.$images[0]);
-            const loadingimg = img.attr('loadingimg');
-            if (loadingimg !== 'true' && loadingimg !== true) {
-              img.attr('loadingimg', 'true');
-              let tinyNode = avatar.$images[0];
-              for (let i = 0; i < animParentsCount + 1; i++) {
-                tinyNode = tinyNode.parentNode;
+              // Is normal image? Reset the animation version too.
+              if (!isAnim) {
+                if (tinyImageUrl === waitSrc) {
+                  setBlobAnimSrc(null);
+                  setImgAnimSrc(null);
+                  setImgAnimError(null);
+                }
               }
-    
-              // Final Node
-              tinyNode = $(tinyNode);
-    
-              // Insert Effects
-              tinyNode.hover(
-                () => {
-                  
-                },
-                () => {
-                  
-                },
-              );
-    
-              if (typeof avatar.render === 'function') avatar.render();
-              return () => {
-                if (avatar && typeof avatar.destroy === 'function') avatar.destroy();
-              };
+
+              // Add loading progress...
+              isLoadingProgress++;
+              mxcUrl
+                .focusFetchBlob(tinySrc)
+                .then((blobFromFetch) =>
+                  blobUrlManager.insert(blobFromFetch, {
+                    freeze: true,
+                    group: `user_avatars`,
+                  }),
+                )
+                // Complete
+                .then((blobUrl) => {
+                  // Insert data
+                  if (tinyImageUrl === waitSrc) {
+                    setTinyBlob(blobUrl);
+                    setTnSrc(tinySrc);
+                  }
+
+                  // Check the progress
+                  isLoadingProgress--;
+                  isComplete();
+                })
+                // Error
+                .catch((err) => {
+                  // Show console error
+                  console.error(err);
+
+                  // Set image error
+                  if (tinyImageUrl === waitSrc) {
+                    setTinyBlob(ImageBrokenSVG);
+                    setTnSrc(tinySrc);
+                  }
+
+                  // Check the progress
+                  isLoadingProgress--;
+                  isComplete();
+                });
             }
-          }*/
-        }
+          }
+          // Nothing
+          else {
+            if (tinyImageUrl === waitSrc) {
+              setTnSrc(null);
+              setTinyBlob(null);
+            }
+          }
+        };
+
+        // Execute the image loading
+
+        // Normal image
+        progressLoad(imgSrc, tinyImageUrl, setBlobSrc, setImgSrc, setImgError, false);
+
+        // Anim image
+        progressLoad(
+          imgAnimSrc,
+          tinyImageAnimUrl,
+          setBlobAnimSrc,
+          setImgAnimSrc,
+          setImgError,
+          true,
+        );
+
+        // Check the progress
+        isComplete();
+
+        /* 
+        if (freezeAvatarRef.current) {
+          const avatar = new Freezeframe(freezeAvatarRef.current, {
+            responsive: true,
+            trigger: false,
+            overlay: false,
+          });
+  
+          const img = $(avatar.$images[0]);
+          const loadingimg = img.attr('loadingimg');
+          if (loadingimg !== 'true' && loadingimg !== true) {
+            img.attr('loadingimg', 'true');
+            let tinyNode = avatar.$images[0];
+            for (let i = 0; i < animParentsCount + 1; i++) {
+              tinyNode = tinyNode.parentNode;
+            }
+  
+            // Final Node
+            tinyNode = $(tinyNode);
+  
+            // Insert Effects
+            tinyNode.hover(
+              () => {
+                
+              },
+              () => {
+                
+              },
+            );
+  
+            if (typeof avatar.render === 'function') avatar.render();
+            return () => {
+              if (avatar && typeof avatar.destroy === 'function') avatar.destroy();
+            };
+          }
+        }*/
       }
     });
 
@@ -247,11 +267,9 @@ const Avatar = React.forwardRef(
           ref={theRef}
           className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
           draggable="false"
-          src={blobSrc}
-          onError={(e) => {
-            setBlobSrc(ImageBrokenSVG);
-            setBlobAnimSrc(ImageBrokenSVG);
-          }}
+          src_url={tinyImageUrl}
+          src_anim_url={tinyImageAnimUrl}
+          src={blobSrc || ImageBrokenSVG}
           alt={text || 'avatar'}
         />
       );
@@ -283,7 +301,7 @@ const Avatar = React.forwardRef(
       );
 
     // Render
-    const isImage = imageSrc !== null || isDefaultImage;
+    const isImage = tinyImageUrl !== null || isDefaultImage;
     return (
       <div
         onClick={onClick}
