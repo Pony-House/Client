@@ -15,18 +15,23 @@ import Spinner from '../../atoms/spinner/Spinner';
 import { getBlobSafeMimeType } from '../../../util/mimetypes';
 import { mediaFix } from './mediaFix';
 
-async function getUrl(link, type, decryptData, roomId /* , threadId */) {
+async function getUrl(contentType, link, type, decryptData, roomId /* , threadId */) {
   try {
     const blobSettings = {
       freeze: true,
-      // group: `roomMedia:${roomId}${typeof threadId === 'string' ? `:${threadId}` : ''}`,
-      group: `roomMedia:${roomId}`,
     };
+
+    if (contentType === 'image' || contentType === 'sticker' || contentType === 'videoThumb') {
+      blobSettings.group = `mxcMedia:${link}`;
+    } else {
+      blobSettings.group = `roomMedia:${roomId}`;
+      // blobSettings.group = `roomMedia:${roomId}${typeof threadId === 'string' ? `:${threadId}` : ''}`,
+    }
 
     blobSettings.id = `${blobSettings.group}:${link}`;
     const resultById = blobUrlManager.getById(blobSettings.id);
     if (!resultById) {
-      const blob = await initMatrix.mxcUrl.fetchBlob(link, type, decryptData);
+      const blob = await initMatrix.mxcUrl.focusFetchBlob(link, type, decryptData);
       const result = await blobUrlManager.insert(blob, blobSettings);
       return result;
     } else {
@@ -51,7 +56,7 @@ function FileHeader({ name, link = null, external = false, file = null, type, ro
   const [url, setUrl] = useState(null);
 
   async function getFile() {
-    const myUrl = await getUrl(link, type, file, roomId, threadId);
+    const myUrl = await getUrl('file', link, type, file, roomId, threadId);
     setUrl(myUrl);
   }
 
@@ -147,7 +152,7 @@ function Image({
   useEffect(() => {
     let unmounted = false;
     async function fetchUrl() {
-      const myUrl = await getUrl(link, type, file, roomId, threadId);
+      const myUrl = await getUrl('image', link, type, file, roomId, threadId);
       if (unmounted) {
         blobUrlManager.delete(myUrl);
         return;
@@ -257,7 +262,7 @@ function Sticker({
   useEffect(() => {
     let unmounted = false;
     async function fetchUrl() {
-      const myUrl = await getUrl(link, type, file, roomId, threadId);
+      const myUrl = await getUrl('sticker', link, type, file, roomId, threadId);
       if (unmounted) {
         blobUrlManager.delete(myUrl);
         return;
@@ -302,7 +307,7 @@ function Audio({ name, link, type = '', file = null, roomId, threadId }) {
   const [embedHeight, setEmbedHeight] = useState(null);
 
   async function loadAudio() {
-    const myUrl = await getUrl(link, type, file, roomId, threadId);
+    const myUrl = await getUrl('audio', link, type, file, roomId, threadId);
     setUrl(myUrl);
     setIsLoading(false);
     setIsLoaded(true);
@@ -371,7 +376,14 @@ function Video({
   useEffect(() => {
     let unmounted = false;
     async function fetchUrl() {
-      const myThumbUrl = await getUrl(thumbnail, thumbnailType, thumbnailFile, roomId, threadId);
+      const myThumbUrl = await getUrl(
+        'videoThumb',
+        thumbnail,
+        thumbnailType,
+        thumbnailFile,
+        roomId,
+        threadId,
+      );
       if (unmounted) {
         blobUrlManager.delete(myThumbUrl);
         return;
@@ -387,7 +399,7 @@ function Video({
 
   useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded));
   const loadVideo = async () => {
-    const myUrl = await getUrl(link, type, file, roomId, threadId);
+    const myUrl = await getUrl('video', link, type, file, roomId, threadId);
     setUrl(myUrl);
     setIsLoading(false);
     setIsLoaded(true);

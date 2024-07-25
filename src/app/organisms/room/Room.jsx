@@ -90,7 +90,8 @@ function Room() {
       forceScroll,
     ) => {
       blobUrlManager.deleteGroup(
-        `roomMedia:${prevRoomId}${typeof prevThreadId === 'string' ? `:${prevThreadId}` : ''}`,
+        `roomMedia:${prevRoomId}`,
+        // `roomMedia:${prevRoomId}${typeof prevThreadId === 'string' ? `:${prevThreadId}` : ''}`,
       );
       roomInfo.roomTimeline?.removeInternalListeners();
       $('.space-drawer-menu-item').removeClass('active');
