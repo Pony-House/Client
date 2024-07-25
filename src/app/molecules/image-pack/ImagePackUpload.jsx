@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import emojiEditor from '@src/util/libs/emoji/EmojiEditor';
+import { imageMimes } from '@src/util/MimesUtil';
 // import { scaleDownImage } from '../../../util/common';
 
 import Text from '../../atoms/text/Text';
@@ -58,12 +58,7 @@ function ImagePackUpload({ onUpload, roomId, buttons = null }) {
 
   return (
     <form onSubmit={handleSubmit} className="image-pack-upload">
-      <FileInput
-        ref={inputRef}
-        onChange={handleFileChange}
-        accept={emojiEditor.fileMimes}
-        required
-      />
+      <FileInput ref={inputRef} onChange={handleFileChange} accept={imageMimes} required />
       {imgFile ? (
         <div className="image-pack-upload__file">
           <IconButton onClick={handleRemove} fa="fa-solid fa-circle-plus" tooltip="Remove file" />

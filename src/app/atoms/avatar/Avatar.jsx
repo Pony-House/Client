@@ -14,6 +14,7 @@ import RawIcon from '../system-icons/RawIcon';
 import { avatarInitials } from '../../../util/common';
 import { defaultAvatar, defaultProfileBanner, defaultSpaceBanner } from './defaultAvatar';
 import { getAppearance } from '../../../util/libs/appearance';
+import { imageExts } from '@src/util/MimesUtil';
 
 const ImageBrokenSVG = './img/svg/image-broken.svg';
 
@@ -155,12 +156,17 @@ const Avatar = React.forwardRef(
               isLoadingProgress++;
               mxcUrl
                 .focusFetchBlob(tinySrc)
-                .then((blobFromFetch) =>
-                  blobUrlManager.insert(blobFromFetch, {
-                    freeze: true,
-                    group: `user_avatars`,
-                  }),
-                )
+                .then((blobFromFetch) => {
+                  const mime = blobFromFetch.type.split('/');
+                  if (mime[0] === 'image' && imageExts.indexOf(mime[1]) > -1)
+                    return blobUrlManager.insert(blobFromFetch, {
+                      freeze: true,
+                      group: `user_avatars`,
+                    });
+                  throw new Error(
+                    `INVALID IMAGE MIME MXC! The "${tinySrc}" is "${blobFromFetch.type}".`,
+                  );
+                })
                 // Complete
                 .then((blobUrl) => {
                   // Insert data

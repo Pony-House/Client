@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import EventEmitter from 'events';
 import { ClientEvent, RoomStateEvent } from 'matrix-js-sdk';
+import { imageMimes, imageExts } from '@src/util/MimesUtil';
 
 import { objType } from 'for-promise/utils/lib.mjs';
 
@@ -20,12 +21,6 @@ class EmojiEditor extends EventEmitter {
     super();
     this.personalPack = null;
     this.roomsPack = {};
-    this.fileMimes = ['image/png', 'image/gif', 'image/jpg', 'image/jpeg', 'image/webp'];
-
-    this.imageExt = [];
-    for (const item in this.fileMimes) {
-      this.imageExt.push(this.fileMimes[item].split('/')[1]);
-    }
   }
 
   // Emoji Usage
@@ -177,11 +172,11 @@ class EmojiEditor extends EventEmitter {
   // Supported File
   allowedExt(filename) {
     const filenameSplit = filename.split('.');
-    return this.imageExt.indexOf(filenameSplit[filenameSplit.length - 1]) > -1;
+    return imageExts.indexOf(filenameSplit[filenameSplit.length - 1]) > -1;
   }
 
   allowedMime(mime) {
-    return this.fileMimes.indexOf(mime) > -1;
+    return imageMimes.indexOf(mime) > -1;
   }
 
   // Is Emoji Event
