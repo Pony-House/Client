@@ -234,6 +234,12 @@
     height: 36px !important;
     width: 36px !important;
   }
+
+  .avatar-base .avatar-react,
+  .avatar-base.ff-canvas,
+  .avatar-base .ff-image {
+    height: 30px;
+  }
 }
 
 // Profile / Room Editor Place

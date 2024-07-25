@@ -4,27 +4,17 @@
 }
 
 .header-room {
-  .avatar-base > .nav-link {
-    height: 42px;
-  }
-
-  .avatar-base .avatar-react,
-  .avatar-base.ff-canvas,
-  .avatar-base .ff-image {
-    height: 30px;
-    position: relative;
-    top: -3px;
-  }
-
-  .room-icon {
-    top: -11px;
-    position: relative;
+  .avatar-base {
+    > .nav-link {
+      height: 42px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 
   .room-name {
     max-width: 500px;
-    top: -6px;
-    position: relative;
   }
 
   @media (max-width: 1500px) {
