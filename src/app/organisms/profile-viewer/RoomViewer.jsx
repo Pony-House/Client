@@ -231,11 +231,13 @@ function RoomViewer() {
       // Avatar Preview
       const tinyAvatarPreview = () => {
         if (newAvatar) {
+          const img = $(profileAvatar.current).find('> img');
           imageViewer({
             lightbox,
-            imgQuery: $(profileAvatar.current).find('> img'),
+            imgQuery: img,
             name: username,
-            url: newAvatar,
+            url: img.attr('src'),
+            originalUrl: newAvatar,
             readMime: true,
           });
         }
