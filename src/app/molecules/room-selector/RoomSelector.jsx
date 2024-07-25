@@ -238,7 +238,7 @@ function RoomSelector({
           {user ? (
             <div
               ref={customStatusRef}
-              className="very-small text-gray text-truncate emoji-size-fix-2 user-custom-status"
+              className={`very-small text-gray text-truncate emoji-size-fix-2 user-custom-status${isUnread ? ' custom-status-unread' : ''}`}
             />
           ) : null}
 

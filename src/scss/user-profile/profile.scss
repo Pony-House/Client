@@ -23,22 +23,18 @@
         margin-right: 27px;
       }
 
+      .custom-status-unread {
+        margin-left: -27px;
+      }
+
       .notification-badge {
         width: 23px;
         display: flex !important;
         align-items: center;
-        margin-top: -20px;
       }
 
       &.content-dm {
         height: 45px;
-        .notification-badge {
-          margin-top: -29px !important;
-        }
-
-        &.content-with-custom-status .notification-badge {
-          margin-top: -26px !important;
-        }
       }
 
       .avatar {
