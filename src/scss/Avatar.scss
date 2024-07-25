@@ -122,7 +122,7 @@
 }
 
 .avatar-container,
-.image-container {
+.img-container {
   & {
     background-color: var(--avatar-grow-animation-1);
     -webkit-animation: avatar-container-loading 2s infinite ease-in-out;
