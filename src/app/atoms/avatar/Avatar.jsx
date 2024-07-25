@@ -73,6 +73,8 @@ const Avatar = React.forwardRef(
     // imageSrc
     // appearanceSettings.isAnimateAvatarsEnabled
     // appearanceSettings.useFreezePlugin
+    const [waitSrc, setWaitSrc] = useState(imageSrc);
+
     const [imgSrc, setImgSrc] = useState(null);
     const [imgAnimSrc, setImgAnimSrc] = useState(null);
 
@@ -96,6 +98,11 @@ const Avatar = React.forwardRef(
     // Get data
     const defaultAvatar = avatarDefaultColor(bgColor);
     useEffect(() => {
+      if (waitSrc !== imageSrc) {
+        setWaitSrc(imageSrc);
+        setIsLoading(0);
+      }
+
       if (typeof imageSrc === 'string') {
         if (isLoading < 1) {
           // Complete checker
@@ -117,21 +124,27 @@ const Avatar = React.forwardRef(
               // Exist blob cache?
               const blobFromId = blobUrlManager.getById(tinySrc);
               if (blobFromId) {
-                setTinyBlob(blobFromId);
-                setTnSrc(tinySrc);
+                if (imageSrc === waitSrc) {
+                  setTinyBlob(blobFromId);
+                  setTnSrc(tinySrc);
+                }
               }
 
               // Nope. Let's create a new one.
               else {
                 // Reset image data
-                setTnSrc(null);
-                setTinyBlob(null);
+                if (imageSrc === waitSrc) {
+                  setTnSrc(null);
+                  setTinyBlob(null);
+                }
 
                 // Is normal image? Reset the animation version too.
                 if (!isAnim) {
-                  setBlobAnimSrc(null);
-                  setImgAnimSrc(null);
-                  setImgAnimError(null);
+                  if (imageSrc === waitSrc) {
+                    setBlobAnimSrc(null);
+                    setImgAnimSrc(null);
+                    setImgAnimError(null);
+                  }
                 }
 
                 // Add loading progress...
@@ -147,8 +160,10 @@ const Avatar = React.forwardRef(
                   // Complete
                   .then((blobUrl) => {
                     // Insert data
-                    setTinyBlob(blobUrl);
-                    setTnSrc(tinySrc);
+                    if (imageSrc === waitSrc) {
+                      setTinyBlob(blobUrl);
+                      setTnSrc(tinySrc);
+                    }
 
                     // Check the progress
                     isLoadingProgress--;
@@ -167,8 +182,10 @@ const Avatar = React.forwardRef(
             }
             // Nothing
             else {
-              setTnSrc(null);
-              setTinyBlob(null);
+              if (imageSrc === waitSrc) {
+                setTnSrc(null);
+                setTinyBlob(null);
+              }
             }
           };
 
