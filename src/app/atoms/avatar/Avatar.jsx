@@ -361,6 +361,10 @@ const Avatar = React.forwardRef(
             setImgError(null);
           }
         } else {
+          if (tinyImageUrl.startsWith('./')) {
+            const filename = tinyImageUrl.split('.');
+            setImgMime(['image', filename[filename.length - 1]]);
+          }
           setBlobSrc(tinyImageUrl);
           setImgSrc(tinyImageUrl);
         }
@@ -380,6 +384,10 @@ const Avatar = React.forwardRef(
             true,
           );
         } else {
+          if (tinyImageAnimUrl.startsWith('./')) {
+            const filename = tinyImageAnimUrl.split('.');
+            setImgMimeAnim(['image', filename[filename.length - 1]]);
+          }
           setBlobAnimSrc(tinyImageAnimUrl);
           setBlobAnimSrc(tinyImageAnimUrl);
         }
