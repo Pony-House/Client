@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Freezeframe from 'freezeframe';
 
+import blobUrlManager from '@src/util/libs/blobUrlManager';
 import initMatrix from '@src/client/initMatrix';
 import { getFileContentType } from '@src/util/fileMime';
 
@@ -74,6 +75,13 @@ const Avatar = React.forwardRef(
     // appearanceSettings.useFreezePlugin
     const [imgSrc, setImgSrc] = useState(null);
     const [imgAnimSrc, setImgAnimSrc] = useState(null);
+
+    const [imgError, setImgError] = useState(null);
+    const [imgAnimError, setImgAnimError] = useState(null);
+
+    const [blobSrc, setBlobSrc] = useState(null);
+    const [blobAnimSrc, setBlobAnimSrc] = useState(null);
+
     const [isLoading, setIsLoading] = useState(false);
 
     // Avatar Config
@@ -85,55 +93,133 @@ const Avatar = React.forwardRef(
     if (size === 'small') textSize = 'b1';
     if (size === 'extra-small') textSize = 'b3';
 
+    // Get data
     const defaultAvatar = avatarDefaultColor(bgColor);
     useEffect(() => {
-      if (imgSrc !== imageSrc) {
-        if (typeof imageSrc === 'string') {
-          console.log(imageSrc);
-        }
-      }
-
-      if (imgAnimSrc !== imageAnimSrc) {
-        if (typeof imageAnimSrc === 'string') {
-          console.log(imageAnimSrc);
-        }
-      }
-      /* 
-      if (freezeAvatarRef.current) {
-        const avatar = new Freezeframe(freezeAvatarRef.current, {
-          responsive: true,
-          trigger: false,
-          overlay: false,
-        });
-
-        const img = $(avatar.$images[0]);
-        const loadingimg = img.attr('loadingimg');
-        if (loadingimg !== 'true' && loadingimg !== true) {
-          img.attr('loadingimg', 'true');
-          let tinyNode = avatar.$images[0];
-          for (let i = 0; i < animParentsCount + 1; i++) {
-            tinyNode = tinyNode.parentNode;
+      if (!isLoading) {
+        // Complete checker
+        let isLoadingProgress = 0;
+        const isComplete = () => {
+          if (isLoading && isLoadingProgress < 1) {
           }
+        };
 
-          // Final Node
-          tinyNode = $(tinyNode);
+        // Error! Oh no!
+        const tinyError = (setError, err) => {
+          // Show console error
+          console.error(err);
 
-          // Insert Effects
-          tinyNode.hover(
-            () => {
-              
-            },
-            () => {
-              
-            },
-          );
+          // Check the progress
+          isLoadingProgress--;
+          isComplete();
+        };
 
-          if (typeof avatar.render === 'function') avatar.render();
-          return () => {
-            if (avatar && typeof avatar.destroy === 'function') avatar.destroy();
-          };
-        }
-      }*/
+        // Load progress
+        const loadProgress = (blob, tinySrc, setTinyBlob, setTnSrc) =>
+          new Promise((resolve, reject) => {
+            // Check the progress
+            isLoadingProgress--;
+            resolve(true);
+          });
+
+        // Active load progress
+        const progressLoad = (tnSrc, tinySrc, setTinyBlob, setTnSrc, setError, isAnim) => {
+          // Compare if the image was changed
+          if (tnSrc !== tinySrc) {
+            // Enable loading mode
+            setIsLoading(true);
+            setError(null);
+
+            // The new image is string
+            if (typeof tinySrc === 'string') {
+              // Exist blob cache?
+              const blobFromId = blobUrlManager.getById(tinySrc);
+              if (blobFromId) {
+                setTinyBlob(blobFromId);
+                setTinyBlob(blobFromId);
+              }
+
+              // Nope. Let's create a new one.
+              else {
+                // Reset image data
+                setTnSrc(null);
+                setTinyBlob(null);
+
+                // Is normal image? Reset the animation version too.
+                if (!isAnim) {
+                  setBlobAnimSrc(null);
+                  setImgAnimSrc(null);
+                  imgAnimError(null);
+                }
+
+                // Add loading progress...
+                isLoadingProgress++;
+                mxcUrl
+                  .focusFetchBlob(tinySrc)
+                  .then((blobFromFetch) =>
+                    loadProgress(blobFromFetch, tinySrc, setTinyBlob, setTnSrc)
+                      .then(isComplete)
+                      .catch((err) => tinyError(setError, err)),
+                  )
+                  .catch((err) => tinyError(setError, err));
+              }
+            }
+            // Nothing
+            else {
+              setTnSrc(null);
+              setTinyBlob(null);
+            }
+          }
+        };
+
+        // Execute the image loading
+
+        // Normal image
+        progressLoad(imgSrc, imageSrc, setBlobSrc, setImgSrc, setImgError, false);
+
+        // Anim image
+        progressLoad(imgAnimSrc, imageAnimSrc, setBlobAnimSrc, setImgAnimSrc, setImgError, true);
+
+        // Check the progress
+        isComplete();
+
+        /* 
+        if (freezeAvatarRef.current) {
+          const avatar = new Freezeframe(freezeAvatarRef.current, {
+            responsive: true,
+            trigger: false,
+            overlay: false,
+          });
+  
+          const img = $(avatar.$images[0]);
+          const loadingimg = img.attr('loadingimg');
+          if (loadingimg !== 'true' && loadingimg !== true) {
+            img.attr('loadingimg', 'true');
+            let tinyNode = avatar.$images[0];
+            for (let i = 0; i < animParentsCount + 1; i++) {
+              tinyNode = tinyNode.parentNode;
+            }
+  
+            // Final Node
+            tinyNode = $(tinyNode);
+  
+            // Insert Effects
+            tinyNode.hover(
+              () => {
+                
+              },
+              () => {
+                
+              },
+            );
+  
+            if (typeof avatar.render === 'function') avatar.render();
+            return () => {
+              if (avatar && typeof avatar.destroy === 'function') avatar.destroy();
+            };
+          }
+        }*/
+      }
     });
 
     const onLoadAvatar = () => {
@@ -148,7 +234,6 @@ const Avatar = React.forwardRef(
           className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
           draggable="false"
           src={imgSrc}
-          onLoad={onLoadAvatar}
           onError={(e) => {
             e.target.src = ImageBrokenSVG;
           }}
