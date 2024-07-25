@@ -101,6 +101,7 @@ const Avatar = React.forwardRef(
         let isLoadingProgress = 0;
         const isComplete = () => {
           if (isLoading && isLoadingProgress < 1) {
+            setIsLoading(false);
           }
         };
 
@@ -113,14 +114,6 @@ const Avatar = React.forwardRef(
           isLoadingProgress--;
           isComplete();
         };
-
-        // Load progress
-        const loadProgress = (blob, tinySrc, setTinyBlob, setTnSrc) =>
-          new Promise((resolve, reject) => {
-            // Check the progress
-            isLoadingProgress--;
-            resolve(true);
-          });
 
         // Active load progress
         const progressLoad = (tnSrc, tinySrc, setTinyBlob, setTnSrc, setError, isAnim) => {
@@ -136,7 +129,7 @@ const Avatar = React.forwardRef(
               const blobFromId = blobUrlManager.getById(tinySrc);
               if (blobFromId) {
                 setTinyBlob(blobFromId);
-                setTinyBlob(blobFromId);
+                setTnSrc(tinySrc);
               }
 
               // Nope. Let's create a new one.
@@ -158,7 +151,21 @@ const Avatar = React.forwardRef(
                   .focusFetchBlob(tinySrc)
                   .then((blobFromFetch) =>
                     loadProgress(blobFromFetch, tinySrc, setTinyBlob, setTnSrc)
-                      .then(isComplete)
+                      .then((blob) =>
+                        blobUrlManager.insert(blob, {
+                          freeze: true,
+                          group: `user_avatars`,
+                        }),
+                      )
+                      .then((blobUrl) => {
+                        // Insert data
+                        setTinyBlob(blobUrl);
+                        setTnSrc(tinySrc);
+
+                        // Check the progress
+                        isLoadingProgress--;
+                        isComplete();
+                      })
                       .catch((err) => tinyError(setError, err)),
                   )
                   .catch((err) => tinyError(setError, err));
@@ -233,7 +240,7 @@ const Avatar = React.forwardRef(
           ref={theRef}
           className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
           draggable="false"
-          src={imgSrc}
+          src={blobSrc}
           onError={(e) => {
             e.target.src = ImageBrokenSVG;
           }}
