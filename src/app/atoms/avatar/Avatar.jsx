@@ -82,7 +82,7 @@ const Avatar = React.forwardRef(
     const [blobSrc, setBlobSrc] = useState(null);
     const [blobAnimSrc, setBlobAnimSrc] = useState(null);
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(0);
 
     // Avatar Config
     const appearanceSettings = getAppearance();
@@ -97,19 +97,19 @@ const Avatar = React.forwardRef(
     const defaultAvatar = avatarDefaultColor(bgColor);
     useEffect(() => {
       if (typeof imageSrc === 'string') {
-        if (!isLoading) {
+        if (isLoading < 1) {
           // Complete checker
           let isLoadingProgress = 0;
           const isComplete = () => {
-            if (isLoading && isLoadingProgress < 1) {
-              setIsLoading(false);
+            if (isLoading < 2 && isLoadingProgress < 1) {
+              setIsLoading(2);
             }
           };
 
           // Active load progress
           const progressLoad = (tnSrc, tinySrc, setTinyBlob, setTnSrc, setError, isAnim) => {
             // Enable loading mode
-            setIsLoading(true);
+            setIsLoading(1);
             setError(null);
 
             // The new image is string
@@ -225,7 +225,7 @@ const Avatar = React.forwardRef(
 
     // Image
     const tinyImg = () =>
-      !isLoading && (
+      isLoading >= 2 && (
         <img
           ref={theRef}
           className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
@@ -271,7 +271,7 @@ const Avatar = React.forwardRef(
       <div
         onClick={onClick}
         ref={imgRef}
-        className={`avatar-container${`${className ? ` ${className}` : ''}`} noselect${isImage && !isLoading ? '' : ' image-react-loaded'}`}
+        className={`avatar-container${`${className ? ` ${className}` : ''}`} noselect${isImage && isLoading < 2 ? '' : ' image-react-loaded'}`}
       >
         {isImage ? tinyImg() : tinyIcon()}
       </div>
