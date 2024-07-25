@@ -349,7 +349,8 @@
 body.rounded-avatar-mode .profile-image-container {
   &,
   img,
-  canvas {
+  canvas,
+  .avatar__border--active {
     border-radius: 50% !important;
   }
 }
