@@ -758,8 +758,8 @@ function ProfileViewer() {
     };
 
     const toggleLightbox = () => {
-      closeDialog();
       if (!avatarUrl) return;
+      closeDialog();
       setLightbox(!lightbox);
     };
 
