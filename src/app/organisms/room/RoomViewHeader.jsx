@@ -4,9 +4,7 @@ import { objType } from 'for-promise/utils/lib.mjs';
 import settings from '@src/client/state/settings';
 import { canSupport } from '@src/util/matrixUtil';
 
-import { forceUnloadedAvatars } from '../../atoms/avatar/load';
 import { twemojifyReact } from '../../../util/twemojify';
-
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
@@ -88,12 +86,10 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
   useEffect(() => {
     const { roomList } = initMatrix;
     const handleProfileUpdate = (rId) => {
-      forceUnloadedAvatars();
       if (roomId !== rId) return;
       forceUpdate();
     };
 
-    forceUnloadedAvatars();
     if (roomList) {
       roomList.on(cons.events.roomList.ROOM_PROFILE_UPDATED, handleProfileUpdate);
       return () => {
@@ -115,7 +111,6 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
 
   //       <IconButton className="room-header__drawer-btn" onClick={startVoiceChat} tooltip="Start VC" fa="fa-solid fa-phone" />
 
-  setTimeout(forceUnloadedAvatars, 200);
   const navigationSidebarCallback = () => {
     if (!threadId) {
       if (window.matchMedia('screen and (max-width: 768px)').matches) {

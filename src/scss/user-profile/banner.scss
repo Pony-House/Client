@@ -152,13 +152,6 @@
     position: relative;
   }
 
-  .avatar-container,
-  .avatar-container img,
-  .avatar-container canvas {
-    height: 140px;
-    width: 140px;
-  }
-
   .avatar-container img,
   .avatar-container canvas {
     padding: 12px;
@@ -195,13 +188,6 @@
 
     .avatar-container {
       margin-top: 0px;
-    }
-
-    .avatar-container,
-    .avatar-container img,
-    .avatar-container canvas {
-      height: 110px;
-      width: 110px;
     }
 
     .modal-user-profile-avatar {

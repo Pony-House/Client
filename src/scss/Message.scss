@@ -301,28 +301,6 @@
   .avatar-container {
     margin-right: 5px;
     margin-left: 5px;
-    img,
-    canvas {
-      height: 42px !important;
-      width: 42px !important;
-    }
-  }
-
-  .message__threadSummary {
-    .avatar-container {
-      height: 24px !important;
-      width: 24px !important;
-      img,
-      canvas {
-        height: 24px !important;
-        width: 24px !important;
-      }
-    }
-  }
-
-  .chat-base {
-    height: 42px !important;
-    width: 42px !important;
   }
 
   .hc-time {
@@ -341,11 +319,6 @@
     &:hover {
       opacity: 0.8 !important;
     }
-  }
-  .welcome-msg .avatar-container > img,
-  .welcome-msg .avatar-container > canvas {
-    height: 80px !important;
-    width: 80px !important;
   }
 
   ol {

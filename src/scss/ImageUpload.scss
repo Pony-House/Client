@@ -2,18 +2,29 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: none;
+}
+
+.img-upload {
+  @-moz-document url-prefix() {
+    .avatar-container {
+      margin-left: 2px;
+    }
+  }
+}
+
+.image-pack-profile {
+  @-moz-document url-prefix() {
+    .avatar-container {
+      margin-left: 0px;
+    }
+  }
 }
 
 .img-upload {
   display: flex;
   cursor: pointer;
   position: relative;
-
-  @-moz-document url-prefix() {
-    .avatar-container__large {
-      margin-left: 2px;
-    }
-  }
 
   &__process {
     width: 100%;

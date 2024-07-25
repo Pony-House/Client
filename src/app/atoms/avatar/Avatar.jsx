@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import Freezeframe from 'freezeframe';
 
 import initMatrix from '@src/client/initMatrix';
+import { getFileContentType } from '@src/util/fileMime';
 
-import { loadAvatar, forceLoadAvatars } from './load';
 import { twemojifyReact } from '../../../util/twemojify';
 
 import Text from '../text/Text';
@@ -39,6 +39,8 @@ export const avatarDefaultColor = (bgColor, type = 'avatar') => {
   return null;
 };
 
+// getFileContentType
+
 const Avatar = React.forwardRef(
   (
     {
@@ -64,11 +66,15 @@ const Avatar = React.forwardRef(
 
     // Freeze Avatar
     const freezeAvatarRef = useRef(null);
-    const ref2 = useRef(null);
+    const imgRef = ref || useRef(null);
 
     // imageAnimSrc
     // imageSrc
+    // appearanceSettings.isAnimateAvatarsEnabled
+    // appearanceSettings.useFreezePlugin
     const [imgSrc, setImgSrc] = useState(null);
+    const [imgAnimSrc, setImgAnimSrc] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Avatar Config
     const appearanceSettings = getAppearance();
@@ -79,10 +85,20 @@ const Avatar = React.forwardRef(
     if (size === 'small') textSize = 'b1';
     if (size === 'extra-small') textSize = 'b3';
 
-    const tinyDa = avatarDefaultColor(bgColor);
-    setTimeout(forceLoadAvatars, 100);
+    const defaultAvatar = avatarDefaultColor(bgColor);
     useEffect(() => {
-      forceLoadAvatars();
+      if (imgSrc !== imageSrc) {
+        if (typeof imageSrc === 'string') {
+          console.log(imageSrc);
+        }
+      }
+
+      if (imgAnimSrc !== imageAnimSrc) {
+        if (typeof imageAnimSrc === 'string') {
+          console.log(imageAnimSrc);
+        }
+      }
+      /* 
       if (freezeAvatarRef.current) {
         const avatar = new Freezeframe(freezeAvatarRef.current, {
           responsive: true,
@@ -105,10 +121,10 @@ const Avatar = React.forwardRef(
           // Insert Effects
           tinyNode.hover(
             () => {
-              if (typeof avatar.start === 'function') avatar.start();
+              
             },
             () => {
-              if (typeof avatar.stop === 'function') avatar.stop();
+              
             },
           );
 
@@ -117,58 +133,22 @@ const Avatar = React.forwardRef(
             if (avatar && typeof avatar.destroy === 'function') avatar.destroy();
           };
         }
-      }
-    }, []);
+      }*/
+    });
 
     const onLoadAvatar = () => {
-      if (ref) {
-        if (ref.current) ref.current.classList.add('avatar-react-loaded');
-      } else if (ref2.current) ref2.current.classList.add('avatar-react-loaded');
+      // if (imgRef.current) ref.current.classList.add('image-react-loaded');
     };
 
     // Image
     const tinyImg = () =>
-      !imageAnimSrc || !appearanceSettings.isAnimateAvatarsEnabled ? (
-        // Default Image
+      !isLoading && (
         <img
           ref={theRef}
           className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
           draggable="false"
-          src={typeof imageSrc === 'string' && imageSrc.length > 0 ? imageSrc : tinyDa}
+          src={imgSrc}
           onLoad={onLoadAvatar}
-          onError={(e) => {
-            e.target.src = ImageBrokenSVG;
-          }}
-          alt={text || 'avatar'}
-        />
-      ) : appearanceSettings.useFreezePlugin ? (
-        // Custom Image
-        <div className="react-freezeframe">
-          <img
-            ref={freezeAvatarRef}
-            className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
-            onLoad={onLoadAvatar}
-            src={
-              typeof imageAnimSrc === 'string' && imageAnimSrc.length > 0 ? imageAnimSrc : tinyDa
-            }
-            alt={text || 'avatar'}
-          />
-        </div>
-      ) : (
-        <img
-          className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
-          draggable="false"
-          loadedimg="false"
-          loadingimg="false"
-          animparentscount={animParentsCount}
-          animsrc={imageAnimSrc}
-          normalsrc={imageSrc}
-          defaultavatar={tinyDa}
-          src={tinyDa}
-          onLoad={(e) => {
-            onLoadAvatar(e);
-            loadAvatar(e);
-          }}
           onError={(e) => {
             e.target.src = ImageBrokenSVG;
           }}
@@ -207,8 +187,8 @@ const Avatar = React.forwardRef(
     return (
       <div
         onClick={onClick}
-        ref={ref || ref2}
-        className={`avatar-container avatar-container__${size} ${className} noselect${isImage ? '' : ' avatar-react-loaded'}`}
+        ref={imgRef}
+        className={`avatar-container${`${className ? ` ${className}` : ''}`} noselect${isImage && !isLoading ? '' : ' image-react-loaded'}`}
       >
         {isImage ? tinyImg() : tinyIcon()}
       </div>

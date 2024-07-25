@@ -255,7 +255,7 @@ export function openThreadsMessageModal(room) {
                           alt: 'avatar',
                         })
                           .on('load', (event) => {
-                            td.addClass('avatar-react-loaded');
+                            td.addClass('image-react-loaded');
                           })
                           .on('error', (event) => {
                             const e = event.originalEvent;
