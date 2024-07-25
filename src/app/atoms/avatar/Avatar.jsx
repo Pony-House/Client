@@ -338,7 +338,9 @@ const Avatar = React.forwardRef(
           src_anim_url={tinyImageAnimUrl}
           src={
             blobSrc && Array.isArray(imgMime) && imgMime[0] === 'image'
-              ? !useAnimation || (Array.isArray(imgMimeAnim) && imgMimeAnim[1] !== 'gif')
+              ? !blobAnimSrc ||
+                !useAnimation ||
+                (Array.isArray(imgMimeAnim) && imgMimeAnim[1] !== 'gif')
                 ? blobSrc
                 : blobAnimSrc
               : ImageBrokenSVG
