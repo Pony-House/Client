@@ -1,56 +1,5 @@
-@use './partials/text';
 @use './partials/dir';
-@use './partials/flex';
 
-.space-manage {
-  .pw__content-wrapper {
-    position: relative;
-  }
-  .pw__content-container {
-    padding-top: 0;
-    padding-bottom: 73px;
-  }
-}
-
-.space-manage__content-items.joining-room {
-  .join-button {
-    opacity: 0.5;
-    pointer-events: none !important;
-    background-color: var(--bg-caution);
-    border-color: var(--bg-caution-border);
-  }
-}
-
-.space-manage__content {
-  margin-bottom: var(--sp-extra-loose);
-
-  > .text {
-    margin-top: var(--sp-extra-tight);
-    padding: var(--sp-extra-tight) var(--sp-normal);
-    text-transform: uppercase;
-  }
-
-  &-items {
-    @include dir.side(padding, var(--sp-extra-tight), 0);
-    > .text:first-child {
-      padding: var(--sp-extra-tight);
-    }
-  }
-
-  > button {
-    margin: var(--sp-normal);
-  }
-
-  &-loading {
-    padding: var(--sp-loose);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .text {
-      margin: 0 var(--sp-normal);
-    }
-  }
-}
 .space-manage-breadcrumb {
   display: flex;
   align-items: center;

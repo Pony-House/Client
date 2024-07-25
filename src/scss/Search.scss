@@ -79,6 +79,15 @@
   &__content {
     padding: var(--sp-extra-tight);
     @include dir.side(padding, var(--sp-normal), var(--sp-extra-tight));
+    .room-selector {
+      .content {
+        .avatar {
+          justify-content: center;
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
   }
 
   &__footer {

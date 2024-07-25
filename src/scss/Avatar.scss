@@ -233,6 +233,16 @@
   }
 }
 
+/* Space Manage */
+.space-manage__content {
+  .profile-image-container,
+  .profile-image-container img,
+  .profile-image-container canvas {
+    height: 24px !important;
+    width: 24px !important;
+  }
+}
+
 // Profile / Room Editor Place
 .profile-editor,
 .room-info {
