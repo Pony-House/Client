@@ -147,31 +147,42 @@ const Avatar = React.forwardRef(
                   // Freeze gif now
                   try {
                     // Get blob
-                    blobUrlManager
-                      .insert(c.toBlob('image/gif'), {
-                        freeze: true,
-                        group: `user_avatars`,
-                        id: `userFreezeAvatar:${mainSrc}`,
-                      })
-                      .then((newTinyUrl) => {
-                        if (tinyImageUrl === waitSrc) {
-                          // Set data
-                          setImgMime(mainMime);
-                          setImgError(null);
+                    c.toBlob((canvasBlob) => {
+                      if (canvasBlob) {
+                        blobUrlManager
+                          .insert(canvasBlob, {
+                            freeze: true,
+                            group: `user_avatars`,
+                            id: `userFreezeAvatar:${mainSrc}`,
+                          })
+                          .then((newTinyUrl) => {
+                            if (tinyImageUrl === waitSrc) {
+                              // Set data
+                              setImgMime(mainMime);
+                              setImgError(null);
 
-                          setBlobSrc(newTinyUrl);
-                          setImgSrc(newTinyUrl);
+                              setBlobSrc(newTinyUrl);
+                              setImgSrc(newTinyUrl);
 
-                          // Complete
-                          setIsLoading(2);
-                        }
-                      })
-                      .catch((err) => {
+                              // Complete
+                              setIsLoading(2);
+                            }
+                          })
+                          .catch((err) => {
+                            if (tinyImageUrl === waitSrc) {
+                              setImgError(err.message);
+                              setIsLoading(2);
+                            }
+                          });
+                      } else {
                         if (tinyImageUrl === waitSrc) {
+                          const err = new Error('Fail to create image blob.');
+                          console.log(err);
                           setImgError(err.message);
                           setIsLoading(2);
                         }
-                      });
+                      }
+                    }, 'image/gif');
                   } catch (err) {
                     if (tinyImageUrl === waitSrc) {
                       // Error
