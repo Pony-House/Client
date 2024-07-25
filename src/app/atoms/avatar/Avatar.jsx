@@ -107,7 +107,7 @@ const Avatar = React.forwardRef(
             ref={theRef}
             src={imageSrc}
             animSrc={imageAnimSrc}
-            animParentsCount={animParentsCount}
+            animParentsCount={animParentsCount + 1}
             className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
             alt={text || 'avatar'}
           />
