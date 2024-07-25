@@ -11,14 +11,6 @@
   background: var(--selection-background);
 }
 
-body.rounded-avatar-mode .profile-image-container {
-  &,
-  img,
-  canvas {
-    border-radius: 50% !important;
-  }
-}
-
 .fa-ellipsis-vertical {
   margin-left: 8px;
   margin-right: 8px;

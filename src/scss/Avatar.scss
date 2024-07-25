@@ -346,3 +346,10 @@
     }
   }
 }
+body.rounded-avatar-mode .profile-image-container {
+  &,
+  img,
+  canvas {
+    border-radius: 50% !important;
+  }
+}
