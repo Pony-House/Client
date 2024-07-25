@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import blobUrlManager from '@src/util/libs/blobUrlManager';
 import initMatrix from '@src/client/initMatrix';
-import { getFileContentType } from '@src/util/fileMime';
 
 import { twemojifyReact } from '../../../util/twemojify';
 
@@ -14,8 +13,6 @@ import { avatarInitials } from '../../../util/common';
 import { defaultAvatar, defaultProfileBanner, defaultSpaceBanner } from './defaultAvatar';
 import { getAppearance } from '../../../util/libs/appearance';
 import { imageExts } from '@src/util/MimesUtil';
-
-const ImageBrokenSVG = './img/svg/image-broken.svg';
 
 const defaultGetItems = {
   avatar: (colorCode) => defaultAvatar(colorCode),
@@ -30,9 +27,9 @@ export const avatarDefaultColor = (bgColor, type = 'avatar') => {
     typeof colorCode !== 'number' ||
     Number.isNaN(colorCode) ||
     !Number.isFinite(colorCode) ||
-    colorCode < 1
+    colorCode < 0
   ) {
-    colorCode = 1;
+    colorCode = 0;
   }
 
   // Default Avatar
@@ -40,7 +37,7 @@ export const avatarDefaultColor = (bgColor, type = 'avatar') => {
   return null;
 };
 
-// getFileContentType
+const ImageBrokenSVG = './img/svg/image-broken.svg';
 
 const Avatar = React.forwardRef(
   (
