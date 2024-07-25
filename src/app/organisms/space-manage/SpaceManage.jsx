@@ -429,7 +429,7 @@ function SpaceManageContent({ roomId, requestClose }) {
         <Button onClick={loadRoomHierarchy}>Load more</Button>
       )}
       {isLoading && (
-        <div className="space-manage__content-loading">
+        <div className="mt-2 space-manage__content-loading text-center">
           <Spinner size="small" />
           <Text>Loading rooms...</Text>
         </div>

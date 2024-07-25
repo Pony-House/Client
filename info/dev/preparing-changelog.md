@@ -7,3 +7,5 @@
 - Import emoji feature added.
 - Image drag issues fixed.
 - Profile Banner updater fixed.
+- Room Profile avatar button fixed.
+- New optimization for loading avatars and attachments.

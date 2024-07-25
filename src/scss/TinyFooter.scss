@@ -4,6 +4,14 @@
   .room-selector__options {
     display: flex !important;
   }
+
+  .room-selector {
+    .content .avatar,
+    .room-selector__options {
+      display: flex;
+      align-items: center;
+    }
+  }
 }
 
 .space-add-existing-modal.pin-spaces,
