@@ -3587,11 +3587,6 @@ formik@2.4.6:
     tiny-warning "^1.0.2"
     tslib "^2.0.0"
 
-freezeframe@5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/freezeframe/-/freezeframe-5.0.2.tgz#dca477f1836c3932053719a66244244d46b14348"
-  integrity sha512-Lp1ltC2vJGBqxdW5U4Hx+JMW+s9KfTPpxKhSTlpmQxYX5oK66y3GIZo56Jie4XtSOApSbfc8SBcsbZzeTNKfFg==
-
 from2@^2.1.1:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/from2/-/from2-2.3.0.tgz#8bfb5502bde4a4d36cfdeea007fcca21d7e382af"

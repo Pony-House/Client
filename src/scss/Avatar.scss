@@ -150,17 +150,8 @@
 .avatar-container {
   display: flex;
   justify-content: center;
-  &,
-  .react-freezeframe canvas,
-  .react-freezeframe img {
+  & {
     border-radius: var(--bo-radius);
-  }
-
-  .react-freezeframe {
-    canvas,
-    img {
-      image-rendering: crisp-edges !important;
-    }
   }
 
   > img,
