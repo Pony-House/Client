@@ -1,5 +1,17 @@
 Padronizar o profile-image-container
 Padronizar o sistema obter avatares animados
+Ajeitar Image.jsx para jquery
+Colocar os emojis dentro do img jquery
+
+Fazer um gerenciador de quantidade de fetchs que pode executar ao mesmo tempo.
+
+Animação da lista de últimas pessoas que leram a mensagem.
+Animação na lista de usuários online.
+Atualização de username em tempo real não funcionando em rooms.
+
+Animação de banner
+
+Ajeitar o leitor de imagens jquery
 
 Botão de copiar imagem.
 

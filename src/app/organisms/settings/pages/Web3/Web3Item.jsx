@@ -32,6 +32,11 @@ function Web3Item({ item, networkId }) {
     typeof item.chainName === 'string' ? item.chainName : '',
   );
   const [blockchainId, setBlockId] = useState(typeof item.chainId === 'string' ? item.chainId : '');
+  const [blockchainSymbol, setBlockSymbol] = useState(
+    item.nativeCurrency && typeof item.nativeCurrency.symbol === 'string'
+      ? item.nativeCurrency.symbol
+      : '',
+  );
   const [blockchainExplorer, setBlockchainExplorer] = useState(
     Array.isArray(item?.blockExplorerUrls) ? item.blockExplorerUrls : [''],
   );
@@ -155,7 +160,14 @@ function Web3Item({ item, networkId }) {
     // Token Symbol
     const tokenSymbol = $(tokenSymbolRef.current);
     const tokenSymbolChange = (event) =>
-      valueTemplate('nativeCurrency', 'string', $(event.target).val(), 'symbol');
+      valueTemplate(
+        'nativeCurrency',
+        'string',
+        $(event.target).val(),
+        'symbol',
+        undefined,
+        setBlockSymbol,
+      );
 
     // Token Decimals
     const tokenDecimals = $(tokenDecimalsRef.current);
@@ -266,19 +278,11 @@ function Web3Item({ item, networkId }) {
             aria-controls={`chain_collapse_${blockchainId}`}
           >
             {blockchainName}{' '}
-            {blockchainExplorer &&
-            typeof blockchainExplorer[0] === 'string' &&
-            blockchainExplorer[0].length > 0 ? (
-              <Img
-                src={`${blockchainExplorer[0]}images/favicon.ico`}
-                onError={(event) => {
-                  $(event.target).remove();
-                }}
-                className="ms-2 img-fluid"
-                style={{ height: 20 }}
-                height={20}
-                alt="logo"
-              />
+            {typeof blockchainSymbol === 'string' && blockchainSymbol.length > 0 ? (
+              <>
+                {' '}
+                <i className={`text-bg-force cf cf-${blockchainSymbol.toLocaleLowerCase()}`} />
+              </>
             ) : null}
           </a>
         </li>
@@ -465,6 +469,11 @@ function Web3Item({ item, networkId }) {
                       typeof newItem.chainName === 'string' ? newItem.chainName : '',
                     );
                     setBlockId(typeof newItem.chainId === 'string' ? newItem.chainId : '');
+                    setBlockSymbol(
+                      newItem.nativeCurrency && typeof newItem.nativeCurrency?.symbol === 'string'
+                        ? newItem.nativeCurrency?.symbol
+                        : '',
+                    );
                     setBlockchainExplorer(
                       Array.isArray(newItem?.blockExplorerUrls) ? newItem.blockExplorerUrls : [''],
                     );
