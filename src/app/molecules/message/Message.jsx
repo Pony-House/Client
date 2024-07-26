@@ -102,7 +102,7 @@ function PlaceholderMessage({
     <tr className="ph-msg">
       <td className="p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base">
         <center>
-          <div className="avatar-container" />
+          <div className="avatar-container profile-image-container" />
         </center>
       </td>
       <td className="p-0 pe-3 py-1">
