@@ -2,17 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import initMatrix from '@src/client/initMatrix';
-import MxcUrl from '@src/util/libs/MxcUrl';
 import { imageExts } from '@src/util/MimesUtil';
 
 import { getAppearance } from '../../../util/libs/appearance';
 
-const getTinyUrl = (src) => {
-  return typeof src === 'string' &&
-    src.startsWith('mxc://') &&
-    initMatrix.mxcUrl &&
-    initMatrix.mxcUrl.toHttp
-    ? initMatrix.mxcUrl.toHttp(src)
+const getTinyUrl = (mxcUrl, src) => {
+  return typeof src === 'string' && src.startsWith('mxc://') && mxcUrl && mxcUrl.toHttp
+    ? mxcUrl.toHttp(src)
     : src;
 };
 
@@ -39,14 +35,15 @@ const Img = React.forwardRef(
       disableBase = false,
       isObj = false,
       getDefaultImage = null,
+      customMxcUrl = null,
     },
     ref,
   ) => {
     // Ref
-    const mxcUrl = initMatrix.mxcUrl;
+    const mxcUrl = initMatrix.mxcUrl || customMxcUrl;
     const imgRef = ref || useRef(null);
 
-    const url = getTinyUrl(src);
+    const url = getTinyUrl(mxcUrl, src);
     const animUrl = getTinyUrl(animSrc);
 
     // Image Broken
@@ -546,8 +543,11 @@ function ImgJquery({
   disableBase = false,
   isObj = false,
   getDefaultImage = null,
+  customMxcUrl = null,
 }) {
-  const url = getTinyUrl(src);
+  const mxcUrl = initMatrix.mxcUrl || customMxcUrl;
+
+  const url = getTinyUrl(mxcUrl, src);
   const animUrl = getTinyUrl(animSrc);
 
   // Image Broken

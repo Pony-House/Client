@@ -368,6 +368,12 @@
   // }
 
   /* Buttons Animation */
+  .sso-btn__img,
+  .img-container.sso-btn__img {
+    height: 34px;
+    max-width: 34px;
+  }
+
   .sso-btn__img:hover {
     filter: brightness(0.7) grayscale(0.3);
   }

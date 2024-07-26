@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { objType } from 'for-promise/utils/lib.mjs';
 import initMatrix from '@src/client/initMatrix';
-import MxcUrl from '@src/util/libs/MxcUrl';
 
 export const postMessage = (current, msg = null) => current.contentWindow.postMessage(msg);
 
