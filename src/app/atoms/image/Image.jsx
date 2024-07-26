@@ -39,6 +39,7 @@ const Img = React.forwardRef(
       dataMxEmoticon = null,
       isDefaultImage = false,
       disableBase = false,
+      isObj = false,
       getDefaultImage = null,
     },
     ref,
@@ -413,45 +414,48 @@ const Img = React.forwardRef(
 
     // Image
     if (isLoading >= 2) {
-      return (
-        <img
-          onLoad={onLoad}
-          className={className}
-          onClick={onClick}
-          ref={imgRef}
-          data-mx-emoticon={dataMxEmoticon}
-          height={height}
-          width={width}
-          id={id}
-          style={style}
-          draggable={draggable}
-          src_url={tinyImageUrl}
-          src_anim_url={tinyImageAnimUrl}
-          alt={alt}
-          onError={({ currentTarget }) => {
-            currentTarget.onerror = onError;
-            if (tinyImageUrl === waitSrc) {
-              setImgSrc(ImageBrokenSVG);
-              setImgAnimSrc(ImageBrokenSVG);
-              setBlobSrc(ImageBrokenSVG);
-              setBlobAnimSrc(ImageBrokenSVG);
-              setIsLoading(2);
-              if (onLoadingChange) onLoadingChange(2);
-            }
-          }}
-          src={
-            blobSrc &&
-            ((Array.isArray(imgMime) && imgMime[0] === 'image') || tinyImageUrl.startsWith('blob:'))
-              ? !blobAnimSrc ||
-                blobAnimSrc === blobSrc ||
-                !useAnimation ||
-                (Array.isArray(imgMimeAnim) && imgMimeAnim[1] !== 'gif')
-                ? blobSrc
-                : blobAnimSrc
-              : ImageBrokenSVG
-          }
-        />
-      );
+      const theImage =
+        blobSrc &&
+        ((Array.isArray(imgMime) && imgMime[0] === 'image') || tinyImageUrl.startsWith('blob:'))
+          ? !blobAnimSrc ||
+            blobAnimSrc === blobSrc ||
+            !useAnimation ||
+            (Array.isArray(imgMimeAnim) && imgMimeAnim[1] !== 'gif')
+            ? blobSrc
+            : blobAnimSrc
+          : ImageBrokenSVG;
+
+      if (!isObj)
+        return (
+          <img
+            onLoad={onLoad}
+            className={className}
+            onClick={onClick}
+            ref={imgRef}
+            data-mx-emoticon={dataMxEmoticon}
+            height={height}
+            width={width}
+            id={id}
+            style={style}
+            draggable={draggable}
+            src_url={tinyImageUrl}
+            src_anim_url={tinyImageAnimUrl}
+            alt={alt}
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = onError;
+              if (tinyImageUrl === waitSrc) {
+                setImgSrc(ImageBrokenSVG);
+                setImgAnimSrc(ImageBrokenSVG);
+                setBlobSrc(ImageBrokenSVG);
+                setBlobAnimSrc(ImageBrokenSVG);
+                setIsLoading(2);
+                if (onLoadingChange) onLoadingChange(2);
+              }
+            }}
+            src={theImage}
+          />
+        );
+      return { src: theImage, loading: false, href: tinyImageUrl, hrefAnim: tinyImageAnimUrl };
     }
 
     // Loading Image base
@@ -466,25 +470,28 @@ const Img = React.forwardRef(
         }
       }
 
-      return (
-        <div
-          className={`d-inline-block img-container${className ? ` ${className}` : ''}`}
-          onClick={onClick}
-          ref={imgRef}
-          data-mx-emoticon={dataMxEmoticon}
-          height={height}
-          width={width}
-          id={id}
-          style={finalStyle}
-          src_url={tinyImageUrl}
-          src_anim_url={tinyImageAnimUrl}
-          alt={alt}
-        />
-      );
+      if (!isObj)
+        return (
+          <div
+            className={`d-inline-block img-container${className ? ` ${className}` : ''}`}
+            onClick={onClick}
+            ref={imgRef}
+            data-mx-emoticon={dataMxEmoticon}
+            height={height}
+            width={width}
+            id={id}
+            style={finalStyle}
+            src_url={tinyImageUrl}
+            src_anim_url={tinyImageAnimUrl}
+            alt={alt}
+          />
+        );
+      return { src: null, loading: true, href: tinyImageUrl, hrefAnim: tinyImageAnimUrl };
     }
 
     // Nothing
-    return null;
+    if (!isObj) return null;
+    return { src: null, loading: false, href: tinyImageUrl, hrefAnim: tinyImageAnimUrl };
   },
 );
 
@@ -495,6 +502,7 @@ const imgPropTypes = {
   animParentsCount: PropTypes.number,
   isDefaultImage: PropTypes.bool,
   disableBase: PropTypes.bool,
+  isObj: PropTypes.bool,
   dataMxEmoticon: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
   draggable: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   style: PropTypes.object,
