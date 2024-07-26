@@ -1,9 +1,7 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import blobUrlManager from '@src/util/libs/blobUrlManager';
 import { twemojifyReact } from '../../../util/twemojify';
-
 import Text from '../text/Text';
 import RawIcon from '../system-icons/RawIcon';
 
