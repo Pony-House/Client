@@ -34,6 +34,7 @@ function RoomTile({
     <div className="room-tile">
       <div className="room-tile__avatar">
         <Avatar
+          animParentsCount={2}
           className="profile-image-container"
           imageAnimSrc={avatarAnimSrc}
           imageSrc={avatarSrc}

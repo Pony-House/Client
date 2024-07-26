@@ -45,7 +45,7 @@ const Img = React.forwardRef(
     const imgRef = ref || useRef(null);
 
     const url = getTinyUrl(mxcUrl, src);
-    const animUrl = getTinyUrl(animSrc);
+    const animUrl = getTinyUrl(mxcUrl, animSrc);
 
     // Image Broken
     let ImageBrokenSVG = './img/svg/image-broken.svg';

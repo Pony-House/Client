@@ -9,6 +9,7 @@ import { avatarInitials } from '../../../util/common';
 import { defaultAvatar, defaultProfileBanner, defaultSpaceBanner } from './defaultAvatar';
 import Img, { ImgJquery } from '../image/Image';
 
+// isAnimateAvatarsEnabled
 const defaultGetItems = {
   avatar: (colorCode) => defaultAvatar(colorCode),
   space: (colorCode) => defaultSpaceBanner(colorCode),

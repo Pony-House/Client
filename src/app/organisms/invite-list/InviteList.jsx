@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import { getAppearance } from '@src/util/libs/appearance';
+
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import * as roomActions from '../../../client/action/room';
@@ -54,6 +56,7 @@ function InviteList({ isOpen, onRequestClose }) {
   }, [procInvite]);
 
   function renderRoomTile(roomId) {
+    const appearanceSettings = getAppearance();
     const mx = initMatrix.matrixClient;
     const mxcUrl = initMatrix.mxcUrl;
     const myRoom = mx.getRoom(roomId);
@@ -67,6 +70,13 @@ function InviteList({ isOpen, onRequestClose }) {
         key={myRoom.roomId}
         name={roomName}
         avatarSrc={mxcUrl.getAvatarUrl(initMatrix.matrixClient.getRoom(roomId), 42, 42)}
+        avatarAnimSrc={
+          !appearanceSettings.enableAnimParams
+            ? mxcUrl.getAvatarUrl(initMatrix.matrixClient.getRoom(roomId))
+            : getAnimatedImageUrl(
+                mxcUrl.getAvatarUrl(initMatrix.matrixClient.getRoom(roomId), 42, 42),
+              )
+        }
         id={roomAlias}
         inviterName={inviterName}
         options={
@@ -96,7 +106,7 @@ function InviteList({ isOpen, onRequestClose }) {
       <div className="invites-content">
         {initMatrix.roomList.inviteDirects.size !== 0 && (
           <div className="invites-content__subheading">
-            <div className="very-small text-gray">
+            <div className="very-small text-gray noselect">
               <strong>Direct Messages</strong>
             </div>
           </div>
@@ -133,7 +143,7 @@ function InviteList({ isOpen, onRequestClose }) {
         })}
         {initMatrix.roomList.inviteSpaces.size !== 0 && (
           <div className="invites-content__subheading">
-            <div className="very-small text-gray">
+            <div className="very-small text-gray noselect">
               <strong>Spaces</strong>
             </div>
           </div>
@@ -142,7 +152,7 @@ function InviteList({ isOpen, onRequestClose }) {
 
         {initMatrix.roomList.inviteRooms.size !== 0 && (
           <div className="invites-content__subheading">
-            <div className="very-small text-gray">
+            <div className="very-small text-gray noselect">
               <strong>Rooms</strong>
             </div>
           </div>
