@@ -1,7 +1,7 @@
 import clone from 'clone';
 import { objType } from 'for-promise/utils/lib.mjs';
 
-import { ImgJquery } from '@src/app/atoms/image/Image';
+import { AvatarJquery } from '@src/app/atoms/avatar/Avatar';
 
 import initMatrix from '../../../client/initMatrix';
 import { getCurrentState } from '../../matrixUtil';
@@ -239,7 +239,7 @@ export function openPinMessageModal(room) {
 
               const td = $('<td>', {
                 class:
-                  'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container profile-image-container',
+                  'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base profile-image-container',
               });
 
               // Insert Body
@@ -250,23 +250,10 @@ export function openPinMessageModal(room) {
                 }).append(
                   // Avatar
                   td.append(
-                    $('<button>')
-                      .on('click', () => openProfileViewer(userId, roomId))
-                      .append(
-                        ImgJquery({
-                          className: 'avatar-react',
-                          draggable: false,
-                          src: imageSrc !== null ? imageSrc : defaultAvatar(userColor),
-                          alt: 'avatar',
-                        })
-                          .on('load', (event) => {
-                            td.addClass('image-react-loaded');
-                          })
-                          .on('error', (event) => {
-                            const e = event.originalEvent;
-                            e.target.src = ImageBrokenSVG;
-                          }),
-                      ),
+                    AvatarJquery({
+                      className: 'profile-image-container',
+                      imageSrc: imageSrc !== null ? imageSrc : defaultAvatar(userColor),
+                    }).on('click', () => openProfileViewer(userId, roomId)),
                   ),
 
                   // Message

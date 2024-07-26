@@ -10,8 +10,6 @@ import hljs from 'highlight.js';
 import * as linkify from 'linkifyjs';
 import forPromise from 'for-promise';
 
-import { ImgJquery } from '@src/app/atoms/image/Image';
-
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 import cons from '@src/client/state/cons';
 import { isMobile } from '@src/util/libs/mobile';
@@ -62,7 +60,7 @@ import RawIcon from '../../atoms/system-icons/RawIcon';
 import Button from '../../atoms/button/Button';
 import Tooltip from '../../atoms/tooltip/Tooltip';
 import Input from '../../atoms/input/Input';
-import Avatar, { avatarDefaultColor } from '../../atoms/avatar/Avatar';
+import Avatar, { avatarDefaultColor, AvatarJquery } from '../../atoms/avatar/Avatar';
 import IconButton from '../../atoms/button/IconButton';
 import Time from '../../atoms/time/Time';
 import ContextMenu, {
@@ -1107,19 +1105,10 @@ const MessageOptions = React.memo(
                           $('<div>', { class: 'my-2 user-react rounded p-1' })
                             .append(
                               ct.append(
-                                ImgJquery({
-                                  className: 'avatar-react',
-                                  draggable: false,
-                                  src: avatarAnimSrc,
-                                  alt: 'avatar',
-                                })
-                                  .on('load', (event) => {
-                                    ct.addClass('image-react-loaded');
-                                  })
-                                  .on('error', (event) => {
-                                    const e = event.originalEvent;
-                                    e.target.src = ImageBrokenSVG;
-                                  }),
+                                AvatarJquery({
+                                  className: 'profile-image-container',
+                                  imageSrc: avatarAnimSrc,
+                                }),
                               ),
 
                               $('<span>', { class: 'small react-username' }).text(username),

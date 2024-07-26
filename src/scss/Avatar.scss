@@ -148,6 +148,18 @@
 }
 
 .avatar-container {
+  canvas,
+  img,
+  .img-container {
+    font-size: 0px !important;
+    &::before {
+      opacity: 0;
+      display: none;
+    }
+  }
+}
+
+.avatar-container {
   display: flex;
   justify-content: center;
   & {

@@ -2,7 +2,7 @@ import moment from 'moment-timezone';
 import EventEmitter from 'events';
 import { objType } from 'for-promise/utils/lib.mjs';
 
-import { ImgJquery } from '@src/app/atoms/image/Image';
+import { AvatarJquery } from '@src/app/atoms/avatar/Avatar';
 import { setLoadingPage } from '@src/app/templates/client/Loading';
 import { colorMXID } from '@src/util/colorMXID';
 import { twemojify } from '@src/util/twemojify';
@@ -233,8 +233,7 @@ export function openThreadsMessageModal(room) {
               }
 
               const td = $('<td>', {
-                class:
-                  'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base avatar-container profile-image-container',
+                class: 'p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base',
               });
 
               // Insert Body
@@ -245,23 +244,10 @@ export function openThreadsMessageModal(room) {
                 }).append(
                   // Avatar
                   td.append(
-                    $('<button>')
-                      .on('click', () => openProfileViewer(userId, roomId))
-                      .append(
-                        ImgJquery({
-                          className: 'avatar-react',
-                          draggable: false,
-                          src: imageSrc !== null ? imageSrc : defaultAvatar(userColor),
-                          alt: 'avatar',
-                        })
-                          .on('load', (event) => {
-                            td.addClass('image-react-loaded');
-                          })
-                          .on('error', (event) => {
-                            const e = event.originalEvent;
-                            e.target.src = ImageBrokenSVG;
-                          }),
-                      ),
+                    AvatarJquery({
+                      className: 'profile-image-container',
+                      imageSrc: imageSrc !== null ? imageSrc : defaultAvatar(userColor),
+                    }).on('click', () => openProfileViewer(userId, roomId)),
                   ),
 
                   // Message

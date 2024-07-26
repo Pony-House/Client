@@ -534,12 +534,13 @@ function ImgJquery({
   onClick = null,
   onError = null,
   dataMxEmoticon = null,
+  onLoadingChange = null,
 }) {
   const url = getTinyUrl(src);
   const ops = {
     'data-mx-emoticon': dataMxEmoticon,
     id,
-    class: className,
+    class: `img-container${className ? ` ${className}` : ''}`,
     src: url,
     alt,
     height,
@@ -548,6 +549,18 @@ function ImgJquery({
 
   const img = $('<img>', ops);
   if (!draggable) img.attr('draggable', 'false');
+
+  img.on('load', (event) => {
+    if (onLoadingChange) onLoadingChange(2);
+    img.addClass('image-react-loaded');
+    img.removeClass('img-container');
+  });
+
+  img.on('error', (event) => {
+    if (onLoadingChange) onLoadingChange(2);
+    const e = event.originalEvent;
+    e.target.src = ImageBrokenSVG;
+  });
 
   if (style) img.css(style);
   if (onLoad) img.on('load', onLoad);

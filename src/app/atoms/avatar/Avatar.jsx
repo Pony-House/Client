@@ -9,7 +9,7 @@ import RawIcon from '../system-icons/RawIcon';
 
 import { avatarInitials } from '../../../util/common';
 import { defaultAvatar, defaultProfileBanner, defaultSpaceBanner } from './defaultAvatar';
-import Img from '../image/Image';
+import Img, { ImgJquery } from '../image/Image';
 
 const defaultGetItems = {
   avatar: (colorCode) => defaultAvatar(colorCode),
@@ -120,8 +120,7 @@ const Avatar = React.forwardRef(
   },
 );
 
-// Props
-Avatar.propTypes = {
+const imgPropTypes = {
   neonColor: PropTypes.bool,
   animParentsCount: PropTypes.number,
   isDefaultImage: PropTypes.bool,
@@ -138,4 +137,30 @@ Avatar.propTypes = {
   size: PropTypes.oneOf(['large', 'normal', 'small', 'extra-small']),
 };
 
+// Props
+Avatar.propTypes = imgPropTypes;
 export default Avatar;
+
+// jQuery
+const AvatarJquery = ({ text = null, imageSrc = null, imgClass = null, className = null }) => {
+  const tinyBase = $('<div>', {
+    class: `avatar-container${`${className ? ` ${className}` : ''}`} noselect`,
+  });
+
+  return tinyBase.append(
+    ImgJquery({
+      alt: text || 'avatar',
+      className: `avatar-react${imgClass ? ` ${imgClass}` : ''}`,
+      draggable: false,
+      src: imageSrc,
+      alt: 'avatar',
+      onLoadingChange: (isLoading) => {
+        if (isLoading >= 2) tinyBase.addClass('image-react-loaded');
+      },
+    }),
+  );
+};
+
+AvatarJquery.propTypes = imgPropTypes;
+
+export { AvatarJquery };
