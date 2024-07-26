@@ -279,10 +279,7 @@ function Web3Item({ item, networkId }) {
           >
             {blockchainName}{' '}
             {typeof blockchainSymbol === 'string' && blockchainSymbol.length > 0 ? (
-              <>
-                {' '}
-                <i className={`text-bg-force cf cf-${blockchainSymbol.toLocaleLowerCase()}`} />
-              </>
+              <i className={`ms-1 text-bg-force cf cf-${blockchainSymbol.toLocaleLowerCase()}`} />
             ) : null}
           </a>
         </li>
