@@ -9,3 +9,4 @@
 - Profile Banner updater fixed.
 - Room Profile avatar button fixed.
 - New optimization for loading avatars and attachments.
+- Broken images can be default avatar now.
