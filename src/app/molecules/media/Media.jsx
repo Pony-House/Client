@@ -276,14 +276,18 @@ function Sticker({
   }, []);
 
   useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
+  const stickerStyle = { height: width !== null ? getNativeHeight(width, height, 170) : 'unset' };
 
   return (
     <Tooltip placement="top" content={<div className="small">{name}</div>}>
-      <div
-        className="sticker-container"
-        style={{ height: width !== null ? getNativeHeight(width, height, 170) : 'unset' }}
-      >
-        {url !== null && <Img src={url || link} alt={name} />}
+      <div className="sticker-container" style={stickerStyle}>
+        {url !== null && (
+          <Img
+            style={typeof stickerStyle.height === 'number' ? stickerStyle : null}
+            src={url || link}
+            alt={name}
+          />
+        )}
       </div>
     </Tooltip>
   );
