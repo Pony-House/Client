@@ -8,6 +8,10 @@ electron/main/notification/sounds
 public/img/twemoji
 mods/test
 
+/vite.config.*.timestamp-*-*.mjs
+/vite.config.*.timestamp-*-*.js
+/vite.config.*.timestamp-*-*.ts
+
 /index.js
 .DS_Store
 
