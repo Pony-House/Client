@@ -248,6 +248,7 @@ export function openThreadsMessageModal(room) {
                       className: 'profile-image-container',
                       imgClass: 'profile-image-container',
                       imageSrc: imageSrc !== null ? imageSrc : defaultAvatar(userColor),
+                      isDefaultImage: true,
                     }).on('click', () => openProfileViewer(userId, roomId)),
                   ),
 

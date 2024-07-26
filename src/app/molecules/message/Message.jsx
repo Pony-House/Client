@@ -1109,7 +1109,7 @@ const MessageOptions = React.memo(
                                   className: 'profile-image-container',
                                   imgClass: 'profile-image-container',
                                   imageSrc: avatarAnimSrc,
-                                  isDefaultImage,
+                                  isDefaultImage: true,
                                 }),
                               ),
 
