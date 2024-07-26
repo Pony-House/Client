@@ -100,6 +100,7 @@ const Avatar = React.forwardRef(
       >
         {isImage ? (
           <Img
+            disableBase
             bgColor={bgColor}
             onLoadingChange={setIsLoading}
             getDefaultImage={avatarDefaultColor}

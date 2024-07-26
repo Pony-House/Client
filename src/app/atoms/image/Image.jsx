@@ -38,6 +38,7 @@ const Img = React.forwardRef(
       onLoadingChange = null,
       dataMxEmoticon = null,
       isDefaultImage = false,
+      disableBase = false,
       getDefaultImage = null,
     },
     ref,
@@ -410,9 +411,9 @@ const Img = React.forwardRef(
       }
     });
 
-    // Complete
-    return (
-      isLoading >= 2 && (
+    // Image
+    if (isLoading >= 2) {
+      return (
         <img
           onLoad={onLoad}
           className={className}
@@ -450,8 +451,40 @@ const Img = React.forwardRef(
               : ImageBrokenSVG
           }
         />
-      )
-    );
+      );
+    }
+
+    // Loading Image base
+    else if (!disableBase) {
+      const finalStyle = {};
+      if (typeof height === 'number') finalStyle.height = height;
+      if (typeof width === 'number') finalStyle.width = width;
+
+      if (style) {
+        for (const item in style) {
+          finalStyle[item] = style[item];
+        }
+      }
+
+      return (
+        <div
+          className={`d-inline-block img-container${className ? ` ${className}` : ''}`}
+          onClick={onClick}
+          ref={imgRef}
+          data-mx-emoticon={dataMxEmoticon}
+          height={height}
+          width={width}
+          id={id}
+          style={finalStyle}
+          src_url={tinyImageUrl}
+          src_anim_url={tinyImageAnimUrl}
+          alt={alt}
+        />
+      );
+    }
+
+    // Nothing
+    return null;
   },
 );
 
@@ -461,6 +494,7 @@ const imgPropTypes = {
   bgColor: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   animParentsCount: PropTypes.number,
   isDefaultImage: PropTypes.bool,
+  disableBase: PropTypes.bool,
   dataMxEmoticon: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
   draggable: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   style: PropTypes.object,
