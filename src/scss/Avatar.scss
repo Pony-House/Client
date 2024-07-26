@@ -303,6 +303,18 @@
   }
 }
 
+// Reactions
+#message-reactions {
+  .react-content {
+    .avatar-container,
+    img,
+    canvas {
+      height: 36px;
+      width: 36px;
+    }
+  }
+}
+
 // Profile Modal
 .profile-user-profile-avatar {
   .avatar-container,
