@@ -148,6 +148,7 @@ const MessageAvatar = React.memo(
     >
       <Avatar
         imgClass="profile-image-container"
+        className="profile-image-container"
         imageAnimSrc={avatarAnimSrc}
         imageSrc={avatarSrc}
         text={username}
@@ -1097,8 +1098,7 @@ const MessageOptions = React.memo(
                           : null;
 
                         const ct = $('<div>', {
-                          class:
-                            'align-top text-center chat-base avatar-container profile-image-container d-inline-block',
+                          class: 'align-top text-center chat-base d-inline-block',
                         });
 
                         users.push(
@@ -1107,6 +1107,7 @@ const MessageOptions = React.memo(
                               ct.append(
                                 AvatarJquery({
                                   className: 'profile-image-container',
+                                  imgClass: 'profile-image-container',
                                   imageSrc: avatarAnimSrc,
                                   isDefaultImage,
                                 }),

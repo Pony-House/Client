@@ -200,6 +200,7 @@ function RoomSelector({
             className={`float-start me-2 h-100 avatar avatar-type--${imgSrc || isDefault ? 'img' : 'icon'}`}
           >
             <Avatar
+              imgClass="profile-image-container"
               className="profile-image-container"
               text={roomName}
               bgColor={colorMXID(roomId)}

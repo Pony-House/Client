@@ -54,6 +54,7 @@ function ImageUpload({
         }}
       >
         <Avatar
+          imgClass="profile-image-container"
           className="profile-image-container"
           imageSrc={imageSrc || defaultImage}
           text={text}

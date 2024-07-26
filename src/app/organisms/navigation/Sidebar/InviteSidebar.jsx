@@ -128,6 +128,7 @@ export default function InviteSidebar() {
             neonColor
             iconColor={!isIconsColored ? null : 'rgb(164, 42, 212)'}
             faSrc="bi bi-envelope-plus-fill"
+            imgClass="profile-image-container"
             className="profile-image-container"
             size="normal"
           />

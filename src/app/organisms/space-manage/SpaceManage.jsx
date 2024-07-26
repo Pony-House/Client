@@ -138,6 +138,7 @@ function SpaceManageItem({
 
   const roomAvatarJSX = (
     <Avatar
+      imgClass="profile-image-container"
       className="profile-image-container"
       text={name}
       bgColor={colorMXID(roomId)}

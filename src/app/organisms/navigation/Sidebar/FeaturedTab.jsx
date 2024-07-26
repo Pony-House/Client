@@ -124,6 +124,7 @@ export default function FeaturedTab() {
             faSrc="fa-solid fa-user"
             size="normal"
             iconColor={!isIconsColored ? null : 'rgb(0 159 255)'}
+            imgClass="profile-image-container"
             className="profile-image-container"
           />
         }
@@ -151,6 +152,7 @@ export default function FeaturedTab() {
             faSrc="fa-solid fa-house"
             size="normal"
             iconColor={!isIconsColored ? null : 'rgb(118, 232, 84)'}
+            imgClass="profile-image-container"
             className="profile-image-container"
           />
         }
@@ -178,6 +180,7 @@ export default function FeaturedTab() {
               iconColor={!isIconsColored ? null : 'rgb(121, 231, 231)'}
               faSrc="fa-brands fa-ethereum"
               size="normal"
+              imgClass="profile-image-container"
               className="profile-image-container"
             />
           }
@@ -204,6 +207,7 @@ export default function FeaturedTab() {
               }}
               avatar={
                 <Avatar
+                  imgClass="profile-image-container"
                   className="profile-image-container"
                   text={room.name}
                   bgColor={colorMXID(room.roomId)}

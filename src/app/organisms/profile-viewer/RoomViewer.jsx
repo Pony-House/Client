@@ -336,6 +336,7 @@ function RoomViewer() {
               onKeyDown={toggleLightbox}
             >
               <Avatar
+                imgClass="profile-image-container"
                 className="profile-image-container"
                 ref={profileAvatar}
                 imageSrc={imageSrc}

@@ -82,6 +82,7 @@ function CrossSigninAlert({ isIconsColored }) {
           neonColor
           iconColor={!isIconsColored ? null : 'var(--bs-danger)'}
           faSrc="bi bi-shield-lock-fill btn-text-danger"
+          imgClass="profile-image-container"
           className="profile-image-container"
           size="normal"
         />
@@ -118,6 +119,7 @@ function SideBar() {
                     neonColor
                     iconColor={!isIconsColored ? null : 'rgb(84, 101, 232)'}
                     faSrc="bi bi-bookmark-plus-fill"
+                    imgClass="profile-image-container"
                     className="profile-image-container"
                     size="normal"
                   />
@@ -139,6 +141,7 @@ function SideBar() {
                 neonColor
                 iconColor={!isIconsColored ? null : 'rgb(164, 42, 212)'}
                 faSrc="fa-solid fa-magnifying-glass"
+                imgClass="profile-image-container"
                 className="profile-image-container"
                 size="normal"
               />

@@ -1,3 +1,6 @@
+Padronizar o profile-image-container
+Padronizar o sistema obter avatares animados
+
 Botão de copiar imagem.
 
 Ajeitar PowerLevelSelector.jsx

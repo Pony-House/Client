@@ -252,6 +252,7 @@ export function openPinMessageModal(room) {
                   td.append(
                     AvatarJquery({
                       className: 'profile-image-container',
+                      imgClass: 'profile-image-container',
                       imageSrc: imageSrc !== null ? imageSrc : defaultAvatar(userColor),
                     }).on('click', () => openProfileViewer(userId, roomId)),
                   ),

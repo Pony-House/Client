@@ -240,6 +240,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
             <h4 className="card-title">
               <Avatar
                 animParentsCount={0}
+                imgClass="profile-image-container"
                 className="profile-image-container"
                 imageSrc={
                   typeof room.avatar_url === 'string'

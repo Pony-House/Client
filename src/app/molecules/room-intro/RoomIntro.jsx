@@ -20,6 +20,7 @@ function RoomIntro({
         <div className="ps-5 pt-5 pb-3">
           <Avatar
             animParentsCount={1}
+            imgClass="profile-image-container"
             className="profile-image-container"
             imageSrc={avatarSrc}
             imageAnimSrc={avatarAnimSrc}

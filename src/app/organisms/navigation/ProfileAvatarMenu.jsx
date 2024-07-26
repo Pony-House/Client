@@ -250,6 +250,7 @@ function ProfileAvatarMenu() {
             >
               <Avatar
                 className="d-inline-block float-start profile-image-container"
+                imgClass="profile-image-container"
                 text={profile.displayName}
                 bgColor={colorMXID(mx.getUserId())}
                 size="normal"

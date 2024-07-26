@@ -62,6 +62,7 @@ function ImagePackProfile({
           bgColor="#555"
           text={displayName}
           imageSrc={avatarUrl}
+          imgClass="profile-image-container"
           className="profile-image-container"
           size="normal"
         />

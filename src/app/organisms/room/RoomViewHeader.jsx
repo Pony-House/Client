@@ -175,6 +175,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
               <Avatar
                 animParentsCount={2}
                 className="d-inline-block me-2 profile-image-container"
+                imgClass="profile-image-container"
                 imageSrc={avatarSrc}
                 imageAnimSrc={avatarAnimSrc}
                 text={roomName}
@@ -205,6 +206,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
             >
               <Avatar
                 className="d-inline-block me-2 profile-image-container"
+                imgClass="profile-image-container"
                 imageSrc={avatarSrc}
                 text={roomName}
                 bgColor={colorMXID(roomId)}
