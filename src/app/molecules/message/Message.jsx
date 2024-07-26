@@ -60,7 +60,7 @@ import RawIcon from '../../atoms/system-icons/RawIcon';
 import Button from '../../atoms/button/Button';
 import Tooltip from '../../atoms/tooltip/Tooltip';
 import Input from '../../atoms/input/Input';
-import Avatar, { avatarDefaultColor, AvatarJquery } from '../../atoms/avatar/Avatar';
+import Avatar, { AvatarJquery } from '../../atoms/avatar/Avatar';
 import IconButton from '../../atoms/button/IconButton';
 import Time from '../../atoms/time/Time';
 import ContextMenu, {
@@ -152,6 +152,7 @@ const MessageAvatar = React.memo(
         imageSrc={avatarSrc}
         text={username}
         bgColor={bgColor}
+        isDefaultImage
       />
     </button>
   ),
@@ -1092,9 +1093,8 @@ const MessageOptions = React.memo(
                         const avatarAnimSrc = user
                           ? !appearanceSettings.enableAnimParams
                             ? mxcUrl.toHttp(user.avatarUrl)
-                            : (getAnimatedImageUrl(mxcUrl.toHttp(user.avatarUrl, 36, 36)) ??
-                              avatarDefaultColor(color))
-                          : avatarDefaultColor(color);
+                            : (getAnimatedImageUrl(mxcUrl.toHttp(user.avatarUrl, 36, 36)) ?? null)
+                          : null;
 
                         const ct = $('<div>', {
                           class:
@@ -1108,6 +1108,7 @@ const MessageOptions = React.memo(
                                 AvatarJquery({
                                   className: 'profile-image-container',
                                   imageSrc: avatarAnimSrc,
+                                  isDefaultImage,
                                 }),
                               ),
 
@@ -1686,11 +1687,10 @@ function Message({
 
   const color = colorMXID(senderId);
   const username = muteUserManager.getMessageName(mEvent, isDM);
-  const avatarSrc = mxcUrl.getAvatarUrl(mEvent.sender, 36, 36) ?? avatarDefaultColor(color);
+  const avatarSrc = mxcUrl.getAvatarUrl(mEvent.sender, 36, 36) ?? null;
   const avatarAnimSrc = !appearanceSettings.enableAnimParams
     ? mxcUrl.getAvatarUrl(mEvent.sender)
-    : (getAnimatedImageUrl(mxcUrl.getAvatarUrl(mEvent.sender, 36, 36)) ??
-      avatarDefaultColor(color));
+    : (getAnimatedImageUrl(mxcUrl.getAvatarUrl(mEvent.sender, 36, 36)) ?? null);
 
   // Content Data
   let isCustomHTML = content.format === 'org.matrix.custom.html';

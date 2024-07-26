@@ -53,7 +53,11 @@ const Img = React.forwardRef(
     // Get Url
     let tinyImageUrl = url;
     let tinyImageAnimUrl = animUrl;
-    if (isDefaultImage && getDefaultImage && typeof bgColor === 'number') {
+    if (
+      isDefaultImage &&
+      getDefaultImage &&
+      (typeof bgColor === 'number' || typeof bgColor === 'string')
+    ) {
       const defaultAvatar = getDefaultImage(bgColor);
       if (typeof tinyImageUrl !== 'string' || tinyImageUrl.length < 1) {
         tinyImageUrl = defaultAvatar;
@@ -557,7 +561,11 @@ function ImgJquery({
   // Get Url
   let tinyImageUrl = url;
   let tinyImageAnimUrl = animUrl;
-  if (isDefaultImage && getDefaultImage && typeof bgColor === 'number') {
+  if (
+    isDefaultImage &&
+    getDefaultImage &&
+    (typeof bgColor === 'number' || typeof bgColor === 'string')
+  ) {
     const defaultAvatar = getDefaultImage(bgColor);
     if (typeof tinyImageUrl !== 'string' || tinyImageUrl.length < 1) {
       tinyImageUrl = defaultAvatar;
