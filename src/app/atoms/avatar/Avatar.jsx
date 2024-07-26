@@ -149,6 +149,7 @@ const AvatarJquery = ({ text = null, imageSrc = null, imgClass = null, className
 
   return tinyBase.append(
     ImgJquery({
+      disableBase: true,
       alt: text || 'avatar',
       className: `avatar-react${imgClass ? ` ${imgClass}` : ''}`,
       draggable: false,

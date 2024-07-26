@@ -522,51 +522,106 @@ Img.propTypes = imgPropTypes;
 export default Img;
 
 function ImgJquery({
-  draggable = false,
+  bgColor = 0,
+  animParentsCount = 0,
+  draggable = 'false',
   style = null,
   height = null,
   width = null,
   src = null,
+  animSrc = null,
   alt = null,
   className = null,
   id = null,
   onLoad = null,
   onClick = null,
   onError = null,
-  dataMxEmoticon = null,
   onLoadingChange = null,
+  dataMxEmoticon = null,
+  isDefaultImage = false,
+  disableBase = false,
+  isObj = false,
+  getDefaultImage = null,
 }) {
   const url = getTinyUrl(src);
-  const ops = {
-    'data-mx-emoticon': dataMxEmoticon,
-    id,
-    class: `img-container${className ? ` ${className}` : ''}`,
-    src: url,
-    alt,
-    height,
-    width,
+  const animUrl = getTinyUrl(animSrc);
+
+  // Get Url
+  let tinyImageUrl = url;
+  let tinyImageAnimUrl = animUrl;
+  if (isDefaultImage && getDefaultImage) {
+    const defaultAvatar = getDefaultImage(bgColor);
+    if (typeof tinyImageUrl !== 'string' || tinyImageUrl.length < 1) tinyImageUrl = defaultAvatar;
+  }
+
+  // Normal image base
+  let img;
+  if (!disableBase) {
+    // Build container
+    img = $('<div>', {
+      class: `d-inline-block img-container${className ? ` ${className}` : ''}`,
+      'data-mx-emoticon': dataMxEmoticon,
+      height,
+      width,
+      id,
+      alt,
+      src_url: tinyImageUrl,
+      src_anim_url: tinyImageAnimUrl,
+    });
+
+    // Insert Data
+    if (style) img.css(style);
+    if (onLoad) img.on('load', onLoad);
+    if (onClick) img.on('click', onClick);
+    if (onError) img.on('error', onError);
+  }
+
+  // Nope
+  else {
+    img = $('<span>');
+  }
+
+  // Start image script
+  const startLoadImage = () => {
+    const tinyComplete = () => {
+      const ops = {
+        'data-mx-emoticon': dataMxEmoticon,
+        id,
+        class: className,
+        alt,
+        height,
+        width,
+      };
+
+      const finalImg = $('<img>', ops);
+      if (!draggable) img.attr('draggable', 'false');
+      img.replaceWith(finalImg);
+
+      finalImg.on('load', (event) => {
+        if (onLoadingChange) onLoadingChange(2);
+        img.addClass('image-react-loaded');
+        img.removeClass('img-container');
+      });
+
+      finalImg.on('error', (event) => {
+        if (onLoadingChange) onLoadingChange(2);
+        const e = event.originalEvent;
+        e.target.src = ImageBrokenSVG;
+      });
+
+      if (style) finalImg.css(style);
+      if (onLoad) finalImg.on('load', onLoad);
+      if (onClick) finalImg.on('click', onClick);
+      if (onError) finalImg.on('error', onError);
+
+      finalImg.attr('src', tinyImageUrl);
+    };
+
+    tinyComplete();
   };
 
-  const img = $('<img>', ops);
-  if (!draggable) img.attr('draggable', 'false');
-
-  img.on('load', (event) => {
-    if (onLoadingChange) onLoadingChange(2);
-    img.addClass('image-react-loaded');
-    img.removeClass('img-container');
-  });
-
-  img.on('error', (event) => {
-    if (onLoadingChange) onLoadingChange(2);
-    const e = event.originalEvent;
-    e.target.src = ImageBrokenSVG;
-  });
-
-  if (style) img.css(style);
-  if (onLoad) img.on('load', onLoad);
-  if (onClick) img.on('click', onClick);
-  if (onError) img.on('error', onError);
-
+  // Complete
+  setTimeout(() => startLoadImage(), 1);
   return img;
 }
 
