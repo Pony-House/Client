@@ -7,8 +7,6 @@ import { imageExts } from '@src/util/MimesUtil';
 
 import { getAppearance } from '../../../util/libs/appearance';
 
-const ImageBrokenSVG = './img/svg/image-broken.svg';
-
 const getTinyUrl = (src) => {
   return typeof src === 'string' &&
     src.startsWith('mxc://') &&
@@ -51,12 +49,18 @@ const Img = React.forwardRef(
     const url = getTinyUrl(src);
     const animUrl = getTinyUrl(animSrc);
 
+    // Image Broken
+    let ImageBrokenSVG = './img/svg/image-broken.svg';
+
     // Get Url
     let tinyImageUrl = url;
     let tinyImageAnimUrl = animUrl;
     if (isDefaultImage && getDefaultImage) {
       const defaultAvatar = getDefaultImage(bgColor);
-      if (typeof tinyImageUrl !== 'string' || tinyImageUrl.length < 1) tinyImageUrl = defaultAvatar;
+      if (typeof tinyImageUrl !== 'string' || tinyImageUrl.length < 1) {
+        tinyImageUrl = defaultAvatar;
+        ImageBrokenSVG = defaultAvatar;
+      }
     }
 
     // Prepare data
@@ -546,12 +550,18 @@ function ImgJquery({
   const url = getTinyUrl(src);
   const animUrl = getTinyUrl(animSrc);
 
+  // Image Broken
+  let ImageBrokenSVG = './img/svg/image-broken.svg';
+
   // Get Url
   let tinyImageUrl = url;
   let tinyImageAnimUrl = animUrl;
   if (isDefaultImage && getDefaultImage) {
     const defaultAvatar = getDefaultImage(bgColor);
-    if (typeof tinyImageUrl !== 'string' || tinyImageUrl.length < 1) tinyImageUrl = defaultAvatar;
+    if (typeof tinyImageUrl !== 'string' || tinyImageUrl.length < 1) {
+      tinyImageUrl = defaultAvatar;
+      ImageBrokenSVG = defaultAvatar;
+    }
   }
 
   // Normal image base
