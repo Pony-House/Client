@@ -67,6 +67,7 @@ function loadingMsgPlaceholders(key, count = 2) {
 function RoomIntroContainer({ event, timeline }) {
   const [, nameForceUpdate] = useForceUpdate();
 
+  const appearanceSettings = getAppearance();
   const mx = initMatrix.matrixClient;
   const mxcUrl = initMatrix.mxcUrl;
 
@@ -85,6 +86,14 @@ function RoomIntroContainer({ event, timeline }) {
   const isDM = roomList.directs.has(timeline.roomId);
   let avatarSrc = mxcUrl.getAvatarUrl(room, 80, 80);
   avatarSrc = isDM ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 80, 80) : avatarSrc;
+
+  let avatarAnimSrc = mxcUrl.getAvatarUrl(room);
+
+  avatarAnimSrc = isDM
+    ? !appearanceSettings.enableAnimParams
+      ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember())
+      : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 80, 80))
+    : avatarAnimSrc;
 
   const heading = isDM ? roomTitle : `Welcome to ${roomTitle}`;
   const topic = !thread
@@ -121,6 +130,7 @@ function RoomIntroContainer({ event, timeline }) {
     <RoomIntro
       roomId={timeline.roomId}
       avatarSrc={avatarSrc}
+      avatarAnimSrc={avatarAnimSrc}
       name={roomTitle}
       heading={twemojifyReact(heading)}
       desc={desc}
