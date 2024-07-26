@@ -485,13 +485,16 @@ a {
     z-index: 1;
   }
 
-  .discover-banner > img {
-    filter: brightness(65%) blur(3px);
-    -webkit-filter: brightness(65%) blur(3px);
-    -moz-filter: brightness(65%) blur(3px);
-    -o-filter: brightness(65%) blur(3px);
-    -ms-filter: brightness(65%) blur(3px);
-    pointer-events: none;
+  .discover-banner {
+    > img,
+    > .img-container {
+      filter: brightness(65%) blur(3px);
+      -webkit-filter: brightness(65%) blur(3px);
+      -moz-filter: brightness(65%) blur(3px);
+      -o-filter: brightness(65%) blur(3px);
+      -ms-filter: brightness(65%) blur(3px);
+      pointer-events: none;
+    }
   }
 
   @media (max-width: 768px) {

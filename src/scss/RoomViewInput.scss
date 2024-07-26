@@ -101,10 +101,13 @@
 
   line-height: 0;
 
-  &__preview > img {
-    max-height: 40px;
-    border-radius: var(--bo-radius);
-    max-width: 150px;
+  &__preview {
+    > img,
+    > .img-container {
+      max-height: 40px;
+      border-radius: var(--bo-radius);
+      max-width: 150px;
+    }
   }
   &__icon {
     padding: var(--sp-extra-tight);

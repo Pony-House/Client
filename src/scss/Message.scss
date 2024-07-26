@@ -1,8 +1,10 @@
-.cmd-bar__content-suggestions img {
-  height: 20px !important;
-  width: 20px !important;
+.cmd-bar__content-suggestions {
+  img,
+  .img-container {
+    height: 20px !important;
+    width: 20px !important;
+  }
 }
-
 #room-pinned-messages {
   .message-open-click {
     cursor: pointer !important;
@@ -432,7 +434,8 @@ em-emoji-picker {
     display: flex;
     align-items: center;
     align-content: center;
-    img {
+    img,
+    .img-container {
       height: 52px !important;
       margin-right: 7px;
     }
