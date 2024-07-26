@@ -55,12 +55,12 @@ const Img = React.forwardRef(
     // Get Url
     let tinyImageUrl = url;
     let tinyImageAnimUrl = animUrl;
-    if (isDefaultImage && getDefaultImage) {
+    if (isDefaultImage && getDefaultImage && typeof bgColor === 'number') {
       const defaultAvatar = getDefaultImage(bgColor);
       if (typeof tinyImageUrl !== 'string' || tinyImageUrl.length < 1) {
         tinyImageUrl = defaultAvatar;
-        ImageBrokenSVG = defaultAvatar;
       }
+      ImageBrokenSVG = defaultAvatar;
     }
 
     // Prepare data
@@ -556,12 +556,12 @@ function ImgJquery({
   // Get Url
   let tinyImageUrl = url;
   let tinyImageAnimUrl = animUrl;
-  if (isDefaultImage && getDefaultImage) {
+  if (isDefaultImage && getDefaultImage && typeof bgColor === 'number') {
     const defaultAvatar = getDefaultImage(bgColor);
     if (typeof tinyImageUrl !== 'string' || tinyImageUrl.length < 1) {
       tinyImageUrl = defaultAvatar;
-      ImageBrokenSVG = defaultAvatar;
     }
+    ImageBrokenSVG = defaultAvatar;
   }
 
   // Normal image base
