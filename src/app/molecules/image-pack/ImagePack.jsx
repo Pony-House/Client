@@ -229,7 +229,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
 
       {images.length === 0 ? null : (
         <div>
-          <div className="image-pack__header">
+          <div className="image-pack__header noselect">
             <div className="very-small text-gray">Image</div>
             <div className="very-small text-gray">Shortcode</div>
             <div className="very-small text-gray">Usage</div>
@@ -272,7 +272,7 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
         <Checkbox variant="success" onToggle={handleGlobalChange} isActive={isGlobal} />
         <div>
           <Text variant="b2">Use globally</Text>
-          <div className="very-small text-gray">
+          <div className="very-small text-gray noselect">
             Add this pack to your account to use in all rooms.
           </div>
         </div>
@@ -334,7 +334,7 @@ function ImagePackUser() {
   };
 
   return (
-    <div className="card noselect">
+    <div className="card">
       <ul className="list-group list-group-flush">
         <ImagePackProfile
           avatarUrl={pack.avatarUrl ? mxcUrl.toHttp(pack.avatarUrl, 42, 42) : null}
@@ -355,7 +355,7 @@ function ImagePackUser() {
                 accept={supportedEmojiImportFiles}
               />
               <Button
-                className="m-1"
+                className="m-1 noselect"
                 variant="primary"
                 onClick={() => fileInputClick(emojiImportRef, handleEmojisFileChange)}
               >
@@ -368,7 +368,7 @@ function ImagePackUser() {
 
         {images.length === 0 ? null : (
           <div>
-            <div className="image-pack__header">
+            <div className="image-pack__header noselect">
               <div className="very-small text-gray">Image</div>
               <div className="very-small text-gray">Shortcode</div>
               <div className="very-small text-gray">Usage</div>
@@ -387,7 +387,7 @@ function ImagePackUser() {
           </div>
         )}
 
-        <li className="list-group-item">
+        <li className="list-group-item noselect">
           <center>
             {pack.images.size > 2 && (
               <>
@@ -459,9 +459,9 @@ function ImagePackGlobal() {
   };
 
   return (
-    <div className="card noselect mt-3">
+    <div className="card mt-3">
       <ul className="list-group list-group-flush">
-        <li className="list-group-item very-small text-gray">Global packs</li>
+        <li className="list-group-item very-small text-gray noselect">Global packs</li>
 
         <div>
           {roomIdToStateKeys.size > 0 ? (
@@ -475,7 +475,7 @@ function ImagePackGlobal() {
                 return (
                   <li className="list-group-item" key={pack.id}>
                     <div className="row">
-                      <div className="col-md-1">
+                      <div className="col-md-1 noselect">
                         <center>
                           <Checkbox
                             variant="success"
@@ -495,7 +495,7 @@ function ImagePackGlobal() {
               });
             })
           ) : (
-            <li className="list-group-item small text-gray">
+            <li className="list-group-item small text-gray noselect">
               <center>No global packs</center>
             </li>
           )}

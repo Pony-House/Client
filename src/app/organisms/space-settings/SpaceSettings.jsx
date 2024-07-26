@@ -226,7 +226,6 @@ function SpaceSettings() {
       isFullscreen={!window.matchMedia('screen and (max-width: 768px)').matches}
       id="settings-base"
       isOpen={isOpen}
-      className="noselect"
       title={
         window.matchMedia('screen and (max-width: 768px)').matches ? (
           <>

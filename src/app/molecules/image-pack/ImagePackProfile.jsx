@@ -75,7 +75,7 @@ function ImagePackProfile({
             <div>
               <Input name="attributionInput" label="Attribution" value={attribution} resizable />
             </div>
-            <div>
+            <div className="noselect">
               <Button variant="primary" type="submit">
                 Save
               </Button>
@@ -88,6 +88,7 @@ function ImagePackProfile({
               <Text>{displayName}</Text>
               {onEditProfile && (
                 <IconButton
+                  className="noselect"
                   size="extra-small"
                   onClick={() => setIsEdit(true)}
                   fa="fa-solid fa-pencil"

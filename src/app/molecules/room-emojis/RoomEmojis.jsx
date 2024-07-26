@@ -117,11 +117,11 @@ function RoomEmojis({ roomId }) {
   };
 
   return (
-    <div className="card noselect mb-3">
+    <div className="card mb-3">
       <ul className="list-group list-group-flush">
         {canChange && (
           <>
-            <li className="list-group-item very-small text-gray">Create Pack</li>
+            <li className="list-group-item very-small text-gray noselect">Create Pack</li>
 
             <li className="list-group-item">
               <form className="row" onSubmit={handlePackCreate}>
@@ -130,7 +130,7 @@ function RoomEmojis({ roomId }) {
                     <Input name="nameInput" placeholder="Pack Name" required />
                   </div>
                 </div>
-                <div className="col-2">
+                <div className="col-2 noselect">
                   <center className="h-100 align-items-center d-flex">
                     <Button className="m-1" variant="primary" type="submit">
                       Create pack
@@ -166,7 +166,7 @@ function RoomEmojis({ roomId }) {
               />
             ))
         ) : (
-          <div className="room-emojis__empty">
+          <div className="room-emojis__empty noselect">
             <Text>No emoji or sticker pack.</Text>
           </div>
         )}

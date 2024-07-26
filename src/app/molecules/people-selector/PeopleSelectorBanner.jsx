@@ -57,9 +57,7 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
   const bioRef = useRef(null);
   const noteRef = useRef(null);
 
-  const [avatarUrl, setUserAvatar] = useState(
-    user ? user?.avatarUrl || defaultAvatar(colorMXID(user.userId)) : null,
-  );
+  const [avatarUrl, setUserAvatar] = useState(user ? user?.avatarUrl : null);
 
   const mx = initMatrix.matrixClient;
   const mxcUrl = initMatrix.mxcUrl;

@@ -227,29 +227,30 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
   }
 
   function renderRoomList(rooms) {
-    // const appearanceSettings = getAppearance();
+    const appearanceSettings = getAppearance();
     return rooms.map((room, index) => {
       const alias = typeof room.canonical_alias === 'string' ? room.canonical_alias : room.room_id;
       const name = typeof room.name === 'string' ? room.name : alias;
       const isJoined = initMatrix.matrixClient.getRoom(room.room_id)?.getMyMembership() === 'join';
       const desc = typeof room.topic === 'string' ? room.topic : null;
 
-      /*
-            animParentsCount={2}
-      imageAnimSrc={typeof room.avatar_url === 'string' ?
-        !appearanceSettings.enableAnimParams ? mxcUrl.toHttp(room.avatar_url) : getAnimatedImageUrl(mxcUrl.toHttp(room.avatar_url, 42, 42))
-        : null}
-      */
-
       return (
         <div key={`publicRooms_renderRoomList_${index}`} className="col-md-4">
           <div className="card p-3 m-2" style={{ height: '350px' }}>
             <h4 className="card-title">
               <Avatar
+                animParentsCount={0}
                 className="profile-image-container"
                 imageSrc={
                   typeof room.avatar_url === 'string'
                     ? mxcUrl.toHttp(room.avatar_url, 42, 42)
+                    : null
+                }
+                imageAnimSrc={
+                  typeof room.avatar_url === 'string'
+                    ? !appearanceSettings.enableAnimParams
+                      ? mxcUrl.toHttp(room.avatar_url)
+                      : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room.avatar_url, 42, 42))
                     : null
                 }
                 bgColor={colorMXID(alias)}
