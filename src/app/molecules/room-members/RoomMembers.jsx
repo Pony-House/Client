@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { RoomMemberEvent } from 'matrix-js-sdk';
 
+import { getAnimatedImageUrl, getAppearance } from '@src/util/libs/appearance';
+
 import initMatrix from '../../../client/initMatrix';
 import { colorMXID } from '../../../util/colorMXID';
 import { openProfileViewer, openReusableContextMenu } from '../../../client/action/navigation';
@@ -22,11 +24,15 @@ const PER_PAGE_MEMBER = 50;
 function normalizeMembers(members) {
   const mx = initMatrix.matrixClient;
   const mxcUrl = initMatrix.mxcUrl;
+  const appearanceSettings = getAppearance();
   return members.map((member) => ({
     userId: member.userId,
     name: getUsernameOfRoomMember(member),
     username: member.userId.slice(1, member.userId.indexOf(':')),
     avatarSrc: mxcUrl.getAvatarUrl(member, 32, 32),
+    avatarAnimSrc: !appearanceSettings.enableAnimParams
+      ? mxcUrl.getAvatarUrl(member)
+      : getAnimatedImageUrl(mxcUrl.getAvatarUrl(member, 32, 32)),
     peopleRole: getPowerLabel(member.powerLevel),
     powerLevel: members.powerLevel,
   }));
@@ -152,6 +158,7 @@ function RoomMembers({ roomId }) {
           {mList.map((member) => (
             <PeopleSelector
               disableStatus
+              animParentsCount={1}
               avatarSize={32}
               key={member.userId}
               contextMenu={(e) => {
@@ -163,6 +170,7 @@ function RoomMembers({ roomId }) {
               }}
               onClick={() => openProfileViewer(member.userId, roomId)}
               avatarSrc={member.avatarSrc}
+              avatarAnimSrc={member.avatarAnimSrc}
               name={member.name}
               color={colorMXID(member.userId)}
               peopleRole={member.peopleRole}

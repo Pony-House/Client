@@ -18,6 +18,7 @@ import { getAnimatedImageUrl, getAppearance } from '../../../util/libs/appearanc
 function PeopleSelector({
   avatarSrc = null,
   avatarAnimSrc = null,
+  animParentsCount = 3,
   name,
   color,
   peopleRole = null,
@@ -95,6 +96,7 @@ function PeopleSelector({
       type="button"
     >
       <Avatar
+        animParentsCount={animParentsCount}
         imgClass="profile-image-container"
         className="profile-image-container"
         imageAnimSrc={imageAnimSrc}
@@ -128,6 +130,7 @@ function PeopleSelector({
 }
 
 PeopleSelector.propTypes = {
+  animParentsCount: PropTypes.number,
   avatarSize: PropTypes.number,
   disableStatus: PropTypes.bool,
   user: PropTypes.object,

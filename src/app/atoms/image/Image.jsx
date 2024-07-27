@@ -389,8 +389,10 @@ const Img = React.forwardRef(
           const img = $(imgRef.current);
           if (img.length > 0) {
             tinyNode = img.get(0);
-            for (let i = 0; i < animParentsCount; i++) {
-              tinyNode = tinyNode.parentNode;
+            if (tinyNode) {
+              for (let i = 0; i < animParentsCount; i++) {
+                if (tinyNode.parentNode) tinyNode = tinyNode.parentNode;
+              }
             }
           }
         }
@@ -648,7 +650,7 @@ function ImgJquery({
         if (typeof animUrl === 'string' && animUrl.length > 0) {
           tinyNode = finalImg.get(0);
           for (let i = 0; i < animParentsCount; i++) {
-            tinyNode = tinyNode.parentNode;
+            if (tinyNode.parentNode) tinyNode = tinyNode.parentNode;
           }
         }
 

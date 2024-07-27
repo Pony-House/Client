@@ -1309,6 +1309,8 @@ const MessageThreadSummary = React.memo(({ thread, useManualCheck = false }) => 
   const [show, setShow] = useState(false);
   thread.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
+  const appearanceSettings = getAppearance();
+
   // can't have empty threads
   if (thread.length === 0) return null;
 
@@ -1325,12 +1327,11 @@ const MessageThreadSummary = React.memo(({ thread, useManualCheck = false }) => 
     lastSender && typeof lastSender?.userId === 'string' ? colorMXID(lastSender?.userId) : null;
 
   // Avatar
-  const newAvatar = mxcUrl.getAvatarUrl(lastSender, 36, 36, undefined, true, false);
-  const lastSenderAvatarSrc = newAvatar
-    ? newAvatar
-    : typeof color === 'string'
-      ? avatarDefaultColor(color)
-      : defaultAvatar(0);
+  const avatarSrc = mxcUrl.getAvatarUrl(lastSender, 36, 36, undefined, true, false) ?? null;
+  const avatarAnimSrc = !appearanceSettings.enableAnimParams
+    ? mxcUrl.getAvatarUrl(lastSender)
+    : (getAnimatedImageUrl(mxcUrl.getAvatarUrl(lastSender, 36, 36, undefined, true, false)) ??
+      null);
 
   // Select Thread
   function selectThread() {
@@ -1385,8 +1386,11 @@ const MessageThreadSummary = React.memo(({ thread, useManualCheck = false }) => 
             {lastSender ? (
               <>
                 <Avatar
+                  animParentsCount={2}
+                  isDefaultImage
                   className="profile-image-container"
-                  imageSrc={lastSenderAvatarSrc}
+                  imageSrc={avatarSrc}
+                  imageAnimSrc={avatarAnimSrc}
                   text={lastSender?.name}
                   bgColor={backgroundColorMXID(lastSender?.userId)}
                   size="small"
