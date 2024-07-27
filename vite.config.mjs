@@ -42,16 +42,6 @@ const copyFiles = {
     },
 
     {
-      src: 'node_modules/jquery/dist/jquery.min.js',
-      dest: 'js/',
-    },
-
-    {
-      src: 'node_modules/jquery-ui/dist/jquery-ui.min.js',
-      dest: 'js/',
-    },
-
-    {
       src: 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
       dest: 'js/',
     },
