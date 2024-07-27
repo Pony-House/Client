@@ -8,7 +8,7 @@ import Linkify from 'linkify-react';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 
-import Img from '@src/app/atoms/image/Image';
+import Img, { ImgJquery } from '@src/app/atoms/image/Image';
 import { everyoneTags } from '@src/app/molecules/global-notification/KeywordNotification';
 
 import { sanitizeText } from './sanitize';
@@ -68,7 +68,15 @@ global.String.prototype.emojiToCode = function () {
 // Image fix
 const ImageFix = {
   jquery: function () {
-    $(this);
+    $(this).replaceWith(
+      ImgJquery({
+        isEmoji: true,
+        dataMxEmoticon: attribs['data-mx-emoticon'],
+        className: attribs.class,
+        src: attribs.src,
+        alt: attribs.alt,
+      }),
+    );
   },
   React: (attribs) => {
     const imgResult =
