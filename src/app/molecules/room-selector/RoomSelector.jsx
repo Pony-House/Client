@@ -328,7 +328,7 @@ export function ThreadSelector({ room, thread, isSelected, isMuted, options, onC
       content={
         <div className="text-truncate content">
           <p
-            className={`my-0 ms-1 me-5 small ${isSelected ? 'text-bg-force' : 'text-bg-low-force'} text-truncate username-base${isUnread ? ' username-unread' : ''}`}
+            className={`my-0 ms-1 small ${isSelected ? 'text-bg-force' : 'text-bg-low-force'} text-truncate w-100 username-base${isUnread ? ' username-unread' : ''}`}
           >
             <i className="bi bi-arrow-return-right me-2 thread-selector__icon" />{' '}
             {twemojifyReact(name)}

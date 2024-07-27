@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useReducer } from 'react';
 import PropTypes from 'prop-types';
-import matrixAppearance from '@src/util/libs/appearance';
+import matrixAppearance, { getAppearance } from '@src/util/libs/appearance';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
@@ -215,6 +215,7 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
       );
     };
 
+    const appearanceSettings = getAppearance();
     return users.map((user) => {
       const userId = user.user_id;
       const name = typeof user.display_name === 'string' ? user.display_name : userId;
@@ -223,6 +224,11 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
           key={userId}
           avatarSrc={
             typeof user.avatar_url === 'string' ? mxcUrl.toHttp(user.avatar_url, 42, 42) : null
+          }
+          avatarAnimSrc={
+            !appearanceSettings.enableAnimParams
+              ? mxcUrl.toHttp(user.avatar_url)
+              : getAnimatedImageUrl(mxcUrl.toHttp(user.avatar_url, 42, 42))
           }
           name={name}
           id={userId}

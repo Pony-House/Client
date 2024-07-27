@@ -1,6 +1,5 @@
 Padronizar o profile-image-container
 Padronizar o sistema obter avatares animados
-Ajeitar Image.jsx para jquery
 Colocar os emojis dentro do img jquery
 
 Fazer um gerenciador de quantidade de fetchs que pode executar ao mesmo tempo.
