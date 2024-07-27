@@ -547,7 +547,7 @@ function ImgJquery({
   const mxcUrl = initMatrix.mxcUrl || customMxcUrl;
 
   const url = getTinyUrl(mxcUrl, src);
-  const animUrl = getTinyUrl(animSrc);
+  const animUrl = getTinyUrl(mxcUrl, animSrc);
 
   // Image Broken
   let ImageBrokenSVG = './img/svg/image-broken.svg';
@@ -617,6 +617,8 @@ function ImgJquery({
         alt,
         height,
         width,
+        src_url: tinyImageUrl,
+        src_anim_url: tinyImageAnimUrl,
       };
 
       const finalImg = $('<img>', ops);

@@ -169,7 +169,9 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
       // Message Icon
       if (typeof presence.msgIcon === 'string' && presence.msgIcon.length > 0) {
         customStatusImg = ImgJquery({
+          animParentsCount: 4,
           src: presence.msgIconThumb,
+          animSrc: presence.msgIcon,
           alt: 'icon',
           className: 'emoji me-1',
         });

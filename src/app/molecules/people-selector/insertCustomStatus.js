@@ -24,7 +24,9 @@ export default function insertCustomStatus(customStatusRef, content, testMode = 
         content.presenceStatusMsg.msgIcon.length > 0
       ) {
         customStatusImg = ImgJquery({
+          animParentsCount: 3,
           src: content.presenceStatusMsg.msgIconThumb,
+          animSrc: content.presenceStatusMsg.msgIcon,
           alt: 'icon',
           className: 'emoji me-1',
         });
