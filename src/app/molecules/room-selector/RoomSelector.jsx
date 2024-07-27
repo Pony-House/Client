@@ -225,7 +225,7 @@ function RoomSelector({
           </div>
 
           <Text
-            className={`text-truncate username-base${isUnread ? ' username-unread' : ''}`}
+            className={`text-truncate w-100 username-base${isUnread ? ' username-unread' : ''}`}
             variant="b1"
             weight={isUnread ? 'medium' : 'normal'}
           >
