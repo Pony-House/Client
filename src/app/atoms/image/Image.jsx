@@ -577,29 +577,37 @@ function ImgJquery({
 
   // Normal image base
   let img;
-  if (!disableBase) {
-    // Build container
-    img = $('<div>', {
-      class: `d-inline-block img-container${className ? ` ${className}` : ''}`,
-      'data-mx-emoticon': dataMxEmoticon,
-      height,
-      width,
-      id,
-      alt,
-      src_url: tinyImageUrl,
-      src_anim_url: tinyImageAnimUrl,
-    });
+  if (!isObj) {
+    if (!disableBase) {
+      // Build container
+      img = $('<div>', {
+        class: `d-inline-block img-container${className ? ` ${className}` : ''}`,
+        'data-mx-emoticon': dataMxEmoticon,
+        height,
+        width,
+        id,
+        alt,
+        src_url: tinyImageUrl,
+        src_anim_url: tinyImageAnimUrl,
+      });
 
-    // Insert Data
-    if (style) img.css(style);
-    if (onLoad) img.on('load', onLoad);
-    if (onClick) img.on('click', onClick);
-    if (onError) img.on('error', onError);
-  }
+      // Insert Data
+      if (style) img.css(style);
+      if (onLoad) img.on('load', onLoad);
+      if (onClick) img.on('click', onClick);
+      if (onError) img.on('error', onError);
+    }
 
-  // Nope
-  else {
-    img = $('<span>');
+    // Nope
+    else {
+      img = $('<span>');
+    }
+  } else {
+    img = {
+      src: tinyImageUrl,
+      animSrc: tinyImageAnimUrl,
+      err: null,
+    };
   }
 
   // Start image script
@@ -618,62 +626,60 @@ function ImgJquery({
     const [blobAnimSrc, setBlobAnimSrc] = jQueryState(null);
 
     const tinyComplete = () => {
-      const ops = {
-        'data-mx-emoticon': dataMxEmoticon,
-        id,
-        class: className,
-        alt,
-        height,
-        width,
-        src_url: tinyImageUrl,
-        src_anim_url: tinyImageAnimUrl,
-      };
-
-      const finalImg = $('<img>', ops);
-      if (!draggable) img.attr('draggable', 'false');
-      img.replaceWith(finalImg);
-
-      finalImg.on('load', (event) => {
-        img.addClass('image-react-loaded');
-        img.removeClass('img-container');
-      });
-
-      finalImg.on('error', (event) => {
-        const e = event.originalEvent;
-        e.target.src = ImageBrokenSVG;
-      });
-
-      if (style) finalImg.css(style);
-      if (onLoad) finalImg.on('load', onLoad);
-      if (onClick) finalImg.on('click', onClick);
-      if (onError) finalImg.on('error', onError);
-
-      finalImg.attr('src', blobSrc());
-
-      // Anim Parents Counter
-      if (blobAnimSrc() && blobAnimSrc() !== blobSrc()) {
-        let tinyNode;
-        if (typeof animUrl === 'string' && animUrl.length > 0) {
-          tinyNode = finalImg.get(0);
-          for (let i = 0; i < animParentsCount; i++) {
-            if (tinyNode.parentNode) tinyNode = tinyNode.parentNode;
-          }
-        }
-
-        const animationTransitionIn = () => finalImg.attr('src', blobAnimSrc());
-        const animationTransitionOut = () => finalImg.attr('src', blobSrc());
-        const tinyQuery = tinyNode ? $(tinyNode) : null;
-        if (tinyNode) {
-          tinyQuery.on('mouseover', animationTransitionIn);
-          tinyQuery.on('mouseout', animationTransitionOut);
-        }
-
-        return () => {
-          if (tinyNode) {
-            tinyQuery.off('mouseover', animationTransitionIn);
-            tinyQuery.off('mouseout', animationTransitionOut);
-          }
+      if (!isObj) {
+        const ops = {
+          'data-mx-emoticon': dataMxEmoticon,
+          id,
+          class: className,
+          alt,
+          height,
+          width,
+          src_url: tinyImageUrl,
+          src_anim_url: tinyImageAnimUrl,
         };
+
+        const finalImg = $('<img>', ops);
+        if (!draggable) img.attr('draggable', 'false');
+        img.replaceWith(finalImg);
+
+        finalImg.on('load', (event) => {
+          img.addClass('image-react-loaded');
+          img.removeClass('img-container');
+        });
+
+        finalImg.on('error', (event) => {
+          const e = event.originalEvent;
+          e.target.src = ImageBrokenSVG;
+        });
+
+        if (style) finalImg.css(style);
+        if (onLoad) finalImg.on('load', onLoad);
+        if (onClick) finalImg.on('click', onClick);
+        if (onError) finalImg.on('error', onError);
+
+        finalImg.attr('src', blobSrc());
+
+        // Anim Parents Counter
+        if (blobAnimSrc() && blobAnimSrc() !== blobSrc()) {
+          let tinyNode;
+          if (typeof animUrl === 'string' && animUrl.length > 0) {
+            tinyNode = finalImg.get(0);
+            for (let i = 0; i < animParentsCount; i++) {
+              if (tinyNode.parentNode) tinyNode = tinyNode.parentNode;
+            }
+          }
+
+          const animationTransitionIn = () => finalImg.attr('src', blobAnimSrc());
+          const animationTransitionOut = () => finalImg.attr('src', blobSrc());
+          const tinyQuery = tinyNode ? $(tinyNode) : null;
+          if (tinyNode) {
+            tinyQuery.on('mouseover', animationTransitionIn);
+            tinyQuery.on('mouseout', animationTransitionOut);
+          }
+        }
+      } else {
+        img.blobSrc = blobSrc();
+        img.blobAnimSrc = blobAnimSrc();
       }
     };
 
@@ -732,6 +738,7 @@ function ImgJquery({
                         })
                         .catch((err) => {
                           setImgError(err.message);
+                          if (isObj) img.err = err;
                           tinyComplete();
                           if (onLoadingChange) onLoadingChange(2);
                           if (onError) onError(err);
@@ -740,6 +747,7 @@ function ImgJquery({
                       if (tinyImageUrl === waitSrc) {
                         const err = new Error('Fail to create image blob.');
                         setImgError(err.message);
+                        if (isObj) img.err = err;
                         tinyComplete();
                         if (onLoadingChange) onLoadingChange(2);
                         if (onError) onError(err);
@@ -752,6 +760,7 @@ function ImgJquery({
                   setImgSrc(null);
                   setImgMime([]);
                   setImgError(err.message);
+                  if (isObj) img.err = err;
                   tinyComplete();
                   if (onLoadingChange) onLoadingChange(2);
                   if (onError) onError(err);
@@ -759,6 +768,7 @@ function ImgJquery({
               },
               (err) => {
                 setImgError(err.message);
+                if (isObj) img.err = err;
                 tinyComplete();
                 if (onLoadingChange) onLoadingChange(2);
                 if (onError) onError(err);
@@ -854,6 +864,7 @@ function ImgJquery({
               setTnSrc(tinySrc);
               setTinyMime([]);
               setError(err.message);
+              if (isObj) img.err = err;
               if (onError) onError(err);
               if (isAnim) mainBlob = ImageBrokenSVG;
 
