@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
 
+import { jQueryState } from '@src/util/libs/jquery';
 import blobUrlManager from '@src/util/libs/blobUrlManager';
 import initMatrix from '@src/client/initMatrix';
 import { imageExts } from '@src/util/MimesUtil';
@@ -12,6 +13,26 @@ const getTinyUrl = (mxcUrl, src) => {
   return typeof src === 'string' && src.startsWith('mxc://') && mxcUrl && mxcUrl.toHttp
     ? mxcUrl.toHttp(src)
     : src;
+};
+
+const createImageCanvas = (mainBlob, onLoad, onError) => {
+  const img = new Image();
+  img.onload = () => {
+    // Create canvas
+    const c = document.createElement('canvas');
+    var w = (c.width = img.width);
+    var h = (c.height = img.height);
+
+    // Draw canvas
+    c.getContext('2d').drawImage(img, 0, 0, w, h);
+    onLoad(c);
+  };
+
+  // Error
+  img.onerror = onError;
+
+  // Load now
+  img.src = mainBlob;
 };
 
 const Img = React.forwardRef(
@@ -72,11 +93,11 @@ const Img = React.forwardRef(
     const [imgMime, setImgMime] = useState([]);
     const [imgMimeAnim, setImgMimeAnim] = useState([]);
 
-    const [imgSrc, setImgSrc] = useState(null);
-    const [imgAnimSrc, setImgAnimSrc] = useState(null);
+    const [, setImgSrc] = useState(null);
+    const [, setImgAnimSrc] = useState(null);
 
-    const [imgError, setImgError] = useState(null);
-    const [imgAnimError, setImgAnimError] = useState(null);
+    const [, setImgError] = useState(null);
+    const [, setImgAnimError] = useState(null);
 
     const [blobSrc, setBlobSrc] = useState(null);
     const [blobAnimSrc, setBlobAnimSrc] = useState(null);
@@ -121,85 +142,74 @@ const Img = React.forwardRef(
               const mainBlobId = blobUrlManager.getById(`userFreezeAvatar:${mainSrc}`);
               if (!mainBlobId) {
                 // Prepare to load image
-                const img = new Image();
-                img.onload = () => {
-                  // Create canvas
-                  const c = document.createElement('canvas');
-                  var w = (c.width = img.width);
-                  var h = (c.height = img.height);
+                createImageCanvas(
+                  mainBlob,
+                  (c) => {
+                    // Freeze gif now
+                    try {
+                      // Get blob
+                      c.toBlob((canvasBlob) => {
+                        if (canvasBlob) {
+                          blobUrlManager
+                            .insert(canvasBlob, {
+                              freeze: true,
+                              group: `user_avatars`,
+                              id: `userFreezeAvatar:${mainSrc}`,
+                            })
+                            .then((newTinyUrl) => {
+                              if (tinyImageUrl === waitSrc) {
+                                // Set data
+                                setImgMime(mainMime);
+                                setImgError(null);
 
-                  // Draw canvas
-                  c.getContext('2d').drawImage(img, 0, 0, w, h);
+                                setBlobSrc(newTinyUrl);
+                                setImgSrc(newTinyUrl);
 
-                  // Freeze gif now
-                  try {
-                    // Get blob
-                    c.toBlob((canvasBlob) => {
-                      if (canvasBlob) {
-                        blobUrlManager
-                          .insert(canvasBlob, {
-                            freeze: true,
-                            group: `user_avatars`,
-                            id: `userFreezeAvatar:${mainSrc}`,
-                          })
-                          .then((newTinyUrl) => {
-                            if (tinyImageUrl === waitSrc) {
-                              // Set data
-                              setImgMime(mainMime);
-                              setImgError(null);
-
-                              setBlobSrc(newTinyUrl);
-                              setImgSrc(newTinyUrl);
-
-                              // Complete
-                              setIsLoading(2);
-                              if (onLoadingChange) onLoadingChange(2);
-                            }
-                          })
-                          .catch((err) => {
-                            if (tinyImageUrl === waitSrc) {
-                              setImgError(err.message);
-                              setIsLoading(2);
-                              if (onLoadingChange) onLoadingChange(2);
-                              onError(err);
-                            }
-                          });
-                      } else {
-                        if (tinyImageUrl === waitSrc) {
-                          const err = new Error('Fail to create image blob.');
-                          setImgError(err.message);
-                          setIsLoading(2);
-                          if (onLoadingChange) onLoadingChange(2);
-                          onError(err);
+                                // Complete
+                                setIsLoading(2);
+                                if (onLoadingChange) onLoadingChange(2);
+                              }
+                            })
+                            .catch((err) => {
+                              if (tinyImageUrl === waitSrc) {
+                                setImgError(err.message);
+                                setIsLoading(2);
+                                if (onLoadingChange) onLoadingChange(2);
+                                onError(err);
+                              }
+                            });
+                        } else {
+                          if (tinyImageUrl === waitSrc) {
+                            const err = new Error('Fail to create image blob.');
+                            setImgError(err.message);
+                            setIsLoading(2);
+                            if (onLoadingChange) onLoadingChange(2);
+                            onError(err);
+                          }
                         }
+                      }, 'image/gif');
+                    } catch (err) {
+                      if (tinyImageUrl === waitSrc) {
+                        // Error
+                        setBlobSrc(null);
+                        setImgSrc(null);
+                        setImgMime([]);
+                        setImgError(err.message);
+                        setIsLoading(2);
+                        if (onLoadingChange) onLoadingChange(2);
+                        onError(err);
                       }
-                    }, 'image/gif');
-                  } catch (err) {
+                    }
+                  },
+                  (err) => {
                     if (tinyImageUrl === waitSrc) {
-                      // Error
-                      setBlobSrc(null);
-                      setImgSrc(null);
-                      setImgMime([]);
                       setImgError(err.message);
                       setIsLoading(2);
                       if (onLoadingChange) onLoadingChange(2);
                       onError(err);
                     }
-                  }
-                };
-
-                // Error
-                img.onerror = (err) => {
-                  if (tinyImageUrl === waitSrc) {
-                    setImgError(err.message);
-                    setIsLoading(2);
-                    if (onLoadingChange) onLoadingChange(2);
-                    onError(err);
-                  }
-                };
-
-                // Load now
-                img.src = mainBlob;
+                  },
+                );
               }
 
               // Get cache
@@ -216,15 +226,7 @@ const Img = React.forwardRef(
         };
 
         // Active load progress
-        const progressLoad = (
-          tnSrc,
-          tinySrc,
-          setTinyBlob,
-          setTnSrc,
-          setError,
-          setTinyMime,
-          isAnim,
-        ) => {
+        const progressLoad = (tinySrc, setTinyBlob, setTnSrc, setError, setTinyMime, isAnim) => {
           // Enable loading mode
           setIsLoading(1);
           if (onLoadingChange) onLoadingChange(1);
@@ -338,15 +340,7 @@ const Img = React.forwardRef(
           (!tinyImageUrl.startsWith('blob:') && !tinyImageUrl.startsWith('./'))
         ) {
           if (!appearanceSettings.useFreezePlugin || !tinyImageAnimUrl)
-            progressLoad(
-              imgSrc,
-              tinyImageUrl,
-              setBlobSrc,
-              setImgSrc,
-              setImgError,
-              setImgMime,
-              false,
-            );
+            progressLoad(tinyImageUrl, setBlobSrc, setImgSrc, setImgError, setImgMime, false);
           else {
             setBlobSrc(null);
             setImgSrc(null);
@@ -368,7 +362,6 @@ const Img = React.forwardRef(
           (!tinyImageAnimUrl.startsWith('blob:') && !tinyImageAnimUrl.startsWith('./'))
         ) {
           progressLoad(
-            imgAnimSrc,
             tinyImageAnimUrl,
             setBlobAnimSrc,
             setImgAnimSrc,
@@ -603,6 +596,19 @@ function ImgJquery({
 
   // Start image script
   const startLoadImage = () => {
+    // Prepare data
+    const [, setImgMime] = jQueryState([]);
+    const [, setImgMimeAnim] = jQueryState([]);
+
+    const [, setImgSrc] = jQueryState(null);
+    const [, setImgAnimSrc] = jQueryState(null);
+
+    const [, setImgError] = jQueryState(null);
+    const [, setImgAnimError] = jQueryState(null);
+
+    const [blobSrc, setBlobSrc] = jQueryState(null);
+    const [blobAnimSrc, setBlobAnimSrc] = jQueryState(null);
+
     const tinyComplete = () => {
       const ops = {
         'data-mx-emoticon': dataMxEmoticon,
@@ -618,13 +624,11 @@ function ImgJquery({
       img.replaceWith(finalImg);
 
       finalImg.on('load', (event) => {
-        if (onLoadingChange) onLoadingChange(2);
         img.addClass('image-react-loaded');
         img.removeClass('img-container');
       });
 
       finalImg.on('error', (event) => {
-        if (onLoadingChange) onLoadingChange(2);
         const e = event.originalEvent;
         e.target.src = ImageBrokenSVG;
       });
@@ -634,10 +638,250 @@ function ImgJquery({
       if (onClick) finalImg.on('click', onClick);
       if (onError) finalImg.on('error', onError);
 
-      finalImg.attr('src', tinyImageUrl);
+      finalImg.attr('src', blobSrc());
     };
 
-    tinyComplete();
+    // Avatar Config
+    const appearanceSettings = getAppearance();
+
+    // Starting progress
+    if (onLoadingChange) onLoadingChange(0);
+    let mainMime = [];
+    let mainBlob = null;
+    let mainSrc = null;
+    let isLoadingProgress = 0;
+    const isComplete = () => {
+      if (isLoadingProgress < 1) {
+        // Normal complete
+        if (
+          !mainSrc ||
+          !appearanceSettings.useFreezePlugin ||
+          !tinyImageAnimUrl ||
+          !mainBlob ||
+          mainMime[1] !== 'gif'
+        ) {
+          tinyComplete();
+          if (onLoadingChange) onLoadingChange(2);
+        }
+        // FreezePlugin part now
+        else {
+          const mainBlobId = blobUrlManager.getById(`userFreezeAvatar:${mainSrc}`);
+          if (!mainBlobId) {
+            // Prepare to load image
+            createImageCanvas(
+              mainBlob,
+              (c) => {
+                // Freeze gif now
+                try {
+                  // Get blob
+                  c.toBlob((canvasBlob) => {
+                    if (canvasBlob) {
+                      blobUrlManager
+                        .insert(canvasBlob, {
+                          freeze: true,
+                          group: `user_avatars`,
+                          id: `userFreezeAvatar:${mainSrc}`,
+                        })
+                        .then((newTinyUrl) => {
+                          // Set data
+                          setImgMime(mainMime);
+                          setImgError(null);
+
+                          setBlobSrc(newTinyUrl);
+                          setImgSrc(newTinyUrl);
+
+                          // Complete
+                          tinyComplete();
+                          if (onLoadingChange) onLoadingChange(2);
+                        })
+                        .catch((err) => {
+                          setImgError(err.message);
+                          tinyComplete();
+                          if (onLoadingChange) onLoadingChange(2);
+                          onError(err);
+                        });
+                    } else {
+                      if (tinyImageUrl === waitSrc) {
+                        const err = new Error('Fail to create image blob.');
+                        setImgError(err.message);
+                        tinyComplete();
+                        if (onLoadingChange) onLoadingChange(2);
+                        onError(err);
+                      }
+                    }
+                  }, 'image/gif');
+                } catch (err) {
+                  // Error
+                  setBlobSrc(null);
+                  setImgSrc(null);
+                  setImgMime([]);
+                  setImgError(err.message);
+                  tinyComplete();
+                  if (onLoadingChange) onLoadingChange(2);
+                  onError(err);
+                }
+              },
+              (err) => {
+                setImgError(err.message);
+                tinyComplete();
+                if (onLoadingChange) onLoadingChange(2);
+                onError(err);
+              },
+            );
+          }
+
+          // Get cache
+          else {
+            // Set data
+            setImgMime(mainMime);
+            setImgError(null);
+
+            setBlobSrc(mainBlobId);
+            setImgSrc(mainBlobId);
+          }
+        }
+      }
+    };
+
+    // Active load progress
+    const progressLoad = (tinySrc, setTinyBlob, setTnSrc, setError, setTinyMime, isAnim) => {
+      // Enable loading mode
+      if (onLoadingChange) onLoadingChange(1);
+      setError(null);
+
+      // The new image is string
+      if (typeof tinySrc === 'string' && tinySrc.length > 0) {
+        if (isAnim) mainSrc = tinySrc;
+        // Exist blob cache?
+        const blobFromId = blobUrlManager.getById(`userAvatar:${tinySrc}`);
+        if (blobFromId) {
+          setTinyMime(blobUrlManager.getMime(blobFromId));
+          setTinyBlob(blobFromId);
+          setTnSrc(tinySrc);
+          setError(null);
+          if (isAnim) mainBlob = blobFromId;
+        }
+
+        // Nope. Let's create a new one.
+        else {
+          // Reset image data
+          setTnSrc(null);
+          setTinyBlob(null);
+          setTinyMime([]);
+          setError(null);
+          if (isAnim) mainBlob = null;
+
+          // Is normal image? Reset the animation version too.
+          if (!isAnim) {
+            setBlobAnimSrc(null);
+            setImgAnimSrc(null);
+            setImgMimeAnim([]);
+            setImgAnimError(null);
+          }
+
+          // Add loading progress...
+          isLoadingProgress++;
+          mxcUrl
+            .focusFetchBlob(tinySrc)
+            .then((blobFromFetch) => {
+              const mime =
+                typeof blobFromFetch.type === 'string' ? blobFromFetch.type.split('/') : [];
+              if (isAnim) mainMime = mime;
+              if (mime[0] === 'image' && imageExts.indexOf(mime[1]) > -1) {
+                setTinyMime(mime);
+                return blobUrlManager.insert(blobFromFetch, {
+                  freeze: true,
+                  group: `user_avatars`,
+                  id: `userAvatar:${tinySrc}`,
+                });
+              }
+              throw new Error(
+                `INVALID IMAGE MIME MXC! The "${tinySrc}" is "${blobFromFetch.type}".`,
+              );
+            })
+            // Complete
+            .then((blobUrl) => {
+              // Insert data
+              setTinyBlob(blobUrl);
+              setTnSrc(tinySrc);
+              setError(null);
+              if (isAnim) mainBlob = blobUrl;
+
+              // Check the progress
+              isLoadingProgress--;
+              isComplete();
+            })
+            // Error
+            .catch((err) => {
+              // Set image error
+              setTinyBlob(ImageBrokenSVG);
+              setTnSrc(tinySrc);
+              setTinyMime([]);
+              setError(err.message);
+              onError(err);
+              if (isAnim) mainBlob = ImageBrokenSVG;
+
+              // Check the progress
+              isLoadingProgress--;
+              isComplete();
+            });
+        }
+      }
+      // Nothing
+      else {
+        setTnSrc(null);
+        setTinyBlob(null);
+        setTinyMime([]);
+        setError(null);
+        if (isAnim) mainBlob = null;
+      }
+    };
+
+    // Execute the image loading
+
+    // Normal image
+    if (!tinyImageUrl || (!tinyImageUrl.startsWith('blob:') && !tinyImageUrl.startsWith('./'))) {
+      if (!appearanceSettings.useFreezePlugin || !tinyImageAnimUrl)
+        progressLoad(tinyImageUrl, setBlobSrc, setImgSrc, setImgError, setImgMime, false);
+      else {
+        setBlobSrc(null);
+        setImgSrc(null);
+        setImgMime([]);
+        setImgError(null);
+      }
+    } else {
+      if (tinyImageUrl.startsWith('./')) {
+        const filename = tinyImageUrl.split('.');
+        setImgMime(['image', filename[filename.length - 1]]);
+      }
+      setBlobSrc(tinyImageUrl);
+      setImgSrc(tinyImageUrl);
+    }
+
+    // Anim image
+    if (
+      !tinyImageAnimUrl ||
+      (!tinyImageAnimUrl.startsWith('blob:') && !tinyImageAnimUrl.startsWith('./'))
+    ) {
+      progressLoad(
+        tinyImageAnimUrl,
+        setBlobAnimSrc,
+        setImgAnimSrc,
+        setImgAnimError,
+        setImgMimeAnim,
+        true,
+      );
+    } else {
+      if (tinyImageAnimUrl.startsWith('./')) {
+        const filename = tinyImageAnimUrl.split('.');
+        setImgMimeAnim(['image', filename[filename.length - 1]]);
+      }
+      setBlobAnimSrc(tinyImageAnimUrl);
+      setImgAnimSrc(tinyImageAnimUrl);
+    }
+
+    // Check the progress
+    isComplete();
   };
 
   // Complete

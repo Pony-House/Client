@@ -1,6 +1,17 @@
 import $ from 'jquery';
 import windowEvents from './window';
 
+export const jQueryState = (defaultValue) => {
+  let tinyValue = defaultValue;
+  const setValue = (value) => {
+    tinyValue = value;
+  };
+
+  const getValue = () => tinyValue;
+
+  return [getValue, setValue];
+};
+
 // Window Hidden Detector
 let hiddenWindow = 'windowHidden';
 function onPageShow(event) {
