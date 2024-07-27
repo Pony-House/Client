@@ -142,18 +142,32 @@ Avatar.propTypes = imgPropTypes;
 export default Avatar;
 
 // jQuery
-const AvatarJquery = ({ text = null, imageSrc = null, imgClass = null, className = null }) => {
+const AvatarJquery = ({
+  text = null,
+  imageSrc = null,
+  imageAnimSrc = null,
+  animParentsCount = 0,
+  imgClass = 'img-fluid',
+  className = null,
+  bgColor = 'transparent',
+  isDefaultImage = false,
+}) => {
   const tinyBase = $('<div>', {
     class: `avatar-container${`${className ? ` ${className}` : ''}`} noselect`,
   });
 
   return tinyBase.append(
     ImgJquery({
+      isDefaultImage: isDefaultImage,
+      getDefaultImage: avatarDefaultColor,
+      bgColor,
+      animParentsCount,
       disableBase: true,
       alt: text || 'avatar',
       className: `avatar-react${imgClass ? ` ${imgClass}` : ''}`,
       draggable: false,
       src: imageSrc,
+      animSrc: imageAnimSrc,
       alt: 'avatar',
       onLoadingChange: (isLoading) => {
         if (isLoading >= 2) tinyBase.addClass('image-react-loaded');

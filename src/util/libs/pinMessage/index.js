@@ -213,6 +213,7 @@ export function openPinMessageModal(room) {
               const tinyUsername = twemojify(user.userId);
 
               const imageSrc = user ? mxcUrl.toHttp(user.avatarUrl, 36, 36) : null;
+              const imageAnimSrc = user ? mxcUrl.toHttp(user.avatarUrl) : null;
 
               const content = events[item].getContent();
               const msgBody =
@@ -254,24 +255,31 @@ export function openPinMessageModal(room) {
                     AvatarJquery({
                       className: 'profile-image-container',
                       imgClass: 'profile-image-container',
-                      imageSrc: imageSrc !== null ? imageSrc : defaultAvatar(userColor),
+                      imageSrc,
+                      imageAnimSrc,
                       isDefaultImage: true,
+                      animParentsCount: 3,
                     }).on('click', () => openProfileViewer(userId, roomId)),
                   ),
 
                   // Message
                   $('<td>', { class: 'p-0 pe-3 py-1 message-open-click' })
                     .on('click', () => {
-                      const roomTimeline = getRoomInfo().roomTimeline;
+                      try {
+                        const roomTimeline = getRoomInfo().roomTimeline;
 
-                      if (typeof threadId === 'string') {
-                        if (threadId !== roomTimeline.threadId)
-                          selectRoom(thread.roomId, eventId, thread.rootEvent?.getId());
-                      } else if (roomTimeline.room.roomId !== roomId || roomTimeline.threadId) {
-                        selectRoom(roomId, eventId);
+                        if (typeof threadId === 'string') {
+                          if (threadId !== roomTimeline.threadId)
+                            selectRoom(thread.roomId, eventId, thread.rootEvent?.getId());
+                        } else if (roomTimeline.room.roomId !== roomId || roomTimeline.threadId) {
+                          selectRoom(roomId, eventId);
+                        }
+
+                        setTimeout(() => roomTimeline.loadEventTimeline(eventId), 500);
+                      } catch (err) {
+                        console.error(err);
+                        alert(err.message);
                       }
-
-                      setTimeout(() => roomTimeline.loadEventTimeline(eventId), 500);
                       if (modal) modal.hide();
                     })
                     .append(

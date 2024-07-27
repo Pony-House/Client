@@ -216,6 +216,7 @@ export function openThreadsMessageModal(room) {
               const tinyUsername = twemojify(user.userId);
 
               const imageSrc = user ? mxcUrl.toHttp(user.avatarUrl, 36, 36) : null;
+              const imageAnimSrc = user ? mxcUrl.toHttp(user.avatarUrl) : null;
 
               const content = events[item].content;
               const msgBody =
@@ -248,8 +249,10 @@ export function openThreadsMessageModal(room) {
                     AvatarJquery({
                       className: 'profile-image-container',
                       imgClass: 'profile-image-container',
-                      imageSrc: imageSrc !== null ? imageSrc : defaultAvatar(userColor),
+                      imageSrc,
+                      imageAnimSrc,
                       isDefaultImage: true,
+                      animParentsCount: 3,
                     }).on('click', () => openProfileViewer(userId, roomId)),
                   ),
 
@@ -258,12 +261,16 @@ export function openThreadsMessageModal(room) {
                     .on('click', async () => {
                       setLoadingPage();
                       if (modal) modal.hide();
-
-                      // Go to timeline
-                      const roomTimeline = getRoomInfo().roomTimeline;
-                      const isLoaded = await roomTimeline.loadEventTimeline(eventId);
-                      if (!isLoaded) roomTimeline.loadLiveTimeline();
-                      selectRoom(roomId, undefined, { threadId: eventId, force: true });
+                      try {
+                        // Go to timeline
+                        const roomTimeline = getRoomInfo().roomTimeline;
+                        const isLoaded = await roomTimeline.loadEventTimeline(eventId);
+                        if (!isLoaded) roomTimeline.loadLiveTimeline();
+                        selectRoom(roomId, undefined, { threadId: eventId, force: true });
+                      } catch (err) {
+                        console.error(err);
+                        alert(err.message);
+                      }
 
                       setLoadingPage(false);
                     })
