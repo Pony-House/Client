@@ -253,7 +253,8 @@ export function openThreadsMessageModal(room) {
                       imageAnimSrc,
                       isDefaultImage: true,
                       animParentsCount: 3,
-                    }).on('click', () => openProfileViewer(userId, roomId)),
+                      onClick: () => openProfileViewer(userId, roomId),
+                    }),
                   ),
 
                   // Message
