@@ -44,7 +44,7 @@ function PonyHouseSettings({ roomId, room }) {
       getCurrentState(room).getStateEvents(PonyRoomEvent.PhSettings, 'banner')?.getContent() ?? {};
 
     if (typeof bannerCfg?.url === 'string' && bannerCfg?.url.length > 0) {
-      setAvatarSrc(mxcUrl.toHttp(bannerCfg.url, 400, 227));
+      setAvatarSrc(mxcUrl.toHttp(bannerCfg.url));
     }
   }, [room]);
 

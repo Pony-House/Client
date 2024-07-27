@@ -37,6 +37,7 @@ export const avatarDefaultColor = (bgColor, type = 'avatar') => {
 const Avatar = React.forwardRef(
   (
     {
+      isObj = false,
       onClick = null,
       onError = null,
       onLoad = null,
@@ -95,41 +96,47 @@ const Avatar = React.forwardRef(
 
     // Render
     const isImage = imageSrc !== null || isDefaultImage;
-    return (
-      <div
+    const tinyImg = isImage ? (
+      <Img
+        isObj={isObj}
+        disableBase
+        onError={onError}
+        bgColor={bgColor}
+        onLoad={onLoad}
         onClick={onClick}
-        ref={imgRef}
-        className={`avatar-container${`${className ? ` ${className}` : ''}`} noselect${isImage && isLoading < 2 ? '' : ' image-react-loaded'}`}
-      >
-        {isImage ? (
-          <Img
-            disableBase
-            onError={onError}
-            bgColor={bgColor}
-            onLoad={onLoad}
-            onClick={onClick}
-            onLoadingChange={(value) => {
-              setIsLoading(value);
-              if (onLoadingChange) onLoadingChange(value);
-            }}
-            getDefaultImage={avatarDefaultColor}
-            isDefaultImage={isDefaultImage}
-            ref={theRef}
-            src={imageSrc}
-            animSrc={imageAnimSrc}
-            animParentsCount={animParentsCount + 1}
-            className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
-            alt={text || 'avatar'}
-          />
-        ) : (
-          tinyIcon()
-        )}
-      </div>
+        onLoadingChange={(value) => {
+          setIsLoading(value);
+          if (onLoadingChange) onLoadingChange(value);
+        }}
+        getDefaultImage={avatarDefaultColor}
+        isDefaultImage={isDefaultImage}
+        ref={theRef}
+        src={imageSrc}
+        animSrc={imageAnimSrc}
+        animParentsCount={animParentsCount + 1}
+        className={`avatar-react${imgClass ? ` ${imgClass}` : ''}`}
+        alt={text || 'avatar'}
+      />
+    ) : (
+      tinyIcon()
     );
+
+    if (!isObj)
+      return (
+        <div
+          onClick={onClick}
+          ref={imgRef}
+          className={`avatar-container${`${className ? ` ${className}` : ''}`} noselect${isImage && isLoading < 2 ? '' : ' image-react-loaded'}`}
+        >
+          {tinyImg}
+        </div>
+      );
+    else return tinyImg;
   },
 );
 
 const imgPropTypes = {
+  isObj: PropTypes.bool,
   neonColor: PropTypes.bool,
   animParentsCount: PropTypes.number,
   isDefaultImage: PropTypes.bool,
@@ -155,6 +162,7 @@ export default Avatar;
 
 // jQuery
 const AvatarJquery = ({
+  isObj = false,
   onClick = null,
   onError = null,
   onLoad = null,
@@ -172,27 +180,29 @@ const AvatarJquery = ({
     class: `avatar-container${`${className ? ` ${className}` : ''}`} noselect`,
   });
 
-  return tinyBase.append(
-    ImgJquery({
-      onClick,
-      onError,
-      onLoad,
-      isDefaultImage: isDefaultImage,
-      getDefaultImage: avatarDefaultColor,
-      bgColor,
-      animParentsCount,
-      disableBase: true,
-      alt: text || 'avatar',
-      className: `avatar-react${imgClass ? ` ${imgClass}` : ''}`,
-      draggable: false,
-      src: imageSrc,
-      animSrc: imageAnimSrc,
-      onLoadingChange: (isLoading) => {
-        if (isLoading >= 2) tinyBase.addClass('image-react-loaded');
-        if (onLoadingChange) onLoadingChange(isLoading);
-      },
-    }),
-  );
+  const tinyImg = ImgJquery({
+    isObj,
+    onClick,
+    onError,
+    onLoad,
+    isDefaultImage: isDefaultImage,
+    getDefaultImage: avatarDefaultColor,
+    bgColor,
+    animParentsCount,
+    disableBase: true,
+    alt: text || 'avatar',
+    className: `avatar-react${imgClass ? ` ${imgClass}` : ''}`,
+    draggable: false,
+    src: imageSrc,
+    animSrc: imageAnimSrc,
+    onLoadingChange: (isLoading) => {
+      if (isLoading >= 2) tinyBase.addClass('image-react-loaded');
+      if (onLoadingChange) onLoadingChange(isLoading);
+    },
+  });
+
+  if (!isObj) return tinyBase.append(tinyImg);
+  return tinyImg;
 };
 
 AvatarJquery.propTypes = imgPropTypes;

@@ -12,6 +12,7 @@ function ImageUpload({
   text = null,
   bgColor = 'transparent',
   imageSrc = null,
+  imageAnimSrc = null,
   onUpload,
   onRequestRemove,
   className = '',
@@ -54,9 +55,11 @@ function ImageUpload({
         }}
       >
         <Avatar
+          animParentsCount={0}
           imgClass="profile-image-container"
           className="profile-image-container"
           imageSrc={imageSrc || defaultImage}
+          imageAnimSrc={imageAnimSrc || defaultImage}
           text={text}
           bgColor={bgColor}
           size={size}

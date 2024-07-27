@@ -22,6 +22,14 @@
   }
 }
 
+#settings-base {
+  .space-banner.profile-banner {
+    .img-upload__process {
+      left: 1px;
+    }
+  }
+}
+
 .image-pack-profile {
   .img-upload__wrapper .img-upload {
     padding: 0px;

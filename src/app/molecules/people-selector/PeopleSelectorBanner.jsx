@@ -15,7 +15,7 @@ import { convertUserId } from '@src/util/matrixUtil';
 import tinyClipboard from '@src/util/libs/Clipboard';
 import { twemojifyReact, twemojify } from '../../../util/twemojify';
 
-import Avatar from '../../atoms/avatar/Avatar';
+import Avatar, { AvatarJquery } from '../../atoms/avatar/Avatar';
 import { getUserStatus, updateUserStatusIcon, getPresence } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
 import { colorMXID, cssColorMXID } from '../../../util/colorMXID';

@@ -379,11 +379,7 @@ function ProfileSection() {
             <ImageUpload
               className="space-banner profile-banner"
               text="Banner"
-              imageSrc={
-                typeof bannerSrc === 'string' && bannerSrc.length > 0
-                  ? mxcUrl.toHttp(bannerSrc, 400, 227)
-                  : null
-              }
+              imageSrc={mxcUrl.toHttp(bannerSrc)}
               onUpload={handleBannerUpload}
               onRequestRemove={() => handleBannerUpload(null)}
               defaultImage={avatarDefaultColor(color, 'profile')}
