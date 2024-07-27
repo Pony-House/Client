@@ -7,11 +7,11 @@ import Linkify from 'linkify-react';
 
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
+
+import Img from '@src/app/atoms/image/Image';
 import { everyoneTags } from '@src/app/molecules/global-notification/KeywordNotification';
 
-import Tooltip from '../app/atoms/tooltip/Tooltip';
 import { sanitizeText } from './sanitize';
-
 import openTinyURL from './message/urlProtection';
 import { tinyLinkifyFixer } from './clear-urls/clearUrls';
 import envAPI from './libs/env';
@@ -65,6 +65,38 @@ global.String.prototype.emojiToCode = function () {
   return this.codePointAt(0).toString(16);
 };
 
+// Image fix
+const ImageFix = {
+  jquery: function () {
+    $(this);
+  },
+  React: (attribs) => {
+    const imgResult =
+      typeof attribs.src === 'string' &&
+      (attribs.src.startsWith('mxc://') || attribs.src.startsWith('./')) ? (
+        <Img
+          isEmoji
+          dataMxEmoticon={attribs['data-mx-emoticon']}
+          className={attribs.class}
+          src={attribs.src}
+          alt={attribs.alt}
+        />
+      ) : (
+        <span />
+      );
+
+    // Emoji data
+    /* if (
+      attribs['data-mx-emoticon'] ||
+      (typeof attribs.class === 'string' && attribs.class.includes('emoji'))
+    ) {
+      return 
+    } */
+
+    return imgResult;
+  },
+};
+
 // Tiny Math
 const Math = lazy(() => import('../app/atoms/math/Math'));
 const mathOptions = {
@@ -81,7 +113,14 @@ const mathOptions = {
           />
         </Suspense>
       );
-    }
+    } else if (node.type === 'tag' && node.name === 'img') return ImageFix.React(node.attribs);
+    return null;
+  },
+};
+
+const sendImg = {
+  replace: (node) => {
+    if (node.type === 'tag' && node.name === 'img') return ImageFix.React(node.attribs);
     return null;
   },
 };
@@ -190,23 +229,21 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
 
   // React Mode
   if (isReact) {
+    const msgHtml = parse(msgContent, maths ? mathOptions : sendImg);
+
     // Insert Linkify
     if (linkifyEnabled) {
       // Render Data
       linkifyOptions.render = tinyRender.list.react;
       return (
         <span className="linkify-base">
-          <Linkify options={linkifyOptions}>
-            {parse(msgContent, maths ? mathOptions : undefined)}
-          </Linkify>
+          <Linkify options={linkifyOptions}>{msgHtml}</Linkify>
         </span>
       );
     }
 
     // Complete
-    return (
-      <span className="linkify-base">{parse(msgContent, maths ? mathOptions : undefined)}</span>
-    );
+    return <span className="linkify-base">{msgHtml}</span>;
   }
 
   // jQuery Mode
@@ -223,6 +260,12 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
 
   // Final Result
   msgContent = $('<span>', { class: 'linkify-base' }).html(msgContent);
+
+  // Convert images
+  const imgs = msgContent.find('img');
+  imgs.each(ImageFix.jquery);
+
+  // Fix Urls
   const tinyUrls = msgContent.find('.lk-href');
   tinyUrls.on('click', (event) => {
     const e = event.originalEvent;
@@ -230,6 +273,7 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
     openTinyURL($(e.target).attr('href'), $(e.target).attr('href'));
     return false;
   });
+
   tinyUrls.each(() => $(this).attr('title') && $(this).tooltip());
 
   // Complete

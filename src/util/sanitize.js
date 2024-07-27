@@ -1,6 +1,5 @@
 import sanitizeHtml from 'sanitize-html';
 import clone from 'clone';
-import initMatrix from '@src/client/initMatrix';
 
 import muteUserManager from './libs/muteUserManager';
 
@@ -174,7 +173,7 @@ function transformImgTag(tagName, attribs) {
     tagName,
     attribs: {
       ...attribs,
-      src: initMatrix.mxcUrl.toHttp(src),
+      src: typeof src === 'string' && src.startsWith('mxc://') ? src : null,
     },
   };
 

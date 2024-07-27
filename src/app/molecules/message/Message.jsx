@@ -337,21 +337,35 @@ const isEmojiOnly = (msgContent) => {
   // - Contains no more than 10 emoji
   let emojiOnly = false;
   if (msgContent) {
-    if (msgContent.type === 'img') {
+    if (
+      msgContent.type === 'img' ||
+      (msgContent.props &&
+        (typeof msgContent.props.dataMxEmoticon === 'string' ||
+          msgContent.props.className === 'emoji'))
+    ) {
       // If this messages contains only a single (inline) image
       emojiOnly = true;
     } else if (msgContent.constructor.name === 'Array') {
       // Otherwise, it might be an array of images / text
 
       // Count the number of emojis
-      const nEmojis = msgContent.filter((e) => e.type === 'img').length;
+      const nEmojis = msgContent.filter(
+        (e) =>
+          e.type === 'img' ||
+          (e.props &&
+            (typeof e.props.dataMxEmoticon === 'string' || e.props.className === 'emoji')),
+      ).length;
 
       // Make sure there's no text besides whitespace and variation selector U+FE0F
       if (
         nEmojis <= 10 &&
         msgContent.every(
           (element) =>
-            (typeof element === 'object' && element.type === 'img') ||
+            (typeof element === 'object' &&
+              (element.type === 'img' ||
+                (element.props &&
+                  (typeof element.props.dataMxEmoticon === 'string' ||
+                    element.props.className === 'emoji')))) ||
             (typeof element === 'string' && /^[\s\ufe0f]*$/g.test(element)),
         )
       ) {
@@ -377,23 +391,12 @@ const createMessageData = (
   let msgData = null;
   if (isCustomHTML) {
     try {
-      const insertMsg = () =>
-        !isJquery
-          ? twemojifyReact(
-              sanitizeCustomHtml(initMatrix.matrixClient, body, senderId),
-              undefined,
-              true,
-              false,
-              true,
-            )
-          : twemojify(
-              sanitizeCustomHtml(initMatrix.matrixClient, body, senderId),
-              undefined,
-              true,
-              false,
-              true,
-            );
-
+      const insertMsg = () => {
+        const messageHtml = sanitizeCustomHtml(initMatrix.matrixClient, body, senderId);
+        return !isJquery
+          ? twemojifyReact(messageHtml, undefined, true, false, true)
+          : twemojify(messageHtml, undefined, true, false, true);
+      };
       const msgOptions = tinyAPI.emit(
         'messageBody',
         content,

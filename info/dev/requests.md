@@ -1,5 +1,5 @@
+Remover tudo do messageDataEffects
 Padronizar o profile-image-container
-Colocar os emojis dentro do img jquery
 
 Fazer um gerenciador de quantidade de fetchs que pode executar ao mesmo tempo.
 
