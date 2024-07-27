@@ -5,10 +5,6 @@ Fazer um gerenciador de quantidade de fetchs que pode executar ao mesmo tempo.
 
 Atualização de username em tempo real não funcionando em rooms.
 
-Animação de banner
-
-Ajeitar o leitor de imagens jquery
-
 Botão de copiar imagem.
 
 Ajeitar PowerLevelSelector.jsx

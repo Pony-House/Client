@@ -173,9 +173,6 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
           className: 'emoji me-1',
         });
         htmlStatus.push(customStatusImg);
-
-        customStatusImg.data('pony-house-cs-normal', presence.msgIconThumb);
-        customStatusImg.data('pony-house-cs-hover', presence.msgIcon);
       }
 
       if (typeof presence.msg === 'string' && presence.msg.length > 0) {
@@ -190,11 +187,34 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
       const bannerDOM = $(profileBanner.current);
 
       if (bannerDOM.length > 0) {
-        if (typeof presence.banner === 'string' && presence.banner.length > 0) {
-          bannerDOM.css('background-image', `url("${presence.banner}")`).addClass('exist-banner');
-        } else {
-          bannerDOM.css('background-image', '').removeClass('exist-banner');
-        }
+        bannerDOM.css('background-image', '').removeClass('exist-banner');
+        const bannerData = AvatarJquery({
+          isObj: true,
+          imageSrc: presence.bannerThumb,
+          imageAnimSrc: presence.banner,
+          onLoadingChange: () => {
+            if (typeof bannerData.blobSrc === 'string' && bannerData.blobSrc.length > 0) {
+              bannerDOM
+                .css('background-image', `url("${bannerData.blobSrc}")`)
+                .addClass('exist-banner');
+
+              const bannerDomParent = bannerDOM.parent();
+
+              bannerDomParent
+                .off('mouseover')
+                .on('mouseover', () =>
+                  bannerDOM.css('background-image', `url("${bannerData.blobAnimSrc}")`),
+                );
+              bannerDomParent
+                .off('mouseout')
+                .on('mouseout', () =>
+                  bannerDOM.css('background-image', `url("${bannerData.blobSrc}")`),
+                );
+            } else {
+              bannerDOM.css('background-image', '').removeClass('exist-banner');
+            }
+          },
+        });
       }
     }
 

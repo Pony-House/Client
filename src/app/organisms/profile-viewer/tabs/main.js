@@ -2,6 +2,7 @@ import $ from 'jquery';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import tinyClipboard from '@src/util/libs/Clipboard';
 import { ImgJquery } from '@src/app/atoms/image/Image';
+import { AvatarJquery } from '@src/app/atoms/avatar/Avatar';
 
 import { twemojify } from '../../../../util/twemojify';
 import { toast } from '../../../../util/tools';
@@ -72,16 +73,21 @@ export default function renderAbout(
   const bannerDOM = $(profileBanner.current);
 
   if (bannerDOM.length > 0) {
-    if (
-      typeof content.presenceStatusMsg.banner === 'string' &&
-      content.presenceStatusMsg.banner.length > 0
-    ) {
-      bannerDOM
-        .css('background-image', `url("${content.presenceStatusMsg.banner}")`)
-        .addClass('exist-banner');
-    } else {
-      bannerDOM.css('background-image', '').removeClass('exist-banner');
-    }
+    bannerDOM.css('background-image', '').removeClass('exist-banner');
+    const bannerData = AvatarJquery({
+      isObj: true,
+      imageSrc: content.presenceStatusMsg.bannerThumb,
+      imageAnimSrc: content.presenceStatusMsg.banner,
+      onLoadingChange: () => {
+        if (typeof bannerData.blobAnimSrc === 'string' && bannerData.blobAnimSrc.length > 0) {
+          bannerDOM
+            .css('background-image', `url("${bannerData.blobAnimSrc}")`)
+            .addClass('exist-banner');
+        } else {
+          bannerDOM.css('background-image', '').removeClass('exist-banner');
+        }
+      },
+    });
   }
 
   // Get Bio Data

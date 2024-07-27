@@ -639,7 +639,6 @@ function ImgJquery({
         };
 
         const finalImg = $('<img>', ops);
-        if (!draggable) img.attr('draggable', 'false');
         img.replaceWith(finalImg);
 
         finalImg.on('load', (event) => {
@@ -658,6 +657,7 @@ function ImgJquery({
         if (onError) finalImg.on('error', onError);
 
         finalImg.attr('src', blobSrc());
+        if (!draggable || draggable === 'false') finalImg.attr('draggable', 'false');
 
         // Anim Parents Counter
         if (blobAnimSrc() && blobAnimSrc() !== blobSrc()) {

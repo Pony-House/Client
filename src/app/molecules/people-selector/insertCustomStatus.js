@@ -31,9 +31,6 @@ export default function insertCustomStatus(customStatusRef, content, testMode = 
           className: 'emoji me-1',
         });
         htmlStatus.push(customStatusImg);
-
-        customStatusImg.data('pony-house-cs-normal', content.presenceStatusMsg.msgIconThumb);
-        customStatusImg.data('pony-house-cs-hover', content.presenceStatusMsg.msgIcon);
       }
 
       if (
@@ -49,20 +46,5 @@ export default function insertCustomStatus(customStatusRef, content, testMode = 
     }
 
     customStatus.html(htmlStatus);
-
-    if (customStatusImg) {
-      customStatusImg
-        .parent()
-        .parent()
-        .parent()
-        .hover(
-          () => {
-            customStatusImg.attr('src', customStatusImg.data('pony-house-cs-hover'));
-          },
-          () => {
-            customStatusImg.attr('src', customStatusImg.data('pony-house-cs-normal'));
-          },
-        );
-    }
   }
 }
