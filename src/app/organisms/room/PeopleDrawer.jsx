@@ -33,13 +33,13 @@ import PeopleDrawerBase from './PeopleDrawerBase';
 function simplyfiMembers(members) {
   const mx = initMatrix.matrixClient;
   const mxcUrl = initMatrix.mxcUrl;
-
   return members.map((member) => ({
     user: mx.getUser(member.userId),
     userId: member.userId,
     name: getUsernameOfRoomMember(member),
     username: member.userId.slice(1, member.userId.indexOf(':')),
     avatarSrc: mxcUrl.getAvatarUrl(member, 32, 32),
+    avatarAnimSrc: mxcUrl.getAvatarUrl(member),
     peopleRole: getPowerLabel(member.powerLevel),
     powerLevel: members.powerLevel,
   }));
@@ -276,6 +276,7 @@ function PeopleDrawer({
               !member.customSelector ? (
                 isUserList ? (
                   <PeopleSelector
+                    animParentsCount={1}
                     avatarSize={32}
                     key={member.userId}
                     user={mx.getUser(member.userId)}
@@ -297,6 +298,7 @@ function PeopleDrawer({
                     }}
                     customData={member.customData}
                     avatarSrc={member.avatarSrc}
+                    avatarAnimSrc={member.avatarAnimSrc}
                     name={member.name}
                     color={colorMXID(member.userId)}
                     peopleRole={member.peopleRole}
@@ -315,6 +317,7 @@ function PeopleDrawer({
                 )
               ) : (
                 <member.customSelector
+                  animParentsCount={2}
                   key={member.userId}
                   user={mx.getUser(member.userId)}
                   onClick={() =>
@@ -323,6 +326,7 @@ function PeopleDrawer({
                       : member.customClick()
                   }
                   avatarSrc={member.avatarSrc}
+                  avatarAnimSrc={member.avatarAnimSrc}
                   name={member.name}
                   customData={member.customData}
                   color={colorMXID(member.userId)}
