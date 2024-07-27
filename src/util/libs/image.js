@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import imageViewer from '../imageViewer';
 
 export function openOnGallery(imgUrl, fileName /* urlRevoke = false */) {

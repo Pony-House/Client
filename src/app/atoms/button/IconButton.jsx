@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
 
 import RawIcon from '../system-icons/RawIcon';
 import Tooltip from '../tooltip/Tooltip';

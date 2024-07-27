@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useReducer } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
+
 import { RoomMemberEvent, UserEvent } from 'matrix-js-sdk';
 
 import clone from 'clone';

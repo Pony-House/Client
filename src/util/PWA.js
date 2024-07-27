@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 let deferredPrompt;
 window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt) => {
   const body = $('body');

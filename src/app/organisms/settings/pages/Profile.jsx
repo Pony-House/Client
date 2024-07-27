@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import $ from 'jquery';
+
 import moment from '@src/util/libs/momentjs';
 import { avatarDefaultColor } from '@src/app/atoms/avatar/Avatar';
 import { colorMXID } from '@src/util/colorMXID';

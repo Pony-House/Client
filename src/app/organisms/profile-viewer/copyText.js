@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 import tinyClipboard from '@src/util/libs/Clipboard';
 import { toast } from '../../../util/tools';
 

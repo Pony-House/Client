@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import $ from 'jquery';
 
 import Button from '@src/app/atoms/button/Button';
 import Iframe from '@src/app/atoms/iframe/Iframe';

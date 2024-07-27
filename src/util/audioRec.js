@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import { toggleActionLocal } from '../app/organisms/settings/Api';
 import storageManager from './libs/Localstorage';
 

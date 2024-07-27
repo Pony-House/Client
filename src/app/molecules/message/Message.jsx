@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState, useEffect, useCallback, useRef, useReducer } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
 
 import { MatrixEventEvent, RoomEvent, THREAD_RELATION_TYPE } from 'matrix-js-sdk';
 import { objType } from 'for-promise/utils/lib.mjs';

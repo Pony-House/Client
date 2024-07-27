@@ -1,4 +1,6 @@
 import EventEmitter from 'events';
+import $ from 'jquery';
+
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import favIconManager from '@src/util/libs/favicon';

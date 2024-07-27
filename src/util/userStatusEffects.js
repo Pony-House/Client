@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import clone from 'clone';
 import { CryptoEvent } from 'matrix-js-sdk';
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
 
 import hljs from 'highlight.js';
 import cons from '../../../client/state/cons';

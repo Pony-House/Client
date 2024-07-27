@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import tinyClipboard from '@src/util/libs/Clipboard';
 import { ImgJquery } from '@src/app/atoms/image/Image';

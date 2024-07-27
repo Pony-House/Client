@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
+
 import { UserEvent } from 'matrix-js-sdk';
 
 import { objType } from 'for-promise/utils/lib.mjs';

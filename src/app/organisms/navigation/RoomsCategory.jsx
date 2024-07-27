@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import matrixAppearance, { getAppearance } from '@src/util/libs/appearance';
+import $ from 'jquery';
 
+import matrixAppearance, { getAppearance } from '@src/util/libs/appearance';
 import { updateName, sortTime, sortName } from '../../../util/roomName';
 import initMatrix from '../../../client/initMatrix';
 import {

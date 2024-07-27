@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import { ImgJquery } from '@src/app/atoms/image/Image';
 import { twemojify } from '../../../util/twemojify';
 

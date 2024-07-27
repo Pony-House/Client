@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-use-before-define */
+import $ from 'jquery';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import SimpleMarkdown from '@khanacademy/simple-markdown';
 import { objType } from 'for-promise/utils/lib.mjs';

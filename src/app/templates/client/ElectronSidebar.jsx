@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
 
 import favIconManager from '@src/util/libs/favicon';
 import Img from '@src/app/atoms/image/Image';

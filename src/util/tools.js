@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 // import { Toast } from '@capacitor/toast';
 // import { Capacitor } from '@capacitor/core';
 import { objType } from 'for-promise/utils/lib.mjs';

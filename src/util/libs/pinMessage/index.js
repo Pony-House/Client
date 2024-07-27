@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import clone from 'clone';
 import { objType } from 'for-promise/utils/lib.mjs';
 

@@ -1,3 +1,4 @@
+import $ from 'jquery';
 // import { Browser } from '@capacitor/browser';
 import { objType } from 'for-promise/utils/lib.mjs';
 

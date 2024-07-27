@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
+
 // import { Capacitor } from '@capacitor/core';
 // import { Filesystem } from '@capacitor/filesystem';
 // import { FilePicker } from '@capawesome/capacitor-file-picker';

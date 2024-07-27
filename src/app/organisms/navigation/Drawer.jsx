@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import $ from 'jquery';
+
 import { ClientEvent, RoomStateEvent } from 'matrix-js-sdk';
 
 import Modal from 'react-bootstrap/Modal';

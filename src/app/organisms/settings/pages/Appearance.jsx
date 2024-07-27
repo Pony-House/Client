@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import $ from 'jquery';
+
 import { calendarFormat } from '@src/util/libs/momentjs';
 import { isMobile } from '@src/util/libs/mobile';
 import Button from '@src/app/atoms/button/Button';

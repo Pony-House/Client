@@ -1,4 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
+import $ from 'jquery';
+
 import getUrlPreview from '@src/util/libs/getUrlPreview';
 import { twemojifyReact } from '@src/util/twemojify';
 import initMatrix from '@src/client/initMatrix';

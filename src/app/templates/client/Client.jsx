@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
 
 import appLoadMsg from '@mods/appLoadMsg';
 import {

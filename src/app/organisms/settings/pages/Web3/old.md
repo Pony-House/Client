@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
     const signMessage = web3SignTemplate(initMatrix.matrixClient.getUserId(), null, 'Matrix Client - Bitcoin Account');
 
 

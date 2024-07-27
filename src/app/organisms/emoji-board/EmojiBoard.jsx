@@ -2,8 +2,9 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useEffect, useRef, useReducer } from 'react';
 import PropTypes from 'prop-types';
-import { ClientEvent } from 'matrix-js-sdk';
+import $ from 'jquery';
 
+import { ClientEvent } from 'matrix-js-sdk';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 import matrixAppearance from '@src/util/libs/appearance';

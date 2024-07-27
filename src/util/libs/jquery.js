@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import windowEvents from './window';
 
 // Window Hidden Detector
@@ -109,3 +110,5 @@ export default function startQuery() {
     });
   };
 }
+
+if (__ENV_APP__.MODE === 'development') global.$ = $;

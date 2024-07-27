@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useReducer } from 'react';
-import { UserEvent } from 'matrix-js-sdk';
+import $ from 'jquery';
 
+import { UserEvent } from 'matrix-js-sdk';
 import clone from 'clone';
 
 import { ImgJquery } from '@src/app/atoms/image/Image';

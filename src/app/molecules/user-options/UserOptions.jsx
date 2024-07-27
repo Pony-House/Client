@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
 
 import muteUserManager from '@src/util/libs/muteUserManager';
 import { twemojifyReact } from '../../../util/twemojify';

@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import { setMediaHeight } from '../../molecules/media/mediaFix';
 import { getScrollInfo } from '../../../util/common';
 

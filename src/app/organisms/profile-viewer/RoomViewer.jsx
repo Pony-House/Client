@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
+
 import { objType } from 'for-promise/utils/lib.mjs';
 import tinyClipboard from '@src/util/libs/Clipboard';
 import { getShareUrl } from '@src/util/tools';

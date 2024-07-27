@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import $ from 'jquery';
+
 import envAPI from '@src/util/libs/env';
 import libreTranslate from '@src/util/libs/libreTranslate';
 

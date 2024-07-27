@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
 
 import { twemojifyReact } from '../../../util/twemojify';
 import Text from '../text/Text';

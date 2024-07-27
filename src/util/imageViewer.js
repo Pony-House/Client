@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 import FileSaver from 'file-saver';
 import PhotoSwipeLightbox from 'photoswipe';
 import ExifReader from 'exifreader';

@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
+
 import * as sdk from 'matrix-js-sdk';
 import { objType } from 'for-promise/utils/lib.mjs';
 

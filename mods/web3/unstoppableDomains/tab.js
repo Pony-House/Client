@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 import { tinyCrypto } from '@src/util/web3';
 import copyText from '@src/app/organisms/profile-viewer/copyText';
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
 
 import Img from '@src/app/atoms/image/Image';
 import initMatrix, { fetchFn } from '@src/client/initMatrix';

@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from 'react';
+import $ from 'jquery';
 
 import * as linkify from 'linkifyjs';
 import linkifyHtml from 'linkify-html';

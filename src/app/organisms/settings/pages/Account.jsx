@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import $ from 'jquery';
+
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import userPid from '@src/util/libs/userPid';

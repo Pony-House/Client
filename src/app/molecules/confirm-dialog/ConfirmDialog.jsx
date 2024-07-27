@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
 
 import { openReusableDialog } from '../../../client/action/navigation';
 import { arrayItems as bsColorsArray } from '../../../util/styles-bootstrap';

@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
+
 import {
   AsYouType,
   getCountries,

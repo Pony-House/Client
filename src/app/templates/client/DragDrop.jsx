@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import $ from 'jquery';
 
 import Img from '@src/app/atoms/image/Image';
 

@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import { EventEmitter } from 'events';
 
 class FavIconManager extends EventEmitter {

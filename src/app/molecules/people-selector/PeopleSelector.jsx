@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { UserEvent } from 'matrix-js-sdk';
+import $ from 'jquery';
 
+import { UserEvent } from 'matrix-js-sdk';
 import { twemojifyReact } from '../../../util/twemojify';
 
 import { blurOnBubbling } from '../../atoms/button/script';

@@ -1,5 +1,7 @@
 import React, { useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
+
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 
 import { isInSameDay } from '../../../util/common';

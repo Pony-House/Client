@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
+
 import TextareaAutosize from 'react-autosize-textarea';
 import moment from '@src/util/libs/momentjs';
 

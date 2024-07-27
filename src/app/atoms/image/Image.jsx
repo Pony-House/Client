@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
 
 import blobUrlManager from '@src/util/libs/blobUrlManager';
 import initMatrix from '@src/client/initMatrix';

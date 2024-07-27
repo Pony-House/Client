@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import $ from 'jquery';
+
 import storageManager from '@src/util/libs/Localstorage';
 
 import VolumeMeter from '../../../../../util/libs/volumeMeter';

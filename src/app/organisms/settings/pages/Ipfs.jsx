@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import $ from 'jquery';
+
 import { getAppearance } from '@src/util/libs/appearance';
 
 import SettingTile from '../../../molecules/setting-tile/SettingTile';

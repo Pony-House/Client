@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import { ethers } from 'ethers';
 import { objType } from 'for-promise/utils/lib.mjs';
 import moment from '@src/util/libs/momentjs';

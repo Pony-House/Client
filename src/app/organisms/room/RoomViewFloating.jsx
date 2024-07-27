@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
 
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';

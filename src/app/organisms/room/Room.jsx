@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import $ from 'jquery';
+
 import clone from 'clone';
 import { objType } from 'for-promise/utils/lib.mjs';
 

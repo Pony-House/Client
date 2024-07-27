@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import moment from 'moment-timezone';
 import EventEmitter from 'events';
 import { objType } from 'for-promise/utils/lib.mjs';

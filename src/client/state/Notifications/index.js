@@ -1,4 +1,5 @@
 // import { LocalNotifications } from '@capacitor/local-notifications';
+import $ from 'jquery';
 import { ClientEvent, MatrixEventEvent, NotificationCountType, RoomEvent } from 'matrix-js-sdk';
 import EventEmitter from 'events';
 

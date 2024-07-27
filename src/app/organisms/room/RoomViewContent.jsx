@@ -7,6 +7,8 @@ import React, {
   useReducer,
 } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
+
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import windowEvents from '@src/util/libs/window';
 

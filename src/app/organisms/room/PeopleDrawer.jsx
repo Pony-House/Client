@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
+
 import { RoomMemberEvent } from 'matrix-js-sdk';
 
 import settings from '@src/client/state/settings';

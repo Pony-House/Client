@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { RoomStateEvent } from 'matrix-js-sdk';
+import $ from 'jquery';
 
+import { RoomStateEvent } from 'matrix-js-sdk';
 import { twemojifyReact } from '../../../util/twemojify';
 
 import initMatrix from '../../../client/initMatrix';

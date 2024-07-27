@@ -1,4 +1,5 @@
 // import { StatusBar } from '@capacitor/status-bar';
+import $ from 'jquery';
 
 import EventEmitter from 'events';
 import { objType } from 'for-promise/utils/lib.mjs';
