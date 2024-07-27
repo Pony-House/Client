@@ -11,7 +11,6 @@ export default [
   {
     languageOptions: {
       globals: {
-        '$': 'readonly',
         'ethereum': 'readonly',
         'arguments': 'readonly',
         'getLogData': 'readonly',
