@@ -639,6 +639,32 @@ function ImgJquery({
       if (onError) finalImg.on('error', onError);
 
       finalImg.attr('src', blobSrc());
+
+      // Anim Parents Counter
+      if (blobAnimSrc() && blobAnimSrc() !== blobSrc()) {
+        let tinyNode;
+        if (typeof animUrl === 'string' && animUrl.length > 0) {
+          tinyNode = finalImg.get(0);
+          for (let i = 0; i < animParentsCount; i++) {
+            tinyNode = tinyNode.parentNode;
+          }
+        }
+
+        const animationTransitionIn = () => finalImg.attr('src', blobAnimSrc());
+        const animationTransitionOut = () => finalImg.attr('src', blobSrc());
+        const tinyQuery = tinyNode ? $(tinyNode) : null;
+        if (tinyNode) {
+          tinyQuery.on('mouseover', animationTransitionIn);
+          tinyQuery.on('mouseout', animationTransitionOut);
+        }
+
+        return () => {
+          if (tinyNode) {
+            tinyQuery.off('mouseover', animationTransitionIn);
+            tinyQuery.off('mouseout', animationTransitionOut);
+          }
+        };
+      }
     };
 
     // Avatar Config
