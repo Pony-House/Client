@@ -3,7 +3,6 @@ Colocar os emojis dentro do img jquery
 
 Fazer um gerenciador de quantidade de fetchs que pode executar ao mesmo tempo.
 
-Animação da lista de últimas pessoas que leram a mensagem.
 Atualização de username em tempo real não funcionando em rooms.
 
 Animação de banner

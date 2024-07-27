@@ -44,6 +44,7 @@ function ReadReceipts() {
     return (
       <PeopleSelector
         disableStatus
+        animParentsCount={1}
         avatarSize={32}
         key={userId}
         onClick={() => {
@@ -51,6 +52,7 @@ function ReadReceipts() {
           openProfileViewer(userId, roomId);
         }}
         avatarSrc={mxcUrl.getAvatarUrl(member, 32, 32)}
+        avatarAnimSrc={mxcUrl.getAvatarUrl(member)}
         name={getUserDisplayName(userId)}
         color={colorMXID(userId)}
       />
