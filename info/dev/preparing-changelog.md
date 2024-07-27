@@ -10,3 +10,4 @@
 - Room Profile avatar button fixed.
 - New optimization for loading avatars and attachments.
 - Broken images can be default avatar now.
+- New script to read images made especially to deal with Authenticated media MSC3916. (Matrix 1.11)
