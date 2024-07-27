@@ -68,18 +68,25 @@ global.String.prototype.emojiToCode = function () {
 // Image fix
 const ImageFix = {
   jquery: function () {
-    $(this).replaceWith(
+    const el = $(this);
+    const dataMxEmoticon = el.attr('data-mx-emoticon') || el.prop('data-mx-emoticon');
+    const className = el.attr('class');
+    const src = el.attr('src');
+    const alt = el.attr('alt');
+
+    el.replaceWith(
       ImgJquery({
         isEmoji: true,
-        dataMxEmoticon: attribs['data-mx-emoticon'],
-        className: attribs.class,
-        src: attribs.src,
-        alt: attribs.alt,
+        dataMxEmoticon,
+        className,
+        src,
+        alt,
       }),
     );
   },
   React: (attribs) => {
     const imgResult =
+      attribs &&
       typeof attribs.src === 'string' &&
       (attribs.src.startsWith('mxc://') || attribs.src.startsWith('./')) ? (
         <Img
