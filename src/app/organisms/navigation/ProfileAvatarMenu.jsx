@@ -26,10 +26,7 @@ import tinyAPI from '../../../util/mods';
 import { enableAfkSystem } from '../../../util/userStatusEffects';
 import { getUserWeb3Account } from '../../../util/web3';
 
-import matrixAppearance, {
-  getAppearance,
-  getAnimatedImageUrl,
-} from '../../../util/libs/appearance';
+import matrixAppearance from '../../../util/libs/appearance';
 
 // Account Status
 const accountStatus = { status: null, data: null };
@@ -228,8 +225,6 @@ function ProfileAvatarMenu() {
   user.presenceStatusMsg = JSON.stringify(content);
   const newStatus = `user-status-icon ${getUserStatus(user)}`;
 
-  const appearanceSettings = getAppearance();
-
   useEffect(() => {
     const tinyUpdate = () => forceUpdate();
     matrixAppearance.off('simplerHashtagSameHomeServer', tinyUpdate);
@@ -255,16 +250,8 @@ function ProfileAvatarMenu() {
                 text={profile.displayName}
                 bgColor={colorMXID(mx.getUserId())}
                 size="normal"
-                imageAnimSrc={
-                  profile.avatarUrl !== null
-                    ? !appearanceSettings.enableAnimParams
-                      ? mxcUrl.toHttp(profile.avatarUrl)
-                      : getAnimatedImageUrl(mxcUrl.toHttp(profile.avatarUrl, 42, 42))
-                    : null
-                }
-                imageSrc={
-                  profile.avatarUrl !== null ? mxcUrl.toHttp(profile.avatarUrl, 42, 42) : null
-                }
+                imageAnimSrc={mxcUrl.toHttp(profile.avatarUrl)}
+                imageSrc={mxcUrl.toHttp(profile.avatarUrl, 42, 42)}
                 isDefaultImage
               />
               <i ref={statusRef} className={newStatus} />

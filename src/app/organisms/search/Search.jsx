@@ -14,7 +14,6 @@ import IconButton from '../../atoms/button/IconButton';
 import Input from '../../atoms/input/Input';
 import ScrollView from '../../atoms/scroll/ScrollView';
 import RoomSelector from '../../molecules/room-selector/RoomSelector';
-import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 
 function useVisiblityToggle(setResult) {
   const [isOpen, setIsOpen] = useState(false);
@@ -71,7 +70,6 @@ function mapRoomIds(roomIds) {
 }
 
 function Search() {
-  const appearanceSettings = getAppearance();
   const [result, setResult] = useState(null);
   const [asyncSearch] = useState(new AsyncSearch());
   const [isOpen, requestClose] = useVisiblityToggle(setResult);
@@ -177,11 +175,8 @@ function Search() {
     let iconSrc = null;
 
     if (item.type === 'direct') {
-      imageSrc = mxcUrl.getAvatarUrl(item.room.getAvatarFallbackMember(), 32, 32) || null;
-      imageAnimSrc = !appearanceSettings.enableAnimParams
-        ? mxcUrl.getAvatarUrl(item.room.getAvatarFallbackMember())
-        : getAnimatedImageUrl(mxcUrl.getAvatarUrl(item.room.getAvatarFallbackMember(), 32, 32)) ||
-          null;
+      imageSrc = mxcUrl.getAvatarUrl(item.room.getAvatarFallbackMember(), 32, 32);
+      imageAnimSrc = mxcUrl.getAvatarUrl(item.room.getAvatarFallbackMember());
     } else {
       iconSrc = joinRuleToIconSrc(item.room.getJoinRule(), item.type === 'space');
     }

@@ -21,7 +21,6 @@ import { getPresence, getUserStatus, updateUserStatusIcon } from '../../../util/
 import initMatrix from '../../../client/initMatrix';
 import insertCustomStatus from '../people-selector/insertCustomStatus';
 import favIconManager from '../../../util/libs/favicon';
-import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 import { selectRoom, selectRoomMode } from '../../../client/action/navigation';
 
 function RoomSelectorWrapper({
@@ -120,7 +119,6 @@ function RoomSelector({
       // Update Status Profile
       const updateProfileStatus = (mEvent, tinyUser) => {
         // Presence
-        const appearanceSettings = getAppearance();
         const content = updateUserStatusIcon(status, tinyUser);
 
         // Image
@@ -128,22 +126,15 @@ function RoomSelector({
           tinyUser && tinyUser.avatarUrl
             ? mxcUrl.toHttp(tinyUser.avatarUrl, 32, 32)
             : (room && mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32)) || null;
-        if (room && newImageSrc === null) newImageSrc = mxcUrl.getAvatarUrl(room, 32, 32) || null;
+        if (room && newImageSrc === null) newImageSrc = mxcUrl.getAvatarUrl(room, 32, 32);
         setImgSrc(newImageSrc);
 
         let newImageAnimSrc =
           tinyUser && tinyUser.avatarUrl
             ? mxcUrl.toHttp(tinyUser.avatarUrl)
-            : (room && !appearanceSettings.enableAnimParams
-                ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember())
-                : getAnimatedImageUrl(
-                    mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32),
-                  )) || null;
+            : (room && mxcUrl.getAvatarUrl(room.getAvatarFallbackMember())) || null;
 
-        if (room && newImageAnimSrc === null)
-          newImageAnimSrc = !appearanceSettings.enableAnimParams
-            ? mxcUrl.getAvatarUrl(room)
-            : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 32, 32)) || null;
+        if (room && newImageAnimSrc === null) newImageAnimSrc = mxcUrl.getAvatarUrl(room);
         setImgAnimSrc(newImageAnimSrc);
 
         // Room Name

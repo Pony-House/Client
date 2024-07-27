@@ -90,12 +90,7 @@ function RoomIntroContainer({ event, timeline }) {
   avatarSrc = isDM ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 80, 80) : avatarSrc;
 
   let avatarAnimSrc = mxcUrl.getAvatarUrl(room);
-
-  avatarAnimSrc = isDM
-    ? !appearanceSettings.enableAnimParams
-      ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember())
-      : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 80, 80))
-    : avatarAnimSrc;
+  avatarAnimSrc = isDM ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember()) : avatarAnimSrc;
 
   const heading = isDM ? roomTitle : `Welcome to ${roomTitle}`;
   const topic = !thread

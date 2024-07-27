@@ -8,7 +8,6 @@ import { avatarDefaultColor } from '@src/app/atoms/avatar/Avatar';
 import { colorMXID } from '../colorMXID';
 import { getBlobSafeMimeType } from '../mimetypes';
 
-// getAnimatedImageUrl
 // Mxc Url
 class MxcUrl extends EventEmitter {
   // Constructor
@@ -153,15 +152,17 @@ class MxcUrl extends EventEmitter {
     allowDirectLinks = undefined,
     allowRedirects = undefined,
   ) {
-    return this.mx.mxcUrlToHttp(
-      mxcUrl,
-      width,
-      height,
-      height || width ? resizeMethod : undefined,
-      allowDirectLinks,
-      allowRedirects,
-      this._isAuth,
-    );
+    if (typeof mxcUrl === 'string')
+      return this.mx.mxcUrlToHttp(
+        mxcUrl,
+        width,
+        height,
+        height || width ? resizeMethod : undefined,
+        allowDirectLinks,
+        allowRedirects,
+        this._isAuth,
+      );
+    return null;
   }
 
   // Classic getAvatarUrl

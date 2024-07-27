@@ -20,7 +20,6 @@ import RoomOptions from '../../molecules/room-options/RoomOptions';
 import SpaceOptions from '../../molecules/space-options/SpaceOptions';
 
 import { useForceUpdate } from '../../hooks/useForceUpdate';
-import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 import { getDataList, getSelectSpace } from '../../../util/selectedRoom';
 import PonyRoomEvent from '../space-settings/PonyRoomEvent';
 
@@ -44,7 +43,6 @@ const Selector = React.forwardRef(
     const mxcUrl = initMatrix.mxcUrl;
 
     const noti = initMatrix.notifications;
-    const appearanceSettings = getAppearance();
     const [roomIconsActive, setRoomIconsActive] = useState(false);
 
     // Room Data
@@ -102,27 +100,16 @@ const Selector = React.forwardRef(
         imageAnimSrc =
           // User Avatar
           user && user.avatarUrl
-            ? // Normal Mode
-              !appearanceSettings.enableAnimParams
-              ? mxcUrl.toHttp(user.avatarUrl)
-              : // Animated Params
-                getAnimatedImageUrl(mxcUrl.toHttp(user.avatarUrl, 32, 32))
+            ? mxcUrl.toHttp(user.avatarUrl)
             : // Room User Avatar
-              !appearanceSettings.enableAnimParams
-              ? // Normal Mode
-                mxcUrl.getAvatarUrl(room.getAvatarFallbackMember())
-              : // Animated Params
-                getAnimatedImageUrl(mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32)) ||
-                // Nothing
-                null;
+              mxcUrl.getAvatarUrl(room.getAvatarFallbackMember()) ||
+              // Nothing
+              null;
 
       // Room Avatar
       if (imageAnimSrc === null)
         // Normal Mode
-        imageAnimSrc = !appearanceSettings.enableAnimParams
-          ? mxcUrl.getAvatarUrl(room)
-          : // Animated Params
-            getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 32, 32)) || null;
+        imageAnimSrc = mxcUrl.getAvatarUrl(room);
     }
 
     // Is Muted

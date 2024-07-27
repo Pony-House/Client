@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { objType } from 'for-promise/utils/lib.mjs';
 import settings from '@src/client/state/settings';
 import { canSupport } from '@src/util/matrixUtil';
-import { getAnimatedImageUrl, getAppearance } from '@src/util/libs/appearance';
 
 import { twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
@@ -50,7 +49,6 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
   const [isIconsColored, setIsIconsColored] = useState(settings.isSelectedThemeColored());
   settings.isThemeColoredDetector(useEffect, setIsIconsColored);
   const [topEmbedVisible, setTopEmbedVisible] = useState(false);
-  const appearanceSettings = getAppearance();
 
   const getAvatarUrl = () =>
     isDM
@@ -59,13 +57,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
   const [avatarSrc, setAvatarSrc] = useState(getAvatarUrl());
 
   const getAvatarAnimUrl = () =>
-    isDM
-      ? !appearanceSettings.enableAnimParams
-        ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember())
-        : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 36, 36))
-      : !appearanceSettings.enableAnimParams
-        ? mxcUrl.getAvatarUrl(room)
-        : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 36, 36));
+    isDM ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember()) : mxcUrl.getAvatarUrl(room);
   const [avatarAnimSrc, setAvatarAnimSrc] = useState(getAvatarAnimUrl());
 
   const [roomName, setRoomName] = useState(roomAlias || room.name);

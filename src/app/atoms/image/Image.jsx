@@ -7,12 +7,18 @@ import blobUrlManager from '@src/util/libs/blobUrlManager';
 import initMatrix from '@src/client/initMatrix';
 import { imageExts } from '@src/util/MimesUtil';
 
-import { getAppearance } from '../../../util/libs/appearance';
+import { getAnimatedImageUrl, getAppearance } from '../../../util/libs/appearance';
 
 const getTinyUrl = (mxcUrl, src) => {
   return typeof src === 'string' && src.startsWith('mxc://') && mxcUrl && mxcUrl.toHttp
     ? mxcUrl.toHttp(src)
     : src;
+};
+
+const filterAvatarAnimation = (avatarSrc, animAvatarSrc) => {
+  if (animAvatarSrc && avatarSrc)
+    return !getAppearance('enableAnimParams') ? animAvatarSrc : getAnimatedImageUrl(avatarSrc);
+  return null;
 };
 
 const createImageCanvas = (mainBlob, onLoad, onError) => {
@@ -67,7 +73,7 @@ const Img = React.forwardRef(
     const imgRef = ref || useRef(null);
 
     const url = getTinyUrl(mxcUrl, src);
-    const animUrl = getTinyUrl(mxcUrl, animSrc);
+    const animUrl = filterAvatarAnimation(url, getTinyUrl(mxcUrl, animSrc));
 
     // Image Broken
     let ImageBrokenSVG = './img/svg/image-broken.svg';
@@ -549,7 +555,7 @@ function ImgJquery({
   const mxcUrl = initMatrix.mxcUrl || customMxcUrl;
 
   const url = getTinyUrl(mxcUrl, src);
-  const animUrl = getTinyUrl(mxcUrl, animSrc);
+  const animUrl = filterAvatarAnimation(url, getTinyUrl(mxcUrl, animSrc));
 
   // Image Broken
   let ImageBrokenSVG = './img/svg/image-broken.svg';

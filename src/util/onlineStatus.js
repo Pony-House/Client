@@ -1,7 +1,6 @@
 import initMatrix from '../client/initMatrix';
 import { twemojifyToUrl } from './twemojify';
 import { getUserWeb3Account } from './web3';
-import { getAppearance, getAnimatedImageUrl } from './libs/appearance';
 
 // Status Builder
 const statusList = {
@@ -59,7 +58,6 @@ export function parsePresenceStatus(presence, userId) {
     // Get data
     const mx = initMatrix.matrixClient;
     const mxcUrl = initMatrix.mxcUrl;
-    const appearanceSettings = getAppearance();
 
     // Result
     const tinyResult = { status: null, msg: null, bio: null, timezone: null, banner: null };
@@ -90,18 +88,14 @@ export function parsePresenceStatus(presence, userId) {
             tinyResult.msgIcon = twemojifyToUrl(tinyParse.msgIcon);
             tinyResult.msgIconThumb = tinyResult.msgIcon;
           } else {
-            tinyResult.msgIcon = !appearanceSettings.enableAnimParams
-              ? mxcUrl.toHttp(tinyParse.msgIcon)
-              : getAnimatedImageUrl(mxcUrl.toHttp(tinyParse.msgIcon, 50, 50));
+            tinyResult.msgIcon = mxcUrl.toHttp(tinyParse.msgIcon);
             tinyResult.msgIconThumb = mxcUrl.toHttp(tinyParse.msgIcon, 50, 50);
           }
         }
 
         // User Banner
         if (typeof tinyParse.banner === 'string' && tinyParse.banner.length > 0) {
-          tinyResult.banner = !appearanceSettings.enableAnimParams
-            ? mxcUrl.toHttp(tinyParse.banner)
-            : getAnimatedImageUrl(mxcUrl.toHttp(tinyParse.banner, 1500, 500));
+          tinyResult.banner = mxcUrl.toHttp(tinyParse.banner);
           tinyResult.bannerThumb = mxcUrl.toHttp(tinyParse.banner, 1500, 500);
         }
 

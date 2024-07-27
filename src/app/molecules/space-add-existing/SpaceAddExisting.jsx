@@ -18,7 +18,6 @@ import RoomSelector from '../room-selector/RoomSelector';
 import Dialog from '../dialog/Dialog';
 
 import { useStore } from '../../hooks/useStore';
-import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 
 function SpaceAddExistingContent({ roomId }) {
   const mountStore = useStore(roomId);
@@ -109,8 +108,6 @@ function SpaceAddExistingContent({ roomId }) {
     setSearchIds(null);
   }; */
 
-  const appearanceSettings = getAppearance();
-
   return (
     <>
       <form
@@ -133,14 +130,8 @@ function SpaceAddExistingContent({ roomId }) {
           let imageSrc = mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32) || null;
           if (imageSrc === null) imageSrc = mxcUrl.getAvatarUrl(room, 32, 32) || null;
 
-          let imageAnimSrc = !appearanceSettings.enableAnimParams
-            ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember())
-            : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32)) ||
-              null;
-          if (imageAnimSrc === null)
-            imageAnimSrc = !appearanceSettings.enableAnimParams
-              ? mxcUrl.getAvatarUrl(room)
-              : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 32, 32)) || null;
+          let imageAnimSrc = mxcUrl.getAvatarUrl(room.getAvatarFallbackMember());
+          if (imageAnimSrc === null) imageAnimSrc = mxcUrl.getAvatarUrl(room);
 
           const parentSet = roomIdToParents.get(rId);
           const parentNames = parentSet

@@ -1092,11 +1092,7 @@ const MessageOptions = React.memo(
                         const color = colorMXID(userId);
 
                         const username = user ? muteUserManager.getSelectorName(user) : userId;
-                        const avatarAnimSrc = user
-                          ? !appearanceSettings.enableAnimParams
-                            ? mxcUrl.toHttp(user.avatarUrl)
-                            : (getAnimatedImageUrl(mxcUrl.toHttp(user.avatarUrl, 36, 36)) ?? null)
-                          : null;
+                        const avatarAnimSrc = user ? mxcUrl.toHttp(user.avatarUrl) : null;
 
                         const ct = $('<div>', {
                           class: 'align-top text-center chat-base d-inline-block',
@@ -1328,10 +1324,7 @@ const MessageThreadSummary = React.memo(({ thread, useManualCheck = false }) => 
 
   // Avatar
   const avatarSrc = mxcUrl.getAvatarUrl(lastSender, 36, 36, undefined, true, false) ?? null;
-  const avatarAnimSrc = !appearanceSettings.enableAnimParams
-    ? mxcUrl.getAvatarUrl(lastSender)
-    : (getAnimatedImageUrl(mxcUrl.getAvatarUrl(lastSender, 36, 36, undefined, true, false)) ??
-      null);
+  const avatarAnimSrc = mxcUrl.getAvatarUrl(lastSender);
 
   // Select Thread
   function selectThread() {
@@ -1694,9 +1687,7 @@ function Message({
   const color = colorMXID(senderId);
   const username = muteUserManager.getMessageName(mEvent, isDM);
   const avatarSrc = mxcUrl.getAvatarUrl(mEvent.sender, 36, 36) ?? null;
-  const avatarAnimSrc = !appearanceSettings.enableAnimParams
-    ? mxcUrl.getAvatarUrl(mEvent.sender)
-    : (getAnimatedImageUrl(mxcUrl.getAvatarUrl(mEvent.sender, 36, 36)) ?? null);
+  const avatarAnimSrc = mxcUrl.getAvatarUrl(mEvent.sender);
 
   // Content Data
   let isCustomHTML = content.format === 'org.matrix.custom.html';

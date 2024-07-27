@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { getAppearance } from '@src/util/libs/appearance';
-
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import * as roomActions from '../../../client/action/room';
@@ -56,7 +54,6 @@ function InviteList({ isOpen, onRequestClose }) {
   }, [procInvite]);
 
   function renderRoomTile(roomId) {
-    const appearanceSettings = getAppearance();
     const mx = initMatrix.matrixClient;
     const mxcUrl = initMatrix.mxcUrl;
     const myRoom = mx.getRoom(roomId);
@@ -70,13 +67,7 @@ function InviteList({ isOpen, onRequestClose }) {
         key={myRoom.roomId}
         name={roomName}
         avatarSrc={mxcUrl.getAvatarUrl(initMatrix.matrixClient.getRoom(roomId), 42, 42)}
-        avatarAnimSrc={
-          !appearanceSettings.enableAnimParams
-            ? mxcUrl.getAvatarUrl(initMatrix.matrixClient.getRoom(roomId))
-            : getAnimatedImageUrl(
-                mxcUrl.getAvatarUrl(initMatrix.matrixClient.getRoom(roomId), 42, 42),
-              )
-        }
+        avatarAnimSrc={mxcUrl.getAvatarUrl(initMatrix.matrixClient.getRoom(roomId))}
         id={roomAlias}
         inviterName={inviterName}
         options={

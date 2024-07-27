@@ -20,7 +20,6 @@ import { abbreviateNumber, getEventCords } from '../../../../util/common';
 import cons from '../../../../client/state/cons';
 
 import { notificationClasses, useNotificationUpdate } from './Notification';
-import { getAppearance, getAnimatedImageUrl } from '../../../../util/libs/appearance';
 
 // Draggable Space Shortcut
 function DraggableSpaceShortcut({ isActive, spaceId, index, moveShortcut, onDrop }) {
@@ -32,7 +31,6 @@ function DraggableSpaceShortcut({ isActive, spaceId, index, moveShortcut, onDrop
   const room = mx.getRoom(spaceId);
   const shortcutRef = useRef(null);
   const avatarRef = useRef(null);
-  const appearanceSettings = getAppearance();
 
   // Options
   const openSpaceOptions = (e, sId) => {
@@ -112,12 +110,8 @@ function DraggableSpaceShortcut({ isActive, spaceId, index, moveShortcut, onDrop
           bgColor={colorMXID(room.roomId)}
           size="normal"
           animParentsCount={1}
-          imageAnimSrc={
-            !appearanceSettings.enableAnimParams
-              ? mxcUrl.getAvatarUrl(room)
-              : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room, 42, 42)) || null
-          }
-          imageSrc={mxcUrl.getAvatarUrl(room, 42, 42) || null}
+          imageAnimSrc={mxcUrl.getAvatarUrl(room)}
+          imageSrc={mxcUrl.getAvatarUrl(room, 42, 42)}
           isDefaultImage
         />
       }

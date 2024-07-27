@@ -22,10 +22,7 @@ import { colorMXID, cssColorMXID } from '../../../util/colorMXID';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 import { toast } from '../../../util/tools';
 import copyText from '../../organisms/profile-viewer/copyText';
-import matrixAppearance, {
-  getAppearance,
-  getAnimatedImageUrl,
-} from '../../../util/libs/appearance';
+import matrixAppearance from '../../../util/libs/appearance';
 
 const timezoneAutoUpdate = { text: null, html: null, value: null };
 setInterval(() => {
@@ -300,8 +297,6 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
   });
 
   if (user) {
-    const appearanceSettings = getAppearance();
-
     return (
       <>
         <div
@@ -316,11 +311,7 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
             className="profile-image-container"
             ref={profileAvatar}
             imageSrc={mxcUrl.toHttp(avatarUrl, 100, 100)}
-            imageAnimSrc={
-              !appearanceSettings.enableAnimParams
-                ? mxcUrl.toHttp(avatarUrl)
-                : getAnimatedImageUrl(mxcUrl.toHttp(avatarUrl, 100, 100))
-            }
+            imageAnimSrc={mxcUrl.toHttp(avatarUrl)}
             text={name}
             bgColor={color}
             size="large"

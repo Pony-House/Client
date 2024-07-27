@@ -16,7 +16,6 @@ import PopupWindow from '../../molecules/popup-window/PopupWindow';
 import Avatar from '../../atoms/avatar/Avatar';
 import { colorMXID } from '../../../util/colorMXID';
 import { twemojifyReact } from '../../../util/twemojify';
-import { getAppearance, getAnimatedImageUrl } from '../../../util/libs/appearance';
 
 const HashSearchIC = './img/ic/outlined/hash-search.svg';
 
@@ -227,7 +226,6 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
   }
 
   function renderRoomList(rooms) {
-    const appearanceSettings = getAppearance();
     return rooms.map((room, index) => {
       const alias = typeof room.canonical_alias === 'string' ? room.canonical_alias : room.room_id;
       const name = typeof room.name === 'string' ? room.name : alias;
@@ -242,18 +240,8 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
                 animParentsCount={0}
                 imgClass="profile-image-container"
                 className="profile-image-container"
-                imageSrc={
-                  typeof room.avatar_url === 'string'
-                    ? mxcUrl.toHttp(room.avatar_url, 42, 42)
-                    : null
-                }
-                imageAnimSrc={
-                  typeof room.avatar_url === 'string'
-                    ? !appearanceSettings.enableAnimParams
-                      ? mxcUrl.toHttp(room.avatar_url)
-                      : getAnimatedImageUrl(mxcUrl.getAvatarUrl(room.avatar_url, 42, 42))
-                    : null
-                }
+                imageSrc={mxcUrl.toHttp(room.avatar_url, 42, 42)}
+                imageAnimSrc={mxcUrl.toHttp(room.avatar_url)}
                 bgColor={colorMXID(alias)}
                 text={name}
                 isDefaultImage
