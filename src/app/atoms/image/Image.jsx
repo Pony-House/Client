@@ -116,23 +116,20 @@ const Img = React.forwardRef(
         if (onLoadingChange) onLoadingChange(0);
       }
 
+      const isGif = appearanceSettings.useFreezePlugin && tinyImageAnimUrl;
       if (isLoading < 1) {
         // Complete checker
         let mainMime = [];
         let mainBlob = null;
         let mainSrc = null;
         let isLoadingProgress = 0;
-        const isComplete = (isAgain = false) => {
+        const isComplete = () => {
           if (isLoading < 2 && isLoadingProgress < 1) {
             // Normal complete
-            if (!appearanceSettings.useFreezePlugin || mainMime[1] !== 'gif' || isAgain) {
+            if (!appearanceSettings.useFreezePlugin || mainMime[1] !== 'gif') {
               if (tinyImageUrl === waitSrc) {
-                if (blobSrc || isAgain) {
-                  setIsLoading(2);
-                  if (onLoadingChange) onLoadingChange(2);
-                } else {
-                  progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false, true);
-                }
+                setIsLoading(2);
+                if (onLoadingChange) onLoadingChange(2);
               }
             }
             // FreezePlugin part now
@@ -212,7 +209,7 @@ const Img = React.forwardRef(
         };
 
         // Active load progress
-        const progressLoad = (tinySrc, setTinyBlob, setTinyMime, isAnim, isAgain) => {
+        const progressLoad = (tinySrc, setTinyBlob, setTinyMime, isAnim) => {
           // Enable loading mode
           setIsLoading(1);
           if (onLoadingChange) onLoadingChange(1);
@@ -228,7 +225,6 @@ const Img = React.forwardRef(
                 setTinyBlob(blobFromId);
                 if (isAnim) mainBlob = blobFromId;
               }
-              if (isAgain) isComplete(isAgain);
             }
 
             // Nope. Let's create a new one.
@@ -241,7 +237,7 @@ const Img = React.forwardRef(
               }
 
               // Is normal image? Reset the animation version too.
-              if (!isAnim && !isAgain) {
+              if (!isAnim) {
                 if (tinyImageUrl === waitSrc) {
                   setBlobAnimSrc(null);
                   setImgMimeAnim([]);
@@ -278,7 +274,7 @@ const Img = React.forwardRef(
 
                   // Check the progress
                   isLoadingProgress--;
-                  isComplete(isAgain);
+                  isComplete();
                 })
                 // Error
                 .catch((err) => {
@@ -292,7 +288,7 @@ const Img = React.forwardRef(
 
                   // Check the progress
                   isLoadingProgress--;
-                  isComplete(isAgain);
+                  isComplete();
                 });
             }
           }
@@ -313,9 +309,9 @@ const Img = React.forwardRef(
           !tinyImageUrl ||
           (!tinyImageUrl.startsWith('blob:') && !tinyImageUrl.startsWith('./'))
         ) {
-          if (!appearanceSettings.useFreezePlugin || !tinyImageAnimUrl)
+          if (!appearanceSettings.useFreezePlugin || !tinyImageAnimUrl) {
             progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
-          else {
+          } else {
             setBlobSrc(null);
             setImgMime([]);
           }
@@ -641,16 +637,12 @@ function ImgJquery({
     let mainBlob = null;
     let mainSrc = null;
     let isLoadingProgress = 0;
-    const isComplete = (isAgain = false) => {
+    const isComplete = () => {
       if (isLoadingProgress < 1) {
         // Normal complete
-        if (!appearanceSettings.useFreezePlugin || mainMime[1] !== 'gif' || isAgain) {
-          if (blobSrc() || isAgain) {
-            tinyComplete();
-            if (onLoadingChange) onLoadingChange(2);
-          } else {
-            progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false, true);
-          }
+        if (!appearanceSettings.useFreezePlugin || mainMime[1] !== 'gif') {
+          tinyComplete();
+          if (onLoadingChange) onLoadingChange(2);
         }
         // FreezePlugin part now
         else {
@@ -723,7 +715,7 @@ function ImgJquery({
     };
 
     // Active load progress
-    const progressLoad = (tinySrc, setTinyBlob, setTinyMime, isAnim, isAgain) => {
+    const progressLoad = (tinySrc, setTinyBlob, setTinyMime, isAnim) => {
       // Enable loading mode
       if (onLoadingChange) onLoadingChange(1);
 
@@ -736,7 +728,6 @@ function ImgJquery({
           setTinyMime(blobUrlManager.getMime(blobFromId));
           setTinyBlob(blobFromId);
           if (isAnim) mainBlob = blobFromId;
-          if (isAgain) isComplete(isAgain);
         }
 
         // Nope. Let's create a new one.
@@ -747,7 +738,7 @@ function ImgJquery({
           if (isAnim) mainBlob = null;
 
           // Is normal image? Reset the animation version too.
-          if (!isAnim && !isAgain) {
+          if (!isAnim) {
             setBlobAnimSrc(null);
             setImgMimeAnim([]);
           }
@@ -780,7 +771,7 @@ function ImgJquery({
 
               // Check the progress
               isLoadingProgress--;
-              isComplete(isAgain);
+              isComplete();
             })
             // Error
             .catch((err) => {
@@ -793,7 +784,7 @@ function ImgJquery({
 
               // Check the progress
               isLoadingProgress--;
-              isComplete(isAgain);
+              isComplete();
             });
         }
       }
