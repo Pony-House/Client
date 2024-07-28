@@ -11,6 +11,7 @@ import matrixAppearance, {
   getAnimatedImageUrl,
   getAppearance,
 } from '../../../util/libs/appearance';
+import Tooltip from '../tooltip/Tooltip';
 
 const getTinyUrl = (mxcUrl, src) => {
   return typeof src === 'string' && src.startsWith('mxc://') && mxcUrl && mxcUrl.toHttp
@@ -79,6 +80,8 @@ const Img = React.forwardRef(
       isObj = false,
       getDefaultImage = null,
       customMxcUrl = null,
+      placement = null,
+      content = null,
     },
     ref,
   ) => {
@@ -419,8 +422,8 @@ const Img = React.forwardRef(
             : blobAnimSrc
           : ImageBrokenSVG;
 
-      if (!isObj)
-        return (
+      if (!isObj) {
+        const theTinyImg = (
           <img
             onLoad={onLoad}
             className={className}
@@ -447,6 +450,15 @@ const Img = React.forwardRef(
             src={theImage}
           />
         );
+
+        return !placement ? (
+          theTinyImg
+        ) : (
+          <Tooltip placement={placement} content={content}>
+            {theTinyImg}
+          </Tooltip>
+        );
+      }
       return { src: theImage, loading: false, href: tinyImageUrl, hrefAnim: tinyImageAnimUrl };
     }
 
@@ -508,6 +520,8 @@ const imgPropTypes = {
   onLoad: PropTypes.func,
   onClick: PropTypes.func,
   onError: PropTypes.func,
+  placement: PropTypes.string,
+  content: PropTypes.node,
 };
 Img.propTypes = imgPropTypes;
 

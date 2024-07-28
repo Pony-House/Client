@@ -91,6 +91,8 @@ const ImageFix = {
       (attribs.src.startsWith('mxc://') || attribs.src.startsWith('./')) ? (
         <Img
           isEmoji
+          placement="top"
+          content={<div className="small">{attribs.alt}</div>}
           dataMxEmoticon={attribs['data-mx-emoticon']}
           className={attribs.class}
           src={attribs.src}

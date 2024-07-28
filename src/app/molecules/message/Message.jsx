@@ -446,19 +446,6 @@ const messageDataEffects = (messageBody, embedHeight, setEmbedHeight) => {
       mediaFix(null, embedHeight, setEmbedHeight);
     }
   });
-
-  // Add tooltip on the emoji
-  messageBody.find('[data-mx-emoticon], .emoji').each((index, value) => {
-    const el = $(value);
-
-    if (!el.hasClass('emoji-fix')) {
-      if (!el.attr('title') && el.attr('alt')) el.attr('title', el.attr('alt'));
-
-      new bootstrap.Tooltip(value, { customClass: 'small' });
-      el.addClass('emoji-fix');
-      el.attr('draggable', 'false');
-    }
-  });
 };
 
 export { createMessageData, isEmojiOnly, messageDataEffects };
