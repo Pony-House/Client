@@ -99,12 +99,6 @@ const Img = React.forwardRef(
     const [imgMime, setImgMime] = useState([]);
     const [imgMimeAnim, setImgMimeAnim] = useState([]);
 
-    const [, setImgSrc] = useState(null);
-    const [, setImgAnimSrc] = useState(null);
-
-    const [, setImgError] = useState(null);
-    const [, setImgAnimError] = useState(null);
-
     const [blobSrc, setBlobSrc] = useState(null);
     const [blobAnimSrc, setBlobAnimSrc] = useState(null);
 
@@ -137,103 +131,91 @@ const Img = React.forwardRef(
                   setIsLoading(2);
                   if (onLoadingChange) onLoadingChange(2);
                 } else {
-                  progressLoad(
-                    tinyImageUrl,
-                    setBlobSrc,
-                    setImgSrc,
-                    setImgError,
-                    setImgMime,
-                    false,
-                    true,
-                  );
+                  progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false, true);
                 }
               }
             }
             // FreezePlugin part now
             else {
-              createImageCanvas(
-                mainBlob,
-                (canvasBlob) => {
-                  // Freeze gif now
-                  try {
-                    if (canvasBlob) {
-                      blobUrlManager
-                        .insert(canvasBlob, {
-                          freeze: true,
-                          group: `user_avatars`,
-                          id: `userAvatar:${mainSrc}`,
-                        })
-                        .then((newTinyUrl) => {
-                          if (tinyImageUrl === waitSrc) {
-                            // Set data
-                            setImgMime(mainMime);
-                            setImgError(null);
+              const blobFromId = blobUrlManager.getById(`freezeUserAvatar:${mainBlob}`);
+              if (!blobFromId) {
+                createImageCanvas(
+                  mainBlob,
+                  (canvasBlob) => {
+                    // Freeze gif now
+                    try {
+                      if (canvasBlob) {
+                        blobUrlManager
+                          .insert(canvasBlob, {
+                            freeze: true,
+                            group: `user_avatars`,
+                            id: `freezeUserAvatar:${mainBlob}`,
+                          })
+                          .then((newTinyUrl) => {
+                            if (tinyImageUrl === waitSrc) {
+                              // Set data
+                              setImgMime(mainMime);
+                              setBlobSrc(newTinyUrl);
 
-                            setBlobSrc(newTinyUrl);
-                            setImgSrc(newTinyUrl);
-
-                            // Complete
-                            setIsLoading(2);
-                            if (onLoadingChange) onLoadingChange(2);
-                          }
-                        })
-                        .catch((err) => {
-                          if (tinyImageUrl === waitSrc) {
-                            setImgError(err.message);
-                            setIsLoading(2);
-                            if (onLoadingChange) onLoadingChange(2);
-                            if (onError) onError(err);
-                          }
-                        });
-                    } else {
+                              // Complete
+                              setIsLoading(2);
+                              if (onLoadingChange) onLoadingChange(2);
+                            }
+                          })
+                          .catch((err) => {
+                            if (tinyImageUrl === waitSrc) {
+                              setIsLoading(2);
+                              if (onLoadingChange) onLoadingChange(2);
+                              if (onError) onError(err);
+                            }
+                          });
+                      } else {
+                        if (tinyImageUrl === waitSrc) {
+                          const err = new Error('Fail to create image blob.');
+                          setIsLoading(2);
+                          if (onLoadingChange) onLoadingChange(2);
+                          if (onError) onError(err);
+                        }
+                      }
+                    } catch (err) {
                       if (tinyImageUrl === waitSrc) {
-                        const err = new Error('Fail to create image blob.');
-                        setImgError(err.message);
+                        // Error
+                        setBlobSrc(null);
+                        setImgMime([]);
                         setIsLoading(2);
                         if (onLoadingChange) onLoadingChange(2);
                         if (onError) onError(err);
                       }
                     }
-                  } catch (err) {
+                  },
+                  (err) => {
                     if (tinyImageUrl === waitSrc) {
-                      // Error
-                      setBlobSrc(null);
-                      setImgSrc(null);
-                      setImgMime([]);
-                      setImgError(err.message);
                       setIsLoading(2);
                       if (onLoadingChange) onLoadingChange(2);
                       if (onError) onError(err);
                     }
-                  }
-                },
-                (err) => {
-                  if (tinyImageUrl === waitSrc) {
-                    setImgError(err.message);
-                    setIsLoading(2);
-                    if (onLoadingChange) onLoadingChange(2);
-                    if (onError) onError(err);
-                  }
-                },
-              );
+                  },
+                );
+              } else {
+                if (tinyImageUrl === waitSrc) {
+                  // Set data
+                  setImgMime(mainMime);
+                  setBlobSrc(blobFromId);
+
+                  // Complete
+                  setIsLoading(2);
+                  if (onLoadingChange) onLoadingChange(2);
+                }
+              }
             }
           }
         };
 
         // Active load progress
-        const progressLoad = (
-          tinySrc,
-          setTinyBlob,
-          setTnSrc,
-          setError,
-          setTinyMime,
-          isAnim,
-          isAgain,
-        ) => {
+        const progressLoad = (tinySrc, setTinyBlob, setTinyMime, isAnim, isAgain) => {
           // Enable loading mode
           setIsLoading(1);
           if (onLoadingChange) onLoadingChange(1);
-          setError(null);
 
           // The new image is string
           if (typeof tinySrc === 'string' && tinySrc.length > 0) {
@@ -244,21 +226,17 @@ const Img = React.forwardRef(
               if (tinyImageUrl === waitSrc) {
                 setTinyMime(blobUrlManager.getMime(blobFromId));
                 setTinyBlob(blobFromId);
-                setTnSrc(tinySrc);
-                setError(null);
                 if (isAnim) mainBlob = blobFromId;
-                if (isAgain) isComplete(isAgain);
               }
+              if (isAgain) isComplete(isAgain);
             }
 
             // Nope. Let's create a new one.
             else {
               // Reset image data
               if (tinyImageUrl === waitSrc) {
-                setTnSrc(null);
                 setTinyBlob(null);
                 setTinyMime([]);
-                setError(null);
                 if (isAnim) mainBlob = null;
               }
 
@@ -266,9 +244,7 @@ const Img = React.forwardRef(
               if (!isAnim && !isAgain) {
                 if (tinyImageUrl === waitSrc) {
                   setBlobAnimSrc(null);
-                  setImgAnimSrc(null);
                   setImgMimeAnim([]);
-                  setImgAnimError(null);
                 }
               }
 
@@ -297,8 +273,6 @@ const Img = React.forwardRef(
                   // Insert data
                   if (tinyImageUrl === waitSrc) {
                     setTinyBlob(blobUrl);
-                    setTnSrc(tinySrc);
-                    setError(null);
                     if (isAnim) mainBlob = blobUrl;
                   }
 
@@ -311,9 +285,7 @@ const Img = React.forwardRef(
                   // Set image error
                   if (tinyImageUrl === waitSrc) {
                     setTinyBlob(ImageBrokenSVG);
-                    setTnSrc(tinySrc);
                     setTinyMime([]);
-                    setError(err.message);
                     if (onError) onError(err);
                     if (isAnim) mainBlob = ImageBrokenSVG;
                   }
@@ -327,10 +299,8 @@ const Img = React.forwardRef(
           // Nothing
           else {
             if (tinyImageUrl === waitSrc) {
-              setTnSrc(null);
               setTinyBlob(null);
               setTinyMime([]);
-              setError(null);
               if (isAnim) mainBlob = null;
             }
           }
@@ -344,12 +314,10 @@ const Img = React.forwardRef(
           (!tinyImageUrl.startsWith('blob:') && !tinyImageUrl.startsWith('./'))
         ) {
           if (!appearanceSettings.useFreezePlugin || !tinyImageAnimUrl)
-            progressLoad(tinyImageUrl, setBlobSrc, setImgSrc, setImgError, setImgMime, false);
+            progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
           else {
             setBlobSrc(null);
-            setImgSrc(null);
             setImgMime([]);
-            setImgError(null);
           }
         } else {
           if (tinyImageUrl.startsWith('./')) {
@@ -357,7 +325,6 @@ const Img = React.forwardRef(
             setImgMime(['image', filename[filename.length - 1]]);
           }
           setBlobSrc(tinyImageUrl);
-          setImgSrc(tinyImageUrl);
         }
 
         // Anim image
@@ -365,21 +332,13 @@ const Img = React.forwardRef(
           !tinyImageAnimUrl ||
           (!tinyImageAnimUrl.startsWith('blob:') && !tinyImageAnimUrl.startsWith('./'))
         ) {
-          progressLoad(
-            tinyImageAnimUrl,
-            setBlobAnimSrc,
-            setImgAnimSrc,
-            setImgAnimError,
-            setImgMimeAnim,
-            true,
-          );
+          progressLoad(tinyImageAnimUrl, setBlobAnimSrc, setImgMimeAnim, true);
         } else {
           if (tinyImageAnimUrl.startsWith('./')) {
             const filename = tinyImageAnimUrl.split('.');
             setImgMimeAnim(['image', filename[filename.length - 1]]);
           }
           setBlobAnimSrc(tinyImageAnimUrl);
-          setImgAnimSrc(tinyImageAnimUrl);
         }
 
         // Check the progress
@@ -450,8 +409,6 @@ const Img = React.forwardRef(
             onError={({ currentTarget }) => {
               currentTarget.onerror = onError;
               if (tinyImageUrl === waitSrc) {
-                setImgSrc(ImageBrokenSVG);
-                setImgAnimSrc(ImageBrokenSVG);
                 setBlobSrc(ImageBrokenSVG);
                 setBlobAnimSrc(ImageBrokenSVG);
                 setIsLoading(2);
@@ -614,12 +571,6 @@ function ImgJquery({
     const [, setImgMime] = jQueryState([]);
     const [, setImgMimeAnim] = jQueryState([]);
 
-    const [, setImgSrc] = jQueryState(null);
-    const [, setImgAnimSrc] = jQueryState(null);
-
-    const [, setImgError] = jQueryState(null);
-    const [, setImgAnimError] = jQueryState(null);
-
     const [blobSrc, setBlobSrc] = jQueryState(null);
     const [blobAnimSrc, setBlobAnimSrc] = jQueryState(null);
 
@@ -698,89 +649,83 @@ function ImgJquery({
             tinyComplete();
             if (onLoadingChange) onLoadingChange(2);
           } else {
-            progressLoad(tinyImageUrl, setBlobSrc, setImgSrc, setImgError, setImgMime, false, true);
+            progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false, true);
           }
         }
         // FreezePlugin part now
         else {
-          createImageCanvas(
-            mainBlob,
-            (canvasBlob) => {
-              // Freeze gif now
-              try {
-                if (canvasBlob) {
-                  blobUrlManager
-                    .insert(canvasBlob, {
-                      freeze: true,
-                      group: `user_avatars`,
-                      id: `userAvatar:${mainSrc}`,
-                    })
-                    .then((newTinyUrl) => {
-                      // Set data
-                      setImgMime(mainMime);
-                      setImgError(null);
+          const blobFromId = blobUrlManager.getById(`freezeUserAvatar:${mainBlob}`);
+          if (!blobFromId) {
+            createImageCanvas(
+              mainBlob,
+              (canvasBlob) => {
+                // Freeze gif now
+                try {
+                  if (canvasBlob) {
+                    blobUrlManager
+                      .insert(canvasBlob, {
+                        freeze: true,
+                        group: `user_avatars`,
+                        id: `freezeUserAvatar:${mainBlob}`,
+                      })
+                      .then((newTinyUrl) => {
+                        // Set data
+                        setImgMime(mainMime);
+                        setBlobSrc(newTinyUrl);
 
-                      setBlobSrc(newTinyUrl);
-                      setImgSrc(newTinyUrl);
-
-                      // Complete
-                      tinyComplete();
-                      if (onLoadingChange) onLoadingChange(2);
-                    })
-                    .catch((err) => {
-                      setImgError(err.message);
+                        // Complete
+                        tinyComplete();
+                        if (onLoadingChange) onLoadingChange(2);
+                      })
+                      .catch((err) => {
+                        if (isObj) img.err = err;
+                        tinyComplete();
+                        if (onLoadingChange) onLoadingChange(2);
+                        if (onError) onError(err);
+                      });
+                  } else {
+                    if (tinyImageUrl === waitSrc) {
+                      const err = new Error('Fail to create image blob.');
                       if (isObj) img.err = err;
                       tinyComplete();
                       if (onLoadingChange) onLoadingChange(2);
                       if (onError) onError(err);
-                    });
-                } else {
-                  if (tinyImageUrl === waitSrc) {
-                    const err = new Error('Fail to create image blob.');
-                    setImgError(err.message);
-                    if (isObj) img.err = err;
-                    tinyComplete();
-                    if (onLoadingChange) onLoadingChange(2);
-                    if (onError) onError(err);
+                    }
                   }
+                } catch (err) {
+                  // Error
+                  setBlobSrc(null);
+                  setImgMime([]);
+                  if (isObj) img.err = err;
+                  tinyComplete();
+                  if (onLoadingChange) onLoadingChange(2);
+                  if (onError) onError(err);
                 }
-              } catch (err) {
-                // Error
-                setBlobSrc(null);
-                setImgSrc(null);
-                setImgMime([]);
-                setImgError(err.message);
+              },
+              (err) => {
                 if (isObj) img.err = err;
                 tinyComplete();
                 if (onLoadingChange) onLoadingChange(2);
                 if (onError) onError(err);
-              }
-            },
-            (err) => {
-              setImgError(err.message);
-              if (isObj) img.err = err;
-              tinyComplete();
-              if (onLoadingChange) onLoadingChange(2);
-              if (onError) onError(err);
-            },
-          );
+              },
+            );
+          } else {
+            // Set data
+            setImgMime(mainMime);
+            setBlobSrc(blobFromId);
+
+            // Complete
+            tinyComplete();
+            if (onLoadingChange) onLoadingChange(2);
+          }
         }
       }
     };
 
     // Active load progress
-    const progressLoad = (
-      tinySrc,
-      setTinyBlob,
-      setTnSrc,
-      setError,
-      setTinyMime,
-      isAnim,
-      isAgain,
-    ) => {
+    const progressLoad = (tinySrc, setTinyBlob, setTinyMime, isAnim, isAgain) => {
       // Enable loading mode
       if (onLoadingChange) onLoadingChange(1);
-      setError(null);
 
       // The new image is string
       if (typeof tinySrc === 'string' && tinySrc.length > 0) {
@@ -790,8 +735,6 @@ function ImgJquery({
         if (blobFromId) {
           setTinyMime(blobUrlManager.getMime(blobFromId));
           setTinyBlob(blobFromId);
-          setTnSrc(tinySrc);
-          setError(null);
           if (isAnim) mainBlob = blobFromId;
           if (isAgain) isComplete(isAgain);
         }
@@ -799,18 +742,14 @@ function ImgJquery({
         // Nope. Let's create a new one.
         else {
           // Reset image data
-          setTnSrc(null);
           setTinyBlob(null);
           setTinyMime([]);
-          setError(null);
           if (isAnim) mainBlob = null;
 
           // Is normal image? Reset the animation version too.
           if (!isAnim && !isAgain) {
             setBlobAnimSrc(null);
-            setImgAnimSrc(null);
             setImgMimeAnim([]);
-            setImgAnimError(null);
           }
 
           // Add loading progress...
@@ -837,8 +776,6 @@ function ImgJquery({
             .then((blobUrl) => {
               // Insert data
               setTinyBlob(blobUrl);
-              setTnSrc(tinySrc);
-              setError(null);
               if (isAnim) mainBlob = blobUrl;
 
               // Check the progress
@@ -849,9 +786,7 @@ function ImgJquery({
             .catch((err) => {
               // Set image error
               setTinyBlob(ImageBrokenSVG);
-              setTnSrc(tinySrc);
               setTinyMime([]);
-              setError(err.message);
               if (isObj) img.err = err;
               if (onError) onError(err);
               if (isAnim) mainBlob = ImageBrokenSVG;
@@ -864,10 +799,8 @@ function ImgJquery({
       }
       // Nothing
       else {
-        setTnSrc(null);
         setTinyBlob(null);
         setTinyMime([]);
-        setError(null);
         if (isAnim) mainBlob = null;
       }
     };
@@ -877,12 +810,10 @@ function ImgJquery({
     // Normal image
     if (!tinyImageUrl || (!tinyImageUrl.startsWith('blob:') && !tinyImageUrl.startsWith('./'))) {
       if (!appearanceSettings.useFreezePlugin || !tinyImageAnimUrl)
-        progressLoad(tinyImageUrl, setBlobSrc, setImgSrc, setImgError, setImgMime, false);
+        progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
       else {
         setBlobSrc(null);
-        setImgSrc(null);
         setImgMime([]);
-        setImgError(null);
       }
     } else {
       if (tinyImageUrl.startsWith('./')) {
@@ -890,7 +821,6 @@ function ImgJquery({
         setImgMime(['image', filename[filename.length - 1]]);
       }
       setBlobSrc(tinyImageUrl);
-      setImgSrc(tinyImageUrl);
     }
 
     // Anim image
@@ -898,21 +828,13 @@ function ImgJquery({
       !tinyImageAnimUrl ||
       (!tinyImageAnimUrl.startsWith('blob:') && !tinyImageAnimUrl.startsWith('./'))
     ) {
-      progressLoad(
-        tinyImageAnimUrl,
-        setBlobAnimSrc,
-        setImgAnimSrc,
-        setImgAnimError,
-        setImgMimeAnim,
-        true,
-      );
+      progressLoad(tinyImageAnimUrl, setBlobAnimSrc, setImgMimeAnim, true);
     } else {
       if (tinyImageAnimUrl.startsWith('./')) {
         const filename = tinyImageAnimUrl.split('.');
         setImgMimeAnim(['image', filename[filename.length - 1]]);
       }
       setBlobAnimSrc(tinyImageAnimUrl);
-      setImgAnimSrc(tinyImageAnimUrl);
     }
 
     // Check the progress

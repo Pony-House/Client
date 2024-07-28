@@ -1,3 +1,5 @@
+Colocar o avatar de chat e lista de membros ter o mesmo tamanho do perfil para evitar glitch.
+
 Remover tudo do messageDataEffects
 Padronizar o profile-image-container
 
