@@ -41,7 +41,6 @@ import Toggle from '../../../atoms/button/Toggle';
 function ExperimentalSection() {
   // const [isUsingUseGPU, setUsingUseGPU] = useState(false);
   const appearanceSettings = getAppearance();
-  const [useFreezePlugin, setUseFreezePlugin] = useState(appearanceSettings.useFreezePlugin);
   const [noReconnectRefresh, setNoReconnectRefresh] = useState(
     appearanceSettings.noReconnectRefresh,
   );
@@ -105,29 +104,6 @@ function ExperimentalSection() {
           </ul>
         </div>
       ) : null}
-
-      <div className="card noselect mt-3">
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">User avatars</li>
-
-          <SettingTile
-            title="Use freezeframe on avatars"
-            options={
-              <Toggle
-                className="d-inline-flex"
-                isActive={useFreezePlugin}
-                onToggle={toggleAppearanceAction('useFreezePlugin', setUseFreezePlugin)}
-              />
-            }
-            content={
-              <div className="very-small text-gray">
-                All client avatars will be rendered using the plugin freezeframe. If the images are
-                in low resolution, please disable this option.
-              </div>
-            }
-          />
-        </ul>
-      </div>
     </div>
   );
 }

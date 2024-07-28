@@ -30,6 +30,8 @@ function AppearanceSection() {
   const [, updateState] = useState({});
   const appearanceSettings = getAppearance();
 
+  const [useFreezePlugin, setUseFreezePlugin] = useState(appearanceSettings.useFreezePlugin);
+
   const [pageLimit, setPageLimit] = useState(appearanceSettings.pageLimit);
   const [useCustomEmojis, setUseCustomEmojis] = useState(appearanceSettings.useCustomEmojis);
   const [showStickers, setShowStickers] = useState(appearanceSettings.showStickers);
@@ -164,6 +166,25 @@ function AppearanceSection() {
           />
         </ul>
       </div>
+
+                <SettingTile
+            title="Enable animated hover avatars"
+            options={
+              <Toggle
+                className="d-inline-flex"
+                isActive={isAnimateAvatarsEnabled}
+                onToggle={toggleAppearanceAction(
+                  'isAnimateAvatarsEnabled',
+                  setAnimateAvatarsEnabled,
+                )}
+              />
+            }
+            content={
+              <div className="very-small text-gray">
+                Turn on animated avatars that are displayed when you mouse over it.
+              </div>
+            }
+          />
     */
   return (
     <div>
@@ -708,20 +729,18 @@ function AppearanceSection() {
           ) : null}
 
           <SettingTile
-            title="Enable animated hover avatars"
+            title="Use freezeframe on images"
             options={
               <Toggle
                 className="d-inline-flex"
-                isActive={isAnimateAvatarsEnabled}
-                onToggle={toggleAppearanceAction(
-                  'isAnimateAvatarsEnabled',
-                  setAnimateAvatarsEnabled,
-                )}
+                isActive={useFreezePlugin}
+                onToggle={toggleAppearanceAction('useFreezePlugin', setUseFreezePlugin)}
               />
             }
             content={
               <div className="very-small text-gray">
-                Turn on animated avatars that are displayed when you mouse over it.
+                All client gif and webp images will be rendered using the freezeframe. If the images
+                are in low resolution, please disable this option.
               </div>
             }
           />
