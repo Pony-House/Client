@@ -223,12 +223,7 @@ const Img = React.forwardRef(
           !tinyImageUrl ||
           (!tinyImageUrl.startsWith('blob:') && !tinyImageUrl.startsWith('./'))
         ) {
-          if (!tinyImageAnimUrl) {
-            progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
-          } else {
-            setBlobSrc(null);
-            setImgMime([]);
-          }
+          progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
         } else {
           if (tinyImageUrl.startsWith('./')) {
             const filename = tinyImageUrl.split('.');
@@ -634,11 +629,7 @@ function ImgJquery({
 
     // Normal image
     if (!tinyImageUrl || (!tinyImageUrl.startsWith('blob:') && !tinyImageUrl.startsWith('./'))) {
-      if (!tinyImageAnimUrl) progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
-      else {
-        setBlobSrc(null);
-        setImgMime([]);
-      }
+      progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
     } else {
       if (tinyImageUrl.startsWith('./')) {
         const filename = tinyImageUrl.split('.');
