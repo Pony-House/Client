@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import threadsList from '@src/util/libs/thread';
-import { RoomStateEvent } from 'matrix-js-sdk';
+import { RoomStateEvent, UserEvent } from 'matrix-js-sdk';
 
 import muteUserManager from '@src/util/libs/muteUserManager';
 import initMatrix from '../../../client/initMatrix';
@@ -85,31 +85,19 @@ const Selector = React.forwardRef(
     let imageSrc = null;
     let imageAnimSrc = null;
     if (isDM || notSpace) {
-      if (!isSpaces)
-        imageSrc =
-          // User Avatar
-          user && user.avatarUrl
-            ? mxcUrl.toHttp(user.avatarUrl, 32, 32)
-            : // Room User Avatar
-              mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32) || null;
+      // Normal Image
+      if (!isSpaces) {
+        imageSrc = user && user.avatarUrl && mxcUrl.toHttp(user.avatarUrl, 32, 32);
+        if (!imageSrc) imageSrc = mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32);
+      }
+      if (!imageSrc) imageSrc = mxcUrl.getAvatarUrl(room, 32, 32);
 
-      // Room Avatar
-      if (imageSrc === null) imageSrc = mxcUrl.getAvatarUrl(room, 32, 32) || null;
-
-      if (!isSpaces)
-        imageAnimSrc =
-          // User Avatar
-          user && user.avatarUrl
-            ? mxcUrl.toHttp(user.avatarUrl)
-            : // Room User Avatar
-              mxcUrl.getAvatarUrl(room.getAvatarFallbackMember()) ||
-              // Nothing
-              null;
-
-      // Room Avatar
-      if (imageAnimSrc === null)
-        // Normal Mode
-        imageAnimSrc = mxcUrl.getAvatarUrl(room);
+      // Anim Image
+      if (!isSpaces) {
+        imageAnimSrc = user && user.avatarUrl && mxcUrl.toHttp(user.avatarUrl);
+        if (!imageAnimSrc) imageAnimSrc = mxcUrl.getAvatarUrl(room.getAvatarFallbackMember());
+      }
+      if (!imageAnimSrc) imageAnimSrc = mxcUrl.getAvatarUrl(room);
     }
 
     // Is Muted
@@ -209,6 +197,18 @@ const Selector = React.forwardRef(
       }
     });
 
+    useEffect(() => {
+      if (user) {
+        const updateRoomData = () => forceUpdate();
+        user.on(UserEvent.AvatarUrl, updateRoomData);
+        muteUserManager.on('friendNickname', updateRoomData);
+        return () => {
+          user.removeListener(UserEvent.AvatarUrl, updateRoomData);
+          muteUserManager.off('friendNickname', updateRoomData);
+        };
+      }
+    });
+
     return (
       <>
         <RoomSelector
@@ -220,8 +220,8 @@ const Selector = React.forwardRef(
           animParentsCount={2}
           user={user}
           room={room}
-          imageAnimSrc={imageAnimSrc || null}
-          imageSrc={imageSrc || null}
+          imageAnimSrc={imageAnimSrc}
+          imageSrc={imageSrc}
           iconSrc={isDM ? null : joinRuleToIconSrc(room.getJoinRule(), room.isSpaceRoom())}
           isSelected={navigation.selectedRoomId === roomId && navigation.selectedThreadId === null}
           isMuted={isMuted}

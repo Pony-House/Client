@@ -8,7 +8,6 @@ import { objType } from 'for-promise/utils/lib.mjs';
 
 import cons from '@src/client/state/cons';
 import { abbreviateNumber } from '@src/util/common';
-import muteUserManager from '@src/util/libs/muteUserManager';
 
 import { twemojifyReact } from '../../../util/twemojify';
 import { colorMXID } from '../../../util/colorMXID';
@@ -86,10 +85,6 @@ function RoomSelector({
   allowCustomUsername = false,
 }) {
   const [userData, setPresenceStatus] = useState(null);
-  const [imgAnimSrc, setImgAnimSrc] = useState(imageAnimSrc);
-  const [imgSrc, setImgSrc] = useState(imageSrc);
-  const [roomName, setName] = useState(name);
-
   const statusRef = useRef(null);
   const customStatusRef = useRef(null);
 
@@ -118,37 +113,8 @@ function RoomSelector({
 
       // Update Status Profile
       const updateProfileStatus = (mEvent, tinyUser) => {
-        // Presence
         const content = updateUserStatusIcon(status, tinyUser);
-
-        // Image
-        let newImageSrc =
-          tinyUser && tinyUser.avatarUrl
-            ? mxcUrl.toHttp(tinyUser.avatarUrl, 32, 32)
-            : (room && mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32)) || null;
-        if (room && newImageSrc === null) newImageSrc = mxcUrl.getAvatarUrl(room, 32, 32);
-        setImgSrc(newImageSrc);
-
-        let newImageAnimSrc =
-          tinyUser && tinyUser.avatarUrl
-            ? mxcUrl.toHttp(tinyUser.avatarUrl)
-            : (room && mxcUrl.getAvatarUrl(room.getAvatarFallbackMember())) || null;
-
-        if (room && newImageAnimSrc === null) newImageAnimSrc = mxcUrl.getAvatarUrl(room);
-        setImgAnimSrc(newImageAnimSrc);
-
-        // Room Name
-        let newRoomName = room.name;
-
-        if (typeof tinyUser.displayName === 'string' && tinyUser.displayName.length > 0) {
-          newRoomName = tinyUser.displayName;
-        } else if (typeof tinyUser.userId === 'string' && tinyUser.userId.length > 0) {
-          newRoomName = tinyUser.userId;
-        }
-
-        if (!allowCustomUsername) setName(newRoomName);
         insertCustomStatus(customStatusRef, content);
-
         setPresenceStatus(content);
       };
 
@@ -169,16 +135,6 @@ function RoomSelector({
   favIconManager.checkerFavIcon();
   const isDefault = !iconSrc || notSpace;
 
-  useEffect(() => {
-    const tinyUpdate = (info) => {
-      if (user && info.userId === user.userId && allowCustomUsername) setName(info.value);
-    };
-    muteUserManager.on('friendNickname', tinyUpdate);
-    return () => {
-      muteUserManager.off('friendNickname', tinyUpdate);
-    };
-  });
-
   return (
     <RoomSelectorWrapper
       className="text-truncate"
@@ -190,16 +146,16 @@ function RoomSelector({
           className={`text-truncate content${user ? ' content-dm' : ''}${existStatus ? ' content-with-custom-status' : ''}`}
         >
           <div
-            className={`float-start me-2 h-100 avatar avatar-type--${imgSrc || isDefault ? 'img' : 'icon'}`}
+            className={`float-start me-2 h-100 avatar avatar-type--${imageSrc || isDefault ? 'img' : 'icon'}`}
           >
             <Avatar
               imgClass="profile-image-container"
               className="profile-image-container"
-              text={roomName}
+              text={name}
               bgColor={colorMXID(roomId)}
-              imageSrc={imgSrc}
+              imageSrc={imageSrc}
               animParentsCount={animParentsCount}
-              imageAnimSrc={imgAnimSrc}
+              imageAnimSrc={imageAnimSrc}
               iconColor="var(--ic-surface-low)"
               iconSrc={!isProfile ? iconSrc : null}
               faSrc={isProfile ? 'bi bi-person-badge-fill profile-icon-fa' : null}
@@ -220,7 +176,7 @@ function RoomSelector({
             variant="b1"
             weight={isUnread ? 'medium' : 'normal'}
           >
-            {twemojifyReact(roomName)}
+            {twemojifyReact(name)}
             {parentName && (
               <span className="very-small text-gray">
                 {' — '}

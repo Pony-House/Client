@@ -371,6 +371,25 @@ export function appearUserProfile(userId) {
   openProfileViewer(openUserId);
 }
 
+export function getRoomAvatars(room, size = 32, isDM = false) {
+  const mxcUrl = initMatrix.mxcUrl;
+
+  let imageSrc = null;
+  if (room) {
+    imageSrc = mxcUrl.getAvatarUrl(room, size, size);
+    if (!imageSrc && isDM)
+      imageSrc = mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), size, size);
+  }
+
+  let imageAnimSrc = null;
+  if (room) {
+    imageAnimSrc = mxcUrl.getAvatarUrl(room);
+    if (!imageAnimSrc && isDM) imageAnimSrc = mxcUrl.getAvatarUrl(room.getAvatarFallbackMember());
+  }
+
+  return { imageSrc, imageAnimSrc };
+}
+
 if (__ENV_APP__.MODE === 'development') {
   global.matrixUtil = {
     convertUserId,

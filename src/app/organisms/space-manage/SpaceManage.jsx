@@ -11,7 +11,7 @@ import navigation from '../../../client/state/navigation';
 import { colorMXID } from '../../../util/colorMXID';
 import { selectRoom, selectTab, selectRoomMode } from '../../../client/action/navigation';
 import RoomsHierarchy from '../../../client/state/RoomsHierarchy';
-import { joinRuleToIconSrc, getCurrentState } from '../../../util/matrixUtil';
+import { joinRuleToIconSrc, getCurrentState, getRoomAvatars } from '../../../util/matrixUtil';
 import { join } from '../../../client/action/room';
 import { Debounce } from '../../../util/common';
 
@@ -88,20 +88,8 @@ function SpaceManageItem({
   const room = mx.getRoom(roomId);
   const isJoined = !!(room?.getMyMembership() === 'join' || null);
   const name = room?.name || roomInfo.name || roomInfo.canonical_alias || roomId;
-
-  let imageSrc = mxcUrl.toHttp(roomInfo.avatar_url, 32, 32) || null;
-  if (!imageSrc && room) {
-    imageSrc = mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32) || null;
-    if (imageSrc === null) imageSrc = mxcUrl.getAvatarUrl(room, 32, 32) || null;
-  }
-
-  let imageAnimSrc = mxcUrl.toHttp(roomInfo.avatar_url);
-  if (!imageAnimSrc && room) {
-    imageAnimSrc = mxcUrl.getAvatarUrl(room.getAvatarFallbackMember());
-    if (imageAnimSrc === null) imageAnimSrc = mxcUrl.getAvatarUrl(room);
-  }
-
   const isDM = directs.has(roomId);
+  const { imageSrc, imageAnimSrc } = getRoomAvatars(room, 32, isDM);
 
   const handleOpen = () => {
     if (isSpace) selectTab(roomId, true);
@@ -136,8 +124,8 @@ function SpaceManageItem({
       className="profile-image-container"
       text={name}
       bgColor={colorMXID(roomId)}
-      imageAnimSrc={isDM ? imageAnimSrc : null}
-      imageSrc={isDM ? imageSrc : null}
+      imageAnimSrc={imageAnimSrc}
+      imageSrc={imageSrc}
       iconColor="var(--ic-surface-low)"
       iconSrc={isDM ? null : joinRuleToIconSrc(roomInfo.join_rules || roomInfo.join_rule, isSpace)}
       size="extra-small"
