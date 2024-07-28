@@ -76,7 +76,7 @@ const ImageFix = {
 
     el.replaceWith(
       ImgJquery({
-        isEmoji: true,
+        isEmoji: typeof dataMxEmoticon !== 'undefined' && dataMxEmoticon !== null,
         dataMxEmoticon,
         className,
         src,
@@ -90,7 +90,10 @@ const ImageFix = {
       typeof attribs.src === 'string' &&
       (attribs.src.startsWith('mxc://') || attribs.src.startsWith('./')) ? (
         <Img
-          isEmoji
+          isEmoji={
+            typeof attribs['data-mx-emoticon'] !== 'undefined' &&
+            attribs['data-mx-emoticon'] !== null
+          }
           placement="top"
           content={<div className="small">{attribs.alt}</div>}
           dataMxEmoticon={attribs['data-mx-emoticon']}

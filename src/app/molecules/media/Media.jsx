@@ -284,6 +284,7 @@ function Sticker({
       <div className="sticker-container" style={stickerStyle}>
         {url !== null && (
           <Img
+            isSticker
             style={typeof stickerStyle.height === 'number' ? stickerStyle : null}
             src={url || link}
             alt={name}

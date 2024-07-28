@@ -1,8 +1,6 @@
 Banner de space precisa de animação
 Emojiboard para Img
 
-Colocar o avatar de chat e lista de membros ter o mesmo tamanho do perfil.
-
 Remover tudo do messageDataEffects
 Padronizar o profile-image-container
 
