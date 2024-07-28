@@ -1096,6 +1096,7 @@ const MessageOptions = React.memo(
 
                         const username = user ? muteUserManager.getSelectorName(user) : userId;
                         const avatarAnimSrc = user ? mxcUrl.toHttp(user.avatarUrl) : null;
+                        const avatarSrc = user ? mxcUrl.toHttp(user.avatarUrl, 36, 36) : null;
 
                         const ct = $('<div>', {
                           class: 'align-top text-center chat-base d-inline-block',
@@ -1106,9 +1107,11 @@ const MessageOptions = React.memo(
                             .append(
                               ct.append(
                                 AvatarJquery({
+                                  animParentsCount: 3,
                                   className: 'profile-image-container',
                                   imgClass: 'profile-image-container',
-                                  imageSrc: avatarAnimSrc,
+                                  imageSrc: avatarSrc,
+                                  imageAnimSrc: avatarAnimSrc,
                                   isDefaultImage: true,
                                 }),
                               ),
