@@ -83,7 +83,7 @@ const Img = React.forwardRef(
       placement = null,
       content = null,
       isSticker = false,
-      IsEmoji = false,
+      isEmoji = false,
     },
     ref,
   ) => {
@@ -439,7 +439,7 @@ const Img = React.forwardRef(
             draggable={draggable}
             src-url={tinyImageUrl}
             src-anim-url={tinyImageAnimUrl}
-            img-type={IsEmoji ? 'emoji' : isSticker ? 'sticker' : null}
+            img-type={isEmoji ? 'emoji' : isSticker ? 'sticker' : null}
             alt={alt}
             onError={({ currentTarget }) => {
               currentTarget.onerror = onError;
@@ -490,7 +490,7 @@ const Img = React.forwardRef(
             style={finalStyle}
             src-url={tinyImageUrl}
             src-anim-url={tinyImageAnimUrl}
-            img-type={IsEmoji ? 'emoji' : isSticker ? 'sticker' : null}
+            img-type={isEmoji ? 'emoji' : isSticker ? 'sticker' : null}
             alt={alt}
           />
         );
@@ -527,7 +527,7 @@ const imgPropTypes = {
   placement: PropTypes.string,
   content: PropTypes.node,
   isSticker: PropTypes.bool,
-  IsEmoji: PropTypes.bool,
+  isEmoji: PropTypes.bool,
 };
 Img.propTypes = imgPropTypes;
 
@@ -556,7 +556,7 @@ function ImgJquery({
   getDefaultImage = null,
   customMxcUrl = null,
   isSticker = false,
-  IsEmoji = false,
+  isEmoji = false,
 }) {
   const mxcUrl = initMatrix.mxcUrl || customMxcUrl;
 
@@ -587,7 +587,7 @@ function ImgJquery({
     if (!disableBase) {
       // Build container
       img = $('<div>', {
-        'img-type': IsEmoji ? 'emoji' : isSticker ? 'sticker' : null,
+        'img-type': isEmoji ? 'emoji' : isSticker ? 'sticker' : null,
         class: `d-inline-block img-container${className ? ` ${className}` : ''}`,
         'data-mx-emoticon': dataMxEmoticon,
         height,
@@ -629,7 +629,7 @@ function ImgJquery({
     const tinyComplete = () => {
       if (!isObj) {
         const ops = {
-          'img-type': IsEmoji ? 'emoji' : isSticker ? 'sticker' : null,
+          'img-type': isEmoji ? 'emoji' : isSticker ? 'sticker' : null,
           'data-mx-emoticon': dataMxEmoticon,
           id,
           class: className,
