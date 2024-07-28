@@ -371,6 +371,8 @@ export function appearUserProfile(userId) {
   openProfileViewer(openUserId);
 }
 
+export const dfAvatarSize = __ENV_APP__.IMG.SIZE.AVATAR;
+
 export function getRoomAvatars(room, size = 32, isDM = false) {
   const mxcUrl = initMatrix.mxcUrl;
 

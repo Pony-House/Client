@@ -7,7 +7,7 @@ import clone from 'clone';
 import { ImgJquery } from '@src/app/atoms/image/Image';
 import jReact from '@mods/lib/jReact';
 import soundFiles from '@src/util/soundFiles';
-import { convertUserId } from '@src/util/matrixUtil';
+import { convertUserId, dfAvatarSize } from '@src/util/matrixUtil';
 
 import IconButton from '../../atoms/button/IconButton';
 import { twemojifyReact } from '../../../util/twemojify';
@@ -251,7 +251,7 @@ function ProfileAvatarMenu() {
                 bgColor={colorMXID(mx.getUserId())}
                 size="normal"
                 imageAnimSrc={mxcUrl.toHttp(profile.avatarUrl)}
-                imageSrc={mxcUrl.toHttp(profile.avatarUrl, 42, 42)}
+                imageSrc={mxcUrl.toHttp(profile.avatarUrl, dfAvatarSize, dfAvatarSize)}
                 isDefaultImage
               />
               <i ref={statusRef} className={newStatus} />

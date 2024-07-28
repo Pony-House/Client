@@ -5,7 +5,7 @@ import { objType } from 'for-promise/utils/lib.mjs';
 import { AvatarJquery } from '@src/app/atoms/avatar/Avatar';
 
 import initMatrix from '../../../client/initMatrix';
-import { getCurrentState } from '../../matrixUtil';
+import { dfAvatarSize, getCurrentState } from '../../matrixUtil';
 import { btModal } from '../../tools';
 
 import { setLoadingPage } from '../../../app/templates/client/Loading';
@@ -212,7 +212,9 @@ export function openPinMessageModal(room) {
 
               const tinyUsername = twemojify(user.userId);
 
-              const imageSrc = user ? mxcUrl.toHttp(user.avatarUrl, 36, 36) : null;
+              const imageSrc = user
+                ? mxcUrl.toHttp(user.avatarUrl, dfAvatarSize, dfAvatarSize)
+                : null;
               const imageAnimSrc = user ? mxcUrl.toHttp(user.avatarUrl) : null;
 
               const content = events[item].getContent();

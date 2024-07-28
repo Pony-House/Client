@@ -5,6 +5,7 @@ import { objType } from 'for-promise/utils/lib.mjs';
 
 import envAPI from '@src/util/libs/env';
 import settings from '@src/client/state/settings';
+import { dfAvatarSize } from '@src/util/matrixUtil';
 
 import initMatrix from '../../../../client/initMatrix';
 import cons from '../../../../client/state/cons';
@@ -219,8 +220,12 @@ export default function FeaturedTab() {
                     mxcUrl.getAvatarUrl(room.getAvatarFallbackMember()) || mxcUrl.getAvatarUrl(room)
                   }
                   imageSrc={
-                    mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 42, 42) ||
-                    mxcUrl.getAvatarUrl(room, 42, 42) ||
+                    mxcUrl.getAvatarUrl(
+                      room.getAvatarFallbackMember(),
+                      dfAvatarSize,
+                      dfAvatarSize,
+                    ) ||
+                    mxcUrl.getAvatarUrl(room, dfAvatarSize, dfAvatarSize) ||
                     null
                   }
                   isDefaultImage

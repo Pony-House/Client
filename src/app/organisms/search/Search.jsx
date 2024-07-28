@@ -5,7 +5,7 @@ import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import AsyncSearch from '../../../util/AsyncSearch';
 import { selectRoom, selectTab, selectRoomMode } from '../../../client/action/navigation';
-import { joinRuleToIconSrc } from '../../../util/matrixUtil';
+import { dfAvatarSize, joinRuleToIconSrc } from '../../../util/matrixUtil';
 import { roomIdByActivity } from '../../../util/sort';
 
 import Dialog from '../../molecules/dialog/Dialog';
@@ -175,7 +175,11 @@ function Search() {
     let iconSrc = null;
 
     if (item.type === 'direct') {
-      imageSrc = mxcUrl.getAvatarUrl(item.room.getAvatarFallbackMember(), 32, 32);
+      imageSrc = mxcUrl.getAvatarUrl(
+        item.room.getAvatarFallbackMember(),
+        dfAvatarSize,
+        dfAvatarSize,
+      );
       imageAnimSrc = mxcUrl.getAvatarUrl(item.room.getAvatarFallbackMember());
     } else {
       iconSrc = joinRuleToIconSrc(item.room.getJoinRule(), item.type === 'space');

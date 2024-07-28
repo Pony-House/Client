@@ -76,6 +76,7 @@ function renderSuggestions({ prefix, option, suggestions }, fireCmd) {
     function renderCustomEmoji(emoji) {
       return (
         <Img
+          isEmoji
           className="emoji"
           src={mxcUrl.toHttp(emoji.mxc)}
           dataMxEmoticon=""

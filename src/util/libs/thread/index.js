@@ -14,7 +14,7 @@ import {
   getDataList,
   removeFromDataFolder,
 } from '@src/util/selectedRoom';
-import { canSupport } from '@src/util/matrixUtil';
+import { canSupport, dfAvatarSize } from '@src/util/matrixUtil';
 
 import { openProfileViewer, selectRoom } from '@src/client/action/navigation';
 import { createMessageData } from '@src/app/molecules/message/Message';
@@ -215,7 +215,9 @@ export function openThreadsMessageModal(room) {
               const roomId = room.roomId;
               const tinyUsername = twemojify(user.userId);
 
-              const imageSrc = user ? mxcUrl.toHttp(user.avatarUrl, 36, 36) : null;
+              const imageSrc = user
+                ? mxcUrl.toHttp(user.avatarUrl, dfAvatarSize, dfAvatarSize)
+                : null;
               const imageAnimSrc = user ? mxcUrl.toHttp(user.avatarUrl) : null;
 
               const content = events[item].content;

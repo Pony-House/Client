@@ -168,6 +168,12 @@ export default defineConfig(({ command, mode }) => {
 
     MAX_LISTENERS: Number(env.MAX_LISTENERS),
 
+    IMG: {
+      SIZE: {
+        AVATAR: Number(env.DEFAULT_AVATAR_SIZE)
+      }
+    },
+
     LIBRE_TRANSLATE: {
       DEFAULT_HOST: typeof env.LIBRE_TRANSLATE_DEFAULT_HOST === 'string' && env.LIBRE_TRANSLATE_DEFAULT_HOST.length > 0 ?
         env.LIBRE_TRANSLATE_DEFAULT_HOST : '',

@@ -39,7 +39,7 @@ import TimelineScroll, {
 } from './TimelineScroll';
 
 import EventLimit from './EventLimit';
-import { getCurrentState } from '../../../util/matrixUtil';
+import { dfAvatarSize, getCurrentState } from '../../../util/matrixUtil';
 import tinyAPI from '../../../util/mods';
 import { rule3 } from '../../../util/tools';
 import { mediaFix } from '../../molecules/media/mediaFix';
@@ -86,8 +86,10 @@ function RoomIntroContainer({ event, timeline }) {
 
   const roomTopic = getCurrentState(room).getStateEvents('m.room.topic')[0]?.getContent().topic;
   const isDM = roomList.directs.has(timeline.roomId);
-  let avatarSrc = mxcUrl.getAvatarUrl(room, 80, 80);
-  avatarSrc = isDM ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 80, 80) : avatarSrc;
+  let avatarSrc = mxcUrl.getAvatarUrl(room, dfAvatarSize, dfAvatarSize);
+  avatarSrc = isDM
+    ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), dfAvatarSize, dfAvatarSize)
+    : avatarSrc;
 
   let avatarAnimSrc = mxcUrl.getAvatarUrl(room);
   avatarAnimSrc = isDM ? mxcUrl.getAvatarUrl(room.getAvatarFallbackMember()) : avatarAnimSrc;

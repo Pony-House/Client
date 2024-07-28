@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { getHomeServer } from '@src/util/matrixUtil';
+import { dfAvatarSize, getHomeServer } from '@src/util/matrixUtil';
 import Img from '@src/app/atoms/image/Image';
 
 import initMatrix from '../../../client/initMatrix';
@@ -240,7 +240,7 @@ function PublicRooms({ isOpen, searchTerm, onRequestClose }) {
                 animParentsCount={0}
                 imgClass="profile-image-container"
                 className="profile-image-container"
-                imageSrc={mxcUrl.toHttp(room.avatar_url, 42, 42)}
+                imageSrc={mxcUrl.toHttp(room.avatar_url, dfAvatarSize, dfAvatarSize)}
                 imageAnimSrc={mxcUrl.toHttp(room.avatar_url)}
                 bgColor={colorMXID(alias)}
                 text={name}

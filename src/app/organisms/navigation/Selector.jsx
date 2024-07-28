@@ -11,7 +11,12 @@ import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 import { openReusableContextMenu } from '../../../client/action/navigation';
 import { getEventCords, abbreviateNumber } from '../../../util/common';
-import { canSupport, getCurrentState, joinRuleToIconSrc } from '../../../util/matrixUtil';
+import {
+  canSupport,
+  dfAvatarSize,
+  getCurrentState,
+  joinRuleToIconSrc,
+} from '../../../util/matrixUtil';
 import { updateName } from '../../../util/roomName';
 
 import IconButton from '../../atoms/button/IconButton';
@@ -87,10 +92,16 @@ const Selector = React.forwardRef(
     if (isDM || notSpace) {
       // Normal Image
       if (!isSpaces) {
-        imageSrc = user && user.avatarUrl && mxcUrl.toHttp(user.avatarUrl, 32, 32);
-        if (!imageSrc) imageSrc = mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32);
+        imageSrc =
+          user && user.avatarUrl && mxcUrl.toHttp(user.avatarUrl, dfAvatarSize, dfAvatarSize);
+        if (!imageSrc)
+          imageSrc = mxcUrl.getAvatarUrl(
+            room.getAvatarFallbackMember(),
+            dfAvatarSize,
+            dfAvatarSize,
+          );
       }
-      if (!imageSrc) imageSrc = mxcUrl.getAvatarUrl(room, 32, 32);
+      if (!imageSrc) imageSrc = mxcUrl.getAvatarUrl(room, dfAvatarSize, dfAvatarSize);
 
       // Anim Image
       if (!isSpaces) {

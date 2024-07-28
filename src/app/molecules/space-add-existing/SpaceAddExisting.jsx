@@ -6,7 +6,7 @@ import { twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
-import { joinRuleToIconSrc, getIdServer, genRoomVia } from '../../../util/matrixUtil';
+import { joinRuleToIconSrc, getIdServer, genRoomVia, dfAvatarSize } from '../../../util/matrixUtil';
 import { Debounce } from '../../../util/common';
 
 import Text from '../../atoms/text/Text';
@@ -127,11 +127,15 @@ function SpaceAddExistingContent({ roomId }) {
         {(searchIds || allRoomIds).map((rId) => {
           const room = mx.getRoom(rId);
 
-          let imageSrc = mxcUrl.getAvatarUrl(room.getAvatarFallbackMember(), 32, 32) || null;
-          if (imageSrc === null) imageSrc = mxcUrl.getAvatarUrl(room, 32, 32) || null;
+          let imageSrc = mxcUrl.getAvatarUrl(
+            room.getAvatarFallbackMember(),
+            dfAvatarSize,
+            dfAvatarSize,
+          );
+          if (!imageSrc) imageSrc = mxcUrl.getAvatarUrl(room, dfAvatarSize, dfAvatarSize);
 
           let imageAnimSrc = mxcUrl.getAvatarUrl(room.getAvatarFallbackMember());
-          if (imageAnimSrc === null) imageAnimSrc = mxcUrl.getAvatarUrl(room);
+          if (!imageAnimSrc) imageAnimSrc = mxcUrl.getAvatarUrl(room);
 
           const parentSet = roomIdToParents.get(rId);
           const parentNames = parentSet

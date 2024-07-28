@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { dfAvatarSize } from '@src/util/matrixUtil';
 
 import initMatrix from '../../../../client/initMatrix';
 import { colorMXID } from '../../../../util/colorMXID';
@@ -111,7 +112,7 @@ function DraggableSpaceShortcut({ isActive, spaceId, index, moveShortcut, onDrop
           size="normal"
           animParentsCount={1}
           imageAnimSrc={mxcUrl.getAvatarUrl(room)}
-          imageSrc={mxcUrl.getAvatarUrl(room, 42, 42)}
+          imageSrc={mxcUrl.getAvatarUrl(room, dfAvatarSize, dfAvatarSize)}
           isDefaultImage
         />
       }

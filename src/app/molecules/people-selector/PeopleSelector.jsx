@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import $ from 'jquery';
 
 import { UserEvent } from 'matrix-js-sdk';
+import { dfAvatarSize } from '@src/util/matrixUtil';
 import { twemojifyReact } from '../../../util/twemojify';
 
 import { blurOnBubbling } from '../../atoms/button/script';
@@ -23,7 +24,7 @@ function PeopleSelector({
   onClick,
   user = null,
   disableStatus = false,
-  avatarSize = 32,
+  avatarSize = dfAvatarSize,
   contextMenu,
 }) {
   const statusRef = useRef(null);

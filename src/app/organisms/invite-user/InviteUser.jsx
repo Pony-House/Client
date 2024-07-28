@@ -9,6 +9,7 @@ import { selectRoom } from '../../../client/action/navigation';
 import {
   convertUserId,
   convertUserIdReverse,
+  dfAvatarSize,
   hasDMWith,
   hasDevices,
 } from '../../../util/matrixUtil';
@@ -221,7 +222,7 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
       return (
         <RoomTile
           key={userId}
-          avatarSrc={mxcUrl.toHttp(user.avatar_url, 42, 42)}
+          avatarSrc={mxcUrl.toHttp(user.avatar_url, dfAvatarSize, dfAvatarSize)}
           avatarAnimSrc={mxcUrl.toHttp(user.avatar_url)}
           name={name}
           id={userId}
