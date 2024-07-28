@@ -28,13 +28,18 @@ const createImageCanvas = (mainBlob, onLoad, onError) => {
     img.alt = 'Image.jsx canvas';
     img.onload = () => {
       // Create canvas
-      const c = document.createElement('canvas');
-      var w = (c.width = img.width);
-      var h = (c.height = img.height);
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      const w = (canvas.width = img.width);
+      const h = (canvas.height = img.height);
 
       // Draw canvas
-      c.getContext('2d').drawImage(img, 0, 0, w, h);
-      c.toBlob(onLoad, 'image/gif');
+      ctx.drawImage(img, 0, 0, w, h);
+      canvas.toBlob((canvasBlob) => {
+        if (onLoad) onLoad(canvasBlob);
+        ctx.clearRect(0, 0, w, h);
+      }, 'image/gif');
     };
 
     // Error
