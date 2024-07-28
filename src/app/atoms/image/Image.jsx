@@ -7,7 +7,10 @@ import blobUrlManager from '@src/util/libs/blobUrlManager';
 import initMatrix from '@src/client/initMatrix';
 import { imageExts } from '@src/util/MimesUtil';
 
-import { getAnimatedImageUrl, getAppearance } from '../../../util/libs/appearance';
+import matrixAppearance, {
+  getAnimatedImageUrl,
+  getAppearance,
+} from '../../../util/libs/appearance';
 
 const getTinyUrl = (mxcUrl, src) => {
   return typeof src === 'string' && src.startsWith('mxc://') && mxcUrl && mxcUrl.toHttp
@@ -105,6 +108,7 @@ const Img = React.forwardRef(
     }
 
     // Prepare data
+    const [useFreezePlugin, setFreezePlugin] = useState(getAppearance('useFreezePlugin'));
     const [waitSrc, setWaitSrc] = useState(tinyImageUrl);
 
     const [imgMime, setImgMime] = useState([]);
@@ -125,7 +129,7 @@ const Img = React.forwardRef(
       }
 
       // Avatar Config
-      const useFreezePlugin = getAppearance('useFreezePlugin') && tinyImageAnimUrl;
+      const usingFreezePlugin = useFreezePlugin && tinyImageAnimUrl;
       if (isLoading < 1) {
         // Complete checker
         let isLoadingProgress = 0;
@@ -232,7 +236,7 @@ const Img = React.forwardRef(
           !tinyImageUrl ||
           (!tinyImageUrl.startsWith('blob:') && !tinyImageUrl.startsWith('./'))
         ) {
-          if (!useFreezePlugin) progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
+          if (!usingFreezePlugin) progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
           else if (tinyImageUrl) {
             // Get freeze cache
             const blobFromId = blobUrlManager.getById(`freezeUserAvatar:${tinyImageUrl}`);
@@ -384,6 +388,22 @@ const Img = React.forwardRef(
           }
         };
       }
+    });
+
+    // Settings update
+    useEffect(() => {
+      const tinyUpdate = (value) => {
+        setFreezePlugin(value);
+        setBlobSrc(null);
+        setBlobAnimSrc(null);
+        setImgMime([]);
+        setImgMimeAnim([]);
+        setIsLoading(0);
+      };
+      matrixAppearance.on('useFreezePlugin', tinyUpdate);
+      return () => {
+        matrixAppearance.off('useFreezePlugin', tinyUpdate);
+      };
     });
 
     // Image
