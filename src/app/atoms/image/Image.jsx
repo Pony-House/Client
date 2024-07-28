@@ -105,9 +105,6 @@ const Img = React.forwardRef(
     const [isLoading, setIsLoading] = useState(0);
     const [useAnimation, setUseAnimation] = useState(false);
 
-    // Avatar Config
-    const appearanceSettings = getAppearance();
-
     // Get data
     useEffect(() => {
       if (waitSrc !== tinyImageUrl) {
@@ -116,7 +113,8 @@ const Img = React.forwardRef(
         if (onLoadingChange) onLoadingChange(0);
       }
 
-      const isGif = appearanceSettings.useFreezePlugin && tinyImageAnimUrl;
+      // Avatar Config
+      const useFreezePlugin = getAppearance('useFreezePlugin') && tinyImageAnimUrl;
       if (isLoading < 1) {
         // Complete checker
         let isLoadingProgress = 0;
@@ -223,7 +221,28 @@ const Img = React.forwardRef(
           !tinyImageUrl ||
           (!tinyImageUrl.startsWith('blob:') && !tinyImageUrl.startsWith('./'))
         ) {
-          progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
+          if (!useFreezePlugin) progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
+          else {
+            // Enable loading mode
+            setIsLoading(1);
+            if (onLoadingChange) onLoadingChange(1);
+
+            // Get freeze cache
+            const blobFromId = blobUrlManager.getById(`freezeUserAvatar:${tinyImageUrl}`);
+            if (blobFromId) {
+              // Set data
+              setImgMime(['image', 'gif']);
+              setBlobSrc(blobFromId);
+
+              // Complete
+              setIsLoading(2);
+              if (onLoadingChange) onLoadingChange(2);
+            }
+
+            // Nothing. Create new one
+            else {
+            }
+          }
         } else {
           if (tinyImageUrl.startsWith('./')) {
             const filename = tinyImageUrl.split('.');
@@ -538,7 +557,7 @@ function ImgJquery({
     };
 
     // Avatar Config
-    const appearanceSettings = getAppearance();
+    const useFreezePlugin = getAppearance('useFreezePlugin') && tinyImageAnimUrl;
 
     // Starting progress
     if (onLoadingChange) onLoadingChange(0);
@@ -629,7 +648,26 @@ function ImgJquery({
 
     // Normal image
     if (!tinyImageUrl || (!tinyImageUrl.startsWith('blob:') && !tinyImageUrl.startsWith('./'))) {
-      progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
+      if (!useFreezePlugin) progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
+      else {
+        // Enable loading mode
+        if (onLoadingChange) onLoadingChange(1);
+
+        // Get freeze cache
+        const blobFromId = blobUrlManager.getById(`freezeUserAvatar:${tinyImageUrl}`);
+        if (blobFromId) {
+          // Insert data
+          setImgMime(['image', 'gif']);
+          setBlobSrc(blobFromId);
+
+          // Check the progress
+          isComplete();
+        }
+
+        // Nothing. Create new one
+        else {
+        }
+      }
     } else {
       if (tinyImageUrl.startsWith('./')) {
         const filename = tinyImageUrl.split('.');
