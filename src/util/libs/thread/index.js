@@ -246,15 +246,17 @@ export function openThreadsMessageModal(room) {
                 }).append(
                   // Avatar
                   td.append(
-                    AvatarJquery({
-                      className: 'profile-image-container',
-                      imgClass: 'profile-image-container',
-                      imageSrc,
-                      imageAnimSrc,
-                      isDefaultImage: true,
-                      animParentsCount: 3,
-                      onClick: () => openProfileViewer(userId, roomId),
-                    }),
+                    $('<button>').append(
+                      AvatarJquery({
+                        className: 'profile-image-container',
+                        imgClass: 'profile-image-container',
+                        imageSrc,
+                        imageAnimSrc,
+                        isDefaultImage: true,
+                        animParentsCount: 4,
+                        onClick: () => openProfileViewer(userId, roomId),
+                      }),
+                    ),
                   ),
 
                   // Message
