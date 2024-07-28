@@ -223,24 +223,19 @@ const Img = React.forwardRef(
         ) {
           if (!useFreezePlugin) progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
           else {
-            // Enable loading mode
-            setIsLoading(1);
-            if (onLoadingChange) onLoadingChange(1);
-
             // Get freeze cache
             const blobFromId = blobUrlManager.getById(`freezeUserAvatar:${tinyImageUrl}`);
             if (blobFromId) {
               // Set data
               setImgMime(['image', 'gif']);
               setBlobSrc(blobFromId);
-
-              // Complete
-              setIsLoading(2);
-              if (onLoadingChange) onLoadingChange(2);
             }
 
             // Nothing. Create new one
             else {
+              // Enable loading mode
+              setIsLoading(1);
+              if (onLoadingChange) onLoadingChange(1);
             }
           }
         } else {
@@ -650,22 +645,17 @@ function ImgJquery({
     if (!tinyImageUrl || (!tinyImageUrl.startsWith('blob:') && !tinyImageUrl.startsWith('./'))) {
       if (!useFreezePlugin) progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
       else {
-        // Enable loading mode
-        if (onLoadingChange) onLoadingChange(1);
-
         // Get freeze cache
         const blobFromId = blobUrlManager.getById(`freezeUserAvatar:${tinyImageUrl}`);
         if (blobFromId) {
-          // Insert data
           setImgMime(['image', 'gif']);
           setBlobSrc(blobFromId);
-
-          // Check the progress
-          isComplete();
         }
 
         // Nothing. Create new one
         else {
+          // Enable loading mode
+          if (onLoadingChange) onLoadingChange(1);
         }
       }
     } else {
