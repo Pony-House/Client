@@ -39,7 +39,7 @@ const createImageCanvas = (mainBlob, onLoad, onError) => {
       canvas.toBlob((canvasBlob) => {
         if (onLoad) onLoad(canvasBlob);
         ctx.clearRect(0, 0, w, h);
-      }, 'image/gif');
+      }, 'image/webp');
     };
 
     // Error
@@ -238,7 +238,7 @@ const Img = React.forwardRef(
             const blobFromId = blobUrlManager.getById(`freezeUserAvatar:${tinyImageUrl}`);
             if (blobFromId) {
               // Set data
-              setImgMime(['image', 'gif']);
+              setImgMime(['image', 'webp']);
               setBlobSrc(blobFromId);
             }
 
@@ -263,7 +263,7 @@ const Img = React.forwardRef(
                         .then((newTinyUrl) => {
                           if (tinyImageUrl === waitSrc) {
                             // Set data
-                            setImgMime(['image', 'gif']);
+                            setImgMime(['image', 'webp']);
                             setBlobSrc(newTinyUrl);
 
                             // Check the progress
@@ -394,7 +394,7 @@ const Img = React.forwardRef(
           ? !blobAnimSrc ||
             blobAnimSrc === blobSrc ||
             !useAnimation ||
-            (Array.isArray(imgMimeAnim) && imgMimeAnim[1] !== 'gif')
+            (Array.isArray(imgMimeAnim) && imgMimeAnim[1] !== 'gif' && imgMimeAnim[1] !== 'webp')
             ? blobSrc
             : blobAnimSrc
           : ImageBrokenSVG;
@@ -738,7 +738,7 @@ function ImgJquery({
         // Get freeze cache
         const blobFromId = blobUrlManager.getById(`freezeUserAvatar:${tinyImageUrl}`);
         if (blobFromId) {
-          setImgMime(['image', 'gif']);
+          setImgMime(['image', 'webp']);
           setBlobSrc(blobFromId);
         }
 
@@ -761,7 +761,7 @@ function ImgJquery({
                     })
                     .then((newTinyUrl) => {
                       // Set data
-                      setImgMime(['image', 'gif']);
+                      setImgMime(['image', 'webp']);
                       setBlobSrc(newTinyUrl);
 
                       // Check the progress
