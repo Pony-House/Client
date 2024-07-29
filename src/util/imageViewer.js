@@ -5,8 +5,8 @@ import PhotoSwipeLightbox from 'photoswipe';
 import ExifReader from 'exifreader';
 import { fetchFn } from '@src/client/initMatrix';
 
-import { getFileContentType } from './fileMime';
 import { btModal, toast } from './tools';
+import blobUrlManager from './libs/blobUrlManager';
 
 export default function imageViewer(data) {
   return new Promise(async (resolve, reject) => {
@@ -16,24 +16,11 @@ export default function imageViewer(data) {
       if (img) {
         // Get Mime
         let filename = data.name;
-        let tinyImgData = null;
-        if (data.readMime) {
-          try {
-            // Read Mime
-            tinyImgData = await getFileContentType({ target: img }, data.url);
 
-            // Insert Mime
-            if (
-              Array.isArray(tinyImgData.type) &&
-              tinyImgData.type.length > 1 &&
-              typeof tinyImgData.type[1] === 'string'
-            ) {
-              filename += `.${tinyImgData.type[1]}`;
-            }
-          } catch (err) {
-            console.error(err);
-            tinyImgData = null;
-          }
+        // Insert Mime
+        const mime = blobUrlManager.getMime(data.imgQuery.attr('src'));
+        if (Array.isArray(mime) && mime.length > 1 && typeof mime[1] === 'string') {
+          filename += `.${mime[1]}`;
         }
 
         // Prepare Data
@@ -44,9 +31,10 @@ export default function imageViewer(data) {
         }
 
         // Get Data
-        else if (tinyImgData) {
-          imgData.height = tinyImgData.height;
-          imgData.width = tinyImgData.width;
+        else {
+          const { height, width } = await blobUrlManager.forceGetImgSize(data.imgQuery.attr('src'));
+          if (typeof height === 'number') imgData.height = height;
+          if (typeof width === 'number') imgData.width = width;
         }
 
         // Create Lightbox

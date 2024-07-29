@@ -2,6 +2,8 @@ import { EventEmitter } from 'events';
 import { generateApiKey } from 'generate-api-key';
 import md5 from 'md5';
 
+import { objType } from 'for-promise/utils/lib.mjs';
+
 class BlobUrlManager extends EventEmitter {
   // Constructor
   constructor() {
@@ -13,6 +15,8 @@ class BlobUrlManager extends EventEmitter {
     this.queue = {};
     this.ids = {};
     this.mime = {};
+    this.size = {};
+    this.imgSize = {};
     this.idsReverse = {};
   }
 
@@ -43,6 +47,45 @@ class BlobUrlManager extends EventEmitter {
 
   getMime(blobUrl) {
     if (Array.isArray(this.mime[blobUrl])) return this.mime[blobUrl];
+    return null;
+  }
+
+  getImgSize(blobUrl) {
+    if (objType(this.imgSize[blobUrl], 'object')) return this.imgSize[blobUrl];
+    return null;
+  }
+
+  async forceGetImgSize(blobUrl) {
+    const file = this.getImgSize(blobUrl);
+    if (objType(file, 'object')) {
+      if (typeof file.height === 'number' && typeof file.width === 'number') return file;
+      else return this.fetchImgSize(blobUrl);
+    }
+    return null;
+  }
+
+  fetchImgSize(blobUrl) {
+    if (objType(this.imgSize[blobUrl], 'object')) {
+      const tinyThis = this;
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          if (objType(tinyThis.imgSize[blobUrl], 'object')) {
+            tinyThis.imgSize[blobUrl] = { height: img.height, width: img.width };
+            resolve(tinyThis.imgSize[blobUrl]);
+          } else {
+            reject(new Error('Invalid file url!'));
+          }
+        };
+        img.onerror = reject;
+        img.src = blobUrl;
+      });
+    }
+    return null;
+  }
+
+  getSize(blobUrl) {
+    if (typeof this.size[blobUrl] === 'number') return this.size[blobUrl];
     return null;
   }
 
@@ -85,6 +128,12 @@ class BlobUrlManager extends EventEmitter {
 
         // Mime
         this.mime[tinyUrl] = typeof file.type === 'string' ? file.type.split('/') : [];
+
+        // Size
+        this.size[tinyUrl] = file.size;
+
+        // Image Size
+        this.imgSize[tinyUrl] = { height: file.height, width: file.width };
 
         // Hash
         this.urls[tinyUrl] = hash;
@@ -159,6 +208,8 @@ class BlobUrlManager extends EventEmitter {
         }
 
         delete this.mime[tinyUrl];
+        delete this.size[tinyUrl];
+        delete this.imgSize[tinyUrl];
         delete this.hashes[hash];
         delete this.timeout[hash];
         delete this.urls[tinyUrl];
