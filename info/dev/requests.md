@@ -1,5 +1,3 @@
-Emojiboard para Img
-
 Remover tudo do messageDataEffects
 Padronizar o profile-image-container
 

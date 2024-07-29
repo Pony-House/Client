@@ -37,6 +37,14 @@ let ROW_COUNT;
 // Emoji Groups
 const EmojiGroup = React.memo(
   ({ boardType = null, name, groupEmojis, className, isFav = false }) => {
+    const [isIntersecting, setIntersecting] = useState(false);
+    const tinyRef = useRef(null);
+
+    useEffect(() => {
+      const observer = new IntersectionObserver(([entry]) => setIntersecting(entry.isIntersecting));
+      observer.observe(tinyRef.current);
+    });
+
     function getEmojiBoard() {
       const emojiBoard = [];
       const totalEmojis = groupEmojis.length;
@@ -93,7 +101,7 @@ const EmojiGroup = React.memo(
           emojiRow.push(<span key={emojiIndex}>{emojiItem}</span>);
         }
         emojiBoard.push(
-          <div key={r} className="emoji-row hide-emoji">
+          <div key={r} className={`emoji-row${!isIntersecting ? ' hide-emoji' : ''}`}>
             {emojiRow}
           </div>,
         );
@@ -102,7 +110,7 @@ const EmojiGroup = React.memo(
     }
 
     return (
-      <div className={`emoji-group${className ? ` ${className}` : ''}`}>
+      <div ref={tinyRef} className={`emoji-group${className ? ` ${className}` : ''}`}>
         <Text className="emoji-group__header" variant="b2" weight="bold">
           {name}
         </Text>
@@ -136,7 +144,7 @@ asyncSearch.setup(emojis, {
   isContain: true,
   limit: 40,
 });
-function SearchedEmoji({ boardType = null, scrollEmojisRef }) {
+function SearchedEmoji({ boardType = null }) {
   // Searched
   const [searchedEmojis, setSearchedEmojis] = useState(null);
 
@@ -149,9 +157,6 @@ function SearchedEmoji({ boardType = null, scrollEmojisRef }) {
     }
 
     setSearchedEmojis({ emojis: resultEmojis });
-    setTimeout(() => {
-      $(scrollEmojisRef.current).trigger('scroll');
-    }, 500);
   }
 
   // Effect
@@ -176,19 +181,16 @@ function SearchedEmoji({ boardType = null, scrollEmojisRef }) {
   );
 }
 
-SearchedEmoji.propTypes = {
-  scrollEmojisRef: PropTypes.shape({}).isRequired,
-};
-
 // Board
-function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
+function EmojiBoard({ onSelect, searchRef, emojiBoardRef }) {
   // First Values
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
   const emojiInfo = useRef(null);
   const [boardType, setBoardType] = useState('emoji');
   const [selectedRoomId, setSelectedRoomId] = useState(null);
-  const tinyTimeoutCollection = [];
+  const scrollEmojisRef = useRef(null);
 
+  const tinyTimeoutCollection = [];
   const [emojiFav, setEmojiFav] = useState([]);
   const [emojiData, setEmojiData] = useState([]);
   const [emojiRecent, setEmojiRecent] = useState([]);
@@ -207,34 +209,6 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     setEmojiFav,
     setEmojiData,
   );
-
-  // Check Emoji Visible
-  function onScroll(event) {
-    // Read Data
-    for (let i = 0; i < tinyTimeoutCollection.length; i++) {
-      if (tinyTimeoutCollection.length > 0) {
-        const tinyTimeoutLoad = tinyTimeoutCollection.shift();
-        clearTimeout(tinyTimeoutLoad);
-      }
-    }
-
-    const target = $(event.target.childNodes[0]).find('.emoji-row');
-    const existEmojiBoard = $('#emoji-board').length > 0;
-
-    if (existEmojiBoard) {
-      target.each((index, element) => {
-        const emojiGroup = $(element);
-        tinyTimeoutCollection.push(
-          setTimeout(() => {
-            // Is Visible
-            if (existEmojiBoard && checkVisible(element)) {
-              emojiGroup.removeClass('hide-emoji');
-            }
-          }, 500),
-        );
-      });
-    }
-  }
 
   function isTargetNotEmoji(target) {
     return target.hasClass('emoji') === false;
@@ -428,9 +402,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
     navigation.on(cons.events.navigation.UPDATED_EMOJI_LIST_DATA, handleEvent2);
     navigation.on(cons.events.navigation.ROOM_SELECTED, updateAvailableEmoji);
     navigation.on(cons.events.navigation.EMOJIBOARD_OPENED, onOpen);
-    $(scrollEmojisRef.current).on('scroll', onScroll);
     return () => {
-      $(scrollEmojisRef.current).off('scroll', onScroll);
       mx.removeListener(ClientEvent.AccountData, handleEvent);
       matrixAppearance.off('useCustomEmojis', handleEvent2);
       matrixAppearance.off('showStickers', handleEvent2);
@@ -522,7 +494,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         <div className="emoji-board__content__emojis">
           <ScrollView ref={scrollEmojisRef} autoHide>
             <div onMouseMove={hoverEmoji} onContextMenu={contextEmoji} onClick={selectEmoji}>
-              <SearchedEmoji boardType={boardType} scrollEmojisRef={scrollEmojisRef} />
+              <SearchedEmoji boardType={boardType} />
 
               {emojiFav.length > 0 && (
                 <EmojiGroup boardType={boardType} name="Favorites" groupEmojis={emojiFav} isFav />
@@ -567,7 +539,6 @@ EmojiBoard.propTypes = {
   onSelect: PropTypes.func.isRequired,
   searchRef: PropTypes.shape({}).isRequired,
   emojiBoardRef: PropTypes.shape({}).isRequired,
-  scrollEmojisRef: PropTypes.shape({}).isRequired,
 };
 
 export default EmojiBoard;
