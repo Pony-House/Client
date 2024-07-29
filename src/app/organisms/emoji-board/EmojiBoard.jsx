@@ -7,6 +7,9 @@ import $ from 'jquery';
 import { ClientEvent } from 'matrix-js-sdk';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
+
+import useIsVisible from '@src/util/useIsVisible';
+
 import matrixAppearance from '@src/util/libs/appearance';
 import EmojiEvents from '@src/util/libs/emoji/EmojiEvents';
 import emojiEditor from '@src/util/libs/emoji/EmojiEditor';
@@ -37,16 +40,8 @@ let ROW_COUNT;
 // Emoji Groups
 const EmojiGroup = React.memo(
   ({ boardType = null, name, groupEmojis, className, isFav = false }) => {
-    const [isIntersecting, setIntersecting] = useState(false);
     const tinyRef = useRef(null);
-
-    useEffect(() => {
-      const observer = new IntersectionObserver(([entry]) => setIntersecting(entry.isIntersecting));
-      observer.observe(tinyRef.current);
-      return () => {
-        observer.disconnect();
-      };
-    });
+    const isIntersecting = useIsVisible(tinyRef);
 
     function getEmojiBoard() {
       const emojiBoard = [];
