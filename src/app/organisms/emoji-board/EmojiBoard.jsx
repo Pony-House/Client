@@ -40,44 +40,55 @@ const EmojiGroup = React.memo(({ name, groupEmojis, className, isFav }) => {
     const totalEmojis = groupEmojis.length;
     const mxcUrl = initMatrix.mxcUrl;
 
+    // Read emoji data
     for (let r = 0; r < totalEmojis; r += ROW_COUNT) {
       const emojiRow = [];
       for (let c = r; c < r + ROW_COUNT; c += 1) {
+        // Prepare data
         const emojiIndex = c;
         if (emojiIndex >= totalEmojis) break;
         const emoji = groupEmojis[emojiIndex];
-        emojiRow.push(
-          <span key={emojiIndex}>
-            {emoji.hexcode ? (
-              // This is a unicode emoji, and should be rendered with twemoji
-              <span
-                className={`emoji${emoji.isFav || isFav ? ' fav-emoji' : ''}`}
-                draggable="false"
-                version={emoji.version?.toString()}
-                alt={emoji.shortcodes?.toString()}
-                unicode={emoji.unicode}
-                shortcodes={emoji.shortcodes?.toString()}
-                tags={emoji.tags?.toString()}
-                label={emoji.label?.toString()}
-                hexcode={emoji.hexcode}
-                style={{ backgroundImage: `url("${twemojifyUrl(emoji.hexcode)}")` }}
-              />
-            ) : (
-              // This is a custom emoji, and should be render as an mxc
-              <span
-                className={`emoji${emoji.isFav || isFav ? ' fav-emoji' : ''}`}
-                draggable="false"
-                alt={emoji.shortcode}
-                unicode={`:${emoji.shortcode}:`}
-                shortcodes={emoji.shortcode}
-                style={{
-                  backgroundImage: `url("${mxcUrl.toHttp(emoji.mxc)}")`,
-                }}
-                data-mx-emoticon={emoji.mxc}
-              />
-            )}
-          </span>,
-        );
+        let emojiItem;
+
+        // Hex code
+        if (emoji.hexcode) {
+          emojiItem = (
+            // This is a unicode emoji, and should be rendered with twemoji
+            <span
+              className={`emoji${emoji.isFav || isFav ? ' fav-emoji' : ''}`}
+              draggable="false"
+              version={emoji.version?.toString()}
+              alt={emoji.shortcodes?.toString()}
+              unicode={emoji.unicode}
+              shortcodes={emoji.shortcodes?.toString()}
+              tags={emoji.tags?.toString()}
+              label={emoji.label?.toString()}
+              hexcode={emoji.hexcode}
+              style={{ backgroundImage: `url("${twemojifyUrl(emoji.hexcode)}")` }}
+            />
+          );
+        }
+
+        // Custom emoji
+        else {
+          emojiItem = (
+            // This is a custom emoji, and should be render as an mxc
+            <span
+              className={`emoji${emoji.isFav || isFav ? ' fav-emoji' : ''}`}
+              draggable="false"
+              alt={emoji.shortcode}
+              unicode={`:${emoji.shortcode}:`}
+              shortcodes={emoji.shortcode}
+              style={{
+                backgroundImage: `url("${mxcUrl.toHttp(emoji.mxc)}")`,
+              }}
+              data-mx-emoticon={emoji.mxc}
+            />
+          );
+        }
+
+        // Insert emoji
+        emojiRow.push(<span key={emojiIndex}>{emojiItem}</span>);
       }
       emojiBoard.push(
         <div key={r} className="emoji-row hide-emoji">
