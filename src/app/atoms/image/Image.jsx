@@ -84,6 +84,8 @@ const Img = React.forwardRef(
       content = null,
       isSticker = false,
       isEmoji = false,
+      unicode = null,
+      shortcodes = null,
     },
     ref,
   ) => {
@@ -427,6 +429,8 @@ const Img = React.forwardRef(
       if (!isObj) {
         const theTinyImg = (
           <img
+            unicode={unicode}
+            shortcodes={shortcodes}
             onLoad={onLoad}
             className={className}
             onClick={onClick}
@@ -480,6 +484,8 @@ const Img = React.forwardRef(
       if (!isObj)
         return (
           <div
+            unicode={unicode}
+            shortcodes={shortcodes}
             className={`d-inline-block img-container${className ? ` ${className}` : ''}`}
             onClick={onClick}
             ref={imgRef}

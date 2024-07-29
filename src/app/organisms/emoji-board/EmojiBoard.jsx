@@ -12,6 +12,7 @@ import EmojiEvents from '@src/util/libs/emoji/EmojiEvents';
 import emojiEditor from '@src/util/libs/emoji/EmojiEditor';
 import { colorMXID } from '@src/util/colorMXID';
 import { avatarDefaultColor } from '@src/app/atoms/avatar/Avatar';
+import Img from '@src/app/atoms/image/Image';
 
 import { emojis } from './emoji';
 import { loadEmojiData, getEmojiData, ROW_EMOJIS_COUNT, ROW_STICKERS_COUNT } from './emojiData';
@@ -34,82 +35,85 @@ import { emojiCateogoryList as cateogoryList, emojiGroups } from './data/emojiba
 let ROW_COUNT;
 
 // Emoji Groups
-const EmojiGroup = React.memo(({ name, groupEmojis, className, isFav }) => {
-  function getEmojiBoard() {
-    const emojiBoard = [];
-    const totalEmojis = groupEmojis.length;
-    const mxcUrl = initMatrix.mxcUrl;
+const EmojiGroup = React.memo(
+  ({ boardType = null, name, groupEmojis, className, isFav = false }) => {
+    function getEmojiBoard() {
+      const emojiBoard = [];
+      const totalEmojis = groupEmojis.length;
+      const mxcUrl = initMatrix.mxcUrl;
 
-    // Read emoji data
-    for (let r = 0; r < totalEmojis; r += ROW_COUNT) {
-      const emojiRow = [];
-      for (let c = r; c < r + ROW_COUNT; c += 1) {
-        // Prepare data
-        const emojiIndex = c;
-        if (emojiIndex >= totalEmojis) break;
-        const emoji = groupEmojis[emojiIndex];
-        let emojiItem;
+      // Read emoji data
+      for (let r = 0; r < totalEmojis; r += ROW_COUNT) {
+        const emojiRow = [];
+        for (let c = r; c < r + ROW_COUNT; c += 1) {
+          // Prepare data
+          const emojiIndex = c;
+          if (emojiIndex >= totalEmojis) break;
+          const emoji = groupEmojis[emojiIndex];
+          let emojiItem;
 
-        // Hex code
-        if (emoji.hexcode) {
-          emojiItem = (
-            // This is a unicode emoji, and should be rendered with twemoji
-            <span
-              className={`emoji${emoji.isFav || isFav ? ' fav-emoji' : ''}`}
-              draggable="false"
-              version={emoji.version?.toString()}
-              alt={emoji.shortcodes?.toString()}
-              unicode={emoji.unicode}
-              shortcodes={emoji.shortcodes?.toString()}
-              tags={emoji.tags?.toString()}
-              label={emoji.label?.toString()}
-              hexcode={emoji.hexcode}
-              style={{ backgroundImage: `url("${twemojifyUrl(emoji.hexcode)}")` }}
-            />
-          );
+          // Hex code
+          if (emoji.hexcode) {
+            emojiItem = (
+              // This is a unicode emoji, and should be rendered with twemoji
+              <span
+                className={`emoji${emoji.isFav || isFav ? ' fav-emoji' : ''}`}
+                draggable="false"
+                version={emoji.version?.toString()}
+                alt={emoji.shortcodes?.toString()}
+                unicode={emoji.unicode}
+                shortcodes={emoji.shortcodes?.toString()}
+                tags={emoji.tags?.toString()}
+                label={emoji.label?.toString()}
+                hexcode={emoji.hexcode}
+                style={{ backgroundImage: `url("${twemojifyUrl(emoji.hexcode)}")` }}
+              />
+            );
+          }
+
+          // Custom emoji
+          else {
+            emojiItem = (
+              // This is a custom emoji, and should be render as an mxc
+              <Img
+                isEmoji={boardType === 'emoji'}
+                isSticker={boardType === 'sticker'}
+                className={`emoji${emoji.isFav || isFav ? ' fav-emoji' : ''}`}
+                draggable="false"
+                alt={emoji.shortcode}
+                unicode={`:${emoji.shortcode}:`}
+                shortcodes={emoji.shortcode}
+                src={mxcUrl.toHttp(emoji.mxc)}
+                dataMxEmoticon={emoji.mxc}
+              />
+            );
+          }
+
+          // Insert emoji
+          emojiRow.push(<span key={emojiIndex}>{emojiItem}</span>);
         }
-
-        // Custom emoji
-        else {
-          emojiItem = (
-            // This is a custom emoji, and should be render as an mxc
-            <span
-              className={`emoji${emoji.isFav || isFav ? ' fav-emoji' : ''}`}
-              draggable="false"
-              alt={emoji.shortcode}
-              unicode={`:${emoji.shortcode}:`}
-              shortcodes={emoji.shortcode}
-              style={{
-                backgroundImage: `url("${mxcUrl.toHttp(emoji.mxc)}")`,
-              }}
-              data-mx-emoticon={emoji.mxc}
-            />
-          );
-        }
-
-        // Insert emoji
-        emojiRow.push(<span key={emojiIndex}>{emojiItem}</span>);
+        emojiBoard.push(
+          <div key={r} className="emoji-row hide-emoji">
+            {emojiRow}
+          </div>,
+        );
       }
-      emojiBoard.push(
-        <div key={r} className="emoji-row hide-emoji">
-          {emojiRow}
-        </div>,
-      );
+      return emojiBoard;
     }
-    return emojiBoard;
-  }
 
-  return (
-    <div className={`emoji-group${className ? ` ${className}` : ''}`}>
-      <Text className="emoji-group__header" variant="b2" weight="bold">
-        {name}
-      </Text>
-      {groupEmojis.length !== 0 && <div className="emoji-set noselect">{getEmojiBoard()}</div>}
-    </div>
-  );
-});
+    return (
+      <div className={`emoji-group${className ? ` ${className}` : ''}`}>
+        <Text className="emoji-group__header" variant="b2" weight="bold">
+          {name}
+        </Text>
+        {groupEmojis.length !== 0 && <div className="emoji-set noselect">{getEmojiBoard()}</div>}
+      </div>
+    );
+  },
+);
 
 EmojiGroup.propTypes = {
+  boardType: PropTypes.string,
   isFav: PropTypes.bool,
   className: PropTypes.string,
   name: PropTypes.string.isRequired,
@@ -132,7 +136,7 @@ asyncSearch.setup(emojis, {
   isContain: true,
   limit: 40,
 });
-function SearchedEmoji({ scrollEmojisRef }) {
+function SearchedEmoji({ boardType = null, scrollEmojisRef }) {
   // Searched
   const [searchedEmojis, setSearchedEmojis] = useState(null);
 
@@ -164,6 +168,7 @@ function SearchedEmoji({ scrollEmojisRef }) {
   // Complete
   return (
     <EmojiGroup
+      boardType={boardType}
       key="-1"
       name={searchedEmojis.emojis.length === 0 ? 'No search result found' : 'Search results'}
       groupEmojis={searchedEmojis.emojis}
@@ -517,16 +522,19 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
         <div className="emoji-board__content__emojis">
           <ScrollView ref={scrollEmojisRef} autoHide>
             <div onMouseMove={hoverEmoji} onContextMenu={contextEmoji} onClick={selectEmoji}>
-              <SearchedEmoji scrollEmojisRef={scrollEmojisRef} />
+              <SearchedEmoji boardType={boardType} scrollEmojisRef={scrollEmojisRef} />
 
-              {emojiFav.length > 0 && <EmojiGroup name="Favorites" groupEmojis={emojiFav} isFav />}
+              {emojiFav.length > 0 && (
+                <EmojiGroup boardType={boardType} name="Favorites" groupEmojis={emojiFav} isFav />
+              )}
 
               {emojiRecent.length > 0 && (
-                <EmojiGroup name="Recently used" groupEmojis={emojiRecent} />
+                <EmojiGroup boardType={boardType} name="Recently used" groupEmojis={emojiRecent} />
               )}
 
               {emojiData.map((pack) => (
                 <EmojiGroup
+                  boardType={boardType}
                   name={pack.displayName ?? 'Unknown'}
                   key={pack.packIndex}
                   groupEmojis={pack[boardType !== 'sticker' ? 'getEmojis' : 'getStickers']()}
@@ -536,6 +544,7 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef, scrollEmojisRef }) {
 
               {emojiGroups.map((group) => (
                 <EmojiGroup
+                  boardType={boardType}
                   className={boardType === 'sticker' ? 'd-none' : null}
                   key={group.name}
                   name={group.name}
