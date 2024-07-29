@@ -1,4 +1,3 @@
-Banner de space precisa de animação
 Emojiboard para Img
 
 Remover tudo do messageDataEffects

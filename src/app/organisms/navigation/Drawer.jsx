@@ -9,6 +9,7 @@ import { objType } from 'for-promise/utils/lib.mjs';
 
 import { getAppearance } from '@src/util/libs/appearance';
 import settings from '@src/client/state/settings';
+import { AvatarJquery } from '@src/app/atoms/avatar/Avatar';
 
 import tinyAPI from '../../../util/mods';
 import initMatrix from '../../../client/initMatrix';
@@ -136,11 +137,23 @@ function Drawer() {
 
   useEffect(() => {
     if (room) {
-      const bannerCfg = getCurrentState(room)
-        .getStateEvents(PonyRoomEvent.PhSettings, 'banner')
-        ?.getContent();
+      const bannerCfg =
+        getCurrentState(room).getStateEvents(PonyRoomEvent.PhSettings, 'banner')?.getContent() ??
+        {};
+
       if (bannerCfg && typeof bannerCfg?.url === 'string' && bannerCfg?.url.length > 0) {
-        setBannerSrc(mxcUrl.toHttp(bannerCfg.url, 960, 540));
+        const bannerData = AvatarJquery({
+          isObj: true,
+          imageSrc: mxcUrl.toHttp(bannerCfg.url, 960, 540),
+          imageAnimSrc: mxcUrl.toHttp(bannerCfg.url),
+          onLoadingChange: () => {
+            if (typeof bannerData.blobAnimSrc === 'string' && bannerData.blobAnimSrc.length > 0) {
+              setBannerSrc(bannerData.blobAnimSrc);
+            } else {
+              setBannerSrc('');
+            }
+          },
+        });
       } else {
         setBannerSrc('');
       }
