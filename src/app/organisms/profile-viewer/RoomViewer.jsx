@@ -247,9 +247,7 @@ function RoomViewer() {
             lightbox,
             imgQuery: img,
             name: username,
-            url: img.attr('src'),
             originalUrl: newAvatar,
-            readMime: true,
           });
         }
       };

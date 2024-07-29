@@ -14,6 +14,9 @@ export default function imageViewer(data) {
       // Read Image Tag
       const img = data.imgQuery.get(0);
       if (img) {
+        // File Url
+        const url = data.imgQuery.attr('src');
+
         // Get Mime
         let filename = data.name;
 
@@ -41,7 +44,7 @@ export default function imageViewer(data) {
         const options = {
           dataSource: [
             {
-              src: data.url,
+              src: url,
               alt: filename,
               width: imgData.width,
               height: imgData.height,
@@ -67,7 +70,7 @@ export default function imageViewer(data) {
               isButton: true,
               html: '<i class="fa-solid fa-arrow-up-right-from-square pswp__icn" height="32" width="32"></i>',
               onClick: () => {
-                window.open(data.url, '_blank').focus();
+                window.open(url, '_blank').focus();
               },
             });
           }
@@ -79,7 +82,7 @@ export default function imageViewer(data) {
             isButton: true,
             html: '<i class="fa-solid fa-floppy-disk pswp__icn" height="32" width="32"></i>',
             onClick: () => {
-              FileSaver.saveAs(data.url, filename);
+              FileSaver.saveAs(url, filename);
             },
           });
 
@@ -90,7 +93,7 @@ export default function imageViewer(data) {
             isButton: true,
             html: '<i class="fa-solid fa-circle-info pswp__icn" height="32" width="32"></i>',
             onClick: () => {
-              fetchFn(data.url)
+              fetchFn(url)
                 .then((res) => res.arrayBuffer())
                 .then(async (body) => {
                   const newTags = await ExifReader.load(body, {

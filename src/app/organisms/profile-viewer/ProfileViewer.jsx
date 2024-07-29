@@ -461,9 +461,7 @@ function ProfileViewer() {
             onClose: reopenProfile,
             imgQuery: img,
             name: username,
-            url: img.attr('src'),
             originalUrl: newAvatar,
-            readMime: true,
           });
         }
       };
@@ -682,9 +680,7 @@ function ProfileViewer() {
             lightbox,
             imgQuery: img,
             name: userId,
-            url: img.attr('src'),
             originalUrl: newAvatar,
-            readMime: true,
           });
         }
       };
