@@ -1,3 +1,8 @@
+Ícone de preview do emoji está falhando
+
+=========> Dots invadindo o contador no DM quando a room é encryptada.
+
+Adicionar a cor de ausencia de focus no electron.
 Remover tudo do messageDataEffects
 Padronizar o profile-image-container
 
@@ -33,8 +38,6 @@ initMatrix.matrixClient.slidingSync();
 /\_matrix/client/unstable/org.matrix.msc3575/sync
 
 Quando o people tabs é atualizado, o custom status some
-
-=========> Dots invadindo o contador no DM quando a room é encryptada.
 
 urlParams.set('event_id', eventId, false);
 

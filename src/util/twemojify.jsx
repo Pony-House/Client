@@ -8,6 +8,7 @@ import Linkify from 'linkify-react';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 
+import { tinyFixScrollChat } from '@src/app/molecules/media/mediaFix';
 import Img, { ImgJquery } from '@src/app/atoms/image/Image';
 import { everyoneTags } from '@src/app/molecules/global-notification/KeywordNotification';
 
@@ -77,6 +78,8 @@ const ImageFix = {
     el.replaceWith(
       ImgJquery({
         isEmoji: typeof dataMxEmoticon !== 'undefined' && dataMxEmoticon !== null,
+        onLoad: () => tinyFixScrollChat(),
+        onLoadingChange: () => tinyFixScrollChat(),
         dataMxEmoticon,
         className,
         src,
@@ -94,6 +97,8 @@ const ImageFix = {
             typeof attribs['data-mx-emoticon'] !== 'undefined' &&
             attribs['data-mx-emoticon'] !== null
           }
+          onLoad={() => tinyFixScrollChat()}
+          onLoadingChange={() => tinyFixScrollChat()}
           placement="top"
           content={<div className="small">{attribs.alt}</div>}
           dataMxEmoticon={attribs['data-mx-emoticon']}

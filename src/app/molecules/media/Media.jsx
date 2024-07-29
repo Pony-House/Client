@@ -186,6 +186,7 @@ function Image({
           display: blur ? 'none' : 'unset',
           height: imgHeight,
         }}
+        onLoadingChange={() => mediaFix(itemEmbed, embedHeight, setEmbedHeight)}
         onLoad={(event) => {
           mediaFix(itemEmbed, embedHeight, setEmbedHeight);
           setBlur(false);
@@ -288,6 +289,8 @@ function Sticker({
             style={typeof stickerStyle.height === 'number' ? stickerStyle : null}
             src={url || link}
             alt={name}
+            onLoad={() => mediaFix(itemEmbed, embedHeight, setEmbedHeight)}
+            onLoadingChange={() => mediaFix(itemEmbed, embedHeight, setEmbedHeight)}
           />
         )}
       </div>
@@ -440,7 +443,11 @@ function Video({
             <Img
               style={{ display: blur ? 'none' : 'unset' }}
               src={thumbUrl}
-              onLoad={() => setBlur(false)}
+              onLoadingChange={() => mediaFix(itemEmbed, embedHeight, setEmbedHeight)}
+              onLoad={() => {
+                setBlur(false);
+                mediaFix(itemEmbed, embedHeight, setEmbedHeight);
+              }}
               alt={name}
             />
           )}
