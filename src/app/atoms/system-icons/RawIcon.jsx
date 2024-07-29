@@ -1,28 +1,79 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { AvatarJquery } from '../avatar/Avatar';
 
 function RawIcon({
   neonColor = false,
   color = null,
   size = 'normal',
-  src,
+  src = null,
+  srcAnim = null,
   isImage = false,
   fa = null,
   className = null,
 }) {
+  const iconRef = useRef(null);
+  const [imageSrc, setImageSrc] = useState(null);
+  const [imageAnimSrc, setImageAnimSrc] = useState(null);
+
+  useEffect(() => {
+    if (!fa && src) {
+      if (!src.startsWith('./')) {
+        const iconData = AvatarJquery({
+          isObj: true,
+          imageSrc: src,
+          imageAnimSrc: srcAnim,
+          onLoadingChange: () => {
+            if (typeof iconData.blobSrc === 'string' && iconData.blobSrc.length > 0) {
+              setImageSrc(iconData.blobSrc);
+            } else {
+              setImageSrc(null);
+            }
+            if (typeof iconData.blobAnimSrc === 'string' && iconData.blobAnimSrc.length > 0) {
+              setImageAnimSrc(iconData.blobAnimSrc);
+            } else {
+              setImageAnimSrc(null);
+            }
+          },
+        });
+
+        if (iconRef.current && imageAnimSrc) {
+          const icon = $(iconRef.current);
+          const iconStyleChangerIn = () => {
+            icon.css('background-image', `url("${imageAnimSrc}")`);
+          };
+
+          const iconStyleChangerOut = () => {
+            icon.css('background-image', `url("${imageSrc}")`);
+          };
+
+          icon.on('mouseover', iconStyleChangerIn);
+          icon.on('mouseout', iconStyleChangerOut);
+          return () => {
+            icon.off('mouseover', iconStyleChangerIn);
+            icon.off('mouseout', iconStyleChangerOut);
+          };
+        }
+      } else {
+        setImageSrc(src);
+      }
+    }
+  });
+
   const style = {};
   if (!fa) {
     if (color !== null) style.backgroundColor = color;
     if (isImage) {
       style.backgroundColor = 'transparent';
-      style.backgroundImage = `url("${src}")`;
-    } else {
-      style.WebkitMaskImage = `url("${src}")`;
-      style.maskImage = `url("${src}")`;
+      if (imageSrc) style.backgroundImage = `url("${!imageAnimSrc ? imageSrc : imageAnimSrc}")`;
+    } else if (imageSrc) {
+      style.WebkitMaskImage = `url("${!imageAnimSrc ? imageSrc : imageAnimSrc}")`;
+      style.maskImage = `url("${!imageAnimSrc ? imageSrc : imageAnimSrc}")`;
     }
 
     return (
       <span
+        ref={iconRef}
         className={`ic-base ic-raw ic-raw-${size}${className ? ` ${className}` : ''}`}
         style={style}
       />
@@ -65,6 +116,7 @@ RawIcon.propTypes = {
   color: PropTypes.string,
   size: PropTypes.oneOf(['large', 'normal', 'small', 'extra-small']),
   src: PropTypes.string,
+  srcAnim: PropTypes.string,
   isImage: PropTypes.bool,
 };
 
