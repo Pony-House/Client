@@ -43,6 +43,9 @@ const EmojiGroup = React.memo(
     useEffect(() => {
       const observer = new IntersectionObserver(([entry]) => setIntersecting(entry.isIntersecting));
       observer.observe(tinyRef.current);
+      return () => {
+        observer.disconnect();
+      };
     });
 
     function getEmojiBoard() {
