@@ -14,7 +14,7 @@ import IconButton from '../../atoms/button/IconButton';
 import Spinner from '../../atoms/spinner/Spinner';
 
 import { getBlobSafeMimeType } from '../../../util/mimetypes';
-import { mediaFix } from './mediaFix';
+import tinyFixScrollChat from './mediaFix';
 
 async function getUrl(contentType, link, type, decryptData, roomId /* , threadId */) {
   try {
@@ -147,9 +147,6 @@ function Image({
   const [blur, setBlur] = useState(true);
   const [lightbox, setLightbox] = useState(false);
 
-  const itemEmbed = useRef(null);
-  const [embedHeight, setEmbedHeight] = useState(null);
-
   useEffect(() => {
     let unmounted = false;
     async function fetchUrl() {
@@ -186,9 +183,9 @@ function Image({
           display: blur ? 'none' : 'unset',
           height: imgHeight,
         }}
-        onLoadingChange={() => mediaFix(itemEmbed, embedHeight, setEmbedHeight)}
+        onLoadingChange={() => tinyFixScrollChat()}
         onLoad={(event) => {
-          mediaFix(itemEmbed, embedHeight, setEmbedHeight);
+          tinyFixScrollChat();
           setBlur(false);
           let imageLoaded = false;
           if (!imageLoaded && event.target) {
@@ -208,8 +205,7 @@ function Image({
     </div>
   );
 
-  useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
-  // tinyFixScrollChat();
+  useEffect(() => tinyFixScrollChat());
 
   if (!ignoreContainer) {
     return (
@@ -258,9 +254,6 @@ function Sticker({
 }) {
   const [url, setUrl] = useState(null);
 
-  const itemEmbed = useRef(null);
-  const [embedHeight, setEmbedHeight] = useState(null);
-
   useEffect(() => {
     let unmounted = false;
     async function fetchUrl() {
@@ -277,7 +270,7 @@ function Sticker({
     };
   }, []);
 
-  useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
+  useEffect(() => tinyFixScrollChat());
   const stickerStyle = { height: width !== null ? getNativeHeight(width, height, 170) : 175 };
   if (typeof stickerStyle.height === 'number' && stickerStyle.height > 175)
     stickerStyle.height = 175;
@@ -292,8 +285,8 @@ function Sticker({
             height={stickerStyle.height}
             src={url || link}
             alt={name}
-            onLoad={() => mediaFix(itemEmbed, embedHeight, setEmbedHeight)}
-            onLoadingChange={() => mediaFix(itemEmbed, embedHeight, setEmbedHeight)}
+            onLoad={() => tinyFixScrollChat()}
+            onLoadingChange={() => tinyFixScrollChat()}
           />
         )}
       </div>
@@ -315,9 +308,6 @@ function Audio({ name, link, type = '', file = null, roomId, threadId }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [url, setUrl] = useState(null);
 
-  const itemEmbed = useRef(null);
-  const [embedHeight, setEmbedHeight] = useState(null);
-
   async function loadAudio() {
     const myUrl = await getUrl('audio', link, type, file, roomId, threadId);
     setUrl(myUrl);
@@ -329,9 +319,9 @@ function Audio({ name, link, type = '', file = null, roomId, threadId }) {
     loadAudio();
   }
 
-  useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded));
+  useEffect(() => tinyFixScrollChat());
   return (
-    <div ref={itemEmbed} className="file-container">
+    <div className="file-container">
       <FileHeader
         threadId={threadId}
         roomId={roomId}
@@ -382,9 +372,6 @@ function Video({
   const [thumbUrl, setThumbUrl] = useState(null);
   const [blur, setBlur] = useState(true);
 
-  const itemEmbed = useRef(null);
-  const [embedHeight, setEmbedHeight] = useState(null);
-
   useEffect(() => {
     let unmounted = false;
     async function fetchUrl() {
@@ -409,7 +396,7 @@ function Video({
     };
   }, []);
 
-  useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded));
+  useEffect(() => tinyFixScrollChat());
   const loadVideo = async () => {
     const myUrl = await getUrl('video', link, type, file, roomId, threadId);
     setUrl(myUrl);
@@ -423,7 +410,7 @@ function Video({
   };
 
   return (
-    <div ref={itemEmbed} className={`file-container${url !== null ? ' file-open' : ''}`}>
+    <div className={`file-container${url !== null ? ' file-open' : ''}`}>
       <FileHeader
         threadId={threadId}
         roomId={roomId}
@@ -446,10 +433,10 @@ function Video({
             <Img
               style={{ display: blur ? 'none' : 'unset' }}
               src={thumbUrl}
-              onLoadingChange={() => mediaFix(itemEmbed, embedHeight, setEmbedHeight)}
+              onLoadingChange={() => tinyFixScrollChat()}
               onLoad={() => {
                 setBlur(false);
-                mediaFix(itemEmbed, embedHeight, setEmbedHeight);
+                tinyFixScrollChat();
               }}
               alt={name}
             />

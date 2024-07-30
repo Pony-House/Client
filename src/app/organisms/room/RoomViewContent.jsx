@@ -42,7 +42,7 @@ import EventLimit from './EventLimit';
 import { dfAvatarSize, getCurrentState } from '../../../util/matrixUtil';
 import tinyAPI from '../../../util/mods';
 import { rule3 } from '../../../util/tools';
-import { mediaFix } from '../../molecules/media/mediaFix';
+import tinyFixScrollChat from '../../molecules/media/mediaFix';
 import matrixAppearance, { getAppearance } from '../../../util/libs/appearance';
 
 let forceDelay = false;
@@ -532,7 +532,6 @@ function RoomViewContent({
 }) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
   const [throttle] = useState(new Throttle());
-  const [embedHeight, setEmbedHeight] = useState(null);
   const [pageLimit, setPageLimit] = useState(getAppearance('pageLimit'));
   const [useManualCheck] = useState(true);
 
@@ -615,7 +614,7 @@ function RoomViewContent({
 
       autoPaginate();
 
-      mediaFix(null, embedHeight, setEmbedHeight);
+      tinyFixScrollChat();
       roomTimeline.on(cons.events.roomTimeline.SCROLL_TO_LIVE, handleScrollToLive);
       return () => {
         if (timelineSVRef.current === null) return;

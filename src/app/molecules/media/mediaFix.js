@@ -10,30 +10,7 @@ setInterval(() => {
   if (tinyFix > 0) tinyFix--;
 }, 5000);
 
-export function fixScrollChat() {
-  const scrollBar = $(chatboxQuery);
-  const roomView = scrollBar.find(roomViewQuery);
-  height = roomView.height();
-  return {
-    height,
-    execute() {
-      const oldHeight = height;
-      const newHeight = roomView.height();
-      height = newHeight;
-
-      const diffHeight = newHeight - oldHeight;
-      if (diffHeight > 0) scrollBar.animate({ scrollTop: scrollBar.scrollTop() + diffHeight }, 0);
-
-      // Fix the bottom scroll
-      if (scrollBar[0].scrollHeight - scrollBar.scrollTop() - 30 <= scrollBar.outerHeight()) {
-        scrollBar.animate({ scrollTop: scrollBar.scrollTop() + 3 }, 0);
-      }
-      // if (scrollBar[0].scrollHeight - scrollBar.scrollTop() === scrollBar.outerHeight())
-    },
-  };
-}
-
-export function tinyFixScrollChat(tinyI = timeoutFixer.i) {
+export default function tinyFixScrollChat(tinyI = timeoutFixer.i) {
   tinyFix++;
   for (let i = 0; i < tinyI; i++) {
     setTimeout(() => {
@@ -49,29 +26,6 @@ export function tinyFixScrollChat(tinyI = timeoutFixer.i) {
         if (diffHeight > 0) scrollBar.animate({ scrollTop: scrollBar.scrollTop() + diffHeight }, 0);
       }
     }, timeoutFixer.value * tinyFix);
-  }
-}
-
-export function mediaFix(itemEmbed, embedHeight, setEmbedHeight, isLoaded = true) {
-  if (itemEmbed === null || (itemEmbed && itemEmbed.current)) {
-    let embedHeight2;
-    if (embedHeight === null) {
-      embedHeight2 = fixScrollChat();
-      setEmbedHeight(embedHeight2);
-    }
-
-    if (isLoaded) {
-      // eslint-disable-next-line no-unused-expressions
-      embedHeight ? embedHeight.execute() : embedHeight2.execute();
-
-      tinyFix++;
-      for (let i = 0; i < timeoutFixer.i; i++) {
-        setTimeout(
-          () => (embedHeight ? embedHeight.execute() : embedHeight2.execute()),
-          timeoutFixer.value * tinyFix,
-        );
-      }
-    }
   }
 }
 

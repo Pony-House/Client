@@ -12,7 +12,7 @@ import { twemojifyReact } from '../../../util/twemojify';
 
 import openTinyURL from '../../../util/message/urlProtection';
 import { defaultAvatar } from '../../atoms/avatar/defaultAvatar';
-import { mediaFix } from '../media/mediaFix';
+import tinyFixScrollChat from '../media/mediaFix';
 import Iframe from '../../atoms/iframe/Iframe';
 
 const tinyUrlAction = (event) => {
@@ -26,9 +26,7 @@ const tinyUrlAction = (event) => {
 function Embed({ embed = {}, roomId = null, threadId = null }) {
   // URL Ref
   const tinyUrl = useRef(null);
-  const itemEmbed = useRef(null);
   const [useVideo, setUseVideo] = useState(false);
-  const [embedHeight, setEmbedHeight] = useState(null);
 
   const imgType =
     typeof embed['og:image:type'] === 'string' && embed['og:image:type'].length > 0
@@ -43,7 +41,7 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
     };
   });
 
-  useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
+  useEffect(() => tinyFixScrollChat());
 
   // Matrix
   const mx = initMatrix.matrixClient;
@@ -120,7 +118,7 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
 
   // Complete
   return (
-    <div ref={itemEmbed} className="card mt-2">
+    <div className="card mt-2">
       <div className="card-body">
         {isThumb && typeof imgUrl === 'string' ? (
           <span className="float-end">

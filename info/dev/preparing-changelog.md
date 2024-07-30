@@ -4,3 +4,4 @@
 - ImagePack - animation fixed.
 - Sticker image size fixed.
 - DragDrop issues fixed.
+- mediaFix migration to tinyFixScrollChat.

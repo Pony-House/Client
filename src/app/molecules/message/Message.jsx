@@ -87,7 +87,7 @@ import UserOptions from '../user-options/UserOptions';
 import { getDataList } from '../../../util/selectedRoom';
 import { tinyLinkifyFixer } from '../../../util/clear-urls/clearUrls';
 import { canPinMessage, isPinnedMessage, setPinMessage } from '../../../util/libs/pinMessage';
-import { mediaFix, tinyFixScrollChat } from '../media/mediaFix';
+import tinyFixScrollChat from '../media/mediaFix';
 import { everyoneTags } from '../global-notification/KeywordNotification';
 
 function PlaceholderMessage({
@@ -425,7 +425,7 @@ const createMessageData = (
   return msgData;
 };
 
-const messageDataEffects = (messageBody, embedHeight, setEmbedHeight) => {
+const messageDataEffects = (messageBody) => {
   messageBody.find('pre code').each((index, value) => {
     const el = $(value);
     resizeWindowChecker();
@@ -433,18 +433,18 @@ const messageDataEffects = (messageBody, embedHeight, setEmbedHeight) => {
     if (!el.hasClass('hljs')) {
       hljs.highlightElement(value);
       el.addClass('chatbox-size-fix');
-      mediaFix(null, embedHeight, setEmbedHeight);
+      tinyFixScrollChat();
     }
 
     if (!el.hasClass('hljs-fix')) {
       el.addClass('hljs-fix');
-      hljsFixer(el, 'MessageBody', () => mediaFix(null, embedHeight, setEmbedHeight));
-      mediaFix(null, embedHeight, setEmbedHeight);
+      hljsFixer(el, 'MessageBody', () => tinyFixScrollChat());
+      tinyFixScrollChat();
     }
 
     if (!el.hasClass('hljs')) {
       el.addClass('hljs');
-      mediaFix(null, embedHeight, setEmbedHeight);
+      tinyFixScrollChat();
     }
   });
 };
@@ -470,10 +470,9 @@ const MessageBody = React.memo(
     messageStatus,
   }) => {
     const messageBody = useRef(null);
-    const [embedHeight, setEmbedHeight] = useState(null);
 
     useEffect(() => {
-      messageDataEffects($(messageBody.current), embedHeight, setEmbedHeight);
+      messageDataEffects($(messageBody.current));
     });
 
     // if body is not string it is a React element.
@@ -782,8 +781,6 @@ MessageReaction.propTypes = {
 };
 
 function MessageReactionGroup({ roomTimeline, mEvent }) {
-  const itemEmbed = useRef(null);
-  const [embedHeight, setEmbedHeight] = useState(null);
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
   const { roomId, room, reactionTimeline } = roomTimeline;
@@ -803,7 +800,7 @@ function MessageReactionGroup({ roomTimeline, mEvent }) {
   // Create reaction list and limit the amount to 20
   const reacts = getEventReactions(eventReactions, false, reactionLimit);
 
-  useEffect(() => mediaFix(itemEmbed, embedHeight, setEmbedHeight));
+  useEffect(() => tinyFixScrollChat());
 
   return (
     <div className="noselect">
@@ -1644,7 +1641,6 @@ function Message({
   const [seeHiddenData, setSeeHiddenData] = useState(false);
   const [existThread, updateExistThread] = useState(typeof threadId === 'string');
   const [embeds, setEmbeds] = useState([]);
-  const [embedHeight, setEmbedHeight] = useState(null);
   const [isFocus, setIsFocus] = useState(null);
   const [translateText, setTranslateText] = useState(null);
   const messageElement = useRef(null);
@@ -1693,13 +1689,13 @@ function Message({
   // Edit Data
   const edit = useCallback(() => {
     if (eventId && setEdit) setEdit(eventId);
-    mediaFix(null, embedHeight, setEmbedHeight);
+    tinyFixScrollChat();
   }, [setEdit, eventId]);
 
   // Reply Data
   const reply = useCallback(() => {
     if (eventId && senderId) replyTo(senderId, eventId, body, customHTML);
-    mediaFix(null, embedHeight, setEmbedHeight);
+    tinyFixScrollChat();
   }, [body, customHTML, eventId, senderId]);
 
   if (!eventId) {
@@ -1806,7 +1802,7 @@ function Message({
                   ) {
                     try {
                       tinyEmbed.data = await getUrlPreview(bodyUrls[item].href);
-                      mediaFix(null, embedHeight, setEmbedHeight);
+                      tinyFixScrollChat();
                     } catch (err) {
                       tinyEmbed.data = null;
                       console.error(err);
@@ -1837,7 +1833,7 @@ function Message({
                   ) {
                     try {
                       tinyEmbed.data = await getUrlPreview(bodyUrls[item].href);
-                      mediaFix(null, embedHeight, setEmbedHeight);
+                      tinyFixScrollChat();
                     } catch (err) {
                       tinyEmbed.data = null;
                       console.error(err);
@@ -1852,7 +1848,7 @@ function Message({
               }
             }
 
-            mediaFix(null, embedHeight, setEmbedHeight);
+            tinyFixScrollChat();
             setEmbeds(newEmbeds);
           };
 
@@ -1861,7 +1857,7 @@ function Message({
       }
 
       // Complete
-      mediaFix(null, embedHeight, setEmbedHeight);
+      tinyFixScrollChat();
     } else if (embeds.length > 0 && muteUserManager.isEmbedMuted(senderId)) {
       setEmbeds([]);
     }

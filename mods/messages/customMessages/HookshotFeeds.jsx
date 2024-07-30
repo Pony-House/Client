@@ -8,13 +8,11 @@ import initMatrix from '@src/client/initMatrix';
 import openTinyURL from '@src/util/message/urlProtection';
 
 import * as Media from '@src/app/molecules/media/Media';
-import { mediaFix } from '@src/app/molecules/media/mediaFix';
+import tinyFixScrollChat from '@src/app/molecules/media/mediaFix';
 
 function HookshotFeeds({ feedData, roomId, threadId }) {
-  const embedRef = useRef(null);
   const embedButton = useRef(null);
   const [embed, setEmbed] = useState(null);
-  const [embedHeight, setEmbedHeight] = useState(null);
 
   // Matrix
   const mx = initMatrix.matrixClient;
@@ -34,7 +32,7 @@ function HookshotFeeds({ feedData, roomId, threadId }) {
       return false;
     };
 
-    setTimeout(() => mediaFix(embedRef, embedHeight, setEmbedHeight), 500);
+    setTimeout(() => tinyFixScrollChat(), 500);
 
     button.on('click', openUrl);
     return () => {
@@ -42,9 +40,9 @@ function HookshotFeeds({ feedData, roomId, threadId }) {
     };
   });
 
-  useEffect(() => mediaFix(embedRef, embedHeight, setEmbedHeight));
+  useEffect(() => tinyFixScrollChat());
   return (
-    <div ref={embedRef} className="card hookshot-feeds">
+    <div className="card hookshot-feeds">
       {embed && typeof embed['og:image'] === 'string' && embed['og:image'].length > 0 ? (
         <Media.Image
           roomId={roomId}

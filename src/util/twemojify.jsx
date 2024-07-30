@@ -8,7 +8,7 @@ import Linkify from 'linkify-react';
 import parse from 'html-react-parser';
 import twemoji from 'twemoji';
 
-import { tinyFixScrollChat } from '@src/app/molecules/media/mediaFix';
+import tinyFixScrollChat from '@src/app/molecules/media/mediaFix';
 import Img, { ImgJquery } from '@src/app/atoms/image/Image';
 import { everyoneTags } from '@src/app/molecules/global-notification/KeywordNotification';
 

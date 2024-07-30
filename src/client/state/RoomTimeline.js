@@ -28,7 +28,7 @@ import { messageIsClassicCrdt } from '../../util/libs/crdt';
 
 import { updateRoomInfo } from '../action/navigation';
 import urlParams from '../../util/libs/urlParams';
-import { tinyFixScrollChat } from '../../app/molecules/media/mediaFix';
+import tinyFixScrollChat from '../../app/molecules/media/mediaFix';
 // import { insertEvent } from './eventsDelay';
 
 const delayYdocUpdate = 100;
