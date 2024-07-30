@@ -36,7 +36,7 @@ function ElectronSidebar({ isDevToolsOpen = false }) {
         }
       }
 
-      if (electronWindow.getIsMaximized()) {
+      if (electronWindow.isMaximized()) {
         $('body').addClass('electron-maximized');
       } else {
         $('body').removeClass('electron-maximized');
@@ -49,7 +49,7 @@ function ElectronSidebar({ isDevToolsOpen = false }) {
         );
     };
     const maxWindow = () => {
-      if (electronWindow.getIsMaximized()) {
+      if (electronWindow.isMaximized()) {
         electronWindow.unmaximize();
         setIsMaximize(false);
       } else {
@@ -70,7 +70,7 @@ function ElectronSidebar({ isDevToolsOpen = false }) {
         // setIsUnread(info.unread);
       };
       const resizePage = () => {
-        setIsMaximize(electronWindow.getIsMaximized());
+        setIsMaximize(electronWindow.isMaximized());
         resizeRoot();
       };
 

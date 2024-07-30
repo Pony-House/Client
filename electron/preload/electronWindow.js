@@ -5,11 +5,12 @@ class ElectronWindow extends EventEmitter {
   constructor() {
     super();
     this.appShow = true;
-    this.isMaximized = false;
+    this.maximized = false;
     this._pinged = false;
     this.data = {};
     this.cache = {};
-    this.isFocused = false;
+    this.visible = false;
+    this.focused = false;
   }
 
   _firstPing(data) {
@@ -21,8 +22,12 @@ class ElectronWindow extends EventEmitter {
     this.cache = value;
   }
 
+  _setIsVisible(value) {
+    this.visible = value;
+  }
+
   _setIsFocused(value) {
-    this.isFocused = value;
+    this.focused = value;
   }
 
   _setShowStatus(value) {
@@ -30,11 +35,7 @@ class ElectronWindow extends EventEmitter {
   }
 
   _setIsMaximized(value) {
-    this.isMaximized = value;
-  }
-
-  getIsFocused(value) {
-    return this.isFocused;
+    this.maximized = value;
   }
 
   getCache() {
@@ -49,8 +50,16 @@ class ElectronWindow extends EventEmitter {
     return this.appShow;
   }
 
-  getIsMaximized() {
-    return this.isMaximized;
+  isFocused(value) {
+    return this.focused;
+  }
+
+  isVisible(value) {
+    return this.visible;
+  }
+
+  isMaximized() {
+    return this.maximized;
   }
 }
 
@@ -87,12 +96,17 @@ ipcRenderer.on('tiny-app-is-show', (event, data) => {
 
 ipcRenderer.on('window-is-maximized', (_event, arg) => {
   electronWindow._setIsMaximized(arg);
-  electronWindow.emit('windowIsMaximized', arg);
+  electronWindow.emit('isMaximized', arg);
 });
 
 ipcRenderer.on('window-is-focused', (_event, arg) => {
   electronWindow._setIsFocused(arg);
   electronWindow.emit('isFocused', arg);
+});
+
+ipcRenderer.on('window-is-visible', (_event, arg) => {
+  electronWindow._setIsVisible(arg);
+  electronWindow.emit('isVisible', arg);
 });
 
 ipcRenderer.on('ping', (_event, arg) => electronWindow._firstPing(arg));
@@ -106,9 +120,11 @@ contextBridge.exposeInMainWorld('electronWindow', {
   setIsVisible: (isVisible) => ipcRenderer.send('windowIsVisible', isVisible),
 
   getShowStatus: () => electronWindow.getShowStatus(),
-  getIsMaximized: () => electronWindow.getIsMaximized(),
-  getIsFocused: () => electronWindow.getIsFocused(),
   getData: () => electronWindow.getData(),
+
+  isVisible: () => electronWindow.isVisible(),
+  isFocused: () => electronWindow.isFocused(),
+  isMaximized: () => electronWindow.isMaximized(),
 
   requestCache: () => ipcRenderer.send('electron-cache-values', true),
   getCache: () => electronWindow.getCache(),

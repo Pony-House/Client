@@ -151,9 +151,19 @@ async function createWindow() {
         electronCache.win.webContents.send('window-is-focused', true);
     });
 
-    electronCache.win.on('hide', () => {
+    electronCache.win.on('blur', () => {
       if (electronCache.win && electronCache.win.webContents)
         electronCache.win.webContents.send('window-is-focused', false);
+    });
+
+    electronCache.win.on('show', () => {
+      if (electronCache.win && electronCache.win.webContents)
+        electronCache.win.webContents.send('window-is-visible', true);
+    });
+
+    electronCache.win.on('hide', () => {
+      if (electronCache.win && electronCache.win.webContents)
+        electronCache.win.webContents.send('window-is-visible', false);
     });
 
     electronCache.win.on('maximize', () => {
