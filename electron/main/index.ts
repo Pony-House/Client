@@ -146,6 +146,16 @@ async function createWindow() {
       });
     }
 
+    electronCache.win.on('focus', () => {
+      if (electronCache.win && electronCache.win.webContents)
+        electronCache.win.webContents.send('window-is-focused', true);
+    });
+
+    electronCache.win.on('hide', () => {
+      if (electronCache.win && electronCache.win.webContents)
+        electronCache.win.webContents.send('window-is-focused', false);
+    });
+
     electronCache.win.on('maximize', () => {
       if (electronCache.win && electronCache.win.webContents)
         electronCache.win.webContents.send('window-is-maximized', true);

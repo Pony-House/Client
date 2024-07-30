@@ -8,6 +8,7 @@ import './idle/status';
 // import './db';
 import './jsonDB';
 import './mediaCache';
+import './electronWindow';
 import startAutoLaunch from './auto-launch';
 import insertMatrixAgent, { startCustomDNS } from './dns';
 
@@ -117,85 +118,6 @@ contextBridge.exposeInMainWorld('desktopNotification', (options: object) =>
 
 contextBridge.exposeInMainWorld('nodeFetch', insertMatrixAgent);
 contextBridge.exposeInMainWorld('startCustomDNS', startCustomDNS);
-contextBridge.exposeInMainWorld('focusAppWindow', () =>
-  ipcRenderer.send('tiny-focus-window', true),
-);
-
 contextBridge.exposeInMainWorld('openDevTools', () => ipcRenderer.send('openDevTools', true));
-contextBridge.exposeInMainWorld('getElectronExe', () => process.execPath);
-
-contextBridge.exposeInMainWorld('electronWindowIsVisible', (isVisible: boolean) =>
-  ipcRenderer.send('windowIsVisible', isVisible),
-);
-
-ipcRenderer.on('ping', (_event, arg) => {
-  console.log('[electron] [ping] ', arg);
-});
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-let electronResize: Function | null = null;
-ipcRenderer.on('resize', (event, data) => {
-  if (typeof electronResize === 'function') {
-    electronResize(data);
-  }
-});
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-contextBridge.exposeInMainWorld('setElectronResize', (callback: Function) => {
-  electronResize = callback;
-});
-
-contextBridge.exposeInMainWorld('changeTrayIcon', (img: string) => {
-  if (
-    img === 'cinny.ico' ||
-    img === 'cinny-unread-red.ico' ||
-    img === 'cinny.png' ||
-    img === 'cinny-unread-red.png'
-  ) {
-    ipcRenderer.send('change-tray-icon', img);
-  }
-});
-
-contextBridge.exposeInMainWorld('changeAppIcon', (img: string) => {
-  if (
-    img === 'cinny.ico' ||
-    img === 'cinny-unread-red.ico' ||
-    img === 'cinny.png' ||
-    img === 'cinny-unread-red.png'
-  ) {
-    ipcRenderer.send('change-app-icon', img);
-  }
-});
 
 setTimeout(removeLoading, 4999);
-
-// App Status
-let appShow = true;
-ipcRenderer.on('tiny-app-is-show', (event, data) => {
-  if (typeof data === 'boolean') appShow = data;
-});
-
-contextBridge.exposeInMainWorld('getElectronShowStatus', () => appShow);
-
-let isMaximized: any = false;
-ipcRenderer.on('window-is-maximized', (_event, arg) => {
-  isMaximized = arg;
-});
-
-const electronWindowStatus = {
-  maximize: () => {
-    ipcRenderer.send('window-maximize', true);
-  },
-  unmaximize: () => {
-    ipcRenderer.send('window-unmaximize', true);
-  },
-  minimize: () => {
-    ipcRenderer.send('window-minimize', true);
-  },
-  close: () => {
-    ipcRenderer.send('window-close', true);
-  },
-  isMaximized: () => isMaximized,
-};
-
-contextBridge.exposeInMainWorld('electronWindowStatus', electronWindowStatus);

@@ -36,7 +36,7 @@ function ElectronSidebar({ isDevToolsOpen = false }) {
         }
       }
 
-      if (electronWindowStatus.isMaximized()) {
+      if (electronWindow.getIsMaximized()) {
         $('body').addClass('electron-maximized');
       } else {
         $('body').removeClass('electron-maximized');
@@ -49,11 +49,11 @@ function ElectronSidebar({ isDevToolsOpen = false }) {
         );
     };
     const maxWindow = () => {
-      if (electronWindowStatus.isMaximized()) {
-        electronWindowStatus.unmaximize();
+      if (electronWindow.getIsMaximized()) {
+        electronWindow.unmaximize();
         setIsMaximize(false);
       } else {
-        electronWindowStatus.maximize();
+        electronWindow.maximize();
         setIsMaximize(true);
       }
     };
@@ -70,7 +70,7 @@ function ElectronSidebar({ isDevToolsOpen = false }) {
         // setIsUnread(info.unread);
       };
       const resizePage = () => {
-        setIsMaximize(electronWindowStatus.isMaximized());
+        setIsMaximize(electronWindow.getIsMaximized());
         resizeRoot();
       };
 
@@ -108,13 +108,13 @@ function ElectronSidebar({ isDevToolsOpen = false }) {
           ) : null}
         </div>
         <div className="options text-end">
-          <button className="minimize button" onClick={() => electronWindowStatus.minimize()}>
+          <button className="minimize button" onClick={() => electronWindow.minimize()}>
             <i className="bi bi-dash-lg" />
           </button>
           <button className="maximize button" onClick={maxWindow}>
             {isMaximize ? <i className="bi bi-window-stack" /> : <i className="bi bi-square" />}
           </button>
-          <button className="close button" onClick={() => electronWindowStatus.close()}>
+          <button className="close button" onClick={() => electronWindow.close()}>
             <i className="bi bi-x-lg" />
           </button>
         </div>

@@ -55,8 +55,8 @@ function StartApp(appProtocol) {
   }
 
   console.log(`[app] Starting app using the protocol "${appProtocol}" mode.`);
-  if (osSettings.startMinimized && typeof global.electronWindowIsVisible === 'function') {
-    global.electronWindowIsVisible(false);
+  if (osSettings.startMinimized && typeof global.electronWindow.setIsVisible === 'function') {
+    global.electronWindow.setIsVisible(false);
   }
 
   return root.render(<App />);

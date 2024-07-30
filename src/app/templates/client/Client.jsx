@@ -57,7 +57,7 @@ import ElectronSidebar from './ElectronSidebar';
 let versionChecked = false;
 
 if (__ENV_APP__.ELECTRON_MODE) {
-  window.setElectronResize(() => resizeWindowChecker());
+  global.electronWindow.on('resize', () => resizeWindowChecker());
 }
 
 export const versionChecker = () =>

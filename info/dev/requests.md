@@ -7,7 +7,6 @@ breadcrumbs
 
 =========> Dots invadindo o contador no DM quando a room é encryptada.
 
-Adicionar a cor de ausencia de focus no electron.
 Remover tudo do messageDataEffects
 Padronizar o profile-image-container
 

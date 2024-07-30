@@ -406,8 +406,8 @@ class Notifications extends EventEmitter {
     // Check Window
     if (
       (!__ENV_APP__.ELECTRON_MODE ||
-        typeof window.getElectronShowStatus !== 'function' ||
-        window.getElectronShowStatus()) &&
+        typeof global.electronWindow.getShowStatus !== 'function' ||
+        global.electronWindow.getShowStatus()) &&
       !$('body').hasClass('modal-open') &&
       ((!mEvent.thread && navigation.selectedRoomId === room.roomId) ||
         (mEvent.thread && navigation.selectedThreadId === mEvent.thread.id)) &&
@@ -467,7 +467,7 @@ class Notifications extends EventEmitter {
         onClick: {
           desktop: () => {
             selectRoom(room.roomId, mEvent.getId(), !mEvent.thread ? null : mEvent.thread.id, true);
-            window.focusAppWindow();
+            global.electronWindow.focus();
           },
 
           browser: () =>
