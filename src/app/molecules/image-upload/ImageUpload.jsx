@@ -13,6 +13,7 @@ function ImageUpload({
   bgColor = 'transparent',
   imageSrc = null,
   imageAnimSrc = null,
+  animParentsCount = 0,
   onUpload,
   onRequestRemove,
   className = '',
@@ -55,7 +56,7 @@ function ImageUpload({
         }}
       >
         <Avatar
-          animParentsCount={0}
+          animParentsCount={animParentsCount}
           imgClass="profile-image-container"
           className="profile-image-container"
           imageSrc={imageSrc || defaultImage}
@@ -99,6 +100,8 @@ ImageUpload.propTypes = {
   className: PropTypes.string,
   bgColor: PropTypes.string,
   imageSrc: PropTypes.string,
+  imageAnimSrc: PropTypes.string,
+  animParentsCount: PropTypes.number,
   onUpload: PropTypes.func.isRequired,
   onRequestRemove: PropTypes.func.isRequired,
   size: PropTypes.oneOf(['large', 'normal']),

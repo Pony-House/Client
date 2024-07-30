@@ -25,7 +25,7 @@ import ImagePackProfile from './ImagePackProfile';
 import ImagePackItem from './ImagePackItem';
 import ImagePackUpload from './ImagePackUpload';
 import { getSelectRoom } from '../../../util/selectedRoom';
-import { getCurrentState } from '../../../util/matrixUtil';
+import { dfAvatarSize, getCurrentState } from '../../../util/matrixUtil';
 import FileInput, { fileInputClick, fileInputValue } from '../file-input/FileInput';
 
 const renameImagePackItem = (shortcode) =>
@@ -217,7 +217,8 @@ function ImagePack({ roomId, stateKey, handlePackDelete = null }) {
   return (
     <li className="list-group-item image-pack">
       <ImagePackProfile
-        avatarUrl={pack.avatarUrl ? mxcUrl.toHttp(pack.avatarUrl, 42, 42) : null}
+        avatarUrl={mxcUrl.toHttp(pack.avatarUrl, dfAvatarSize, dfAvatarSize)}
+        avatarAnimUrl={mxcUrl.toHttp(pack.avatarUrl)}
         displayName={pack.displayName ?? 'Unknown'}
         attribution={pack.attribution}
         usage={emojiEditor.getUsage(pack.usage)}
@@ -337,7 +338,8 @@ function ImagePackUser() {
     <div className="card">
       <ul className="list-group list-group-flush">
         <ImagePackProfile
-          avatarUrl={pack.avatarUrl ? mxcUrl.toHttp(pack.avatarUrl, 42, 42) : null}
+          avatarUrl={mxcUrl.toHttp(pack.avatarUrl, dfAvatarSize, dfAvatarSize)}
+          avatarAnimUrl={mxcUrl.toHttp(pack.avatarUrl)}
           displayName={pack.displayName ?? 'Personal'}
           attribution={pack.attribution}
           usage={emojiEditor.getUsage(pack.usage)}
