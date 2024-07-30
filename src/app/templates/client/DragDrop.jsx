@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import $ from 'jquery';
 
 import Img from '@src/app/atoms/image/Image';
@@ -7,8 +7,9 @@ import navigation from '../../../client/state/navigation';
 import cons from '../../../client/state/cons';
 import initMatrix from '../../../client/initMatrix';
 
-function DragDrop({ children, navWrapperRef, className }) {
+function DragDrop() {
   const dropZone = useRef(null);
+  const [isDropping, setIsDropping] = useState(false);
 
   function dragContainsFiles(e) {
     if (!e.dataTransfer.types) return false;
@@ -22,37 +23,38 @@ function DragDrop({ children, navWrapperRef, className }) {
 
   function dropAllowed() {
     const dropWrap = $(dropZone.current);
-    return (
-      !navigation.isRawModalVisible && dropWrap.length > 0 && dropWrap.hasClass('drag-enabled')
-    );
+    return !navigation.isRawModalVisible && dropWrap.length > 0;
   }
 
   function handleDragOver(event) {
-    const e = event.originalEvent;
+    const e = event;
     if (!dragContainsFiles(e)) return;
 
     if (!navigation.selectedRoomId) {
       e.dataTransfer.dropEffect = 'none';
     } else {
-      $(dropZone.current).addClass('drag-enabled');
+      setIsDropping(true);
     }
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   function handleDragEnter(event) {
-    if (navigation.selectedRoomId && dragContainsFiles(event.originalEvent)) {
-      $(dropZone.current).addClass('drag-enabled');
+    if (navigation.selectedRoomId && dragContainsFiles(event)) {
+      setIsDropping(true);
     } else {
-      $(dropZone.current).removeClass('drag-enabled');
+      setIsDropping(false);
     }
+    e.preventDefault();
   }
 
   function handleDragLeave() {
-    $(dropZone.current).removeClass('drag-enabled');
+    setIsDropping(false);
+    e.preventDefault();
   }
 
   function handleDrop(event) {
-    const e = event.originalEvent;
-    e.preventDefault();
+    const e = event;
     if (!dropAllowed()) return;
 
     const roomId = navigation.selectedRoomId;
@@ -65,32 +67,29 @@ function DragDrop({ children, navWrapperRef, className }) {
     const file = files[0];
     initMatrix.roomsInput.setAttachment(roomId, threadId, file);
     initMatrix.roomsInput.emit(cons.events.roomsInput.ATTACHMENT_SET, file);
-    if (dropZone.current) $(dropZone.current).removeClass('drag-enabled');
+    setIsDropping(false);
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   useEffect(() => {
-    const clientContainer = $(navWrapperRef.current);
-
-    clientContainer
-      .on('dragenter', handleDragEnter)
-      .on('dragover', handleDragOver)
-      .on('dragleave', handleDragLeave)
-      .on('drop', handleDrop);
-
+    document.addEventListener('drop', handleDrop);
+    document.addEventListener('dragover', handleDragOver);
+    document.addEventListener('dragenter', handleDragEnter);
+    document.addEventListener('dragleave', handleDragLeave);
     return () => {
-      clientContainer
-        .off('dragenter', handleDragEnter)
-        .off('dragover', handleDragOver)
-        .off('dragleave', handleDragLeave)
-        .off('drop', handleDrop);
+      document.removeEventListener('drop', handleDrop);
+      document.removeEventListener('dragover', handleDragOver);
+      document.removeEventListener('dragenter', handleDragEnter);
+      document.removeEventListener('dragleave', handleDragLeave);
     };
-  }, [navWrapperRef]);
+  });
 
   return (
     <>
       <div
         ref={dropZone}
-        className={`${__ENV_APP__.ELECTRON_MODE ? 'root-electron-style ' : ''}justify-content-center w-100 h-100 noselect`}
+        className={`${__ENV_APP__.ELECTRON_MODE ? 'root-electron-style ' : ''}${isDropping ? 'drag-enabled ' : ''}justify-content-center w-100 h-100 noselect`}
         id="dropzone"
       >
         <center>
@@ -101,12 +100,6 @@ function DragDrop({ children, navWrapperRef, className }) {
           />
           <h2 className="mt-3">Drop file to upload</h2>
         </center>
-      </div>
-      <div
-        ref={navWrapperRef}
-        className={`${__ENV_APP__.ELECTRON_MODE ? 'root-electron-style ' : ''}client-container${className ? ` ${className}` : ''}`}
-      >
-        {children}
       </div>
     </>
   );

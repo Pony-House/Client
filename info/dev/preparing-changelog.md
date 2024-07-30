@@ -2,3 +2,5 @@
 - EmojiBoard - emoji preview fixed.
 - Animation issues in RawIcon.jsx and Drawer.jsx is fixed.
 - ImagePack - animation fixed.
+- Sticker image size fixed.
+- DragDrop issues fixed.

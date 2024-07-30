@@ -36,7 +36,7 @@ import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 
 import commands from '../../../commands';
 import matrixAppearance, { getAppearance } from '../../../util/libs/appearance';
-import { mediaFix } from '../../molecules/media/mediaFix';
+import { mediaFix, tinyFixScrollChat } from '../../molecules/media/mediaFix';
 import RoomUpload from '../../molecules/room-upload-button/RoomUpload';
 
 // Variables
@@ -81,7 +81,7 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
   }
 
   useEffect(() => {
-    const tinyScrollTime = () => mediaFix(null, embedHeight, setEmbedHeight);
+    const tinyScrollTime = () => tinyFixScrollChat();
     if (roomsInput) {
       roomsInput.on(cons.events.roomsInput.ATTACHMENT_SET, setAttachment);
       roomsInput.on(cons.events.roomsInput.ATTACHMENT_SET, tinyScrollTime);
