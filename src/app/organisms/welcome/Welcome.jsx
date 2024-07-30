@@ -1,6 +1,11 @@
 import React from 'react';
+import cons from '@src/client/state/cons';
 import Img from '@src/app/atoms/image/Image';
 
+import Button from '@src/app/atoms/button/Button';
+import { openSettings } from '@src/client/action/navigation';
+
+import { tabText } from '../settings/Settings';
 import tinyAPI from '../../../util/mods';
 
 function Welcome() {
@@ -17,9 +22,30 @@ function Welcome() {
             alt="App logo"
           />
 
-          <h2 className="mt-3">{`Welcome to ${__ENV_APP__.INFO.name}`}</h2>
+          <h2 className="mt-3">
+            {`Welcome to ${__ENV_APP__.INFO.name} `}
+            <strong className="small">{cons.version}</strong>
+          </h2>
 
           <h6>{__ENV_APP__.INFO.welcome}</h6>
+          <div className="d-grid gap-2 col-8 mx-auto my-3">
+            <Button
+              variant="primary"
+              size="md"
+              className="small"
+              onClick={() => window.open('https://github.com/Pony-House/Client')}
+            >
+              <i class="fa-solid fa-code me-2" /> Source Code
+            </Button>
+            <Button
+              variant="secondary"
+              size="md"
+              className="small"
+              onClick={() => openSettings(tabText.DONATE)}
+            >
+              <i class="fa-solid fa-heart me-2" /> Support
+            </Button>
+          </div>
         </center>
       </div>
     ),

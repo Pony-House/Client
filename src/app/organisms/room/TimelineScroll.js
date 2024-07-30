@@ -2,7 +2,7 @@ import $ from 'jquery';
 import { setMediaHeight } from '../../molecules/media/mediaFix';
 import { getScrollInfo } from '../../../util/common';
 
-export const PLACEHOLDER_COUNT = 1;
+export const PLACEHOLDER_COUNT = 2;
 export const MAX_MSG_DIFF_MINUTES = 5;
 export const PLACEHOLDERS_HEIGHT = 96 * PLACEHOLDER_COUNT;
 export const SCROLL_TRIGGER_POS = PLACEHOLDERS_HEIGHT / 2;
