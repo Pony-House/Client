@@ -16,9 +16,9 @@
 
 # Pony House
 
-A Matrix client, focused on being a completely customizable open source superapp with everything you need to be happy in your online life with your friends.
+A Matrix client, focused on being a completely customizable open source superapp with everything you need to be happy with your friends.
 
-<img align="center" src="https://github.com/Pony-House/Client/blob/dev/docs/assets/preview-1.png?raw=true" height="380">
+<img align="center" src="https://github.com/Pony-House/Client/blob/dev/docs/assets/preview-2.png?raw=true" height="380">
 
 ## Motivation
 I am someone who is definitely tired of seeing censorship spread across the internet. As I write this message on May 01 2023, it has been one of the most difficult days to have privacy, especially in Brazil due to the current political scenario.

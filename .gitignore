@@ -26,6 +26,8 @@ npm-debug.*
 *.orig.*
 web-build/
 
+*.kra~
+
 # macOS
 .DS_Store
 
