@@ -129,12 +129,16 @@ contextBridge.exposeInMainWorld('electronWindow', {
   requestCache: () => ipcRenderer.send('electron-cache-values', true),
   getCache: () => electronWindow.getCache(),
 
+  forceFocus: () => ipcRenderer.send('tiny-force-focus-window', true),
   focus: () => ipcRenderer.send('tiny-focus-window', true),
+  blur: () => ipcRenderer.send('tiny-blur-window', true),
+
+  show: () => ipcRenderer.send('tiny-show-window', true),
+  hide: () => ipcRenderer.send('window-hide', true),
 
   maximize: () => ipcRenderer.send('window-maximize', true),
   unmaximize: () => ipcRenderer.send('window-unmaximize', true),
   minimize: () => ipcRenderer.send('window-minimize', true),
-  hide: () => ipcRenderer.send('window-hide', true),
   close: () => ipcRenderer.send('app-close', true),
 
   getExecPath: () => process.execPath,

@@ -12,8 +12,37 @@ export default function startEvents(ipcMain, electronCache, appShow, startDevToo
     const tinyWin = BrowserWindow.fromWebContents(webContents);
     if (tinyWin)
       setTimeout(() => {
-        tinyWin.show();
-        tinyWin.focus();
+        if (tinyWin) tinyWin.focus();
+      }, 200);
+  });
+
+  ipcMain.on('tiny-blur-window', (event) => {
+    const webContents = event.sender;
+    const tinyWin = BrowserWindow.fromWebContents(webContents);
+    if (tinyWin)
+      setTimeout(() => {
+        if (tinyWin) tinyWin.blur();
+      }, 200);
+  });
+
+  ipcMain.on('tiny-show-window', (event) => {
+    const webContents = event.sender;
+    const tinyWin = BrowserWindow.fromWebContents(webContents);
+    if (tinyWin)
+      setTimeout(() => {
+        if (tinyWin) tinyWin.show();
+      }, 200);
+  });
+
+  ipcMain.on('tiny-force-focus-window', (event) => {
+    const webContents = event.sender;
+    const tinyWin = BrowserWindow.fromWebContents(webContents);
+    if (tinyWin)
+      setTimeout(() => {
+        if (tinyWin) {
+          tinyWin.show();
+          tinyWin.focus();
+        }
       }, 200);
   });
 

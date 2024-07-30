@@ -467,7 +467,7 @@ class Notifications extends EventEmitter {
         onClick: {
           desktop: () => {
             selectRoom(room.roomId, mEvent.getId(), !mEvent.thread ? null : mEvent.thread.id, true);
-            global.electronWindow.focus();
+            global.electronWindow.forceFocus();
           },
 
           browser: () =>
