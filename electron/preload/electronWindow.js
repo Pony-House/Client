@@ -139,7 +139,7 @@ contextBridge.exposeInMainWorld('electronWindow', {
   maximize: () => ipcRenderer.send('window-maximize', true),
   unmaximize: () => ipcRenderer.send('window-unmaximize', true),
   minimize: () => ipcRenderer.send('window-minimize', true),
-  close: () => ipcRenderer.send('app-close', true),
+  quit: () => ipcRenderer.send('app-quit', true),
 
   getExecPath: () => process.execPath,
 });

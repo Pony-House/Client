@@ -226,7 +226,7 @@ async function createWindow() {
       if (electronCache.win) electronCache.win.hide();
     });
 
-    ipcMain.on('app-close', () => {
+    ipcMain.on('app-quit', () => {
       electronCache.isQuiting = true;
       app.quit();
     });
