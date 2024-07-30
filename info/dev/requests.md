@@ -1,6 +1,10 @@
 setRoomAccountData para o usuário definir se quer room com avatares ou sem avatares nas configurações privadas.
 canUsePresence
 
+im.vector.web.settings
+autoplayGifs
+breadcrumbs
+
 =========> Dots invadindo o contador no DM quando a room é encryptada.
 
 Adicionar a cor de ausencia de focus no electron.
