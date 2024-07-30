@@ -1,1 +1,2 @@
 - Scroll messages issue during images load is fixed.
+- EmojiBoard - emoji preview fixed.

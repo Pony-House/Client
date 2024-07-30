@@ -86,6 +86,9 @@ const Img = React.forwardRef(
       isEmoji = false,
       unicode = null,
       shortcodes = null,
+      label = null,
+      tags = null,
+      hexcode = null,
     },
     ref,
   ) => {
@@ -429,6 +432,9 @@ const Img = React.forwardRef(
       if (!isObj) {
         const theTinyImg = (
           <img
+            label={label}
+            tags={typeof tags === 'string' ? tags : Array.isArray(tags) ? tags.join(',') : null}
+            hexcode={hexcode}
             unicode={unicode}
             shortcodes={shortcodes}
             onLoad={onLoad}
@@ -485,6 +491,9 @@ const Img = React.forwardRef(
         return (
           <div
             unicode={unicode}
+            hexcode={hexcode}
+            label={label}
+            tags={typeof tags === 'string' ? tags : Array.isArray(tags) ? tags.join(',') : null}
             shortcodes={shortcodes}
             className={`d-inline-block img-container${className ? ` ${className}` : ''}`}
             onClick={onClick}
@@ -534,6 +543,11 @@ const imgPropTypes = {
   content: PropTypes.node,
   isSticker: PropTypes.bool,
   isEmoji: PropTypes.bool,
+  label: PropTypes.string,
+  tags: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  hexcode: PropTypes.string,
+  unicode: PropTypes.string,
+  shortcodes: PropTypes.string,
 };
 Img.propTypes = imgPropTypes;
 
@@ -563,6 +577,11 @@ function ImgJquery({
   customMxcUrl = null,
   isSticker = false,
   isEmoji = false,
+  unicode = null,
+  shortcodes = null,
+  label = null,
+  tags = null,
+  hexcode = null,
 }) {
   const mxcUrl = initMatrix.mxcUrl || customMxcUrl;
 
@@ -603,6 +622,16 @@ function ImgJquery({
         'src-url': tinyImageUrl,
         'src-anim-url': tinyImageAnimUrl,
       });
+
+      if (tags)
+        img.attr(
+          'tags',
+          typeof tags === 'string' ? tags : Array.isArray(tags) ? tags.join(',') : null,
+        );
+      if (alt) img.attr('alt', alt);
+      if (hexcode) img.attr('hexcode', hexcode);
+      if (unicode) img.attr('unicode', unicode);
+      if (shortcodes) img.attr('shortcodes', shortcodes);
 
       // Insert Data
       if (style) img.css(style);
@@ -648,6 +677,16 @@ function ImgJquery({
 
         const finalImg = $('<img>', ops);
         img.replaceWith(finalImg);
+
+        if (tags)
+          finalImg.attr(
+            'tags',
+            typeof tags === 'string' ? tags : Array.isArray(tags) ? tags.join(',') : null,
+          );
+        if (alt) finalImg.attr('alt', alt);
+        if (hexcode) finalImg.attr('hexcode', hexcode);
+        if (unicode) finalImg.attr('unicode', unicode);
+        if (shortcodes) finalImg.attr('shortcodes', shortcodes);
 
         finalImg.on('load', (event) => {
           img.addClass('image-react-loaded');

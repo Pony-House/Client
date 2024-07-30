@@ -1,5 +1,3 @@
-Ícone de preview do emoji está falhando
-
 =========> Dots invadindo o contador no DM quando a room é encryptada.
 
 Adicionar a cor de ausencia de focus no electron.

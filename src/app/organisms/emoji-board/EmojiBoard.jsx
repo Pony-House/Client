@@ -334,8 +334,11 @@ function EmojiBoard({ onSelect, searchRef, emojiBoardRef }) {
 
     let src;
 
-    if (el.css('background-image')) {
-      src = el.css('background-image').substring(5, el.css('background-image').length - 2);
+    if (el.prop('tagName').toUpperCase() !== 'IMG') {
+      if (el.css('background-image'))
+        src = el.css('background-image').substring(5, el.css('background-image').length - 2);
+    } else {
+      src = el.attr('src');
     }
 
     if (!src || typeof shortcodes === 'undefined') {
