@@ -690,8 +690,8 @@ function ProfileViewer() {
         .then((userProfile) => {
           newAvatar =
             userProfile.avatar_url &&
-              userProfile.avatar_url !== 'null' &&
-              userProfile.avatar_url !== null
+            userProfile.avatar_url !== 'null' &&
+            userProfile.avatar_url !== null
               ? mxcUrl.toHttp(userProfile.avatar_url)
               : null;
 
@@ -782,10 +782,12 @@ function ProfileViewer() {
                 size="large"
                 isDefaultImage
               />
-              {canUsePresence() && <i
-                ref={statusRef}
-                className={`user-status user-status-icon pe-2 ${getUserStatus(user)}`}
-              />}
+              {canUsePresence() && (
+                <i
+                  ref={statusRef}
+                  className={`user-status user-status-icon pe-2 ${getUserStatus(user)}`}
+                />
+              )}
             </div>
 
             <div className="col-md-9">

@@ -1,4 +1,5 @@
 setRoomAccountData para o usuário definir se quer room com avatares ou sem avatares nas configurações privadas.
+canUsePresence
 
 =========> Dots invadindo o contador no DM quando a room é encryptada.
 

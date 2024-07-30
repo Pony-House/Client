@@ -18,7 +18,7 @@ import { MenuItem } from '../../../atoms/context-menu/ContextMenu';
 import RadioButton from '../../../atoms/button/RadioButton';
 import ImageUpload from '../../../molecules/image-upload/ImageUpload';
 import { toast } from '../../../../util/tools';
-import { getStatusCSS } from '../../../../util/onlineStatus';
+import { canUsePresence, getStatusCSS } from '../../../../util/onlineStatus';
 import { confirmDialog } from '../../../molecules/confirm-dialog/ConfirmDialog';
 
 function ProfileSection() {
@@ -223,6 +223,22 @@ function ProfileSection() {
           </ul>
         </div>
       ) : null}
+
+      {!canUsePresence() && (
+        <div className="card mb-3">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item very-small text-gray">Custom Presence</li>
+
+            <li className="list-group-item border-0">
+              <div className="small">Status</div>
+              <div className="very-small text-danger">
+                It was not possible to detect compatibility with presences in your homeserver. Your
+                attempts to edit this page may have no effect.
+              </div>
+            </li>
+          </ul>
+        </div>
+      )}
 
       <div className="card noselect mb-3">
         <ul className="list-group list-group-flush">
