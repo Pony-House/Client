@@ -114,7 +114,7 @@ function ElectronSidebar({ isDevToolsOpen = false }) {
           <button className="maximize button" onClick={maxWindow}>
             {isMaximize ? <i className="bi bi-window-stack" /> : <i className="bi bi-square" />}
           </button>
-          <button className="close button" onClick={() => electronWindow.close()}>
+          <button className="close button" onClick={() => electronWindow.hide()}>
             <i className="bi bi-x-lg" />
           </button>
         </div>

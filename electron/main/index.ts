@@ -222,7 +222,7 @@ async function createWindow() {
       if (electronCache.win) electronCache.win.minimize();
     });
 
-    ipcMain.on('window-close', () => {
+    ipcMain.on('window-hide', () => {
       if (electronCache.win) electronCache.win.hide();
     });
 
