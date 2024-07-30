@@ -67,6 +67,7 @@ const Img = React.forwardRef(
       width = null,
       src = null,
       animSrc = null,
+      errSrc = null,
       alt = null,
       className = null,
       id = null,
@@ -100,7 +101,7 @@ const Img = React.forwardRef(
     const animUrl = filterAvatarAnimation(url, getTinyUrl(mxcUrl, animSrc));
 
     // Image Broken
-    let ImageBrokenSVG = './img/svg/image-broken.svg';
+    let ImageBrokenSVG = errSrc || './img/svg/image-broken.svg';
 
     // Get Url
     let tinyImageUrl = url;
@@ -533,6 +534,7 @@ const imgPropTypes = {
   width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   src: PropTypes.string,
   animSrc: PropTypes.string,
+  errSrc: PropTypes.string,
   alt: PropTypes.string,
   className: PropTypes.string,
   id: PropTypes.string,
@@ -562,6 +564,7 @@ function ImgJquery({
   width = null,
   src = null,
   animSrc = null,
+  errSrc = null,
   alt = null,
   className = null,
   id = null,
@@ -589,7 +592,7 @@ function ImgJquery({
   const animUrl = filterAvatarAnimation(url, getTinyUrl(mxcUrl, animSrc));
 
   // Image Broken
-  let ImageBrokenSVG = './img/svg/image-broken.svg';
+  let ImageBrokenSVG = errSrc || './img/svg/image-broken.svg';
 
   // Get Url
   let tinyImageUrl = url;
