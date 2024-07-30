@@ -226,6 +226,11 @@ async function createWindow() {
       if (electronCache.win) electronCache.win.hide();
     });
 
+    ipcMain.on('app-close', () => {
+      electronCache.isQuiting = true;
+      app.quit();
+    });
+
     ipcMain.on('change-app-icon', (event, img) => {
       try {
         if (typeof img === 'string' && img.length > 0) {
