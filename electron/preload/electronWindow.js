@@ -8,11 +8,37 @@ class ElectronWindow extends EventEmitter {
     this.isMaximized = false;
     this._pinged = false;
     this.data = {};
+    this.cache = {};
+    this.isFocused = false;
   }
 
   _firstPing(data) {
     this._pinged = true;
     this.data = data;
+  }
+
+  _setCache(value) {
+    this.cache = value;
+  }
+
+  _setIsFocused(value) {
+    this.isFocused = value;
+  }
+
+  _setShowStatus(value) {
+    this.appShow = value;
+  }
+
+  _setIsMaximized(value) {
+    this.isMaximized = value;
+  }
+
+  getIsFocused(value) {
+    return this.isFocused;
+  }
+
+  getCache() {
+    return this.cache;
   }
 
   getData() {
@@ -21,14 +47,6 @@ class ElectronWindow extends EventEmitter {
 
   getShowStatus() {
     return this.appShow;
-  }
-
-  setShowStatus(value) {
-    this.appShow = value;
-  }
-
-  setIsMaximized(value) {
-    this.isMaximized = value;
   }
 
   getIsMaximized() {
@@ -63,27 +81,22 @@ contextBridge.exposeInMainWorld('changeAppIcon', (img) => {
 
 // App Status
 ipcRenderer.on('tiny-app-is-show', (event, data) => {
-  if (typeof data === 'boolean') {
-    electronWindow.setShowStatus(data);
-    electronWindow.emit('appShow', data);
-  }
+  electronWindow._setShowStatus(data);
+  electronWindow.emit('appShow', data);
 });
 
 ipcRenderer.on('window-is-maximized', (_event, arg) => {
-  if (typeof arg === 'boolean') {
-    electronWindow.setIsMaximized(arg);
-    electronWindow.emit('windowIsMaximized', arg);
-  }
+  electronWindow._setIsMaximized(arg);
+  electronWindow.emit('windowIsMaximized', arg);
 });
 
 ipcRenderer.on('window-is-focused', (_event, arg) => {
-  if (typeof arg === 'boolean') electronWindow.emit('windowIsFocused', arg);
+  electronWindow._setIsFocused(arg);
+  electronWindow.emit('isFocused', arg);
 });
 
-ipcRenderer.on('ping', (_event, arg) => {
-  console.log('[electron] [ping] ', arg);
-  electronWindow._firstPing(arg);
-});
+ipcRenderer.on('ping', (_event, arg) => electronWindow._firstPing(arg));
+ipcRenderer.on('electron-cache-values', (event, msg) => electronWindow._setCache(msg));
 
 contextBridge.exposeInMainWorld('electronWindow', {
   on: (event, callback) => electronWindow.on(event, callback),
@@ -94,7 +107,11 @@ contextBridge.exposeInMainWorld('electronWindow', {
 
   getShowStatus: () => electronWindow.getShowStatus(),
   getIsMaximized: () => electronWindow.getIsMaximized(),
+  getIsFocused: () => electronWindow.getIsFocused(),
   getData: () => electronWindow.getData(),
+
+  requestCache: () => ipcRenderer.send('electron-cache-values', true),
+  getCache: () => electronWindow.getCache(),
 
   focus: () => ipcRenderer.send('tiny-focus-window', true),
 
@@ -105,5 +122,4 @@ contextBridge.exposeInMainWorld('electronWindow', {
 
   getExecPath: () => process.execPath,
 });
-
 export { electronWindow };

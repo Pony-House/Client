@@ -18,10 +18,6 @@ ipcRenderer.on('console-message', (event, msg, msg2) => {
   console.log(msg, msg2);
 });
 
-ipcRenderer.on('electron-cache-values', (event, msg) => {
-  console.log('[electron-cache]', msg);
-});
-
 let tinyModule;
 const autoLaunch = {
   started: false,
@@ -40,9 +36,6 @@ const autoLaunch = {
 };
 
 contextBridge.exposeInMainWorld('autoLaunch', autoLaunch);
-contextBridge.exposeInMainWorld('electronCacheValues', () => {
-  ipcRenderer.send('electron-cache-values', true);
-});
 export default function startAutoLaunch(newUseLoadingElectron) {
   useLoadingElectron = newUseLoadingElectron;
 }
