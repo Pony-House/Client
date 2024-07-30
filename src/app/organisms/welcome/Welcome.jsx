@@ -35,7 +35,7 @@ function Welcome() {
               className="small"
               onClick={() => window.open('https://github.com/Pony-House/Client')}
             >
-              <i class="fa-solid fa-code me-2" /> Source Code
+              <i className="fa-solid fa-code me-2" /> Source Code
             </Button>
             <Button
               variant="secondary"
@@ -43,7 +43,7 @@ function Welcome() {
               className="small"
               onClick={() => openSettings(tabText.DONATE)}
             >
-              <i class="fa-solid fa-heart me-2" /> Support
+              <i className="fa-solid fa-heart me-2" /> Support
             </Button>
           </div>
         </center>

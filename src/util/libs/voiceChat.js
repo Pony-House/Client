@@ -62,6 +62,18 @@ class MatrixVoiceChat {
     return this.mx.supportsVoip();
   }
 
+  supportsCallTransfer() {
+    return this.mx.supportsCallTransfer;
+  }
+
+  useE2eForGroupCall() {
+    return this.mx.useE2eForGroupCall;
+  }
+
+  useLivekitForGroupCalls() {
+    return this.mx.useLivekitForGroupCalls;
+  }
+
   existsCall() {
     return typeof this.call !== 'undefined';
   }

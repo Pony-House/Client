@@ -16,7 +16,12 @@ import Text from '../../atoms/text/Text';
 import Avatar from '../../atoms/avatar/Avatar';
 import NotificationBadge from '../../atoms/badge/NotificationBadge';
 import { blurOnBubbling } from '../../atoms/button/script';
-import { getPresence, getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
+import {
+  canUsePresence,
+  getPresence,
+  getUserStatus,
+  updateUserStatusIcon,
+} from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
 import insertCustomStatus from '../people-selector/insertCustomStatus';
 import favIconManager from '../../../util/libs/favicon';
@@ -91,7 +96,7 @@ function RoomSelector({
   const mx = initMatrix.matrixClient;
   const mxcUrl = initMatrix.mxcUrl;
 
-  if (user && !userData) {
+  if (user && !userData && canUsePresence()) {
     const content = getPresence(user);
     setPresenceStatus(content);
     setTimeout(() => insertCustomStatus(customStatusRef, content), 10);
@@ -113,9 +118,11 @@ function RoomSelector({
 
       // Update Status Profile
       const updateProfileStatus = (mEvent, tinyUser) => {
-        const content = updateUserStatusIcon(status, tinyUser);
-        insertCustomStatus(customStatusRef, content);
-        setPresenceStatus(content);
+        if (canUsePresence()) {
+          const content = updateUserStatusIcon(status, tinyUser);
+          insertCustomStatus(customStatusRef, content);
+          setPresenceStatus(content);
+        }
       };
 
       user.on(UserEvent.AvatarUrl, updateProfileStatus);
@@ -163,7 +170,7 @@ function RoomSelector({
               isDefaultImage={isDefault}
             />
 
-            {user ? (
+            {canUsePresence() && user ? (
               <i
                 ref={statusRef}
                 className={`user-status user-status-icon ${getUserStatus(user)}`}

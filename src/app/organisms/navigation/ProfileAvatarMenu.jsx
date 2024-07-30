@@ -19,7 +19,7 @@ import { colorMXID } from '../../../util/colorMXID';
 
 import initMatrix from '../../../client/initMatrix';
 import { tabText as settingTabText } from '../settings/Settings';
-import { getPresence, getUserStatus } from '../../../util/onlineStatus';
+import { canUsePresence, getPresence, getUserStatus } from '../../../util/onlineStatus';
 
 import { openSettings } from '../../../client/action/navigation';
 import tinyAPI from '../../../util/mods';
@@ -79,7 +79,7 @@ function ProfileAvatarMenu() {
     // Set New User Status
     const onProfileUpdate = (event = {}) => {
       // Exist
-      if (event) {
+      if (event && canUsePresence()) {
         // Clone Event
         const tinyEvent = event;
         const tinyClone = clone(event);
@@ -180,7 +180,7 @@ function ProfileAvatarMenu() {
 
       // Status update
       tinyAPI.emit('userStatusUpdate', accountStatus);
-      enableAfkSystem();
+      if (canUsePresence()) enableAfkSystem();
     };
 
     onProfileUpdate(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
@@ -254,7 +254,7 @@ function ProfileAvatarMenu() {
                 imageSrc={mxcUrl.toHttp(profile.avatarUrl, dfAvatarSize, dfAvatarSize)}
                 isDefaultImage
               />
-              <i ref={statusRef} className={newStatus} />
+              {canUsePresence() && <i ref={statusRef} className={newStatus} />}
               <div className="very-small ps-2 text-truncate emoji-size-fix-2" id="display-name">
                 {profile.displayName}
               </div>

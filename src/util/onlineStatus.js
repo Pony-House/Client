@@ -24,6 +24,15 @@ for (const item in statusIcons) {
   statusIcons2[statusIcons[item]] = item;
 }
 
+export function canUsePresence() {
+  const user = initMatrix.matrixClient.getUser(initMatrix.matrixClient.getUserId());
+  return (
+    (typeof user.lastPresenceTs === 'number' && user.lastPresenceTs > 0) ||
+    (typeof user.lastActiveAgo === 'number' && user.lastActiveAgo > 0) ||
+    user.currentlyActive
+  );
+}
+
 export function getStatusCSS(presence) {
   if (statusList[presence]) {
     return statusList[presence];

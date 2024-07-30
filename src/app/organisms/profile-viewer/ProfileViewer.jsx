@@ -10,7 +10,7 @@ import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 import matrixAppearance from '@src/util/libs/appearance';
 
 import { twemojifyReact } from '../../../util/twemojify';
-import { getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
+import { canUsePresence, getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
 
 import imageViewer from '../../../util/imageViewer';
 
@@ -690,8 +690,8 @@ function ProfileViewer() {
         .then((userProfile) => {
           newAvatar =
             userProfile.avatar_url &&
-            userProfile.avatar_url !== 'null' &&
-            userProfile.avatar_url !== null
+              userProfile.avatar_url !== 'null' &&
+              userProfile.avatar_url !== null
               ? mxcUrl.toHttp(userProfile.avatar_url)
               : null;
 
@@ -782,10 +782,10 @@ function ProfileViewer() {
                 size="large"
                 isDefaultImage
               />
-              <i
+              {canUsePresence() && <i
                 ref={statusRef}
                 className={`user-status user-status-icon pe-2 ${getUserStatus(user)}`}
-              />
+              />}
             </div>
 
             <div className="col-md-9">

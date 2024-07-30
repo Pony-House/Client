@@ -5,3 +5,4 @@
 - Sticker image size fixed.
 - DragDrop issues fixed.
 - mediaFix migration to tinyFixScrollChat.
+- Welcome page updated.

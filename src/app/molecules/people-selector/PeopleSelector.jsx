@@ -10,7 +10,12 @@ import { blurOnBubbling } from '../../atoms/button/script';
 
 import Text from '../../atoms/text/Text';
 import Avatar from '../../atoms/avatar/Avatar';
-import { getUserStatus, updateUserStatusIcon, getPresence } from '../../../util/onlineStatus';
+import {
+  getUserStatus,
+  updateUserStatusIcon,
+  getPresence,
+  canUsePresence,
+} from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
 import insertCustomStatus from './insertCustomStatus';
 
@@ -37,7 +42,7 @@ function PeopleSelector({
     insertCustomStatus(customStatusRef, content);
   };
 
-  if (user) {
+  if (user && canUsePresence()) {
     getCustomStatus(getPresence(user));
   }
 
@@ -64,7 +69,7 @@ function PeopleSelector({
         setImageAnimSrc(newImageAnimSrc);
 
         // Update Status Icon
-        getCustomStatus(updateUserStatusIcon(status, tinyUser));
+        if (canUsePresence) getCustomStatus(updateUserStatusIcon(status, tinyUser));
       };
 
       // Read Events
@@ -100,7 +105,7 @@ function PeopleSelector({
         size="small"
         isDefaultImage
       />
-      {!disableStatus ? (
+      {canUsePresence() && !disableStatus ? (
         <i ref={statusRef} className={`user-status-icon ${getUserStatus(user)}`} />
       ) : (
         ''

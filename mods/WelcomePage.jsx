@@ -46,7 +46,7 @@ WelcomePage.html = function ({ setIsWelcome, setType }) {
               setIsWelcome(false);
             }}
           >
-            <i class="fa-solid fa-right-to-bracket me-1" /> Sign In
+            <i className="fa-solid fa-right-to-bracket me-1" /> Sign In
           </Button>
           <Button
             variant="secondary"
@@ -57,12 +57,12 @@ WelcomePage.html = function ({ setIsWelcome, setType }) {
               setIsWelcome(false);
             }}
           >
-            <i class="fa-solid fa-circle-plus me-1" /> Create Account
+            <i className="fa-solid fa-circle-plus me-1" /> Create Account
           </Button>
         </div>
       </center>
 
-      <div class="px-5">
+      <div className="px-5">
         <ul>
           <li>
             <a href="./">Our server-wide rules and privacy info</a>

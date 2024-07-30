@@ -16,7 +16,12 @@ import tinyClipboard from '@src/util/libs/Clipboard';
 import { twemojifyReact, twemojify } from '../../../util/twemojify';
 
 import Avatar, { AvatarJquery } from '../../atoms/avatar/Avatar';
-import { getUserStatus, updateUserStatusIcon, getPresence } from '../../../util/onlineStatus';
+import {
+  getUserStatus,
+  updateUserStatusIcon,
+  getPresence,
+  canUsePresence,
+} from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
 import { colorMXID, cssColorMXID } from '../../../util/colorMXID';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
@@ -242,7 +247,7 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
     }
   };
 
-  if (user) {
+  if (user && canUsePresence()) {
     getCustomStatus(getPresence(user));
   }
 
@@ -256,7 +261,7 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
         setUserAvatar(tinyData?.avatarUrl);
 
         // Update Status Icon
-        getCustomStatus(updateUserStatusIcon(status, tinyUser));
+        if (canUsePresence) getCustomStatus(updateUserStatusIcon(status, tinyUser));
       };
 
       // Read Events
@@ -337,10 +342,12 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
             size="large"
             isDefaultImage
           />
-          <i
-            ref={statusRef}
-            className={`user-status user-status-icon pe-2 ${getUserStatus(user)}`}
-          />
+          {canUsePresence() && (
+            <i
+              ref={statusRef}
+              className={`user-status user-status-icon pe-2 ${getUserStatus(user)}`}
+            />
+          )}
         </div>
 
         <div className="card bg-bg mx-3 text-start">
