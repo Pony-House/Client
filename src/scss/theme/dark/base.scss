@@ -347,5 +347,11 @@
     /* Grow Animation */
     --avatar-grow-animation-1: rgb(119, 119, 119);
     --avatar-grow-animation-2: hsl(0, 0%, 25%);
+
+    /* Electron Window */
+    --electron-window-focus: var(--bg-surface-low);
+    --electron-window-blur: var(--bg-surface-low);
+    --electron-window-text-focus: var(--tc-surface-normal);
+    --electron-window-text-blur: var(--tc-surface-normal-low);
   }
 }

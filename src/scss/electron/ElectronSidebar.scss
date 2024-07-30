@@ -5,7 +5,7 @@ body.electron-mode {
     max-height: 29px;
     height: 29px;
     width: 100%;
-    background-color: var(--bg-surface-low);
+    background-color: var(--electron-window-focus);
     position: fixed;
     top: 0;
     z-index: 99999999;
@@ -14,7 +14,7 @@ body.electron-mode {
       margin-bottom: 3px;
       margin-left: 15px;
       height: 29px;
-      color: var(--tc-surface-normal);
+      color: var(--electron-window-text-focus);
       .badge {
         font-size: 9pt;
         height: 20px;
@@ -36,7 +36,7 @@ body.electron-mode {
         -webkit-app-region: no-drag;
         cursor: default;
         text-align: center;
-        color: var(--tc-surface-normal);
+        color: var(--electron-window-text-focus);
         height: 29px;
         width: 50px;
         &:hover {
@@ -64,7 +64,13 @@ body.electron-mode {
   }
 
   &.electron-blur #electron-titlebar {
-    background-color: var(--bg-surface-extra-low);
+    background-color: var(--electron-window-blur);
+    .title {
+      color: var(--electron-window-text-blur);
+    }
+    .options .button {
+      color: var(--electron-window-text-blur);
+    }
   }
 
   #dropzone,

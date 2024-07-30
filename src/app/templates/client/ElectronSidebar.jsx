@@ -74,6 +74,13 @@ function ElectronSidebar({ isDevToolsOpen = false }) {
         resizeRoot();
       };
 
+      const windowIsFocused = () => {};
+
+      electronWindow.on('isFocused', (isFocused) => {
+        if (isFocused) $('body').removeClass('electron-blur');
+        else $('body').addClass('electron-blur');
+      });
+
       $(window).on('resize', resizePage);
       favIconManager.on('valueChange', favIconUpdated);
       el.on('dblclick', maxWindow);

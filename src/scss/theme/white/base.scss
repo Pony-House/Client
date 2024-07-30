@@ -264,6 +264,12 @@
     /* Grow Animation */
     --avatar-grow-animation-1: #949494;
     --avatar-grow-animation-2: #cecece;
+
+    /* Electron Window */
+    --electron-window-focus: var(--bg-surface-low);
+    --electron-window-blur: var(--bg-surface-low);
+    --electron-window-text-focus: var(--tc-surface-normal);
+    --electron-window-text-blur: rgba(80, 80, 80, 0.78);
   }
 }
 
