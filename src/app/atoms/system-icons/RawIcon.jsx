@@ -26,13 +26,6 @@ function RawIcon({
           onLoadingChange: () => {
             if (typeof iconData.blobSrc === 'string' && iconData.blobSrc.length > 0) {
               setImageSrc(iconData.blobSrc);
-            } else {
-              setImageSrc(null);
-            }
-            if (typeof iconData.blobAnimSrc === 'string' && iconData.blobAnimSrc.length > 0) {
-              setImageAnimSrc(iconData.blobAnimSrc);
-            } else {
-              setImageAnimSrc(null);
             }
           },
         });

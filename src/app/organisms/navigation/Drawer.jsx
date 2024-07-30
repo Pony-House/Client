@@ -149,8 +149,6 @@ function Drawer() {
           onLoadingChange: () => {
             if (typeof bannerData.blobAnimSrc === 'string' && bannerData.blobAnimSrc.length > 0) {
               setBannerSrc(bannerData.blobAnimSrc);
-            } else {
-              setBannerSrc('');
             }
           },
         });

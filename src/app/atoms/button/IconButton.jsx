@@ -18,6 +18,7 @@ const IconButton = React.forwardRef(
       tooltip,
       tooltipPlacement = 'top',
       src,
+      srcAnim,
       onClick = null,
       onDblClick = null,
       tabIndex = 0,
@@ -71,6 +72,7 @@ const IconButton = React.forwardRef(
           neonColor={neonColor}
           size={size}
           src={src}
+          srcAnim={srcAnim}
           color={iconColor}
           isImage={isImage}
         />
@@ -100,6 +102,7 @@ IconButton.propTypes = {
   type: PropTypes.oneOf(['button', 'submit', 'reset']),
   tooltipPlacement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
   src: PropTypes.string,
+  srcAnim: PropTypes.string,
   onClick: PropTypes.func,
   onDblClick: PropTypes.func,
   tabIndex: PropTypes.number,

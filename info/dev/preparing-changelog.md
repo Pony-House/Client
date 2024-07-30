@@ -1,2 +1,3 @@
 - Scroll messages issue during images load is fixed.
 - EmojiBoard - emoji preview fixed.
+- Animation issues in RawIcon.jsx and Drawer.jsx is fixed.
