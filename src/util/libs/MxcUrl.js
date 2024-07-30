@@ -125,7 +125,10 @@ class MxcUrl extends EventEmitter {
     const options = {
       method: 'GET',
       headers: {},
-      signal: AbortSignal.timeout(__ENV_APP__.MXC_FETCH_TIMEOUT),
+      signal:
+        __ENV_APP__.MXC_FETCH_TIMEOUT > 0
+          ? AbortSignal.timeout(__ENV_APP__.MXC_FETCH_TIMEOUT)
+          : undefined,
     };
 
     if (this._isAuth && link.startsWith(`${this.mx.baseUrl}/`)) {
