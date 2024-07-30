@@ -16,6 +16,8 @@ class MxcUrl extends EventEmitter {
     this.mx = mxBase;
     this._fetchWait = {};
     this._isAuth = false;
+    this._queue = [];
+    this._queueExec = [];
     this.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
   }
 
@@ -34,6 +36,55 @@ class MxcUrl extends EventEmitter {
       return global.cacheFileElectron(url, type);
     }
     return url;
+  }
+
+  // Fetch queue
+  _checkFetchQueue() {
+    const tinyThis = this;
+
+    // Get executation
+    if (this._queueExec.length > 0) {
+      for (const item in this._queueExec) {
+        if (!this._queueExec[item].exec) {
+          // Execute now
+          this._queueExec[item].exec = true;
+          const tinyData = this._queueExec[item];
+
+          // Complete
+          const tinyComplete = () => {
+            // Remove old item
+            const index = tinyThis._queueExec.findIndex((tItem) => tItem.key === tinyData.key);
+            if (index > -1) {
+              tinyThis._queueExec.splice(index, 1);
+            }
+
+            // Add new fetch
+            if (tinyThis._queue.length > 0) {
+              while (
+                tinyThis._queue.length > 0 &&
+                tinyThis._queueExec.length < __ENV_APP__.MXC_FETCH_LIMIT
+              ) {
+                tinyThis._queueExec.push(tinyThis._queue.shift());
+              }
+            }
+
+            // Check again
+            tinyThis._checkFetchQueue();
+          };
+
+          // Fetch
+          fetchFn(tinyData.url, tinyData.options)
+            .then((res) => {
+              tinyComplete();
+              tinyData.resolve(res);
+            })
+            .catch((err) => {
+              tinyComplete();
+              tinyData.reject(err);
+            });
+        }
+      }
+    }
   }
 
   // Image
@@ -76,7 +127,21 @@ class MxcUrl extends EventEmitter {
       const accessToken = typeof this.mx.getAccessToken === 'function' && this.mx.getAccessToken();
       if (accessToken) options.headers['Authorization'] = `Bearer ${accessToken}`;
     }
-    return fetchFn(tinyLink, options);
+
+    // Execute fetch
+    return new Promise((resolve, reject) => {
+      const tinyThis = this;
+      const key = generateApiKey();
+      const tinyFetch = { key, url: tinyLink, options, resolve, reject, exec: false };
+
+      // Execute now
+      if (tinyThis._queueExec.length < __ENV_APP__.MXC_FETCH_LIMIT)
+        tinyThis._queueExec.push(tinyFetch);
+      // Later
+      else tinyThis._queue.push(tinyFetch);
+
+      tinyThis._checkFetchQueue();
+    });
   }
 
   // Get Fetch Blob

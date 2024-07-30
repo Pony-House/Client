@@ -11,8 +11,6 @@ Adicionar a cor de ausencia de focus no electron.
 Remover tudo do messageDataEffects
 Padronizar o profile-image-container
 
-Fazer um gerenciador de quantidade de fetchs que pode executar ao mesmo tempo.
-
 Atualização de username em tempo real não funcionando em rooms.
 
 Botão de copiar imagem.
