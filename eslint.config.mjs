@@ -1,14 +1,24 @@
 import globals from "globals";
 import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
-import pluginReactConfig from "eslint-plugin-react/configs/recommended.js";
-// import reactHooks from 'eslint-plugin-react-hooks';
+import react from "eslint-plugin-react";
+import reactHooks from 'eslint-plugin-react-hooks';
+// import airbnb from 'eslint-config-airbnb';
+// import prettier from 'eslint-config-prettier';
+import importRules from 'eslint-plugin-import';
+import jsx from 'eslint-plugin-jsx-a11y';
+// import prettier from 'eslint-plugin-prettier';
 
 export default [
-  // pluginJs.configs.recommended,
-  // ...tseslint.configs.recommended,
-  // pluginReactConfig,
   {
+    plugins: {
+      'react-hooks': reactHooks.configs.recommended,
+      react,
+      'js': pluginJs.configs.recommended,
+      '@typescript-eslint': tseslint.configs.recommended,
+      'jsx-a11y': jsx.configs.recommended,
+      'import': importRules,
+    },
     languageOptions: {
       globals: {
         'ethereum': 'readonly',
@@ -26,26 +36,20 @@ export default [
       }
     },
     ignores: [
-      'experiment',
-      'node_modules',
-      'dist',
-      'dist-electron',
-      'vendor',
-      'release',
-      '.flatpak',
+      'experiment/**',
+      'node_modules/**',
+      'gallery/**',
+      'dist/**',
+      'dist-electron/**',
+      'vendor/**',
+      'release/**',
+      '.flatpak/**',
+      'old/**/**',
+      '**/old.js',
+      '**/old.jsx',
       '*.md',
-    ]
-  },
-];
-
-/*
-    plugins: {
-      'react-hooks': reactHooks.configs.recommended,
-    },
-*/
-
-/*
-rules: {
+    ],
+    rules: {
 
       'camelcase': 0,
       'default-case': 0,
@@ -119,11 +123,13 @@ rules: {
       'react/prop-types': 0,
       "react/require-default-props": "off",
       "react/jsx-props-no-spreading": "off",
-      "react-hooks/rules-of-hooks": "error",
+      // "react-hooks/rules-of-hooks": "error",
       "react/no-unknown-property": 0,
 
+
       '@typescript-eslint/no-this-alias': 0,
-      "@typescript-eslint/no-shadow": "error",
-      "@typescript-eslint/no-unused-vars": "error",
+      "@/no-shadow": "error",
+      "@/no-unused-vars": "error",
     },
-    */
+  },
+];

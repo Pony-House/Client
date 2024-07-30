@@ -47,7 +47,7 @@ const tinyJsonDB = {
       try {
         data = JSON.parse(fs.readFileSync(initFile, 'utf8'));
         if (!objType(data, 'object')) data = {};
-      } catch (e) {
+      } catch {
         data = {};
       }
     }

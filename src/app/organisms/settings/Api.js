@@ -1,4 +1,3 @@
-import { objType } from 'for-promise/utils/lib.mjs';
 import storageManager from '@src/util/libs/Localstorage';
 
 import initMatrix from '../../../client/initMatrix';

@@ -371,7 +371,6 @@ const startWeb3 = (/* tcall */) => {
     tinyCrypto.recover = (msg, sig) => ethers.recoverAddress(ethers.hashMessage(msg), sig);
 
     // Insert Provider
-    // eslint-disable-next-line no-undef
     if (window.ethereum) {
       tinyCrypto.changeNetwork = (chainId) =>
         window.ethereum.request({

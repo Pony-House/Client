@@ -28,7 +28,6 @@ import navigation from './state/navigation';
 
 global.Olm = Olm;
 
-// eslint-disable-next-line import/no-mutable-exports
 const fetchBase = (url, ops) => {
   if (typeof global.nodeFetch === 'function') return global.nodeFetch(url.href, ops);
   return global.fetch(url.href, ops);

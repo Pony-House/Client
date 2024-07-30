@@ -20,12 +20,8 @@ import { openProfileViewer, selectRoom } from '@src/client/action/navigation';
 import { createMessageData } from '@src/app/molecules/message/Message';
 import { jqueryTime } from '@src/app/atoms/time/Time';
 
-import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
-
 import { btModal } from '../../tools';
 import initMatrix, { fetchFn } from '../../../client/initMatrix';
-
-const ImageBrokenSVG = './img/svg/image-broken.svg';
 
 // The class
 class ThreadsList extends EventEmitter {
@@ -73,12 +69,10 @@ class ThreadsList extends EventEmitter {
     return newData;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   getActives() {
     return getDataFolderRaw('thread', 'actives');
   }
 
-  // eslint-disable-next-line class-methods-use-this
   getActive(roomId, threadId) {
     return getDataList('thread', 'actives', `${roomId}:${threadId}`);
   }

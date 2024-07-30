@@ -53,21 +53,15 @@ export default function startQuery() {
   (() => {
     // Standards:
     if (hiddenWindow in document) document.addEventListener('visibilitychange', onPageShow);
-    // eslint-disable-next-line no-cond-assign
     else if ((hiddenWindow = 'mozHidden') in document)
       document.addEventListener('mozvisibilitychange', onPageShow);
-    // eslint-disable-next-line no-cond-assign
     else if ((hiddenWindow = 'webkitHidden') in document)
       document.addEventListener('webkitvisibilitychange', onPageShow);
-    // eslint-disable-next-line no-cond-assign
     else if ((hiddenWindow = 'msHidden') in document)
       document.addEventListener('msvisibilitychange', onPageShow);
     // IE 9 and lower:
-    else if ('onfocusin' in document)
-      // eslint-disable-next-line no-multi-assign
-      document.onfocusin = document.onfocusout = onPageShow;
+    else if ('onfocusin' in document) document.onfocusin = document.onfocusout = onPageShow;
     // All others:
-    // eslint-disable-next-line no-multi-assign
     else window.onpageshow = window.onpagehide = window.onfocus = window.onblur = onPageShow;
 
     // set the initial state (but only if browser supports the Page Visibility API)

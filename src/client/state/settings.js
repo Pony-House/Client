@@ -169,7 +169,6 @@ class Settings extends EventEmitter {
     const settings = getSettings();
     if (settings === null) return 0;
     if (typeof settings.themeIndex === 'undefined') return 0;
-    // eslint-disable-next-line radix
     return parseInt(settings.themeIndex);
   }
 
@@ -253,8 +252,8 @@ class Settings extends EventEmitter {
     });
   }
 
-  changeMobileBackground(value = 'default') {
-    const data = this.themes[this.themeIndex]?.data;
+  changeMobileBackground(/* value = 'default' */) {
+    // const data = this.themes[this.themeIndex]?.data;
     return new Promise((resolve, reject) => {
       if (isMobile(true)) {
         try {

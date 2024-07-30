@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { contextBridge, ipcRenderer } from 'electron';
 
 let idleSecs = 0;

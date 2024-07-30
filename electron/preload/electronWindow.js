@@ -50,11 +50,11 @@ class ElectronWindow extends EventEmitter {
     return this.appShow;
   }
 
-  isFocused(value) {
+  isFocused() {
     return this.focused;
   }
 
-  isVisible(value) {
+  isVisible() {
     return this.visible;
   }
 

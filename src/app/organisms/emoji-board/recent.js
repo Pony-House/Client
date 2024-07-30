@@ -25,7 +25,6 @@ export function getEmojisList(limit, where, tinyEmojis) {
           emoji = emojis.find((e) => e.mxc === emojiData.mxc);
         }
       } else {
-        // eslint-disable-next-line no-lonely-if
         if (!emojiData.isCustom) {
           emoji = tinyEmojis.find((e) => e.unicode === emojiData.unicode);
         } else {

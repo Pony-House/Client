@@ -14,7 +14,6 @@ class TinyClipboard {
   copyText(text) {
     // Clipboard API
     if (this.existNavigator) {
-      const tinyThis = this;
       return navigator.clipboard.writeText(text);
     }
     // Classic API
@@ -74,7 +73,7 @@ class TinyClipboard {
     return this.readData(index, 'text');
   }
 
-  readAllTexts(index = 0) {
+  readAllTexts() {
     return this.readData(null, 'text');
   }
 
@@ -146,13 +145,13 @@ class TinyClipboard {
 
                 // Nothing
                 else {
-                  return new Promise((resolve) => {
-                    resolve(null);
+                  return new Promise((resolve2) => {
+                    resolve2(null);
                   });
                 }
               } else {
-                return new Promise((resolve) => {
-                  resolve(null);
+                return new Promise((resolve2) => {
+                  resolve2(null);
                 });
               }
             };

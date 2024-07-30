@@ -1,4 +1,3 @@
-import { objType } from 'for-promise/utils/lib.mjs';
 import EventEmitter from 'events';
 
 // Emitter

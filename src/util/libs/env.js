@@ -79,7 +79,6 @@ class EnvAPI extends EventEmitter {
     return this.content;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async getDB(folder) {
     if (__ENV_APP__.ELECTRON_MODE) {
       const newValue = await global.tinyJsonDB.get('envData', folder);

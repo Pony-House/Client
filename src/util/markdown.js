@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-use-before-define */
 import $ from 'jquery';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import SimpleMarkdown from '@khanacademy/simple-markdown';
@@ -83,7 +81,6 @@ export const DiscordFormattingPatterns = {
    *
    * The `timestamp` and `style` group properties are present on the `exec` result of this expression
    */
-  // eslint-disable-next-line prefer-named-capture-group
   Timestamp: /<t:(?<timestamp>-?\d{1,13})(:(?<style>[DFRTdft]))?>/,
   /**
    * Regular expression for matching strictly default styled timestamps

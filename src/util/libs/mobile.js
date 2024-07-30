@@ -43,7 +43,7 @@ class MobileEvents extends EventEmitter {
 
   checkNotificationPerm() {
     // const tinyThis = this;
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve /* , reject */) => {
       /* if (!tinyThis.checkingNotificationPerm && Capacitor.isNativePlatform()) {
         tinyThis.checkingNotificationPerm = true;
         LocalNotifications.checkPermissions()
@@ -81,7 +81,7 @@ class MobileEvents extends EventEmitter {
 const mobileEvents = new MobileEvents();
 mobileEvents.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
-export function isMobile(isNative = false) {
+export function isMobile(/* isNative = false */) {
   // if (!isNative) {
   return (
     // Capacitor.isNativePlatform() ||

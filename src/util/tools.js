@@ -11,7 +11,7 @@ import cons from '@src/client/state/cons';
 
 import tinyAPI from './mods';
 import { twemojify } from './twemojify';
-import mobileEvents, { isMobile } from './libs/mobile';
+import mobileEvents /* isMobile*/ from './libs/mobile';
 import { convertRoomId } from './matrixUtil';
 
 let resizePlace = null;
@@ -123,7 +123,7 @@ export function hljsFixer(el, where, callback = function () {}) {
 }
 
 export function toast(msg, title) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve /* reject */) => {
     /* if (isMobile(true)) {
       Toast.show({ text: msg }).then(resolve).catch(reject);
     } else { */
@@ -133,7 +133,6 @@ export function toast(msg, title) {
 }
 
 export function resizeWindowChecker(timeout = 500) {
-  // eslint-disable-next-line no-use-before-define
   return tinyResizeFixer(timeout);
 }
 
@@ -338,7 +337,6 @@ export function formatBytes(bytes, decimals = 2) {
 
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  // eslint-disable-next-line prefer-exponentiation-operator, no-restricted-properties
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
 
@@ -584,7 +582,6 @@ export function cyrb128(str) {
   h2 = Math.imul(h4 ^ (h2 >>> 22), 2869860233);
   h3 = Math.imul(h1 ^ (h3 >>> 17), 951274213);
   h4 = Math.imul(h2 ^ (h4 >>> 19), 2716044179);
-  // eslint-disable-next-line no-unused-expressions, no-sequences
   (h1 ^= h2 ^ h3 ^ h4), (h2 ^= h1), (h3 ^= h1), (h4 ^= h1);
   return [h1 >>> 0, h2 >>> 0, h3 >>> 0, h4 >>> 0];
 }
@@ -609,11 +606,9 @@ export function getFlagEmoji(countryCode) {
   return String.fromCodePoint(...codePoints);
 }
 
-// eslint-disable-next-line no-extend-native
 Date.prototype.isValid = function () {
   // If the date object is invalid it
   // will return 'NaN' on getTime()
   // and NaN is never equal to itself
-  // eslint-disable-next-line no-self-compare
   return this.getTime() === this.getTime();
 };

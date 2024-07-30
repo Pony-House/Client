@@ -13,7 +13,6 @@ import { twemojify } from '../../twemojify';
 import { getRoomInfo } from '../../../app/organisms/room/Room';
 
 import { openProfileViewer, selectRoom } from '../../../client/action/navigation';
-import { defaultAvatar } from '../../../app/atoms/avatar/defaultAvatar';
 import { colorMXID } from '../../colorMXID';
 import { createMessageData, messageDataEffects } from '../../../app/molecules/message/Message';
 import { jqueryTime } from '../../../app/atoms/time/Time';
@@ -21,7 +20,6 @@ import { jqueryTime } from '../../../app/atoms/time/Time';
 import { getEventById } from './cache';
 
 // Info
-const ImageBrokenSVG = './img/svg/image-broken.svg';
 const PIN_LIMIT = 50;
 const eventName = 'm.room.pinned_events';
 

@@ -186,7 +186,6 @@ export function emojiExport(data, images) {
 
       let count = 0;
 
-      const mx = initMatrix.matrixClient;
       const validatorComplete = () => {
         if (count === images.length) {
           zip.file(`metadata.json`, JSON.stringify(fileData));

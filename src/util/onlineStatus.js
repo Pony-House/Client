@@ -68,7 +68,6 @@ export function validatorStatusIcon(presence) {
 export function parsePresenceStatus(presence, userId) {
   if (typeof presence === 'string') {
     // Get data
-    const mx = initMatrix.matrixClient;
     const mxcUrl = initMatrix.mxcUrl;
 
     // Result
@@ -133,7 +132,7 @@ export function parsePresenceStatus(presence, userId) {
           tinyResult.afk = false;
         }
       }
-    } catch (err) {
+    } catch {
       tinyResult.msg = presence.substring(0, 100);
     }
 

@@ -1,6 +1,5 @@
 import clone from 'clone';
 import moment from 'moment-timezone';
-import initMatrix from '@src/client/initMatrix';
 import { objType } from 'for-promise/utils/lib.mjs';
 import envAPI from '../env';
 import attemptDecryption from '../attemptDecryption';

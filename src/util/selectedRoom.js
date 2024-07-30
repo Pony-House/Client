@@ -41,7 +41,7 @@ export function getDataList(dataFolder, folderName, where) {
 
   try {
     result = data.find(([u]) => u && u.id === where)[0].value;
-  } catch (err) {
+  } catch {
     result = null;
   }
 

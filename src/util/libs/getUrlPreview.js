@@ -92,7 +92,6 @@ setInterval(() => {
     if (!tinyCache[item].timeout.isValid() || moment().isAfter(tinyCache[item].timeout)) {
       delete tinyCache[item];
 
-      // eslint-disable-next-line no-use-before-define
       setTimeout(() => {
         urlPreviewStore.delete(item);
       }, 1);

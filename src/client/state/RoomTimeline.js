@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 import * as Y from 'yjs';
 import EventEmitter from 'events';
 import clone from 'clone';

@@ -10,7 +10,7 @@ import storageManager from '../libs/Localstorage';
 // import { isMobile } from '../libs/mobile';
 
 export const openUrl = (url) =>
-  new Promise((resolve, reject) => {
+  new Promise((resolve /*, reject */) => {
     // Mobile
     /* if (isMobile(true)) {
       Browser.open({ url }).then(resolve).catch(reject);

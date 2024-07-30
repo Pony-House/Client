@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import chokidar from 'chokidar';
 
-import { getAppFolders, saveDownloadFile } from './libs/utils';
+import { getAppFolders /*, saveDownloadFile */ } from './libs/utils';
 
 // Prepare cache
 let started = false;
@@ -16,8 +16,8 @@ const convertFileName = {
 };
 
 // Get file
-const urlCache = {};
-const getFile = async (url) => {
+// const urlCache = {};
+/* const getFile = async (url) => {
   if (dirs && (!urlCache[url] || !urlCache[url].downloading)) {
     urlCache[url] = { downloading: true, error: false };
 
@@ -36,10 +36,10 @@ const getFile = async (url) => {
         urlCache[url].downloading = false;
       });
   }
-};
+}; */
 
 // Global get file url
-const cacheFileElectron = (url, type) =>
+const cacheFileElectron = (url /* , type */) =>
   /* let value = url;
 
   // Use cache

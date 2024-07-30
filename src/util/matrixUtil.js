@@ -50,7 +50,7 @@ export async function getBaseUrl(servername) {
     const baseUrl = result?.['m.homeserver']?.base_url;
     if (baseUrl === undefined) throw new Error();
     return baseUrl;
-  } catch (e) {
+  } catch {
     return `${protocol}${servername}`;
   }
 }
