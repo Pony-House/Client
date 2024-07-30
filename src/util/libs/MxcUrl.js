@@ -75,6 +75,21 @@ class MxcUrl extends EventEmitter {
           // Fetch
           fetchFn(tinyData.url, tinyData.options)
             .then((res) => {
+              if (!res.ok) {
+                res
+                  .json()
+                  .then((e) => {
+                    const err = new Error(e.error);
+                    err.code = e.errcode;
+                    tinyComplete();
+                    tinyData.reject(err);
+                  })
+                  .catch((err) => {
+                    tinyComplete();
+                    tinyData.reject(err);
+                  });
+                return;
+              }
               tinyComplete();
               tinyData.resolve(res);
             })
