@@ -34,6 +34,19 @@ To set default Homeserver on login and register page, place a customized [`.env`
 
 If you want to use devtools in production mode in the destkop version before the application is opened, type `--devtools` after the file path.
 
+## Supports
+
+### Web3
+The ethers.js is a crypto open source lib used for the client to have connection with your crypto wallet (if you have any installed on your machine).
+This feature use is inspired by Telegram that allows you to use crypto as a payment method in the conversation between users. At the moment this API only supports the Ethereum Network (Example: Ethereum, Polygon, Optimism)
+### IPFS
+This feature gives you the freedom to configure which gateway you want to load the IPFS protocol links within the client. You can use any third-party node or an IPFS node self-host.
+
+### LibreTranslate
+This is an open source third-party project that allows you to use a translator hosted on your machine or on some third-party server without needing on some big tech. Pony House uses this API to give you the option to translate incoming messages.
+
+Just like IPFS, you can use your own instance hosted on your machine, or some third-party server.
+
 ## Custom App Style
 Would you like to customize your login page to your website? Then you can check out some values available in the `config/custom-css.scss` file.
 
