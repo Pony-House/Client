@@ -38,7 +38,7 @@ If you want to use devtools in production mode in the destkop version before the
 
 ### Web3
 The ethers.js is a crypto open source lib used for the client to have connection with your crypto wallet (if you have any installed on your machine).
-This feature use is inspired by Telegram that allows you to use crypto as a payment method in the conversation between users. At the moment this API only supports the Ethereum Network (Example: Ethereum, Polygon, Optimism)
+This feature use is inspired by Telegram that allows you to use crypto as a payment method in the conversation between users. At the moment this API only supports the Ethereum Network (Example: Mainnet, Polygon, Optimism)
 ### IPFS
 This feature gives you the freedom to configure which gateway you want to load the IPFS protocol links within the client. You can use any third-party node or an IPFS node self-host.
 
