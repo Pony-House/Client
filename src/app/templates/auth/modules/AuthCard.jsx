@@ -25,7 +25,7 @@ function AuthCard({ type = 'login', setType }) {
     global.authPublicData.register = { params: hsConfig?.register?.params };
   return (
     <>
-      <div className="mb-4">
+      <div className="mb-4 noselect">
         <Homeserver className={type === 'reset-password' ? 'd-none' : null} />
       </div>
 
@@ -48,7 +48,7 @@ function AuthCard({ type = 'login', setType }) {
         ) : null)}
 
       {objType(hsConfig, 'object') && hsWellKnown.getBaseUrl() && (
-        <center>
+        <center className="noselect">
           {type === 'login' && (
             <a
               className="very-small"

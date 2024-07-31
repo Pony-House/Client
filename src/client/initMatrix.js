@@ -25,6 +25,7 @@ import RoomsInput from './state/RoomsInput';
 import Notifications from './state/Notifications';
 import { cryptoCallbacks } from './state/secretStorageKeys';
 import navigation from './state/navigation';
+import cons from './state/cons';
 
 global.Olm = Olm;
 
@@ -63,12 +64,21 @@ const startCustomDNS = () => {
 class InitMatrix extends EventEmitter {
   constructor() {
     super();
+    this.isGuest = false;
     navigation.initMatrix = this;
     startCustomDNS();
   }
 
+  setGuest(value) {
+    if (typeof value === 'boolean') {
+      this.matrixClient.setGuest(value);
+      this.isGuest = value;
+    }
+  }
+
   setMatrixClient(mx) {
     this.matrixClient = mx;
+    this.isGuest = mx.isGuest();
     if (__ENV_APP__.MODE === 'development') {
       global.initMatrix = { matrixClient: mx, mxcUrl: this.mxcUrl };
     }
@@ -156,6 +166,8 @@ class InitMatrix extends EventEmitter {
 
       this.matrixClient = sdk.createClient(clientOps);
       this.mxcUrl = new MxcUrl(this.matrixClient);
+      if (storageManager.getBool(cons.secretKey.IS_GUEST)) this.setGuest(true);
+
       emojiEditor.start();
       attemptDecryption.start();
       if (__ENV_APP__.ELECTRON_MODE) {

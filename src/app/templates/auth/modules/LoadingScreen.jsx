@@ -6,9 +6,9 @@ import Spinner from '../../../atoms/spinner/Spinner';
 
 import ProcessWrapper from './ProcessWrapper';
 
-function LoadingScreen({ message }) {
+function LoadingScreen({ message, className }) {
   return (
-    <ProcessWrapper>
+    <ProcessWrapper className={className}>
       <Spinner />
       <div style={{ marginTop: 'var(--sp-normal)' }}>
         <Text variant="b1">{message}</Text>

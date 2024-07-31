@@ -166,6 +166,8 @@ export default defineConfig(({ command, mode }) => {
     HOVER_SIDEBAR: addBooleanToEnv('HOVER_SIDEBAR'),
     SIDEBAR_TRANSITION: addBooleanToEnv('SIDEBAR_TRANSITION'),
 
+    GUEST_ACCOUNT: addBooleanToEnv('GUEST_ACCOUNT'),
+
     MAX_LISTENERS: Number(env.MAX_LISTENERS),
     MXC_FETCH_LIMIT: Number(env.MXC_FETCH_LIMIT),
     MXC_FETCH_TIMEOUT: Number(env.MXC_FETCH_TIMEOUT),

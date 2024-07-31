@@ -8,7 +8,7 @@ import ProcessWrapper from './ProcessWrapper';
 
 function EmailVerify({ email, onContinue }) {
   return (
-    <ProcessWrapper>
+    <ProcessWrapper className="noselect">
       <div style={{ margin: 'var(--sp-normal)', maxWidth: '450px' }}>
         <Text variant="h2" weight="medium">
           Verify email

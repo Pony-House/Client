@@ -3,11 +3,12 @@ import storageManager from '@src/util/libs/Localstorage';
 import cons from '../state/cons';
 import { fetchFn } from '../initMatrix';
 
-function updateLocalStore(accessToken, deviceId, userId, baseUrl) {
+function updateLocalStore(accessToken, deviceId, userId, baseUrl, isGuest = false) {
   storageManager.setItem(cons.secretKey.ACCESS_TOKEN, accessToken);
   storageManager.setItem(cons.secretKey.DEVICE_ID, deviceId);
   storageManager.setItem(cons.secretKey.USER_ID, userId);
   storageManager.setItem(cons.secretKey.BASE_URL, baseUrl);
+  storageManager.setItem(cons.secretKey.IS_GUEST, isGuest);
 }
 
 function createTemporaryClient(baseUrl) {
@@ -47,7 +48,7 @@ async function login(baseUrl, username, email, password) {
   updateLocalStore(res.access_token, res.device_id, res.user_id, myBaseUrl);
 }
 
-async function loginWithToken(baseUrl, token) {
+async function loginWithToken(baseUrl, token, isGuest = false) {
   const client = createTemporaryClient(baseUrl);
 
   const res = await client.login('m.login.token', {
@@ -56,7 +57,7 @@ async function loginWithToken(baseUrl, token) {
   });
 
   const myBaseUrl = res?.well_known?.['m.homeserver']?.base_url || client.baseUrl;
-  updateLocalStore(res.access_token, res.device_id, res.user_id, myBaseUrl);
+  updateLocalStore(res.access_token, res.device_id, res.user_id, myBaseUrl, isGuest);
 }
 
 async function verifyEmail(baseUrl, email, client_secret, send_attempt, next_link) {
@@ -105,6 +106,7 @@ async function completeRegisterStage(baseUrl, username, password, auth) {
 }
 
 export {
+  updateLocalStore,
   createTemporaryClient,
   login,
   verifyEmail,

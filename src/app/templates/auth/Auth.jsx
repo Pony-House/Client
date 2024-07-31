@@ -12,6 +12,7 @@ import LoadingScreen from './modules/LoadingScreen';
 import AuthCard from './modules/AuthCard';
 import ElectronSidebar from '../client/ElectronSidebar';
 import { AuthDivBaseWithBanner } from './modules/AuthDivBase';
+import LoadingPage from '../client/Loading';
 
 function Auth({ isDevToolsOpen = false }) {
   const [loginToken, setLoginToken] = useState(getUrlParams('loginToken'));
@@ -43,6 +44,7 @@ function Auth({ isDevToolsOpen = false }) {
   return (
     <>
       <ElectronSidebar isDevToolsOpen={isDevToolsOpen} />
+      <LoadingPage />
       <section className={`vh-100 auth-base${isDevToolsOpen ? ' devtools-open' : ''}`}>
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
@@ -54,7 +56,7 @@ function Auth({ isDevToolsOpen = false }) {
                       {loginToken && <LoadingScreen message="Redirecting..." />}
                       {!loginToken && (
                         <>
-                          <div className="d-flex align-items-center mb-3 pb-1">
+                          <div className="d-flex align-items-center mb-3 pb-1 noselect">
                             <Avatar imageSrc="./img/png/cinny-main.png" />
                             <span className="ms-3 h2 fw-bold mb-0">{__ENV_APP__.INFO.name}</span>
                           </div>
@@ -63,7 +65,7 @@ function Auth({ isDevToolsOpen = false }) {
                         </>
                       )}
 
-                      <section className="border-top border-bg py-4 footer">
+                      <section className="border-top border-bg py-4 footer noselect">
                         <div className="row text-center d-flex justify-content-center">
                           <div className="col-md-4 small">
                             <a

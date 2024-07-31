@@ -10,6 +10,7 @@ function Terms({ url, onSubmit }) {
   return (
     <ProcessWrapper>
       <form
+        className="noselect"
         onSubmit={(e) => {
           e.preventDefault();
           onSubmit();

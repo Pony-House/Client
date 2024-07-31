@@ -9,7 +9,7 @@ import ProcessWrapper from './ProcessWrapper';
 
 function Recaptcha({ message, sitekey, onChange }) {
   return (
-    <ProcessWrapper>
+    <ProcessWrapper className="noselect">
       <div style={{ marginBottom: 'var(--sp-normal)' }}>
         <Text variant="s1" weight="medium">
           {message}

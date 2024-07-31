@@ -124,8 +124,8 @@ function ResetPassword() {
       {step === 'send' ? (
         <>
           {process.type === 'processing' && <LoadingScreen message={process.message} />}
-          <h5>Enter your email to reset password</h5>
-          <p className="small">
+          <h5 className="noselect">Enter your email to reset password</h5>
+          <p className="small noselect">
             <strong>{serverName}</strong> will send you a verification link to let you reset your
             password.
           </p>
@@ -134,9 +134,9 @@ function ResetPassword() {
             {({ values, errors, handleChange, handleSubmit, isSubmitting }) => (
               <>
                 {process.type === undefined && isSubmitting && (
-                  <LoadingScreen message="Sending new password request..." />
+                  <LoadingScreen className="noselect" message="Sending new password request..." />
                 )}
-                <form className="auth-form" ref={formRef} onSubmit={handleSubmit}>
+                <form className="auth-form noselect" ref={formRef} onSubmit={handleSubmit}>
                   <div>
                     <Input
                       values={values.email}
@@ -167,7 +167,7 @@ function ResetPassword() {
       ) : null}
 
       {step === 'waiting' ? (
-        <center>
+        <center className="noselect">
           <h5>Confirm your password reset request</h5>
           <p className="small">
             {
@@ -210,16 +210,18 @@ function ResetPassword() {
 
       {step === 'set_password' ? (
         <>
-          {process.type === 'processing' && <LoadingScreen message={process.message} />}
+          {process.type === 'processing' && (
+            <LoadingScreen className="noselect" message={process.message} />
+          )}
 
-          <h5>Reseting password</h5>
+          <h5 className="noselect">Reseting password</h5>
           <Formik initialValues={initialValues} onSubmit={changePassword} validate={validator}>
             {({ values, errors, handleChange, handleSubmit, isSubmitting }) => (
               <>
                 {process.type === undefined && isSubmitting && (
-                  <LoadingScreen message="Sending new password..." />
+                  <LoadingScreen className="noselect" message="Sending new password..." />
                 )}
-                <form className="auth-form" ref={formRef} onSubmit={handleSubmit}>
+                <form className="auth-form noselect" ref={formRef} onSubmit={handleSubmit}>
                   <div className="auth-form__pass-eye-wrapper">
                     <div>
                       <Input
@@ -300,7 +302,7 @@ function ResetPassword() {
       ) : null}
 
       {step === 'reset_complete' ? (
-        <center>
+        <center className="noselect">
           <p className="small">
             {'Your password has been changed successfully! Now you can try to log in again.'}
           </p>

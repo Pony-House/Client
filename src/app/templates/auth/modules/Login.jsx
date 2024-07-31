@@ -88,7 +88,7 @@ function Login() {
 
   return (
     <>
-      <div className="auth-form__heading">
+      <div className="auth-form__heading noselect">
         <h5>Welcome back</h5>
         {isPassword && (
           <ContextMenu
@@ -119,7 +119,7 @@ function Login() {
           {({ values, errors, handleChange, handleSubmit, isSubmitting }) => (
             <>
               {isSubmitting && <LoadingScreen message="Login in progress..." />}
-              <form className="auth-form" onSubmit={handleSubmit}>
+              <form className="auth-form noselect" onSubmit={handleSubmit}>
                 {typeIndex === 0 && (
                   <div>
                     <Input
@@ -242,8 +242,10 @@ function Login() {
           )}
         </Formik>
       )}
-      {ssoProviders.length > 0 && isPassword && <Text className="sso__divider">OR</Text>}
-      {ssoProviders.length > 0 && (
+      {(ssoProviders.length > 0 || __ENV_APP__.GUEST_ACCOUNT) && isPassword && (
+        <Text className="sso__divider noselect">OR</Text>
+      )}
+      {(ssoProviders.length > 0 || __ENV_APP__.GUEST_ACCOUNT) && (
         <SSOButtons type="sso" identityProviders={ssoProviders} baseUrl={baseUrl} />
       )}
     </>

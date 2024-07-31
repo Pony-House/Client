@@ -108,7 +108,9 @@ function Homeserver({ className }) {
     <>
       {checkLocalStorage > 1 ? (
         storageManager.localStorageExist() ? (
-          <div className={`homeserver-form${typeof className === 'string' ? ` ${className}` : ''}`}>
+          <div
+            className={`homeserver-form noselect${typeof className === 'string' ? ` ${className}` : ''}`}
+          >
             <div className="w-100">
               <Input
                 className={!useHomeserverList ? 'no-homeserver-list' : null}
@@ -146,23 +148,23 @@ function Homeserver({ className }) {
             ) : null}
           </div>
         ) : (
-          <Text className="homeserver-form__error" variant="b3">
+          <Text className="homeserver-form__error noselect" variant="b3">
             Unsupported localstorage!
           </Text>
         )
       ) : (
-        <div className="homeserver-form__status flex--center">
+        <div className="homeserver-form__status flex--center noselect">
           <Spinner size="small" />
           <Text variant="b2">Checking storage settings...</Text>
         </div>
       )}
       {process.error !== undefined && (
-        <Text className="homeserver-form__error" variant="b3">
+        <Text className="homeserver-form__error noselect" variant="b3">
           {process.error}
         </Text>
       )}
       {process.isLoading && (
-        <div className="homeserver-form__status flex--center">
+        <div className="homeserver-form__status flex--center noselect">
           <Spinner size="small" />
           <Text variant="b2">{process.message}</Text>
         </div>

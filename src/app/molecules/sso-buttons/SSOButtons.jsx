@@ -4,8 +4,14 @@ import PropTypes from 'prop-types';
 import Img from '@src/app/atoms/image/Image';
 import Tooltip from '@src/app/atoms/tooltip/Tooltip';
 import MxcUrl from '@src/util/libs/MxcUrl';
+import { setLoadingPage } from '@src/app/templates/client/Loading';
 
-import { createTemporaryClient, startSsoLogin } from '../../../client/action/auth';
+import {
+  createTemporaryClient,
+  startSsoLogin,
+  loginWithToken,
+  updateLocalStore,
+} from '../../../client/action/auth';
 
 import Button from '../../atoms/button/Button';
 
@@ -16,7 +22,7 @@ function SSOButtons({ type, identityProviders, baseUrl }) {
     startSsoLogin(baseUrl, type, id);
   }
   return (
-    <div className="sso-buttons">
+    <div className="sso-buttons noselect">
       {identityProviders
         .sort((idp, idp2) => {
           if (typeof idp.icon !== 'string') return -1;
@@ -47,6 +53,24 @@ function SSOButtons({ type, identityProviders, baseUrl }) {
             >{`Login with ${idp.name}`}</Button>
           ),
         )}
+      {__ENV_APP__.GUEST_ACCOUNT && (
+        <Button
+          className="sso-btn__text-only"
+          onClick={async () => {
+            setLoadingPage('Joining...');
+            try {
+              const tempClient = createTemporaryClient(baseUrl);
+              const { user_id, device_id, access_token } = await tempClient.registerGuest();
+              updateLocalStore(access_token, device_id, user_id, baseUrl, true);
+              window.location.reload();
+            } catch (err) {
+              console.error(err);
+              alert(err.message);
+              setLoadingPage(false);
+            }
+          }}
+        >{`Login with Guest`}</Button>
+      )}
     </div>
   );
 }

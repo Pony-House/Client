@@ -8,6 +8,7 @@ const cons = {
     DEVICE_ID: 'cinny_device_id',
     USER_ID: 'cinny_user_id',
     BASE_URL: 'cinny_hs_base_url',
+    IS_GUEST: 'pony_house_is_guest',
   },
 
   DEVICE_DISPLAY_NAME: `${__ENV_APP__.INFO.name} (${__ENV_APP__.ELECTRON_MODE ? 'Desktop' : isMobile() ? 'Mobile' : 'Browser'})`,

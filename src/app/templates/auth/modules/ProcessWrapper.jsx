@@ -2,8 +2,8 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-function ProcessWrapper({ children }) {
-  return <div className="process-wrapper">{children}</div>;
+function ProcessWrapper({ children, className }) {
+  return <div className={`process-wrapper${className ? ` ${className}` : ''}`}>{children}</div>;
 }
 ProcessWrapper.propTypes = {
   children: PropTypes.node.isRequired,
