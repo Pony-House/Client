@@ -448,7 +448,7 @@ function RoomViewContent({
   const { timeline } = roomTimeline;
 
   useLayoutEffect(() => {
-    if (!roomTimeline.initialized) {
+    if (!isLoading && !roomTimeline.initialized) {
       timelineScrollRef.current = new TimelineScroll(timelineSVRef.current);
       eventLimitRef.current = new EventLimit();
     }
@@ -761,28 +761,6 @@ function RoomViewContent({
     target.removeClass('no-loading').off('click', noLoadingPageButton);
     forceUpdateLimit();
   };
-
-  setTimeout(() => {
-    if (roomTimeline.timeline.length < 1) {
-      autoPaginate().then(() => {
-        if (roomTimeline.timeline.length <= rule3(50, 10, pageLimit)) {
-          $(phMsgQuery)
-            .addClass('no-loading')
-            .off('click', noLoadingPageButton)
-            .on('click', noLoadingPageButton);
-        }
-
-        if (roomTimeline.timeline.length < 1) {
-          tinyAPI.emit('emptyTimeline', forceUpdateLimit);
-        }
-      });
-    } else if (roomTimeline.timeline.length <= rule3(50, 10, pageLimit)) {
-      $(phMsgQuery)
-        .addClass('no-loading')
-        .off('click', noLoadingPageButton)
-        .on('click', noLoadingPageButton);
-    }
-  }, 100);
 
   useEffect(() => {
     const updateClock = () => forceUpdate();

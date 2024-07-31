@@ -160,7 +160,6 @@ const enableyJsItem = {
 // Class
 class RoomTimeline extends EventEmitter {
   constructor(roomId, roomAlias = null, isGuest = false, guestId = null, refreshTime = null) {
-    // Super!
     super();
 
     // These are local timelines
