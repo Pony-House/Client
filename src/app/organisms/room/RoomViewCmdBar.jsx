@@ -313,13 +313,13 @@ function RoomViewCmdBar({ roomId, roomTimeline, viewEvent, refcmdInput }) {
 
     if (myCmd.prefix === '@') {
       viewEvent.emit('cmd_fired', {
-        replace: `@${myCmd.result.userId}`,
+        replace: `@${myCmd.result.userId} `,
       });
     }
 
     if (myCmd.prefix === '#') {
       viewEvent.emit('cmd_fired', {
-        replace: `#${myCmd.result.roomId}`,
+        replace: `#${myCmd.result.roomId} `,
       });
     }
 
