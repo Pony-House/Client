@@ -286,13 +286,14 @@ function PeopleDrawer({
                         : member.customClick()
                     }
                     contextMenu={(e) => {
-                      openReusableContextMenu(
-                        'bottom',
-                        getEventCords(e, '.ic-btn'),
-                        (closeMenu) => (
-                          <UserOptions userId={member.userId} afterOptionSelect={closeMenu} />
-                        ),
-                      );
+                      if (!initMatrix.isGuest)
+                        openReusableContextMenu(
+                          'bottom',
+                          getEventCords(e, '.ic-btn'),
+                          (closeMenu) => (
+                            <UserOptions userId={member.userId} afterOptionSelect={closeMenu} />
+                          ),
+                        );
 
                       e.preventDefault();
                     }}

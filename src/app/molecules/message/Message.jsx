@@ -188,9 +188,10 @@ const MessageHeader = React.memo(({ userId, username, usernameHover, roomId }) =
     <span
       onClick={usernameClick}
       onContextMenu={(e) => {
-        openReusableContextMenu('bottom', getEventCords(e, '.ic-btn'), (closeMenu) => (
-          <UserOptions userId={userId} afterOptionSelect={closeMenu} />
-        ));
+        if (!initMatrix.isGuest)
+          openReusableContextMenu('bottom', getEventCords(e, '.ic-btn'), (closeMenu) => (
+            <UserOptions userId={userId} afterOptionSelect={closeMenu} />
+          ));
 
         e.preventDefault();
       }}
@@ -1951,9 +1952,10 @@ function Message({
   });
 
   const contextMenuClick = (e) => {
-    openReusableContextMenu('bottom', getEventCords(e, '.ic-btn'), (closeMenu) => (
-      <UserOptions userId={senderId} afterOptionSelect={closeMenu} />
-    ));
+    if (!initMatrix.isGuest)
+      openReusableContextMenu('bottom', getEventCords(e, '.ic-btn'), (closeMenu) => (
+        <UserOptions userId={senderId} afterOptionSelect={closeMenu} />
+      ));
 
     e.preventDefault();
   };

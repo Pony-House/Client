@@ -157,9 +157,10 @@ function RoomMembers({ roomId }) {
               avatarSize={32}
               key={member.userId}
               contextMenu={(e) => {
-                openReusableContextMenu('bottom', getEventCords(e, '.ic-btn'), (closeMenu) => (
-                  <UserOptions userId={member.userId} afterOptionSelect={closeMenu} />
-                ));
+                if (!initMatrix.isGuest)
+                  openReusableContextMenu('bottom', getEventCords(e, '.ic-btn'), (closeMenu) => (
+                    <UserOptions userId={member.userId} afterOptionSelect={closeMenu} />
+                  ));
 
                 e.preventDefault();
               }}

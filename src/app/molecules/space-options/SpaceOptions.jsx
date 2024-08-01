@@ -98,20 +98,24 @@ function SpaceOptions({ roomId, afterOptionSelect = null }) {
       >
         {isPinned ? 'Unpin from sidebar' : 'Pin to sidebar'}
       </MenuItem>
-      <MenuItem
-        className="text-start"
-        faSrc="fa-solid fa-user-plus"
-        onClick={handleInviteClick}
-        disabled={!canInvite}
-      >
-        Invite
-      </MenuItem>
+      {!initMatrix.isGuest && (
+        <MenuItem
+          className="text-start"
+          faSrc="fa-solid fa-user-plus"
+          onClick={handleInviteClick}
+          disabled={!canInvite}
+        >
+          Invite
+        </MenuItem>
+      )}
       <MenuItem className="text-start" onClick={handleManageRoom} iconSrc={HashSearchIC}>
         Manage rooms
       </MenuItem>
-      <MenuItem className="text-start" onClick={handleSettingsClick} faSrc="fa-solid fa-gear">
-        Settings
-      </MenuItem>
+      {!initMatrix.isGuest && (
+        <MenuItem className="text-start" onClick={handleSettingsClick} faSrc="fa-solid fa-gear">
+          Settings
+        </MenuItem>
+      )}
       <MenuItem
         className="text-start btn-text-danger"
         onClick={handleLeaveClick}

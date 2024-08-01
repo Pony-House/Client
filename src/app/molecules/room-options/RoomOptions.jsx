@@ -59,7 +59,7 @@ function RoomOptions({ roomId, threadId, afterOptionSelect = null }) {
       <MenuItem className="text-start" faSrc="fa-solid fa-check-double" onClick={handleMarkAsRead}>
         Mark as read
       </MenuItem>
-      {canSupport('Thread') && threadId ? (
+      {!initMatrix.isGuest && canSupport('Thread') && threadId ? (
         <MenuItem
           className="text-start"
           faSrc={followedThread ? 'fa-solid fa-minus' : 'fa-solid fa-plus'}
@@ -76,7 +76,7 @@ function RoomOptions({ roomId, threadId, afterOptionSelect = null }) {
           {followedThread ? 'Unfollow thread' : 'Follow thread'}
         </MenuItem>
       ) : null}
-      {!threadId ? (
+      {!initMatrix.isGuest && !threadId ? (
         <>
           <MenuItem
             className="text-start"

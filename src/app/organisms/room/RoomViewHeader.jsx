@@ -158,7 +158,7 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
         ) : null}
 
         <li className="nav-item avatar-base">
-          {!disableActions ? (
+          {!initMatrix.isGuest && !disableActions ? (
             <button
               className="nav-link btn btn-bg border-0 p-1"
               onClick={() => toggleRoomSettings()}

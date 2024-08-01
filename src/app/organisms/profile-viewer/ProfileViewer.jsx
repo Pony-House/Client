@@ -95,6 +95,7 @@ function ModerationTools({ roomId, userId }) {
   });
 
   return (
+    !initMatrix.isGuest &&
     (canIKick || canIBan) && (
       <div className="card-body">
         {canIKick && (
