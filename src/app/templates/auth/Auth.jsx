@@ -36,9 +36,10 @@ function Auth({ isDevToolsOpen = false }) {
         ) {
           setLoadingPage('Joining...');
           try {
-            const tempClient = auth.createTemporaryClient(ENV.HOMESERVER_LIST[0]);
+            const baseUrl = `https://${ENV.HOMESERVER_LIST[0]}`;
+            const tempClient = auth.createTemporaryClient(baseUrl);
             const { user_id, device_id, access_token } = await tempClient.registerGuest();
-            auth.updateLocalStore(access_token, device_id, user_id, ENV.HOMESERVER_LIST[0], true);
+            auth.updateLocalStore(access_token, device_id, user_id, baseUrl, true);
             window.location.reload();
             return;
           } catch (err) {
