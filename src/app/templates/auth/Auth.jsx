@@ -23,6 +23,23 @@ function Auth({ isDevToolsOpen = false }) {
   useEffect(() => {
     const authSync = async () => {
       if (__ENV_APP__.GUEST_ACCOUNT) {
+        const joinGuestMode = async () => {
+          setLoadingPage('Joining...');
+          try {
+            const baseUrl = `https://${ENV.HOMESERVER_LIST[0]}`;
+            const tempClient = auth.createTemporaryClient(baseUrl);
+            const { user_id, device_id, access_token } = await tempClient.registerGuest();
+            auth.updateLocalStore(access_token, device_id, user_id, baseUrl, true);
+            window.location.reload();
+            return true;
+          } catch (err) {
+            console.error(err);
+            alert(err.message);
+            setLoadingPage(false);
+            return false;
+          }
+        };
+
         const roomId = urlParams.get('room_id');
         const ENV = __ENV_APP__.LOGIN ?? {};
         if (
@@ -34,19 +51,8 @@ function Auth({ isDevToolsOpen = false }) {
           typeof roomId === 'string' &&
           roomId.length > 0
         ) {
-          setLoadingPage('Joining...');
-          try {
-            const baseUrl = `https://${ENV.HOMESERVER_LIST[0]}`;
-            const tempClient = auth.createTemporaryClient(baseUrl);
-            const { user_id, device_id, access_token } = await tempClient.registerGuest();
-            auth.updateLocalStore(access_token, device_id, user_id, baseUrl, true);
-            window.location.reload();
-            return;
-          } catch (err) {
-            console.error(err);
-            alert(err.message);
-            setLoadingPage(false);
-          }
+          const guestSuccess = await joinGuestMode();
+          if (guestSuccess) return;
         }
       }
 
