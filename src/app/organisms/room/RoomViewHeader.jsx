@@ -197,9 +197,11 @@ function RoomViewHeader({ roomId, threadId, roomAlias, roomItem, disableActions 
               type="button"
             >
               <Avatar
+                animParentsCount={2}
                 className="d-inline-block me-2 profile-image-container"
                 imgClass="profile-image-container"
                 imageSrc={avatarSrc}
+                imageAnimSrc={avatarAnimSrc}
                 text={roomName}
                 bgColor={colorMXID(roomId)}
                 size="small"

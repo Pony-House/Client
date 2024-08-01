@@ -227,7 +227,7 @@ function ProfileSection() {
       {!initMatrix.isGuest ? (
         <>
           {!canUsePresence() && (
-            <div className="card mb-3">
+            <div className="card mb-3 noselct">
               <ul className="list-group list-group-flush">
                 <li className="list-group-item very-small text-gray">Custom Presence</li>
 
@@ -411,7 +411,7 @@ function ProfileSection() {
           </div>
         </>
       ) : (
-        <div className="card mb-3">
+        <div className="card mb-3 noselect">
           <ul className="list-group list-group-flush">
             <li className="list-group-item very-small text-gray">Guest Account</li>
 
