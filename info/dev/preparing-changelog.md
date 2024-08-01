@@ -8,3 +8,4 @@
 - Welcome page updated.
 - MXC_FETCH_LIMIT sets the file limit that can be loaded simultaneously by the client. Always the value is reached, the other requests are paused temporarily to wait for the queue to have new slots.
 - Guest Account login method added. (Deactivated by default in the env file)
+- .cmd-bar - css fixed.
