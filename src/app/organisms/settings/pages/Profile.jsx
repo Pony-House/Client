@@ -423,6 +423,36 @@ function ProfileSection() {
                 your account.
               </div>
             </li>
+
+            <li className="list-group-item border-0">
+              <div className="small">Create account</div>
+              <div className="very-small">
+                Are you interested in being a user? Then create your account now.
+              </div>
+            </li>
+
+            <li className="list-group-item border-0">
+              <div className="very-small">
+                <Button
+                  variant="danger"
+                  className="mt-2"
+                  onClick={async () => {
+                    if (
+                      await confirmDialog(
+                        'Logout',
+                        'Are you sure that you want to logout your session?',
+                        'Logout',
+                        'danger',
+                      )
+                    ) {
+                      initMatrix.logout();
+                    }
+                  }}
+                >
+                  Logout
+                </Button>
+              </div>
+            </li>
           </ul>
         </div>
       )}
