@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import storageManager from '@src/util/libs/Localstorage';
 import { isMobile } from '@src/util/libs/mobile';
+import initMatrix from '@src/client/initMatrix';
 
 import Toggle from '@src/app/atoms/button/Toggle';
 import Button from '@src/app/atoms/button/Button';
