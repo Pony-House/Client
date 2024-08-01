@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { convertUserId } from '@src/util/matrixUtil';
+import Avatar from '@src/app/atoms/avatar/Avatar';
 
 import { twemojifyReact } from '../../../util/twemojify';
 
@@ -125,13 +126,25 @@ function ProfileEditor({ userId = null }) {
   // Complete
   return (
     <div className="profile-editor pb-3">
-      <ImageUpload
-        text={username ?? userId}
-        bgColor={colorMXID(userId)}
-        imageSrc={avatarSrc}
-        onUpload={handleAvatarUpload}
-        onRequestRemove={() => handleAvatarUpload(null)}
-      />
+      {!initMatrix.isGuest ? (
+        <ImageUpload
+          text={username ?? userId}
+          bgColor={colorMXID(userId)}
+          imageSrc={avatarSrc}
+          onUpload={handleAvatarUpload}
+          onRequestRemove={() => handleAvatarUpload(null)}
+        />
+      ) : (
+        <Avatar
+          animParentsCount={1}
+          bgColor={colorMXID(userId)}
+          text={username ?? userId}
+          imageSrc={avatarSrc}
+          imgClass="profile-image-container"
+          className="profile-image-container"
+          isDefaultImage
+        />
+      )}
       {isEditing ? renderForm() : renderInfo()}
     </div>
   );

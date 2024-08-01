@@ -20,12 +20,12 @@ function InviteList({ isOpen, onRequestClose }) {
     setPrivacyRefuseRoom(roomId, true);
     procInvite.add(roomId);
     changeProcInvite(new Set(Array.from(procInvite)));
-    roomActions.join(roomId, isDM);
+    roomActions.join(roomId, isDM).catch((err) => alert(err.message, 'Join room error'));
   }
   function rejectInvite(roomId, isDM) {
     procInvite.add(roomId);
     changeProcInvite(new Set(Array.from(procInvite)));
-    roomActions.leave(roomId, isDM);
+    roomActions.leave(roomId, isDM).catch((err) => alert(err.message, 'Leave room error'));
   }
   function updateInviteList(roomId) {
     if (procInvite.has(roomId)) procInvite.delete(roomId);

@@ -43,7 +43,7 @@ function RoomOptions({ roomId, threadId, afterOptionSelect = null }) {
       'danger',
     );
     if (!isConfirmed) return;
-    roomActions.leave(roomId);
+    roomActions.leave(roomId).catch((err) => alert(err.message, 'Leave room error'));
   };
 
   const followedThread =

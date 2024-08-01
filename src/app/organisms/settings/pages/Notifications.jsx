@@ -5,6 +5,7 @@ import mobileEvents, {
   notificationStatus,
   requestNotification,
 } from '@src/util/libs/mobile';
+import initMatrix from '@src/client/initMatrix';
 
 import settings from '../../../../client/state/settings';
 import { usePermission } from '../../../hooks/usePermission';
@@ -84,9 +85,14 @@ function NotificationsSection() {
           />
         </ul>
       </div>
-      <GlobalNotification />
-      <KeywordNotification />
-      <IgnoreUserList />
+
+      {!initMatrix.isGuest && (
+        <>
+          <GlobalNotification />
+          <KeywordNotification />
+          <IgnoreUserList />
+        </>
+      )}
     </>
   );
 }

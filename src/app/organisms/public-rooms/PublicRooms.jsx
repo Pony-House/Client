@@ -53,7 +53,9 @@ function TryJoinWithAlias({ alias, onRequestClose }) {
       tempRoomId: null,
     });
     try {
-      const roomId = await roomActions.join(alias, false);
+      const roomId = await roomActions
+        .join(alias, false)
+        .catch((err) => alert(err.message, 'Join room error'));
       setStatus({
         isJoining: true,
         error: null,

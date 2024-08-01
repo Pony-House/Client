@@ -122,6 +122,7 @@ async function join(roomIdOrAlias, isDM = false, via = undefined) {
     });
     return resultRoom.roomId;
   } catch (e) {
+    console.error(`[matrix] Unable to join room.`);
     throw new Error(e);
   }
 }
@@ -141,8 +142,9 @@ async function leave(roomId) {
       roomId,
       isDM,
     });
-  } catch {
+  } catch (e) {
     console.error(`[matrix] Unable to leave room.`);
+    throw new Error(e);
   }
 }
 

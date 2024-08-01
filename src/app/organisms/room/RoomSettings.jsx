@@ -107,7 +107,7 @@ function GeneralSettings({ roomId }) {
                 'danger',
               );
               if (!isConfirmed) return;
-              roomActions.leave(roomId);
+              roomActions.leave(roomId).catch((err) => alert(err.message, 'Leave room error'));
             }}
             faSrc="fa-solid fa-arrow-right-from-bracket"
           >

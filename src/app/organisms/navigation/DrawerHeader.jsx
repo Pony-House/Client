@@ -156,28 +156,30 @@ function DrawerHeader({ selectedTab, spaceId = null, room = null, banner = null 
         )}
       </ul>
 
-      <ul className="navbar-nav ms-auto mt-0 mt-md-1 small space-menu-2">
-        {isDMTab && (
-          <IconButton
-            className="nav-link"
-            onClick={() => openInviteUser()}
-            tooltipPlacement="bottom"
-            tooltip="Start DM"
-            fa="fa-solid fa-plus"
-            size="small"
-          />
-        )}
-        {!isDMTab && (
-          <IconButton
-            className="nav-link"
-            onClick={openHomeSpaceOptions}
-            tooltipPlacement="bottom"
-            tooltip="Add rooms/spaces"
-            fa="fa-solid fa-plus"
-            size="small"
-          />
-        )}
-      </ul>
+      {!initMatrix.isGuest && (
+        <ul className="navbar-nav ms-auto mt-0 mt-md-1 small space-menu-2">
+          {isDMTab && (
+            <IconButton
+              className="nav-link"
+              onClick={() => openInviteUser()}
+              tooltipPlacement="bottom"
+              tooltip="Start DM"
+              fa="fa-solid fa-plus"
+              size="small"
+            />
+          )}
+          {!isDMTab && (
+            <IconButton
+              className="nav-link"
+              onClick={openHomeSpaceOptions}
+              tooltipPlacement="bottom"
+              tooltip="Add rooms/spaces"
+              fa="fa-solid fa-plus"
+              size="small"
+            />
+          )}
+        </ul>
+      )}
     </Header>
   );
 }

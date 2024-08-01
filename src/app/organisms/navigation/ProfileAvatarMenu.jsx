@@ -101,10 +101,11 @@ function ProfileAvatarMenu() {
           }
 
           // Set Presence
-          mx.setPresence({
-            presence: presenceStatus,
-            status_msg: eventJSON,
-          });
+          if (!initMatrix.isGuest)
+            mx.setPresence({
+              presence: presenceStatus,
+              status_msg: eventJSON,
+            });
         }
 
         // Custom Status data

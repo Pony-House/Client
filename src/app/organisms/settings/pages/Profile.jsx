@@ -224,185 +224,208 @@ function ProfileSection() {
         </div>
       ) : null}
 
-      {!canUsePresence() && (
+      {!initMatrix.isGuest ? (
+        <>
+          {!canUsePresence() && (
+            <div className="card mb-3">
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item very-small text-gray">Custom Presence</li>
+
+                <li className="list-group-item border-0">
+                  <div className="small">Status</div>
+                  <div className="very-small text-danger">
+                    It was not possible to detect compatibility with presences in your homeserver.
+                    Your attempts to edit this page may have no effect.
+                  </div>
+                </li>
+              </ul>
+            </div>
+          )}
+
+          <div className="card noselect mb-3">
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item very-small text-gray">Status</li>
+
+              <li className="list-group-item border-0">
+                <div className="small">Status</div>
+                <div className="very-small text-gray">
+                  Choose the current status of your profile.
+                </div>
+              </li>
+
+              {items.map((item) => (
+                <MenuItem
+                  className={
+                    profileStatus === item.type ? 'text-start btn-text-success' : 'text-start'
+                  }
+                  faSrc={`user-status-icon ${item.faSrc}`}
+                  key={`profileSection_user_status_${item.type}`}
+                  onClick={() => sendSetStatus(item)}
+                >
+                  {item.text}
+                  <span className="ms-4 float-end">
+                    <RadioButton isActive={profileStatus === item.type} />
+                  </span>
+                </MenuItem>
+              ))}
+
+              <li className="list-group-item border-0">
+                <div className="small">Custom Status</div>
+                <div className="very-small text-gray">
+                  Enter a status that will appear next to your name.
+                </div>
+                <div className="input-group">
+                  <span className="input-group-text" id="basic-addon1">
+                    {customStatusValue ? (
+                      <IconButton
+                        fa="fa-solid fa-xmark"
+                        className="btn-sm me-2"
+                        onClick={() => {
+                          setcustomStatusIcon(avatarDefaultColor(color));
+                          setcustomStatusValue(null);
+                        }}
+                      />
+                    ) : null}
+
+                    <Img
+                      id="change-custom-status-img"
+                      className="img-fluid"
+                      src={customStatusIcon}
+                      alt="custom-status"
+                      onClick={(e) => {
+                        if (!$(e.target).hasClass('disabled')) {
+                          const cords = getEventCords(e);
+                          cords.x -= (document.dir === 'rtl' ? -80 : 280) - 200;
+                          cords.y -= 230;
+
+                          const tinyOpenEmojis = () => {
+                            openEmojiBoard(null, cords, 'emoji', (emoji) => {
+                              if (emoji.mxc) {
+                                setcustomStatusIcon(emoji.mxc);
+                                setcustomStatusValue(emoji.mxc);
+                              } else if (emoji.unicode) {
+                                setcustomStatusIcon(twemojifyUrl(emoji.hexcode));
+                                setcustomStatusValue(emoji.unicode);
+                              } else {
+                                setcustomStatusIcon(avatarDefaultColor(color));
+                                setcustomStatusValue(null);
+                              }
+
+                              e.target.click();
+                            });
+                          };
+
+                          tinyOpenEmojis();
+                        }
+                      }}
+                    />
+                  </span>
+                  <input
+                    ref={customStatusRef}
+                    className="form-control form-control-bg"
+                    type="text"
+                    placeholder=""
+                    maxLength="100"
+                    defaultValue={customStatus}
+                  />
+                </div>
+                <Button className="mt-2" onClick={sendCustomStatus} variant="primary">
+                  Submit
+                </Button>
+              </li>
+            </ul>
+          </div>
+
+          <div className="card noselect">
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item very-small text-gray">Info</li>
+
+              <li className="list-group-item border-0">
+                <div className="small">About me</div>
+                <div className="very-small text-gray">Enter a small biography about you.</div>
+                <textarea
+                  ref={bioRef}
+                  className="form-control form-control-bg"
+                  rows="7"
+                  maxLength="190"
+                  defaultValue={userBio}
+                />
+                <Button className="mt-2" onClick={sendBio} variant="primary">
+                  Submit
+                </Button>
+              </li>
+
+              <li className="list-group-item border-0">
+                <div className="small">Pronouns</div>
+                <div className="very-small text-gray">Enter your pronouns.</div>
+                <input
+                  ref={pronounsRef}
+                  type="text"
+                  className="form-control form-control-bg"
+                  maxLength="20"
+                  defaultValue={userPronouns}
+                />
+                <Button className="mt-2" onClick={sendPronouns} variant="primary">
+                  Submit
+                </Button>
+              </li>
+
+              <li className="list-group-item border-0">
+                <div className="small">Timezone</div>
+                <div className="very-small text-gray">Add timezone to your profile.</div>
+                <select
+                  ref={timezoneRef}
+                  className="form-select form-control-bg"
+                  defaultValue={userTimezone}
+                >
+                  <option>Choose...</option>
+                  {moment.tz.names().map((item) => (
+                    <option key={`profileSection_timezone_${item}`} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+                <Button className="mt-2" onClick={sendTimezone} variant="primary">
+                  Submit
+                </Button>
+              </li>
+
+              <li className="list-group-item border-0">
+                <div className="small">Banner</div>
+
+                <div className="very-small text-gray">
+                  <p>This image will display at the top of your profile.</p>
+                  The recommended minimum size is 1500x500 and recommended aspect ratio is 16:9.
+                </div>
+
+                <ImageUpload
+                  className="space-banner profile-banner"
+                  text="Banner"
+                  imageSrc={mxcUrl.toHttp(bannerSrc)}
+                  onUpload={handleBannerUpload}
+                  onRequestRemove={() => handleBannerUpload(null)}
+                  defaultImage={avatarDefaultColor(color, 'profile')}
+                />
+              </li>
+            </ul>
+          </div>
+        </>
+      ) : (
         <div className="card mb-3">
           <ul className="list-group list-group-flush">
-            <li className="list-group-item very-small text-gray">Custom Presence</li>
+            <li className="list-group-item very-small text-gray">Guest Account</li>
 
             <li className="list-group-item border-0">
-              <div className="small">Status</div>
+              <div className="small">Information</div>
               <div className="very-small text-danger">
-                It was not possible to detect compatibility with presences in your homeserver. Your
-                attempts to edit this page may have no effect.
+                You are using a guest account in this homeserver. Many account settings are limited
+                to this type of account. Try switching to a normal account to get full access to
+                your account.
               </div>
             </li>
           </ul>
         </div>
       )}
-
-      <div className="card noselect mb-3">
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Status</li>
-
-          <li className="list-group-item border-0">
-            <div className="small">Status</div>
-            <div className="very-small text-gray">Choose the current status of your profile.</div>
-          </li>
-
-          {items.map((item) => (
-            <MenuItem
-              className={profileStatus === item.type ? 'text-start btn-text-success' : 'text-start'}
-              faSrc={`user-status-icon ${item.faSrc}`}
-              key={`profileSection_user_status_${item.type}`}
-              onClick={() => sendSetStatus(item)}
-            >
-              {item.text}
-              <span className="ms-4 float-end">
-                <RadioButton isActive={profileStatus === item.type} />
-              </span>
-            </MenuItem>
-          ))}
-
-          <li className="list-group-item border-0">
-            <div className="small">Custom Status</div>
-            <div className="very-small text-gray">
-              Enter a status that will appear next to your name.
-            </div>
-            <div className="input-group">
-              <span className="input-group-text" id="basic-addon1">
-                {customStatusValue ? (
-                  <IconButton
-                    fa="fa-solid fa-xmark"
-                    className="btn-sm me-2"
-                    onClick={() => {
-                      setcustomStatusIcon(avatarDefaultColor(color));
-                      setcustomStatusValue(null);
-                    }}
-                  />
-                ) : null}
-
-                <Img
-                  id="change-custom-status-img"
-                  className="img-fluid"
-                  src={customStatusIcon}
-                  alt="custom-status"
-                  onClick={(e) => {
-                    if (!$(e.target).hasClass('disabled')) {
-                      const cords = getEventCords(e);
-                      cords.x -= (document.dir === 'rtl' ? -80 : 280) - 200;
-                      cords.y -= 230;
-
-                      const tinyOpenEmojis = () => {
-                        openEmojiBoard(null, cords, 'emoji', (emoji) => {
-                          if (emoji.mxc) {
-                            setcustomStatusIcon(emoji.mxc);
-                            setcustomStatusValue(emoji.mxc);
-                          } else if (emoji.unicode) {
-                            setcustomStatusIcon(twemojifyUrl(emoji.hexcode));
-                            setcustomStatusValue(emoji.unicode);
-                          } else {
-                            setcustomStatusIcon(avatarDefaultColor(color));
-                            setcustomStatusValue(null);
-                          }
-
-                          e.target.click();
-                        });
-                      };
-
-                      tinyOpenEmojis();
-                    }
-                  }}
-                />
-              </span>
-              <input
-                ref={customStatusRef}
-                className="form-control form-control-bg"
-                type="text"
-                placeholder=""
-                maxLength="100"
-                defaultValue={customStatus}
-              />
-            </div>
-            <Button className="mt-2" onClick={sendCustomStatus} variant="primary">
-              Submit
-            </Button>
-          </li>
-        </ul>
-      </div>
-
-      <div className="card noselect">
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item very-small text-gray">Info</li>
-
-          <li className="list-group-item border-0">
-            <div className="small">About me</div>
-            <div className="very-small text-gray">Enter a small biography about you.</div>
-            <textarea
-              ref={bioRef}
-              className="form-control form-control-bg"
-              rows="7"
-              maxLength="190"
-              defaultValue={userBio}
-            />
-            <Button className="mt-2" onClick={sendBio} variant="primary">
-              Submit
-            </Button>
-          </li>
-
-          <li className="list-group-item border-0">
-            <div className="small">Pronouns</div>
-            <div className="very-small text-gray">Enter your pronouns.</div>
-            <input
-              ref={pronounsRef}
-              type="text"
-              className="form-control form-control-bg"
-              maxLength="20"
-              defaultValue={userPronouns}
-            />
-            <Button className="mt-2" onClick={sendPronouns} variant="primary">
-              Submit
-            </Button>
-          </li>
-
-          <li className="list-group-item border-0">
-            <div className="small">Timezone</div>
-            <div className="very-small text-gray">Add timezone to your profile.</div>
-            <select
-              ref={timezoneRef}
-              className="form-select form-control-bg"
-              defaultValue={userTimezone}
-            >
-              <option>Choose...</option>
-              {moment.tz.names().map((item) => (
-                <option key={`profileSection_timezone_${item}`} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-            <Button className="mt-2" onClick={sendTimezone} variant="primary">
-              Submit
-            </Button>
-          </li>
-
-          <li className="list-group-item border-0">
-            <div className="small">Banner</div>
-
-            <div className="very-small text-gray">
-              <p>This image will display at the top of your profile.</p>
-              The recommended minimum size is 1500x500 and recommended aspect ratio is 16:9.
-            </div>
-
-            <ImageUpload
-              className="space-banner profile-banner"
-              text="Banner"
-              imageSrc={mxcUrl.toHttp(bannerSrc)}
-              onUpload={handleBannerUpload}
-              onRequestRemove={() => handleBannerUpload(null)}
-              defaultImage={avatarDefaultColor(color, 'profile')}
-            />
-          </li>
-        </ul>
-      </div>
     </>
   );
 }

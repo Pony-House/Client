@@ -40,7 +40,9 @@ const rommCommands = {
     exe: (roomId, data) => {
       const rawIds = data.split(' ');
       const roomIds = rawIds.filter((id) => id.match(ROOM_ID_ALIAS_REG));
-      roomIds.map((id) => roomActions.join(id));
+      roomIds.map((id) =>
+        roomActions.join(id).catch((err) => alert(err.message, 'Join room error')),
+      );
     },
   },
 

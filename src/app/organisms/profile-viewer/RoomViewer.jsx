@@ -70,7 +70,7 @@ function RoomFooter({ roomId, originalRoomId, publicData, onRequestClose }) {
   async function joinRoom() {
     onRequestClose();
     setLoadingPage('Joining room...');
-    await roomActions.join(roomId, false);
+    await roomActions.join(roomId, false).catch((err) => alert(err.message, 'Join room error'));
     setLoadingPage(false);
     openRoom();
   }
