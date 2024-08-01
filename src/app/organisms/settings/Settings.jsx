@@ -187,7 +187,7 @@ const buildTabItems = () => {
         });
       }
 
-      if (envAPI.get('WEB3')) {
+      if (envAPI.get('WEB3') && !initMatrix.isGuest) {
         tabItems.push({
           text: tabText.WEB3,
           key: 'web3',
