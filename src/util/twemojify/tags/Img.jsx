@@ -26,7 +26,7 @@ const IMG = {
       }),
     );
   },
-  React: (attribs) => {
+  React: ({ attribs }) => {
     const imgResult =
       attribs &&
       typeof attribs.src === 'string' &&
@@ -51,11 +51,11 @@ const IMG = {
 
     // Emoji data
     /* if (
-                      attribs['data-mx-emoticon'] ||
-                      (typeof attribs.class === 'string' && attribs.class.includes('emoji'))
-                    ) {
-                      return 
-                    } */
+                          attribs['data-mx-emoticon'] ||
+                          (typeof attribs.class === 'string' && attribs.class.includes('emoji'))
+                        ) {
+                          return 
+                        } */
 
     return imgResult;
   },

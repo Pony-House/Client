@@ -75,14 +75,14 @@ const mathOptions = {
   replace: (node) => {
     const maths = node.attribs?.['data-mx-maths'];
     if (maths) return <MxMaths displayMode={node.name} maths={maths} />;
-    else if (node.type === 'tag' && reactTags[node.name]) return reactTags[node.name](node.attribs);
+    else if (node.type === 'tag' && reactTags[node.name]) return reactTags[node.name](node);
     return null;
   },
 };
 
 const sendReactTag = {
   replace: (node) => {
-    if (node.type === 'tag' && reactTags[node.name]) return reactTags[node.name](node.attribs);
+    if (node.type === 'tag' && reactTags[node.name]) return reactTags[node.name](node);
     return null;
   },
 };
