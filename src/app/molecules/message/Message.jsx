@@ -515,7 +515,7 @@ const MessageBody = React.memo(
 
     return (
       <div
-        className={`text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''} ${className} message-body-status-${messageStatus || ''}`}
+        className={`text-freedom message-body small text-bg${!emojiOnly ? ' emoji-size-fix' : ''} ${className}${messageStatus ? ` message-body-status-${messageStatus}` : ''}`}
       >
         {msgType === 'm.emote' && (
           <>
