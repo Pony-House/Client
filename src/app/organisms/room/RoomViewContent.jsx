@@ -657,7 +657,13 @@ function RoomViewContent({
     // Need pagination backward
     if (roomTimeline.canPaginateBackward() || limit.from > 0) {
       if (!isGuest)
-        tl.push(<LoadingMsgPlaceholders keyName="chatscroll-1" count={PLACEHOLDER_COUNT} />);
+        tl.push(
+          <LoadingMsgPlaceholders
+            keyName="chatscroll-1"
+            key="chatscroll-1"
+            count={PLACEHOLDER_COUNT}
+          />,
+        );
       itemCountIndex += PLACEHOLDER_COUNT;
     }
 
@@ -746,7 +752,13 @@ function RoomViewContent({
     // Need pagination forward
     if (roomTimeline.canPaginateForward() || limit.length < timeline.length) {
       if (!isGuest)
-        tl.push(<LoadingMsgPlaceholders keyName="chatscroll-2" count={PLACEHOLDER_COUNT} />);
+        tl.push(
+          <LoadingMsgPlaceholders
+            keyName="chatscroll-2"
+            key="chatscroll-2"
+            count={PLACEHOLDER_COUNT}
+          />,
+        );
     }
 
     if (tl.length < 1 && isGuest) {
@@ -785,7 +797,11 @@ function RoomViewContent({
               {!isLoading && roomTimeline.initialized ? (
                 renderTimeline(isUserList)
               ) : (
-                <LoadingMsgPlaceholders keyName="chatscroll-loading" count={3} />
+                <LoadingMsgPlaceholders
+                  keyName="chatscroll-loading"
+                  key="chatscroll-loading"
+                  count={3}
+                />
               )}
             </tbody>
           </table>
