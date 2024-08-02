@@ -12,10 +12,10 @@ import tinyFixScrollChat from '@src/app/molecules/media/mediaFix';
 import Img, { ImgJquery } from '@src/app/atoms/image/Image';
 import { everyoneTags } from '@src/app/molecules/global-notification/KeywordNotification';
 
-import { sanitizeText } from './sanitize';
-import openTinyURL from './message/urlProtection';
-import { tinyLinkifyFixer } from './clear-urls/clearUrls';
-import envAPI from './libs/env';
+import { sanitizeText } from '../sanitize';
+import openTinyURL from '../message/urlProtection';
+import { tinyLinkifyFixer } from '../clear-urls/clearUrls';
+import envAPI from '../libs/env';
 
 // Register Protocols
 linkify.registerCustomProtocol('matrix');
@@ -123,7 +123,7 @@ const ImageFix = {
 };
 
 // Tiny Math
-const Math = lazy(() => import('../app/atoms/math/Math'));
+const Math = lazy(() => import('../../app/atoms/math/Math'));
 const mathOptions = {
   replace: (node) => {
     const maths = node.attribs?.['data-mx-maths'];
