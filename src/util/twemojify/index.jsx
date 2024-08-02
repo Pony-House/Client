@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import $ from 'jquery';
 
 import * as linkify from 'linkifyjs';
@@ -14,7 +14,9 @@ import { sanitizeText } from '../sanitize';
 import openTinyURL from '../message/urlProtection';
 import { tinyLinkifyFixer } from '../clear-urls/clearUrls';
 import envAPI from '../libs/env';
+
 import IMG from './tags/Img';
+import MxMaths from './tags/MxMaths';
 
 // Register Protocols
 linkify.registerCustomProtocol('matrix');
@@ -65,30 +67,22 @@ global.String.prototype.emojiToCode = function () {
   return this.codePointAt(0).toString(16);
 };
 
+const reactTags = { img: IMG.React };
+const jQueryTags = { img: IMG.jquery };
+
 // Tiny Math
-const Math = lazy(() => import('../../app/atoms/math/Math'));
 const mathOptions = {
   replace: (node) => {
     const maths = node.attribs?.['data-mx-maths'];
-    if (maths) {
-      return (
-        <Suspense fallback={<code>{maths}</code>}>
-          <Math
-            content={maths}
-            throwOnError={false}
-            errorColor="var(--tc-danger-normal)"
-            displayMode={node.name === 'div'}
-          />
-        </Suspense>
-      );
-    } else if (node.type === 'tag' && node.name === 'img') return IMG.React(node.attribs);
+    if (maths) return <MxMaths displayMode={node.name} maths={maths} />;
+    else if (node.type === 'tag' && reactTags[node.name]) return reactTags[node.name](node.attribs);
     return null;
   },
 };
 
-const sendImg = {
+const sendReactTag = {
   replace: (node) => {
-    if (node.type === 'tag' && node.name === 'img') return IMG.React(node.attribs);
+    if (node.type === 'tag' && reactTags[node.name]) return reactTags[node.name](node.attribs);
     return null;
   },
 };
@@ -197,7 +191,7 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
 
   // React Mode
   if (isReact) {
-    const msgHtml = parse(msgContent, maths ? mathOptions : sendImg);
+    const msgHtml = parse(msgContent, maths ? mathOptions : sendReactTag);
 
     // Insert Linkify
     if (linkifyEnabled) {
@@ -230,8 +224,10 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
   msgContent = $('<span>', { class: 'linkify-base' }).html(msgContent);
 
   // Convert Tags
-  const imgs = msgContent.find('img');
-  imgs.each(IMG.jquery);
+  for (const item in jQueryTags) {
+    const imgs = msgContent.find(item);
+    imgs.each(jQueryTags[item]);
+  }
 
   // Fix Urls
   const tinyUrls = msgContent.find('.lk-href');
