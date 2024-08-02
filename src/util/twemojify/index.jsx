@@ -17,6 +17,7 @@ import envAPI from '../libs/env';
 
 import IMG from './tags/Img';
 import MxMaths from './tags/MxMaths';
+import IFRAME from './tags/Iframe';
 
 // Register Protocols
 linkify.registerCustomProtocol('matrix');
@@ -67,7 +68,7 @@ global.String.prototype.emojiToCode = function () {
   return this.codePointAt(0).toString(16);
 };
 
-const reactTags = { img: IMG.React };
+const reactTags = { img: IMG.React, iframe: IFRAME.React };
 const jQueryTags = { img: IMG.jquery };
 
 // Tiny Math

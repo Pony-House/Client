@@ -8,6 +8,7 @@ export const postMessage = (current, msg = null) => current.contentWindow.postMe
 const Iframe = React.forwardRef(
   (
     {
+      onLoad = null,
       title = null,
       id = null,
       src = null,
@@ -67,6 +68,7 @@ const Iframe = React.forwardRef(
 
     return (
       <iframe
+        onLoad={onLoad}
         title={title}
         style={style}
         id={id}
@@ -105,6 +107,7 @@ Iframe.propTypes = {
   className: PropTypes.string,
   id: PropTypes.string,
   onMessage: PropTypes.func,
+  onLoad: PropTypes.func,
   frameBorder: PropTypes.number,
 };
 
