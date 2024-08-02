@@ -18,7 +18,6 @@ function AboutSection() {
     ['Crypto Fonts', __ENV_APP__.DEPS['@cryptofonts/cryptofont']],
     ['Emoji Data', __ENV_APP__.DEPS['emojibase-data']],
     ['jQuery', __ENV_APP__.DEPS.jquery],
-    ['jQuery UI', __ENV_APP__.DEPS['jquery-ui']],
     ['Linkifyjs', __ENV_APP__.DEPS.linkifyjs],
     initMatrix.matrixClient.olmVersion
       ? ['OLM Version', initMatrix.matrixClient.olmVersion.join('.')]
