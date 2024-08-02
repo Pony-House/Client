@@ -189,6 +189,15 @@ const twemojifyAction = (text, opts, linkifyEnabled, sanitize, maths, isReact) =
     target: '_blank',
   };
 
+  // Fix List
+  const UL_tags = /<ul>([\s\S]*?)<\/ul>|<ol>([\s\S]*?)<\/ol>/g;
+  msgContent = msgContent.replace(UL_tags, (r0) => {
+    return r0
+      .replace(/<p>/g, '')
+      .replace(/<\/p>/g, '')
+      .replace(/(\r\n|\n|\r)/gm, '');
+  });
+
   // React Mode
   if (isReact) {
     const msgHtml = parse(msgContent, maths ? mathOptions : sendReactTag);
