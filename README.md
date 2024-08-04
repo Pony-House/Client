@@ -47,6 +47,9 @@ This is an open source third-party project that allows you to use a translator h
 
 Just like IPFS, you can use your own instance hosted on your machine, or some third-party server.
 
+### Yjs
+Yjs is a shared editing framework. It exposes Shared Types that can be manipulated like any other data type. But they are synced automatically using the room events.
+
 ## Custom App Style
 Would you like to customize your login page to your website? Then you can check out some values available in the `config/custom-css.scss` file.
 

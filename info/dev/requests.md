@@ -106,6 +106,8 @@ Made by Me
 
     =======================================================
 
+    Ajeitar o scroll da timeline
+
     --> Ajeitar... Ao criar uma sala, o app está jogando para o menu de homes. Isso não pode acotecer se a room for dentro de um space.
     (Isso também acontece quando tenta criar uma DM)
 
