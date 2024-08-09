@@ -8,27 +8,30 @@ import moment from '@src/util/libs/momentjs';
 import attemptDecryption from '@src/util/libs/attemptDecryption';
 // import { insertIntoRoomEventsDB } from '@src/util/libs/roomEventsDB';
 
-import {
-  Direction,
-  EventTimeline,
-  MatrixEventEvent,
-  Room,
-  RoomEvent,
-  RoomMemberEvent,
-} from 'matrix-js-sdk';
+import { Direction, MatrixEventEvent, Room, RoomEvent, RoomMemberEvent } from 'matrix-js-sdk';
 
 // import { setLoadingPage } from '@src/app/templates/client/Loading';
 import initMatrix /* , { fetchFn } */ from '../initMatrix';
 import cons from './cons';
 
-import settings from './settings';
 import { messageIsClassicCrdt } from '../../util/libs/crdt';
 
 import { updateRoomInfo } from '../action/navigation';
 import urlParams from '../../util/libs/urlParams';
 import tinyFixScrollChat from '../../app/molecules/media/mediaFix';
 import { buildRoomTimeline, startRoomTimelineRefresh } from './GuestRoomTimeline';
-// import { insertEvent } from './eventsDelay';
+import {
+  isEdited,
+  isReaction,
+  hideMemberEvents,
+  addToMap,
+  getFirstLinkedTimeline,
+  getLastLinkedTimeline,
+  iterateLinkedTimelines,
+  isTimelineLinked,
+  getClientYjs,
+  enableyJsItem,
+} from './Timeline/functions';
 
 const delayYdocUpdate = 100;
 const hashTryLimit = 10;
@@ -37,126 +40,6 @@ if (__ENV_APP__.MODE === 'development') {
   global.Y = Y;
 }
 // let timeoutForceChatbox = null;
-
-function isEdited(mEvent) {
-  return mEvent.getRelation()?.rel_type === 'm.replace';
-}
-
-function isReaction(mEvent) {
-  return mEvent.getType() === 'm.reaction';
-}
-
-function hideMemberEvents(mEvent) {
-  const content = mEvent.getContent();
-  const prevContent = mEvent.getPrevContent();
-  const { membership } = content;
-  if (settings.hideMembershipEvents) {
-    if (membership === 'invite' || membership === 'ban' || membership === 'leave') return true;
-    if (prevContent.membership !== 'join') return true;
-  }
-  if (settings.hideNickAvatarEvents) {
-    if (membership === 'join' && prevContent.membership === 'join') return true;
-  }
-  return false;
-}
-
-function getRelateToId(mEvent) {
-  const relation = mEvent.getRelation();
-  return relation && (relation.event_id ?? null);
-}
-
-function addToMap(myMap, mEvent) {
-  const relateToId = getRelateToId(mEvent);
-  if (relateToId === null) return null;
-  const mEventId = mEvent.getId();
-
-  if (!myMap.has(relateToId)) myMap.set(relateToId, []);
-  const mEvents = myMap.get(relateToId);
-  if (mEvents.find((ev) => ev.getId() === mEventId)) return mEvent;
-  mEvents.push(mEvent);
-  return mEvent;
-}
-
-function getFirstLinkedTimeline(timeline) {
-  let prevTimeline = timeline;
-  let tm = prevTimeline;
-  while (prevTimeline) {
-    tm = prevTimeline;
-    prevTimeline = prevTimeline.getNeighbouringTimeline(EventTimeline.BACKWARDS);
-  }
-  return tm;
-}
-function getLastLinkedTimeline(timeline) {
-  let nextTimeline = timeline;
-  let tm = nextTimeline;
-  while (nextTimeline) {
-    tm = nextTimeline;
-    nextTimeline = nextTimeline.getNeighbouringTimeline(EventTimeline.FORWARDS);
-  }
-  return tm;
-}
-
-function iterateLinkedTimelines(timeline, backwards, callback) {
-  let tm = timeline;
-  while (tm) {
-    callback(tm);
-    if (backwards) tm = tm.getNeighbouringTimeline(EventTimeline.BACKWARDS);
-    else tm = tm.getNeighbouringTimeline(EventTimeline.FORWARDS);
-  }
-}
-
-function isTimelineLinked(tm1, tm2) {
-  let tm = getFirstLinkedTimeline(tm1);
-  while (tm) {
-    if (tm === tm2) return true;
-    tm = tm.getNeighbouringTimeline(EventTimeline.FORWARDS);
-  }
-  return false;
-}
-
-const getClientYjs = (updateInfo, callback) => {
-  if (Array.isArray(updateInfo.structs) && updateInfo.structs.length > 0) {
-    for (const item in updateInfo.structs) {
-      const struct = updateInfo.structs[item];
-      callback({ value: struct, key: struct.id.client }, 'structs');
-    }
-  }
-
-  if (updateInfo.ds && objType(updateInfo.ds.clients, 'map')) {
-    updateInfo.ds.clients.forEach((value, key) => {
-      callback({ value, key }, 'deleted');
-    });
-  }
-};
-
-const enableyJsItem = {
-  convertToString: (update) => btoa(update.toString()),
-
-  action: (ydoc, type, parent) => {
-    if (typeof enableyJsItem.types[type] === 'function') {
-      return enableyJsItem.types[type](ydoc, parent);
-    }
-  },
-
-  constructorToString: (parent) =>
-    String(
-      parent.constructor.name.startsWith('_')
-        ? parent.constructor.name.substring(1)
-        : parent.constructor.name,
-    ).toLocaleLowerCase(),
-
-  types: {
-    ymap: (ydoc, parent) => ydoc.getMap(parent),
-    ytext: (ydoc, parent) => ydoc.getText(parent),
-    yarray: (ydoc, parent) => ydoc.getArray(parent),
-  },
-
-  convertToJson: {
-    ymap: (data) => data.toJSON(),
-    ytext: (data) => data.toString(),
-    yarray: (data) => data.toArray(),
-  },
-};
 
 // Class
 class RoomTimeline extends EventEmitter {
@@ -1220,11 +1103,6 @@ class RoomTimeline extends EventEmitter {
     this._preListenRoomTimeline = (event, room, toStartOfTimeline, removed, data) =>
       this._listenRoomTimeline(event, room, data);
     this._preListenDecryptEvent = (event) => this._listenDecryptEvent(event);
-    /*
-        this._preListenRoomTimeline = (event, room, toStartOfTimeline, removed, data) =>
-      insertEvent(() => this._listenRoomTimeline(event, room, data));
-    this._preListenDecryptEvent = (event) => insertEvent(() => this._listenDecryptEvent(event));
-    */
 
     this._listenRedaction = (mEvent, room) => {
       if (room.roomId !== this.roomId) return;
