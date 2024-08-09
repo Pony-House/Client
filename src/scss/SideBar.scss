@@ -148,8 +148,7 @@
   }
 
   .avatar-container,
-  .avatar-container [itemprop='image'],
-  .avatar-container canvas {
+  .avatar-container [itemprop='image'] {
     height: 35px !important;
     width: 35px !important;
   }

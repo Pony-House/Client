@@ -37,21 +37,15 @@
 }
 
 .modal-user-profile-avatar {
-  .avatar-react,
-  .ff-canvas,
-  .ff-image {
+  .avatar-react {
     transition: filter 0.1s;
   }
 
-  .avatar-react:hover,
-  .ff-canvas:hover,
-  .ff-image:hover {
+  .avatar-react:hover {
     filter: grayscale(0.2) brightness(0.9);
   }
 
-  .avatar-react:active,
-  .ff-canvas:active,
-  .ff-image:active {
+  .avatar-react:active {
     filter: grayscale(0.4) brightness(0.8);
   }
 }

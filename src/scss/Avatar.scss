@@ -98,8 +98,7 @@
 
 .chatbox-portable {
   .avatar-container {
-    [itemprop='image'],
-    canvas {
+    [itemprop='image'] {
       border-radius: var(--bo-radius);
     }
   }
@@ -141,14 +140,12 @@
 }
 
 .avatar-container,
-.avatar-container [itemprop='image'],
-.avatar-container canvas {
+.avatar-container [itemprop='image'] {
   width: var(--default-avatar-size);
   height: var(--default-avatar-size);
 }
 
 .avatar-container {
-  canvas,
   [itemprop='image'],
   .img-container {
     font-size: 0px !important;
@@ -166,8 +163,7 @@
     border-radius: var(--bo-radius);
   }
 
-  > [itemprop='image'],
-  > canvas {
+  > [itemprop='image'] {
     font-size: 0;
     border-radius: var(--bo-radius);
     height: 100%;
@@ -232,15 +228,12 @@
 // Room Header
 .room-view .header-room {
   .avatar-container,
-  .avatar-container [itemprop='image'],
-  .avatar-container canvas {
+  .avatar-container [itemprop='image'] {
     height: 36px !important;
     width: 36px !important;
   }
 
-  .avatar-base .avatar-react,
-  .avatar-base.ff-canvas,
-  .avatar-base .ff-image {
+  .avatar-base .avatar-react {
     height: 30px;
   }
 }
@@ -248,8 +241,7 @@
 /* Space Manage */
 .space-manage__content {
   .profile-image-container,
-  .profile-image-container [itemprop='image'],
-  .profile-image-container canvas {
+  .profile-image-container [itemprop='image'] {
     height: 24px !important;
     width: 24px !important;
   }
@@ -274,9 +266,7 @@
 .space-container,
 .featured-container {
   .avatar-container {
-    .avatar-react,
-    .ff-canvas,
-    .ff-image {
+    .avatar-react {
       height: 42px !important;
       width: 42px !important;
     }
@@ -286,8 +276,7 @@
 // People Drawer
 .people-drawer {
   .avatar-container,
-  .avatar-container [itemprop='image'],
-  .avatar-container canvas {
+  .avatar-container [itemprop='image'] {
     height: 32px !important;
     width: 32px !important;
   }
@@ -296,8 +285,7 @@
 // Room Selector
 .room-selector {
   .avatar-container,
-  .avatar-container [itemprop='image'],
-  .avatar-container canvas {
+  .avatar-container [itemprop='image'] {
     height: 24px !important;
     width: 24px !important;
   }
@@ -307,8 +295,7 @@
 #message-reactions {
   .react-content {
     .avatar-container,
-    [itemprop='image'],
-    canvas {
+    [itemprop='image'] {
       height: 36px;
       width: 36px;
     }
@@ -318,8 +305,7 @@
 // Profile Modal
 .profile-user-profile-avatar {
   .avatar-container,
-  .avatar-container [itemprop='image'],
-  .avatar-container canvas {
+  .avatar-container [itemprop='image'] {
     height: 87px !important;
     width: 101px !important;
   }
@@ -327,16 +313,14 @@
 
 .modal-dialog-user-profile {
   .avatar-container,
-  .avatar-container [itemprop='image'],
-  .avatar-container canvas {
+  .avatar-container [itemprop='image'] {
     height: 140px;
     width: 140px;
   }
 
   &.modal-dialog-room-profile {
     .avatar-container,
-    .avatar-container [itemprop='image'],
-    .avatar-container canvas {
+    .avatar-container [itemprop='image'] {
       height: 110px;
       width: 110px;
     }
@@ -349,8 +333,7 @@
 #search-chatbox {
   .message__threadSummary {
     .avatar-container,
-    .avatar-container [itemprop='image'],
-    .avatar-container canvas {
+    .avatar-container [itemprop='image'] {
       height: 24px !important;
       width: 24px !important;
     }
@@ -363,8 +346,7 @@
 
   .welcome-msg {
     .avatar-container,
-    .avatar-container [itemprop='image'],
-    .avatar-container canvas {
+    .avatar-container [itemprop='image'] {
       height: 80px !important;
       width: 80px !important;
     }
@@ -373,7 +355,6 @@
 body.rounded-avatar-mode .profile-image-container {
   &,
   [itemprop='image'],
-  canvas,
   .avatar__border--active,
   .img-container {
     border-radius: 50% !important;
