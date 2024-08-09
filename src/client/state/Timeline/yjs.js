@@ -5,7 +5,7 @@ import { objType } from 'for-promise/utils/lib.mjs';
 
 import moment from '@src/util/libs/momentjs';
 
-import { getClientYjs, enableyJsItem } from './Timeline/functions';
+import { getClientYjs, enableyJsItem } from './functions';
 
 const delayYdocUpdate = 100;
 const hashTryLimit = 10;

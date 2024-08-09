@@ -27,8 +27,6 @@ import {
 } from './Timeline/functions';
 import installYjs from './Timeline/yjs';
 
-// let timeoutForceChatbox = null;
-
 // Class
 class RoomTimeline extends EventEmitter {
   constructor(roomId, roomAlias = null, isGuest = false, guestId = null, refreshTime = null) {
