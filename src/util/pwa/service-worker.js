@@ -104,17 +104,17 @@ function proxyRequest(caches, request) {
         return networkResponse;
       };
 
-      const reject = (err) => {
-        // console.error(err);
-        // console.error('[PWA] [service-worker] Failed to fetch', request.url);
+      /* const reject = (err) => {
+        console.error(err);
+        console.error('[PWA] [service-worker] Failed to fetch', request.url);
         // Placeholder image for the fallback
-        // return fetch('./img/svg/image-broken.svg', { mode: 'no-cors' });
+        return fetch('./img/svg/image-broken.svg', { mode: 'no-cors' });
         return err;
-      };
+      }; */
 
       if (typeof window.nodeFetch === 'function')
-        return window.nodeFetch(request.clone()).then(resolve).catch(reject);
-      return fetch(request.clone()).then(resolve).catch(reject);
+        return window.nodeFetch(request.clone()).then(resolve);
+      return fetch(request.clone()).then(resolve);
     });
   });
 }
