@@ -131,7 +131,10 @@ self.addEventListener('fetch', function (event) {
   var request = event.request;
 
   // console.log('[PWA] [service-worker] Detected request', request.url);
-  if (request.method !== 'GET' || !request.url.match(/\.(jpe?g|png|gif|svg)$/)) {
+  if (
+    request.method !== 'GET' ||
+    !request.url.match(/\.(jpe?g|png|gif|svg|webp|bmp|avif|jfif|pjpeg|pjp|ico|cur|tif|tiff)$/)
+  ) {
     return;
   }
 

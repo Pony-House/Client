@@ -6,6 +6,8 @@ export const ALLOWED_BLOB_MIMETYPES = [
   'image/apng',
   'image/webp',
   'image/avif',
+  'image/bmp',
+  'image/tiff',
 
   'video/mp4',
   'video/webm',
