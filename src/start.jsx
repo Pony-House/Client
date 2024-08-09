@@ -7,7 +7,7 @@ import { startCustomThemes } from '@mods';
 import startQuery from './util/libs/jquery';
 
 import { startSettings } from './client/state/settings';
-import { getPWADisplayMode } from './util/PWA.js';
+import { getPWADisplayMode, installPWA } from './util/pwa/installer.js';
 
 import App from './app/pages/App';
 import { getOsSettings } from './util/libs/osSettings';
@@ -27,6 +27,7 @@ function StartApp(appProtocol) {
   startSettings();
 
   getPWADisplayMode();
+  installPWA();
   startQuery();
 
   const root = ReactDOM.createRoot(document.getElementById('root'));

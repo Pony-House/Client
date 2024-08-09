@@ -1,0 +1,1 @@
+- Pwa file added to cache images.

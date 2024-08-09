@@ -66,6 +66,11 @@ const copyFiles = {
       dest: '',
     },
 
+    {
+      src: 'src/util/pwa/service-worker.js',
+      dest: '',
+    },
+
   ],
 }
 

@@ -1,5 +1,6 @@
 import $ from 'jquery';
 
+let usingPWA = false;
 let deferredPrompt;
 window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt) => {
   const body = $('body');
@@ -60,4 +61,23 @@ export function getPWADisplayMode() {
   }
 
   return 'browser';
+}
+
+export function isUsingPWA() {
+  return usingPWA;
+}
+
+export function installPWA() {
+  if ('serviceWorker' in navigator || 'ServiceWorker' in navigator) {
+    navigator.serviceWorker
+      .register('./service-worker.js', { scope: './' })
+      .then(() => {
+        console.log('[PWA] Service Worker Registered');
+        usingPWA = true;
+      })
+      .catch((err) => {
+        console.log('[PWA] Service Worker Failed to Register');
+        console.error(err);
+      });
+  }
 }

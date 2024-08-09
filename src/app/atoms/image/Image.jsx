@@ -443,6 +443,7 @@ const Img = React.forwardRef(
       if (!isObj) {
         const theTinyImg = (
           <img
+            itemProp="image"
             label={label}
             tags={typeof tags === 'string' ? tags : Array.isArray(tags) ? tags.join(',') : null}
             hexcode={hexcode}
@@ -694,6 +695,7 @@ function ImgJquery({
 
         const finalImg = $('<img>', ops);
         img.replaceWith(finalImg);
+        finalImg.attr('itemprop', 'image');
 
         if (tags)
           finalImg.attr(
