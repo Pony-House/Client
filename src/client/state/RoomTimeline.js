@@ -319,12 +319,12 @@ class RoomTimeline extends EventEmitter {
           !isEdited(mEvent) &&
           cons.supportEventTypes.includes(mEvent.getType())
         ) {
-          // tinyFixScrollChat();
+          tinyFixScrollChat();
           return mEvent;
         }
       }
 
-      // tinyFixScrollChat();
+      tinyFixScrollChat();
       return liveEvents[liveEvents.length - 1];
     };
 
