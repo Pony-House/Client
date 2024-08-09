@@ -105,10 +105,11 @@ function proxyRequest(caches, request) {
       };
 
       const reject = (err) => {
-        console.error(err);
-        console.error('[PWA] [service-worker] Failed to fetch', request.url);
+        // console.error(err);
+        // console.error('[PWA] [service-worker] Failed to fetch', request.url);
         // Placeholder image for the fallback
-        return fetch('./img/svg/image-broken.svg', { mode: 'no-cors' });
+        // return fetch('./img/svg/image-broken.svg', { mode: 'no-cors' });
+        return err;
       };
 
       if (typeof window.nodeFetch === 'function')
