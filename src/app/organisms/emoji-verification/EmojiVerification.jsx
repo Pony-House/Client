@@ -27,34 +27,41 @@ function EmojiVerificationContent({ data, requestClose }) {
   const beginStore = useStore();
 
   const beginVerification = async () => {
-    const crossSigningInfo = mx.getCrypto().crossSigningInfo;
-    if (
-      (await isCrossVerified(mx.deviceId)) &&
-      (mx.getCrossSigningId() === null ||
-        (crossSigningInfo && (await crossSigningInfo.isStoredInKeyCache('self_signing'))) === false)
-    ) {
-      if (!hasPrivateKey(getDefaultSSKey())) {
-        const keyData = await accessSecretStorage('Emoji verification');
-        if (!keyData) {
-          request.cancel();
-          return;
+    try {
+      const crossSigningInfo = mx.getCrypto().crossSigningInfo;
+      if (
+        (await isCrossVerified(mx.deviceId)) &&
+        (mx.getCrossSigningId() === null ||
+          (crossSigningInfo && (await crossSigningInfo.isStoredInKeyCache('self_signing'))) ===
+            false)
+      ) {
+        if (!hasPrivateKey(getDefaultSSKey())) {
+          const keyData = await accessSecretStorage('Emoji verification');
+          if (!keyData) {
+            request.cancel();
+            return;
+          }
         }
+        await mx.checkOwnCrossSigningTrust();
       }
-      await mx.checkOwnCrossSigningTrust();
-    }
-    setProcess(true);
-    await request.accept();
+      setProcess(true);
+      await request.accept();
 
-    const verifier = request.beginKeyVerification('m.sas.v1', targetDevice);
+      const verifier = request.beginKeyVerification('m.sas.v1', targetDevice);
 
-    const handleVerifier = (sasData) => {
-      verifier.off('show_sas', handleVerifier);
-      if (!mountStore.getItem()) return;
-      setSas(sasData);
+      const handleVerifier = (sasData) => {
+        verifier.off('show_sas', handleVerifier);
+        if (!mountStore.getItem()) return;
+        setSas(sasData);
+        setProcess(false);
+      };
+      verifier.on('show_sas', handleVerifier);
+      await verifier.verify();
+    } catch (err) {
+      console.error(err);
       setProcess(false);
-    };
-    verifier.on('show_sas', handleVerifier);
-    await verifier.verify();
+      alert(err.message, 'Emoji Verification Error');
+    }
   };
 
   const sasMismatch = () => {
