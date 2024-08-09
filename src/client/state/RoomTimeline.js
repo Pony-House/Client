@@ -172,26 +172,6 @@ class RoomTimeline extends EventEmitter {
     this._populateAllLinkedEvents(this.activeTimeline);
   }
 
-  // History Get
-  /*
-    https://matrix.org/docs/older/matrix-enact/
-    https://github.com/benparsons/matrix-enact/blob/master/src/App.js
-    https://github.com/matrix-org/matrix-js-sdk/issues/494
-    https://matrix-org.github.io/matrix-js-sdk/stable/classes/MatrixClient.html#isGuest
-  */
-  /* loadScriptFromEventId(startEventId, isFirst = true) {
-    const url = `${this.matrixClient.baseUrl}/_matrix/client/r0/rooms/${encodeURIComponent(this.roomId)}/context/${encodeURIComponent(startEventId)}?limit=100&access_token=${this.matrixClient.getAccessToken()}`;
-    return new Promise((resolve, reject) => {
-      fetchFn(url, {
-        'Content-Type': 'application/json',
-      }).then(res => res.json()).then(data => {
-
-        resolve(data);
-
-      }).catch(reject);
-    });
-  } */
-
   // Reset
   async _reset() {
     if (this.isEncrypted()) await this.decryptAllEventsOfTimeline(this.activeTimeline);
@@ -214,12 +194,6 @@ class RoomTimeline extends EventEmitter {
 
   // Load Event timeline
   async loadEventTimeline(eventId) {
-    // we use first unfiltered EventTimelineSet for room pagination.
-    // $('body').addClass('fo-cb-top').removeClass('cb-top-page');
-    // if (timeoutForceChatbox) {
-    //   clearTimeout(timeoutForceChatbox);
-    // }
-
     const timelineSet = this.getUnfilteredTimelineSet();
 
     try {
@@ -231,14 +205,11 @@ class RoomTimeline extends EventEmitter {
       await this._reset();
       this.emit(cons.events.roomTimeline.READY, eventId);
 
-      // timeoutForceChatbox = setTimeout(() => $('body').removeClass('fo-cb-top'), 500);
-
       if (typeof eventId === 'string' && eventId.length > 0) urlParams.set('event_id', eventId);
       else urlParams.delete('event_id');
 
       return true;
     } catch {
-      // timeoutForceChatbox = setTimeout(() => $('body').removeClass('fo-cb-top'), 500);
       return false;
     }
   }
