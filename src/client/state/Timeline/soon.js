@@ -1,3 +1,5 @@
+// import { fetchFn } from '../initMatrix';
+
 // History Get
 /*
   https://matrix.org/docs/older/matrix-enact/

@@ -4,9 +4,7 @@ import attemptDecryption from '@src/util/libs/attemptDecryption';
 // import { insertIntoRoomEventsDB } from '@src/util/libs/roomEventsDB';
 
 import { Direction, MatrixEventEvent, Room, RoomEvent, RoomMemberEvent } from 'matrix-js-sdk';
-
-// import { setLoadingPage } from '@src/app/templates/client/Loading';
-import initMatrix /* , { fetchFn } */ from '../initMatrix';
+import initMatrix from '../initMatrix';
 import cons from './cons';
 
 import { messageIsClassicCrdt } from '../../util/libs/crdt';
