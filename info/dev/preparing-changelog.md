@@ -1,1 +1,2 @@
 - Pwa file added to cache images.
+- Image css updated to fix tiny issues.
