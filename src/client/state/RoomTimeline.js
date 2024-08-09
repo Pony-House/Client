@@ -27,6 +27,7 @@ import { messageIsClassicCrdt } from '../../util/libs/crdt';
 import { updateRoomInfo } from '../action/navigation';
 import urlParams from '../../util/libs/urlParams';
 import tinyFixScrollChat from '../../app/molecules/media/mediaFix';
+import { buildRoomTimeline, startRoomTimelineRefresh } from './GuestRoomTimeline';
 // import { insertEvent } from './eventsDelay';
 
 const delayYdocUpdate = 100;
@@ -223,55 +224,7 @@ class RoomTimeline extends EventEmitter {
     };
 
     // Is Guest
-    if (this.isGuest) {
-      const tinyThis = this;
-      // Load Guest timeline
-      this.loadGuestTimeline = () => {
-        this.room.refreshLiveTimeline().then(() => {
-          // Insert guest timeline
-          tinyThis.liveTimeline = tinyThis.room.getLiveTimeline();
-          tinyThis.activeTimeline = tinyThis.liveTimeline;
-
-          // Update room info to RoomViewHeader.jsx
-          updateRoomInfo();
-
-          // Read Timeline
-          if (
-            objType(tinyThis.liveTimeline, 'object') &&
-            Array.isArray(tinyThis.liveTimeline.events)
-          ) {
-            for (const item in tinyThis.liveTimeline.events) {
-              // Anti Repeat
-              let repeated = false;
-              if (
-                tinyThis.timeline.find(
-                  (event) =>
-                    typeof event.getId === 'function' &&
-                    typeof tinyThis.liveTimeline.events[item].getId === 'function' &&
-                    event.getId() === tinyThis.liveTimeline.events[item].getId(),
-                )
-              ) {
-                repeated = true;
-              }
-
-              // Send events
-              if (!repeated) {
-                const event = tinyThis.liveTimeline.events[item];
-                tinyThis.matrixClient.emit(RoomEvent.Timeline, event, tinyThis.room, true, false, {
-                  liveEvent: true,
-                  timeline: tinyThis.liveTimeline,
-                });
-              }
-            }
-          }
-        });
-      };
-
-      // First load
-      tinyThis._reset().then(() => {
-        tinyThis.loadGuestTimeline();
-      });
-    }
+    if (this.isGuest) buildRoomTimeline(this);
 
     // Load Members
     setTimeout(() => this.room.loadMembersIfNeeded());
@@ -1330,13 +1283,7 @@ class RoomTimeline extends EventEmitter {
     this.matrixClient.on(MatrixEventEvent.Decrypted, this._preListenDecryptEvent);
     this.matrixClient.on(RoomMemberEvent.Typing, this._listenTypingEvent);
     this.matrixClient.on(RoomEvent.Receipt, this._listenReciptEvent);
-
-    if (this.isGuest && typeof this.refreshTime === 'number' && this.refreshTime > 0) {
-      this.refreshTimelineInterval = setInterval(
-        () => this.loadGuestTimeline(),
-        60000 * this.refreshTime,
-      );
-    }
+    startRoomTimelineRefresh();
   }
 
   removeInternalListeners() {
