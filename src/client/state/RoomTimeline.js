@@ -481,7 +481,7 @@ class RoomTimeline extends EventEmitter {
     this.matrixClient.on(MatrixEventEvent.Decrypted, this._preListenDecryptEvent);
     this.matrixClient.on(RoomMemberEvent.Typing, this._listenTypingEvent);
     this.matrixClient.on(RoomEvent.Receipt, this._listenReciptEvent);
-    startRoomTimelineRefresh();
+    startRoomTimelineRefresh(this);
   }
 
   removeInternalListeners() {
