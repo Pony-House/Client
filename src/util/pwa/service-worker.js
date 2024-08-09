@@ -111,8 +111,8 @@ function proxyRequest(caches, request) {
         return fetch('./img/svg/image-broken.svg', { mode: 'no-cors' });
       };
 
-      if (global && typeof global.nodeFetch === 'function')
-        return global.nodeFetch(request.clone()).then(resolve).catch(reject);
+      if (typeof window.nodeFetch === 'function')
+        return window.nodeFetch(request.clone()).then(resolve).catch(reject);
       return fetch(request.clone()).then(resolve).catch(reject);
     });
   });
