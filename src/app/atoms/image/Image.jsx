@@ -14,7 +14,7 @@ import matrixAppearance, {
 import Tooltip from '../tooltip/Tooltip';
 
 const showErrorMessage = (err) => {
-  if (__ENV_APP__.IMG.SHOW_ERROR) console.error(err);
+  if (__ENV_APP__.IMG.SHOW_ERROR || __ENV_APP__.MODE === 'development') console.error(err);
 };
 
 const getTinyUrl = (mxcUrl, src) => {
