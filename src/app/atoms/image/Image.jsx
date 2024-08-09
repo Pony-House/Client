@@ -13,6 +13,10 @@ import matrixAppearance, {
 } from '../../../util/libs/appearance';
 import Tooltip from '../tooltip/Tooltip';
 
+const showErrorMessage = (err) => {
+  if (__ENV_APP__.IMG.SHOW_ERROR) console.error(err);
+};
+
 const getTinyUrl = (mxcUrl, src) => {
   return typeof src === 'string' && src.startsWith('mxc://') && mxcUrl && mxcUrl.toHttp
     ? mxcUrl.toHttp(src)
@@ -222,6 +226,7 @@ const Img = React.forwardRef(
                   if (tinyImageUrl === waitSrc) {
                     setTinyBlob(ImageBrokenSVG);
                     setTinyMime([]);
+                    showErrorMessage(err);
                     if (onError) onError(err);
                   }
 
@@ -290,6 +295,7 @@ const Img = React.forwardRef(
                           if (tinyImageUrl === waitSrc) {
                             setBlobSrc(ImageBrokenSVG);
                             setImgMime([]);
+                            showErrorMessage(err);
                             if (onError) onError(err);
                           }
 
@@ -302,6 +308,7 @@ const Img = React.forwardRef(
                         const err = new Error('Fail to create image blob.');
                         setBlobSrc(ImageBrokenSVG);
                         setImgMime([]);
+                        showErrorMessage(err);
                         if (onError) onError(err);
                       }
 
@@ -314,6 +321,7 @@ const Img = React.forwardRef(
                       // Error
                       setBlobSrc(ImageBrokenSVG);
                       setImgMime([]);
+                      showErrorMessage(err);
                       if (onError) onError(err);
                     }
 
@@ -328,6 +336,7 @@ const Img = React.forwardRef(
                   if (tinyImageUrl === waitSrc) {
                     setBlobSrc(ImageBrokenSVG);
                     setImgMime([]);
+                    showErrorMessage(err);
                     if (onError) onError(err);
                   }
 
@@ -341,6 +350,7 @@ const Img = React.forwardRef(
             setBlobSrc(ImageBrokenSVG);
             setImgMime([]);
             const err = new Error('File not found.');
+            showErrorMessage(err);
             if (onError) onError(err);
           }
         } else {
@@ -453,7 +463,10 @@ const Img = React.forwardRef(
             img-type={isEmoji ? 'emoji' : isSticker ? 'sticker' : null}
             alt={alt}
             onError={({ currentTarget }) => {
-              currentTarget.onerror = onError;
+              currentTarget.onerror = (err) => {
+                showErrorMessage(err);
+                if (onError) onError(err);
+              };
               if (tinyImageUrl === waitSrc) {
                 setBlobSrc(ImageBrokenSVG);
                 setBlobAnimSrc(ImageBrokenSVG);
@@ -641,6 +654,7 @@ function ImgJquery({
       if (onLoad) img.on('load', onLoad);
       if (onClick) img.on('click', onClick);
       if (onError) img.on('error', onError);
+      img.on('error', showErrorMessage);
     }
 
     // Nope
@@ -705,6 +719,7 @@ function ImgJquery({
         if (onLoad) finalImg.on('load', onLoad);
         if (onClick) finalImg.on('click', onClick);
         if (onError) finalImg.on('error', onError);
+        finalImg.on('error', showErrorMessage);
 
         finalImg.attr('src', blobSrc());
         if (!draggable || draggable === 'false') finalImg.attr('draggable', 'false');
@@ -806,6 +821,7 @@ function ImgJquery({
               setTinyBlob(ImageBrokenSVG);
               setTinyMime([]);
               if (isObj) img.err = err;
+              showErrorMessage(err);
               if (onError) onError(err);
 
               // Check the progress
@@ -864,6 +880,7 @@ function ImgJquery({
                       setBlobSrc(ImageBrokenSVG);
                       setImgMime([]);
                       if (isObj) img.err = err;
+                      showErrorMessage(err);
                       if (onError) onError(err);
 
                       // Check the progress
@@ -875,6 +892,7 @@ function ImgJquery({
                   setImgMime([]);
                   const err = new Error('Fail to create image blob.');
                   if (isObj) img.err = err;
+                  showErrorMessage(err);
                   if (onError) onError(err);
 
                   // Check the progress
@@ -886,6 +904,7 @@ function ImgJquery({
                 setBlobSrc(ImageBrokenSVG);
                 setImgMime([]);
                 if (isObj) img.err = err;
+                showErrorMessage(err);
                 if (onError) onError(err);
 
                 // Check the progress
@@ -899,6 +918,7 @@ function ImgJquery({
               setBlobSrc(ImageBrokenSVG);
               setImgMime([]);
               if (isObj) img.err = err;
+              showErrorMessage(err);
               if (onError) onError(err);
 
               // Check the progress
@@ -912,6 +932,7 @@ function ImgJquery({
         setImgMime([]);
         const err = new Error('File not found.');
         if (isObj) img.err = err;
+        showErrorMessage(err);
         if (onError) onError(err);
       }
     } else {

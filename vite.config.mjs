@@ -175,7 +175,8 @@ export default defineConfig(({ command, mode }) => {
     IMG: {
       SIZE: {
         AVATAR: Number(env.DEFAULT_AVATAR_SIZE)
-      }
+      },
+      SHOW_ERROR: addBooleanToEnv('SHOW_IMG_ERROR'),
     },
 
     LIBRE_TRANSLATE: {
