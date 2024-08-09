@@ -62,6 +62,7 @@
 .image-container,
 .video-container {
   [itemprop='image'],
+  .image-container-canvas,
   .img-container {
     max-width: unset !important;
     width: 100% !important;

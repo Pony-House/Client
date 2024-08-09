@@ -37,7 +37,7 @@ import TimelineScroll, {
 
 import EventLimit from './EventLimit';
 import tinyAPI from '../../../util/mods';
-import tinyFixScrollChat from '../../molecules/media/mediaFix';
+import tinyFixScrollChat, { setMediaHeight } from '../../molecules/media/mediaFix';
 import matrixAppearance, { getAppearance } from '../../../util/libs/appearance';
 
 import handleOnClickCapture from './content/handleOnClickCapture';
@@ -218,6 +218,7 @@ function usePaginate(
       const limit = eventLimitRef.current;
 
       if (roomTimeline.isOngoingPagination) {
+        setMediaHeight();
         setLoadingTimeline(false);
         return;
       }
@@ -237,6 +238,7 @@ function usePaginate(
           } else if (roomTimeline.canPaginateForward()) {
             // paginate from server.
             await roomTimeline.paginateTimeline(false, pageLimit);
+            setMediaHeight();
             setLoadingTimeline(false);
             return;
           }
@@ -254,6 +256,7 @@ function usePaginate(
         }
       }
 
+      setMediaHeight();
       setLoadingTimeline(false);
     }
   }, [roomTimeline]);

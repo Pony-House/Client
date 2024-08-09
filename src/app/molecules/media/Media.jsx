@@ -218,7 +218,9 @@ function Image({
           onClick={toggleLightbox}
           onKeyDown={toggleLightbox}
         >
-          {blurhash && blur && <BlurhashCanvas hash={blurhash} punch={1} />}
+          {blurhash && blur && (
+            <BlurhashCanvas className="image-container-canvas" hash={blurhash} punch={1} />
+          )}
           {imgData}
         </div>
       </div>
