@@ -390,12 +390,12 @@ a {
 }
 
 /* Fix Emoji Size */
-.emoji-size-fix img.emoji,
+.emoji-size-fix [itemprop='image'].emoji,
 .message-body.emoji-size-fix [data-mx-emoticon] {
   max-height: 20px !important;
 }
 
-.emoji-size-fix-2 img.emoji,
+.emoji-size-fix-2 [itemprop='image'].emoji,
 .message-body.emoji-size-fix-2 [data-mx-emoticon] {
   max-height: 15px !important;
 }
@@ -486,7 +486,7 @@ a {
   }
 
   .discover-banner {
-    > img,
+    > [itemprop='image'],
     > .img-container {
       filter: brightness(65%) blur(3px);
       -webkit-filter: brightness(65%) blur(3px);

@@ -98,7 +98,7 @@
 
 .chatbox-portable {
   .avatar-container {
-    img,
+    [itemprop='image'],
     canvas {
       border-radius: var(--bo-radius);
     }
@@ -141,7 +141,7 @@
 }
 
 .avatar-container,
-.avatar-container img,
+.avatar-container [itemprop='image'],
 .avatar-container canvas {
   width: var(--default-avatar-size);
   height: var(--default-avatar-size);
@@ -149,7 +149,7 @@
 
 .avatar-container {
   canvas,
-  img,
+  [itemprop='image'],
   .img-container {
     font-size: 0px !important;
     &::before {
@@ -166,7 +166,7 @@
     border-radius: var(--bo-radius);
   }
 
-  > img,
+  > [itemprop='image'],
   > canvas {
     font-size: 0;
     border-radius: var(--bo-radius);
@@ -232,7 +232,7 @@
 // Room Header
 .room-view .header-room {
   .avatar-container,
-  .avatar-container img,
+  .avatar-container [itemprop='image'],
   .avatar-container canvas {
     height: 36px !important;
     width: 36px !important;
@@ -248,7 +248,7 @@
 /* Space Manage */
 .space-manage__content {
   .profile-image-container,
-  .profile-image-container img,
+  .profile-image-container [itemprop='image'],
   .profile-image-container canvas {
     height: 24px !important;
     width: 24px !important;
@@ -286,7 +286,7 @@
 // People Drawer
 .people-drawer {
   .avatar-container,
-  .avatar-container img,
+  .avatar-container [itemprop='image'],
   .avatar-container canvas {
     height: 32px !important;
     width: 32px !important;
@@ -296,7 +296,7 @@
 // Room Selector
 .room-selector {
   .avatar-container,
-  .avatar-container img,
+  .avatar-container [itemprop='image'],
   .avatar-container canvas {
     height: 24px !important;
     width: 24px !important;
@@ -307,7 +307,7 @@
 #message-reactions {
   .react-content {
     .avatar-container,
-    img,
+    [itemprop='image'],
     canvas {
       height: 36px;
       width: 36px;
@@ -318,7 +318,7 @@
 // Profile Modal
 .profile-user-profile-avatar {
   .avatar-container,
-  .avatar-container img,
+  .avatar-container [itemprop='image'],
   .avatar-container canvas {
     height: 87px !important;
     width: 101px !important;
@@ -327,7 +327,7 @@
 
 .modal-dialog-user-profile {
   .avatar-container,
-  .avatar-container img,
+  .avatar-container [itemprop='image'],
   .avatar-container canvas {
     height: 140px;
     width: 140px;
@@ -335,7 +335,7 @@
 
   &.modal-dialog-room-profile {
     .avatar-container,
-    .avatar-container img,
+    .avatar-container [itemprop='image'],
     .avatar-container canvas {
       height: 110px;
       width: 110px;
@@ -349,7 +349,7 @@
 #search-chatbox {
   .message__threadSummary {
     .avatar-container,
-    .avatar-container img,
+    .avatar-container [itemprop='image'],
     .avatar-container canvas {
       height: 24px !important;
       width: 24px !important;
@@ -363,7 +363,7 @@
 
   .welcome-msg {
     .avatar-container,
-    .avatar-container img,
+    .avatar-container [itemprop='image'],
     .avatar-container canvas {
       height: 80px !important;
       width: 80px !important;
@@ -372,7 +372,7 @@
 }
 body.rounded-avatar-mode .profile-image-container {
   &,
-  img,
+  [itemprop='image'],
   canvas,
   .avatar__border--active,
   .img-container {

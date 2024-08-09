@@ -1,5 +1,5 @@
 .cmd-bar__content-suggestions {
-  img,
+  [itemprop='image'],
   .img-container {
     height: 20px !important;
     width: 20px !important;
@@ -280,8 +280,8 @@
     }
   }
 
-  img.emoji,
-  img[data-mx-emoticon] {
+  [itemprop='image'].emoji,
+  [itemprop='image'][data-mx-emoticon] {
     height: 46px;
     max-width: 96px !important;
   }
@@ -438,7 +438,7 @@ em-emoji-picker {
     display: flex;
     align-items: center;
     align-content: center;
-    img,
+    [itemprop='image'],
     .img-container {
       height: 52px !important;
       margin-right: 7px;

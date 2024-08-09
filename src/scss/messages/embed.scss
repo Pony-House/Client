@@ -72,7 +72,7 @@
     max-width: unset !important;
     .image-container {
       height: auto !important;
-      img,
+      [itemprop='image'],
       .img-container {
         max-width: 100% !important;
       }
@@ -84,7 +84,7 @@
   .embed-thumb {
     background-color: transparent !important;
     margin-left: 10px;
-    img,
+    [itemprop='image'],
     .img-container {
       height: 72px !important;
     }

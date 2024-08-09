@@ -102,7 +102,7 @@
   line-height: 0;
 
   &__preview {
-    > img,
+    > [itemprop='image'],
     > .img-container {
       max-height: 40px;
       border-radius: var(--bo-radius);

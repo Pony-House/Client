@@ -152,7 +152,7 @@
     position: relative;
   }
 
-  .avatar-container img,
+  .avatar-container [itemprop='image'],
   .avatar-container canvas {
     padding: 12px;
     border-radius: 21px;
@@ -181,7 +181,7 @@
       display: flex !important;
     }
 
-    .avatar-container img,
+    .avatar-container [itemprop='image'],
     .avatar-container canvas {
       padding: 0px;
     }

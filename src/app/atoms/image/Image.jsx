@@ -505,6 +505,7 @@ const Img = React.forwardRef(
       if (!isObj)
         return (
           <div
+            itemProp="image"
             unicode={unicode}
             hexcode={hexcode}
             label={label}
@@ -640,6 +641,7 @@ function ImgJquery({
         'src-anim-url': tinyImageAnimUrl,
       });
 
+      img.attr('itemprop', 'image');
       if (tags)
         img.attr(
           'tags',

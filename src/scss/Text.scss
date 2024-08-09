@@ -9,8 +9,8 @@
   padding: 0;
   color: var(--tc-surface-high);
 
-  img.emoji,
-  img[data-mx-emoticon] {
+  [itemprop='image'].emoji,
+  [itemprop='image'][data-mx-emoticon] {
     margin: 0 !important;
     margin-right: 2px !important;
     padding: 0 !important;

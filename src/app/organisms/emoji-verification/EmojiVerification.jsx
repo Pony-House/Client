@@ -59,6 +59,7 @@ function EmojiVerificationContent({ data, requestClose }) {
       await verifier.verify();
     } catch (err) {
       console.error(err);
+      setSas(null);
       setProcess(false);
       alert(err.message, 'Emoji Verification Error');
     }

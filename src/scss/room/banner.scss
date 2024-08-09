@@ -10,21 +10,21 @@
 }
 
 .space-banner,
-.space-banner img,
+.space-banner [itemprop='image'],
 .space-banner .img-container {
   height: 226px;
   padding: 1px;
 }
 
 .space-banner,
-.space-banner img,
+.space-banner [itemprop='image'],
 .space-banner .avatar-container {
   width: 300px;
 }
 
 @media (min-width: 950px) {
   .space-banner,
-  .space-banner img,
+  .space-banner [itemprop='image'],
   .space-banner .avatar-container {
     width: 400px;
   }
@@ -37,7 +37,7 @@
 @media (max-width: 991px) {
   .settings-modal-open.settings-modal-open-2 {
     .space-banner,
-    .space-banner img,
+    .space-banner [itemprop='image'],
     .space-banner .avatar-container {
       width: 300px;
     }
@@ -45,14 +45,14 @@
 }
 
 .space-banner.profile-banner,
-.space-banner.profile-banner img,
+.space-banner.profile-banner [itemprop='image'],
 .space-banner.profile-banner .avatar-container {
   width: 660px;
 }
 
 @media (max-width: 1140px) {
   .space-banner.profile-banner,
-  .space-banner.profile-banner img,
+  .space-banner.profile-banner [itemprop='image'],
   .space-banner.profile-banner .avatar-container {
     width: 515px;
   }
@@ -60,7 +60,7 @@
 
 @media (max-width: 991px) {
   .space-banner.profile-banner,
-  .space-banner.profile-banner img,
+  .space-banner.profile-banner [itemprop='image'],
   .space-banner.profile-banner .avatar-container {
     width: 300px;
   }
@@ -68,14 +68,14 @@
 
 .settings-modal-open.settings-modal-open-2 {
   .space-banner.profile-banner,
-  .space-banner.profile-banner img,
+  .space-banner.profile-banner [itemprop='image'],
   .space-banner.profile-banner .avatar-container {
     width: 545px;
   }
 
   @media (max-width: 991px) {
     .space-banner.profile-banner,
-    .space-banner.profile-banner img,
+    .space-banner.profile-banner [itemprop='image'],
     .space-banner.profile-banner .avatar-container {
       width: 260px;
     }
@@ -83,7 +83,7 @@
 }
 @media (max-width: 768px) {
   .space-banner.profile-banner,
-  .space-banner.profile-banner img,
+  .space-banner.profile-banner [itemprop='image'],
   .space-banner.profile-banner .avatar-container {
     width: 460px;
   }
@@ -91,19 +91,19 @@
 
 @media (max-width: 576px) {
   .space-banner,
-  .space-banner img,
+  .space-banner [itemprop='image'],
   .space-banner .img-container {
     height: 171px;
   }
 
   .space-banner,
-  .space-banner img,
+  .space-banner [itemprop='image'],
   .space-banner .avatar-container {
     width: 300px;
   }
 
   .space-banner.profile-banner,
-  .space-banner.profile-banner img,
+  .space-banner.profile-banner [itemprop='image'],
   .space-banner.profile-banner .avatar-container {
     width: 360px;
   }
