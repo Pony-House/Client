@@ -112,8 +112,7 @@ function proxyRequest(caches, request) {
         return err;
       }; */
 
-      if (typeof window.nodeFetch === 'function')
-        return window.nodeFetch(request.clone()).then(resolve);
+      if (typeof nodeFetch === 'function') return nodeFetch(request.clone()).then(resolve);
       return fetch(request.clone()).then(resolve);
     });
   });
