@@ -1358,8 +1358,8 @@ const MessageThreadSummary = React.memo(({ thread, useManualCheck = false }) => 
   // Couldn&apos;t load latest message
   return (
     <button
-      disabled={!show || !lastReply}
-      className={`message__threadSummary p-2 small${!show || !lastReply ? ' disabled' : ''}`}
+      disabled={!show}
+      className={`message__threadSummary p-2 small${!show ? ' disabled' : ''}`}
       onClick={selectThread}
       type="button"
     >
@@ -1410,10 +1410,10 @@ const MessageThreadSummary = React.memo(({ thread, useManualCheck = false }) => 
         ) : (
           <>
             <div className="d-flex justify-content-center align-items-center spinner">
-              <div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>{' '}
-              Loading latest message...
+              <span className="message__threadSummary-lastReply-sender very-small text-truncate">
+                <i className="fa-solid fa-circle-exclamation me-1" />
+                Couldn't load the last message.
+              </span>
             </div>
           </>
         )}
