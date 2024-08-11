@@ -20,6 +20,7 @@ import emojiEditor from '@src/util/libs/emoji/EmojiEditor';
 
 import { secret } from './state/auth';
 import RoomList from './state/RoomList';
+import UserList from './state/UserList';
 import AccountData from './state/AccountData';
 import RoomsInput from './state/RoomsInput';
 import Notifications from './state/Notifications';
@@ -229,6 +230,7 @@ class InitMatrix extends EventEmitter {
               : () => false;
 
           this.roomList = new RoomList(this.matrixClient);
+          this.userList = new UserList(this.matrixClient);
           this.accountData = new AccountData(this.roomList);
           this.roomsInput = new RoomsInput(this.matrixClient, this.roomList);
           this.notifications = new Notifications(this.roomList);
