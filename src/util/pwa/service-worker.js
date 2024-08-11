@@ -158,6 +158,6 @@ self.addEventListener('fetch', function (event) {
     } else return;
   }
 
-  // console.log('[PWA] [service-worker] Accepted request', request.url);
+  console.log('[PWA] [service-worker] Accepted request', request.url);
   event.respondWith(proxyRequest(caches, request));
 });
