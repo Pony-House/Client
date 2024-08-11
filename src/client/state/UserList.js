@@ -13,15 +13,15 @@ class UserList extends EventEmitter {
   }
 
   _addUser(roomId, userId, user) {
-    console.log('Join user', roomId, user);
+    // console.log('Join user', roomId, user);
   }
 
   _removeUser(roomId, userId, user) {
-    console.log('Leave user', roomId, user);
+    // console.log('Leave user', roomId, user);
   }
 
   _removeRoom(roomId) {
-    console.log('Remove Room', roomId);
+    // console.log('Remove Room', roomId);
   }
 
   _populateRooms() {
