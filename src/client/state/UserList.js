@@ -29,7 +29,7 @@ class UserList extends EventEmitter {
     this.users.clear();
     this.matrixClient.getRooms().forEach((room) => {
       room.getJoinedMembers().forEach((member) => {
-        tinyThis._addUser(room.roomId, member.user.userId, member.user);
+        tinyThis._addUser(room.roomId, member.userId, member.user);
       });
     });
   }
@@ -50,7 +50,7 @@ class UserList extends EventEmitter {
     mx.on(RoomEvent.MyMembership, async (room, membership) => {
       if (room && membership === 'join') {
         room.getJoinedMembers().forEach((member) => {
-          tinyThis._addUser(room.roomId, member.user.userId, member.user);
+          tinyThis._addUser(room.roomId, member.userId, member.user);
         });
       } else tinyThis._removeRoom(room.roomId);
     });
