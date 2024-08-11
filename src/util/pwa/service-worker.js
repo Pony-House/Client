@@ -95,6 +95,17 @@ function proxyRequest(caches, request) {
         if (networkResponse.type !== 'opaque' && networkResponse.ok === false) {
           throw new Error('Resource not available');
         }
+
+        if (!networkResponse.ok) {
+          const err = new Error(`Connection error: ${networkResponse.statusText}`);
+          err.requestData = {
+            status: networkResponse.status,
+            type: networkResponse.type,
+            redirected: networkResponse.redirected,
+            headers: networkResponse.headers,
+          };
+          throw err;
+        }
         console.info(
           '[PWA] [service-worker] Fetch it through Network',
           request.url,
