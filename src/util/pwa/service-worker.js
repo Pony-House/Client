@@ -100,6 +100,7 @@ function proxyRequest(caches, request) {
           const err = new Error(`Connection error: ${networkResponse.statusText}`);
           err.requestData = {
             status: networkResponse.status,
+            statusText: networkResponse.statusText,
             type: networkResponse.type,
             redirected: networkResponse.redirected,
             headers: networkResponse.headers,
