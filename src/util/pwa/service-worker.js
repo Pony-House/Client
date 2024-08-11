@@ -147,7 +147,7 @@ self.addEventListener('fetch', function (event) {
     !request.url.match(/\.(jpe?g|png|gif|svg|webp|bmp|avif|jfif|pjpeg|pjp|ico|cur|tif|tiff)$/)
   ) {
     // Detect matrix file url
-    /* const urlPath = request.url.split('/');
+    const urlPath = request.url.split('/');
     const skipUrlPath = 2;
     if (
       urlPath[skipUrlPath + 1] === '_matrix' &&
@@ -155,8 +155,7 @@ self.addEventListener('fetch', function (event) {
       (urlPath[skipUrlPath + 4] === 'download' || urlPath[skipUrlPath + 4] === 'thumbnail')
     ) {
       if (!request.url.endsWith('ph_mxc_type=image')) return;
-    } else return; */
-    return;
+    } else return;
   }
 
   // console.log('[PWA] [service-worker] Accepted request', request.url);
