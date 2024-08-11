@@ -154,7 +154,7 @@ self.addEventListener('fetch', function (event) {
       urlPath[skipUrlPath + 2] === 'media' &&
       (urlPath[skipUrlPath + 4] === 'download' || urlPath[skipUrlPath + 4] === 'thumbnail')
     ) {
-      if (!request.url.endsWith('pony_content_type=image')) return;
+      if (!request.url.endsWith('ph_mxc_type=image')) return;
     } else return;
   }
 

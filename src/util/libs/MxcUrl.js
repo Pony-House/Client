@@ -150,7 +150,7 @@ class MxcUrl extends EventEmitter {
       const tinyUrl = new URL(tinyLink);
       if (typeof tinyUrl.search === 'string' && tinyUrl.search.length > 0) tinyLink += `&`;
       else tinyLink += `?`;
-      tinyLink += `pony_content_type=${type}`;
+      tinyLink += `ph_mxc_type=${type}`;
     }
 
     if (this._isAuth && link.startsWith(`${this.mx.baseUrl}/`)) {
