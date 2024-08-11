@@ -176,6 +176,7 @@ export default defineConfig(({ command, mode }) => {
     MAX_LISTENERS: Number(env.MAX_LISTENERS),
     MXC_FETCH_LIMIT: Number(env.MXC_FETCH_LIMIT),
     MXC_FETCH_TIMEOUT: Number(env.MXC_FETCH_TIMEOUT),
+    MXC_AUTHENTICATED_MEDIA: addBooleanToEnv('MXC_AUTHENTICATED_MEDIA'),
 
     IMG: {
       SIZE: {

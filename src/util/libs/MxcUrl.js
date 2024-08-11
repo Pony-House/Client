@@ -15,7 +15,7 @@ class MxcUrl extends EventEmitter {
     super();
     this.mx = mxBase;
     this._fetchWait = {};
-    this._isAuth = false;
+    this._isAuth = __ENV_APP__.MXC_AUTHENTICATED_MEDIA;
     this._queue = [];
     this._queueExec = [];
     this.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
