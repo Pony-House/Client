@@ -1,3 +1,4 @@
+import forPromise from 'for-promise';
 import $ from 'jquery';
 
 let usingPWA = false;
@@ -69,14 +70,46 @@ export function isUsingPWA() {
 
 export function installPWA() {
   if ('serviceWorker' in navigator || 'ServiceWorker' in navigator) {
+    // Get Items
     navigator.serviceWorker
-      .register('./service-worker.js', { scope: './' })
-      .then(() => {
-        console.log('[PWA] Service Worker Registered');
-        usingPWA = true;
+      .getRegistrations()
+      .then((items) => {
+        forPromise({ data: items }, async (item, fn, fnErr) => {
+          // Remove old stuff
+          items[item]
+            .unregister()
+            .then((success) => {
+              if (!success)
+                console.error(`[PWA] Fail to remove the Service Worker ${items[item].scope}`);
+              fn();
+            })
+            .catch(fnErr);
+        })
+          // Remove progress complete
+          .then(() => {
+            // Register new stuff
+            navigator.serviceWorker
+              .register('./service-worker.js', { scope: './' })
+              // Complete
+              .then(() => {
+                console.log('[PWA] Service Worker Registered.');
+                usingPWA = true;
+              })
+              // Error
+              .catch((err) => {
+                console.log('[PWA] Service Worker Failed to Register.');
+                console.error(err);
+              });
+          })
+          // Error
+          .catch((err) => {
+            console.log('[PWA] Service Worker Failed to Unregister.');
+            console.error(err);
+          });
       })
+      // Error
       .catch((err) => {
-        console.log('[PWA] Service Worker Failed to Register');
+        console.log('[PWA] Service Worker Failed to get Register list.');
         console.error(err);
       });
   }
