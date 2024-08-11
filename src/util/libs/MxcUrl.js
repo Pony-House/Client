@@ -135,8 +135,8 @@ class MxcUrl extends EventEmitter {
   }
 
   // Fetch Url
-  fetch(link = null, ignoreCustomUrl = false) {
-    const tinyLink = !ignoreCustomUrl ? this.readCustomUrl(link) : link;
+  fetch(link = null, type = null, ignoreCustomUrl = false) {
+    let tinyLink = !ignoreCustomUrl ? this.readCustomUrl(link) : link;
     const options = {
       method: 'GET',
       headers: {},
@@ -145,6 +145,13 @@ class MxcUrl extends EventEmitter {
           ? AbortSignal.timeout(__ENV_APP__.MXC_FETCH_TIMEOUT)
           : undefined,
     };
+
+    if (typeof type === 'string' && type.length > 0) {
+      const tinyUrl = new URL(tinyLink);
+      if (typeof tinyUrl.search === 'string' && tinyUrl.search.length > 0) tinyLink += `&`;
+      else tinyLink += `?`;
+      tinyLink += `pony_content_type=${type}`;
+    }
 
     if (this._isAuth && link.startsWith(`${this.mx.baseUrl}/`)) {
       const accessToken = typeof this.mx.getAccessToken === 'function' && this.mx.getAccessToken();
@@ -178,29 +185,29 @@ class MxcUrl extends EventEmitter {
   }
 
   // Fetch Blob
-  async fetchBlob(link = null, type = null, decryptData = null) {
+  async fetchBlob(link = null, fileType = 'unknown', type = null, decryptData = null) {
     const tinyLink = this.readCustomUrl(link);
-    const response = await this.fetch(tinyLink, true);
+    const response = await this.fetch(tinyLink, fileType, true);
     return this.getBlob(response, type, tinyLink, decryptData);
   }
 
   // Focus Fetch Blob
-  async focusFetchBlob(link = null, type = null, decryptData = null) {
+  async focusFetchBlob(link = null, fileType = 'unknown', type = null, decryptData = null) {
     const tinyThis = this;
     return new Promise((resolve, reject) => {
       if (!tinyThis._fetchWait[link]) {
         tinyThis._fetchWait[link] = true;
         tinyThis
-          .fetchBlob(link, type, decryptData)
+          .fetchBlob(link, fileType, type, decryptData)
           // Complete
           .then((result) => {
-            tinyThis.emit(`fetchBlob:then:${link}`, result);
+            tinyThis.emit(`fetchBlob:then:${link}:${fileType}`, result);
             delete tinyThis._fetchWait[link];
             resolve(result);
           })
           // Error
           .catch((err) => {
-            tinyThis.emit(`fetchBlob:catch:${link}`, err);
+            tinyThis.emit(`fetchBlob:catch:${link}:${fileType}`, err);
             delete tinyThis._fetchWait[link];
             reject(err);
           });
@@ -212,8 +219,9 @@ class MxcUrl extends EventEmitter {
         const key = generateApiKey();
 
         const tinyComplete = (isResolve) => {
-          if (isResolve) tinyThis.off(`fetchBlob:catch:${link}`, funcs[`${key}_TinyReject`]);
-          else tinyThis.off(`fetchBlob:then:${link}`, funcs[`${key}_TinyResolve`]);
+          if (isResolve)
+            tinyThis.off(`fetchBlob:catch:${link}:${fileType}`, funcs[`${key}_TinyReject`]);
+          else tinyThis.off(`fetchBlob:then:${link}:${fileType}`, funcs[`${key}_TinyResolve`]);
         };
 
         funcs[`${key}_TinyResolve`] = (result) => {
@@ -225,8 +233,8 @@ class MxcUrl extends EventEmitter {
           tinyComplete(false);
         };
 
-        tinyThis.once(`fetchBlob:then:${link}`, funcs[`${key}_TinyResolve`]);
-        tinyThis.once(`fetchBlob:catch:${link}`, funcs[`${key}_TinyReject`]);
+        tinyThis.once(`fetchBlob:then:${link}:${fileType}`, funcs[`${key}_TinyResolve`]);
+        tinyThis.once(`fetchBlob:catch:${link}:${fileType}`, funcs[`${key}_TinyReject`]);
       }
     });
   }

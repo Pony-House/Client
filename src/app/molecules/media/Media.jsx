@@ -16,7 +16,7 @@ import Spinner from '../../atoms/spinner/Spinner';
 import { getBlobSafeMimeType } from '../../../util/mimetypes';
 import tinyFixScrollChat from './mediaFix';
 
-async function getUrl(contentType, link, type, decryptData, roomId /* , threadId */) {
+async function getUrl(contentType, fileType, link, type, decryptData, roomId /* , threadId */) {
   try {
     const blobSettings = {
       freeze: true,
@@ -32,7 +32,7 @@ async function getUrl(contentType, link, type, decryptData, roomId /* , threadId
     blobSettings.id = `${blobSettings.group}:${link}`;
     const resultById = blobUrlManager.getById(blobSettings.id);
     if (!resultById) {
-      const blob = await initMatrix.mxcUrl.focusFetchBlob(link, type, decryptData);
+      const blob = await initMatrix.mxcUrl.focusFetchBlob(link, fileType, type, decryptData);
       const result = await blobUrlManager.insert(blob, blobSettings);
       return result;
     } else {
@@ -57,7 +57,7 @@ function FileHeader({ name, link = null, external = false, file = null, type, ro
   const [url, setUrl] = useState(null);
 
   async function getFile() {
-    const myUrl = await getUrl('file', link, type, file, roomId, threadId);
+    const myUrl = await getUrl('file', 'unknown', link, type, file, roomId, threadId);
     setUrl(myUrl);
   }
 
@@ -150,7 +150,7 @@ function Image({
   useEffect(() => {
     let unmounted = false;
     async function fetchUrl() {
-      const myUrl = await getUrl('image', link, type, file, roomId, threadId);
+      const myUrl = await getUrl('image', 'image', link, type, file, roomId, threadId);
       if (unmounted) {
         blobUrlManager.delete(myUrl);
         return;
@@ -259,7 +259,7 @@ function Sticker({
   useEffect(() => {
     let unmounted = false;
     async function fetchUrl() {
-      const myUrl = await getUrl('sticker', link, type, file, roomId, threadId);
+      const myUrl = await getUrl('sticker', 'image', link, type, file, roomId, threadId);
       if (unmounted) {
         blobUrlManager.delete(myUrl);
         return;
@@ -311,7 +311,7 @@ function Audio({ name, link, type = '', file = null, roomId, threadId }) {
   const [url, setUrl] = useState(null);
 
   async function loadAudio() {
-    const myUrl = await getUrl('audio', link, type, file, roomId, threadId);
+    const myUrl = await getUrl('audio', 'audio', link, type, file, roomId, threadId);
     setUrl(myUrl);
     setIsLoading(false);
     setIsLoaded(true);
@@ -379,6 +379,7 @@ function Video({
     async function fetchUrl() {
       const myThumbUrl = await getUrl(
         'videoThumb',
+        'image',
         thumbnail,
         thumbnailType,
         thumbnailFile,
@@ -400,7 +401,7 @@ function Video({
 
   useEffect(() => tinyFixScrollChat());
   const loadVideo = async () => {
-    const myUrl = await getUrl('video', link, type, file, roomId, threadId);
+    const myUrl = await getUrl('video', 'video', link, type, file, roomId, threadId);
     setUrl(myUrl);
     setIsLoading(false);
     setIsLoaded(true);

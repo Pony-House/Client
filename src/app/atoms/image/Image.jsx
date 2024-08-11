@@ -193,7 +193,7 @@ const Img = React.forwardRef(
               // Add loading progress...
               isLoadingProgress++;
               mxcUrl
-                .focusFetchBlob(tinySrc)
+                .focusFetchBlob(tinySrc, 'image')
                 .then((blobFromFetch) => {
                   const mime =
                     typeof blobFromFetch.type === 'string' ? blobFromFetch.type.split('/') : [];
@@ -794,7 +794,7 @@ function ImgJquery({
           // Add loading progress...
           isLoadingProgress++;
           mxcUrl
-            .focusFetchBlob(tinySrc)
+            .focusFetchBlob(tinySrc, 'image')
             .then((blobFromFetch) => {
               const mime =
                 typeof blobFromFetch.type === 'string' ? blobFromFetch.type.split('/') : [];
