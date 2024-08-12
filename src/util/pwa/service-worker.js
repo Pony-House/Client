@@ -84,7 +84,7 @@ function proxyRequest(caches, request) {
     // check cache
     return cache.match(request).then(function (cachedResponse) {
       if (cachedResponse) {
-        console.info('[PWA] [service-worker] Take it from cache', request.url);
+        // console.info('[PWA] [service-worker] Take it from cache', request.url);
         return cachedResponse;
       }
 
@@ -107,11 +107,11 @@ function proxyRequest(caches, request) {
           };
           throw err;
         }
-        console.info(
+        /* console.info(
           '[PWA] [service-worker] Fetch it through Network',
           request.url,
           networkResponse.type,
-        );
+        ); */
         cache.put(request, networkResponse.clone());
         return networkResponse;
       };
@@ -158,6 +158,6 @@ self.addEventListener('fetch', function (event) {
     } else return;
   }
 
-  console.log('[PWA] [service-worker] Accepted request', request.url);
+  // console.log('[PWA] [service-worker] Accepted request', request.url);
   event.respondWith(proxyRequest(caches, request));
 });
