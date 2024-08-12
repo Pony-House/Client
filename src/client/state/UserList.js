@@ -13,6 +13,22 @@ class UserList extends EventEmitter {
     this._listenEvents();
   }
 
+  getUserRooms(userId) {
+    const userData = this.users.get(userId);
+    if (userData) {
+      return userData.rooms;
+    }
+    return null;
+  }
+
+  getUser(userId) {
+    const userData = this.users.get(userId);
+    if (userData) {
+      return userData;
+    }
+    return null;
+  }
+
   _addUser(roomId, userId) {
     const userData = this.users.get(userId);
     if (userData) userData.rooms.add(roomId);
