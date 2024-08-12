@@ -21,6 +21,7 @@ class UserList extends EventEmitter {
       newUserData.rooms = new Set();
       newUserData.rooms.add(roomId);
       this.users.set(userId, newUserData);
+      this.emit('userCreated', userId);
     }
 
     const roomData = this.rooms.get(roomId);
@@ -31,13 +32,17 @@ class UserList extends EventEmitter {
       newRoomData.users.add(userId);
       this.rooms.set(roomId, newRoomData);
     }
+    this.emit('userAdded', roomId, userId);
   }
 
   _removeUser(roomId, userId) {
     const userData = this.users.get(userId);
     if (userData) {
       userData.rooms.delete(roomId);
-      if (userData.rooms.size < 1) this.users.delete(userId);
+      if (userData.rooms.size < 1) {
+        this.users.delete(userId);
+        this.emit('userDeleted', userId);
+      }
     }
 
     const roomData = this.rooms.get(roomId);
@@ -45,6 +50,7 @@ class UserList extends EventEmitter {
       roomData.users.delete(userId);
       if (roomData.users.size < 1) this.rooms.delete(roomId);
     }
+    this.emit('userRemoved', roomId, userId);
   }
 
   _removeRoom(roomId) {
