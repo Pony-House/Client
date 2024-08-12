@@ -87,19 +87,21 @@ export function installPWA() {
         })
           // Remove progress complete
           .then(() => {
-            // Register new stuff
-            navigator.serviceWorker
-              .register('./service-worker.js', { scope: './' })
-              // Complete
-              .then(() => {
-                console.log('[PWA] Service Worker Registered.');
-                usingPWA = true;
-              })
-              // Error
-              .catch((err) => {
-                console.log('[PWA] Service Worker Failed to Register.');
-                console.error(err);
-              });
+            if (__ENV_APP__.MXC_SERVICE_WORKER) {
+              // Register new stuff
+              navigator.serviceWorker
+                .register('./service-worker.js', { scope: './' })
+                // Complete
+                .then(() => {
+                  console.log('[PWA] Service Worker Registered.');
+                  usingPWA = true;
+                })
+                // Error
+                .catch((err) => {
+                  console.log('[PWA] Service Worker Failed to Register.');
+                  console.error(err);
+                });
+            }
           })
           // Error
           .catch((err) => {

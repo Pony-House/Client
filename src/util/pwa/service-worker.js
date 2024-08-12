@@ -107,11 +107,11 @@ function proxyRequest(caches, request) {
           };
           throw err;
         }
-        /* console.info(
+        console.info(
           '[PWA] [service-worker] Fetch it through Network',
           request.url,
           networkResponse.type,
-        ); */
+        );
         cache.put(request, networkResponse.clone());
         return networkResponse;
       };
