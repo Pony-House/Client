@@ -144,6 +144,8 @@ self.addEventListener('fetch', function (event) {
   // console.log('[PWA] [service-worker] Detected request', request.url);
   if (
     request.method !== 'GET' ||
+    !request.url.startsWith('blob:') ||
+    !request.url.startsWith('data:') ||
     !request.url.match(/\.(jpe?g|png|gif|svg|webp|bmp|avif|jfif|pjpeg|pjp|ico|cur|tif|tiff)$/)
   ) {
     // Detect matrix file url
