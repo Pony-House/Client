@@ -75,7 +75,7 @@ class UserList extends EventEmitter {
 
   _removeRoom(roomId) {
     const roomData = this.rooms.get(roomId);
-    if (roomData) {
+    if (roomData && roomData.users) {
       const removeData = [];
       roomData.users.forEach((userId) => {
         removeData.push(userId);
@@ -91,7 +91,7 @@ class UserList extends EventEmitter {
     this.users.clear();
     this.matrixClient.getRooms().forEach((room) => {
       room.getJoinedMembers().forEach((member) => {
-        tinyThis._addUser(room.roomId, member.userId, member.user);
+        tinyThis._addUser(room.roomId, member.userId);
       });
     });
   }
@@ -104,15 +104,15 @@ class UserList extends EventEmitter {
       const content = event.getContent();
       const userId = event.getStateKey();
       if (typeof userId === 'string' && userId.length > 0) {
-        if (content.membership === 'join') tinyThis._addUser(roomId, userId, mx.getUser(userId));
-        else tinyThis._removeUser(roomId, userId, mx.getUser(userId));
+        if (content.membership === 'join') tinyThis._addUser(roomId, userId);
+        else tinyThis._removeUser(roomId, userId);
       }
     };
 
     mx.on(RoomEvent.MyMembership, async (room, membership) => {
       if (room && membership === 'join') {
         room.getJoinedMembers().forEach((member) => {
-          tinyThis._addUser(room.roomId, member.userId, member.user);
+          tinyThis._addUser(room.roomId, member.userId);
         });
       } else tinyThis._removeRoom(room.roomId);
     });
