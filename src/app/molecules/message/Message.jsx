@@ -2042,6 +2042,7 @@ function Message({
                             threadId={threadId}
                             key={`msg_embed_${embed.eventId}_${embed.url}`}
                             embed={embed.data}
+                            url={embed.url}
                           />
                         );
                     })}

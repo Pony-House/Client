@@ -23,7 +23,7 @@ const tinyUrlAction = (event) => {
 };
 
 // Embed Data
-function Embed({ embed = {}, roomId = null, threadId = null }) {
+function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
   // URL Ref
   const tinyUrl = useRef(null);
   const [useVideo, setUseVideo] = useState(false);
@@ -91,8 +91,7 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
     !embed['og:video:secure_url'] &&
     (typeof embed['og:image:height'] !== 'number' ||
       typeof embed['og:image:width'] !== 'number' ||
-      (embed['og:image:height'] < 512 && embed['og:image:width'] < 512) ||
-      embed['og:image:height'] === embed['og:image:width']);
+      (embed['og:image:height'] <= 200 && embed['og:image:width'] <= 200));
 
   // Video
   let videoUrl = null;
@@ -115,6 +114,9 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
   if (!imgUrl && isVideo) {
     imgUrl = defaultVideoAvatar;
   }
+
+  let urlClick = url.href;
+  if (typeof embed['og:url'] === 'string' && embed['og:url'].length > 0) urlClick = embed['og:url'];
 
   // Complete
   return (
@@ -145,8 +147,8 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
 
           {typeof embed['og:title'] === 'string' && embed['og:title'].length > 0 ? (
             <h5 className="card-title small emoji-size-fix fw-bold">
-              {typeof embed['og:url'] === 'string' && embed['og:url'].length > 0 ? (
-                <a ref={tinyUrl} href={embed['og:url']} target="_blank" rel="noreferrer">
+              {typeof urlClick === 'string' && urlClick.length > 0 ? (
+                <a ref={tinyUrl} href={urlClick} target="_blank" rel="noreferrer">
                   {twemojifyReact(embed['og:title'])}
                 </a>
               ) : (
@@ -155,7 +157,9 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
             </h5>
           ) : null}
 
-          {typeof embed['og:description'] === 'string' && embed['og:description'].length > 0 ? (
+          {isThumb &&
+          typeof embed['og:description'] === 'string' &&
+          embed['og:description'].length > 0 ? (
             <p className="card-text text-freedom very-small emoji-size-fix-2">
               {twemojifyReact(embed['og:description'])}
             </p>
@@ -191,7 +195,7 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
               roomId={roomId}
               threadId={threadId}
               name="embed-img"
-              className="mt-2 embed-img"
+              className="mt-3 embed-img"
               width={Number(embed['og:image:width'])}
               height={Number(embed['og:image:height'])}
               link={mxcUrl.toHttp(imgUrl, 2000, 2000)}
@@ -235,6 +239,7 @@ function Embed({ embed = {}, roomId = null, threadId = null }) {
 // Message Default Data
 Embed.propTypes = {
   embed: PropTypes.object,
+  url: PropTypes.object,
   roomId: PropTypes.string,
   threadId: PropTypes.string,
 };

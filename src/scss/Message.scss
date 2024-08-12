@@ -1,8 +1,23 @@
+.text {
+  [itemprop='image'].emoji,
+  [itemprop='image'][data-mx-emoticon] {
+    margin-right: 2px !important;
+  }
+}
+
 .cmd-bar__content-suggestions {
   [itemprop='image'],
+  .emoji,
   .img-container {
     height: 20px !important;
     width: 20px !important;
+    margin-right: 3px !important;
+  }
+  .text {
+    [itemprop='image'].emoji,
+    [itemprop='image'][data-mx-emoticon] {
+      margin-right: 3px !important;
+    }
   }
 }
 #room-pinned-messages {

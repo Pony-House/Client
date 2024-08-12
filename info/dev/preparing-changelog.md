@@ -1,3 +1,5 @@
 - Pwa file added to cache images.
 - Image css updated to fix tiny issues.
 - MXC_AUTHENTICATED_MEDIA added into env file.
+- Emoji tab selector css fixed.
+- Embed tiny issues fixed.
