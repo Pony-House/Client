@@ -133,6 +133,7 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
               width={Number(embed['og:image:width'])}
               height={Number(embed['og:image:height'])}
               link={mxcUrl.toHttp(imgUrl, 2000, 2000)}
+              linkAnim={mxcUrl.toHttp(imgUrl)}
               type={String(embed['og:image:type'])}
             />
           </span>
@@ -191,7 +192,7 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
 
           {!isVideo && !isThumb && typeof imgUrl === 'string' && imgUrl.length > 0 ? (
             <Media.Image
-              maxWidth={413}
+              maxWidth={350}
               roomId={roomId}
               threadId={threadId}
               name="embed-img"
@@ -199,6 +200,7 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
               width={Number(embed['og:image:width'])}
               height={Number(embed['og:image:height'])}
               link={mxcUrl.toHttp(imgUrl, 2000, 2000)}
+              linkAnim={mxcUrl.toHttp(imgUrl)}
               type={String(embed['og:image:type'])}
             />
           ) : null}

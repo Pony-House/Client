@@ -237,6 +237,7 @@ Image.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   link: PropTypes.string.isRequired,
+  linkAnim: PropTypes.string,
   file: PropTypes.shape({}),
   type: PropTypes.string,
   className: PropTypes.string,
