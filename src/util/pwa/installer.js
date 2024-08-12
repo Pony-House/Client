@@ -101,7 +101,11 @@ export function installPWA() {
                 fn();
               })
               .catch(fnErr);
-          } else if (
+          }
+
+          // Update tiny stuff
+          else if (
+            __ENV_APP__.MXC_SERVICE_WORKER &&
             items[item].active &&
             (items[item].active.state === 'activated' ||
               items[item].active.state === 'activating') &&
@@ -122,6 +126,7 @@ export function installPWA() {
               .catch(fnErr);
           }
 
+          // Add count
           cacheChecker.count++;
         })
           // Remove progress complete
