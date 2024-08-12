@@ -6,18 +6,45 @@ class UserList extends EventEmitter {
     super();
     this.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
     this.matrixClient = matrixClient;
-    this.users = new Set();
+    this.users = new Map();
+    this.rooms = new Map();
 
     this._populateRooms();
     this._listenEvents();
   }
 
-  _addUser(roomId, userId, user) {
-    // console.log('Join user', roomId, user);
+  _addUser(roomId, userId) {
+    const userData = this.users.get(userId);
+    if (userData) userData.rooms.add(roomId);
+    else {
+      const newUserData = {};
+      newUserData.rooms = new Set();
+      newUserData.rooms.add(roomId);
+      this.users.set(userId, newUserData);
+    }
+
+    const roomData = this.rooms.get(roomId);
+    if (roomData) roomData.users.add(userId);
+    else {
+      const newRoomData = {};
+      newRoomData.users = new Set();
+      newRoomData.users.add(userId);
+      this.rooms.set(roomId, newRoomData);
+    }
   }
 
-  _removeUser(roomId, userId, user) {
-    // console.log('Leave user', roomId, user);
+  _removeUser(roomId, userId) {
+    const userData = this.users.get(userId);
+    if (userData) {
+      userData.rooms.delete(roomId);
+      if (userData.rooms.size < 1) this.users.delete(userId);
+    }
+
+    const roomData = this.rooms.get(roomId);
+    if (roomData) {
+      roomData.users.delete(userId);
+      if (roomData.users.size < 1) this.rooms.delete(roomId);
+    }
   }
 
   _removeRoom(roomId) {

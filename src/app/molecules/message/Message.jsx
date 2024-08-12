@@ -2040,7 +2040,7 @@ function Message({
                           <Embed
                             roomId={roomId}
                             threadId={threadId}
-                            key={`msg_embed_${embed.eventId}_${embed.url}`}
+                            key={`msg_embed_${embed.eventId}_${embed.url?.href}`}
                             embed={embed.data}
                             url={embed.url}
                           />
