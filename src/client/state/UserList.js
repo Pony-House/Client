@@ -48,7 +48,16 @@ class UserList extends EventEmitter {
   }
 
   _removeRoom(roomId) {
-    // console.log('Remove Room', roomId);
+    const roomData = this.rooms.get(roomId);
+    if (roomData) {
+      const removeData = [];
+      roomData.users.forEach((userId) => {
+        removeData.push(userId);
+      });
+      for (const item in removeData) {
+        this._removeUser(roomId, removeData[item]);
+      }
+    }
   }
 
   _populateRooms() {
