@@ -155,6 +155,7 @@ export default defineConfig(({ command, mode }) => {
     SHOW_STICKERS: addBooleanToEnv('SHOW_STICKERS'),
     USE_CUSTOM_EMOJIS: addBooleanToEnv('USE_CUSTOM_EMOJIS'),
     USE_ANIM_PARAMS: addBooleanToEnv('USE_ANIM_PARAMS'),
+    USE_FREEZE_PLUGIN: addBooleanToEnv('USE_FREEZE_PLUGIN'),
 
     DEV_TOOLS_TRAY: addBooleanToEnv('DEV_TOOLS_TRAY'),
 

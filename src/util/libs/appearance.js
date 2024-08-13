@@ -135,7 +135,9 @@ class MatrixAppearance extends EventEmitter {
           : !!__ENV_APP__.DISCORD_STYLE;
 
       this.content.useFreezePlugin =
-        typeof this.content.useFreezePlugin === 'boolean' ? this.content.useFreezePlugin : false;
+        typeof this.content.useFreezePlugin === 'boolean'
+          ? this.content.useFreezePlugin
+          : !!__ENV_APP__.USE_FREEZE_PLUGIN;
 
       this.content.hidePinMessageEvents =
         typeof this.content.hidePinMessageEvents === 'boolean'
