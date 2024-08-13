@@ -1,5 +1,6 @@
 import EventEmitter from 'events';
 import { RoomEvent, RoomStateEvent } from 'matrix-js-sdk';
+import initMatrix from '../initMatrix';
 
 class UserList extends EventEmitter {
   constructor(matrixClient) {
@@ -13,10 +14,34 @@ class UserList extends EventEmitter {
     this._listenEvents();
   }
 
-  getUserRooms(userId) {
+  getUserRawRooms(userId) {
     const userData = this.users.get(userId);
     if (userData) {
       return userData.rooms;
+    }
+    return null;
+  }
+
+  getUserRooms(userId) {
+    const rooms = this.getUserRawRooms(userId);
+    if (rooms) {
+      let using = false;
+      const result = { spaces: [], rooms: [] };
+      const { roomList } = initMatrix;
+
+      rooms.forEach((roomId) => {
+        if (roomList.isOrphan(roomId)) {
+          if (roomList.spaces.has(roomId)) {
+            using = true;
+            result.spaces.push(roomId);
+          } else if (!roomList.directs.has(roomId)) {
+            using = true;
+            result.rooms.push(roomId);
+          }
+        }
+      });
+
+      if (using) return result;
     }
     return null;
   }
