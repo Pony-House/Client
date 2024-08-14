@@ -51,9 +51,6 @@ import { confirmDialog } from '../../molecules/confirm-dialog/ConfirmDialog';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 import { getUserWeb3Account, getWeb3Cfg } from '../../../util/web3';
 
-import renderAbout from './tabs/main';
-import renderEthereum from './tabs/ethereum';
-
 import copyText from './copyText';
 import tinyAPI from '../../../util/mods';
 
@@ -399,7 +396,7 @@ function ProfileViewer() {
 
   const [isOpen, roomId, userId, closeDialog, handleAfterClose] = useToggleDialog();
   const [lightbox, setLightbox] = useState(false);
-  const [accountContent, setAccountContent] = useState(false);
+  const [accountContent, setAccountContent] = useState(null);
 
   const userNameRef = useRef(null);
   const displayNameRef = useRef(null);
@@ -572,7 +569,6 @@ function ProfileViewer() {
       updateProfileStatus(null, user);
 
       return () => {
-        menubar.empty();
         if (user) user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
         if (user) user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
         if (user) user.removeListener(UserEvent.Presence, updateProfileStatus);

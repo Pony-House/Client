@@ -100,3 +100,7 @@ const enableMenuBar = (content, ethereumValid, menubarReasons = 0) => {
     menubar.addClass('d-none');
   }
 };
+
+return () => {
+  menubar.empty();
+};
