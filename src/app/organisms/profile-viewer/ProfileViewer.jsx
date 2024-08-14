@@ -396,10 +396,10 @@ function ProfileViewer() {
   const noteRef = useRef(null);
   const profileAvatar = useRef(null);
   const statusRef = useRef(null);
-  const profileBanner = useRef(null);
 
   const [isOpen, roomId, userId, closeDialog, handleAfterClose] = useToggleDialog();
   const [lightbox, setLightbox] = useState(false);
+  const [accountContent, setAccountContent] = useState(false);
 
   const userNameRef = useRef(null);
   const displayNameRef = useRef(null);
@@ -544,6 +544,42 @@ function ProfileViewer() {
     }
   }, [user]);
 
+  // User profile updated
+  useEffect(() => {
+    if (user) {
+      const updateProfileStatus = (mEvent, tinyData) => {
+        // Tiny Data
+        const tinyUser = tinyData;
+
+        // Get Status
+        const status = $(statusRef.current);
+
+        // Is You
+        if (tinyUser.userId === mx.getUserId()) {
+          const yourData = clone(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
+          yourData.ethereum = getUserWeb3Account();
+          if (typeof yourData.ethereum.valid !== 'undefined') delete yourData.ethereum.valid;
+          tinyUser.presenceStatusMsg = JSON.stringify(yourData);
+        }
+
+        // Update Status Icon
+        setAccountContent(updateUserStatusIcon(status, tinyUser));
+      };
+
+      user.on(UserEvent.CurrentlyActive, updateProfileStatus);
+      user.on(UserEvent.LastPresenceTs, updateProfileStatus);
+      user.on(UserEvent.Presence, updateProfileStatus);
+      updateProfileStatus(null, user);
+
+      return () => {
+        menubar.empty();
+        if (user) user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.Presence, updateProfileStatus);
+      };
+    }
+  }, [user]);
+
   // Render Profile
   const renderProfile = () => {
     const powerLevel = roomMember?.powerLevel || 0;
@@ -598,7 +634,7 @@ function ProfileViewer() {
 
     return (
       <>
-        <div ref={profileBanner} className={`profile-banner profile-bg${cssColorMXID(userId)}`} />
+        <div className={`profile-banner profile-bg${cssColorMXID(userId)}`} />
 
         <div className="p-4">
           <div className="row pb-3">
