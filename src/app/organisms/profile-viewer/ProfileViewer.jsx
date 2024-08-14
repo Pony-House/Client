@@ -342,6 +342,7 @@ function useToggleDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const [roomId, setRoomId] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [accountContent, setAccountContent] = useState(null);
 
   useEffect(() => {
     const loadProfile = (uId, rId) => {
@@ -358,11 +359,12 @@ function useToggleDialog() {
   const closeDialog = () => setIsOpen(false);
 
   const afterClose = () => {
+    setAccountContent(null);
     setUserId(null);
     setRoomId(null);
   };
 
-  return [isOpen, roomId, userId, closeDialog, afterClose];
+  return [isOpen, roomId, userId, closeDialog, afterClose, accountContent, setAccountContent];
 }
 
 function useRerenderOnProfileChange(roomId, userId) {
@@ -394,14 +396,16 @@ function ProfileViewer() {
   const profileAvatar = useRef(null);
   const statusRef = useRef(null);
 
-  const [isOpen, roomId, userId, closeDialog, handleAfterClose] = useToggleDialog();
+  const [isOpen, roomId, userId, closeDialog, handleAfterClose, accountContent, setAccountContent] =
+    useToggleDialog();
+
   const [lightbox, setLightbox] = useState(false);
-  const [accountContent, setAccountContent] = useState(null);
 
   const userNameRef = useRef(null);
   const displayNameRef = useRef(null);
 
   useRerenderOnProfileChange(roomId, userId);
+  console.log(accountContent);
 
   // Get Data
   const mx = initMatrix.matrixClient;
