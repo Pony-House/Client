@@ -393,22 +393,15 @@ function useRerenderOnProfileChange(roomId, userId) {
 let tinyMenuId = 'default';
 function ProfileViewer() {
   // Prepare
-  const menubarRef = useRef(null);
-  const profileAvatar = useRef(null);
-  const bioRef = useRef(null);
-  const timezoneRef = useRef(null);
   const noteRef = useRef(null);
-  const customStatusRef = useRef(null);
+  const profileAvatar = useRef(null);
   const statusRef = useRef(null);
   const profileBanner = useRef(null);
-
-  const customPlaceRef = useRef(null);
 
   const [isOpen, roomId, userId, closeDialog, handleAfterClose] = useToggleDialog();
   const [lightbox, setLightbox] = useState(false);
 
   const userNameRef = useRef(null);
-  const userPronounsRef = useRef(null);
   const displayNameRef = useRef(null);
 
   useRerenderOnProfileChange(roomId, userId);
@@ -433,12 +426,29 @@ function ProfileViewer() {
 
   if (!isOpen) tinyMenuId = 'default';
 
+  // Basic User profile updated
   useEffect(() => {
+    // Re-Open Profile
     const reopenProfile = () => {
       if (userId) openProfileViewer(userId, roomId);
     };
 
+    // Avatar Preview
+    let newAvatar;
+    const avatarPreviewBase = (name) => {
+      const img = $(profileAvatar.current).find('> img');
+      imageViewer({
+        lightbox,
+        onClose: reopenProfile,
+        imgQuery: img,
+        name,
+        originalUrl: newAvatar || avatarUrl,
+      });
+    };
+
+    // User
     if (user) {
+      // Avatar and username data
       const avatarMxc = roomMember
         ? roomMember?.getMxcAvatarUrl?.()
         : user
@@ -454,175 +464,17 @@ function ProfileViewer() {
       setUsername(roomMember ? getUsernameOfRoomMember(roomMember) : getTheUsername());
 
       // Avatar Preview
-      const tinyAvatarPreview = () => {
-        if (newAvatar) {
-          const img = $(profileAvatar.current).find('> img');
-          imageViewer({
-            lightbox,
-            onClose: reopenProfile,
-            imgQuery: img,
-            name: username,
-            originalUrl: newAvatar,
-          });
-        }
-      };
-
-      // Menu Bar
-      const menubar = $(menubarRef.current);
-      const menuBarItems = [];
-
-      // Get refs
-      const bioPlace = $(bioRef.current);
-      const timezonePlace = $(timezoneRef.current);
-      const customPlace = $(customPlaceRef.current);
-
-      // Actions
-      const actions = {
-        ethereum: renderEthereum,
-      };
-
-      tinyAPI.emit('profileTabs', actions);
-
-      // Execute Menu
-      const executeMenu = (where, tinyData) => {
-        // Hide items
-        bioPlace.addClass('no-show').addClass('d-none');
-        timezonePlace.addClass('no-show').addClass('d-none');
-        customPlace.addClass('d-none');
-
-        // Show items back
-        if (typeof actions[where] === 'function') {
-          const tinyPlace = customPlace.find('#insert-custom-place');
-          tinyPlace
-            .empty()
-            .append(
-              actions[where](
-                tinyPlace,
-                user,
-                tinyData.content?.presenceStatusMsg,
-                tinyData.ethereumValid,
-              ),
-            );
-          customPlace.removeClass('d-none');
-        } else {
-          timezonePlace.removeClass('no-show').removeClass('d-none');
-          bioPlace.removeClass('no-show').removeClass('d-none');
-        }
-      };
-
-      // Create menu
-      const menuItem = (name, openItem = null, tinyData = {}) => {
-        const button = $('<a>', {
-          class: `nav-link text-bg-force${openItem === tinyMenuId ? ' active' : ''}${openItem !== 'default' ? ' ms-3' : ''}`,
-          href: '#',
-        }).on('click', () => {
-          for (const item in menuBarItems) {
-            menuBarItems[item].removeClass('active');
-          }
-
-          button.addClass('active');
-
-          executeMenu(openItem, tinyData);
-          tinyMenuId = openItem;
-          return false;
-        });
-
-        menuBarItems.push(button);
-        return $('<li>', { class: 'nav-item' }).append(button.text(name));
-      };
-
-      // Create Menu Bar Time
-      const enableMenuBar = (content, ethereumValid, menubarReasons = 0) => {
-        // Clear Menu bar
-        menubar.empty().removeClass('d-none');
-
-        // Start functions
-        if (menubarReasons > 0) {
-          const tinyData = { content, ethereumValid };
-
-          // User info
-          menubar.append(menuItem('User info', 'default', tinyData));
-
-          // Ethereum
-          tinyAPI.emit('profileTabsSpawnBefore', tinyData, user, (name, id) =>
-            menubar.append(menuItem(name, id, tinyData)),
-          );
-          if (ethereumValid) {
-            tinyAPI.emit('profileTabsSpawnEthereumBefore', tinyData, user, (name, id) =>
-              menubar.append(menuItem(name, id, tinyData)),
-            );
-            menubar.append(menuItem('Ethereum', 'ethereum', tinyData));
-            tinyAPI.emit('profileTabsSpawnEthereumAfter', tinyData, user, (name, id) =>
-              menubar.append(menuItem(name, id, tinyData)),
-            );
-          }
-          tinyAPI.emit('profileTabsSpawnAfter', tinyData, user, (name, id) =>
-            menubar.append(menuItem(name, id, tinyData)),
-          );
-
-          // First Execute
-          executeMenu(tinyMenuId, tinyData);
-        }
-
-        // Nope
-        else {
-          menubar.addClass('d-none');
-        }
-      };
-
-      // Update Status Profile
-      const updateProfileStatus = (mEvent, tinyData) => {
-        // Ethereum Config
-        const ethConfig = getWeb3Cfg();
-
-        // Get Status
-        let menubarReasons = 0;
-        const tinyUser = tinyData;
-        const status = $(statusRef.current);
-
-        // Is You
-        if (tinyUser.userId === mx.getUserId()) {
-          const yourData = clone(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
-          yourData.ethereum = getUserWeb3Account();
-          if (typeof yourData.ethereum.valid !== 'undefined') delete yourData.ethereum.valid;
-          tinyUser.presenceStatusMsg = JSON.stringify(yourData);
-        }
-
-        // Update Status Icon
-        const content = updateUserStatusIcon(status, tinyUser);
-        const existPresence = content && content.presenceStatusMsg;
-        const ethereumValid =
-          envAPI.get('WEB3') &&
-          existPresence &&
-          content.presenceStatusMsg.ethereum &&
-          content.presenceStatusMsg.ethereum.valid;
-        if (existPresence) {
-          // Ethereum
-          if (ethConfig.web3Enabled && ethereumValid) {
-            menubarReasons++;
-          }
-
-          // About Page
-          renderAbout(
-            userPronounsRef,
-            ethereumValid,
-            displayNameRef,
-            customStatusRef,
-            profileBanner,
-            bioRef,
-            timezoneRef,
-            content,
-          );
-        }
-
-        enableMenuBar(content, ethereumValid, menubarReasons);
-      };
+      const tinyAvatarPreview = () => avatarPreviewBase(username);
 
       // Copy Profile Username
       const copyUsername = {
         tag: (event) => copyText(event, 'Username successfully copied to the clipboard.'),
         display: (event) => copyText(event, 'Display name successfully copied to the clipboard.'),
       };
+
+      $(profileAvatar.current).on('click', tinyAvatarPreview);
+      $(displayNameRef.current).find('> .button').on('click', copyUsername.display);
+      $(userNameRef.current).find('> .button').on('click', copyUsername.tag);
 
       // Update Note
       const tinyNoteUpdate = (event) => {
@@ -638,53 +490,35 @@ function ProfileViewer() {
       // Read Events
       const tinyNote = getDataList('user_cache', 'note', userId);
 
-      if (user) user.on(UserEvent.CurrentlyActive, updateProfileStatus);
-      if (user) user.on(UserEvent.LastPresenceTs, updateProfileStatus);
-      if (user) user.on(UserEvent.Presence, updateProfileStatus);
-
-      $(displayNameRef.current).find('> .button').on('click', copyUsername.display);
-      $(userNameRef.current).find('> .button').on('click', copyUsername.tag);
-
-      $(profileAvatar.current).on('click', tinyAvatarPreview);
+      // Note
       $(noteRef.current)
         .on('change', tinyNoteUpdate)
         .on('keypress keyup keydown', tinyNoteSpacing)
         .val(tinyNote);
 
       if (noteRef.current) tinyNoteSpacing({ target: noteRef.current });
-      if (user) updateProfileStatus(null, user);
 
       return () => {
-        menubar.empty();
-        $(displayNameRef.current).find('> .button').off('click', copyUsername.display);
-        $(userNameRef.current).find('> .button').off('click', copyUsername.tag);
         $(noteRef.current)
           .off('change', tinyNoteUpdate)
           .off('keypress keyup keydown', tinyNoteSpacing);
+
+        $(displayNameRef.current).find('> .button').off('click', copyUsername.display);
+        $(userNameRef.current).find('> .button').off('click', copyUsername.tag);
         $(profileAvatar.current).off('click', tinyAvatarPreview);
-        if (user) user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
-        if (user) user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
-        if (user) user.removeListener(UserEvent.Presence, updateProfileStatus);
       };
-    } else if (!userId) {
+    }
+
+    // User not found
+    else if (!userId) {
       setAvatarUrl(defaultAvatar(0));
       setUsername(null);
     }
+
+    // Unknown User
     if (username === null && avatarUrl === defaultAvatar(0)) {
       // Avatar Preview
-      let newAvatar;
-      const tinyAvatarPreview = () => {
-        if (newAvatar) {
-          const img = $(profileAvatar.current).find('> img');
-          imageViewer({
-            onClose: reopenProfile,
-            lightbox,
-            imgQuery: img,
-            name: userId,
-            originalUrl: newAvatar,
-          });
-        }
-      };
+      const tinyAvatarPreview = () => avatarPreviewBase(userId);
 
       $(profileAvatar.current).on('click', tinyAvatarPreview);
       mx.getProfileInfo(userId)
@@ -820,30 +654,26 @@ function ProfileViewer() {
               <small ref={userNameRef} className="text-gray emoji-size-fix username">
                 <span className="button">{twemojifyReact(convertUserId(userId))}</span>
               </small>
-              <div
-                ref={userPronounsRef}
-                className="text-gray emoji-size-fix pronouns small d-none"
-              />
 
-              <div
-                ref={customStatusRef}
-                className="d-none mt-2 emoji-size-fix small user-custom-status"
-              />
-              <ul ref={menubarRef} id="usertabs" className="nav nav-underline mt-2 small" />
+              <div className="text-gray emoji-size-fix pronouns small d-none"></div>
 
-              <div ref={customPlaceRef} className="d-none">
+              <div className="d-none mt-2 emoji-size-fix small user-custom-status"></div>
+
+              <ul className="usertabs nav nav-underline mt-2 small"></ul>
+
+              <div className="d-none">
                 <hr />
                 <div id="insert-custom-place" />
               </div>
 
-              <div ref={timezoneRef} className="d-none">
+              <div className="d-none">
                 <hr />
 
                 <div className="text-gray text-uppercase fw-bold very-small mb-2">Timezone</div>
                 <div id="tiny-timezone" className="emoji-size-fix small text-freedom" />
               </div>
 
-              <div ref={bioRef} className="d-none">
+              <div className="d-none">
                 <hr />
 
                 <div className="text-gray text-uppercase fw-bold very-small mb-2">About me</div>
