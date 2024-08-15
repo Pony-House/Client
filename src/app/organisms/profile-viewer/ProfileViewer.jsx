@@ -764,7 +764,7 @@ function ProfileViewer() {
                 <span className="button">{twemojifyReact(convertUserId(userId))}</span>
               </small>
 
-              {accountContent && existPresenceObject ? (
+              {existPresenceObject ? (
                 <>
                   {typeof accountContent.presenceStatusMsg.pronouns === 'string' &&
                   accountContent.presenceStatusMsg.pronouns.length > 0 ? (
@@ -846,71 +846,73 @@ function ProfileViewer() {
                 </>
               ) : null}
 
-              {accountContent ? (
-                // Object presence status
-                existPresenceObject ? (
-                  <>
-                    {typeof accountContent.presenceStatusMsg.timezone === 'string' &&
-                    accountContent.presenceStatusMsg.timezone.length > 0 ? (
+              {selectedMenu === 0 ? (
+                <>
+                  {accountContent ? (
+                    // Object presence status
+                    existPresenceObject ? (
                       <>
-                        <hr />
+                        {typeof accountContent.presenceStatusMsg.timezone === 'string' &&
+                        accountContent.presenceStatusMsg.timezone.length > 0 ? (
+                          <>
+                            <hr />
 
-                        <div className="text-gray text-uppercase fw-bold very-small mb-2">
-                          Timezone
-                        </div>
-                        <div className="emoji-size-fix small text-freedom">
-                          <Clock
-                            timezone={accountContent.presenceStatusMsg.timezone}
-                            calendarFormat="MMMM Do YYYY, {time}"
-                          />
-                        </div>
-                      </>
-                    ) : null}
+                            <div className="text-gray text-uppercase fw-bold very-small mb-2">
+                              Timezone
+                            </div>
+                            <div className="emoji-size-fix small text-freedom">
+                              <Clock
+                                timezone={accountContent.presenceStatusMsg.timezone}
+                                calendarFormat="MMMM Do YYYY, {time}"
+                              />
+                            </div>
+                          </>
+                        ) : null}
 
-                    {typeof accountContent.presenceStatusMsg.bio === 'string' &&
-                    accountContent.presenceStatusMsg.bio.length > 0 ? (
-                      <>
-                        <hr />
-                        <div className="text-gray text-uppercase fw-bold very-small mb-2">
-                          About me
-                        </div>
-                        <div className="emoji-size-fix small text-freedom">
-                          {twemojifyReact(
-                            accountContent.presenceStatusMsg.bio.substring(0, 190),
-                            undefined,
-                            true,
-                            false,
-                          )}
-                        </div>
+                        {typeof accountContent.presenceStatusMsg.bio === 'string' &&
+                        accountContent.presenceStatusMsg.bio.length > 0 ? (
+                          <>
+                            <hr />
+                            <div className="text-gray text-uppercase fw-bold very-small mb-2">
+                              About me
+                            </div>
+                            <div className="emoji-size-fix small text-freedom">
+                              {twemojifyReact(
+                                accountContent.presenceStatusMsg.bio.substring(0, 190),
+                                undefined,
+                                true,
+                                false,
+                              )}
+                            </div>
+                          </>
+                        ) : null}
                       </>
-                    ) : null}
-                  </>
-                ) : // Text presence status
-                typeof accountContent.presenceStatusMsg === 'string' &&
-                  accountContent.presenceStatusMsg.length > 0 ? (
-                  <div className="mt-2 emoji-size-fix small user-custom-status">
-                    <span className="text-truncate cs-text">
-                      {twemojifyReact(accountContent.presenceStatusMsg.substring(0, 100))}
-                    </span>
-                  </div>
-                ) : null
+                    ) : // Text presence status
+                    typeof accountContent.presenceStatusMsg === 'string' &&
+                      accountContent.presenceStatusMsg.length > 0 ? (
+                      <div className="mt-2 emoji-size-fix small user-custom-status">
+                        <span className="text-truncate cs-text">
+                          {twemojifyReact(accountContent.presenceStatusMsg.substring(0, 100))}
+                        </span>
+                      </div>
+                    ) : null
+                  ) : null}
+                  <hr />
+                  <label
+                    htmlFor="tiny-note"
+                    className="form-label text-gray text-uppercase fw-bold very-small mb-2"
+                  >
+                    Note
+                  </label>
+                  <textarea
+                    ref={noteRef}
+                    spellCheck="false"
+                    className="form-control form-control-bg emoji-size-fix small"
+                    id="tiny-note"
+                    placeholder="Insert a note here"
+                  />
+                </>
               ) : null}
-
-              <hr />
-
-              <label
-                htmlFor="tiny-note"
-                className="form-label text-gray text-uppercase fw-bold very-small mb-2"
-              >
-                Note
-              </label>
-              <textarea
-                ref={noteRef}
-                spellCheck="false"
-                className="form-control form-control-bg emoji-size-fix small"
-                id="tiny-note"
-                placeholder="Insert a note here"
-              />
             </div>
 
             {roomId ? <ModerationTools roomId={roomId} userId={userId} /> : null}
