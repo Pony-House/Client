@@ -10,6 +10,7 @@ import envAPI from '@src/util/libs/env';
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 import matrixAppearance from '@src/util/libs/appearance';
 import Img from '@src/app/atoms/image/Image';
+import Tooltip from '@src/app/atoms/tooltip/Tooltip';
 
 import { twemojifyReact } from '../../../util/twemojify';
 import { canUsePresence, getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
@@ -655,16 +656,29 @@ function ProfileViewer() {
       setLightbox(!lightbox);
     };
 
+    // Menu bar items
     const menuBarItems = [];
 
+    // Exist Presence
     const existPresenceObject =
       accountContent && objType(accountContent.presenceStatusMsg, 'object');
 
+    // Ethereum Config
+    const ethConfig = getWeb3Cfg();
+    const existEthereum =
+      envAPI.get('WEB3') &&
+      ethConfig.web3Enabled &&
+      existPresenceObject &&
+      accountContent.presenceStatusMsg.ethereum &&
+      accountContent.presenceStatusMsg.ethereum.valid;
+
+    // Exist message presence
     const existMsgPresence =
       existPresenceObject &&
       typeof accountContent.presenceStatusMsg.msg === 'string' &&
       accountContent.presenceStatusMsg.msg.length > 0;
 
+    // Exist Icon Presence
     const existIconPresence =
       existPresenceObject &&
       typeof accountContent.presenceStatusMsg.msgIcon === 'string' &&
@@ -724,6 +738,21 @@ function ProfileViewer() {
 
               <h6 ref={displayNameRef} className="emoji-size-fix m-0 mb-1 fw-bold display-name">
                 <span className="button">{twemojifyReact(username)}</span>
+                {existEthereum ? (
+                  <Tooltip content={accountContent.presenceStatusMsg.ethereum.address}>
+                    <span
+                      className="ms-2 ethereum-icon"
+                      onClick={() => {
+                        copyText(
+                          accountContent.presenceStatusMsg.ethereum.address,
+                          'Ethereum address successfully copied to the clipboard.',
+                        );
+                      }}
+                    >
+                      <i className="fa-brands fa-ethereum" />
+                    </span>
+                  </Tooltip>
+                ) : null}
               </h6>
               <small ref={userNameRef} className="text-gray emoji-size-fix username">
                 <span className="button">{twemojifyReact(convertUserId(userId))}</span>

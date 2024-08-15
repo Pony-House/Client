@@ -1,11 +1,5 @@
 // Menu Bar
-const menubar = $(menubarRef.current);
 const menuBarItems = [];
-
-// Get refs
-const bioPlace = $(bioRef.current);
-const timezonePlace = $(timezoneRef.current);
-const customPlace = $(customPlaceRef.current);
 
 // Actions
 const actions = {
@@ -99,8 +93,4 @@ const enableMenuBar = (content, ethereumValid, menubarReasons = 0) => {
   else {
     menubar.addClass('d-none');
   }
-};
-
-return () => {
-  menubar.empty();
 };

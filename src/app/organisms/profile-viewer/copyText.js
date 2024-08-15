@@ -5,7 +5,7 @@ import { toast } from '../../../util/tools';
 
 export default function copyText(event, text) {
   try {
-    const target = $(event.target);
+    const target = typeof event !== 'string' ? $(event.target) : { text: () => event };
     const tinyUsername = target.text().trim();
 
     if (tinyUsername.length > 0) {
