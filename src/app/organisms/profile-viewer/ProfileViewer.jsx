@@ -683,7 +683,16 @@ function ProfileViewer() {
 
     // Menu bar items
     const menuBarItems = [];
+
+    // Profile Tabs Spawn
+    tinyAPI.emit('profileTabsSpawn', menuBarItems, accountContent, existEthereum);
+
+    // Add default page
     if (menuBarItems.length > 0) {
+      for (const item in menuBarItems) {
+        menuBarItems[item].isDefault = false;
+      }
+
       menuBarItems.unshift({
         isDefault: true,
         menu: () => 'User info',
