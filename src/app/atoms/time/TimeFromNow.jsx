@@ -4,23 +4,14 @@ import PropTypes from 'prop-types';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import matrixAppearance from '../../../util/libs/appearance';
 
-function Clock({
-  timezone = null,
-  className = null,
-  intervalTimeout = 1000,
-  showSeconds = false,
-  calendarFormat = null,
-}) {
-  const getNow = () => (timezone ? moment.tz(timezone) : moment());
-
+function TimeFromNow({ className = null, intervalTimeout = 1000, timestamp = null }) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
-  const [now, setNow] = useState(getNow());
+  const now = moment(timestamp);
 
   useEffect(() => {
-    const clockUpdater = () => setNow(getNow());
-    const tinyInterval = setInterval(clockUpdater, intervalTimeout);
-
     const updateClock = () => forceUpdate();
+    const tinyInterval = setInterval(updateClock, intervalTimeout);
+
     matrixAppearance.on('is24hours', updateClock);
     matrixAppearance.on('calendarFormat', updateClock);
     return () => {
@@ -30,20 +21,16 @@ function Clock({
     };
   });
 
-  const timeText = momentFormat[!showSeconds ? 'clock' : 'clock2']();
-
   return (
-    <time className={className} type="clock" timezone={timezone}>
-      {now.format(!calendarFormat ? timeText : calendarFormat.replace('{time}', timeText))}
+    <time className={className} dateTime={now.toISOString()} type="fromnow">
+      {now.fromNow()}
     </time>
   );
 }
 
-Clock.propTypes = {
+TimeFromNow.propTypes = {
   className: PropTypes.string,
   intervalTimeout: PropTypes.number,
-  showSeconds: PropTypes.bool,
-  calendarFormat: PropTypes.string,
-  timezone: PropTypes.string,
+  timestamp: PropTypes.number.isRequired,
 };
-export default Clock;
+export default TimeFromNow;

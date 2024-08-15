@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useRef, useReducer } from 'react';
+import $ from 'jquery';
+
 import { ethers } from 'ethers';
 import { objType } from 'for-promise/utils/lib.mjs';
 import moment from '@src/util/libs/momentjs';
 
 import getEnsManager from '@src/util/web3/abi/ethereum/0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb';
 import { getWeb3Cfg, tinyCrypto } from '@src/util/web3';
+import initMatrix from '@src/client/initMatrix';
+
+import { btModal, toast } from '@src/util/tools';
 
 const ens = {
   reverseName: {},
@@ -102,112 +107,104 @@ const getUserBalance = (chain, address) =>
 
 export { getEnsDomain };
 
-/*
-import $ from 'jquery';
-import { btModal, toast } from '../../../../util/tools';
-
-export default function renderEthereum(tinyPlace, user, presenceStatus) {
-  if (user) {
-    // Config
-    const web3Cfg = getWeb3Cfg();
-
-    // Balances
-    const balances = $('<div>', { class: 'd-none small row' });
-
-    // Ethereum
-    const ethereum = presenceStatus.ethereum;
-
-    // Add Place
-    tinyPlace.append(
-      $('<strong>', { class: 'small' }).text('Address: '),
-      $('<a>', { class: 'small text-click' })
-        .text(ethereum.address)
-        .on('click', () => {
-          const qrcodeCanvas = $('<canvas>');
-          qrcode.toCanvas(qrcodeCanvas[0], ethereum.address, (error) => {
-            if (error) {
-              toast(error);
-            } else {
-              // Prepare Text
-              btModal({
-                title: 'Ethereum Address',
-
-                id: 'user-eth-address',
-                dialog: 'modal-lg modal-dialog-centered',
-
-                body: $('<center>', { class: 'small' }).append(
-                  $('<h6>', { class: 'mb-4 noselect' }).text(
-                    'Please enter the address correctly! Any type issue will be permanent loss of your funds!',
-                  ),
-                  $('<span>').text(user.displayName ? user.displayName : user.userId),
-                  $('<br/>'),
-                  $('<span>').text(ethereum.address),
-                  $('<div>', { class: 'mt-3' }).append(qrcodeCanvas),
-                ),
-              });
-            }
-          });
-        }),
-
-      balances,
-    );
-
-    // Ethereum Wallets
-    for (const chain in tinyCrypto.userProviders) {
-      balances.removeClass('d-none');
-      const balanceDiv = $('<a>', {
-        href: `${web3Cfg.networks[chain]?.blockExplorerUrls[0]}address/${ethereum.address}`,
-        target: '_blank',
-      }).text(`?.?? ${web3Cfg.networks[chain]?.nativeCurrency?.symbol}`);
-      const timeDiv = $('<div>', { class: 'very-small text-bg-low' }).text('Updated at...');
-
-      getUserBalance(chain, ethereum.address)
-        .then((data) => {
-          if (data) {
-            balanceDiv.text(`${data.value} ${web3Cfg.networks[chain]?.nativeCurrency?.symbol}`);
-            timeDiv.text(`Updated at ${data.date.fromNow()}`);
-          }
-        })
-        .catch((err) => {
-          balanceDiv.text('ERROR!');
-          console.error(err);
-        });
-
-      balances.append(
-        $('<div>', { class: 'col-md-6 mt-3' }).append(
-          $('<div>', { class: 'border border-bg p-3 ' }).append(
-            $('<div>', { class: 'fw-bold' })
-              .text(web3Cfg.networks[chain]?.chainName)
-              .prepend(
-                $('<i>', {
-                  class: `me-2 cf cf-${web3Cfg.networks[chain]?.nativeCurrency?.symbol ? web3Cfg.networks[chain]?.nativeCurrency?.symbol.toLowerCase() : ''}`,
-                }),
-              ),
-            balanceDiv,
-            timeDiv,
-          ),
-        ),
-      );
-    }
-  }
-}
-*/
-
 export default function EthereumProfileTab(menuBarItems, accountContent, existEthereum) {
-  menuBarItems.push({
-    menu: () => 'Ethereum',
-    render: ({
-      roomId,
-      userId,
-      closeDialog,
-      accountContent,
-      roomMember,
-      avatarUrl,
-      username,
-      imagePreview,
-    }) => {
-      console.log(accountContent);
-      return <div>Tiny Test</div>;
-    },
-  });
+  if (existEthereum) {
+    menuBarItems.push({
+      menu: () => 'Ethereum',
+      render: ({
+        roomId,
+        userId,
+        closeDialog,
+        accountContent,
+        roomMember,
+        avatarUrl,
+        username,
+        imagePreview,
+      }) => {
+        // Config
+        const web3Cfg = getWeb3Cfg();
+        const user = initMatrix.matrixClient.getUser(userId);
+
+        // Ethereum
+        const ethereum = accountContent.presenceStatusMsg.ethereum;
+
+        // Ethereum Wallets
+        /* for (const chain in tinyCrypto.userProviders) {
+
+          const balanceDiv = $('<a>', {
+            href: `${web3Cfg.networks[chain]?.blockExplorerUrls[0]}address/${ethereum.address}`,
+            target: '_blank',
+          }).text(`?.?? ${web3Cfg.networks[chain]?.nativeCurrency?.symbol}`);
+          const timeDiv = $('<div>', { class: 'very-small text-bg-low' }).text('Updated at...');
+
+          getUserBalance(chain, ethereum.address)
+            .then((data) => {
+              if (data) {
+                balanceDiv.text(`${data.value} ${web3Cfg.networks[chain]?.nativeCurrency?.symbol}`);
+                timeDiv.text(`Updated at ${data.date.fromNow()}`);
+              }
+            })
+            .catch((err) => {
+              balanceDiv.text('ERROR!');
+              console.error(err);
+            });
+
+            balanceDiv;
+            timeDiv;
+        } */
+
+        return (
+          <>
+            <strong className="small">Address:</strong>{' '}
+            <a
+              className="small text-click"
+              onClick={(event) => {
+                event.preventDefault();
+                const qrcodeCanvas = $('<canvas>');
+                qrcode.toCanvas(qrcodeCanvas[0], ethereum.address, (error) => {
+                  if (error) {
+                    toast(error);
+                  } else {
+                    // Prepare Text
+                    btModal({
+                      title: 'Ethereum Address',
+
+                      id: 'user-eth-address',
+                      dialog: 'modal-lg modal-dialog-centered',
+
+                      body: $('<center>', { class: 'small' }).append(
+                        $('<h6>', { class: 'mb-4 noselect' }).text(
+                          'Please enter the address correctly! Any type issue will be permanent loss of your funds!',
+                        ),
+                        $('<span>').text(user.displayName ? user.displayName : user.userId),
+                        $('<br/>'),
+                        $('<span>').text(ethereum.address),
+                        $('<div>', { class: 'mt-3' }).append(qrcodeCanvas),
+                      ),
+                    });
+                  }
+                });
+              }}
+            >
+              {ethereum.address}
+            </a>
+            <div className="small row">
+              {Object.keys(tinyCrypto.userProviders).map((chain) => (
+                <div className="col-md-6 mt-3">
+                  <div className="border border-bg p-3">
+                    <div className="fw-bold">
+                      <i
+                        className={`me-2 cf cf-${web3Cfg.networks[chain]?.nativeCurrency?.symbol ? web3Cfg.networks[chain]?.nativeCurrency?.symbol.toLowerCase() : ''}`}
+                      ></i>
+                      {web3Cfg.networks[chain]?.chainName}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        );
+      },
+    });
+  }
 }

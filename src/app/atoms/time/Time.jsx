@@ -48,7 +48,12 @@ function Time({ timestamp, fullTime = false, className = '', intervalTimeout = 1
   });
 
   return (
-    <time className={className} dateTime={date.toISOString()} title={formattedFullTime}>
+    <time
+      className={className}
+      dateTime={date.toISOString()}
+      title={formattedFullTime}
+      type="default"
+    >
       {formattedDate}
     </time>
   );

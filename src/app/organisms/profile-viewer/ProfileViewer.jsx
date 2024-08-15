@@ -684,7 +684,7 @@ function ProfileViewer() {
     const menuBarItems = [];
 
     // Ethereum
-    if (existEthereum) EthereumProfileTab(menuBarItems, accountContent, existEthereum);
+    EthereumProfileTab(menuBarItems, accountContent, existEthereum);
 
     // Profile Tabs Spawn
     tinyAPI.emit('profileTabsSpawn', menuBarItems, accountContent, existEthereum);
