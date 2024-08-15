@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useReducer } from 'react';
+import React from 'react';
 import $ from 'jquery';
 
 import { ethers } from 'ethers';
@@ -6,10 +6,11 @@ import { objType } from 'for-promise/utils/lib.mjs';
 import moment from '@src/util/libs/momentjs';
 
 import getEnsManager from '@src/util/web3/abi/ethereum/0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb';
-import { getWeb3Cfg, tinyCrypto } from '@src/util/web3';
+import { tinyCrypto } from '@src/util/web3';
 import initMatrix from '@src/client/initMatrix';
 
 import { btModal, toast } from '@src/util/tools';
+import EthereumProfileTabItem from './EthereumItem';
 
 const ens = {
   reverseName: {},
@@ -122,37 +123,10 @@ export default function EthereumProfileTab(menuBarItems, accountContent, existEt
         imagePreview,
       }) => {
         // Config
-        const web3Cfg = getWeb3Cfg();
         const user = initMatrix.matrixClient.getUser(userId);
 
         // Ethereum
         const ethereum = accountContent.presenceStatusMsg.ethereum;
-
-        // Ethereum Wallets
-        /* for (const chain in tinyCrypto.userProviders) {
-
-          const balanceDiv = $('<a>', {
-            href: `${web3Cfg.networks[chain]?.blockExplorerUrls[0]}address/${ethereum.address}`,
-            target: '_blank',
-          }).text(`?.?? ${web3Cfg.networks[chain]?.nativeCurrency?.symbol}`);
-          const timeDiv = $('<div>', { class: 'very-small text-bg-low' }).text('Updated at...');
-
-          getUserBalance(chain, ethereum.address)
-            .then((data) => {
-              if (data) {
-                balanceDiv.text(`${data.value} ${web3Cfg.networks[chain]?.nativeCurrency?.symbol}`);
-                timeDiv.text(`Updated at ${data.date.fromNow()}`);
-              }
-            })
-            .catch((err) => {
-              balanceDiv.text('ERROR!');
-              console.error(err);
-            });
-
-            balanceDiv;
-            timeDiv;
-        } */
-
         return (
           <>
             <strong className="small">Address:</strong>{' '}
@@ -190,16 +164,11 @@ export default function EthereumProfileTab(menuBarItems, accountContent, existEt
             </a>
             <div className="small row">
               {Object.keys(tinyCrypto.userProviders).map((chain) => (
-                <div className="col-md-6 mt-3">
-                  <div className="border border-bg p-3">
-                    <div className="fw-bold">
-                      <i
-                        className={`me-2 cf cf-${web3Cfg.networks[chain]?.nativeCurrency?.symbol ? web3Cfg.networks[chain]?.nativeCurrency?.symbol.toLowerCase() : ''}`}
-                      ></i>
-                      {web3Cfg.networks[chain]?.chainName}
-                    </div>
-                  </div>
-                </div>
+                <EthereumProfileTabItem
+                  key={`profile_ethereum_${chain}`}
+                  chain={chain}
+                  ethereum={ethereum}
+                />
               ))}
             </div>
           </>
