@@ -1,14 +1,10 @@
 import React, { useState, useEffect, useRef, useReducer } from 'react';
-
-/*
-import $ from 'jquery';
 import { ethers } from 'ethers';
 import { objType } from 'for-promise/utils/lib.mjs';
 import moment from '@src/util/libs/momentjs';
-import { getWeb3Cfg, tinyCrypto } from '../../../../util/web3';
-import { btModal, toast } from '../../../../util/tools';
 
-import getEnsManager from '../../../../util/web3/abi/ethereum/0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb';
+import getEnsManager from '@src/util/web3/abi/ethereum/0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb';
+import { getWeb3Cfg, tinyCrypto } from '@src/util/web3';
 
 const ens = {
   reverseName: {},
@@ -105,6 +101,11 @@ const getUserBalance = (chain, address) =>
   });
 
 export { getEnsDomain };
+
+/*
+import $ from 'jquery';
+import { btModal, toast } from '../../../../util/tools';
+
 export default function renderEthereum(tinyPlace, user, presenceStatus) {
   if (user) {
     // Config

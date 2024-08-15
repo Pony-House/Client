@@ -691,12 +691,7 @@ function ProfileViewer() {
 
     // Add default page
     if (menuBarItems.length > 0) {
-      for (const item in menuBarItems) {
-        menuBarItems[item].isDefault = false;
-      }
-
       menuBarItems.unshift({
-        isDefault: true,
         menu: () => 'User info',
       });
     }
