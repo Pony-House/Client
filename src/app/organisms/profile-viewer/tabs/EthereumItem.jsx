@@ -1,29 +1,72 @@
 import React, { useState, useEffect } from 'react';
-import $ from 'jquery';
 
+import { ethers } from 'ethers';
+import { objType } from 'for-promise/utils/lib.mjs';
+
+import moment from '@src/util/libs/momentjs';
 import { getWeb3Cfg } from '@src/util/web3';
+import TimeFromNow from '@src/app/atoms/time/TimeFromNow';
+import { chainBalance } from './Ethereum';
 
-// Ethereum Wallets
-/* 
-  const timeDiv = $('<div>', { class: 'very-small text-bg-low' }).text('Updated at...');
+const getUserBalance = (chain, address) =>
+  new Promise((resolve, reject) => {
+    // Insert Chain
+    if (!chainBalance[chain]) chainBalance[chain] = {};
 
-  getUserBalance(chain, ethereum.address)
-    .then((data) => {
-      if (data) {
-        balanceDiv.text(`${data.value} ${web3Cfg.networks[chain]?.nativeCurrency?.symbol}`);
-        timeDiv.text(`Updated at ${data.date.fromNow()}`);
-      }
-    })
-    .catch((err) => {
-      balanceDiv.text('ERROR!');
-      console.error(err);
-    });
+    // Exist cache?
+    if (
+      chainBalance[chain][address] &&
+      (typeof chainBalance[chain][address].value === 'string' ||
+        typeof chainBalance[chain][address].value === 'number')
+    ) {
+      resolve({
+        value: chainBalance[chain][address].value,
+        date: chainBalance[chain][address].date,
+      });
+    }
 
-    balanceDiv;
-    timeDiv;
-*/
+    // Nope
+    else if (objType(tinyCrypto.userProviders, 'object') && tinyCrypto.userProviders.ethereum) {
+      tinyCrypto.userProviders[chain]
+        .getBalance(address)
+        .then((n) => {
+          let balance = ethers.formatEther(n);
+          if (balance.endsWith('.')) balance = `${balance}00`;
+
+          chainBalance[chain][address] = { value: balance, timeout: 60, date: moment() };
+          resolve({
+            value: chainBalance[chain][address].value,
+            date: chainBalance[chain][address].date,
+          });
+        })
+        .catch(reject);
+    } else {
+      resolve(null);
+    }
+  });
+
 export default function EthereumProfileTabItem({ chain, ethereum }) {
   const web3Cfg = getWeb3Cfg();
+  const [balance, setBalance] = useState('?.??');
+  const [updatedAt, setUpdatedAt] = useState(0);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    if (!updatedAt) {
+      getUserBalance(chain, ethereum.address)
+        .then((data) => {
+          if (data) {
+            setUpdatedAt(moment());
+            setBalance(data.value);
+            setIsError(false);
+          }
+        })
+        .catch((err) => {
+          setIsError(true);
+          console.error(err);
+        });
+    }
+  });
 
   return (
     <div className="col-md-6 mt-3">
@@ -39,8 +82,13 @@ export default function EthereumProfileTabItem({ chain, ethereum }) {
           href={`${web3Cfg.networks[chain]?.blockExplorerUrls[0]}address/${ethereum.address}`}
           target="_blank"
         >
-          {`?.?? ${web3Cfg.networks[chain]?.nativeCurrency?.symbol}`}
+          {!isError ? `${balance} ${web3Cfg.networks[chain]?.nativeCurrency?.symbol}` : 'ERROR!'}
         </a>
+        {updatedAt ? (
+          <div className="very-small text-bg-low">
+            {`Updated at`} <TimeFromNow timestamp={updatedAt} />
+          </div>
+        ) : null}
       </div>
     </div>
   );

@@ -1,9 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 
-import { ethers } from 'ethers';
 import { objType } from 'for-promise/utils/lib.mjs';
-import moment from '@src/util/libs/momentjs';
 
 import getEnsManager from '@src/util/web3/abi/ethereum/0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb';
 import { tinyCrypto } from '@src/util/web3';
@@ -16,7 +14,7 @@ const ens = {
   reverseName: {},
 };
 
-const chainBalance = {};
+export const chainBalance = {};
 
 // Clear cache
 setInterval(() => {
@@ -64,43 +62,6 @@ const getEnsDomain = (address) =>
       } else {
         resolve(null);
       }
-    } else {
-      resolve(null);
-    }
-  });
-
-const getUserBalance = (chain, address) =>
-  new Promise((resolve, reject) => {
-    // Insert Chain
-    if (!chainBalance[chain]) chainBalance[chain] = {};
-
-    // Exist cache?
-    if (
-      chainBalance[chain][address] &&
-      (typeof chainBalance[chain][address].value === 'string' ||
-        typeof chainBalance[chain][address].value === 'number')
-    ) {
-      resolve({
-        value: chainBalance[chain][address].value,
-        date: chainBalance[chain][address].date,
-      });
-    }
-
-    // Nope
-    else if (objType(tinyCrypto.userProviders, 'object') && tinyCrypto.userProviders.ethereum) {
-      tinyCrypto.userProviders[chain]
-        .getBalance(address)
-        .then((n) => {
-          let balance = ethers.formatEther(n);
-          if (balance.endsWith('.')) balance = `${balance}00`;
-
-          chainBalance[chain][address] = { value: balance, timeout: 60, date: moment() };
-          resolve({
-            value: chainBalance[chain][address].value,
-            date: chainBalance[chain][address].date,
-          });
-        })
-        .catch(reject);
     } else {
       resolve(null);
     }
