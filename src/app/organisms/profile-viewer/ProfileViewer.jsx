@@ -55,6 +55,7 @@ import { getUserWeb3Account, getWeb3Cfg } from '../../../util/web3';
 
 import copyText from './copyText';
 import tinyAPI from '../../../util/mods';
+import Clock from '@src/app/atoms/time/Clock';
 
 function ModerationTools({ roomId, userId }) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
@@ -799,14 +800,22 @@ function ProfileViewer() {
                       </>
                     ) : null}
 
-                    <div className="d-none">
-                      <hr />
+                    {typeof accountContent.presenceStatusMsg.timezone === 'string' &&
+                    accountContent.presenceStatusMsg.timezone.length > 0 ? (
+                      <>
+                        <hr />
 
-                      <div className="text-gray text-uppercase fw-bold very-small mb-2">
-                        Timezone
-                      </div>
-                      <div id="tiny-timezone" className="emoji-size-fix small text-freedom" />
-                    </div>
+                        <div className="text-gray text-uppercase fw-bold very-small mb-2">
+                          Timezone
+                        </div>
+                        <div className="emoji-size-fix small text-freedom">
+                          <Clock
+                            timezone={accountContent.presenceStatusMsg.timezone}
+                            calendarFormat="MMMM Do YYYY, {time}"
+                          />
+                        </div>
+                      </>
+                    ) : null}
 
                     {typeof accountContent.presenceStatusMsg.bio === 'string' &&
                     accountContent.presenceStatusMsg.bio.length > 0 ? (
