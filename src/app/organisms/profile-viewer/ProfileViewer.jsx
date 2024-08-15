@@ -346,7 +346,7 @@ function useToggleDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const [roomId, setRoomId] = useState(null);
   const [userId, setUserId] = useState(null);
-  const [selectedMenu, setSelectedMenu] = useState(null);
+  const [selectedMenu, setSelectedMenu] = useState(0);
   const [accountContent, setAccountContent] = useState(null);
 
   useEffect(() => {
@@ -367,7 +367,7 @@ function useToggleDialog() {
     setAccountContent(null);
     setUserId(null);
     setRoomId(null);
-    setSelectedMenu(null);
+    setSelectedMenu(0);
   };
 
   return [
@@ -656,9 +656,6 @@ function ProfileViewer() {
       setLightbox(!lightbox);
     };
 
-    // Menu bar items
-    const menuBarItems = [];
-
     // Exist Presence
     const existPresenceObject =
       accountContent && objType(accountContent.presenceStatusMsg, 'object');
@@ -683,6 +680,15 @@ function ProfileViewer() {
       existPresenceObject &&
       typeof accountContent.presenceStatusMsg.msgIcon === 'string' &&
       accountContent.presenceStatusMsg.msgIcon.length > 0;
+
+    // Menu bar items
+    const menuBarItems = [];
+    if (menuBarItems.length > 0) {
+      menuBarItems.unshift({
+        isDefault: true,
+        menu: () => 'User info',
+      });
+    }
 
     return (
       <>
@@ -758,77 +764,92 @@ function ProfileViewer() {
                 <span className="button">{twemojifyReact(convertUserId(userId))}</span>
               </small>
 
+              {accountContent && existPresenceObject ? (
+                <>
+                  {typeof accountContent.presenceStatusMsg.pronouns === 'string' &&
+                  accountContent.presenceStatusMsg.pronouns.length > 0 ? (
+                    <div className="text-gray emoji-size-fix pronouns small">
+                      {twemojifyReact(accountContent.presenceStatusMsg.pronouns.substring(0, 20))}
+                    </div>
+                  ) : null}
+
+                  {existMsgPresence || existIconPresence ? (
+                    <div
+                      className={`mt-2${existMsgPresence ? ' emoji-size-fix ' : ''}small user-custom-status${!existMsgPresence ? ' custom-status-emoji-only' : ''}`}
+                    >
+                      {existIconPresence ? (
+                        <Img
+                          className="emoji me-1"
+                          alt="icon"
+                          src={accountContent.presenceStatusMsg.msgIcon}
+                        />
+                      ) : null}
+                      {existMsgPresence ? (
+                        <span className="text-truncate cs-text">
+                          {twemojifyReact(accountContent.presenceStatusMsg.msg.substring(0, 100))}
+                        </span>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </>
+              ) : null}
+
+              {menuBarItems.length > 0
+                ? menuBarItems.map((item, index) => (
+                    <>
+                      <ul className="usertabs nav nav-underline mt-2 small">
+                        <li className="nav-item">
+                          <a
+                            className={`nav-link text-bg-force${!item.isDefault ? '' : ' ms-3'}${index !== selectedMenu ? '' : ' active'}`}
+                            href="#"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              setSelectedMenu(index);
+                            }}
+                          >
+                            {item.menu({
+                              roomId,
+                              userId,
+                              closeDialog,
+                              accountContent,
+                              roomMember,
+                              avatarUrl,
+                              username,
+                            })}
+                          </a>
+                        </li>
+                      </ul>
+                    </>
+                  ))
+                : null}
+
+              {menuBarItems[selectedMenu] ? (
+                <>
+                  <hr />
+                  {menuBarItems[selectedMenu].render({
+                    roomId,
+                    userId,
+                    closeDialog,
+                    accountContent,
+                    roomMember,
+                    avatarUrl,
+                    username,
+                    imagePreview: (name, imgQuery, originalUrl) =>
+                      imageViewer({
+                        lightbox,
+                        onClose: reopenProfile,
+                        imgQuery: imgQuery,
+                        name,
+                        originalUrl: originalUrl,
+                      }),
+                  })}
+                </>
+              ) : null}
+
               {accountContent ? (
                 // Object presence status
                 existPresenceObject ? (
                   <>
-                    {typeof accountContent.presenceStatusMsg.pronouns === 'string' &&
-                    accountContent.presenceStatusMsg.pronouns.length > 0 ? (
-                      <div className="text-gray emoji-size-fix pronouns small">
-                        {twemojifyReact(accountContent.presenceStatusMsg.pronouns.substring(0, 20))}
-                      </div>
-                    ) : null}
-
-                    {existMsgPresence || existIconPresence ? (
-                      <div
-                        className={`mt-2${existMsgPresence ? ' emoji-size-fix ' : ''}small user-custom-status${!existMsgPresence ? ' custom-status-emoji-only' : ''}`}
-                      >
-                        {existIconPresence ? (
-                          <Img
-                            className="emoji me-1"
-                            alt="icon"
-                            src={accountContent.presenceStatusMsg.msgIcon}
-                          />
-                        ) : null}
-                        {existMsgPresence ? (
-                          <span className="text-truncate cs-text">
-                            {twemojifyReact(accountContent.presenceStatusMsg.msg.substring(0, 100))}
-                          </span>
-                        ) : null}
-                      </div>
-                    ) : null}
-
-                    {menuBarItems.length > 0
-                      ? menuBarItems.map((item) => (
-                          <>
-                            <ul className="usertabs nav nav-underline mt-2 small">
-                              {item.menu({
-                                roomId,
-                                userId,
-                                closeDialog,
-                                accountContent,
-                                roomMember,
-                                avatarUrl,
-                                username,
-                              })}
-                            </ul>
-                          </>
-                        ))
-                      : null}
-
-                    {menuBarItems[selectedMenu] ? (
-                      <>
-                        <hr />
-                        {menuBarItems[selectedMenu].render({
-                          roomId,
-                          userId,
-                          closeDialog,
-                          accountContent,
-                          roomMember,
-                          avatarUrl,
-                          username,
-                          imagePreview: (name, imgQuery, originalUrl) =>
-                            imageViewer({
-                              lightbox,
-                              onClose: reopenProfile,
-                              imgQuery: imgQuery,
-                              name,
-                              originalUrl: originalUrl,
-                            }),
-                        })}
-                      </>
-                    ) : null}
-
                     {typeof accountContent.presenceStatusMsg.timezone === 'string' &&
                     accountContent.presenceStatusMsg.timezone.length > 0 ? (
                       <>
