@@ -1,3 +1,6 @@
+import React, { useState, useEffect, useRef, useReducer } from 'react';
+
+/*
 import $ from 'jquery';
 import { ethers } from 'ethers';
 import { objType } from 'for-promise/utils/lib.mjs';
@@ -186,4 +189,24 @@ export default function renderEthereum(tinyPlace, user, presenceStatus) {
       );
     }
   }
+}
+*/
+
+export default function EthereumProfileTab(menuBarItems, accountContent, existEthereum) {
+  menuBarItems.push({
+    menu: () => 'Ethereum',
+    render: ({
+      roomId,
+      userId,
+      closeDialog,
+      accountContent,
+      roomMember,
+      avatarUrl,
+      username,
+      imagePreview,
+    }) => {
+      console.log(accountContent);
+      return <div>Tiny Test</div>;
+    },
+  });
 }

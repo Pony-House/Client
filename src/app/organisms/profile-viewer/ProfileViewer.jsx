@@ -57,6 +57,7 @@ import { getUserWeb3Account, getWeb3Cfg } from '../../../util/web3';
 import copyText from './copyText';
 import tinyAPI from '../../../util/mods';
 import Clock from '@src/app/atoms/time/Clock';
+import EthereumProfileTab from './tabs/Ethereum';
 
 function ModerationTools({ roomId, userId }) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
@@ -428,9 +429,7 @@ function ProfileViewer() {
 
   const userNameRef = useRef(null);
   const displayNameRef = useRef(null);
-
   useRerenderOnProfileChange(roomId, userId);
-  console.log(accountContent);
 
   // Get Data
   const mx = initMatrix.matrixClient;
@@ -684,6 +683,9 @@ function ProfileViewer() {
     // Menu bar items
     const menuBarItems = [];
 
+    // Ethereum
+    if (existEthereum) EthereumProfileTab(menuBarItems, accountContent, existEthereum);
+
     // Profile Tabs Spawn
     tinyAPI.emit('profileTabsSpawn', menuBarItems, accountContent, existEthereum);
 
@@ -803,34 +805,32 @@ function ProfileViewer() {
                 </>
               ) : null}
 
-              {menuBarItems.length > 0
-                ? menuBarItems.map((item, index) => (
-                    <>
-                      <ul className="usertabs nav nav-underline mt-2 small">
-                        <li className="nav-item">
-                          <a
-                            className={`nav-link text-bg-force${!item.isDefault ? '' : ' ms-3'}${index !== selectedMenu ? '' : ' active'}`}
-                            href="#"
-                            onClick={(event) => {
-                              event.preventDefault();
-                              setSelectedMenu(index);
-                            }}
-                          >
-                            {item.menu({
-                              roomId,
-                              userId,
-                              closeDialog,
-                              accountContent,
-                              roomMember,
-                              avatarUrl,
-                              username,
-                            })}
-                          </a>
-                        </li>
-                      </ul>
-                    </>
-                  ))
-                : null}
+              {menuBarItems.length > 0 ? (
+                <ul className="usertabs nav nav-underline mt-2 small">
+                  {menuBarItems.map((item, index) => (
+                    <li className="nav-item">
+                      <a
+                        className={`nav-link text-bg-force${index !== menuBarItems.length - 1 ? ' me-3' : ''}${index !== selectedMenu ? '' : ' active'}`}
+                        href="#"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          setSelectedMenu(index);
+                        }}
+                      >
+                        {item.menu({
+                          roomId,
+                          userId,
+                          closeDialog,
+                          accountContent,
+                          roomMember,
+                          avatarUrl,
+                          username,
+                        })}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
 
               {menuBarItems[selectedMenu] &&
               typeof menuBarItems[selectedMenu].render === 'function' ? (
