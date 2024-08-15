@@ -30,16 +30,18 @@ const timeBase = (timestamp, fullTime) => {
   return { date, formattedFullTime, formattedDate };
 };
 
-function Time({ timestamp, fullTime = false, className = '' }) {
+function Time({ timestamp, fullTime = false, className = '', intervalTimeout = 1000 }) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
   const { date, formattedFullTime, formattedDate } = timeBase(timestamp, fullTime);
 
   useEffect(() => {
     const updateClock = () => forceUpdate();
+    const tinyInterval = setInterval(updateClock, intervalTimeout);
     matrixAppearance.on('is24hours', updateClock);
     matrixAppearance.on('calendarFormat', updateClock);
 
     return () => {
+      if (tinyInterval) clearInterval(tinyInterval);
       matrixAppearance.off('is24hours', updateClock);
       matrixAppearance.off('calendarFormat', updateClock);
     };
@@ -53,6 +55,7 @@ function Time({ timestamp, fullTime = false, className = '' }) {
 }
 
 Time.propTypes = {
+  intervalTimeout: PropTypes.number,
   className: PropTypes.string,
   timestamp: PropTypes.number.isRequired,
   fullTime: PropTypes.bool,
