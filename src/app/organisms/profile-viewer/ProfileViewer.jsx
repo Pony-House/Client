@@ -823,7 +823,8 @@ function ProfileViewer() {
                   ))
                 : null}
 
-              {menuBarItems[selectedMenu] ? (
+              {menuBarItems[selectedMenu] &&
+              typeof menuBarItems[selectedMenu].render === 'function' ? (
                 <>
                   <hr />
                   {menuBarItems[selectedMenu].render({
