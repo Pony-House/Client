@@ -5,7 +5,7 @@
   "description": "The open source house, your house, the house for all matrix ponies",
   "main": "dist-electron/main/index.js",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "start": "git submodule update --init && vite dev",

@@ -159,7 +159,7 @@ export default function renderAbout(
       typeof content.presenceStatusMsg.pronouns === 'string' &&
       content.presenceStatusMsg.pronouns.length > 0
     ) {
-      pronounsDOM.removeClass('d-none').text(content.presenceStatusMsg.pronouns);
+      pronounsDOM.removeClass('d-none').text(content.presenceStatusMsg.pronouns.substring(0, 20));
     } else {
       pronounsDOM.empty().addClass('d-none');
     }

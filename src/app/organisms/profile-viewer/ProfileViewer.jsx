@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
+import { objType } from 'for-promise/utils/lib.mjs';
 
 import { RoomMemberEvent, UserEvent } from 'matrix-js-sdk';
 
@@ -8,6 +9,7 @@ import clone from 'clone';
 import envAPI from '@src/util/libs/env';
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 import matrixAppearance from '@src/util/libs/appearance';
+import Img from '@src/app/atoms/image/Image';
 
 import { twemojifyReact } from '../../../util/twemojify';
 import { canUsePresence, getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
@@ -342,6 +344,7 @@ function useToggleDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const [roomId, setRoomId] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [selectedMenu, setSelectedMenu] = useState(null);
   const [accountContent, setAccountContent] = useState(null);
 
   useEffect(() => {
@@ -362,9 +365,20 @@ function useToggleDialog() {
     setAccountContent(null);
     setUserId(null);
     setRoomId(null);
+    setSelectedMenu(null);
   };
 
-  return [isOpen, roomId, userId, closeDialog, afterClose, accountContent, setAccountContent];
+  return [
+    isOpen,
+    roomId,
+    userId,
+    closeDialog,
+    afterClose,
+    accountContent,
+    setAccountContent,
+    selectedMenu,
+    setSelectedMenu,
+  ];
 }
 
 function useRerenderOnProfileChange(roomId, userId) {
@@ -396,8 +410,17 @@ function ProfileViewer() {
   const profileAvatar = useRef(null);
   const statusRef = useRef(null);
 
-  const [isOpen, roomId, userId, closeDialog, handleAfterClose, accountContent, setAccountContent] =
-    useToggleDialog();
+  const [
+    isOpen,
+    roomId,
+    userId,
+    closeDialog,
+    handleAfterClose,
+    accountContent,
+    setAccountContent,
+    selectedMenu,
+    setSelectedMenu,
+  ] = useToggleDialog();
 
   const [lightbox, setLightbox] = useState(false);
 
@@ -426,14 +449,13 @@ function ProfileViewer() {
   };
 
   if (!isOpen) tinyMenuId = 'default';
+  // Re-Open Profile
+  const reopenProfile = () => {
+    if (userId) openProfileViewer(userId, roomId);
+  };
 
   // Basic User profile updated
   useEffect(() => {
-    // Re-Open Profile
-    const reopenProfile = () => {
-      if (userId) openProfileViewer(userId, roomId);
-    };
-
     // Avatar Preview
     let newAvatar;
     const avatarPreviewBase = (name) => {
@@ -632,6 +654,21 @@ function ProfileViewer() {
       setLightbox(!lightbox);
     };
 
+    const menuBarItems = [];
+
+    const existPresenceObject =
+      accountContent && objType(accountContent.presenceStatusMsg, 'object');
+
+    const existMsgPresence =
+      existPresenceObject &&
+      typeof accountContent.presenceStatusMsg.msg === 'string' &&
+      accountContent.presenceStatusMsg.msg.length > 0;
+
+    const existIconPresence =
+      existPresenceObject &&
+      typeof accountContent.presenceStatusMsg.msgIcon === 'string' &&
+      accountContent.presenceStatusMsg.msgIcon.length > 0;
+
     return (
       <>
         <div className={`profile-banner profile-bg${cssColorMXID(userId)}`} />
@@ -691,30 +728,114 @@ function ProfileViewer() {
                 <span className="button">{twemojifyReact(convertUserId(userId))}</span>
               </small>
 
-              <div className="text-gray emoji-size-fix pronouns small d-none"></div>
+              {accountContent ? (
+                // Object presence status
+                existPresenceObject ? (
+                  <>
+                    {typeof accountContent.presenceStatusMsg.pronouns === 'string' &&
+                    accountContent.presenceStatusMsg.pronouns.length > 0 ? (
+                      <div className="text-gray emoji-size-fix pronouns small">
+                        {twemojifyReact(accountContent.presenceStatusMsg.pronouns.substring(0, 20))}
+                      </div>
+                    ) : null}
 
-              <div className="d-none mt-2 emoji-size-fix small user-custom-status"></div>
+                    {existMsgPresence || existIconPresence ? (
+                      <div
+                        className={`mt-2${existMsgPresence ? ' emoji-size-fix ' : ''}small user-custom-status${!existMsgPresence ? ' custom-status-emoji-only' : ''}`}
+                      >
+                        {existIconPresence ? (
+                          <Img
+                            className="emoji me-1"
+                            alt="icon"
+                            src={accountContent.presenceStatusMsg.msgIcon}
+                          />
+                        ) : null}
+                        {existMsgPresence ? (
+                          <span className="text-truncate cs-text">
+                            {twemojifyReact(accountContent.presenceStatusMsg.msg.substring(0, 100))}
+                          </span>
+                        ) : null}
+                      </div>
+                    ) : null}
 
-              <ul className="usertabs nav nav-underline mt-2 small"></ul>
+                    {menuBarItems.length > 0
+                      ? menuBarItems.map((item) => (
+                          <>
+                            <ul className="usertabs nav nav-underline mt-2 small">
+                              {item.menu({
+                                roomId,
+                                userId,
+                                closeDialog,
+                                accountContent,
+                                roomMember,
+                                avatarUrl,
+                                username,
+                              })}
+                            </ul>
+                          </>
+                        ))
+                      : null}
 
-              <div className="d-none">
-                <hr />
-                <div id="insert-custom-place" />
-              </div>
+                    {menuBarItems[selectedMenu] ? (
+                      <>
+                        <hr />
+                        {menuBarItems[selectedMenu].render({
+                          roomId,
+                          userId,
+                          closeDialog,
+                          accountContent,
+                          roomMember,
+                          avatarUrl,
+                          username,
+                          imagePreview: (name, imgQuery, originalUrl) =>
+                            imageViewer({
+                              lightbox,
+                              onClose: reopenProfile,
+                              imgQuery: imgQuery,
+                              name,
+                              originalUrl: originalUrl,
+                            }),
+                        })}
+                      </>
+                    ) : null}
 
-              <div className="d-none">
-                <hr />
+                    <div className="d-none">
+                      <hr />
 
-                <div className="text-gray text-uppercase fw-bold very-small mb-2">Timezone</div>
-                <div id="tiny-timezone" className="emoji-size-fix small text-freedom" />
-              </div>
+                      <div className="text-gray text-uppercase fw-bold very-small mb-2">
+                        Timezone
+                      </div>
+                      <div id="tiny-timezone" className="emoji-size-fix small text-freedom" />
+                    </div>
 
-              <div className="d-none">
-                <hr />
-
-                <div className="text-gray text-uppercase fw-bold very-small mb-2">About me</div>
-                <div id="tiny-bio" className="emoji-size-fix small text-freedom" />
-              </div>
+                    {typeof accountContent.presenceStatusMsg.bio === 'string' &&
+                    accountContent.presenceStatusMsg.bio.length > 0 ? (
+                      <>
+                        <hr />
+                        <div className="text-gray text-uppercase fw-bold very-small mb-2">
+                          About me
+                        </div>
+                        <div className="emoji-size-fix small text-freedom">
+                          {twemojifyReact(
+                            accountContent.presenceStatusMsg.bio.substring(0, 190),
+                            undefined,
+                            true,
+                            false,
+                          )}
+                        </div>
+                      </>
+                    ) : null}
+                  </>
+                ) : // Text presence status
+                typeof accountContent.presenceStatusMsg === 'string' &&
+                  accountContent.presenceStatusMsg.length > 0 ? (
+                  <div className="mt-2 emoji-size-fix small user-custom-status">
+                    <span className="text-truncate cs-text">
+                      {twemojifyReact(accountContent.presenceStatusMsg.substring(0, 100))}
+                    </span>
+                  </div>
+                ) : null
+              ) : null}
 
               <hr />
 

@@ -110,7 +110,7 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
 
         // Message Icon
         if (typeof presence.pronouns === 'string' && presence.pronouns.length > 0) {
-          pronounsDOM.removeClass('d-none').text(presence.pronouns);
+          pronounsDOM.removeClass('d-none').text(presence.pronouns.substring(0, 20));
         } else {
           pronounsDOM.empty().addClass('d-none');
         }
