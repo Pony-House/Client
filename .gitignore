@@ -4,6 +4,8 @@ dist
 node_modules
 devAssets
 electron/main/notification/sounds
+.flatpak-builder
+.flatpak
 
 public/img/twemoji
 mods/test

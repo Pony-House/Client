@@ -12,7 +12,7 @@
   files: ['dist-electron', 'dist'],
   linux: {
     icon: 'build/icon.png',
-    target: ['AppImage', 'deb'],
+    target: ['AppImage', 'deb', 'tar.gz'],
     category: 'Network;Chat;InstantMessaging;',
     desktop: {
       Comment: 'Pony House matrix client',
@@ -28,6 +28,7 @@
   win: {
     icon: 'build/icon.ico',
     target: [
+      'zip',
       {
         target: 'nsis',
         arch: ['x64'],
