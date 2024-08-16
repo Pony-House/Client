@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import tinyAPI from '@src/util/mods';
 import initMatrix from '@src/client/initMatrix';
+import copyText from '@src/app/organisms/profile-viewer/copyText';
+
+import { toast, btModal } from '../../../src/util/tools';
+import getWallets from '../../ud';
+import { getUdDomain, getUdDomains } from './getDomain';
 
 function UnstoppableDomainsTab({ userId, accountContent }) {
   // Prepare
@@ -17,7 +22,93 @@ function UnstoppableDomainsTab({ userId, accountContent }) {
   // Get Data
   useEffect(() => {
     if (isLoading && !isError && !isEmpty) {
+      // Ethereum
+      getUdDomain(ethereum.address)
+        .then((domain) => {
+          if (typeof domain === 'string' && domain.length > 0) {
+            getUdDomains(ethereum.address, domain)
+              .then((addresses) => {
+                if (Array.isArray(addresses) && addresses.length > 0) {
+                  /*
+                  tinyPlace.empty().append(
+                    $('<strong>', { class: 'small' }).text('UD Domain: '),
+                    $('<a>', { class: 'small text-click' })
+                      .text(domain)
+                      .on('click', (event) =>
+                        copyText(event, 'Ethereum domain successfully copied to the clipboard.'),
+                      ),
+                  );
 
+                  // Address Base
+                  const balances = $('<div>', { class: 'small row' });
+
+                  // Check Wallets
+                  for (const item in getWallets) {
+                    const address = addresses[item];
+                    const walletInfo = getWallets[item].split('.');
+                    if (
+                      typeof address === 'string' &&
+                      address.length > 0 &&
+                      walletInfo[0] === 'crypto' &&
+                      walletInfo[2] === 'address'
+                    ) {
+                      // Insert Item
+                      balances.append(
+                        $('<div>', { class: 'col-md-6 mt-3' }).append(
+                          $('<div>', { class: 'border border-bg p-3 ' }).append(
+                            $('<div>', { class: 'fw-bold' })
+                              .text(walletInfo[1])
+                              .prepend(
+                                $('<i>', { class: `me-2 cf cf-${walletInfo[1].toLowerCase()}` }),
+                              ),
+                            $('<span>', { class: 'small text-click' })
+                              .text(address)
+                              .on('click', () => {
+                                const qrcodeCanvas = $('<canvas>');
+                                qrcode.toCanvas(qrcodeCanvas[0], address, (error) => {
+                                  if (error) {
+                                    toast(error);
+                                  } else {
+                                    // Prepare Text
+                                    btModal({
+                                      title: `${walletInfo[1]} Address`,
+
+                                      id: 'user-eth-address',
+                                      dialog: 'modal-lg modal-dialog-centered',
+
+                                      body: $('<center>', { class: 'small' }).append(
+                                        $('<h6>', { class: 'mb-4 noselect' }).text(
+                                          'Please enter the address correctly! Any type issue will be permanent loss of your funds!',
+                                        ),
+                                        $('<span>').text(
+                                          user.displayName ? user.displayName : user.userId,
+                                        ),
+                                        $('<br/>'),
+                                        $('<span>').text(address),
+                                        $('<div>', { class: 'mt-3' }).append(qrcodeCanvas),
+                                      ),
+                                    });
+                                  }
+                                });
+                              }),
+                          ),
+                        ),
+                      );
+                    }
+                  }
+
+                  tinyPlace.append(balances);
+                  */
+                } else {
+                  tinyError();
+                }
+              })
+              .catch(tinyError);
+          } else {
+            tinyError();
+          }
+        })
+        .catch(tinyError);
     }
   });
 
@@ -63,96 +154,6 @@ function UnstoppableDomainsTab({ userId, accountContent }) {
       </div>
     </>
   );
-
-  /*
-
-// Ethereum
-const ethereum = presenceStatus.ethereum;
-getUdDomain(ethereum.address)
-.then((domain) => {
-  if (typeof domain === 'string' && domain.length > 0) {
-    getUdDomains(ethereum.address, domain)
-      .then((addresses) => {
-        if (Array.isArray(addresses) && addresses.length > 0) {
-          tinyPlace.empty().append(
-            $('<strong>', { class: 'small' }).text('UD Domain: '),
-            $('<a>', { class: 'small text-click' })
-              .text(domain)
-              .on('click', (event) =>
-                copyText(event, 'Ethereum domain successfully copied to the clipboard.'),
-              ),
-          );
-
-          // Address Base
-          const balances = $('<div>', { class: 'small row' });
-
-          // Check Wallets
-          for (const item in getWallets) {
-            const address = addresses[item];
-            const walletInfo = getWallets[item].split('.');
-            if (
-              typeof address === 'string' &&
-              address.length > 0 &&
-              walletInfo[0] === 'crypto' &&
-              walletInfo[2] === 'address'
-            ) {
-              // Insert Item
-              balances.append(
-                $('<div>', { class: 'col-md-6 mt-3' }).append(
-                  $('<div>', { class: 'border border-bg p-3 ' }).append(
-                    $('<div>', { class: 'fw-bold' })
-                      .text(walletInfo[1])
-                      .prepend(
-                        $('<i>', { class: `me-2 cf cf-${walletInfo[1].toLowerCase()}` }),
-                      ),
-                    $('<span>', { class: 'small text-click' })
-                      .text(address)
-                      .on('click', () => {
-                        const qrcodeCanvas = $('<canvas>');
-                        qrcode.toCanvas(qrcodeCanvas[0], address, (error) => {
-                          if (error) {
-                            toast(error);
-                          } else {
-                            // Prepare Text
-                            btModal({
-                              title: `${walletInfo[1]} Address`,
-
-                              id: 'user-eth-address',
-                              dialog: 'modal-lg modal-dialog-centered',
-
-                              body: $('<center>', { class: 'small' }).append(
-                                $('<h6>', { class: 'mb-4 noselect' }).text(
-                                  'Please enter the address correctly! Any type issue will be permanent loss of your funds!',
-                                ),
-                                $('<span>').text(
-                                  user.displayName ? user.displayName : user.userId,
-                                ),
-                                $('<br/>'),
-                                $('<span>').text(address),
-                                $('<div>', { class: 'mt-3' }).append(qrcodeCanvas),
-                              ),
-                            });
-                          }
-                        });
-                      }),
-                  ),
-                ),
-              );
-            }
-          }
-
-          tinyPlace.append(balances);
-        } else {
-          tinyError();
-        }
-      })
-      .catch(tinyError);
-  } else {
-    tinyError();
-  }
-})
-.catch(tinyError);
-*/
 }
 
 export default function startMod() {
