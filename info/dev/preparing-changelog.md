@@ -3,3 +3,5 @@
 - MXC_AUTHENTICATED_MEDIA added into env file.
 - Emoji tab selector css fixed.
 - Embed tiny issues fixed.
+- Profile Viewer source code changed to react version.
+- Timestamp codes updated.
