@@ -9,8 +9,11 @@ sdk-extensions:
 command: run.sh
 separate-locales: false
 finish-args:
-  - --env=ELECTRON_TRASH=gio
-  - --filesystem=home
+  - --device=dri
+  - --filesystem=xdg-cache
+  - --filesystem=xdg-config
+  - --filesystem=xdg-download
+  - --filesystem=/tmp
   - --talk-name=org.freedesktop.Notifications"
   - --share=ipc
   - --socket=x11
