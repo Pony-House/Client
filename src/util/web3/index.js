@@ -48,10 +48,6 @@ export function validateWeb3Account(ethereumData, userId) {
       if (typeof ethereumData.address !== 'string') ethereumData.address = null;
       if (typeof ethereumData.register_time !== 'number') ethereumData.register_time = null;
 
-      if (!objType(ethereumData.btc, 'object')) ethereumData.btc = {};
-      if (typeof ethereumData.btc.sign !== 'string') ethereumData.btc.sign = null;
-      if (typeof ethereumData.btc.address !== 'string') ethereumData.btc.address = null;
-
       // Check
       if (ethereumData.sign && ethereumData.address && ethereumData.register_time) {
         // Fix Address
@@ -94,7 +90,6 @@ export function getUserWeb3Account(userData, userId) {
     if (objType(ethereumData, 'object')) {
       // Validator
       validateWeb3Account(ethereumData, mx.getUserId());
-      if (!objType(ethereumData.data, 'object')) ethereumData.data = {};
 
       // Complete
       return ethereumData;
@@ -367,9 +362,6 @@ const startWeb3 = (/* tcall */) => {
         }
       });
 
-    // Recover Signature
-    tinyCrypto.recover = (msg, sig) => ethers.recoverAddress(ethers.hashMessage(msg), sig);
-
     // Insert Provider
     if (window.ethereum) {
       tinyCrypto.changeNetwork = (chainId) =>
@@ -462,7 +454,6 @@ const startWeb3 = (/* tcall */) => {
     tinyCrypto.isUnlocked = () => false;
     tinyCrypto.validateMatrixAccount = () => false;
     tinyCrypto.getUser = () => ({ sign: null, id: null });
-    tinyCrypto.recover = () => '';
     tinyCrypto.signUserAccount = () =>
       new Promise((resolve) => {
         resolve(null);
@@ -473,6 +464,9 @@ const startWeb3 = (/* tcall */) => {
       });
     tinyCrypto.setUser = () => null;
   }
+
+  // Recover Signature
+  tinyCrypto.recover = (msg, sig) => ethers.recoverAddress(ethers.hashMessage(msg), sig);
 
   // Functions
   tinyCrypto.getCfg = getWeb3Cfg;

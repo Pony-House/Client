@@ -5,3 +5,4 @@
 - Embed tiny issues fixed.
 - Profile Viewer source code changed to react version.
 - Timestamp codes updated.
+- The ethereum profiles were not being detected even with the web3 enabled. That was corrected now.
