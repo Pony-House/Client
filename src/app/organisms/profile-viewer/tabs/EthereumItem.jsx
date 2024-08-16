@@ -3,33 +3,39 @@ import React, { useState, useEffect } from 'react';
 import { getWeb3Cfg } from '@src/util/web3';
 import TimeFromNow from '@src/app/atoms/time/TimeFromNow';
 import { getUserBalance } from '@src/util/web3/utils';
+import IconButton from '@src/app/atoms/button/IconButton';
 
 export default function EthereumProfileTabItem({ chain, ethereum }) {
   const web3Cfg = getWeb3Cfg();
   const [balance, setBalance] = useState('?.??');
   const [updatedAt, setUpdatedAt] = useState(0);
   const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const getBalance = (forceUpdate = false) => {
+    setIsLoading(true);
+    getUserBalance(chain, ethereum.address, forceUpdate)
+      .then((data) => {
+        if (data) {
+          setUpdatedAt(data.date);
+          setBalance(data.value);
+          setIsError(false);
+        } else {
+          setIsError(true);
+          setBalance('?.??');
+          setUpdatedAt(0);
+          console.error(new Error('No data found.'));
+        }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setIsError(true);
+        console.error(err);
+        setIsLoading(false);
+      });
+  };
 
   useEffect(() => {
-    if (!updatedAt) {
-      getUserBalance(chain, ethereum.address)
-        .then((data) => {
-          if (data) {
-            setUpdatedAt(data.date);
-            setBalance(data.value);
-            setIsError(false);
-          } else {
-            setIsError(true);
-            setBalance('?.??');
-            setUpdatedAt(0);
-            console.error(new Error('No data found.'));
-          }
-        })
-        .catch((err) => {
-          setIsError(true);
-          console.error(err);
-        });
-    }
+    if (!updatedAt && !isLoading) getBalance();
   });
 
   return (
@@ -42,15 +48,33 @@ export default function EthereumProfileTabItem({ chain, ethereum }) {
           {web3Cfg.networks[chain]?.chainName}
         </div>
 
-        <a
-          href={`${web3Cfg.networks[chain]?.blockExplorerUrls[0]}address/${ethereum.address}`}
-          target="_blank"
-        >
-          {!isError ? `${balance} ${web3Cfg.networks[chain]?.nativeCurrency?.symbol}` : 'ERROR!'}
-        </a>
+        {!isLoading ? (
+          <a
+            href={`${web3Cfg.networks[chain]?.blockExplorerUrls[0]}address/${ethereum.address}`}
+            target="_blank"
+          >
+            {!isError ? `${balance} ${web3Cfg.networks[chain]?.nativeCurrency?.symbol}` : 'ERROR!'}
+          </a>
+        ) : (
+          <div className="spinner-border spinner-border-sm d-inline-block" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        )}
         {updatedAt ? (
           <div className="very-small text-bg-low">
-            {`Updated at`} <TimeFromNow timestamp={updatedAt} />
+            {`Updated at`}
+            {` `}
+            <TimeFromNow timestamp={updatedAt} />
+            {` `}
+            <IconButton
+              className="btn-sm"
+              size="small"
+              disabled={isLoading}
+              fa="fa-solid fa-arrows-rotate"
+              onClick={() => {
+                getBalance(true);
+              }}
+            />
           </div>
         ) : null}
       </div>

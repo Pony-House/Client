@@ -31,13 +31,14 @@ setInterval(() => {
   }
 }, 60000);
 
-export const getUserBalance = (chain, address) =>
+export const getUserBalance = (chain, address, forceNoCache = false) =>
   new Promise((resolve, reject) => {
     // Insert Chain
     if (!chainBalance[chain]) chainBalance[chain] = {};
 
     // Exist cache?
     if (
+      !forceNoCache &&
       chainBalance[chain][address] &&
       (typeof chainBalance[chain][address].value === 'string' ||
         typeof chainBalance[chain][address].value === 'number')
@@ -70,10 +71,14 @@ export const getUserBalance = (chain, address) =>
     }
   });
 
-export const getEnsDomain = (address) =>
+export const getEnsDomain = (address, forceNoCache = false) =>
   new Promise((resolve, reject) => {
     // Exist cache?
-    if (ens.reverseName[address] && typeof ens.reverseName[address].value === 'string') {
+    if (
+      !forceNoCache &&
+      ens.reverseName[address] &&
+      typeof ens.reverseName[address].value === 'string'
+    ) {
       resolve({ data: ens.reverseName[address].value, cache: true });
     }
 
