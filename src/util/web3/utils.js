@@ -45,6 +45,7 @@ export const getUserBalance = (chain, address) =>
       resolve({
         value: chainBalance[chain][address].value,
         date: chainBalance[chain][address].date,
+        cache: true,
       });
     }
 
@@ -60,6 +61,7 @@ export const getUserBalance = (chain, address) =>
           resolve({
             value: chainBalance[chain][address].value,
             date: chainBalance[chain][address].date,
+            cache: false,
           });
         })
         .catch(reject);
@@ -72,7 +74,7 @@ export const getEnsDomain = (address) =>
   new Promise((resolve, reject) => {
     // Exist cache?
     if (ens.reverseName[address] && typeof ens.reverseName[address].value === 'string') {
-      resolve(ens.reverseName[address].value);
+      resolve({ data: ens.reverseName[address].value, cache: true });
     }
 
     // Nope
@@ -86,8 +88,8 @@ export const getEnsDomain = (address) =>
           .node(address)
           .call()
           .then((domain) => {
-            ens.reverseName[address] = { node: domain, timeout: 60 };
-            resolve(ens.reverseName[address].node);
+            ens.reverseName[address] = { value: domain, timeout: 60 };
+            resolve({ data: ens.reverseName[address].value, cache: false });
           })
           .catch(reject);
       } else {

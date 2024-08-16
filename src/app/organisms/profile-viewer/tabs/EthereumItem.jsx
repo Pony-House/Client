@@ -15,9 +15,14 @@ export default function EthereumProfileTabItem({ chain, ethereum }) {
       getUserBalance(chain, ethereum.address)
         .then((data) => {
           if (data) {
-            setUpdatedAt(new Date());
+            setUpdatedAt(data.date);
             setBalance(data.value);
             setIsError(false);
+          } else {
+            setIsError(true);
+            setBalance('?.??');
+            setUpdatedAt(0);
+            console.error(new Error('No data found.'));
           }
         })
         .catch((err) => {
