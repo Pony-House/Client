@@ -1,73 +1,11 @@
 import React from 'react';
 import $ from 'jquery';
 
-import { objType } from 'for-promise/utils/lib.mjs';
-
-import getEnsManager from '@src/util/web3/abi/ethereum/0xa58e81fe9b61b5c3fe2afd33cf304c454abfc7cb';
 import { tinyCrypto } from '@src/util/web3';
 import initMatrix from '@src/client/initMatrix';
 
 import { btModal, toast } from '@src/util/tools';
 import EthereumProfileTabItem from './EthereumItem';
-
-const ens = {
-  reverseName: {},
-};
-
-export const chainBalance = {};
-
-// Clear cache
-setInterval(() => {
-  for (const address in ens.reverseName) {
-    if (ens.reverseName[address].timeout < 1) {
-      delete ens.reverseName[address];
-    } else {
-      ens.reverseName[address].timeout--;
-    }
-  }
-
-  for (const chain in chainBalance) {
-    for (const address in chainBalance[chain]) {
-      if (chainBalance[chain][address].timeout < 1) {
-        delete chainBalance[chain][address];
-      } else {
-        chainBalance[chain][address].timeout--;
-      }
-    }
-  }
-}, 60000);
-
-const getEnsDomain = (address) =>
-  new Promise((resolve, reject) => {
-    // Exist cache?
-    if (ens.reverseName[address] && typeof ens.reverseName[address].value === 'string') {
-      resolve(ens.reverseName[address].value);
-    }
-
-    // Nope
-    else if (objType(tinyCrypto.userProviders, 'object') && tinyCrypto.userProviders.ethereum) {
-      if (!ens.ethereum) {
-        ens.ethereum = getEnsManager();
-      }
-
-      if (ens.ethereum.node) {
-        ens.ethereum
-          .node(address)
-          .call()
-          .then((domain) => {
-            ens.reverseName[address] = { node: domain, timeout: 60 };
-            resolve(ens.reverseName[address].node);
-          })
-          .catch(reject);
-      } else {
-        resolve(null);
-      }
-    } else {
-      resolve(null);
-    }
-  });
-
-export { getEnsDomain };
 
 export default function EthereumProfileTab(menuBarItems, accountContent, existEthereum) {
   if (existEthereum) {
