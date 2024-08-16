@@ -778,16 +778,10 @@ function RoomViewContent({
   };
 
   useEffect(() => {
-    const updateClock = () => forceUpdate();
     const updatePageLimit = (value) => setPageLimit(value);
     matrixAppearance.on('pageLimit', updatePageLimit);
-    matrixAppearance.on('is24hours', updateClock);
-    matrixAppearance.on('calendarFormat', updateClock);
-
     return () => {
       matrixAppearance.off('pageLimit', updatePageLimit);
-      matrixAppearance.off('is24hours', updateClock);
-      matrixAppearance.off('calendarFormat', updateClock);
     };
   });
 
