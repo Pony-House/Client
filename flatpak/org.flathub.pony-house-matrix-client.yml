@@ -5,7 +5,7 @@ sdk: org.freedesktop.Sdk
 base: org.electronjs.Electron2.BaseApp
 base-version: '23.08'
 sdk-extensions:
-  - org.freedesktop.Sdk.Extension.node18
+  - org.freedesktop.Sdk.Extension.node20
 command: run.sh
 separate-locales: false
 finish-args:
@@ -20,7 +20,7 @@ finish-args:
   - --socket=pulseaudio
   - --share=network
 build-options:
-  append-path: /usr/lib/sdk/node18/bin
+  append-path: /usr/lib/sdk/node20/bin
   env:
     NPM_CONFIG_LOGLEVEL: info
 modules:
@@ -30,7 +30,7 @@ modules:
       env:
         XDG_CACHE_HOME: /run/build/pony-house-matrix/flatpak-node/cache
         npm_config_cache: /run/build/pony-house-matrix/flatpak-node/npm-cache
-        npm_config_nodedir: /usr/lib/sdk/node18
+        npm_config_nodedir: /usr/lib/sdk/node20
         npm_config_offline: 'true'
     subdir: main
     build-commands:
