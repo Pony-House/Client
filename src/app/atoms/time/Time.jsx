@@ -3,14 +3,17 @@ import PropTypes from 'prop-types';
 import $ from 'jquery';
 
 import moment, { momentFormat } from '@src/util/libs/momentjs';
+import { getTimestampRules } from '@src/util/markdown';
 
 import { isInSameDay } from '../../../util/common';
 import matrixAppearance from '../../../util/libs/appearance';
+import Tooltip from '../tooltip/Tooltip';
 
 const timeBase = (timestamp, fullTime) => {
   const date = new Date(timestamp);
 
-  const formattedFullTime = moment(date).format(`DD MMMM YYYY, ${momentFormat.clock()}`);
+  const momentNow = moment(date);
+  const formattedFullTime = momentNow.format(`DD MMMM YYYY, ${momentFormat.clock()}`);
   let formattedDate = formattedFullTime;
 
   if (!fullTime) {
@@ -19,7 +22,7 @@ const timeBase = (timestamp, fullTime) => {
     compareDate.setDate(compareDate.getDate() - 1);
     const isYesterday = isInSameDay(date, compareDate);
 
-    formattedDate = moment(date).format(
+    formattedDate = momentNow.format(
       isToday || isYesterday ? momentFormat.clock() : momentFormat.calendar(),
     );
     if (isYesterday) {
@@ -27,12 +30,19 @@ const timeBase = (timestamp, fullTime) => {
     }
   }
 
-  return { date, formattedFullTime, formattedDate };
+  return { date, formattedFullTime, formattedDate, momentNow };
 };
 
-function Time({ timestamp, fullTime = false, className = '', intervalTimeout = 1000 }) {
+function Time({
+  timestamp,
+  fullTime = false,
+  className = '',
+  intervalTimeout = 1000,
+  onChange = null,
+  placement = null,
+}) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
-  const { date, formattedFullTime, formattedDate } = timeBase(timestamp, fullTime);
+  const { date, formattedFullTime, formattedDate, momentNow } = timeBase(timestamp, fullTime);
 
   useEffect(() => {
     const updateClock = () => forceUpdate();
@@ -47,7 +57,14 @@ function Time({ timestamp, fullTime = false, className = '', intervalTimeout = 1
     };
   });
 
-  return (
+  if (onChange)
+    onChange({
+      date,
+      formattedFullTime,
+      formattedDate,
+    });
+
+  const result = (
     <time
       className={className}
       dateTime={date.toISOString()}
@@ -57,13 +74,23 @@ function Time({ timestamp, fullTime = false, className = '', intervalTimeout = 1
       {formattedDate}
     </time>
   );
+
+  if (!placement) return result;
+  const timestampRules = getTimestampRules();
+  return (
+    <Tooltip content={momentNow.format(timestampRules.F())} placement={placement}>
+      {result}
+    </Tooltip>
+  );
 }
 
 Time.propTypes = {
+  placement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
   intervalTimeout: PropTypes.number,
   className: PropTypes.string,
   timestamp: PropTypes.number.isRequired,
   fullTime: PropTypes.bool,
+  onChange: PropTypes.func,
 };
 
 function jqueryTime(timestamp, fullTime, className) {

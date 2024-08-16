@@ -7,11 +7,14 @@ import { getTimestampRules } from '@src/util/markdown';
 import matrixAppearance from '../../../util/libs/appearance';
 import Tooltip from '../tooltip/Tooltip';
 
-function TimeFromNow({
+function TimeFormat({
   className = null,
   intervalTimeout = 1000,
   timestamp = null,
   onChange = null,
+  realTime = false,
+  format = undefined,
+  type = 'format',
   placement = null,
 }) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
@@ -19,25 +22,29 @@ function TimeFromNow({
 
   useEffect(() => {
     const updateClock = () => forceUpdate();
-    const tinyInterval = setInterval(updateClock, intervalTimeout);
-
     matrixAppearance.on('is24hours', updateClock);
     matrixAppearance.on('calendarFormat', updateClock);
     return () => {
-      if (tinyInterval) clearInterval(tinyInterval);
       matrixAppearance.off('is24hours', updateClock);
       matrixAppearance.off('calendarFormat', updateClock);
     };
   });
 
-  if (onChange)
-    onChange({
-      now,
-    });
+  useEffect(() => {
+    if (realTime) {
+      const updateClock = () => forceUpdate();
+      const tinyInterval = setInterval(updateClock, intervalTimeout);
+      return () => {
+        if (tinyInterval) clearInterval(tinyInterval);
+      };
+    }
+  });
+
+  if (onChange) onChange({ now });
 
   const result = (
-    <time className={className} dateTime={now.toISOString()} type="fromnow">
-      {now.fromNow()}
+    <time className={className} dateTime={now.toISOString()} type={type}>
+      {now.format(format)}
     </time>
   );
 
@@ -50,11 +57,14 @@ function TimeFromNow({
   );
 }
 
-TimeFromNow.propTypes = {
+TimeFormat.propTypes = {
   placement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
   className: PropTypes.string,
+  format: PropTypes.string,
+  type: PropTypes.string,
   intervalTimeout: PropTypes.number,
   timestamp: PropTypes.number.isRequired,
   onChange: PropTypes.func,
+  realTime: PropTypes.bool,
 };
-export default TimeFromNow;
+export default TimeFormat;

@@ -1,11 +1,9 @@
-import $ from 'jquery';
 import moment, { momentFormat } from '@src/util/libs/momentjs';
 import SimpleMarkdown from '@khanacademy/simple-markdown';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import { idRegex, parseIdUri } from './common';
 import rainbowText from './libs/rainbowText';
-import tinyFixScrollChat from '../app/molecules/media/mediaFix';
 
 // const discordRegex = /((`){1,3}|(\*){1,3}|(~){2}|(\|){2}|^(>){1,3}|(_){1,2})+/gm;
 
@@ -109,6 +107,15 @@ export const startTimestamp = () => {
   timestampFormats.F = () => `dddd MMMM DD, YYYY ${momentFormat.clock()}`;
 };
 
+export const getTimestampRules = () => ({
+  t: timestampFormats.t,
+  T: timestampFormats.T,
+  d: timestampFormats.d,
+  D: timestampFormats.D,
+  f: timestampFormats.f,
+  F: timestampFormats.F,
+});
+
 timestampFormats.validated = [];
 
 timestampFormats.html = (item, fromNow = false) => {
@@ -141,41 +148,6 @@ timestampFormats.html = (item, fromNow = false) => {
     },
   };
 };
-
-setInterval(() => {
-  const timestamps = Array.from(document.querySelectorAll('[data-mx-timestamp]'));
-  if (timestamps.length > 0) {
-    timestamps.map((item) => {
-      const tinyItem = $(item);
-      const type = item.getAttribute('timestamp-type');
-      const timestamp = Number(item.getAttribute('data-mx-timestamp'));
-
-      if (!Number.isNaN(timestamp) && typeof type === 'string') {
-        if (type !== 'R') {
-          tinyItem.text(
-            moment(timestamp).format(
-              typeof timestampFormats[type] === 'function'
-                ? timestampFormats[type]()
-                : timestampFormats[type],
-            ),
-          );
-        } else {
-          tinyItem.text(moment(timestamp).fromNow());
-        }
-      }
-
-      if (!tinyItem.hasClass('with-tooltip')) {
-        tinyItem.attr('title', moment(timestamp).format(timestampFormats.F()));
-        tinyItem.addClass('with-tooltip');
-        tinyItem.tooltip();
-      }
-
-      return item;
-    });
-  }
-
-  tinyFixScrollChat(50);
-}, 1000);
 
 const {
   defaultRules,

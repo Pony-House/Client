@@ -15,6 +15,7 @@ import openTinyURL from '../message/urlProtection';
 import { tinyLinkifyFixer } from '../clear-urls/clearUrls';
 import envAPI from '../libs/env';
 
+import SPAN from './tags/Span';
 import IMG from './tags/Img';
 import MxMaths from './tags/MxMaths';
 import IFRAME from './tags/Iframe';
@@ -68,8 +69,8 @@ global.String.prototype.emojiToCode = function () {
   return this.codePointAt(0).toString(16);
 };
 
-const reactTags = { img: IMG.React, iframe: IFRAME.React };
-const jQueryTags = { img: IMG.jquery };
+const reactTags = { img: IMG.React, iframe: IFRAME.React, span: SPAN.React };
+const jQueryTags = { img: IMG.jquery, span: SPAN.jquery };
 
 // Tiny Math
 const mathOptions = {
