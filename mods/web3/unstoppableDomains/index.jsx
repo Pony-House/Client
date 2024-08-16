@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import tinyAPI from '@src/util/mods';
 import initMatrix from '@src/client/initMatrix';
 
 function UnstoppableDomainsTab({ userId, accountContent }) {
   // Prepare
   const [isLoading, setIsLoading] = useState(true);
-  const [errMessage, setErrMessage] = useState(null);
+  const [isError, setIsError] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(false);
 
   // Config
   const user = initMatrix.matrixClient.getUser(userId);
@@ -13,6 +14,25 @@ function UnstoppableDomainsTab({ userId, accountContent }) {
   // Ethereum
   const ethereum = accountContent.presenceStatusMsg.ethereum;
 
+  // Get Data
+  useEffect(() => {
+    if (isLoading && !isError && !isEmpty) {
+
+    }
+  });
+
+  // Tiny Error
+  const tinyError = (err) => {
+    if (err) {
+      toast(err.message);
+      console.error(err);
+      setIsError(true);
+    } else {
+      setIsEmpty(true);
+    }
+  };
+
+  // Is Loading
   if (isLoading)
     return (
       <strong className="small">
@@ -23,6 +43,16 @@ function UnstoppableDomainsTab({ userId, accountContent }) {
       </strong>
     );
 
+  // Is Error
+  if (isError) return <strong className="small text-danger">ERROR LOADING!</strong>;
+
+  // Is Empty
+  if (isEmpty)
+    return (
+      <strong className="small">No reverse UD domains were found linked to this wallet.</strong>
+    );
+
+  // Complete
   return (
     <>
       <div className="very-small text-center mt-3">
@@ -35,25 +65,6 @@ function UnstoppableDomainsTab({ userId, accountContent }) {
   );
 
   /*
-
-// Tiny Error
-const tinyError = (err) => {
-if (err) {
-  toast(err.message);
-  console.error(err);
-  tinyPlace
-    .empty()
-    .append($('<strong>', { class: 'small text-danger' }).text('ERROR LOADING!'));
-} else {
-  tinyPlace
-    .empty()
-    .append(
-      $('<strong>', { class: 'small' }).text(
-        'No reverse UD domains were found linked to this wallet.',
-      ),
-    );
-}
-};
 
 // Ethereum
 const ethereum = presenceStatus.ethereum;
