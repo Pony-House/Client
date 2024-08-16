@@ -704,6 +704,14 @@ function ProfileViewer() {
       typeof accountContent.presenceStatusMsg.msgIcon === 'string' &&
       accountContent.presenceStatusMsg.msgIcon.length > 0;
 
+    // Exist banner
+    const existBanner =
+      existPresenceObject &&
+      typeof accountContent.presenceStatusMsg.bannerThumb === 'string' &&
+      accountContent.presenceStatusMsg.bannerThumb.length > 0 &&
+      typeof accountContent.presenceStatusMsg.banner === 'string' &&
+      accountContent.presenceStatusMsg.banner.length > 0;
+
     // Menu bar items
     const menuBarItems = [];
 
@@ -720,12 +728,7 @@ function ProfileViewer() {
       });
     }
 
-    if (
-      accountContent &&
-      objType(accountContent.presenceStatusMsg, 'object') &&
-      !bannerSrc &&
-      !loadingBanner
-    ) {
+    if (existPresenceObject && existBanner && !bannerSrc && !loadingBanner) {
       setLoadingBanner(true);
       const bannerData = AvatarJquery({
         isObj: true,
@@ -743,7 +746,7 @@ function ProfileViewer() {
     return (
       <>
         <div
-          className={`profile-banner profile-bg${cssColorMXID(userId)}${bannerSrc ? ' exist-banner' : ''}`}
+          className={`profile-banner profile-bg${cssColorMXID(userId)}${existBanner ? ' exist-banner' : ''}`}
           style={{ backgroundImage: bannerSrc ? `url("${bannerSrc}")` : null }}
         />
 
