@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>com.pony-house-matrix-client</id>
+	<launchable type="desktop-id">com.pony-house-matrix-client.desktop</launchable>
+	<metadata_license>CC0-1.0</metadata_license>
+	<project_license>GPL-3.0-or-later</project_license>
+
+	<name>Pony House</name>
+
+	<categories>
+		<category>Network</category>
+	</categories>
+
+	<summary>The open source house, your house, the house for all matrix ponies</summary>
+
+	<description>
+		<p>Matrix client, focused on being a completely customizable open source superapp with everything you need to be happy with your friends.</p>
+	</description>
+
+	<developer_name>Yasmin Seidel (JasminDreasond)</developer_name>
+
+	<releases>
+		<release version="1.4.6" date="2024-04-02">
+			<description>
+				<p>First flathub version.</p>
+			</description>
+		</release>
+	</releases>
+
+	<url type="homepage">https://pony.house</url>
+	<url type="bugtracker">https://github.com/Pony-House/Client/issues</url>
+	<url type="faq">https://github.com/Pony-House/Client</url>
+	<url type="donation">https://github.com/Pony-House/Client</url>
+	<url type="contact">https://github.com/Pony-House/Client</url>
+</component>

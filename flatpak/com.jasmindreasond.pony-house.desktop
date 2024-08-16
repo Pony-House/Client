@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Pony House
+GenericName=Pony House Matrix Client
+Comment=The open source house, your house, the house for all matrix ponies
+Keywords=Network;Chat;InstantMessaging;
+Exec=run.sh
+Icon=org.flathub.pony-house-matrix-client
+Version=1.4.6
+Type=Application
+Terminal=false
+Categories=Network
