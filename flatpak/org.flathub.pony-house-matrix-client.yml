@@ -9,8 +9,7 @@ sdk-extensions:
 command: run.sh
 separate-locales: false
 finish-args:
-  - --socket=wayland"
-  - --device=dri
+  - --env=ELECTRON_TRASH=gio
   - --filesystem=home
   - --talk-name=org.freedesktop.Notifications"
   - --share=ipc
@@ -28,24 +27,22 @@ modules:
       env:
         XDG_CACHE_HOME: /run/build/pony-house-matrix/flatpak-node/cache
         npm_config_cache: /run/build/pony-house-matrix/flatpak-node/npm-cache
+        npm_config_nodedir: /usr/lib/sdk/node18
         npm_config_offline: 'true'
+    subdir: main
     build-commands:
       # Install npm dependencies
-      - yarn
+      - npm install --offline
       # Build the app; in this example the `dist` script
       # in package.json runs electron-builder
       - |
         . ../flatpak-node/electron-builder-arch-args.sh
-        yarn electron:build -- $ELECTRON_BUILDER_ARCH_ARGS  --linux --dir
+        npm run dist -- $ELECTRON_BUILDER_ARCH_ARGS  --linux --dir
       # Bundle app and dependencies
       - cp -a dist/linux*unpacked /app/main
       # Install app wrapper
       - install -Dm755 -t /app/bin/ ../run.sh
-    subdir: main
     sources:
-      #- type: archive
-      #  url: https://github.com/flathub/pony-house-matrix/archive/1.0.1.tar.gz
-      #  sha256: a2feb3f1cf002a2e4e8900f718cc5c54db4ad174e48bfcfbddcd588c7b716d5b
       - type: dir
         path: ..
         dest: main
