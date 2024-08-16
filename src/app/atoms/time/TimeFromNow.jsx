@@ -54,7 +54,7 @@ TimeFromNow.propTypes = {
   placement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
   className: PropTypes.string,
   intervalTimeout: PropTypes.number,
-  timestamp: PropTypes.number.isRequired,
+  timestamp: PropTypes.any.isRequired,
   onChange: PropTypes.func,
 };
 export default TimeFromNow;

@@ -63,7 +63,7 @@ TimeFormat.propTypes = {
   format: PropTypes.string,
   type: PropTypes.string,
   intervalTimeout: PropTypes.number,
-  timestamp: PropTypes.number.isRequired,
+  timestamp: PropTypes.any.isRequired,
   onChange: PropTypes.func,
   realTime: PropTypes.bool,
 };

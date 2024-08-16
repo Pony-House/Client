@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import moment from '@src/util/libs/momentjs';
 import { getWeb3Cfg } from '@src/util/web3';
 import TimeFromNow from '@src/app/atoms/time/TimeFromNow';
 import { getUserBalance } from '@src/util/web3/utils';
@@ -16,7 +15,7 @@ export default function EthereumProfileTabItem({ chain, ethereum }) {
       getUserBalance(chain, ethereum.address)
         .then((data) => {
           if (data) {
-            setUpdatedAt(moment());
+            setUpdatedAt(new Date());
             setBalance(data.value);
             setIsError(false);
           }
