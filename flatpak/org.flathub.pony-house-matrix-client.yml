@@ -9,6 +9,10 @@ sdk-extensions:
 command: run.sh
 separate-locales: false
 finish-args:
+  - --socket=wayland"
+  - --device=dri
+  - --filesystem=home
+  - --talk-name=org.freedesktop.Notifications"
   - --share=ipc
   - --socket=x11
   - --socket=pulseaudio
