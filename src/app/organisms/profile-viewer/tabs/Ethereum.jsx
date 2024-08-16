@@ -73,16 +73,7 @@ export default function EthereumProfileTab(menuBarItems, accountContent, existEt
   if (existEthereum) {
     menuBarItems.push({
       menu: () => 'Ethereum',
-      render: ({
-        roomId,
-        userId,
-        closeDialog,
-        accountContent,
-        roomMember,
-        avatarUrl,
-        username,
-        imagePreview,
-      }) => {
+      render: ({ userId, accountContent }) => {
         // Config
         const user = initMatrix.matrixClient.getUser(userId);
 

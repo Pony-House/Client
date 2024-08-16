@@ -803,7 +803,7 @@ function ProfileViewer() {
               {menuBarItems.length > 0 ? (
                 <ul className="usertabs nav nav-underline mt-2 small">
                   {menuBarItems.map((item, index) => (
-                    <li className="nav-item">
+                    <li key={`profileViewer_menubar_${index}`} className="nav-item">
                       <a
                         className={`nav-link text-bg-force${index !== menuBarItems.length - 1 ? ' me-3' : ''}${index !== selectedMenu ? '' : ' active'}`}
                         href="#"
