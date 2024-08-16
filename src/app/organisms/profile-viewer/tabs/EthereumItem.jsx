@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import moment from '@src/util/libs/momentjs';
-import { getWeb3Cfg } from '@src/util/web3';
+import { getWeb3Cfg, tinyCrypto } from '@src/util/web3';
 import TimeFromNow from '@src/app/atoms/time/TimeFromNow';
 import { chainBalance } from './Ethereum';
 
