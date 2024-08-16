@@ -19,6 +19,7 @@ const Timestamps = {
     if (typeof timestampRules[type] === 'string') {
       return (
         <TimeFormat
+          onChange={() => tinyFixScrollChat(50)}
           placement="top"
           className="mx-timestamp"
           format={timestampRules[type]}
@@ -29,6 +30,7 @@ const Timestamps = {
     } else if (typeof timestampRules[type] === 'function') {
       return (
         <TimeFormat
+          onChange={() => tinyFixScrollChat(50)}
           placement="top"
           className="mx-timestamp"
           format={timestampRules[type]()}
@@ -37,7 +39,14 @@ const Timestamps = {
         />
       );
     } else if (type === 'R')
-      return <TimeFromNow placement="top" className="mx-timestamp" timestamp={timestamp} />;
+      return (
+        <TimeFromNow
+          onChange={() => tinyFixScrollChat(50)}
+          placement="top"
+          className="mx-timestamp"
+          timestamp={timestamp}
+        />
+      );
 
     return null;
   },
