@@ -43,7 +43,7 @@ import { colorMXID, cssColorMXID } from '../../../util/colorMXID';
 import Text from '../../atoms/text/Text';
 import Chip from '../../atoms/chip/Chip';
 import Input from '../../atoms/input/Input';
-import Avatar, { avatarDefaultColor } from '../../atoms/avatar/Avatar';
+import Avatar, { avatarDefaultColor, AvatarJquery } from '../../atoms/avatar/Avatar';
 import Button from '../../atoms/button/Button';
 import { MenuItem } from '../../atoms/context-menu/ContextMenu';
 import PowerLevelSelector from '../../molecules/power-level-selector/PowerLevelSelector';
@@ -353,6 +353,7 @@ function useToggleDialog() {
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [username, setUsername] = useState(null);
   const [bannerSrc, setBannerSrc] = useState(null);
+  const [loadingBanner, setLoadingBanner] = useState(false);
 
   useEffect(() => {
     const loadProfile = (uId, rId) => {
@@ -374,6 +375,7 @@ function useToggleDialog() {
     setRoomId(null);
     setSelectedMenu(0);
     setBannerSrc(null);
+    setLoadingBanner(false);
     setUsername(null);
     setAvatarUrl(null);
   };
@@ -394,6 +396,8 @@ function useToggleDialog() {
     setAvatarUrl,
     username,
     setUsername,
+    loadingBanner,
+    setLoadingBanner,
   ];
 }
 
@@ -442,6 +446,8 @@ function ProfileViewer() {
     setAvatarUrl,
     username,
     setUsername,
+    loadingBanner,
+    setLoadingBanner,
   ] = useToggleDialog();
 
   const [lightbox, setLightbox] = useState(false);
@@ -711,6 +717,26 @@ function ProfileViewer() {
     if (menuBarItems.length > 0) {
       menuBarItems.unshift({
         menu: () => 'User info',
+      });
+    }
+
+    if (
+      accountContent &&
+      objType(accountContent.presenceStatusMsg, 'object') &&
+      !bannerSrc &&
+      !loadingBanner
+    ) {
+      setLoadingBanner(true);
+      const bannerData = AvatarJquery({
+        isObj: true,
+        imageSrc: accountContent.presenceStatusMsg.bannerThumb,
+        imageAnimSrc: accountContent.presenceStatusMsg.banner,
+        onLoadingChange: () => {
+          if (typeof bannerData.blobAnimSrc === 'string' && bannerData.blobAnimSrc.length > 0) {
+            setBannerSrc(bannerData.blobAnimSrc);
+            setLoadingBanner(false);
+          }
+        },
       });
     }
 
