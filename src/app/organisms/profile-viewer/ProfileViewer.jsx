@@ -350,6 +350,10 @@ function useToggleDialog() {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [accountContent, setAccountContent] = useState(null);
 
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [username, setUsername] = useState(null);
+  const [bannerSrc, setBannerSrc] = useState(null);
+
   useEffect(() => {
     const loadProfile = (uId, rId) => {
       setIsOpen(true);
@@ -369,6 +373,9 @@ function useToggleDialog() {
     setUserId(null);
     setRoomId(null);
     setSelectedMenu(0);
+    setBannerSrc(null);
+    setUsername(null);
+    setAvatarUrl(null);
   };
 
   return [
@@ -381,6 +388,12 @@ function useToggleDialog() {
     setAccountContent,
     selectedMenu,
     setSelectedMenu,
+    bannerSrc,
+    setBannerSrc,
+    avatarUrl,
+    setAvatarUrl,
+    username,
+    setUsername,
   ];
 }
 
@@ -423,6 +436,12 @@ function ProfileViewer() {
     setAccountContent,
     selectedMenu,
     setSelectedMenu,
+    bannerSrc,
+    setBannerSrc,
+    avatarUrl,
+    setAvatarUrl,
+    username,
+    setUsername,
   ] = useToggleDialog();
 
   const [lightbox, setLightbox] = useState(false);
@@ -438,8 +457,6 @@ function ProfileViewer() {
   const user = mx.getUser(userId);
   const room = mx.getRoom(roomId) || {};
   const roomMember = room && room.getMember ? room.getMember(userId) : null;
-  const [avatarUrl, setAvatarUrl] = useState(null);
-  const [username, setUsername] = useState(null);
 
   const getTheUsername = () => {
     if (userId) {
@@ -537,6 +554,7 @@ function ProfileViewer() {
     else if (!userId) {
       setAvatarUrl(defaultAvatar(0));
       setUsername(null);
+      setBannerSrc(null);
     }
 
     // Unknown User
@@ -698,7 +716,10 @@ function ProfileViewer() {
 
     return (
       <>
-        <div className={`profile-banner profile-bg${cssColorMXID(userId)}`} />
+        <div
+          className={`profile-banner profile-bg${cssColorMXID(userId)}${bannerSrc ? ' exist-banner' : ''}`}
+          style={{ backgroundImage: bannerSrc ? `url("${bannerSrc}")` : null }}
+        />
 
         <div className="p-4">
           <div className="row pb-3">
