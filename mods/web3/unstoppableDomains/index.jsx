@@ -126,7 +126,7 @@ function UnstoppableDomainsTab({ userId, accountContent }) {
             walletInfo[2] === 'address'
           ) {
             return (
-              <div className="col-md-6 mt-3">
+              <div key={`web3_ud_wallet_${value}`} className="col-md-6 mt-3">
                 <div className="border border-bg p-3">
                   <div className="fw-bold">
                     <i className={`me-2 cf cf-${walletInfo[1].toLowerCase()}`} />
