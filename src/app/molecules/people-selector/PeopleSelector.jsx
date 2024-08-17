@@ -39,7 +39,7 @@ function PeopleSelector({
       const mxcUrl = initMatrix.mxcUrl;
 
       // Update Status Profile
-      const updateProfileStatus = (mEvent, tinyData) => {
+      const updateProfileStatus = (mEvent, tinyData, isFirstTime = false) => {
         // Image
         const newImageSrc =
           tinyData && tinyData.avatarUrl
@@ -56,16 +56,18 @@ function PeopleSelector({
       };
 
       // Read Events
+      user.on(UserEvent.DisplayName, updateProfileStatus);
       user.on(UserEvent.AvatarUrl, updateProfileStatus);
       user.on(UserEvent.CurrentlyActive, updateProfileStatus);
       user.on(UserEvent.LastPresenceTs, updateProfileStatus);
       user.on(UserEvent.Presence, updateProfileStatus);
-      updateProfileStatus(null, user);
+      if (!accountContent) updateProfileStatus(null, user);
       return () => {
         if (user) user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
         if (user) user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
         if (user) user.removeListener(UserEvent.Presence, updateProfileStatus);
         if (user) user.removeListener(UserEvent.AvatarUrl, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.DisplayName, updateProfileStatus);
       };
     }
   }, [user]);

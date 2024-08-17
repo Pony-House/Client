@@ -102,19 +102,21 @@ function RoomSelector({
   useEffect(() => {
     if (user) {
       // Update Status Profile
-      const updateProfileStatus = (mEvent, tinyUser) => {
+      const updateProfileStatus = (mEvent, tinyUser, isFirstTime = false) => {
         setAccountContent(getPresence(tinyUser));
       };
+      user.on(UserEvent.DisplayName, updateProfileStatus);
       user.on(UserEvent.AvatarUrl, updateProfileStatus);
       user.on(UserEvent.CurrentlyActive, updateProfileStatus);
       user.on(UserEvent.LastPresenceTs, updateProfileStatus);
       user.on(UserEvent.Presence, updateProfileStatus);
-      updateProfileStatus(null, user);
+      if (!accountContent) updateProfileStatus(null, user);
       return () => {
         if (user) user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
         if (user) user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
         if (user) user.removeListener(UserEvent.Presence, updateProfileStatus);
         if (user) user.removeListener(UserEvent.AvatarUrl, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.DisplayName, updateProfileStatus);
       };
     }
   });

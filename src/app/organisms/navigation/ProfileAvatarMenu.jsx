@@ -8,6 +8,7 @@ import { ImgJquery } from '@src/app/atoms/image/Image';
 import jReact from '@mods/lib/jReact';
 import soundFiles from '@src/util/soundFiles';
 import { convertUserId, dfAvatarSize } from '@src/util/matrixUtil';
+import UserStatusIcon from '@src/app/atoms/user-status/UserStatusIcon';
 
 import IconButton from '../../atoms/button/IconButton';
 import { twemojifyReact } from '../../../util/twemojify';
@@ -50,10 +51,9 @@ function ProfileAvatarMenu() {
   const voiceChat = initMatrix.voiceChat;
 
   const user = mx.getUser(mx.getUserId());
-  const customStatusRef = useRef(null);
-  const statusRef = useRef(null);
-
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
+
+  const [accountContent, setAccountContent] = useState(null);
   const [microphoneMuted, setMicrophoneMuted] = useState(voiceChat.getMicrophoneMute());
   const [audioMuted, setAudioMuted] = useState(voiceChat.getAudioMute());
 
@@ -64,167 +64,27 @@ function ProfileAvatarMenu() {
     displayName: user.displayName,
   });
 
-  // Effect
   useEffect(() => {
-    // Get User and update data
-    const user2 = mx.getUser(mx.getUserId());
-
-    const setNewProfile = (avatarUrl, displayName, userId) =>
-      setProfile({
-        avatarUrl: avatarUrl || null,
-        displayName: displayName || profile.displayName,
-        userId: userId || profile.userId,
-      });
-
-    // Set New User Status
-    const onProfileUpdate = (event = {}) => {
-      // Exist
-      if (event && canUsePresence()) {
-        // Clone Event
-        const tinyEvent = event;
-        const tinyClone = clone(event);
-
-        // Afk Fix
-        if (Array.isArray(tinyClone.active_devices) && tinyClone.active_devices.length < 1)
-          tinyClone.status = '🟠';
-        tinyClone.ethereum = getUserWeb3Account();
-        if (typeof tinyClone.ethereum.valid !== 'undefined') delete tinyClone.ethereum.valid;
-
-        // String Version
-        const eventJSON = JSON.stringify(tinyClone);
-        if (eventJSON.length > 0) {
-          // Status Fix
-          let presenceStatus = 'online';
-          if (typeof tinyEvent.status === 'string') {
-            tinyEvent.status = tinyEvent.status.trim();
-            if (tinyEvent.status === '🔘') presenceStatus = 'offline';
-          }
-
-          // Set Presence
-          if (!initMatrix.isGuest)
-            mx.setPresence({
-              presence: presenceStatus,
-              status_msg: eventJSON,
-            });
-        }
-
-        // Custom Status data
-        if (
-          customStatusRef &&
-          customStatusRef.current &&
-          ((typeof event.msg === 'string' && event.msg.length > 0) ||
-            (typeof event.msgIcon === 'string' && event.msgIcon.length > 0))
-        ) {
-          // Get Presence
-          const content = getPresence({ presenceStatusMsg: eventJSON });
-          const htmlStatus = [];
-
-          // Image HTML
-          if (
-            typeof content.presenceStatusMsg.msgIcon === 'string' &&
-            content.presenceStatusMsg.msgIcon.length > 0
-          ) {
-            htmlStatus.push(
-              ImgJquery({
-                src: content.presenceStatusMsg.msgIcon,
-                alt: 'icon',
-                className: 'emoji me-1',
-              }),
-            );
-          }
-
-          // Text HTML
-          if (
-            typeof content.presenceStatusMsg.msg === 'string' &&
-            content.presenceStatusMsg.msg.length > 0
-          ) {
-            htmlStatus.push(
-              jReact(
-                <span className="text-truncate cs-text">
-                  {twemojifyReact(content.presenceStatusMsg.msg.substring(0, 100))}
-                </span>,
-              ),
-            );
-          }
-
-          // Insert Data
-          $(customStatusRef.current).html(htmlStatus);
-          accountStatus.data = content.presenceStatusMsg;
-          accountStatus.status = event.status;
-        }
-
-        // Nope
-        else {
-          $(customStatusRef.current).html(jReact(twemojifyReact(convertUserId(user2.userId))));
-          accountStatus.data = null;
-          accountStatus.status = null;
-        }
-
-        // JSON Status
-        if (
-          statusRef &&
-          statusRef.current &&
-          typeof event.status === 'string' &&
-          event.status.length > 0
-        ) {
-          const tinyUser = mx.getUser(mx.getUserId());
-          tinyUser.presenceStatusMsg = JSON.stringify(event);
-          statusRef.current.className = `user-status-icon ${getUserStatus(user2)}`;
-        }
-      }
-
-      // Nope
-      else {
-        accountStatus.data = null;
-        accountStatus.status = null;
-      }
-
-      // Status update
-      tinyAPI.emit('userStatusUpdate', accountStatus);
-      if (canUsePresence()) enableAfkSystem();
-    };
-
-    onProfileUpdate(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
-
-    const onAvatarChange = (event, myUser) => {
-      setNewProfile(myUser.avatarUrl, myUser.displayName, myUser.userId);
-    };
-
-    mx.getProfileInfo(mx.getUserId()).then((info) => {
-      setNewProfile(info.avatar_url, info.displayname, info.userId);
-    });
-
-    const playMuteSound = (muted) => soundFiles.playNow(muted ? 'micro_off' : 'micro_on');
-
-    const updateAudioMute = (muted) => {
-      playMuteSound(muted);
-      setAudioMuted(muted);
-    };
-    const updateMicrophoneMute = (muted) => {
-      playMuteSound(muted);
-      setMicrophoneMuted(muted);
-    };
-
-    // Socket
-    user2.on(UserEvent.AvatarUrl, onAvatarChange);
-    user2.on(UserEvent.DisplayName, onAvatarChange);
-    navigation.on(cons.events.navigation.PROFILE_UPDATED, onProfileUpdate);
-    voiceChat.on('pony_house_muted_audio', updateAudioMute);
-    voiceChat.on('pony_house_muted_microphone', updateMicrophoneMute);
-    return () => {
-      user2.removeListener(UserEvent.AvatarUrl, onAvatarChange);
-      user2.removeListener(UserEvent.DisplayName, onAvatarChange);
-      voiceChat.off('pony_house_muted_audio', updateAudioMute);
-      voiceChat.off('pony_house_muted_microphone', updateMicrophoneMute);
-      navigation.removeListener(cons.events.navigation.PROFILE_UPDATED, onProfileUpdate);
-    };
-  }, []);
-
-  // User Presence
-  const content = mx.getAccountData('pony.house.profile')?.getContent() ?? {};
-  user.presence = 'online';
-  user.presenceStatusMsg = JSON.stringify(content);
-  const newStatus = `user-status-icon ${getUserStatus(user)}`;
+    if (user) {
+      // Update Status Profile
+      const updateProfileStatus = (mEvent, tinyUser, isFirstTime = false) => {
+        setAccountContent(getPresence(tinyUser));
+      };
+      user.on(UserEvent.AvatarUrl, updateProfileStatus);
+      user.on(UserEvent.CurrentlyActive, updateProfileStatus);
+      user.on(UserEvent.LastPresenceTs, updateProfileStatus);
+      user.on(UserEvent.Presence, updateProfileStatus);
+      user.on(UserEvent.DisplayName, updateProfileStatus);
+      if (!accountContent) updateProfileStatus(null, user);
+      return () => {
+        if (user) user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.Presence, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.AvatarUrl, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.DisplayName, updateProfileStatus);
+      };
+    }
+  });
 
   useEffect(() => {
     const tinyUpdate = () => forceUpdate();
@@ -255,12 +115,13 @@ function ProfileAvatarMenu() {
                 imageSrc={mxcUrl.toHttp(profile.avatarUrl, dfAvatarSize, dfAvatarSize)}
                 isDefaultImage
               />
-              {canUsePresence() && <i ref={statusRef} className={newStatus} />}
+              {canUsePresence() && (
+                <UserStatusIcon presenceData={accountContent} user={user} classBase="" />
+              )}
               <div className="very-small ps-2 text-truncate emoji-size-fix-2" id="display-name">
                 {profile.displayName}
               </div>
               <div
-                ref={customStatusRef}
                 className="very-small ps-2 text-truncate emoji-size-fix-2 user-custom-status"
                 id="user-presence"
               >

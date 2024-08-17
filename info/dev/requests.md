@@ -54,8 +54,6 @@ initMatrix.matrixClient.slidingSync();
 
 ==========================================
 
-Quando o people tabs é atualizado, o custom status some
-
 urlParams.set('event_id', eventId, false);
 
 ==============================================================
