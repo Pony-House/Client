@@ -12,8 +12,11 @@ import matrixAppearance from '@src/util/libs/appearance';
 import Img from '@src/app/atoms/image/Image';
 import Tooltip from '@src/app/atoms/tooltip/Tooltip';
 
+import Clock from '@src/app/atoms/time/Clock';
+import UserStatusIcon from '@src/app/atoms/user-status/UserStatusIcon';
+
 import { twemojifyReact } from '../../../util/twemojify';
-import { canUsePresence, getUserStatus, updateUserStatusIcon } from '../../../util/onlineStatus';
+import { canUsePresence, getUserStatus, getPresence } from '../../../util/onlineStatus';
 
 import imageViewer from '../../../util/imageViewer';
 
@@ -56,7 +59,6 @@ import { getUserWeb3Account, getWeb3Cfg } from '../../../util/web3';
 
 import copyText from './copyText';
 import tinyAPI from '../../../util/mods';
-import Clock from '@src/app/atoms/time/Clock';
 import EthereumProfileTab from './tabs/Ethereum';
 
 function ModerationTools({ roomId, userId }) {
@@ -428,7 +430,6 @@ function ProfileViewer() {
   // Prepare
   const noteRef = useRef(null);
   const profileAvatar = useRef(null);
-  const statusRef = useRef(null);
 
   const [
     isOpen,
@@ -599,9 +600,6 @@ function ProfileViewer() {
         // Tiny Data
         const tinyUser = tinyData;
 
-        // Get Status
-        const status = $(statusRef.current);
-
         // Is You
         if (tinyUser.userId === mx.getUserId()) {
           const yourData = clone(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
@@ -611,7 +609,7 @@ function ProfileViewer() {
         }
 
         // Update Status Icon
-        setAccountContent(updateUserStatusIcon(status, tinyUser));
+        setAccountContent(getPresence(tinyUser));
       };
 
       user.on(UserEvent.CurrentlyActive, updateProfileStatus);
@@ -770,10 +768,7 @@ function ProfileViewer() {
                 isDefaultImage
               />
               {canUsePresence() && (
-                <i
-                  ref={statusRef}
-                  className={`user-status user-status-icon pe-2 ${getUserStatus(user)}`}
-                />
+                <UserStatusIcon className="pe-2" user={user} presenceData={accountContent} />
               )}
             </div>
 

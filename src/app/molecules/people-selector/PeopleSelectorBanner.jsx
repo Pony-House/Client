@@ -10,13 +10,14 @@ import envAPI from '@src/util/libs/env';
 import { openProfileViewer } from '@src/client/action/navigation';
 import { convertUserId } from '@src/util/matrixUtil';
 
+import UserStatusIcon from '@src/app/atoms/user-status/UserStatusIcon';
 import Clock from '@src/app/atoms/time/Clock';
 import { getUserWeb3Account, getWeb3Cfg } from '../../../util/web3';
 
 import { twemojifyReact } from '../../../util/twemojify';
 
 import Avatar, { AvatarJquery } from '../../atoms/avatar/Avatar';
-import { getUserStatus, updateUserStatusIcon, canUsePresence } from '../../../util/onlineStatus';
+import { getUserStatus, canUsePresence, getPresence } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
 import { cssColorMXID } from '../../../util/colorMXID';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
@@ -24,8 +25,6 @@ import matrixAppearance from '../../../util/libs/appearance';
 
 function PeopleSelectorBanner({ name, color, user = null, roomId }) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
-
-  const statusRef = useRef(null);
 
   const userNameRef = useRef(null);
   const displayNameRef = useRef(null);
@@ -94,9 +93,6 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
         // Tiny Data
         const tinyUser = tinyData;
 
-        // Get Status
-        const status = $(statusRef.current);
-
         // Is You
         if (tinyUser.userId === mx.getUserId()) {
           const yourData = clone(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
@@ -105,9 +101,8 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
           tinyUser.presenceStatusMsg = JSON.stringify(yourData);
         }
 
-        console.log(tinyUser);
         // Update Status Icon
-        setAccountContent(updateUserStatusIcon(status, tinyUser));
+        setAccountContent(getPresence(tinyUser));
         setUserAvatar(tinyUser?.avatarUrl);
       };
 
@@ -195,10 +190,7 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
             isDefaultImage
           />
           {canUsePresence() && (
-            <i
-              ref={statusRef}
-              className={`user-status user-status-icon pe-2 ${getUserStatus(user)}`}
-            />
+            <UserStatusIcon className="pe-2" user={user} presenceData={accountContent} />
           )}
         </div>
 
