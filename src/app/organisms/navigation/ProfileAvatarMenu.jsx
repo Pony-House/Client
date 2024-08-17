@@ -53,6 +53,7 @@ function ProfileAvatarMenu() {
   const user = mx.getUser(mx.getUserId());
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
+  const [firstLoad, setFirstLoad] = useState(true);
   const [accountContent, setAccountContent] = useState(null);
   const [microphoneMuted, setMicrophoneMuted] = useState(voiceChat.getMicrophoneMute());
   const [audioMuted, setAudioMuted] = useState(voiceChat.getAudioMute());
@@ -99,11 +100,11 @@ function ProfileAvatarMenu() {
           }
 
           // Set Presence
-          /* if (!initMatrix.isGuest)
+          if (!initMatrix.isGuest)
             mx.setPresence({
               presence: presenceStatus,
               status_msg: eventJSON,
-            }); */
+            });
         }
 
         // Custom Status data
@@ -113,9 +114,7 @@ function ProfileAvatarMenu() {
         ) {
           // Get Presence
           const content = getPresence({ presenceStatusMsg: eventJSON });
-          // setAccountContent(content);
-
-          // Insert Data
+          setAccountContent(content);
           accountStatus.data = content.presenceStatusMsg;
           accountStatus.status = event.status;
         }
@@ -144,18 +143,19 @@ function ProfileAvatarMenu() {
       if (canUsePresence()) enableAfkSystem();
     };
 
-    onProfileUpdate(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
+    setFirstLoad(false);
+    if (firstLoad) onProfileUpdate(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
 
     const onAvatarChange = (event, myUser) => {
       setNewProfile(myUser.avatarUrl, myUser.displayName, myUser.userId);
     };
 
-    /* mx.getProfileInfo(mx.getUserId()).then((info) => {
-      setNewProfile(info.avatar_url, info.displayname, info.userId);
-    }); */
+    if (firstLoad)
+      mx.getProfileInfo(mx.getUserId()).then((info) => {
+        setNewProfile(info.avatar_url, info.displayname, info.userId);
+      });
 
     const playMuteSound = (muted) => soundFiles.playNow(muted ? 'micro_off' : 'micro_on');
-
     const updateAudioMute = (muted) => {
       playMuteSound(muted);
       setAudioMuted(muted);
@@ -286,11 +286,4 @@ function ProfileAvatarMenu() {
   );
 }
 
-/*
-<i className="fa-solid fa-microphone"></i>
-<i className="bi bi-headphones"></i>
-<i className="bi bi-webcam-fill"></i>
-<i className="fa-solid fa-desktop"></i>
-<i className="bi bi-telephone-x-fill"></i>
-*/
 export default ProfileAvatarMenu;
