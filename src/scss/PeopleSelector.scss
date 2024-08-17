@@ -6,6 +6,13 @@
   }
 }
 
+.profile-modal.user-custom-status:not(.custom-status-emoji-only) {
+  .emoji {
+    top: -3px;
+    position: relative;
+  }
+}
+
 .people-selector {
   .user-custom-status {
     display: flex;

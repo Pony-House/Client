@@ -815,7 +815,10 @@ function ProfileViewer() {
                     </div>
                   ) : null}
 
-                  <UserCustomStatus className="mt-2 small" presenceData={accountContent} />
+                  <UserCustomStatus
+                    className="mt-2 small profile-modal "
+                    presenceData={accountContent}
+                  />
                 </>
               ) : null}
 
@@ -914,11 +917,10 @@ function ProfileViewer() {
                     ) : // Text presence status
                     typeof accountContent.presenceStatusMsg === 'string' &&
                       accountContent.presenceStatusMsg.length > 0 ? (
-                      <div className="mt-2 emoji-size-fix small user-custom-status">
-                        <span className="text-truncate cs-text">
-                          {twemojifyReact(accountContent.presenceStatusMsg.substring(0, 100))}
-                        </span>
-                      </div>
+                      <UserCustomStatus
+                        className="mt-2 small profile-modal "
+                        presenceData={accountContent}
+                      />
                     ) : null
                   ) : null}
                   <hr />
