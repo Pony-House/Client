@@ -4,6 +4,7 @@ import { getWeb3Cfg } from '@src/util/web3';
 import TimeFromNow from '@src/app/atoms/time/TimeFromNow';
 import { getUserBalance } from '@src/util/web3/utils';
 import IconButton from '@src/app/atoms/button/IconButton';
+import moment from '@src/util/libs/momentjs';
 
 export default function EthereumProfileTabItem({ chain, ethereum }) {
   const web3Cfg = getWeb3Cfg();
