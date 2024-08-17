@@ -1,5 +1,3 @@
-Ver em quais rooms o usuário está (Pelo perfil)
-
 Ver qual Friend ninkcname está sendo usado.
 
 ==========================================

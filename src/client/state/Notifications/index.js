@@ -576,9 +576,9 @@ class Notifications extends EventEmitter {
             ? room.getRoomUnreadNotificationCount(NotificationCountType.Highlight)
             : canSupport('ThreadUnreadNotifications')
               ? room.getThreadUnreadNotificationCount(
-                mEvent.thread.id,
-                NotificationCountType.Highlight,
-              )
+                  mEvent.thread.id,
+                  NotificationCountType.Highlight,
+                )
               : 0;
 
           // Is Muted
