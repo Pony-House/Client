@@ -26,6 +26,7 @@ import { enableAfkSystem } from '../../../util/userStatusEffects';
 import { getUserWeb3Account } from '../../../util/web3';
 
 import matrixAppearance from '../../../util/libs/appearance';
+import UserCustomStatus from '@src/app/molecules/people-selector/UserCustomStatus';
 
 // Account Status
 const accountStatus = { status: null, data: null };
@@ -235,9 +236,14 @@ function ProfileAvatarMenu() {
               <div className="very-small ps-2 text-truncate emoji-size-fix-2" id="display-name">
                 {profile.displayName}
               </div>
-              <div className="very-small ps-2 text-truncate emoji-size-fix-2 user-custom-status">
-                {convertUserId(profile.userId)}
-              </div>
+              <UserCustomStatus
+                emojiFix=""
+                className="very-small ps-2 text-truncate emoji-size-fix-2"
+                user={user}
+                presenceData={accountContent}
+                altContent={convertUserId(profile.userId)}
+                forceShow
+              />
               <div className="very-small ps-2 text-truncate emoji-size-fix-2" id="user-id">
                 {convertUserId(profile.userId)}
               </div>
