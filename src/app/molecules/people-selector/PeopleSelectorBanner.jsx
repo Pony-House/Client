@@ -5,7 +5,6 @@ import $ from 'jquery';
 import { UserEvent } from 'matrix-js-sdk';
 import { objType } from 'for-promise/utils/lib.mjs';
 
-import Img from '@src/app/atoms/image/Image';
 import envAPI from '@src/util/libs/env';
 import { openProfileViewer } from '@src/client/action/navigation';
 import { convertUserId } from '@src/util/matrixUtil';
@@ -22,6 +21,7 @@ import initMatrix from '../../../client/initMatrix';
 import { cssColorMXID } from '../../../util/colorMXID';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
 import matrixAppearance from '../../../util/libs/appearance';
+import UserCustomStatus from './UserCustomStatus';
 
 function PeopleSelectorBanner({ name, color, user = null, roomId }) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
@@ -133,18 +133,6 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
     accountContent.presenceStatusMsg.ethereum &&
     accountContent.presenceStatusMsg.ethereum.valid;
 
-  // Exist message presence
-  const existMsgPresence =
-    existPresenceObject &&
-    typeof accountContent.presenceStatusMsg.msg === 'string' &&
-    accountContent.presenceStatusMsg.msg.length > 0;
-
-  // Exist Icon Presence
-  const existIconPresence =
-    existPresenceObject &&
-    typeof accountContent.presenceStatusMsg.msgIcon === 'string' &&
-    accountContent.presenceStatusMsg.msgIcon.length > 0;
-
   // Exist banner
   const existBanner =
     existPresenceObject &&
@@ -212,24 +200,7 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
                   </div>
                 ) : null}
 
-                {existMsgPresence || existIconPresence ? (
-                  <div
-                    className={`mt-2${existMsgPresence ? ' emoji-size-fix ' : ''}small user-custom-status${!existMsgPresence ? ' custom-status-emoji-only' : ''}`}
-                  >
-                    {existIconPresence ? (
-                      <Img
-                        className="emoji me-1"
-                        alt="icon"
-                        src={accountContent.presenceStatusMsg.msgIcon}
-                      />
-                    ) : null}
-                    {existMsgPresence ? (
-                      <span className="text-truncate cs-text">
-                        {twemojifyReact(accountContent.presenceStatusMsg.msg.substring(0, 100))}
-                      </span>
-                    ) : null}
-                  </div>
-                ) : null}
+                <UserCustomStatus className="mt-2 small" presenceData={accountContent} />
               </>
             ) : null}
 

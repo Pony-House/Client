@@ -1,9 +1,21 @@
+Ver em quais rooms o usuário está (Pelo perfil)
+
+==========================================
+
 setRoomAccountData para o usuário definir se quer room com avatares ou sem avatares nas configurações privadas.
 canUsePresence
 
 im.vector.web.settings
 autoplayGifs
 breadcrumbs
+
+=======================================
+
+would it be possible to change the order embeds load in? so the most recents messages get their embeds loaded first?
+
+those would be more important than the older embeds
+
+=======================================
 
 =========> Dots invadindo o contador no DM quando a room é encryptada.
 
@@ -18,7 +30,6 @@ Ajeitar PowerLevelSelector.jsx
 Ajeitar o selecionador de custom status icon.
 
 Opção para ocultar localmente a lista de threads.
-Ajeitar o atualizador de perfil para ser em tempo real a atualização de dados.
 
 Compu
 @Tiny Jasmini do u think u could make it so broken images for space icons fall back to the default colored icons for spaces without images set? preferably change it to show the first letter of the space's name?
@@ -34,10 +45,14 @@ Usar a mesma lógica de carregar emojis para deixar menos lento o carregamento d
 
 https://www.npmjs.com/package/jimp
 
+=========================================
+
 https://matrix-org.github.io/matrix-js-sdk/classes/matrix.MatrixClient.html#slidingSync
 initMatrix.matrixClient.slidingSync();
 /\_matrix/client/v3/sync
 /\_matrix/client/unstable/org.matrix.msc3575/sync
+
+==========================================
 
 Quando o people tabs é atualizado, o custom status some
 
@@ -56,8 +71,6 @@ that could be useful for future diagnostics
 ==============================================================
 
 Ver qual Friend ninkcname está sendo usado.
-
-Ver em quais rooms o usuário está (Pelo perfil)
 
 Fazer o load de mensagens no thread
 ENS Ethereum

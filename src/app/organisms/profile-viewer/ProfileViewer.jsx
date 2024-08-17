@@ -9,7 +9,7 @@ import clone from 'clone';
 import envAPI from '@src/util/libs/env';
 import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 import matrixAppearance from '@src/util/libs/appearance';
-import Img from '@src/app/atoms/image/Image';
+import UserCustomStatus from '@src/app/molecules/people-selector/UserCustomStatus';
 import Tooltip from '@src/app/atoms/tooltip/Tooltip';
 
 import Clock from '@src/app/atoms/time/Clock';
@@ -692,18 +692,6 @@ function ProfileViewer() {
       accountContent.presenceStatusMsg.ethereum &&
       accountContent.presenceStatusMsg.ethereum.valid;
 
-    // Exist message presence
-    const existMsgPresence =
-      existPresenceObject &&
-      typeof accountContent.presenceStatusMsg.msg === 'string' &&
-      accountContent.presenceStatusMsg.msg.length > 0;
-
-    // Exist Icon Presence
-    const existIconPresence =
-      existPresenceObject &&
-      typeof accountContent.presenceStatusMsg.msgIcon === 'string' &&
-      accountContent.presenceStatusMsg.msgIcon.length > 0;
-
     // Exist banner
     const existBanner =
       existPresenceObject &&
@@ -826,24 +814,7 @@ function ProfileViewer() {
                     </div>
                   ) : null}
 
-                  {existMsgPresence || existIconPresence ? (
-                    <div
-                      className={`mt-2${existMsgPresence ? ' emoji-size-fix ' : ''}small user-custom-status${!existMsgPresence ? ' custom-status-emoji-only' : ''}`}
-                    >
-                      {existIconPresence ? (
-                        <Img
-                          className="emoji me-1"
-                          alt="icon"
-                          src={accountContent.presenceStatusMsg.msgIcon}
-                        />
-                      ) : null}
-                      {existMsgPresence ? (
-                        <span className="text-truncate cs-text">
-                          {twemojifyReact(accountContent.presenceStatusMsg.msg.substring(0, 100))}
-                        </span>
-                      ) : null}
-                    </div>
-                  ) : null}
+                  <UserCustomStatus className="mt-2 small" presenceData={accountContent} />
                 </>
               ) : null}
 
