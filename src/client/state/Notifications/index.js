@@ -11,6 +11,7 @@ import attemptDecryption from '@src/util/libs/attemptDecryption';
 import soundFiles from '@src/util/soundFiles';
 // import { insertIntoRoomEventsDB } from '@src/util/libs/roomEventsDB';
 import { canSupport, dfAvatarSize } from '@src/util/matrixUtil';
+import initMatrix from '@src/client/initMatrix';
 
 import renderAvatar from '../../../app/atoms/avatar/render';
 import { cssColorMXID } from '../../../util/colorMXID';
@@ -575,9 +576,9 @@ class Notifications extends EventEmitter {
             ? room.getRoomUnreadNotificationCount(NotificationCountType.Highlight)
             : canSupport('ThreadUnreadNotifications')
               ? room.getThreadUnreadNotificationCount(
-                  mEvent.thread.id,
-                  NotificationCountType.Highlight,
-                )
+                mEvent.thread.id,
+                NotificationCountType.Highlight,
+              )
               : 0;
 
           // Is Muted
