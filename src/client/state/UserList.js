@@ -111,13 +111,17 @@ class UserList extends EventEmitter {
     }
   }
 
+  populateRoom(room) {
+    const tinyThis = this;
+    room.getJoinedMembers().forEach((member) => {
+      tinyThis._addUser(room.roomId, member.userId);
+    });
+  }
+
   _populateRooms() {
     const tinyThis = this;
-    this.users.clear();
     this.matrixClient.getRooms().forEach((room) => {
-      room.getJoinedMembers().forEach((member) => {
-        tinyThis._addUser(room.roomId, member.userId);
-      });
+      tinyThis.populateRoom(room);
     });
   }
 
