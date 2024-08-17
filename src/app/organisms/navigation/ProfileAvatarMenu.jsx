@@ -107,13 +107,12 @@ function ProfileAvatarMenu() {
         }
 
         // Custom Status data
+        const content = getPresence({ presenceStatusMsg: eventJSON });
         if (
           (typeof event.msg === 'string' && event.msg.length > 0) ||
           (typeof event.msgIcon === 'string' && event.msgIcon.length > 0)
         ) {
           // Get Presence
-          const content = getPresence({ presenceStatusMsg: eventJSON });
-          setAccountContent(content);
           accountStatus.data = content.presenceStatusMsg;
           accountStatus.status = event.status;
         }
@@ -129,6 +128,9 @@ function ProfileAvatarMenu() {
           const tinyUser = mx.getUser(mx.getUserId());
           tinyUser.presenceStatusMsg = JSON.stringify(event);
         }
+
+        // Update Content
+        setAccountContent(content);
       }
 
       // Nope
