@@ -842,7 +842,6 @@ function ProfileViewer() {
                         {item.menu({
                           roomId,
                           userId,
-                          closeDialog,
                           accountContent,
                           roomMember,
                           avatarUrl,

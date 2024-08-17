@@ -2,6 +2,7 @@ import React from 'react';
 import initMatrix from '@src/client/initMatrix';
 import RoomSelector from '@src/app/molecules/room-selector/RoomSelector';
 import { dfAvatarSize } from '@src/util/matrixUtil';
+import { selectRoom, selectRoomMode, selectTab } from '@src/client/action/navigation';
 
 function MutualServerTitle({ userId, roomId }) {
   const { userList } = initMatrix;
@@ -9,12 +10,20 @@ function MutualServerTitle({ userId, roomId }) {
   return <>{`${String(userData.rooms.length + userData.spaces.length)} Mutual Servers`}</>;
 }
 
-function MutualServerRender({ userId }) {
+function MutualServerRender({ userId, requestClose }) {
   const { userList, mxcUrl } = initMatrix;
   const mx = initMatrix.matrixClient;
 
   const userData = userList.getUserRooms(userId);
   const total = userData.rooms.length + userData.spaces.length > 0;
+  const openItem = (roomId, type) => {
+    if (type === 'space') selectTab(roomId, true);
+    else {
+      selectRoomMode('room');
+      selectRoom(roomId);
+    }
+    requestClose();
+  };
 
   if (total > 0) {
     return (
@@ -38,7 +47,7 @@ function MutualServerRender({ userId }) {
                       isUnread={false}
                       notificationCount={0}
                       isAlert={false}
-                      onClick={() => {}}
+                      onClick={() => openItem(roomId, 'space')}
                     />
                   </li>
                 );
@@ -67,7 +76,7 @@ function MutualServerRender({ userId }) {
                       isUnread={false}
                       notificationCount={0}
                       isAlert={false}
-                      onClick={() => {}}
+                      onClick={() => openItem(roomId, 'room')}
                     />
                   </li>
                 );
@@ -88,6 +97,8 @@ export default function MutualServersTab(menuBarItems, accountContent, existEthe
   if (userData.rooms.length + userData.spaces.length > 0)
     menuBarItems.push({
       menu: ({ roomId, userId }) => <MutualServerTitle roomId={roomId} userId={userId} />,
-      render: ({ userId }) => <MutualServerRender userId={userId} />,
+      render: ({ userId, closeDialog }) => (
+        <MutualServerRender requestClose={closeDialog} userId={userId} />
+      ),
     });
 }
