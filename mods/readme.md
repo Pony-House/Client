@@ -435,7 +435,9 @@ tinyPlace is a jQuery script. Use this to insert the html for your profile tab.
 
     menuBarItems, 
     accountContent, 
-    existEthereum
+    existEthereum, 
+    userId, 
+    roomId
 
 <hr/>
 

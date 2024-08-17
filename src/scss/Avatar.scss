@@ -311,6 +311,19 @@
   }
 }
 
+.mutual-servers {
+  .avatar-container {
+    margin: 4px 0px 4px 0px;
+  }
+  .avatar-container,
+  .avatar-container [itemprop='image'] {
+    height: 40px !important;
+    width: 40px !important;
+    padding: 0px;
+    border-radius: var(--bo-radius);
+  }
+}
+
 .modal-dialog-user-profile {
   .avatar-container,
   .avatar-container [itemprop='image'] {

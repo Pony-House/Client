@@ -59,7 +59,9 @@ import { getUserWeb3Account, getWeb3Cfg } from '../../../util/web3';
 
 import copyText from './copyText';
 import tinyAPI from '../../../util/mods';
+
 import EthereumProfileTab from './tabs/Ethereum';
+import MutualServersTab from './tabs/MutualServers';
 
 function ModerationTools({ roomId, userId }) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
@@ -704,11 +706,14 @@ function ProfileViewer() {
     // Menu bar items
     const menuBarItems = [];
 
+    // User List tab
+    MutualServersTab(menuBarItems, accountContent, existEthereum, userId, roomId);
+
     // Ethereum
-    EthereumProfileTab(menuBarItems, accountContent, existEthereum);
+    EthereumProfileTab(menuBarItems, accountContent, existEthereum, userId, roomId);
 
     // Profile Tabs Spawn
-    tinyAPI.emit('profileTabsSpawn', menuBarItems, accountContent, existEthereum);
+    tinyAPI.emit('profileTabsSpawn', menuBarItems, accountContent, existEthereum, userId, roomId);
 
     // Add default page
     if (menuBarItems.length > 0) {
