@@ -30,6 +30,12 @@
     top: 37px;
     left: -11px;
     font-size: 13px;
+    &.user-presence-unavailable,
+    &.user-presence-invisible,
+    &.user-presence-offline {
+      margin-top: -16px !important;
+      top: 38px;
+    }
   }
 }
 

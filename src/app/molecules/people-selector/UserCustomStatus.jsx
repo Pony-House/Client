@@ -38,7 +38,8 @@ const UserCustomStatus = React.forwardRef(
       forceShow ||
       ((existPresenceObject || presenceIsPureText) &&
         presenceData.presence !== 'offline' &&
-        presenceData.presence !== 'invisible');
+        presenceData.presence !== 'invisible' &&
+        presenceData.presence !== 'unavailable');
 
     if (canShowPresence && (existIconPresence || existMsgPresence || presenceIsPureText))
       return (

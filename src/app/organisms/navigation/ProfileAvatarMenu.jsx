@@ -4,8 +4,6 @@ import $ from 'jquery';
 import { UserEvent } from 'matrix-js-sdk';
 import clone from 'clone';
 
-import { ImgJquery } from '@src/app/atoms/image/Image';
-import jReact from '@mods/lib/jReact';
 import soundFiles from '@src/util/soundFiles';
 import { convertUserId, dfAvatarSize } from '@src/util/matrixUtil';
 import UserStatusIcon from '@src/app/atoms/user-status/UserStatusIcon';
@@ -20,7 +18,7 @@ import { colorMXID } from '../../../util/colorMXID';
 
 import initMatrix from '../../../client/initMatrix';
 import { tabText as settingTabText } from '../settings/Settings';
-import { canUsePresence, getPresence, getUserStatus } from '../../../util/onlineStatus';
+import { canUsePresence, getPresence } from '../../../util/onlineStatus';
 
 import { openSettings } from '../../../client/action/navigation';
 import tinyAPI from '../../../util/mods';
@@ -237,10 +235,7 @@ function ProfileAvatarMenu() {
               <div className="very-small ps-2 text-truncate emoji-size-fix-2" id="display-name">
                 {profile.displayName}
               </div>
-              <div
-                className="very-small ps-2 text-truncate emoji-size-fix-2 user-custom-status"
-                id="user-presence"
-              >
+              <div className="very-small ps-2 text-truncate emoji-size-fix-2 user-custom-status">
                 {convertUserId(profile.userId)}
               </div>
               <div className="very-small ps-2 text-truncate emoji-size-fix-2" id="user-id">

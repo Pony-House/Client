@@ -16,7 +16,7 @@ import Clock from '@src/app/atoms/time/Clock';
 import UserStatusIcon from '@src/app/atoms/user-status/UserStatusIcon';
 
 import { twemojifyReact } from '../../../util/twemojify';
-import { canUsePresence, getUserStatus, getPresence } from '../../../util/onlineStatus';
+import { canUsePresence, getPresence } from '../../../util/onlineStatus';
 
 import imageViewer from '../../../util/imageViewer';
 
