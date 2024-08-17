@@ -11,6 +11,8 @@ import { convertUserId } from '@src/util/matrixUtil';
 
 import UserStatusIcon from '@src/app/atoms/user-status/UserStatusIcon';
 import Clock from '@src/app/atoms/time/Clock';
+import Tooltip from '@src/app/atoms/tooltip/Tooltip';
+
 import { getUserWeb3Account, getWeb3Cfg } from '../../../util/web3';
 
 import { twemojifyReact } from '../../../util/twemojify';
@@ -186,6 +188,21 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
           <div className="card-body">
             <h6 ref={displayNameRef} className="emoji-size-fix m-0 mb-1 fw-bold display-name">
               <span className="button">{twemojifyReact(name)}</span>
+              {existEthereum ? (
+                <Tooltip content={accountContent.presenceStatusMsg.ethereum.address}>
+                  <span
+                    className="ms-2 ethereum-icon"
+                    onClick={() => {
+                      copyText(
+                        accountContent.presenceStatusMsg.ethereum.address,
+                        'Ethereum address successfully copied to the clipboard.',
+                      );
+                    }}
+                  >
+                    <i className="fa-brands fa-ethereum" />
+                  </span>
+                </Tooltip>
+              ) : null}
             </h6>
             <small ref={userNameRef} className="text-gray emoji-size-fix username">
               <span className="button">{twemojifyReact(convertUserId(user.userId))}</span>
