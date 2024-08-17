@@ -1,8 +1,0 @@
-- Pwa file added to cache images.
-- Image css updated to fix tiny issues.
-- MXC_AUTHENTICATED_MEDIA added into env file.
-- Emoji tab selector css fixed.
-- Embed tiny issues fixed.
-- Profile Viewer source code changed to react version.
-- Timestamp codes updated.
-- The ethereum profiles were not being detected even with the web3 enabled. That was corrected now.
