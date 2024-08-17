@@ -64,6 +64,122 @@ function ProfileAvatarMenu() {
     displayName: user.displayName,
   });
 
+  // Effect
+  useEffect(() => {
+    // Get User and update data
+    const setNewProfile = (avatarUrl, displayName, userId) =>
+      setProfile({
+        avatarUrl: avatarUrl || null,
+        displayName: displayName || profile.displayName,
+        userId: userId || profile.userId,
+      });
+
+    // Set New User Status
+    const onProfileUpdate = (event = {}) => {
+      // Exist
+      if (event && canUsePresence()) {
+        // Clone Event
+        const tinyEvent = event;
+        const tinyClone = clone(event);
+
+        // Afk Fix
+        if (Array.isArray(tinyClone.active_devices) && tinyClone.active_devices.length < 1)
+          tinyClone.status = '🟠';
+        tinyClone.ethereum = getUserWeb3Account();
+        if (typeof tinyClone.ethereum.valid !== 'undefined') delete tinyClone.ethereum.valid;
+
+        // String Version
+        const eventJSON = JSON.stringify(tinyClone);
+        if (eventJSON.length > 0) {
+          // Status Fix
+          let presenceStatus = 'online';
+          if (typeof tinyEvent.status === 'string') {
+            tinyEvent.status = tinyEvent.status.trim();
+            if (tinyEvent.status === '🔘') presenceStatus = 'offline';
+          }
+
+          // Set Presence
+          /* if (!initMatrix.isGuest)
+            mx.setPresence({
+              presence: presenceStatus,
+              status_msg: eventJSON,
+            }); */
+        }
+
+        // Custom Status data
+        if (
+          (typeof event.msg === 'string' && event.msg.length > 0) ||
+          (typeof event.msgIcon === 'string' && event.msgIcon.length > 0)
+        ) {
+          // Get Presence
+          const content = getPresence({ presenceStatusMsg: eventJSON });
+          // setAccountContent(content);
+
+          // Insert Data
+          accountStatus.data = content.presenceStatusMsg;
+          accountStatus.status = event.status;
+        }
+
+        // Nope
+        else {
+          accountStatus.data = null;
+          accountStatus.status = null;
+        }
+
+        // JSON Status
+        if (typeof event.status === 'string' && event.status.length > 0) {
+          const tinyUser = mx.getUser(mx.getUserId());
+          tinyUser.presenceStatusMsg = JSON.stringify(event);
+        }
+      }
+
+      // Nope
+      else {
+        accountStatus.data = null;
+        accountStatus.status = null;
+      }
+
+      // Status update
+      tinyAPI.emit('userStatusUpdate', accountStatus);
+      if (canUsePresence()) enableAfkSystem();
+    };
+
+    onProfileUpdate(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
+
+    const onAvatarChange = (event, myUser) => {
+      setNewProfile(myUser.avatarUrl, myUser.displayName, myUser.userId);
+    };
+
+    /* mx.getProfileInfo(mx.getUserId()).then((info) => {
+      setNewProfile(info.avatar_url, info.displayname, info.userId);
+    }); */
+
+    const playMuteSound = (muted) => soundFiles.playNow(muted ? 'micro_off' : 'micro_on');
+
+    const updateAudioMute = (muted) => {
+      playMuteSound(muted);
+      setAudioMuted(muted);
+    };
+    const updateMicrophoneMute = (muted) => {
+      playMuteSound(muted);
+      setMicrophoneMuted(muted);
+    };
+
+    // Socket
+    if (user) user.on(UserEvent.AvatarUrl, onAvatarChange);
+    if (user) user.on(UserEvent.DisplayName, onAvatarChange);
+    navigation.on(cons.events.navigation.PROFILE_UPDATED, onProfileUpdate);
+    voiceChat.on('pony_house_muted_audio', updateAudioMute);
+    voiceChat.on('pony_house_muted_microphone', updateMicrophoneMute);
+    return () => {
+      if (user) user.removeListener(UserEvent.AvatarUrl, onAvatarChange);
+      if (user) user.removeListener(UserEvent.DisplayName, onAvatarChange);
+      voiceChat.off('pony_house_muted_audio', updateAudioMute);
+      voiceChat.off('pony_house_muted_microphone', updateMicrophoneMute);
+      navigation.removeListener(cons.events.navigation.PROFILE_UPDATED, onProfileUpdate);
+    };
+  });
+
   useEffect(() => {
     if (user) {
       // Update Status Profile
