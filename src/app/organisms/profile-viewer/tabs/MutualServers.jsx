@@ -34,12 +34,12 @@ function MutualServerRender({ userId, requestClose }) {
           {userData.spaces.length > 0 ? (
             <>
               <div className="small text-gray ms-2 mb-1">Spaces</div>
-              <ul class="mutual-servers m-0 p-0">
+              <ul className="mutual-servers m-0 p-0">
                 {userData.spaces.map((roomId) => {
                   const room = mx.getRoom(roomId);
 
                   return (
-                    <li class="list-group-item">
+                    <li key={`mutual_servers_space_${roomId}`} className="list-group-item">
                       <RoomSelector
                         key={`mutual_servers_${roomId}`}
                         name={room.name}
@@ -63,12 +63,12 @@ function MutualServerRender({ userId, requestClose }) {
             <>
               {userData.spaces.length > 0 ? <hr className="mx-0 my-2 border-bg" /> : null}
               <div className="small text-gray ms-2 mb-1">Rooms</div>
-              <ul class="mutual-servers m-0 p-0">
+              <ul className="mutual-servers m-0 p-0">
                 {userData.rooms.map((roomId) => {
                   const room = mx.getRoom(roomId);
 
                   return (
-                    <li class="list-group-item">
+                    <li key={`mutual_servers_room_${roomId}`} className="list-group-item">
                       <RoomSelector
                         key={`mutual_servers_${roomId}`}
                         name={room.name}

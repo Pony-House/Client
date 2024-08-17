@@ -10,7 +10,7 @@ class UserList extends EventEmitter {
     this.users = new Map();
     this.rooms = new Map();
 
-    this._populateRooms();
+    this.populateRooms();
     this._listenEvents();
   }
 
@@ -27,20 +27,28 @@ class UserList extends EventEmitter {
     if (rooms) {
       let using = false;
       const result = { spaces: [], rooms: [] };
+      const checked = [];
       const { roomList } = initMatrix;
 
-      rooms.forEach((roomId) => {
-        if (roomList.isOrphan(roomId)) {
-          if (roomList.spaces.has(roomId)) {
-            using = true;
-            result.spaces.push(roomId);
-          } else if (!roomList.directs.has(roomId)) {
-            using = true;
-            result.rooms.push(roomId);
+      const insertRoom = (roomId) => {
+        if (checked.indexOf(roomId) < 0) {
+          checked.push(roomId);
+          if (roomList.isOrphan(roomId)) {
+            if (roomList.spaces.has(roomId)) {
+              using = true;
+              result.spaces.push(roomId);
+            } else if (!roomList.directs.has(roomId)) {
+              using = true;
+              result.rooms.push(roomId);
+            }
+          } else {
+            const moreRooms = roomList.roomIdToParents.get(roomId);
+            if (moreRooms) moreRooms.forEach((roomId2) => insertRoom(roomId2));
           }
         }
-      });
+      };
 
+      rooms.forEach((roomId) => insertRoom(roomId));
       if (using) return result;
     }
     return null;
@@ -118,7 +126,7 @@ class UserList extends EventEmitter {
     });
   }
 
-  _populateRooms() {
+  populateRooms() {
     const tinyThis = this;
     this.matrixClient.getRooms().forEach((room) => {
       tinyThis.populateRoom(room);
