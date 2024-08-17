@@ -1,5 +1,7 @@
 Ver em quais rooms o usuário está (Pelo perfil)
 
+Ver qual Friend ninkcname está sendo usado.
+
 ==========================================
 
 setRoomAccountData para o usuário definir se quer room com avatares ou sem avatares nas configurações privadas.
@@ -21,8 +23,6 @@ those would be more important than the older embeds
 
 Remover tudo do messageDataEffects
 Padronizar o profile-image-container
-
-Atualização de username em tempo real não funcionando em rooms.
 
 Botão de copiar imagem.
 
@@ -67,8 +67,6 @@ also i wonder if u could put somewhere in the settings a count of the number of 
 that could be useful for future diagnostics
 
 ==============================================================
-
-Ver qual Friend ninkcname está sendo usado.
 
 Fazer o load de mensagens no thread
 ENS Ethereum
