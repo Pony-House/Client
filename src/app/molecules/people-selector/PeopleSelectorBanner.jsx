@@ -12,6 +12,7 @@ import { convertUserId } from '@src/util/matrixUtil';
 import UserStatusIcon from '@src/app/atoms/user-status/UserStatusIcon';
 import Clock from '@src/app/atoms/time/Clock';
 import Tooltip from '@src/app/atoms/tooltip/Tooltip';
+import copyText from '@src/app/organisms/profile-viewer/copyText';
 
 import { getUserWeb3Account, getWeb3Cfg } from '../../../util/web3';
 
