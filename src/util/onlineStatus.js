@@ -222,28 +222,3 @@ export function getUserStatus(user, tinyData) {
 
   return `user-presence-unavailable ${statusList.unavailable}`;
 }
-
-// Update Status Icon
-export function updateUserStatusIcon(status, user, tinyData, canStatus = true, canPresence = true) {
-  let useData;
-  if (!tinyData) {
-    useData = getPresence(user, canStatus, canPresence);
-  }
-
-  for (const item in statusList) {
-    status.removeClass(`user-presence-${item}`);
-
-    const statusClasses = statusList[item].split(' ');
-    for (const item2 in statusClasses) {
-      status.removeClass(statusClasses[item2]);
-    }
-  }
-
-  const newClasses = getUserStatus(user, useData).split(' ');
-
-  for (const item in newClasses) {
-    status.addClass(newClasses[item]);
-  }
-
-  return useData;
-}

@@ -4,20 +4,17 @@ import $ from 'jquery';
 
 import { UserEvent } from 'matrix-js-sdk';
 import { dfAvatarSize } from '@src/util/matrixUtil';
+import UserStatusIcon from '@src/app/atoms/user-status/UserStatusIcon';
+
 import { twemojifyReact } from '../../../util/twemojify';
 
 import { blurOnBubbling } from '../../atoms/button/script';
 
 import Text from '../../atoms/text/Text';
 import Avatar from '../../atoms/avatar/Avatar';
-import {
-  getUserStatus,
-  updateUserStatusIcon,
-  getPresence,
-  canUsePresence,
-} from '../../../util/onlineStatus';
+import { getPresence, canUsePresence } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
-import insertCustomStatus from './insertCustomStatus';
+import UserCustomStatus from './UserCustomStatus';
 
 function PeopleSelector({
   avatarSrc = null,
@@ -32,19 +29,9 @@ function PeopleSelector({
   avatarSize = dfAvatarSize,
   contextMenu,
 }) {
-  const statusRef = useRef(null);
-  const customStatusRef = useRef(null);
-
+  const [accountContent, setAccountContent] = useState(null);
   const [imageAnimSrc, setImageAnimSrc] = useState(avatarAnimSrc);
   const [imageSrc, setImageSrc] = useState(avatarSrc);
-
-  const getCustomStatus = (content) => {
-    insertCustomStatus(customStatusRef, content);
-  };
-
-  if (user && canUsePresence()) {
-    getCustomStatus(getPresence(user));
-  }
 
   useEffect(() => {
     if (user) {
@@ -53,23 +40,19 @@ function PeopleSelector({
 
       // Update Status Profile
       const updateProfileStatus = (mEvent, tinyData) => {
-        // Get Status
-        const status = $(statusRef.current);
-        const tinyUser = tinyData;
-
         // Image
         const newImageSrc =
-          tinyUser && tinyUser.avatarUrl
-            ? mxcUrl.toHttp(tinyUser.avatarUrl, avatarSize, avatarSize)
+          tinyData && tinyData.avatarUrl
+            ? mxcUrl.toHttp(tinyData.avatarUrl, avatarSize, avatarSize)
             : null;
         setImageSrc(newImageSrc);
 
         const newImageAnimSrc =
-          tinyUser && tinyUser.avatarUrl ? mxcUrl.toHttp(tinyUser.avatarUrl) : null;
+          tinyData && tinyData.avatarUrl ? mxcUrl.toHttp(tinyData.avatarUrl) : null;
         setImageAnimSrc(newImageAnimSrc);
 
         // Update Status Icon
-        if (canUsePresence) getCustomStatus(updateUserStatusIcon(status, tinyUser));
+        setAccountContent(getPresence(tinyData));
       };
 
       // Read Events
@@ -77,11 +60,12 @@ function PeopleSelector({
       user.on(UserEvent.CurrentlyActive, updateProfileStatus);
       user.on(UserEvent.LastPresenceTs, updateProfileStatus);
       user.on(UserEvent.Presence, updateProfileStatus);
+      updateProfileStatus(null, user);
       return () => {
-        user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
-        user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
-        user.removeListener(UserEvent.Presence, updateProfileStatus);
-        user.removeListener(UserEvent.AvatarUrl, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.Presence, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.AvatarUrl, updateProfileStatus);
       };
     }
   }, [user]);
@@ -106,17 +90,19 @@ function PeopleSelector({
         isDefaultImage
       />
       {canUsePresence() && !disableStatus ? (
-        <i ref={statusRef} className={`user-status-icon ${getUserStatus(user)}`} />
-      ) : (
-        ''
-      )}
+        <UserStatusIcon classbase="" user={user} presenceData={accountContent} />
+      ) : null}
 
       <div className="small people-selector__name text-start">
         <span className="emoji-size-fix">{twemojifyReact(name)}</span>
-        <div
-          ref={customStatusRef}
-          className="very-small text-gray text-truncate emoji-size-fix-2 user-custom-status"
-        />
+        {!disableStatus ? (
+          <UserCustomStatus
+            emojiFix="emoji-size-fix-2"
+            className={`very-small text-gray text-truncate`}
+            user={user}
+            presenceData={accountContent}
+          />
+        ) : null}
       </div>
 
       {peopleRole !== null && (

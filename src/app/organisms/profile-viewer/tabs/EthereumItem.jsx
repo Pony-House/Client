@@ -29,6 +29,7 @@ export default function EthereumProfileTabItem({ chain, ethereum }) {
       })
       .catch((err) => {
         setIsError(true);
+        setUpdatedAt(moment());
         console.error(err);
         setIsLoading(false);
       });

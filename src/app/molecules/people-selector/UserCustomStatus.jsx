@@ -6,7 +6,10 @@ import { twemojifyReact } from '@src/util/twemojify';
 import Img from '@src/app/atoms/image/Image';
 
 const UserCustomStatus = React.forwardRef(
-  ({ presenceData = null, className = null, forceShow = false }, ref) => {
+  (
+    { presenceData = null, className = null, forceShow = false, emojiFix = 'emoji-size-fix' },
+    ref,
+  ) => {
     const existPresenceObject = presenceData && objType(presenceData.presenceStatusMsg, 'object');
     const presenceIsPureText =
       presenceData &&
@@ -33,7 +36,7 @@ const UserCustomStatus = React.forwardRef(
       return (
         <div
           ref={ref}
-          className={`${existMsgPresence ? 'emoji-size-fix ' : ''}user-custom-status${!existMsgPresence ? ' custom-status-emoji-only' : ''}${className ? ` ${className}` : ''}`}
+          className={`${existMsgPresence ? `${emojiFix} ` : ''}user-custom-status${!existMsgPresence ? ' custom-status-emoji-only' : ''}${className ? ` ${className}` : ''}`}
         >
           {existIconPresence ? (
             <Img className="emoji me-1" alt="icon" src={presenceData.presenceStatusMsg.msgIcon} />
@@ -55,6 +58,7 @@ const UserCustomStatus = React.forwardRef(
 );
 
 UserCustomStatus.propTypes = {
+  emojiFix: PropTypes.string,
   className: PropTypes.string,
   presenceData: PropTypes.object,
 };

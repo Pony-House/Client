@@ -8,6 +8,7 @@ import { objType } from 'for-promise/utils/lib.mjs';
 
 import cons from '@src/client/state/cons';
 import { abbreviateNumber } from '@src/util/common';
+import UserStatusIcon from '@src/app/atoms/user-status/UserStatusIcon';
 
 import { twemojifyReact } from '../../../util/twemojify';
 import { colorMXID } from '../../../util/colorMXID';
@@ -16,16 +17,11 @@ import Text from '../../atoms/text/Text';
 import Avatar from '../../atoms/avatar/Avatar';
 import NotificationBadge from '../../atoms/badge/NotificationBadge';
 import { blurOnBubbling } from '../../atoms/button/script';
-import {
-  canUsePresence,
-  getPresence,
-  getUserStatus,
-  updateUserStatusIcon,
-} from '../../../util/onlineStatus';
+import { canUsePresence, getPresence } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
-import insertCustomStatus from '../people-selector/insertCustomStatus';
 import favIconManager from '../../../util/libs/favicon';
 import { selectRoom, selectRoomMode } from '../../../client/action/navigation';
+import UserCustomStatus from '../people-selector/UserCustomStatus';
 
 function RoomSelectorWrapper({
   isSelected,
@@ -89,52 +85,36 @@ function RoomSelector({
   user,
   allowCustomUsername = false,
 }) {
-  const [userData, setPresenceStatus] = useState(null);
-  const statusRef = useRef(null);
-  const customStatusRef = useRef(null);
-
+  const [accountContent, setAccountContent] = useState(null);
   const mx = initMatrix.matrixClient;
   const mxcUrl = initMatrix.mxcUrl;
 
-  if (user && !userData && canUsePresence()) {
-    const content = getPresence(user);
-    setPresenceStatus(content);
-    setTimeout(() => insertCustomStatus(customStatusRef, content), 10);
-  }
-
   const existStatus =
-    objType(userData, 'object') &&
-    objType(userData.presenceStatusMsg, 'object') &&
-    userData.presence !== 'offline' &&
-    userData.presence !== 'unavailable' &&
-    ((userData.presenceStatusMsg.msg === 'string' && userData.presenceStatusMsg.msg.length > 0) ||
-      (typeof userData.presenceStatusMsg.msgIcon === 'string' &&
-        userData.presenceStatusMsg.msgIcon.length > 0));
+    objType(accountContent, 'object') &&
+    objType(accountContent.presenceStatusMsg, 'object') &&
+    accountContent.presence !== 'offline' &&
+    accountContent.presence !== 'unavailable' &&
+    ((accountContent.presenceStatusMsg.msg === 'string' &&
+      accountContent.presenceStatusMsg.msg.length > 0) ||
+      (typeof accountContent.presenceStatusMsg.msgIcon === 'string' &&
+        accountContent.presenceStatusMsg.msgIcon.length > 0));
 
   useEffect(() => {
     if (user) {
-      // Status
-      const status = $(statusRef.current);
-
       // Update Status Profile
       const updateProfileStatus = (mEvent, tinyUser) => {
-        if (canUsePresence()) {
-          const content = updateUserStatusIcon(status, tinyUser);
-          insertCustomStatus(customStatusRef, content);
-          setPresenceStatus(content);
-        }
+        setAccountContent(getPresence(tinyUser));
       };
-
       user.on(UserEvent.AvatarUrl, updateProfileStatus);
       user.on(UserEvent.CurrentlyActive, updateProfileStatus);
       user.on(UserEvent.LastPresenceTs, updateProfileStatus);
       user.on(UserEvent.Presence, updateProfileStatus);
-
+      updateProfileStatus(null, user);
       return () => {
-        user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
-        user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
-        user.removeListener(UserEvent.Presence, updateProfileStatus);
-        user.removeListener(UserEvent.AvatarUrl, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.Presence, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.AvatarUrl, updateProfileStatus);
       };
     }
   });
@@ -171,10 +151,7 @@ function RoomSelector({
             />
 
             {canUsePresence() && user ? (
-              <i
-                ref={statusRef}
-                className={`user-status user-status-icon ${getUserStatus(user)}`}
-              />
+              <UserStatusIcon user={user} presenceData={accountContent} />
             ) : null}
           </div>
 
@@ -191,9 +168,11 @@ function RoomSelector({
               </span>
             )}
             {user ? (
-              <div
-                ref={customStatusRef}
-                className={`very-small text-gray text-truncate emoji-size-fix-2 user-custom-status${isUnread ? ' custom-status-unread' : ''}`}
+              <UserCustomStatus
+                emojiFix="emoji-size-fix-2"
+                className={`very-small text-gray text-truncate ${isUnread ? ' custom-status-unread' : ''}`}
+                user={user}
+                presenceData={accountContent}
               />
             ) : null}
           </Text>
