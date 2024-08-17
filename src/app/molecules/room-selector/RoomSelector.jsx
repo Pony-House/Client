@@ -169,10 +169,12 @@ function RoomSelector({
             )}
             {user ? (
               <UserCustomStatus
-                emojiFix="emoji-size-fix-2"
-                className={`very-small text-gray text-truncate ${isUnread ? ' custom-status-unread' : ''}`}
+                emojiFix=""
+                className={`very-small text-gray text-truncate emoji-size-fix-2 ${isUnread ? ' custom-status-unread' : ''}`}
                 user={user}
                 presenceData={accountContent}
+                animParentsCount={3}
+                useHoverAnim
               />
             ) : null}
           </Text>

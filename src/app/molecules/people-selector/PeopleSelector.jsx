@@ -97,10 +97,12 @@ function PeopleSelector({
         <span className="emoji-size-fix">{twemojifyReact(name)}</span>
         {!disableStatus ? (
           <UserCustomStatus
-            emojiFix="emoji-size-fix-2"
-            className={`very-small text-gray text-truncate`}
+            emojiFix=""
+            className={`very-small text-gray text-truncate emoji-size-fix-2`}
             user={user}
             presenceData={accountContent}
+            animParentsCount={3}
+            useHoverAnim
           />
         ) : null}
       </div>

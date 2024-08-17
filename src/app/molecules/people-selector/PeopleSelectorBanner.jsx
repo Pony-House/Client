@@ -218,7 +218,12 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
                   </div>
                 ) : null}
 
-                <UserCustomStatus className="mt-2 small" presenceData={accountContent} />
+                <UserCustomStatus
+                  className="mt-2 small"
+                  presenceData={accountContent}
+                  animParentsCount={2}
+                  useHoverAnim
+                />
               </>
             ) : null}
 

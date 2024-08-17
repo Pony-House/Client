@@ -7,7 +7,15 @@ import Img from '@src/app/atoms/image/Image';
 
 const UserCustomStatus = React.forwardRef(
   (
-    { presenceData = null, className = null, forceShow = false, emojiFix = 'emoji-size-fix' },
+    {
+      animParentsCount = 0,
+      presenceData = null,
+      className = null,
+      forceShow = false,
+      emojiFix = 'emoji-size-fix',
+      useHoverAnim = false,
+      disableEmojiOnly = false,
+    },
     ref,
   ) => {
     const existPresenceObject = presenceData && objType(presenceData.presenceStatusMsg, 'object');
@@ -36,10 +44,20 @@ const UserCustomStatus = React.forwardRef(
       return (
         <div
           ref={ref}
-          className={`${existMsgPresence ? `${emojiFix} ` : ''}user-custom-status${!existMsgPresence ? ' custom-status-emoji-only' : ''}${className ? ` ${className}` : ''}`}
+          className={`${existMsgPresence ? `${emojiFix} ` : ''}user-custom-status${!existMsgPresence && !disableEmojiOnly ? ' custom-status-emoji-only' : ''}${className ? ` ${className}` : ''}`}
         >
           {existIconPresence ? (
-            <Img className="emoji me-1" alt="icon" src={presenceData.presenceStatusMsg.msgIcon} />
+            <Img
+              animParentsCount={animParentsCount}
+              className="emoji me-1"
+              alt="icon"
+              src={
+                useHoverAnim
+                  ? presenceData.presenceStatusMsg.msgIconThumb
+                  : presenceData.presenceStatusMsg.msgIcon
+              }
+              animSrc={useHoverAnim ? presenceData.presenceStatusMsg.msgIcon : null}
+            />
           ) : null}
           {existMsgPresence ? (
             <span className="text-truncate cs-text">
@@ -58,9 +76,12 @@ const UserCustomStatus = React.forwardRef(
 );
 
 UserCustomStatus.propTypes = {
+  animParentsCount: PropTypes.number,
   emojiFix: PropTypes.string,
   className: PropTypes.string,
   presenceData: PropTypes.object,
+  useHoverAnim: PropTypes.bool,
+  disableEmojiOnly: PropTypes.bool,
 };
 
 export default UserCustomStatus;
