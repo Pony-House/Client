@@ -617,12 +617,14 @@ function ProfileViewer() {
       user.on(UserEvent.CurrentlyActive, updateProfileStatus);
       user.on(UserEvent.LastPresenceTs, updateProfileStatus);
       user.on(UserEvent.Presence, updateProfileStatus);
+      user.on(UserEvent.AvatarUrl, updateProfileStatus);
       updateProfileStatus(null, user);
 
       return () => {
         if (user) user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
         if (user) user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
         if (user) user.removeListener(UserEvent.Presence, updateProfileStatus);
+        if (user) user.on(UserEvent.AvatarUrl, updateProfileStatus);
       };
     }
   }, [user]);

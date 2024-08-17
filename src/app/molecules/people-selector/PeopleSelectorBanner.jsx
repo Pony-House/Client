@@ -5,265 +5,44 @@ import $ from 'jquery';
 import { UserEvent } from 'matrix-js-sdk';
 import { objType } from 'for-promise/utils/lib.mjs';
 
-import { ImgJquery } from '@src/app/atoms/image/Image';
-import moment, { momentFormat } from '@src/util/libs/momentjs';
+import Img from '@src/app/atoms/image/Image';
 import envAPI from '@src/util/libs/env';
-import { defaultAvatar } from '@src/app/atoms/avatar/defaultAvatar';
 import { openProfileViewer } from '@src/client/action/navigation';
 import { convertUserId } from '@src/util/matrixUtil';
 
-import tinyClipboard from '@src/util/libs/Clipboard';
-import { twemojifyReact, twemojify } from '../../../util/twemojify';
+import Clock from '@src/app/atoms/time/Clock';
+import { getUserWeb3Account, getWeb3Cfg } from '../../../util/web3';
+
+import { twemojifyReact } from '../../../util/twemojify';
 
 import Avatar, { AvatarJquery } from '../../atoms/avatar/Avatar';
-import {
-  getUserStatus,
-  updateUserStatusIcon,
-  getPresence,
-  canUsePresence,
-} from '../../../util/onlineStatus';
+import { getUserStatus, updateUserStatusIcon, canUsePresence } from '../../../util/onlineStatus';
 import initMatrix from '../../../client/initMatrix';
-import { colorMXID, cssColorMXID } from '../../../util/colorMXID';
+import { cssColorMXID } from '../../../util/colorMXID';
 import { addToDataFolder, getDataList } from '../../../util/selectedRoom';
-import { toast } from '../../../util/tools';
-import copyText from '../../organisms/profile-viewer/copyText';
 import matrixAppearance from '../../../util/libs/appearance';
-
-const timezoneAutoUpdate = { text: null, html: null, value: null };
-setInterval(() => {
-  if (timezoneAutoUpdate.html && timezoneAutoUpdate.value) {
-    let timezoneText = 'null';
-    try {
-      timezoneText = moment()
-        .tz(timezoneAutoUpdate.value)
-        .format(`MMMM Do YYYY, ${momentFormat.clock()}`);
-    } catch {
-      timezoneText = 'ERROR!';
-    }
-
-    timezoneAutoUpdate.text = timezoneText;
-    timezoneAutoUpdate.html.text(timezoneText);
-  }
-}, 60000);
 
 function PeopleSelectorBanner({ name, color, user = null, roomId }) {
   const [, forceUpdate] = useReducer((count) => count + 1, 0);
 
   const statusRef = useRef(null);
-  const customStatusRef = useRef(null);
-  const profileBanner = useRef(null);
+
   const userNameRef = useRef(null);
-  const userPronounsRef = useRef(null);
   const displayNameRef = useRef(null);
   const profileAvatar = useRef(null);
 
-  const timezoneRef = useRef(null);
-  const bioRef = useRef(null);
   const noteRef = useRef(null);
 
   const [avatarUrl, setUserAvatar] = useState(user ? user?.avatarUrl : null);
+  const [accountContent, setAccountContent] = useState(null);
+  const [bannerSrc, setBannerSrc] = useState(null);
+  const [loadingBanner, setLoadingBanner] = useState(false);
 
   const mx = initMatrix.matrixClient;
   const mxcUrl = initMatrix.mxcUrl;
 
-  const getCustomStatus = (content) => {
-    // Get Status
-    const customStatus = $(customStatusRef.current);
-    const htmlStatus = [];
-    let customStatusImg;
-    const isOffline = content.presence === 'offline' || content.presence === 'unavailable';
-
-    if (content && objType(content.presenceStatusMsg, 'object')) {
-      const presence = content.presenceStatusMsg;
-      const ethereumValid = envAPI.get('WEB3') && presence.ethereum && presence.ethereum.valid;
-
-      // Ethereum
-      if (ethereumValid) {
-        const displayName = $(displayNameRef.current);
-        let ethereumIcon = displayName.find('#dm-ethereum-icon');
-        if (ethereumIcon.length < 1) {
-          ethereumIcon = $('<span>', {
-            id: 'dm-ethereum-icon',
-            class: 'ms-2',
-            title: presence.ethereum.address,
-          }).append($('<i>', { class: 'fa-brands fa-ethereum' }));
-
-          ethereumIcon
-            .on('click', () => {
-              try {
-                tinyClipboard.copyText(presence.ethereum.address);
-                toast('Ethereum address successfully copied to the clipboard.');
-              } catch (err) {
-                console.error(err);
-                alert(err.message, 'Ethereum Icon - Clipboard Error');
-              }
-            })
-            .tooltip();
-
-          displayName.append(ethereumIcon);
-        }
-      }
-
-      // Get Pronouns Data
-      if (userPronounsRef.current) {
-        const pronounsDOM = $(userPronounsRef.current);
-
-        // Message Icon
-        if (typeof presence.pronouns === 'string' && presence.pronouns.length > 0) {
-          pronounsDOM.removeClass('d-none').text(presence.pronouns.substring(0, 20));
-        } else {
-          pronounsDOM.empty().addClass('d-none');
-        }
-      }
-
-      // Get Bio Data
-      if (bioRef.current) {
-        const bioDOM = $(bioRef.current);
-        const tinyBio = $('#dm-tiny-bio');
-
-        if (tinyBio.length > 0) {
-          bioDOM.removeClass('d-none');
-          if (typeof presence.bio === 'string' && presence.bio.length > 0) {
-            tinyBio.html(twemojify(presence.bio.substring(0, 190), undefined, true, false));
-          } else {
-            bioDOM.addClass('d-none');
-            tinyBio.html('');
-          }
-        } else {
-          bioDOM.addClass('d-none');
-        }
-      }
-
-      // Get Timezone Data
-      if (timezoneRef.current) {
-        const timezoneDOM = $(timezoneRef.current);
-        const tinyTimezone = $('#dm-tiny-timezone');
-
-        if (tinyTimezone.length > 0) {
-          timezoneDOM.removeClass('d-none');
-          if (typeof presence.timezone === 'string' && presence.timezone.length > 0) {
-            let timezoneText = 'null';
-            try {
-              timezoneText = moment()
-                .tz(presence.timezone)
-                .format(`MMMM Do YYYY, ${momentFormat.clock()}`);
-            } catch {
-              timezoneText = 'ERROR!';
-              timezoneDOM.addClass('d-none');
-            }
-
-            if (timezoneAutoUpdate.html) delete timezoneAutoUpdate.html;
-
-            timezoneAutoUpdate.html = tinyTimezone;
-            timezoneAutoUpdate.value = presence.timezone;
-            timezoneAutoUpdate.text = timezoneText;
-
-            tinyTimezone.text(timezoneText);
-          } else {
-            timezoneDOM.addClass('d-none');
-            tinyTimezone.html('');
-          }
-        } else {
-          timezoneDOM.addClass('d-none');
-        }
-      }
-
-      // Message Icon
-      if (typeof presence.msgIcon === 'string' && presence.msgIcon.length > 0) {
-        customStatusImg = ImgJquery({
-          animParentsCount: 4,
-          src: presence.msgIconThumb,
-          animSrc: presence.msgIcon,
-          alt: 'icon',
-          className: 'emoji me-1',
-        });
-        htmlStatus.push(customStatusImg);
-      }
-
-      if (typeof presence.msg === 'string' && presence.msg.length > 0) {
-        htmlStatus.push(
-          $('<span>', { class: 'text-truncate cs-text' }).html(
-            twemojify(presence.msg.substring(0, 100)),
-          ),
-        );
-      }
-
-      // Get Banner Data
-      const bannerDOM = $(profileBanner.current);
-
-      if (bannerDOM.length > 0) {
-        bannerDOM.css('background-image', '').removeClass('exist-banner');
-        const bannerData = AvatarJquery({
-          isObj: true,
-          imageSrc: presence.bannerThumb,
-          imageAnimSrc: presence.banner,
-          onLoadingChange: () => {
-            if (typeof bannerData.blobSrc === 'string' && bannerData.blobSrc.length > 0) {
-              bannerDOM
-                .css('background-image', `url("${bannerData.blobSrc}")`)
-                .addClass('exist-banner');
-
-              const bannerDomParent = bannerDOM.parent();
-
-              bannerDomParent
-                .off('mouseover')
-                .on('mouseover', () =>
-                  bannerDOM.css('background-image', `url("${bannerData.blobAnimSrc}")`),
-                );
-              bannerDomParent
-                .off('mouseout')
-                .on('mouseout', () =>
-                  bannerDOM.css('background-image', `url("${bannerData.blobSrc}")`),
-                );
-            } else {
-              bannerDOM.css('background-image', '').removeClass('exist-banner');
-            }
-          },
-        });
-      }
-    }
-
-    // Custom Status
-    customStatus.html(htmlStatus);
-    if (!isOffline) {
-      customStatus.removeClass('d-none');
-    } else {
-      customStatus.addClass('d-none');
-    }
-
-    if (customStatusImg) {
-      customStatusImg
-        .parent()
-        .parent()
-        .parent()
-        .hover(
-          () => {
-            customStatusImg.attr('src', customStatusImg.data('pony-house-cs-hover'));
-          },
-          () => {
-            customStatusImg.attr('src', customStatusImg.data('pony-house-cs-normal'));
-          },
-        );
-    }
-  };
-
-  if (user && canUsePresence()) {
-    getCustomStatus(getPresence(user));
-  }
-
   useEffect(() => {
     if (user) {
-      // Update Status Profile
-      const updateProfileStatus = (mEvent, tinyData) => {
-        // Get Status
-        const status = $(statusRef.current);
-        const tinyUser = tinyData;
-        setUserAvatar(tinyData?.avatarUrl);
-
-        // Update Status Icon
-        if (canUsePresence) getCustomStatus(updateUserStatusIcon(status, tinyUser));
-      };
-
       // Read Events
       const tinyNote = getDataList('user_cache', 'note', user.userId);
 
@@ -284,10 +63,6 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
       };
 
       // Read Events
-      user.on(UserEvent.AvatarUrl, updateProfileStatus);
-      user.on(UserEvent.CurrentlyActive, updateProfileStatus);
-      user.on(UserEvent.LastPresenceTs, updateProfileStatus);
-      user.on(UserEvent.Presence, updateProfileStatus);
       $(displayNameRef.current).find('> .button').on('click', profileViewer);
       $(userNameRef.current).find('> .button').on('click', profileViewer);
       $(noteRef.current)
@@ -300,33 +75,110 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
         $(noteRef.current)
           .off('change', tinyNoteUpdate)
           .off('keypress keyup keydown', tinyNoteSpacing);
-        user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
-        user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
-        user.removeListener(UserEvent.Presence, updateProfileStatus);
-        user.removeListener(UserEvent.AvatarUrl, updateProfileStatus);
       };
     }
   }, [user]);
 
   useEffect(() => {
     const updateClock = () => forceUpdate();
-    matrixAppearance.on('is24hours', updateClock);
-    matrixAppearance.on('calendarFormat', updateClock);
     matrixAppearance.on('simplerHashtagSameHomeServer', updateClock);
-
     return () => {
-      matrixAppearance.off('is24hours', updateClock);
-      matrixAppearance.off('calendarFormat', updateClock);
       matrixAppearance.off('simplerHashtagSameHomeServer', updateClock);
     };
   });
+
+  // User profile updated
+  useEffect(() => {
+    if (user) {
+      const updateProfileStatus = (mEvent, tinyData) => {
+        // Tiny Data
+        const tinyUser = tinyData;
+
+        // Get Status
+        const status = $(statusRef.current);
+
+        // Is You
+        if (tinyUser.userId === mx.getUserId()) {
+          const yourData = clone(mx.getAccountData('pony.house.profile')?.getContent() ?? {});
+          yourData.ethereum = getUserWeb3Account();
+          if (typeof yourData.ethereum.valid !== 'undefined') delete yourData.ethereum.valid;
+          tinyUser.presenceStatusMsg = JSON.stringify(yourData);
+        }
+
+        console.log(tinyUser);
+        // Update Status Icon
+        setAccountContent(updateUserStatusIcon(status, tinyUser));
+        setUserAvatar(tinyUser?.avatarUrl);
+      };
+
+      user.on(UserEvent.CurrentlyActive, updateProfileStatus);
+      user.on(UserEvent.LastPresenceTs, updateProfileStatus);
+      user.on(UserEvent.Presence, updateProfileStatus);
+      if (user) user.on(UserEvent.AvatarUrl, updateProfileStatus);
+      updateProfileStatus(null, user);
+
+      return () => {
+        if (user) user.removeListener(UserEvent.CurrentlyActive, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.LastPresenceTs, updateProfileStatus);
+        if (user) user.removeListener(UserEvent.Presence, updateProfileStatus);
+        if (user) user.on(UserEvent.AvatarUrl, updateProfileStatus);
+      };
+    }
+  }, [user]);
+
+  // Exist Presence
+  const existPresenceObject = accountContent && objType(accountContent.presenceStatusMsg, 'object');
+
+  // Ethereum Config
+  const ethConfig = getWeb3Cfg();
+  const existEthereum =
+    envAPI.get('WEB3') &&
+    ethConfig.web3Enabled &&
+    existPresenceObject &&
+    accountContent.presenceStatusMsg.ethereum &&
+    accountContent.presenceStatusMsg.ethereum.valid;
+
+  // Exist message presence
+  const existMsgPresence =
+    existPresenceObject &&
+    typeof accountContent.presenceStatusMsg.msg === 'string' &&
+    accountContent.presenceStatusMsg.msg.length > 0;
+
+  // Exist Icon Presence
+  const existIconPresence =
+    existPresenceObject &&
+    typeof accountContent.presenceStatusMsg.msgIcon === 'string' &&
+    accountContent.presenceStatusMsg.msgIcon.length > 0;
+
+  // Exist banner
+  const existBanner =
+    existPresenceObject &&
+    typeof accountContent.presenceStatusMsg.bannerThumb === 'string' &&
+    accountContent.presenceStatusMsg.bannerThumb.length > 0 &&
+    typeof accountContent.presenceStatusMsg.banner === 'string' &&
+    accountContent.presenceStatusMsg.banner.length > 0;
+
+  if (existPresenceObject && existBanner && !bannerSrc && !loadingBanner) {
+    setLoadingBanner(true);
+    const bannerData = AvatarJquery({
+      isObj: true,
+      imageSrc: accountContent.presenceStatusMsg.bannerThumb,
+      imageAnimSrc: accountContent.presenceStatusMsg.banner,
+      onLoadingChange: () => {
+        if (typeof bannerData.blobAnimSrc === 'string' && bannerData.blobAnimSrc.length > 0) {
+          setBannerSrc(bannerData.blobAnimSrc);
+          setLoadingBanner(false);
+        }
+      },
+    });
+  }
 
   if (user) {
     return (
       <>
         <div
-          ref={profileBanner}
-          className={`profile-banner profile-bg${cssColorMXID(user.userId)}`}
+          className={`profile-banner profile-bg${cssColorMXID(user ? user.userId : null)}${existBanner ? ' exist-banner' : ''}`}
+          style={{ backgroundImage: bannerSrc ? `url("${bannerSrc}")` : null }}
         />
 
         <div className="text-center profile-user-profile-avatar">
@@ -358,26 +210,86 @@ function PeopleSelectorBanner({ name, color, user = null, roomId }) {
             <small ref={userNameRef} className="text-gray emoji-size-fix username">
               <span className="button">{twemojifyReact(convertUserId(user.userId))}</span>
             </small>
-            <div ref={userPronounsRef} className="text-gray emoji-size-fix pronouns small d-none" />
 
-            <div
-              ref={customStatusRef}
-              className="d-none mt-2 emoji-size-fix small user-custom-status"
-            />
+            {existPresenceObject ? (
+              <>
+                {typeof accountContent.presenceStatusMsg.pronouns === 'string' &&
+                accountContent.presenceStatusMsg.pronouns.length > 0 ? (
+                  <div className="text-gray emoji-size-fix pronouns small">
+                    {twemojifyReact(accountContent.presenceStatusMsg.pronouns.substring(0, 20))}
+                  </div>
+                ) : null}
 
-            <div ref={timezoneRef} className="d-none">
-              <hr />
+                {existMsgPresence || existIconPresence ? (
+                  <div
+                    className={`mt-2${existMsgPresence ? ' emoji-size-fix ' : ''}small user-custom-status${!existMsgPresence ? ' custom-status-emoji-only' : ''}`}
+                  >
+                    {existIconPresence ? (
+                      <Img
+                        className="emoji me-1"
+                        alt="icon"
+                        src={accountContent.presenceStatusMsg.msgIcon}
+                      />
+                    ) : null}
+                    {existMsgPresence ? (
+                      <span className="text-truncate cs-text">
+                        {twemojifyReact(accountContent.presenceStatusMsg.msg.substring(0, 100))}
+                      </span>
+                    ) : null}
+                  </div>
+                ) : null}
+              </>
+            ) : null}
 
-              <div className="text-gray text-uppercase fw-bold very-small mb-2">Timezone</div>
-              <div id="dm-tiny-timezone" className="emoji-size-fix small text-freedom" />
-            </div>
+            {accountContent ? (
+              // Object presence status
+              existPresenceObject ? (
+                <>
+                  {typeof accountContent.presenceStatusMsg.timezone === 'string' &&
+                  accountContent.presenceStatusMsg.timezone.length > 0 ? (
+                    <>
+                      <hr />
 
-            <div ref={bioRef} className="d-none">
-              <hr />
+                      <div className="text-gray text-uppercase fw-bold very-small mb-2">
+                        Timezone
+                      </div>
+                      <div className="emoji-size-fix small text-freedom">
+                        <Clock
+                          timezone={accountContent.presenceStatusMsg.timezone}
+                          calendarFormat="MMMM Do YYYY, {time}"
+                        />
+                      </div>
+                    </>
+                  ) : null}
 
-              <div className="text-gray text-uppercase fw-bold very-small mb-2">About me</div>
-              <div id="dm-tiny-bio" className="emoji-size-fix small text-freedom" />
-            </div>
+                  {typeof accountContent.presenceStatusMsg.bio === 'string' &&
+                  accountContent.presenceStatusMsg.bio.length > 0 ? (
+                    <>
+                      <hr />
+                      <div className="text-gray text-uppercase fw-bold very-small mb-2">
+                        About me
+                      </div>
+                      <div className="emoji-size-fix small text-freedom">
+                        {twemojifyReact(
+                          accountContent.presenceStatusMsg.bio.substring(0, 190),
+                          undefined,
+                          true,
+                          false,
+                        )}
+                      </div>
+                    </>
+                  ) : null}
+                </>
+              ) : // Text presence status
+              typeof accountContent.presenceStatusMsg === 'string' &&
+                accountContent.presenceStatusMsg.length > 0 ? (
+                <div className="mt-2 emoji-size-fix small user-custom-status">
+                  <span className="text-truncate cs-text">
+                    {twemojifyReact(accountContent.presenceStatusMsg.substring(0, 100))}
+                  </span>
+                </div>
+              ) : null
+            ) : null}
 
             <hr />
 
