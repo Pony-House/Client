@@ -9,6 +9,7 @@ export default function EthereumProfileTabItem({ chain, ethereum }) {
   const web3Cfg = getWeb3Cfg();
   const [balance, setBalance] = useState('?.??');
   const [updatedAt, setUpdatedAt] = useState(0);
+  const [firstTime, setFirstTime] = useState(true);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const getBalance = (forceUpdate = false) => {
@@ -30,13 +31,16 @@ export default function EthereumProfileTabItem({ chain, ethereum }) {
       .catch((err) => {
         setIsError(true);
         setUpdatedAt(moment());
-        console.error(err);
         setIsLoading(false);
+        console.error(err);
       });
   };
 
   useEffect(() => {
-    if (!updatedAt && !isLoading) getBalance();
+    if (!updatedAt && !isLoading && !isError && firstTime) {
+      setFirstTime(false);
+      getBalance();
+    }
   });
 
   return (

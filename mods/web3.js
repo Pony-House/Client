@@ -44,7 +44,7 @@ export default {
     ethereum: {
       chainId: '0x1',
       chainIdInt: 1,
-      rpcUrls: ['https://cloudflare-eth.com/'],
+      rpcUrls: ['https://eth.llamarpc.com/', 'https://cloudflare-eth.com/'],
       chainName: 'Ethereum Mainnet',
       nativeCurrency: {
         name: 'ETH',
@@ -62,7 +62,7 @@ export default {
     polygon: {
       chainId: '0x89',
       chainIdInt: 137,
-      rpcUrls: ['https://polygon-rpc.com/'],
+      rpcUrls: ['https://polygon.llamarpc.com/', 'https://polygon-rpc.com/'],
       chainName: 'Polygon Mainnet',
       nativeCurrency: {
         name: 'MATIC',
@@ -80,7 +80,7 @@ export default {
     bsc: {
       chainId: '0x38',
       chainIdInt: 56,
-      rpcUrls: ['https://bsc-dataseed.binance.org/'],
+      rpcUrls: ['https://binance.llamarpc.com/', 'https://bsc-dataseed.binance.org/'],
       chainName: 'Smart Chain',
       nativeCurrency: {
         name: 'BNB',
@@ -132,7 +132,7 @@ export default {
     op: {
       chainId: '0xa',
       chainIdInt: 10,
-      rpcUrls: ['https://mainnet.optimism.io/'],
+      rpcUrls: ['https://optimism.llamarpc.com', 'https://mainnet.optimism.io/'],
       chainName: 'Optimism Mainnet',
       nativeCurrency: {
         name: 'ETH',
@@ -149,7 +149,7 @@ export default {
     base: {
       chainId: '0x2105',
       chainIdInt: 8453,
-      rpcUrls: ['https://mainnet.base.org/'],
+      rpcUrls: ['https://base.llamarpc.com', 'https://mainnet.base.org/'],
       chainName: 'Base Mainnet',
       nativeCurrency: {
         name: 'ETH',
