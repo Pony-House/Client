@@ -1,3 +1,5 @@
+Fazer a timeline carregar o embed antes de exibir a mensagem.
+
 Ver qual Friend ninkcname está sendo usado.
 
 ==========================================
