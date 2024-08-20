@@ -3364,10 +3364,10 @@ esutils@^2.0.2:
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
 
-eth-provider@0.13.6:
-  version "0.13.6"
-  resolved "https://registry.yarnpkg.com/eth-provider/-/eth-provider-0.13.6.tgz#664ad8a5b0aa5db41ff419e6cc1081b4588f1c12"
-  integrity sha512-/i0qSQby/rt3CCZrNVlgBdCUYQBwULStFRlBt7+ULNVpwbsYWl9VWXFaQxsbJLOo0x7swRS3OknIdlxlunsGJw==
+eth-provider@0.13.7:
+  version "0.13.7"
+  resolved "https://registry.yarnpkg.com/eth-provider/-/eth-provider-0.13.7.tgz#f7bec9c255724f54792a6c9a6e3a30e70c4fefe6"
+  integrity sha512-D07HcKBQ0+liERDbkwpex03Y5D7agOMBv8NMkGu0obmD+vHzP9q8jI/tkZMfYAhbfXwpudEgXKiJODXH5UQu7g==
   dependencies:
     ethereum-provider "0.7.7"
     events "3.3.0"
