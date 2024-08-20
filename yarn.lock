@@ -591,10 +591,10 @@
     lodash "^4.17.15"
     tmp-promise "^3.0.2"
 
-"@matrix-org/matrix-sdk-crypto-wasm@^6.0.0":
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/@matrix-org/matrix-sdk-crypto-wasm/-/matrix-sdk-crypto-wasm-6.2.1.tgz#94cd1263656e2b4f3b1dc6f728856efab8920aca"
-  integrity sha512-5mav0EKog0w9NWRRxFzZ+ZcT5Il/KlLh1bsQXgxfhzfJq1RgWLLu+OsvHSZau5NSbPxfOd4ZTWc2ZLAf+V/8mg==
+"@matrix-org/matrix-sdk-crypto-wasm@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@matrix-org/matrix-sdk-crypto-wasm/-/matrix-sdk-crypto-wasm-7.0.0.tgz#8d6abdb9ded8656cc9e2a7909913a34bf3fc9b3a"
+  integrity sha512-MOencXiW/gI5MuTtCNsuojjwT5DXCrjMqv9xOslJC9h2tPdLFFFMGr58dY5Lis4DRd9MRWcgrGowUIHOqieWTA==
 
 "@matrix-org/olm@3.2.15":
   version "3.2.15"
@@ -4954,13 +4954,13 @@ matrix-events-sdk@0.0.1:
   resolved "https://registry.yarnpkg.com/matrix-events-sdk/-/matrix-events-sdk-0.0.1.tgz#c8c38911e2cb29023b0bbac8d6f32e0de2c957dd"
   integrity sha512-1QEOsXO+bhyCroIe2/A5OwaxHvBm7EsSQ46DEDn8RBIfQwN5HWBpFvyWWR4QY0KHPPnnJdI99wgRiAl7Ad5qaA==
 
-matrix-js-sdk@34.2.0:
-  version "34.2.0"
-  resolved "https://registry.yarnpkg.com/matrix-js-sdk/-/matrix-js-sdk-34.2.0.tgz#5e7eff9b4c15689d7f07ad3686373f821e2f06bf"
-  integrity sha512-dygfH/a0C/Q+a5dSfudxxwA0g9peLsBbalC6LaxPa7AEFb4Gg9d8kiGnlqaFb1U9bGUapk8duBsAC526BjXbdA==
+matrix-js-sdk@34.3.0:
+  version "34.3.0"
+  resolved "https://registry.yarnpkg.com/matrix-js-sdk/-/matrix-js-sdk-34.3.0.tgz#9ce3f6c6bb8b1931eec3f9984f4387fef8768001"
+  integrity sha512-vd5j8VUkEmwqGdg7istFsA/ugAaf+cmw2FkgKfefxkEWK4Qx7HZprFnOJK+A6cSqCnBjha4CvHNS4p0D8vmDHw==
   dependencies:
     "@babel/runtime" "^7.12.5"
-    "@matrix-org/matrix-sdk-crypto-wasm" "^6.0.0"
+    "@matrix-org/matrix-sdk-crypto-wasm" "^7.0.0"
     "@matrix-org/olm" "3.2.15"
     another-json "^0.2.0"
     bs58 "^6.0.0"
@@ -4968,14 +4968,14 @@ matrix-js-sdk@34.2.0:
     jwt-decode "^4.0.0"
     loglevel "^1.7.1"
     matrix-events-sdk "0.0.1"
-    matrix-widget-api "^1.6.0"
+    matrix-widget-api "^1.8.2"
     oidc-client-ts "^3.0.1"
     p-retry "4"
     sdp-transform "^2.14.1"
     unhomoglyph "^1.0.6"
     uuid "10"
 
-matrix-widget-api@1.8.2, matrix-widget-api@^1.6.0:
+matrix-widget-api@1.8.2, matrix-widget-api@^1.8.2:
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/matrix-widget-api/-/matrix-widget-api-1.8.2.tgz#28d344502a85593740f560b0f8120e474a054505"
   integrity sha512-kdmks3CvFNPIYN669Y4rO13KrazDvX8KHC7i6jOzJs8uZ8s54FNkuRVVyiQHeVCSZG5ixUqW9UuCj9lf03qxTQ==
