@@ -90,6 +90,11 @@ audio:not([controls]) {
   --bs-success-rgb: 69, 184, 59;
 }
 
+.tiny-form-align-center {
+  display: flex;
+  align-items: center;
+}
+
 .table-td-hover {
   td:hover {
     background-color: var(--bs-table-hover-bg);

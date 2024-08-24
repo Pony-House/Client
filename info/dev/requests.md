@@ -145,3 +145,15 @@ Made by Me
 
     Mobile Background mode
     Mobile Rec audio
+
+===============================
+
+var utterance = new SpeechSynthesisUtterance();
+utterance.text = "some string";
+var someVoice = window.speechSynthesis.getVoices()[0];
+utterance.voice = someVoice;
+window.speechSynthesis.speak(utterance);
+
+utterance.onend = function() {
+    // do something when the line ends
+};
