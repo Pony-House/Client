@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CryptoEvent } from 'matrix-js-sdk';
+import { CrossSigningKey } from 'matrix-js-sdk/lib/crypto-api';
 
 import { twemojifyReact } from '../../../util/twemojify';
 
@@ -29,10 +30,10 @@ function EmojiVerificationContent({ data, requestClose }) {
   const beginVerification = async () => {
     const crypto = mx.getCrypto();
     try {
+      const keyId = await crypto.getCrossSigningKeyId();
       if (
         (await isCrossVerified(mx.deviceId)) &&
-        ((await crypto.getCrossSigningKeyId()) === null ||
-          (await crypto.crossSigningInfo.isStoredInKeyCache('self_signing')) === false)
+        (keyId === null || keyId !== CrossSigningKey.SelfSigning)
       ) {
         if (!hasPrivateKey(getDefaultSSKey())) {
           const keyData = await accessSecretStorage('Emoji verification');
@@ -87,7 +88,7 @@ function EmojiVerificationContent({ data, requestClose }) {
       }
     };
 
-    if (request === null) return null;
+    if (request === null) return undefined;
     const req = request;
     req.on('change', handleChange);
     return () => {
