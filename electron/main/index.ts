@@ -328,7 +328,9 @@ if (!gotTheLock) {
       if (electronCache.win.isMinimized()) {
         electronCache.win.restore();
       }
+      electronCache.win?.show();
       electronCache.win?.focus();
+      appShow.change(true);
     }
   });
 
@@ -392,7 +394,9 @@ app.on('second-instance', () => {
   if (electronCache.win) {
     // Focus on the main window if the user tried to open another
     if (electronCache.win.isMinimized()) electronCache.win.restore();
+    electronCache.win.show();
     electronCache.win.focus();
+    appShow.change(true);
   }
 });
 
