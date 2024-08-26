@@ -247,7 +247,9 @@ export function getDefaultSSKey() {
   const mx = initMatrix.matrixClient;
   try {
     return mx.getAccountData('m.secret_storage.default_key').getContent().key;
-  } catch {
+  } catch (err) {
+    console.log('No getDefaultSSKey');
+    console.error(err);
     return undefined;
   }
 }
@@ -256,7 +258,9 @@ export function getSSKeyInfo(key) {
   const mx = initMatrix.matrixClient;
   try {
     return mx.getAccountData(`m.secret_storage.key.${key}`).getContent();
-  } catch {
+  } catch (err) {
+    console.log(`No getSSKeyInfo ${key}`);
+    console.error(err);
     return undefined;
   }
 }
