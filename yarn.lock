@@ -6481,10 +6481,10 @@ slash@^3.0.0:
   resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
 
-slate-react@0.108.0:
-  version "0.108.0"
-  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.108.0.tgz#9cf228c824bc503ff7ade90c9be116a4374c2c8e"
-  integrity sha512-vzQuQ1t/gR+1pJh9ABbU4rgckPK0A1AZV5iVKO3isBpJ9z5xPCXf6hqnCNIogMvLU0pZIjjyQJVSL2OtxrQ/xA==
+slate-react@0.109.0:
+  version "0.109.0"
+  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.109.0.tgz#549681aa5d79445badc8e320317ec43c1a536830"
+  integrity sha512-tzSJFqwzAvy4PmIPobuKp7PX2Q/R/jwG0DU7AJTnMLVQpGpzS0yacsDcFeGRaGAQpFZYlUteFkKiBm9MKgDEyg==
   dependencies:
     "@juggle/resize-observer" "^3.4.0"
     direction "^1.0.4"
