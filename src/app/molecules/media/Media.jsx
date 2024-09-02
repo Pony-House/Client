@@ -82,6 +82,7 @@ function FileHeader({ name, link = null, external = false, file = null, type, ro
       setIsDownloading(false);
       setTimeout(() => {
         e.target.click();
+        setUrl(null);
       }, 100);
     }
   }
