@@ -1,3 +1,7 @@
+Novo popup de permissão igual celular.
+
+Ajeitar o text verification
+
 Fazer a timeline carregar o embed antes de exibir a mensagem.
 
 Ver qual Friend ninkcname está sendo usado.
@@ -113,10 +117,7 @@ Made by Me
     Coisas que não atualiza sozinho:
         Lista de usuários online na room ainda não atualiza em tempo real.
 
-    =======================================================
-
-    Ajeitar o scroll da timeline
-
+    =======permit
     --> Ajeitar... Ao criar uma sala, o app está jogando para o menu de homes. Isso não pode acotecer se a room for dentro de um space.
     (Isso também acontece quando tenta criar uma DM)
 
@@ -155,5 +156,5 @@ utterance.voice = someVoice;
 window.speechSynthesis.speak(utterance);
 
 utterance.onend = function() {
-    // do something when the line ends
+// do something when the line ends
 };

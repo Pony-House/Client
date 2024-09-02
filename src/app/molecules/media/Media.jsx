@@ -31,12 +31,24 @@ async function getUrl(contentType, fileType, link, type, decryptData, roomId /* 
 
     blobSettings.id = `${blobSettings.group}:${link}`;
     const resultById = blobUrlManager.getById(blobSettings.id);
-    if (!resultById) {
-      const blob = await initMatrix.mxcUrl.focusFetchBlob(link, fileType, type, decryptData);
-      const result = await blobUrlManager.insert(blob, blobSettings);
-      return result;
+    if (fileType !== 'unknown') {
+      if (!resultById) {
+        const blob = await initMatrix.mxcUrl.focusFetchBlob(link, fileType, type, decryptData);
+        const result = await blobUrlManager.insert(blob, blobSettings);
+        return result;
+      } else {
+        return resultById;
+      }
     } else {
-      return resultById;
+      const blob = await initMatrix.mxcUrl.focusFetchBlob(link, fileType, type, decryptData);
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = function () {
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+      });
     }
   } catch (e) {
     console.error(e);
@@ -55,6 +67,7 @@ function getNativeHeight(width, height, maxWidth = 296) {
 
 function FileHeader({ name, link = null, external = false, file = null, type, roomId, threadId }) {
   const [url, setUrl] = useState(null);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   async function getFile() {
     const myUrl = await getUrl('file', 'unknown', link, type, file, roomId, threadId);
@@ -64,8 +77,12 @@ function FileHeader({ name, link = null, external = false, file = null, type, ro
   async function handleDownload(e) {
     if (file !== null && url === null) {
       e.preventDefault();
+      setIsDownloading(true);
       await getFile();
-      e.target.click();
+      setIsDownloading(false);
+      setTimeout(() => {
+        e.target.click();
+      }, 100);
     }
   }
 
@@ -86,6 +103,7 @@ function FileHeader({ name, link = null, external = false, file = null, type, ro
           )}
           <a href={url || link} download={name} target="_blank" rel="noreferrer">
             <IconButton
+              disabled={isDownloading}
               size="extra-small"
               tooltip="Download"
               fa="fa-solid fa-download"
