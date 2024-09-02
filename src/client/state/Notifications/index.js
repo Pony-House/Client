@@ -3,7 +3,7 @@ import $ from 'jquery';
 import { ClientEvent, MatrixEventEvent, NotificationCountType, RoomEvent } from 'matrix-js-sdk';
 import EventEmitter from 'events';
 
-import mobileEvents, { isMobile } from '@src/util/libs/mobile';
+import { isMobile } from '@src/util/libs/mobile';
 import { cyrb128 } from '@src/util/tools';
 import tinyAPI from '@src/util/mods';
 import { getAppearance } from '@src/util/libs/appearance';
@@ -80,13 +80,6 @@ class Notifications extends EventEmitter {
 
     // this._initNoti();
     this._listenEvents();
-
-    // Ask for permission by default after loading
-    if (isMobile(true)) {
-      mobileEvents.checkNotificationPerm();
-    } else {
-      window.Notification?.requestPermission();
-    }
   }
 
   async _initNoti() {

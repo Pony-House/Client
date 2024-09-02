@@ -1,1 +1,2 @@
 - File downloader button fixed.
+- Notification perms pop-up added.

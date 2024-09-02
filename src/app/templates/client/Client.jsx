@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
 
+import mobileEvents, { isMobile } from '@src/util/libs/mobile';
+
 import appLoadMsg from '@mods/appLoadMsg';
 import {
   appearRoomProfile,
@@ -239,6 +241,68 @@ function Client({ isDevToolsOpen = false }) {
           appearUserProfile(userId);
         }
       }, 100);
+
+      if (!storageManager.getIsPersisted()) {
+        alert(
+          'Your client is not using Storage Persisted. You will have sync problems in your client while continuing to use without this option enabled.',
+          'Storage Persisted Error',
+        );
+      }
+
+      // Notifications Check
+      if (!__ENV_APP__.ELECTRON_MODE && window.Notification?.permission === 'default') {
+        const tinyModal = btModal({
+          id: 'tiny-notifications-perm',
+          title: `Permission to activate notifications`,
+
+          dialog: 'modal-dialog-centered modal-lg noselect',
+          body: [
+            $('<p>', { class: 'small' }).text(
+              `Before you continue, activate notifications, if you refuse, you can activate later in your account settings.`,
+            ),
+            $('<center>').append(
+              $('<button>', { class: 'btn btn-primary text-bg-force' })
+                .on('click', () => {
+                  // Ask for permission by default after loading
+                  if (isMobile(true)) {
+                    mobileEvents
+                      .checkNotificationPerm()
+                      .then(() => {
+                        try {
+                          tinyModal.hide();
+                        } catch (err) {
+                          console.error(err);
+                        }
+                      })
+                      .catch((err) => {
+                        console.error(err);
+                        alert(err.message, 'Enable notifications - error');
+                        tinyModal.hide();
+                      });
+                  } else {
+                    window.Notification?.requestPermission()
+                      .then(() => {
+                        try {
+                          tinyModal.hide();
+                        } catch (err) {
+                          console.error(err);
+                        }
+                      })
+                      .catch((err) => {
+                        console.error(err);
+                        alert(err.message, 'Enable notifications - error');
+                        tinyModal.hide();
+                      });
+                  }
+                })
+                .text('Request permission')
+                .prepend($('<i>', { class: 'fa-solid fa-bell me-2' })),
+            ),
+          ],
+        });
+      } else {
+        window.Notification?.requestPermission();
+      }
     });
 
     initMatrix

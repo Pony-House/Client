@@ -68,10 +68,9 @@ function SecuritySection() {
               <div className="very-small text-gray">
                 {`If the persistent storage permission is granted, the ${isMobile() ? 'app' : __ENV_APP__.ELECTRON_MODE ? 'software' : 'browser'} will not evict data stored.`}{' '}
                 If you are already using the application for a long time, the recommendation is to
-                keep this setting enabled to avoid glitches. This option is only for you to disable
-                some app storage features. This is not a guarantee that will completely shut down
-                all the features that use this permission. If you are in advanced mode disabled,
-                this setting cannot be modified for your security.
+                keep this setting enabled to avoid glitches. This is not a guarantee that will
+                completely shut down all the features that use this permission. If you are in
+                advanced mode disabled, this setting cannot be modified for your security.
               </div>
             }
           />
