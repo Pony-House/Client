@@ -31,43 +31,17 @@ import cons from './state/cons';
 global.Olm = Olm;
 
 const fetchBase = (url, ops) => {
-  if (typeof global.nodeFetch === 'function') return global.nodeFetch(url.href, ops);
   return global.fetch(url.href, ops);
 };
 
-/* const fetchFn = __ENV_APP__.ELECTRON_MODE
-  ? (url, ops) => fetchBase({ href: url }, ops)
-  : global.fetch; */
 const fetchFn = global.fetch;
 export { fetchFn };
-
-const startCustomDNS = () => {
-  /* if (__ENV_APP__.ELECTRON_MODE) {
-    if (typeof global.startCustomDNS === 'function') {
-      global.startCustomDNS({
-        port:
-          __ENV_APP__.MODE !== 'development'
-            ? __ENV_APP__.CUSTOM_DNS.PORT
-            : __ENV_APP__.CUSTOM_DNS.PORT - 1,
-        devMode: __ENV_APP__.MODE === 'development',
-        enabled: __ENV_APP__.CUSTOM_DNS.ENABLED,
-
-        ud: {
-          polygon: __ENV_APP__.CUSTOM_DNS.BLOCKCHAIN.ud.polygon,
-        },
-
-        ens: __ENV_APP__.CUSTOM_DNS.BLOCKCHAIN.ens,
-      });
-    }
-  } */
-};
 
 class InitMatrix extends EventEmitter {
   constructor() {
     super();
     this.isGuest = false;
     navigation.initMatrix = this;
-    startCustomDNS();
   }
 
   setGuest(value) {
@@ -86,7 +60,6 @@ class InitMatrix extends EventEmitter {
   }
 
   async init(isGuest = false) {
-    startCustomDNS();
     const started = await this.startClient(isGuest);
     if (started.ready) {
       this.setupSync();
@@ -123,7 +96,6 @@ class InitMatrix extends EventEmitter {
           console.error(err);
         });
 
-      startCustomDNS();
       startTimestamp();
 
       const avatarsToLoad = [];
@@ -207,7 +179,6 @@ class InitMatrix extends EventEmitter {
   }
 
   setupSync() {
-    startCustomDNS();
     const sync = {
       NULL: () => {
         console.log(`NULL state`);
@@ -261,7 +232,6 @@ class InitMatrix extends EventEmitter {
   }
 
   listenEvents() {
-    startCustomDNS();
     this.matrixClient.on(sdk.HttpApiEvent.SessionLoggedOut, async () => {
       this.matrixClient.stopClient();
       await this.matrixClient.clearStores();
@@ -271,7 +241,6 @@ class InitMatrix extends EventEmitter {
   }
 
   async logout() {
-    startCustomDNS();
     this.matrixClient.stopClient();
     try {
       await this.matrixClient.logout();
@@ -286,7 +255,6 @@ class InitMatrix extends EventEmitter {
   }
 
   clearCacheAndReload() {
-    startCustomDNS();
     this.matrixClient.stopClient();
     this.matrixClient.store.deleteAllData().then(() => {
       if (global.tinyJsonDB && typeof global.tinyJsonDB.clearCacheData === 'function') {

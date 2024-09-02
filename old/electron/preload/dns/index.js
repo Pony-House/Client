@@ -11,7 +11,7 @@ import fetch from 'node-fetch';
 import nativeDns from 'native-node-dns';
 import udResolver from './ud';
 import ensResolver from './ens';
-import { getAppFolders } from '../libs/utils';
+import { getAppFolders } from '../../../../electron/preload/libs/utils';
 
 // Server
 const ttl = 600;
@@ -259,7 +259,7 @@ dnsWays.ponyhousetemp = async (href, ops, resolve, reject) => {
     data.redirected = false;
 
     data.json = () => JSON.parse(fileData);
-    data.clone = () => {};
+    data.clone = () => { };
     data.text = () => fileData;
     data.arrayBuffer = () => {
       const arr = new Uint8Array(fileData.length / 8);
@@ -270,7 +270,7 @@ dnsWays.ponyhousetemp = async (href, ops, resolve, reject) => {
     };
 
     data.blob = () => new Blob([data.arrayBuffer()]);
-    data.formData = () => {};
+    data.formData = () => { };
 
     if (ops.method === 'HEAD') {
       headers['content-length'] = String(stats.size);

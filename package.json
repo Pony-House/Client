@@ -82,7 +82,6 @@
     "matrix-widget-api": "1.8.2",
     "md5": "2.3.0",
     "moment-timezone": "0.5.45",
-    "native-node-dns": "0.7.6",
     "node-fetch": "2",
     "object-hash": "3.0.0",
     "photoswipe": "5.4.4",

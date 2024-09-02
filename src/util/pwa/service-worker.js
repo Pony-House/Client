@@ -84,7 +84,6 @@ function proxyRequest(caches, request) {
     // check cache
     return cache.match(request).then(function (cachedResponse) {
       if (cachedResponse) {
-        // console.info('[PWA] [service-worker] Take it from cache', request.url);
         return cachedResponse;
       }
 
@@ -116,15 +115,6 @@ function proxyRequest(caches, request) {
         return networkResponse;
       };
 
-      /* const reject = (err) => {
-        console.error(err);
-        console.error('[PWA] [service-worker] Failed to fetch', request.url);
-        // Placeholder image for the fallback
-        return fetch('./img/svg/image-broken.svg', { mode: 'no-cors' });
-        return err;
-      }; */
-
-      if (typeof nodeFetch === 'function') return nodeFetch(request.clone()).then(resolve);
       return fetch(request.clone()).then(resolve);
     });
   });
@@ -139,9 +129,8 @@ self.addEventListener('activate', function (event) {
 });
 
 self.addEventListener('fetch', function (event) {
-  var request = event.request;
+  const request = event.request;
 
-  // console.log('[PWA] [service-worker] Detected request', request.url);
   if (
     request.method !== 'GET' ||
     !request.url.startsWith('blob:') ||
@@ -160,6 +149,5 @@ self.addEventListener('fetch', function (event) {
     } else return;
   }
 
-  // console.log('[PWA] [service-worker] Accepted request', request.url);
   event.respondWith(proxyRequest(caches, request));
 });
