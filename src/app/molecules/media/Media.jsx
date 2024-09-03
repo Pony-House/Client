@@ -125,7 +125,9 @@ FileHeader.propTypes = {
   type: PropTypes.string.isRequired,
 };
 
-function File({ name, link, file = null, type = '', roomId, threadId }) {
+function File({ link, file = null, roomId, threadId, content = {} }) {
+  const name = content.body;
+  const type = content.info?.mimetype || '';
   return (
     <div className="file-container">
       <FileHeader
@@ -141,21 +143,19 @@ function File({ name, link, file = null, type = '', roomId, threadId }) {
 }
 
 File.propTypes = {
-  name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
-  type: PropTypes.string,
   file: PropTypes.shape({}),
+  content: PropTypes.object,
 };
 
 function Image({
-  name,
+  content = {},
   roomId,
   threadId,
   width = null,
   height = null,
   link,
   file = null,
-  type = '',
   blurhash = '',
   className = null,
   classImage = null,
@@ -165,6 +165,8 @@ function Image({
   const [url, setUrl] = useState(null);
   const [blur, setBlur] = useState(true);
   const [lightbox, setLightbox] = useState(false);
+  const name = content.body;
+  const type = content.info?.mimetype || '';
 
   useEffect(() => {
     let unmounted = false;
@@ -252,29 +254,29 @@ function Image({
 Image.propTypes = {
   maxWidth: PropTypes.number,
   ignoreContainer: PropTypes.bool,
-  name: PropTypes.string.isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
   link: PropTypes.string.isRequired,
   linkAnim: PropTypes.string,
   file: PropTypes.shape({}),
-  type: PropTypes.string,
   className: PropTypes.string,
   classImage: PropTypes.string,
   blurhash: PropTypes.string,
+  content: PropTypes.object,
 };
 
 function Sticker({
-  name,
+  content = {},
   height = null,
   width = null,
   link,
   file = null,
-  type = '',
   roomId,
   threadId,
 }) {
   const [url, setUrl] = useState(null);
+  const name = content.body;
+  const type = content.info?.mimetype || '';
 
   useEffect(() => {
     let unmounted = false;
@@ -317,18 +319,19 @@ function Sticker({
 }
 
 Sticker.propTypes = {
-  name: PropTypes.string.isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
   link: PropTypes.string.isRequired,
   file: PropTypes.shape({}),
-  type: PropTypes.string,
+  content: PropTypes.object,
 };
 
-function Audio({ name, link, type = '', file = null, roomId, threadId }) {
+function Audio({ content = {}, link, file = null, roomId, threadId }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [url, setUrl] = useState(null);
+  const name = content.body;
+  const type = content.info?.mimetype || '';
 
   async function loadAudio() {
     const myUrl = await getUrl('audio', 'audio', link, type, file, roomId, threadId);
@@ -368,14 +371,13 @@ function Audio({ name, link, type = '', file = null, roomId, threadId }) {
 }
 
 Audio.propTypes = {
-  name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
-  type: PropTypes.string,
   file: PropTypes.shape({}),
+  content: PropTypes.object,
 };
 
 function Video({
-  name,
+  content = {},
   roomId,
   threadId,
   link,
@@ -385,7 +387,6 @@ function Video({
   width = null,
   height = null,
   file = null,
-  type = '',
   blurhash = null,
 }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -393,6 +394,8 @@ function Video({
   const [url, setUrl] = useState(null);
   const [thumbUrl, setThumbUrl] = useState(null);
   const [blur, setBlur] = useState(true);
+  const name = content.body;
+  const type = content.info?.mimetype || '';
 
   useEffect(() => {
     let unmounted = false;
@@ -478,7 +481,6 @@ function Video({
 }
 
 Video.propTypes = {
-  name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   thumbnail: PropTypes.string,
   thumbnailFile: PropTypes.shape({}),
@@ -486,8 +488,8 @@ Video.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   file: PropTypes.shape({}),
-  type: PropTypes.string,
   blurhash: PropTypes.string,
+  content: PropTypes.object,
 };
 
 export { File, Image, Sticker, Audio, Video };

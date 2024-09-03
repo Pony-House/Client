@@ -1439,9 +1439,8 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
         <Media.File
           roomId={mE.getRoomId()}
           threadId={mE.getThread()?.id}
-          name={mContent.body}
+          content={mContent}
           link={mxcUrl.toHttp(mediaMXC)}
-          type={mContent.info?.mimetype}
           file={mContent.file || null}
         />
       );
@@ -1452,12 +1451,11 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
         <Media.Image
           roomId={mE.getRoomId()}
           threadId={mE.getThread()?.id}
-          name={mContent.body}
           width={typeof mContent.info?.w === 'number' ? mContent.info?.w : null}
           height={typeof mContent.info?.h === 'number' ? mContent.info?.h : null}
           link={mxcUrl.toHttp(mediaMXC)}
           file={isEncryptedFile ? mContent.file : null}
-          type={mContent.info?.mimetype}
+          content={mContent}
           blurhash={blurhash}
         />
       ) : (
@@ -1479,9 +1477,9 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
       const enableAnimParams = getAppearance('enableAnimParams');
       return !muteUserManager.isStickerMuted(senderId) || seeHiddenData ? (
         <Media.Sticker
+          content={mContent}
           roomId={mE.getRoomId()}
           threadId={mE.getThread()?.id}
-          name={mContent.body}
           width={
             typeof mContent.info?.w === 'number' && !Number.isNaN(mContent.info?.w)
               ? mContent.info?.w
@@ -1498,7 +1496,6 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
               : getAnimatedImageUrl(mxcUrl.toHttp(mediaMXC, 170, 170))
           }
           file={isEncryptedFile ? mContent.file : null}
-          type={mContent.info?.mimetype}
         />
       ) : (
         <a
@@ -1518,11 +1515,10 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
     case 'm.audio':
       return (
         <Media.Audio
+          content={mContent}
           roomId={mE.getRoomId()}
           threadId={mE.getThread()?.id}
-          name={mContent.body}
           link={mxcUrl.toHttp(mediaMXC)}
-          type={mContent.info?.mimetype}
           file={mContent.file || null}
         />
       );
@@ -1534,9 +1530,9 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
       }
       return !muteUserManager.isVideoMuted(senderId) || seeHiddenData ? (
         <Media.Video
+          content={mContent}
           roomId={mE.getRoomId()}
           threadId={mE.getThread()?.id}
-          name={mContent.body}
           link={mxcUrl.toHttp(mediaMXC)}
           thumbnail={thumbnailMXC === null ? null : mxcUrl.toHttp(thumbnailMXC)}
           thumbnailFile={isEncryptedFile ? mContent.info?.thumbnail_file : null}
@@ -1544,7 +1540,6 @@ function genMediaContent(mE, seeHiddenData, setSeeHiddenData) {
           width={typeof mContent.info?.w === 'number' ? mContent.info?.w : null}
           height={typeof mContent.info?.h === 'number' ? mContent.info?.h : null}
           file={isEncryptedFile ? mContent.file : null}
-          type={mContent.info?.mimetype}
           blurhash={blurhash}
         />
       ) : (
