@@ -14,9 +14,7 @@ function ViewSourceBlock({ title, json, className = '' }) {
     <div className={`card ${className}`}>
       <ul className="list-group list-group-flush">
         <li className="list-group-item very-small text-gray noselect">{title}</li>
-        <pre>
-          <HighlightCode code={json} className="bg-bg3" mode="ViewSource" />
-        </pre>
+        <HighlightCode code={json} className="bg-bg3" mode="ViewSource" />
       </ul>
     </div>
   );

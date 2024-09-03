@@ -31,7 +31,16 @@ function hljsFixer(el, where, callback = function () {}) {
 
 const HighlightCode = React.forwardRef(
   (
-    { code = null, lang = null, mode = 'MessageBody', className = null, space = 2, onLoad = null },
+    {
+      code = null,
+      lang = null,
+      mode = 'MessageBody',
+      className = null,
+      preClass = null,
+      space = 2,
+      onLoad = null,
+      id = null,
+    },
     ref,
   ) => {
     const codeRef = ref || useRef(null);
@@ -48,12 +57,14 @@ const HighlightCode = React.forwardRef(
     });
 
     return (
-      <code
-        ref={codeRef}
-        className={`${lang ? `language-${lang}` : typeof code !== 'string' ? 'language-json' : ''}${className ? ` ${className}` : ''}`}
-      >
-        {typeof code !== 'string' ? JSON.stringify(code, null, space) : code}
-      </code>
+      <pre className={preClass} id={id}>
+        <code
+          ref={codeRef}
+          className={`${lang ? `language-${lang}` : typeof code !== 'string' ? 'language-json' : ''}${className ? ` ${className}` : ''}`}
+        >
+          {typeof code !== 'string' ? JSON.stringify(code, null, space) : code}
+        </code>
+      </pre>
     );
   },
 );
@@ -61,6 +72,8 @@ const HighlightCode = React.forwardRef(
 HighlightCode.propTypes = {
   onLoad: PropTypes.func,
   className: PropTypes.string,
+  preClass: PropTypes.string,
+  id: PropTypes.string,
   mode: PropTypes.string,
   lang: PropTypes.string,
   space: PropTypes.number,
