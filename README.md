@@ -26,6 +26,12 @@ I am someone who is definitely tired of seeing censorship spread across the inte
 
 I see the Matrix project as one of the best alternatives to maintain at least try to keep communities and groups of friends on the internet. So my goal is to make this fork as good as possible so that not only can I be happy, but also all the people who are having a similar situation to me.
 
+## Unofficial versions
+
+Unofficial version is supported by the community. Any questions you have about these versions please contact the list of developers below. Links to download unofficial versions are present in the description at the top of the readme.
+
+- Arch Linux - supported by Maki
+
 ## Getting started
 Web app is available at https://client.pony.house/ and gets updated on each new release.
 
