@@ -1,3 +1,4 @@
 - File downloader button fixed.
 - Notification perms pop-up added.
 - Message emoji in code tags are fixed now.
+- File size added into file download info.

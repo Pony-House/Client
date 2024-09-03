@@ -1,4 +1,3 @@
-Os arquivos enviados precisam mostrar o tamanho.
 Colocar barra de progresso de download do arquivo.
 
 Ajeitar ícone de imagem no upload.
