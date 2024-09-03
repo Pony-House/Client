@@ -22,7 +22,12 @@ export default function imageViewer(data) {
 
         // Insert Mime
         const mime = blobUrlManager.getMime(data.imgQuery.attr('src'));
-        if (Array.isArray(mime) && mime.length > 1 && typeof mime[1] === 'string') {
+        if (
+          Array.isArray(mime) &&
+          mime.length > 1 &&
+          typeof mime[1] === 'string' &&
+          !filename.endsWith(mime[1])
+        ) {
           filename += `.${mime[1]}`;
         }
 
