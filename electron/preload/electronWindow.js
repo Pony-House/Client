@@ -66,6 +66,23 @@ class ElectronWindow extends EventEmitter {
 const electronWindow = new ElectronWindow();
 ipcRenderer.on('resize', (event, data) => electronWindow.emit('resize', data));
 
+ipcRenderer.on('set-proxy', (event, data) => {
+  electronWindow.emit('setProxy', data);
+});
+
+ipcRenderer.on('set-proxy-error', (event, data) => {
+  try {
+    const err = new Error(data.message);
+    err.code = data.code;
+    err.message = data.message;
+    err.cause = data.cause;
+    err.stack = data.stack;
+    electronWindow.emit('setProxyError', err);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 contextBridge.exposeInMainWorld('changeTrayIcon', (img) => {
   if (
     img === 'cinny.ico' ||
@@ -128,6 +145,8 @@ contextBridge.exposeInMainWorld('electronWindow', {
 
   requestCache: () => ipcRenderer.send('electron-cache-values', true),
   getCache: () => electronWindow.getCache(),
+
+  setProxy: (config) => ipcRenderer.send('set-proxy', config),
 
   forceFocus: () => ipcRenderer.send('tiny-force-focus-window', true),
   focus: () => ipcRenderer.send('tiny-focus-window', true),

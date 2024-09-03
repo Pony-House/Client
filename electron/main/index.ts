@@ -194,6 +194,26 @@ async function createWindow() {
       }
     });
 
+    ipcMain.on('set-proxy', (event: any, config: Electron.ProxyConfig) => {
+      if (electronCache.win && electronCache.win.webContents) {
+        electronCache.win.webContents.session
+          .setProxy(config)
+          .then((result) => {
+            if (electronCache.win && electronCache.win.webContents)
+              electronCache.win.webContents.send('set-proxy', result);
+          })
+          .catch((err) => {
+            if (electronCache.win && electronCache.win.webContents)
+              electronCache.win.webContents.send('set-proxy-error', {
+                code: err.code,
+                message: err.message,
+                cause: err.cause,
+                stack: err.stack,
+              });
+          });
+      }
+    });
+
     ipcMain.on('electron-cache-values', () => {
       if (electronCache.win && electronCache.win.webContents)
         electronCache.win.webContents.send('electron-cache-values', {
