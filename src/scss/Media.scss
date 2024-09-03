@@ -9,7 +9,10 @@
   .file-name {
     @extend .cp-txt__ellipsis;
     flex: 1;
-    color: var(--tc-surface-low);
+  }
+
+  .file-icon {
+    font-size: x-large;
   }
 
   a {

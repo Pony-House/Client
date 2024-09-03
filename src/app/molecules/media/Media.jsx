@@ -6,6 +6,9 @@ import Img from '@src/app/atoms/image/Image';
 import initMatrix, { fetchFn } from '@src/client/initMatrix';
 import blobUrlManager from '@src/util/libs/blobUrlManager';
 
+import { formatBytes } from '@src/util/tools';
+import { getFileIcon } from '@src/util/icons/files';
+
 import { BlurhashCanvas } from 'react-blurhash';
 import imageViewer from '../../../util/imageViewer';
 import Tooltip from '../../atoms/tooltip/Tooltip';
@@ -65,9 +68,21 @@ function getNativeHeight(width, height, maxWidth = 296) {
   return '';
 }
 
-function FileHeader({ name, link = null, external = false, file = null, type, roomId, threadId }) {
+function FileHeader({
+  name,
+  link = null,
+  external = false,
+  file = null,
+  type,
+  roomId,
+  threadId,
+  content = {},
+}) {
   const [url, setUrl] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const bytesText = formatBytes(
+    content.info && typeof content.info.size === 'number' ? content.info?.size : 0,
+  );
 
   async function getFile() {
     const myUrl = await getUrl('file', 'unknown', link, type, file, roomId, threadId);
@@ -89,9 +104,11 @@ function FileHeader({ name, link = null, external = false, file = null, type, ro
 
   return (
     <div className="file-header">
-      <Text className="file-name" variant="b3">
-        {name}
-      </Text>
+      <i className={`${getFileIcon(type, name)} me-2 h-100 file-icon`} />
+      <div className="file-name small">
+        <span className="title">{name}</span> <br />
+        <span className="file-size very-small text-gray">{bytesText}</span>
+      </div>
       {link !== null && (
         <>
           {!__ENV_APP__.ELECTRON_MODE && external && (
@@ -123,6 +140,7 @@ FileHeader.propTypes = {
   external: PropTypes.bool,
   file: PropTypes.shape({}),
   type: PropTypes.string.isRequired,
+  content: PropTypes.object,
 };
 
 function File({ link, file = null, roomId, threadId, content = {} }) {
@@ -131,6 +149,7 @@ function File({ link, file = null, roomId, threadId, content = {} }) {
   return (
     <div className="file-container">
       <FileHeader
+        content={content}
         roomId={roomId}
         threadId={threadId}
         name={name}
@@ -348,6 +367,7 @@ function Audio({ content = {}, link, file = null, roomId, threadId }) {
   return (
     <div className="file-container">
       <FileHeader
+        content={content}
         threadId={threadId}
         roomId={roomId}
         name={name}
@@ -438,6 +458,7 @@ function Video({
   return (
     <div className={`file-container${url !== null ? ' file-open' : ''}`}>
       <FileHeader
+        content={content}
         threadId={threadId}
         roomId={roomId}
         name={name}
