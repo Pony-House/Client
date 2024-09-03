@@ -1,5 +1,5 @@
 import React from 'react';
-import HighlightCode from '@src/app/organisms/view-source/highlight';
+import HighlightCode from '@src/app/organisms/view-source/HighlightCode';
 import tinyFixScrollChat from '@src/app/molecules/media/mediaFix';
 
 // Image fix

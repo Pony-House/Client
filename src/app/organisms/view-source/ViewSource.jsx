@@ -7,7 +7,7 @@ import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
 
 import PopupWindow from '../../molecules/popup-window/PopupWindow';
-import HighlightCode from './highlight';
+import HighlightCode from './HighlightCode';
 
 function ViewSourceBlock({ title, json, className = '' }) {
   return (
