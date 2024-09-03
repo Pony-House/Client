@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import $ from 'jquery';
 
 import hljs from 'highlight.js';
+import { resizeWindowChecker } from '@src/util/tools';
 
 // HL JS fixer
 function hljsFixer(el, where, callback = function () {}) {
@@ -52,6 +53,7 @@ const HighlightCode = React.forwardRef(
           const el = $(codeRef.current);
           hljsFixer(el, mode);
           setEnabled(true);
+          setTimeout(() => resizeWindowChecker(), 5);
         } else if (onLoad) onLoad(codeRef.current);
       }
     });
