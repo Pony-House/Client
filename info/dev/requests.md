@@ -1,3 +1,5 @@
+Quando o upload de arquivo é enviado, ele abre sem nada, mas funciona quando faz o refresh.
+
 Colocar barra de progresso de download do arquivo.
 
 Ajeitar ícone de imagem no upload.
