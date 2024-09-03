@@ -31,7 +31,7 @@ const PRE = {
       return (
         <HighlightCode
           code={code}
-          className="hljs-fix chatbox-size-fix"
+          className={`${children[0].attribs && typeof children[0].attribs.class === 'string' ? `${children[0].attribs.class} ` : ''}hljs-fix chatbox-size-fix`}
           onLoad={() => tinyFixScrollChat()}
         />
       );
