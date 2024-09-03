@@ -5,28 +5,17 @@ import $ from 'jquery';
 import hljs from 'highlight.js';
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
-import { hljsFixer } from '../../../util/tools';
 
 import PopupWindow from '../../molecules/popup-window/PopupWindow';
+import HighlightCode from './highlight';
 
 function ViewSourceBlock({ title, json, className = '' }) {
-  useEffect(() => {
-    $('.insert-hljs').each((index, element) => {
-      hljs.highlightElement(element);
-
-      const el = $(element);
-
-      el.removeClass('insert-hljs');
-      hljsFixer(el, 'ViewSource');
-    });
-  }, []);
-
   return (
     <div className={`card ${className}`}>
       <ul className="list-group list-group-flush">
         <li className="list-group-item very-small text-gray noselect">{title}</li>
         <pre>
-          <code className="insert-hljs language-json bg-bg3">{JSON.stringify(json, null, 2)}</code>
+          <HighlightCode code={json} className="bg-bg3" mode="ViewSource" />
         </pre>
       </ul>
     </div>

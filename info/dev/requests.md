@@ -23,7 +23,6 @@ those would be more important than the older embeds
 
 =========> Dots invadindo o contador no DM quando a room é encryptada.
 
-Remover tudo do messageDataEffects
 Padronizar o profile-image-container
 
 Botão de copiar imagem.

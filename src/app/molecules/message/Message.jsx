@@ -29,7 +29,7 @@ import {
 import tinyClipboard from '@src/util/libs/Clipboard';
 
 import Text from '../../atoms/text/Text';
-import { btModal, hljsFixer, resizeWindowChecker, toast } from '../../../util/tools';
+import { btModal, resizeWindowChecker, toast } from '../../../util/tools';
 import { twemojify, twemojifyReact } from '../../../util/twemojify';
 import initMatrix from '../../../client/initMatrix';
 
@@ -426,31 +426,7 @@ const createMessageData = (
   return msgData;
 };
 
-const messageDataEffects = (messageBody) => {
-  messageBody.find('pre code').each((index, value) => {
-    const el = $(value);
-    resizeWindowChecker();
-
-    if (!el.hasClass('hljs')) {
-      hljs.highlightElement(value);
-      el.addClass('chatbox-size-fix');
-      tinyFixScrollChat();
-    }
-
-    if (!el.hasClass('hljs-fix')) {
-      el.addClass('hljs-fix');
-      hljsFixer(el, 'MessageBody', () => tinyFixScrollChat());
-      tinyFixScrollChat();
-    }
-
-    if (!el.hasClass('hljs')) {
-      el.addClass('hljs');
-      tinyFixScrollChat();
-    }
-  });
-};
-
-export { createMessageData, isEmojiOnly, messageDataEffects };
+export { createMessageData, isEmojiOnly };
 
 // Message Body
 const MessageBody = React.memo(
@@ -471,10 +447,6 @@ const MessageBody = React.memo(
     messageStatus,
   }) => {
     const messageBody = useRef(null);
-
-    useEffect(() => {
-      messageDataEffects($(messageBody.current));
-    });
 
     // if body is not string it is a React element.
     if (typeof body !== 'string') return <div className="message__body">{body}</div>;

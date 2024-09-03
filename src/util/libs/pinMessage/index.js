@@ -14,7 +14,7 @@ import { getRoomInfo } from '../../../app/organisms/room/Room';
 
 import { openProfileViewer, selectRoom } from '../../../client/action/navigation';
 import { colorMXID } from '../../colorMXID';
-import { createMessageData, messageDataEffects } from '../../../app/molecules/message/Message';
+import { createMessageData } from '../../../app/molecules/message/Message';
 import { jqueryTime } from '../../../app/atoms/time/Time';
 
 import { getEventById } from './cache';
@@ -236,8 +236,6 @@ export function openPinMessageModal(room) {
               } else {
                 msgData = $('<span>', { class: 'custom-html' }).append(msgData);
               }
-
-              messageDataEffects(msgData);
 
               const td = $('<td>', {
                 class:

@@ -97,31 +97,6 @@ export function checkVisibleWindow() {
   return $('body').hasClass('windowVisible');
 }
 
-// HL JS fixer
-export function hljsFixer(el, where, callback = function () {}) {
-  if (where === 'MessageBody') {
-    el.html(
-      `<table class="table table-borderless align-middle m-0"><tbody><tr><td class="code-line noselect">1</td><td class="code-text">${el.html()}</tbody></table>`,
-    );
-    el.addClass('fixhl');
-    let countBr = 1;
-
-    el.html(
-      el.html().replace(/(?:\r\n|\r|\n)/g, () => {
-        countBr++;
-        return `</td></tr><tr><td class="code-line noselect">${countBr}</td><td class="code-text">`;
-      }),
-    ).on('dblclick', () => {
-      if (!el.hasClass('hljs-fullview')) {
-        el.addClass('hljs-fullview');
-      } else {
-        el.removeClass('hljs-fullview');
-      }
-      callback();
-    });
-  }
-}
-
 export function toast(msg, title) {
   return new Promise((resolve /* reject */) => {
     /* if (isMobile(true)) {
