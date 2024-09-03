@@ -11,10 +11,21 @@ const PRE = {
       Array.isArray(children[0].children) &&
       children[0].children.length > 0
     ) {
-      console.log(children[0].children);
       let code = '';
       for (const item in children[0].children) {
-        code += children[0].children[item].data;
+        if (
+          children[0].children[item].type === 'text' &&
+          typeof children[0].children[item].data === 'string'
+        ) {
+          code += children[0].children[item].data;
+        } else if (
+          children[0].children[item].type === 'tag' &&
+          children[0].children[item].name === 'img' &&
+          children[0].children[item].attribs &&
+          typeof children[0].children[item].attribs.alt === 'string'
+        ) {
+          code += children[0].children[item].attribs.alt;
+        }
       }
 
       return (
