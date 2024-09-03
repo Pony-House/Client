@@ -45,14 +45,13 @@ function HookshotFeeds({ feedData, roomId, threadId }) {
     <div className="card hookshot-feeds">
       {embed && typeof embed['og:image'] === 'string' && embed['og:image'].length > 0 ? (
         <Media.Image
+          content={{ info: { mimetype: String(embed['og:image:type']) }, body: 'banner' }}
           roomId={roomId}
           threadId={threadId}
-          name="banner"
           className="card-img-top"
           width={Number(embed['og:image:width'])}
           height={Number(embed['og:image:height'])}
           link={mxcUrl.toHttp(embed['og:image'], 2000, 2000)}
-          type={String(embed['og:image:type'])}
           maxWidth={548}
           ignoreContainer
         />
