@@ -106,6 +106,7 @@ class InitMatrix extends EventEmitter {
       }
 
       preloadImages(avatarsToLoad);
+      await storageManager.startPonyHouseDb();
 
       const indexedDBStore = new sdk.IndexedDBStore({
         indexedDB: storageManager.getIndexedDB(),

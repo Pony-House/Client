@@ -69,6 +69,7 @@
     "generate-api-key": "1.0.2",
     "highlight.js": "11.10.0",
     "html-react-parser": "5.1.15",
+    "idb": "8.0.0",
     "ipaddr.js": "2.2.0",
     "jquery": "3.7.1",
     "jszip": "3.10.1",
