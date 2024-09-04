@@ -1,5 +1,6 @@
 import EventEmitter from 'events';
 import WebSocket from 'ws';
+import clone from 'clone';
 
 import { objType } from 'for-promise/utils/lib.mjs';
 import tinyAPI from '@src/util/mods';
@@ -14,6 +15,7 @@ class SinkingApi extends EventEmitter {
     this._TAG = '[Sinking Yachts]';
     this._ws = null;
     this._closing = false;
+    this._cache = [];
   }
 
   stopSocket() {
@@ -71,7 +73,12 @@ class SinkingApi extends EventEmitter {
               for (const item in message.domains) {
                 if (typeof message.domains[item] === 'string') {
                   console.log(`${tinyThis._TAG} Domain added: ${message.domains[item]}`);
-                  tinyThis.emit('add', message.domains[item]);
+                  const index = tinyThis._cache.indexOf(message.domains[item]);
+
+                  if (index < 0) {
+                    tinyThis._cache.push(message.domains[item]);
+                    tinyThis.emit('add', message.domains[item]);
+                  }
                 }
               }
             }
@@ -81,7 +88,12 @@ class SinkingApi extends EventEmitter {
               for (const item in message.domains) {
                 if (typeof message.domains[item] === 'string') {
                   console.log(`${tinyThis._TAG} Domain deleted: ${message.domains[item]}`);
-                  tinyThis.emit('delete', message.domains[item]);
+                  const index = tinyThis._cache.indexOf(message.domains[item]);
+
+                  if (index > -1) {
+                    tinyThis._cache.splice(index, 1);
+                    tinyThis.emit('delete', message.domains[item]);
+                  }
                 }
               }
             }
@@ -139,6 +151,7 @@ class SinkingApi extends EventEmitter {
   }
 
   all() {
+    const tinyThis = this;
     return new Promise((resolve, reject) =>
       fetchFn(`${this._API_HTTP}/v2/all`, {
         method: 'GET',
@@ -148,15 +161,36 @@ class SinkingApi extends EventEmitter {
         .then((data) => {
           if (Array.isArray(data)) {
             let allowed = true;
+            const oldCache = clone(tinyThis._cache);
+
             for (const item in data) {
-              if (typeof data[item] !== 'string') {
+              if (typeof data[item] === 'string') {
+                const index = tinyThis._cache.indexOf(data[item]);
+                if (index < 0) {
+                  tinyThis._cache.push(data[item]);
+                  tinyThis.emit('add', data[item]);
+                }
+              } else {
                 allowed = false;
                 break;
               }
             }
 
-            if (allowed) resolve(data);
-            else resolve([]);
+            if (allowed) {
+              for (const item in oldCache) {
+                const indexOld = data.indexOf(oldCache[item]);
+                if (indexOld < 0) {
+                  const index = tinyThis._cache.indexOf(oldCache[item]);
+
+                  if (index > -1) {
+                    tinyThis._cache.splice(index, 1);
+                    tinyThis.emit('delete', message.domains[item]);
+                  }
+                }
+              }
+
+              resolve(data);
+            } else resolve([]);
           } else resolve([]);
         })
         .catch(reject),
