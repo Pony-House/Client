@@ -7,6 +7,7 @@ class StorageManager extends EventEmitter {
   constructor() {
     super();
     this.isPersisted = null;
+    this._dbVersion = 1;
 
     // Get Content
     this.content = this.getJson('ponyHouse-storage-manager', 'obj');
@@ -20,10 +21,12 @@ class StorageManager extends EventEmitter {
   }
 
   async startPonyHouseDb() {
-    /* this.db = await openDB('pony-house-database', 1, {
-      upgrade(db) {
+    /* this.db = await openDB('pony-house-database', this._dbVersion, {
+      upgrade(db, oldVersion) {
         switch (oldVersion) {
         case 0:
+          console.log('[indexedDb] Version detected - 0');
+
           // Create a store of objects
           const events = db.createObjectStore('timeline', {
             // The 'id' property of the object will be the key.
@@ -41,9 +44,6 @@ class StorageManager extends EventEmitter {
 
           events.createIndex('content', 'content', { unique: false });
           events.createIndex('unsigned', 'unsigned', { unique: false });
-
-          console.log('[indexedDb] Version detected - 0');
-
         case 1:
           console.log('[indexedDb] Version detected - 1');
         }
