@@ -22,23 +22,31 @@ class StorageManager extends EventEmitter {
   async startPonyHouseDb() {
     /* this.db = await openDB('pony-house-database', 1, {
       upgrade(db) {
-        // Create a store of objects
-        const events = db.createObjectStore('timeline', {
-          // The 'id' property of the object will be the key.
-          keyPath: 'id',
-          // If it isn't explicitly set, create a value by auto incrementing.
-          autoIncrement: false,
-        });
-        // Create an index on the 'date' property of the objects.
-        events.createIndex('origin_server_ts', 'origin_server_ts', { unique: true });
-        events.createIndex('type', 'type', { unique: false });
+        switch (oldVersion) {
+        case 0:
+          // Create a store of objects
+          const events = db.createObjectStore('timeline', {
+            // The 'id' property of the object will be the key.
+            keyPath: 'id',
+            // If it isn't explicitly set, create a value by auto incrementing.
+            autoIncrement: false,
+          });
+          // Create an index on the 'date' property of the objects.
+          events.createIndex('origin_server_ts', 'origin_server_ts', { unique: true });
+          events.createIndex('type', 'type', { unique: false });
 
-        events.createIndex('sender', 'sender', { unique: false });
-        events.createIndex('event_id', 'event_id', { unique: true });
-        events.createIndex('room_id', 'room_id', { unique: false });
+          events.createIndex('sender', 'sender', { unique: false });
+          events.createIndex('event_id', 'event_id', { unique: true });
+          events.createIndex('room_id', 'room_id', { unique: false });
 
-        events.createIndex('content', 'content', { unique: false });
-        events.createIndex('unsigned', 'unsigned', { unique: false });
+          events.createIndex('content', 'content', { unique: false });
+          events.createIndex('unsigned', 'unsigned', { unique: false });
+
+          console.log('[indexedDb] Version detected - 0');
+
+        case 1:
+          console.log('[indexedDb] Version detected - 1');
+        }
       }
     }); */
   }
