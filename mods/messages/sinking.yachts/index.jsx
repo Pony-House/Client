@@ -24,6 +24,33 @@ class SinkingApi {
     );
   }
 
+  getChanges(dt) {
+    return new Promise((resolve, reject) =>
+      fetchFn(`${this._API_HTTP}/v2/recent/${String(dt)}`, {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+      })
+        .then((res) => res.json())
+        .then(resolve)
+        .catch(reject),
+    );
+  }
+
+  dbSize() {
+    return new Promise((resolve, reject) =>
+      fetchFn(`${this._API_HTTP}/v2/dbsize`, {
+        method: 'GET',
+        headers: { Accept: 'application/json' },
+      })
+        .then((res) => res.json())
+        .then((amount) => {
+          if (typeof amount === 'number') resolve(amount);
+          else resolve(null);
+        })
+        .catch(reject),
+    );
+  }
+
   all() {
     return new Promise((resolve, reject) =>
       fetchFn(`${this._API_HTTP}/v2/all`, {
