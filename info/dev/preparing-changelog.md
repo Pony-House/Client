@@ -1,1 +1,2 @@
 - pwa installer --> register fixed.
+- service-worker.js --> tiny fix.

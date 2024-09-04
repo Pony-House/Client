@@ -136,7 +136,18 @@ self.addEventListener('fetch', function (event) {
     request.method !== 'GET' ||
     request.url.startsWith('blob:') ||
     request.url.startsWith('data:') ||
-    (!request.url.startsWith('./') && !request.url.startsWith(origin))
+    typeof origin !== 'string' ||
+    origin.length < 1 ||
+    (!request.url.startsWith(`${origin}/img/`) &&
+      !request.url.startsWith(`${origin}/js/`) &&
+      !request.url.startsWith(`${origin}/sound/`) &&
+      !request.url.startsWith(`${origin}/twemoji/`) &&
+      !request.url.startsWith(`${origin}/assets/`) &&
+      !request.url !== `${origin}/olm.wasm` &&
+      !request.url !== `${origin}/manifest.json` &&
+      !request.url !== `${origin}/404.html` &&
+      !request.url !== `${origin}/ipfs-404.html` &&
+      !request.url !== `${origin}/index.html`)
   ) {
     // Detect matrix file url
     const urlPath = request.url.split('/');
