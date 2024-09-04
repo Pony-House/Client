@@ -1,12 +1,82 @@
+import EventEmitter from 'events';
+import WebSocket from 'ws';
+
 import { objType } from 'for-promise/utils/lib.mjs';
 import tinyAPI from '@src/util/mods';
 import { fetchFn } from '@src/client/initMatrix';
 
-class SinkingApi {
+class SinkingApi extends EventEmitter {
   constructor() {
+    super();
+    this._API_SOCKET = 'wss://phish.sinking.yachts';
     this._API_HTTP = 'https://phish.sinking.yachts';
     this._WEBSITE = 'https://sinking.yachts/';
     this._TAG = '[Sinking Yachts]';
+    this.ws = null;
+  }
+
+  startSocket(xIdentity = 'PonyHouse-MatrixClient', isRestart = false) {
+    if (!this.ws || isRestart) {
+      const tinyThis = this;
+      this.ws = new WebSocket(`${this._API_SOCKET}/feed`, { headers: { 'X-Identity': xIdentity } });
+
+      // Open
+      this.ws.on('open', () => {
+        console.log(`${tinyThis._TAG} Socket connected.`);
+      });
+
+      // Close
+      this.ws.on('close', () => {
+        console.log(`${tinyThis._TAG} Socket disconnected.`);
+        tinyThis.startSocket(xIdentity, true);
+      });
+
+      // Message
+      this.ws.on('message', (data, isBinary) => {
+        // Try
+        try {
+          // Message
+          let message = isBinary ? data : data.toString();
+
+          // Filter
+          if (typeof message === 'string') {
+            message = JSON.parse(message);
+          }
+
+          console.log(tinyThis._TAG, message);
+
+          // Check
+          if (
+            objType(message, 'object') &&
+            Array.isArray(message.domains) &&
+            message.domains.length > 0
+          ) {
+            // Add
+            if (message.type === 'add') {
+              for (const item in message.domains) {
+                if (typeof message.domains[item] === 'string') {
+                  tinyThis.emit('add', message.domains[item]);
+                }
+              }
+            }
+
+            // Remove
+            else if (message.type === 'delete') {
+              for (const item in message.domains) {
+                if (typeof message.domains[item] === 'string') {
+                  tinyThis.emit('delete', message.domains[item]);
+                }
+              }
+            }
+          }
+        } catch (err) {
+          // Error
+          console.error(err);
+        }
+      });
+    } else {
+      throw new Error(`${this._TAG} The socket is started!`);
+    }
   }
 
   check(host) {
