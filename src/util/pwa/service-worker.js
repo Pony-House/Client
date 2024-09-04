@@ -146,8 +146,7 @@ self.addEventListener('fetch', function (event) {
       !request.url !== `${origin}/olm.wasm` &&
       !request.url !== `${origin}/manifest.json` &&
       !request.url !== `${origin}/404.html` &&
-      !request.url !== `${origin}/ipfs-404.html` &&
-      !request.url !== `${origin}/index.html`)
+      !request.url !== `${origin}/ipfs-404.html`)
   ) {
     // Detect matrix file url
     const urlPath = request.url.split('/');
