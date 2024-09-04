@@ -37,7 +37,6 @@ tinyInfo.fullType = {
   'application/atom+xml': 'bi bi-file-earmark-code',
   'application/zip': 'bi bi-file-earmark-zip',
   'application/x-7z-compressed': 'bi bi-file-earmark-zip',
-  'application/vnd.apple.installer+xml': '',
   'application/ogg': 'bi bi-file-earmark-music',
 };
 
