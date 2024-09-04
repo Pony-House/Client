@@ -13,12 +13,27 @@ class SinkingApi extends EventEmitter {
     this._WEBSITE = 'https://sinking.yachts/';
     this._TAG = '[Sinking Yachts]';
     this._ws = null;
+    this._closing = false;
+  }
+
+  stopSocket() {
+    if (this._ws) {
+      const tinyThis = this;
+      this._closing = true;
+      this._ws.on('close', () => {
+        tinyThis._closing = false;
+        tinyThis._ws = null;
+      });
+      this._ws.close();
+    }
   }
 
   startSocket(xIdentity = 'PonyHouse-MatrixClient', isRestart = false) {
-    if (!this._ws || isRestart) {
+    if ((!this._ws || isRestart) && !this._closing) {
       const tinyThis = this;
-      this._ws = new WebSocket(`${this._API_SOCKET}/feed`, { headers: { 'X-Identity': xIdentity } });
+      this._ws = new WebSocket(`${this._API_SOCKET}/feed`, {
+        headers: { 'X-Identity': xIdentity },
+      });
 
       // Open
       this._ws.on('open', () => {
@@ -74,7 +89,7 @@ class SinkingApi extends EventEmitter {
           console.error(err);
         }
       });
-    } else {
+    } else if (!this._closing || !isRestart) {
       throw new Error(`${this._TAG} The socket is started!`);
     }
   }
