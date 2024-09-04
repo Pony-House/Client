@@ -70,6 +70,7 @@ class SinkingApi extends EventEmitter {
             if (message.type === 'add') {
               for (const item in message.domains) {
                 if (typeof message.domains[item] === 'string') {
+                  console.log(`${tinyThis._TAG} Domain added: ${message.domains[item]}`);
                   tinyThis.emit('add', message.domains[item]);
                 }
               }
@@ -79,6 +80,7 @@ class SinkingApi extends EventEmitter {
             else if (message.type === 'delete') {
               for (const item in message.domains) {
                 if (typeof message.domains[item] === 'string') {
+                  console.log(`${tinyThis._TAG} Domain deleted: ${message.domains[item]}`);
                   tinyThis.emit('delete', message.domains[item]);
                 }
               }
