@@ -305,6 +305,29 @@ function Client({ isDevToolsOpen = false }) {
       }
     });
 
+    /* 
+
+      electronWindow.setProxy({});
+
+      direct - In direct mode all connections are created directly, without any proxy involved.
+      fixed_servers - In fixed_servers mode the proxy configuration is specified in proxyRules. This is the default mode if proxyRules is specified.
+      system - In system mode the proxy configuration is taken from the operating system. Note that the system mode is different from setting no proxy configuration. In the latter case, Electron falls back to the system settings only if no command-line options influence the proxy configuration.
+
+      {
+        mode: 'system',
+      }
+
+      {
+        mode: 'direct',
+      }
+
+      {
+        proxyRules: 'socks5://114.215.193.156:1080',
+        mode: 'fixed_servers',
+      }
+        
+    */
+
     initMatrix
       .init()
       .then((tinyResult) => {
