@@ -12,27 +12,27 @@ class SinkingApi extends EventEmitter {
     this._API_HTTP = 'https://phish.sinking.yachts';
     this._WEBSITE = 'https://sinking.yachts/';
     this._TAG = '[Sinking Yachts]';
-    this.ws = null;
+    this._ws = null;
   }
 
   startSocket(xIdentity = 'PonyHouse-MatrixClient', isRestart = false) {
-    if (!this.ws || isRestart) {
+    if (!this._ws || isRestart) {
       const tinyThis = this;
-      this.ws = new WebSocket(`${this._API_SOCKET}/feed`, { headers: { 'X-Identity': xIdentity } });
+      this._ws = new WebSocket(`${this._API_SOCKET}/feed`, { headers: { 'X-Identity': xIdentity } });
 
       // Open
-      this.ws.on('open', () => {
+      this._ws.on('open', () => {
         console.log(`${tinyThis._TAG} Socket connected.`);
       });
 
       // Close
-      this.ws.on('close', () => {
+      this._ws.on('close', () => {
         console.log(`${tinyThis._TAG} Socket disconnected.`);
         tinyThis.startSocket(xIdentity, true);
       });
 
       // Message
-      this.ws.on('message', (data, isBinary) => {
+      this._ws.on('message', (data, isBinary) => {
         // Try
         try {
           // Message
