@@ -158,7 +158,7 @@ export function installPWA() {
               console.log('[PWA] Service Worker Failed to Unregister.');
               console.error(err);
             });
-        } else registerNewService();
+        } else if (__ENV_APP__.MXC_SERVICE_WORKER) registerNewService();
       })
       // Error
       .catch((err) => {
