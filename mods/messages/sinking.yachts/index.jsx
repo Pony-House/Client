@@ -268,7 +268,7 @@ export function startSinkingYachts() {
   // Invalid device
   else {
     console.log(
-      `${sinkingApi._TAG} This mod is only compativel with the desktop version. The mod was disabled automatically.`,
+      `${sinkingApi._TAG} This mod is only compatible with the desktop version. The mod was disabled automatically.`,
     );
   }
 }
