@@ -68,6 +68,14 @@ export function isUsingPWA() {
   return usingPWA;
 }
 
+export function clearFetchPwaCache() {
+  if ('serviceWorker' in navigator || 'ServiceWorker' in navigator) {
+    navigator.serviceWorker.controller.postMessage({
+      type: 'CLEAR_FETCH_CACHE',
+    });
+  }
+}
+
 export function installPWA() {
   if ('serviceWorker' in navigator || 'ServiceWorker' in navigator) {
     // Get Items

@@ -162,3 +162,17 @@ self.addEventListener('fetch', function (event) {
 
   event.respondWith(proxyRequest(caches, request));
 });
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'CLEAR_FETCH_CACHE') {
+    event.waitUntil(
+      caches.keys().then(function (cacheNames) {
+        return Promise.all(
+          cacheNames.map(function (cacheName) {
+            return caches.delete(cacheName);
+          }),
+        );
+      }),
+    );
+  }
+});

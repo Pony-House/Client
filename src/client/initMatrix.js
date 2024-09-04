@@ -2,6 +2,8 @@ import EventEmitter from 'events';
 import * as sdk from 'matrix-js-sdk';
 
 import Olm from '@matrix-org/olm';
+
+import { clearFetchPwaCache } from '@src/util/pwa/installer';
 import storageManager from '@src/util/libs/Localstorage';
 import MxcUrl from '@src/util/libs/MxcUrl';
 
@@ -256,6 +258,7 @@ class InitMatrix extends EventEmitter {
   }
 
   clearCacheAndReload() {
+    clearFetchPwaCache();
     this.matrixClient.stopClient();
     this.matrixClient.store.deleteAllData().then(() => {
       if (global.tinyJsonDB && typeof global.tinyJsonDB.clearCacheData === 'function') {
