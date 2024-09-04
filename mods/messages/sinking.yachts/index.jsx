@@ -31,81 +31,100 @@ class SinkingApi extends EventEmitter {
   }
 
   startSocket(xIdentity = 'PonyHouse-MatrixClient', isRestart = false) {
-    if ((!this._ws || isRestart) && !this._closing) {
-      const tinyThis = this;
-      this._ws = new WebSocket(`${this._API_SOCKET}/feed`, {
-        headers: { 'X-Identity': xIdentity },
-      });
+    const tinyThis = this;
+    return new Promise((resolve, reject) => {
+      if ((!tinyThis._ws || isRestart) && !tinyThis._closing) {
+        let firstTime = true;
+        tinyThis._ws = new WebSocket(`${tinyThis._API_SOCKET}/feed`, {
+          headers: { 'X-Identity': xIdentity },
+        });
 
-      // Open
-      this._ws.on('open', () => {
-        console.log(`${tinyThis._TAG} Socket connected.`);
-      });
-
-      // Close
-      this._ws.on('close', () => {
-        console.log(`${tinyThis._TAG} Socket disconnected.`);
-        tinyThis.startSocket(xIdentity, true);
-      });
-
-      // Message
-      this._ws.on('message', (data, isBinary) => {
-        // Try
-        try {
-          // Message
-          let message = isBinary ? data : data.toString();
-
-          // Filter
-          if (typeof message === 'string') {
-            message = JSON.parse(message);
+        // Open
+        tinyThis._ws.on('open', () => {
+          if (firstTime) {
+            firstTime = false;
+            resolve(true);
           }
+          console.log(`${tinyThis._TAG} Socket connected.`);
+        });
 
-          console.log(tinyThis._TAG, message);
+        // Close
+        tinyThis._ws.on('close', () => {
+          console.log(`${tinyThis._TAG} Socket disconnected.`);
+          tinyThis
+            .startSocket(xIdentity, true)
+            .then(() => {
+              if (firstTime) {
+                firstTime = false;
+                resolve(true);
+              }
+            })
+            .catch((err) => {
+              if (firstTime) {
+                firstTime = false;
+                reject(err);
+              }
+            });
+        });
 
-          // Check
-          if (
-            objType(message, 'object') &&
-            Array.isArray(message.domains) &&
-            message.domains.length > 0
-          ) {
-            // Add
-            if (message.type === 'add') {
-              for (const item in message.domains) {
-                if (typeof message.domains[item] === 'string') {
-                  console.log(`${tinyThis._TAG} Domain added: ${message.domains[item]}`);
-                  const index = tinyThis._cache.indexOf(message.domains[item]);
+        // Message
+        tinyThis._ws.on('message', (data, isBinary) => {
+          // Try
+          try {
+            // Message
+            let message = isBinary ? data : data.toString();
 
-                  if (index < 0) {
-                    tinyThis._cache.push(message.domains[item]);
-                    tinyThis.emit('add', message.domains[item]);
+            // Filter
+            if (typeof message === 'string') {
+              message = JSON.parse(message);
+            }
+
+            console.log(tinyThis._TAG, message);
+
+            // Check
+            if (
+              objType(message, 'object') &&
+              Array.isArray(message.domains) &&
+              message.domains.length > 0
+            ) {
+              // Add
+              if (message.type === 'add') {
+                for (const item in message.domains) {
+                  if (typeof message.domains[item] === 'string') {
+                    console.log(`${tinyThis._TAG} Domain added: ${message.domains[item]}`);
+                    const index = tinyThis._cache.indexOf(message.domains[item]);
+
+                    if (index < 0) {
+                      tinyThis._cache.push(message.domains[item]);
+                      tinyThis.emit('add', message.domains[item]);
+                    }
+                  }
+                }
+              }
+
+              // Remove
+              else if (message.type === 'delete') {
+                for (const item in message.domains) {
+                  if (typeof message.domains[item] === 'string') {
+                    console.log(`${tinyThis._TAG} Domain deleted: ${message.domains[item]}`);
+                    const index = tinyThis._cache.indexOf(message.domains[item]);
+
+                    if (index > -1) {
+                      tinyThis._cache.splice(index, 1);
+                      tinyThis.emit('delete', message.domains[item]);
+                    }
                   }
                 }
               }
             }
-
-            // Remove
-            else if (message.type === 'delete') {
-              for (const item in message.domains) {
-                if (typeof message.domains[item] === 'string') {
-                  console.log(`${tinyThis._TAG} Domain deleted: ${message.domains[item]}`);
-                  const index = tinyThis._cache.indexOf(message.domains[item]);
-
-                  if (index > -1) {
-                    tinyThis._cache.splice(index, 1);
-                    tinyThis.emit('delete', message.domains[item]);
-                  }
-                }
-              }
-            }
+          } catch (err) {
+            // Error
+            console.error(err);
           }
-        } catch (err) {
-          // Error
-          console.error(err);
-        }
-      });
-    } else if (!this._closing || !isRestart) {
-      throw new Error(`${this._TAG} The socket is started!`);
-    }
+        });
+      } else if (!tinyThis._closing || !isRestart)
+        reject(new Error(`${tinyThis._TAG} The socket is started!`));
+    });
   }
 
   check(host) {
@@ -148,6 +167,21 @@ class SinkingApi extends EventEmitter {
         })
         .catch(reject),
     );
+  }
+
+  existSocket() {
+    return this._ws ? true : false;
+  }
+
+  getDomainIndex(domain) {
+    if (this._ws) {
+      return this._cache.indexOf(domain);
+    } else throw new Error('Sinking local cache works with socket only.');
+  }
+
+  isListed(domain) {
+    const index = this.getDomainIndex(domain);
+    return index > -1 ? true : false;
   }
 
   all() {
