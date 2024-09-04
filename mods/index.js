@@ -1,7 +1,7 @@
 // import startTest from './test';
 
 // import helloWorld from './lib/hello-world';
-// import sinkingYachts from './messages/sinking.yachts';
+// import { startSinkingYachts } from './messages/sinking.yachts';
 import customMessages from './messages/customMessages';
 import unstoppableDomains from './web3/unstoppableDomains';
 
@@ -12,7 +12,7 @@ export function startCustomThemes() {
 }
 
 export default function startMods(firstTime) {
-  // sinkingYachts(firstTime);
+  // startSinkingYachts(firstTime);
   // helloWorld(firstTime);
   // startTest(firstTime);
 
