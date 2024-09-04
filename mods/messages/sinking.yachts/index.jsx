@@ -187,3 +187,7 @@ export function startSinkingYachts() {
     );
   }
 }
+
+if (__ENV_APP__.MODE === 'development') {
+  global.sinkingApi = sinkingApi;
+}
