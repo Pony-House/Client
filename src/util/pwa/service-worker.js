@@ -130,12 +130,13 @@ self.addEventListener('activate', function (event) {
 
 self.addEventListener('fetch', function (event) {
   const request = event.request;
+  const origin = self?.origin || self.location?.origin;
 
   if (
     request.method !== 'GET' ||
-    !request.url.startsWith('blob:') ||
-    !request.url.startsWith('data:') ||
-    !request.url.match(/\.(jpe?g|png|gif|svg|webp|bmp|avif|jfif|pjpeg|pjp|ico|cur|tif|tiff)$/)
+    request.url.startsWith('blob:') ||
+    request.url.startsWith('data:') ||
+    (!request.url.startsWith('./') && !request.url.startsWith(origin))
   ) {
     // Detect matrix file url
     const urlPath = request.url.split('/');
