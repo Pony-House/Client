@@ -153,8 +153,11 @@ self.addEventListener('fetch', function (event) {
     const skipUrlPath = 2;
     if (
       urlPath[skipUrlPath + 1] === '_matrix' &&
-      urlPath[skipUrlPath + 2] === 'media' &&
-      (urlPath[skipUrlPath + 4] === 'download' || urlPath[skipUrlPath + 4] === 'thumbnail')
+      ((urlPath[skipUrlPath + 2] === 'media' &&
+        (urlPath[skipUrlPath + 4] === 'download' || urlPath[skipUrlPath + 4] === 'thumbnail')) ||
+        (urlPath[skipUrlPath + 2] === 'client' &&
+          urlPath[skipUrlPath + 4] === 'media' &&
+          (urlPath[skipUrlPath + 5] === 'download' || urlPath[skipUrlPath + 5] === 'thumbnail')))
     ) {
       if (!request.url.endsWith('ph_mxc_type=image')) return;
     } else return;
