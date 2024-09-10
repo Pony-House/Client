@@ -30,3 +30,11 @@ self.addEventListener('fetch', function (event) {
     var request = event.request;
     console.log('[PWA] [service-worker] Detected request', request.url);
 });
+
+// Obtain an array of Window client objects
+/* self.clients.matchAll(options).then(function (clients) {
+    if (clients && clients.length) {
+      //Respond to last focused tab
+      clients[0].postMessage({type: 'MSG_ID'});
+    }
+  }); */
