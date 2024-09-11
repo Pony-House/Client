@@ -16,6 +16,7 @@ const IMG = {
 
     el.replaceWith(
       ImgJquery({
+        queueId: 'media',
         isEmoji: typeof dataMxEmoticon !== 'undefined' && dataMxEmoticon !== null,
         onLoad: () => tinyFixScrollChat(),
         onLoadingChange: () => tinyFixScrollChat(),
@@ -32,6 +33,7 @@ const IMG = {
       typeof attribs.src === 'string' &&
       (attribs.src.startsWith('mxc://') || attribs.src.startsWith('./')) ? (
         <Img
+          queueId="media"
           isEmoji={
             typeof attribs['data-mx-emoticon'] !== 'undefined' &&
             attribs['data-mx-emoticon'] !== null

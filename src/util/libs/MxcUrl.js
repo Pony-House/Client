@@ -240,20 +240,21 @@ class MxcUrl extends EventEmitter {
   ) {
     const tinyThis = this;
     return new Promise((resolve, reject) => {
-      if (!tinyThis._fetchWait[link]) {
-        tinyThis._fetchWait[link] = true;
+      const waitId = `${link}:${queueId}`;
+      if (!tinyThis._fetchWait[waitId]) {
+        tinyThis._fetchWait[waitId] = true;
         tinyThis
           .fetchBlob(link, fileType, type, decryptData, queueId, ignoreAuth)
           // Complete
           .then((result) => {
-            tinyThis.emit(`fetchBlob:${queueId}:then:${link}:${fileType}`, result);
-            delete tinyThis._fetchWait[link];
+            tinyThis.emit(`fetchBlob:then:${waitId}`, result);
+            delete tinyThis._fetchWait[waitId];
             resolve(result);
           })
           // Error
           .catch((err) => {
-            tinyThis.emit(`fetchBlob:${queueId}:catch:${link}:${fileType}`, err);
-            delete tinyThis._fetchWait[link];
+            tinyThis.emit(`fetchBlob:catch:${waitId}`, err);
+            delete tinyThis._fetchWait[waitId];
             reject(err);
           });
       }
@@ -264,16 +265,8 @@ class MxcUrl extends EventEmitter {
         const key = generateApiKey();
 
         const tinyComplete = (isResolve) => {
-          if (isResolve)
-            tinyThis.off(
-              `fetchBlob:${queueId}:catch:${link}:${fileType}`,
-              funcs[`${key}_TinyReject`],
-            );
-          else
-            tinyThis.off(
-              `fetchBlob:${queueId}:then:${link}:${fileType}`,
-              funcs[`${key}_TinyResolve`],
-            );
+          if (isResolve) tinyThis.off(`fetchBlob:catch:${waitId}`, funcs[`${key}_TinyReject`]);
+          else tinyThis.off(`fetchBlob:then:${waitId}`, funcs[`${key}_TinyResolve`]);
         };
 
         funcs[`${key}_TinyResolve`] = (result) => {
@@ -285,8 +278,8 @@ class MxcUrl extends EventEmitter {
           tinyComplete(false);
         };
 
-        tinyThis.once(`fetchBlob:${queueId}:then:${link}:${fileType}`, funcs[`${key}_TinyResolve`]);
-        tinyThis.once(`fetchBlob:${queueId}:catch:${link}:${fileType}`, funcs[`${key}_TinyReject`]);
+        tinyThis.once(`fetchBlob:then:${waitId}`, funcs[`${key}_TinyResolve`]);
+        tinyThis.once(`fetchBlob:catch:${waitId}`, funcs[`${key}_TinyReject`]);
       }
     });
   }
