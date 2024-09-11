@@ -32,6 +32,9 @@ function Login() {
   const [WEB3, setWEB3] = useState(envAPI.get('WEB3'));
   const [IPFS, setIPFS] = useState(envAPI.get('IPFS'));
   const [SAVE_ROOM_DB, setSAVEROOMDB] = useState(envAPI.get('SAVE_ROOM_DB'));
+  const [MXC_AUTHENTICATED_MEDIA, setMXCAUTHENTICATEDMEDIA] = useState(
+    envAPI.get('MXC_AUTHENTICATED_MEDIA'),
+  );
 
   const initialValues = {
     username: '',
@@ -84,6 +87,7 @@ function Login() {
     if (value === 'WEB3') setWEB3(newData);
     else if (value === 'IPFS') setIPFS(newData);
     else if (value === 'SAVE_ROOM_DB') setSAVEROOMDB(newData);
+    else if (value === 'MXC_AUTHENTICATED_MEDIA') setMXCAUTHENTICATEDMEDIA(newData);
   };
 
   return (
@@ -178,6 +182,22 @@ function Login() {
                     {errors.password}
                   </Text>
                 )}
+
+                {__ENV_APP__.MXC_AUTHENTICATED_MEDIA ? (
+                  <div className="form-check form-switch">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="ipfsCheck"
+                      checked={MXC_AUTHENTICATED_MEDIA}
+                      onClick={() => editENV('MXC_AUTHENTICATED_MEDIA')}
+                    />
+                    <label className="form-check-label" htmlFor="ipfsCheck">
+                      Enable Authenticated Media
+                    </label>
+                  </div>
+                ) : null}
 
                 {__ENV_APP__.WEB3 ? (
                   <div className="form-check form-switch">

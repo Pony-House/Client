@@ -36,6 +36,15 @@ class EnvAPI extends EventEmitter {
           const SAVE_ROOM_DB = await this.getDB('SAVE_ROOM_DB');
           if (typeof SAVE_ROOM_DB === 'boolean') this.content.SAVE_ROOM_DB = SAVE_ROOM_DB;
         }
+
+        if (
+          typeof __ENV_APP__.MXC_AUTHENTICATED_MEDIA === 'boolean' &&
+          __ENV_APP__.MXC_AUTHENTICATED_MEDIA
+        ) {
+          const MXC_AUTHENTICATED_MEDIA = await this.getDB('MXC_AUTHENTICATED_MEDIA');
+          if (typeof MXC_AUTHENTICATED_MEDIA === 'boolean')
+            this.content.MXC_AUTHENTICATED_MEDIA = MXC_AUTHENTICATED_MEDIA;
+        }
       }
     }
   }
@@ -65,6 +74,18 @@ class EnvAPI extends EventEmitter {
           typeof this.content.SAVE_ROOM_DB === 'boolean' ? this.content.SAVE_ROOM_DB : true;
       } else {
         this.content.SAVE_ROOM_DB = false;
+      }
+
+      if (
+        typeof __ENV_APP__.MXC_AUTHENTICATED_MEDIA === 'boolean' &&
+        __ENV_APP__.MXC_AUTHENTICATED_MEDIA
+      ) {
+        this.content.MXC_AUTHENTICATED_MEDIA =
+          typeof this.content.MXC_AUTHENTICATED_MEDIA === 'boolean'
+            ? this.content.MXC_AUTHENTICATED_MEDIA
+            : true;
+      } else {
+        this.content.MXC_AUTHENTICATED_MEDIA = false;
       }
     }
   }

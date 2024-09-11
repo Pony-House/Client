@@ -7,6 +7,7 @@ import { avatarDefaultColor } from '@src/app/atoms/avatar/Avatar';
 
 import { colorMXID } from '../colorMXID';
 import { getBlobSafeMimeType } from '../mimetypes';
+import envAPI from './env';
 
 // Mxc Url
 class MxcUrl extends EventEmitter {
@@ -15,7 +16,7 @@ class MxcUrl extends EventEmitter {
     super();
     this.mx = mxBase;
     this._fetchWait = {};
-    this._isAuth = __ENV_APP__.MXC_AUTHENTICATED_MEDIA;
+    this._isAuth = envAPI.get('MXC_AUTHENTICATED_MEDIA');
     this._queue = [];
     this._queueExec = [];
     this.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
