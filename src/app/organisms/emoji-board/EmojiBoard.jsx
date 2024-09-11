@@ -82,6 +82,7 @@ const EmojiGroup = React.memo(
             emojiItem = (
               // This is a custom emoji, and should be render as an mxc
               <Img
+                queueId="emoji"
                 isEmoji={boardType === 'emoji'}
                 isSticker={boardType === 'sticker'}
                 className={`emoji${emoji.isFav || isFav ? ' fav-emoji' : ''}`}

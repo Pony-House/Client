@@ -288,6 +288,7 @@ function ProfileSection() {
                     ) : null}
 
                     <Img
+                      queueId="emoji"
                       id="change-custom-status-img"
                       className="img-fluid"
                       src={customStatusIcon}

@@ -49,6 +49,7 @@ const UserCustomStatus = React.forwardRef(
         <div ref={ref} className={tinyClass}>
           {existIconPresence ? (
             <Img
+              queueId="emoji"
               animParentsCount={animParentsCount}
               className="emoji me-1"
               alt="icon"

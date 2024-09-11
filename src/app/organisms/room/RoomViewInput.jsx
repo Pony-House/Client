@@ -1123,7 +1123,9 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
             fileType !== 'image' ? ' room-attachment__icon' : ''
           }`}
         >
-          {fileType === 'image' && fileSrc && <Img alt={attachment.name} src={fileSrc} />}
+          {fileType === 'image' && fileSrc && (
+            <Img queueId="attach" alt={attachment.name} src={fileSrc} />
+          )}
           {fileType === 'video' && <RawIcon fa="fa-solid fa-film" />}
           {fileType === 'audio' && <RawIcon fa="fa-solid fa-volume-high" />}
           {fileType !== 'image' && fileType !== 'video' && fileType !== 'audio' && (

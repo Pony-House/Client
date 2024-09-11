@@ -37,6 +37,7 @@ export const avatarDefaultColor = (bgColor, type = 'avatar') => {
 const Avatar = React.forwardRef(
   (
     {
+      queueId = 'avatar',
       ignoreAuth = false,
       isObj = false,
       onClick = null,
@@ -99,6 +100,7 @@ const Avatar = React.forwardRef(
     const isImage = imageSrc !== null || isDefaultImage;
     const tinyImg = isImage ? (
       <Img
+        queueId={queueId}
         ignoreAuth={ignoreAuth}
         isObj={isObj}
         disableBase
@@ -138,6 +140,7 @@ const Avatar = React.forwardRef(
 );
 
 const imgPropTypes = {
+  queueId: PropTypes.string,
   ignoreAuth: PropTypes.bool,
   isObj: PropTypes.bool,
   neonColor: PropTypes.bool,
@@ -165,6 +168,7 @@ export default Avatar;
 
 // jQuery
 const AvatarJquery = ({
+  queueId = 'avatar',
   ignoreAuth = false,
   isObj = false,
   onClick = null,
@@ -185,6 +189,7 @@ const AvatarJquery = ({
   });
 
   const tinyImg = ImgJquery({
+    queueId,
     ignoreAuth,
     isObj,
     onClick,

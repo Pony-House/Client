@@ -80,6 +80,7 @@ export const getEventReactions = (eventReactions, ignoreMute = true, rLimit = nu
 export const ReactionImgReact = ({ reaction, shortcode, customEmojiUrl }) => {
   return customEmojiUrl ? (
     <Img
+      queueId="emoji"
       className="react-emoji"
       draggable="false"
       alt={shortcode ?? reaction}
@@ -93,6 +94,7 @@ export const ReactionImgReact = ({ reaction, shortcode, customEmojiUrl }) => {
 export const reactionImgjQuery = (reaction, shortcode, customEmojiUrl) => {
   return customEmojiUrl
     ? ImgJquery({
+        queueId: 'emoji',
         className: 'react-emoji',
         draggable: false,
         alt: shortcode ?? reaction,

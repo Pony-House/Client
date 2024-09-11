@@ -240,7 +240,7 @@ class MxcUrl extends EventEmitter {
   ) {
     const tinyThis = this;
     return new Promise((resolve, reject) => {
-      const waitId = `${link}:${queueId}`;
+      const waitId = `${link}`;
       if (!tinyThis._fetchWait[waitId]) {
         tinyThis._fetchWait[waitId] = true;
         tinyThis
