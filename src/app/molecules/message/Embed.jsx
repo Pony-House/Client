@@ -105,17 +105,23 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
   // Article
   const articlePublisher =
     typeof embed['article:publisher'] === 'string' && embed['article:publisher'].length > 0
-      ? embed['article:publisher']
+      ? embed['article:publisher'].trim()
       : null;
 
-  const articleSection =
+  let articleSection =
     embed['article:section'] === 'string' && embed['article:section'].length > 0
-      ? embed['article:section']
+      ? embed['article:section'].trim()
       : null;
+
+  if (articleSection) {
+    while (articleSection.endsWith('\n') || articleSection.endsWith('\r')) {
+      articleSection = articleSection.substring(0, articleSection.length - 1);
+    }
+  }
 
   const articleTag =
     typeof embed['article:tag'] === 'string' && embed['article:tag'].length > 0
-      ? embed['article:tag']
+      ? embed['article:tag'].trim()
       : null;
 
   // Description
@@ -125,7 +131,7 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
       : null;
 
   if (description) {
-    while (description.endsWith('\n')) {
+    while (description.endsWith('\n') || description.endsWith('\r')) {
       description = description.substring(0, description.length - 1);
     }
   }
@@ -133,7 +139,7 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
   // Site Name
   const siteName =
     typeof embed['og:site_name'] === 'string' && embed['og:site_name'].length > 0
-      ? embed['og:site_name']
+      ? embed['og:site_name'].trim()
       : null;
 
   // Embed Type
