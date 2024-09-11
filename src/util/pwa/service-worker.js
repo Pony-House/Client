@@ -92,7 +92,9 @@ function proxyRequest(caches, request) {
       // so we cannot get info about response status
       const resolve = (networkResponse) => {
         if (networkResponse.type !== 'opaque' && networkResponse.ok === false) {
-          throw new Error('Resource not available');
+          throw new Error(
+            `Resource not available\nType: ${networkResponse.type}\n${networkResponse.statusText}`,
+          );
         }
 
         if (!networkResponse.ok) {
