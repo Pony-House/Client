@@ -26,6 +26,7 @@ export default function imageViewer(data) {
           Array.isArray(mime) &&
           mime.length > 1 &&
           typeof mime[1] === 'string' &&
+          typeof filename === 'string' &&
           !filename.endsWith(mime[1])
         ) {
           filename += `.${mime[1]}`;

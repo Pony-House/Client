@@ -4,7 +4,7 @@ Colocar barra de progresso de download do arquivo.
 
 Ajeitar ícone de imagem no upload.
 
-Ajeitar o text verification
+Ajeitar o text verification (Encrypt code)
 
 Fazer a timeline carregar o embed antes de exibir a mensagem.
 
