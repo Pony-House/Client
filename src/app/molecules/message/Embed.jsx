@@ -121,8 +121,14 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
   // Description
   let description =
     typeof embed['og:description'] === 'string' && embed['og:description'].length > 0
-      ? embed['og:description']
+      ? embed['og:description'].trim()
       : null;
+
+  if (description) {
+    while (description.endsWith('\n')) {
+      description = description.substring(0, description.length - 1);
+    }
+  }
 
   // Site Name
   const siteName =
@@ -136,7 +142,7 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
   // Title
   const title =
     typeof embed['og:title'] === 'string' && embed['og:title'].length > 0
-      ? embed['og:title']
+      ? embed['og:title'].trim()
       : null;
 
   // Check data
@@ -221,7 +227,7 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
             </h5>
           ) : null}
 
-          {isThumb && description ? (
+          {description ? (
             <p className="card-text text-freedom very-small emoji-size-fix-2">
               {twemojifyReact(description)}
             </p>

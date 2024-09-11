@@ -1,0 +1,2 @@
+- Service worker cache time updated.
+- Embed script updated.

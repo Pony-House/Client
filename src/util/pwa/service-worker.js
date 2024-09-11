@@ -4,7 +4,7 @@
  * If image not found responds with fallback
  */
 
-var INVALIDATION_INTERVAL = 24 * 60 * 60 * 1000; // 1 day
+var INVALIDATION_INTERVAL = Number(24 * 60 * 60 * 1000) * 7; // 7 days
 var NS = 'MAGE';
 var SEPARATOR = '|';
 var VERSION = Math.ceil(now() / INVALIDATION_INTERVAL);
