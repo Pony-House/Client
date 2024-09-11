@@ -31,7 +31,7 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
   const imgType =
     typeof embed['og:image:type'] === 'string' && embed['og:image:type'].length > 0
       ? embed['og:image:type'].split('/')
-      : null;
+      : [''];
 
   // Add Click
   useEffect(() => {
@@ -47,52 +47,39 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
   const mx = initMatrix.matrixClient;
   const mxcUrl = initMatrix.mxcUrl;
 
-  // Image
-  let imgUrl = null;
-  if (typeof embed['og:image'] === 'string' && typeof embed['og:image:secure_url'] === 'string') {
-    imgUrl =
-      embed['og:image:secure_url'].length > 0 ? embed['og:image:secure_url'] : embed['og:image'];
-  } else if (typeof embed['og:image'] === 'string' && embed['og:image'].length > 0) {
-    imgUrl = embed['og:image'];
-  }
+  // Sizes
+  let imgHeight =
+    typeof embed['og:image:height'] === 'number'
+      ? embed['og:image:height']
+      : Number(embed['og:image:height']);
+  let imgWidth =
+    typeof embed['og:image:width'] === 'number'
+      ? embed['og:image:width']
+      : Number(embed['og:image:width']);
 
-  if (
-    objType(embed, 'object') &&
-    countObj(embed) <= 6 &&
-    typeof embed['matrix:image:size'] === 'number' &&
-    typeof embed['og:image:height'] === 'number' &&
-    typeof embed['og:image:width'] === 'number' &&
-    typeof imgUrl &&
-    imgType &&
-    imgType[0] === 'image'
-  ) {
-    return (
-      <Media.Image
-        content={{
-          info: { mimetype: String(embed['og:image:type']) },
-          body:
-            typeof embed['og:description'] === 'string' && embed['og:description'].length > 0
-              ? embed['og:description']
-              : embed['og:image'],
-        }}
-        roomId={roomId}
-        threadId={threadId}
-        width={embed['og:image:width']}
-        height={embed['og:image:height']}
-        link={mxcUrl.toHttp(imgUrl)}
-      />
-    );
-  }
+  if (Number.isNaN(imgHeight) || !Number.isFinite(imgHeight) || imgHeight < 1) imgHeight = null;
 
-  // Is Thumb
-  const isThumb =
-    (embed['og:type'] !== 'article' || embed['og:type'] === 'profile') &&
-    !embed['og:video:url'] &&
-    !embed['og:video'] &&
-    !embed['og:video:secure_url'] &&
-    (typeof embed['og:image:height'] !== 'number' ||
-      typeof embed['og:image:width'] !== 'number' ||
-      (embed['og:image:height'] <= 200 && embed['og:image:width'] <= 200));
+  if (Number.isNaN(imgWidth) || !Number.isFinite(imgWidth) || imgWidth < 1) imgWidth = null;
+
+  let videoHeight =
+    typeof embed['og:video:height'] === 'number'
+      ? embed['og:video:height']
+      : Number(embed['og:video:height']);
+  let videoWidth =
+    typeof embed['og:video:width'] === 'number'
+      ? embed['og:video:width']
+      : Number(embed['og:video:width']);
+  let matrixImgSize =
+    typeof embed['matrix:image:size'] === 'number'
+      ? embed['matrix:image:size']
+      : Number(embed['og:video:width']);
+
+  if (Number.isNaN(videoHeight) || !Number.isFinite(videoHeight) || videoHeight < 1)
+    videoHeight = null;
+
+  if (Number.isNaN(videoWidth) || !Number.isFinite(videoWidth) || videoWidth < 1) videoWidth = null;
+  if (Number.isNaN(matrixImgSize) || !Number.isFinite(matrixImgSize) || matrixImgSize < 1)
+    matrixImgSize = null;
 
   // Video
   let videoUrl = null;
@@ -104,12 +91,90 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
     videoUrl = embed['og:video:url'];
   }
 
+  const videoType = typeof embed['og:video:type'] === 'string' ? embed['og:video:type'] : null;
+
+  // Image
+  let imgUrl = null;
+  if (typeof embed['og:image'] === 'string' && typeof embed['og:image:secure_url'] === 'string') {
+    imgUrl =
+      embed['og:image:secure_url'].length > 0 ? embed['og:image:secure_url'] : embed['og:image'];
+  } else if (typeof embed['og:image'] === 'string' && embed['og:image'].length > 0) {
+    imgUrl = embed['og:image'];
+  }
+
+  // Article
+  const articlePublisher =
+    typeof embed['article:publisher'] === 'string' && embed['article:publisher'].length > 0
+      ? embed['article:publisher']
+      : null;
+
+  const articleSection =
+    embed['article:section'] === 'string' && embed['article:section'].length > 0
+      ? embed['article:section']
+      : null;
+
+  const articleTag =
+    typeof embed['article:tag'] === 'string' && embed['article:tag'].length > 0
+      ? embed['article:tag']
+      : null;
+
+  // Description
+  let description =
+    typeof embed['og:description'] === 'string' && embed['og:description'].length > 0
+      ? embed['og:description']
+      : null;
+
+  // Site Name
+  const siteName =
+    typeof embed['og:site_name'] === 'string' && embed['og:site_name'].length > 0
+      ? embed['og:site_name']
+      : null;
+
+  // Embed Type
+  const embedType = typeof embed['og:type'] === 'string' ? embed['og:type'] : null;
+
+  // Title
+  const title =
+    typeof embed['og:title'] === 'string' && embed['og:title'].length > 0
+      ? embed['og:title']
+      : null;
+
+  // Check data
+  if (
+    objType(embed, 'object') &&
+    countObj(embed) <= 6 &&
+    typeof matrixImgSize === 'number' &&
+    typeof imgHeight === 'number' &&
+    typeof imgWidth === 'number' &&
+    typeof imgUrl &&
+    imgType &&
+    imgType[0] === 'image'
+  ) {
+    return (
+      <Media.Image
+        content={{
+          info: { mimetype: imgType.join('/') },
+          body: description ? description : imgUrl,
+        }}
+        roomId={roomId}
+        threadId={threadId}
+        width={imgWidth}
+        height={imgHeight}
+        link={mxcUrl.toHttp(imgUrl)}
+      />
+    );
+  }
+
+  // Is Thumb
+  const isThumb =
+    (embedType !== 'article' || embedType === 'profile') &&
+    !videoUrl &&
+    (typeof imgHeight !== 'number' ||
+      typeof imgWidth !== 'number' ||
+      (imgHeight <= 200 && imgWidth <= 200));
+
   // Is Video
-  const isVideo =
-    videoUrl &&
-    typeof embed['og:video:height'] &&
-    typeof embed['og:video:width'] &&
-    embed['og:video:type'];
+  const isVideo = videoUrl && videoHeight && videoWidth && videoType;
 
   const defaultVideoAvatar = defaultAvatar(1);
   if (!imgUrl && isVideo) {
@@ -126,13 +191,13 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
         {isThumb && typeof imgUrl === 'string' ? (
           <span className="float-end">
             <Media.Image
-              content={{ info: { mimetype: String(embed['og:image:type']) }, body: 'embed-img' }}
+              content={{ info: { mimetype: imgType.join('/') }, body: 'embed-img' }}
               maxWidth={72}
               roomId={roomId}
               threadId={threadId}
               className="embed-thumb"
-              width={Number(embed['og:image:width'])}
-              height={Number(embed['og:image:height'])}
+              width={imgWidth}
+              height={imgHeight}
               link={mxcUrl.toHttp(imgUrl, 2000, 2000)}
               linkAnim={mxcUrl.toHttp(imgUrl)}
             />
@@ -140,51 +205,45 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
         ) : null}
 
         <span>
-          {typeof embed['og:site_name'] === 'string' && embed['og:site_name'].length > 0 ? (
-            <p className="card-text very-small emoji-size-fix-2 mb-2">
-              {twemojifyReact(embed['og:site_name'])}
-            </p>
+          {siteName ? (
+            <p className="card-text very-small emoji-size-fix-2 mb-2">{twemojifyReact(siteName)}</p>
           ) : null}
 
-          {typeof embed['og:title'] === 'string' && embed['og:title'].length > 0 ? (
+          {title ? (
             <h5 className="card-title small emoji-size-fix fw-bold">
               {typeof urlClick === 'string' && urlClick.length > 0 ? (
                 <a ref={tinyUrl} href={urlClick} target="_blank" rel="noreferrer">
-                  {twemojifyReact(embed['og:title'])}
+                  {twemojifyReact(title)}
                 </a>
               ) : (
-                embed['og:title']
+                title
               )}
             </h5>
           ) : null}
 
-          {isThumb &&
-          typeof embed['og:description'] === 'string' &&
-          embed['og:description'].length > 0 ? (
+          {isThumb && description ? (
             <p className="card-text text-freedom very-small emoji-size-fix-2">
-              {twemojifyReact(embed['og:description'])}
+              {twemojifyReact(description)}
             </p>
           ) : null}
 
-          {embed['og:type'] === 'article' ? (
+          {embedType === 'article' ? (
             <>
-              {typeof embed['article:publisher'] === 'string' &&
-              embed['article:publisher'].length > 0 ? (
+              {articlePublisher ? (
                 <p className="card-text very-small emoji-size-fix-2 mt-2">
-                  {twemojifyReact(embed['article:publisher'])}
+                  {twemojifyReact(articlePublisher)}
                 </p>
               ) : null}
 
-              {typeof embed['article:section'] === 'string' &&
-              embed['article:section'].length > 0 ? (
+              {articleSection ? (
                 <p className="card-text very-small emoji-size-fix-2 mt-2">
-                  {twemojifyReact(embed['article:section'])}
+                  {twemojifyReact(articleSection)}
                 </p>
               ) : null}
 
-              {typeof embed['article:tag'] === 'string' && embed['article:tag'].length > 0 ? (
+              {articleTag ? (
                 <p className="card-text very-small emoji-size-fix-2 mt-2">
-                  {twemojifyReact(embed['article:tag'])}
+                  {twemojifyReact(articleTag)}
                 </p>
               ) : null}
             </>
@@ -192,13 +251,13 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
 
           {!isVideo && !isThumb && typeof imgUrl === 'string' && imgUrl.length > 0 ? (
             <Media.Image
-              content={{ info: { mimetype: String(embed['og:image:type']) }, body: 'embed-img' }}
+              content={{ info: { mimetype: imgType.join('/') }, body: 'embed-img' }}
               maxWidth={350}
               roomId={roomId}
               threadId={threadId}
               className="mt-3 embed-img"
-              width={Number(embed['og:image:width'])}
-              height={Number(embed['og:image:height'])}
+              width={imgWidth}
+              height={imgHeight}
               link={mxcUrl.toHttp(imgUrl, 2000, 2000)}
               linkAnim={mxcUrl.toHttp(imgUrl)}
             />
@@ -222,12 +281,7 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
               </div>
             ) : (
               <div className="mt-2 ratio ratio-16x9 embed-video enabled">
-                <Iframe
-                  title={String(embed['og:title'])}
-                  src={videoUrl}
-                  allowFullScreen
-                  frameBorder={0}
-                />
+                <Iframe title={title} src={videoUrl} allowFullScreen frameBorder={0} />
               </div>
             )
           ) : null}
