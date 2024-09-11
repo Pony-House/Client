@@ -10,6 +10,16 @@ import { getBlobSafeMimeType } from '../mimetypes';
 import envAPI from './env';
 
 const LOAD_DELAY_COUNTER = __ENV_APP__.MXC_FETCH_WAITER;
+const fetchLimit = {
+  default: __ENV_APP__.MXC_FETCH_LIMIT.DEFAULT,
+  emoji: __ENV_APP__.MXC_FETCH_LIMIT.EMOJI,
+  avatar: __ENV_APP__.MXC_FETCH_LIMIT.AVATAR,
+  media: __ENV_APP__.MXC_FETCH_LIMIT.MEDIA,
+  attach: __ENV_APP__.MXC_FETCH_LIMIT.ATTACH,
+};
+
+export const getFetchLimit = (name = 'default') =>
+  typeof fetchLimit[name] === 'number' ? fetchLimit[name] : fetchLimit.default;
 
 // Mxc Url
 class MxcUrl extends EventEmitter {
@@ -82,7 +92,7 @@ class MxcUrl extends EventEmitter {
             if (tinyThis._queue[queueId].length > 0) {
               while (
                 tinyThis._queue[queueId].length > 0 &&
-                tinyThis._queueExec[queueId].length < __ENV_APP__.MXC_FETCH_LIMIT
+                tinyThis._queueExec[queueId].length < getFetchLimit(queueId)
               ) {
                 tinyThis._queueExec[queueId].push(tinyThis._queue[queueId].shift());
               }
@@ -196,7 +206,7 @@ class MxcUrl extends EventEmitter {
       const tinyFetch = { key, url: tinyLink, options, resolve, reject, exec: false };
 
       // Execute now
-      if (tinyThis._queueExec[queueId].length < __ENV_APP__.MXC_FETCH_LIMIT)
+      if (tinyThis._queueExec[queueId].length < getFetchLimit(queueId))
         tinyThis._queueExec[queueId].push(tinyFetch);
       // Later
       else tinyThis._queue[queueId].push(tinyFetch);
