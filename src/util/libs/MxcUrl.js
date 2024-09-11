@@ -9,6 +9,8 @@ import { colorMXID } from '../colorMXID';
 import { getBlobSafeMimeType } from '../mimetypes';
 import envAPI from './env';
 
+const LOAD_DELAY_COUNTER = __ENV_APP__.MXC_FETCH_WAITER;
+
 // Mxc Url
 class MxcUrl extends EventEmitter {
   // Constructor
@@ -19,12 +21,12 @@ class MxcUrl extends EventEmitter {
     this._isAuth = envAPI.get('MXC_AUTHENTICATED_MEDIA');
     this._queue = [];
     this._queueExec = [];
+    this._loadDelay = 0;
     this.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
     const tinyThis = this;
     envAPI.on('MXC_AUTHENTICATED_MEDIA', (value) => {
-      if (typeof value === 'boolean')
-        tinyThis._isAuth = value;
+      if (typeof value === 'boolean') tinyThis._isAuth = value;
     });
   }
 
@@ -59,6 +61,8 @@ class MxcUrl extends EventEmitter {
 
           // Complete
           const tinyComplete = () => {
+            tinyThis._loadDelay -= LOAD_DELAY_COUNTER;
+            if (tinyThis._loadDelay < 0) tinyThis._loadDelay = 0;
             // Remove old item
             const index = tinyThis._queueExec.findIndex((tItem) => tItem.key === tinyData.key);
             if (index > -1) {
@@ -80,30 +84,33 @@ class MxcUrl extends EventEmitter {
           };
 
           // Fetch
-          fetchFn(tinyData.url, tinyData.options)
-            .then((res) => {
-              if (!res.ok) {
-                res
-                  .json()
-                  .then((e) => {
-                    const err = new Error(e.error);
-                    err.code = e.errcode;
-                    tinyComplete();
-                    tinyData.reject(err);
-                  })
-                  .catch((err) => {
-                    tinyComplete();
-                    tinyData.reject(err);
-                  });
-                return;
-              }
-              tinyComplete();
-              tinyData.resolve(res);
-            })
-            .catch((err) => {
-              tinyComplete();
-              tinyData.reject(err);
-            });
+          setTimeout(() => {
+            tinyThis._loadDelay += LOAD_DELAY_COUNTER;
+            fetchFn(tinyData.url, tinyData.options)
+              .then((res) => {
+                if (!res.ok) {
+                  res
+                    .json()
+                    .then((e) => {
+                      const err = new Error(e.error);
+                      err.code = e.errcode;
+                      tinyComplete();
+                      tinyData.reject(err);
+                    })
+                    .catch((err) => {
+                      tinyComplete();
+                      tinyData.reject(err);
+                    });
+                  return;
+                }
+                tinyComplete();
+                tinyData.resolve(res);
+              })
+              .catch((err) => {
+                tinyComplete();
+                tinyData.reject(err);
+              });
+          }, tinyThis._loadDelay);
         }
       }
     }

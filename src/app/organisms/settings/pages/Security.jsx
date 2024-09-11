@@ -98,7 +98,8 @@ function SecuritySection() {
             content={
               <div className="very-small text-gray">
                 Some homeservers will require this configuration enabled. The recommendation is that
-                you keep this option enabled by default. The results will start to appear in the next files loaded. If you want a definitive result, restart the software.
+                you keep this option enabled by default. The results will start to appear in the
+                next files loaded. If you want a definitive result, restart the software.
               </div>
             }
           />

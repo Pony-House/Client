@@ -136,6 +136,10 @@ To build the desktop app:
 yarn electron:build # Compiles the app into the release/ directory
 ```
 
+### Env file
+
+Client performance settings are fully customizable! You can adapt the entire client to your personal way or your homeserver you are developing.
+
 ### AppData
 
 If you need to manage client files on your desktop version. You can find specific storage files in the directory below:

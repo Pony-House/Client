@@ -177,6 +177,7 @@ export default defineConfig(({ command, mode }) => {
     MAX_LISTENERS: Number(env.MAX_LISTENERS),
     MXC_FETCH_LIMIT: Number(env.MXC_FETCH_LIMIT),
     MXC_FETCH_TIMEOUT: Number(env.MXC_FETCH_TIMEOUT),
+    MXC_FETCH_WAITER: Number(env.MXC_FETCH_WAITER),
     MXC_AUTHENTICATED_MEDIA: addBooleanToEnv('MXC_AUTHENTICATED_MEDIA'),
     MXC_SERVICE_WORKER: addBooleanToEnv('MXC_SERVICE_WORKER'),
 
