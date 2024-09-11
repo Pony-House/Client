@@ -5,6 +5,8 @@
 import EventEmitter from 'events';
 import storageManager from './Localstorage';
 
+const ENV_NAME_LIMIT = 50;
+
 // Emitter
 class EnvAPI extends EventEmitter {
   constructor() {
@@ -112,7 +114,7 @@ class EnvAPI extends EventEmitter {
   set(folder, value) {
     this.start();
     if (typeof folder === 'string' && (typeof value === 'string' || typeof value === 'boolean')) {
-      if (folder.length <= 20) {
+      if (folder.length <= ENV_NAME_LIMIT) {
         this.content[folder] = value;
 
         if (!__ENV_APP__.ELECTRON_MODE) {
@@ -123,7 +125,7 @@ class EnvAPI extends EventEmitter {
 
         this.emit(folder, value);
       } else {
-        console.error('ENV value name length is greater than the limit! Limit: 20');
+        console.error(`ENV value name length is greater than the limit! Limit: ${ENV_NAME_LIMIT}`);
       }
     }
   }
