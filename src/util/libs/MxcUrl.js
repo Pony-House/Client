@@ -20,6 +20,12 @@ class MxcUrl extends EventEmitter {
     this._queue = [];
     this._queueExec = [];
     this.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
+
+    const tinyThis = this;
+    envAPI.on('MXC_AUTHENTICATED_MEDIA', (value) => {
+      if (typeof value === 'boolean')
+        tinyThis._isAuth = value;
+    });
   }
 
   // Set Auth Mode
