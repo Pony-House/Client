@@ -175,10 +175,17 @@ export default defineConfig(({ command, mode }) => {
     GUEST_ACCOUNT: addBooleanToEnv('GUEST_ACCOUNT'),
 
     MAX_LISTENERS: Number(env.MAX_LISTENERS),
-    MXC_FETCH_TIMEOUT: Number(env.MXC_FETCH_TIMEOUT),
     MXC_FETCH_WAITER: Number(env.MXC_FETCH_WAITER),
     MXC_AUTHENTICATED_MEDIA: addBooleanToEnv('MXC_AUTHENTICATED_MEDIA'),
     MXC_SERVICE_WORKER: addBooleanToEnv('MXC_SERVICE_WORKER'),
+
+    MXC_FETCH_TIMEOUT: {
+      DEFAULT: Number(env.MXC_FETCH_TIMEOUT),
+      EMOJI: Number(env.MXC_FETCH_TIMEOUT_EMOJI),
+      AVATAR: Number(env.MXC_FETCH_TIMEOUT_AVATAR),
+      MEDIA: Number(env.MXC_FETCH_TIMEOUT_MEDIA),
+      ATTACH: Number(env.MXC_FETCH_TIMEOUT_ATTACH),
+    },
 
     MXC_FETCH_LIMIT: {
       DEFAULT: Number(env.MXC_FETCH_LIMIT),

@@ -21,6 +21,17 @@ const fetchLimit = {
 export const getFetchLimit = (name = 'default') =>
   typeof fetchLimit[name] === 'number' ? fetchLimit[name] : fetchLimit.default;
 
+const fetchTimeout = {
+  default: __ENV_APP__.MXC_FETCH_TIMEOUT.DEFAULT,
+  emoji: __ENV_APP__.MXC_FETCH_TIMEOUT.EMOJI,
+  avatar: __ENV_APP__.MXC_FETCH_TIMEOUT.AVATAR,
+  media: __ENV_APP__.MXC_FETCH_TIMEOUT.MEDIA,
+  attach: __ENV_APP__.MXC_FETCH_TIMEOUT.ATTACH,
+};
+
+export const getFetchTimeout = (name = 'default') =>
+  typeof fetchTimeout[name] === 'number' ? fetchTimeout[name] : fetchTimeout.default;
+
 // Mxc Url
 class MxcUrl extends EventEmitter {
   // Constructor
@@ -176,13 +187,12 @@ class MxcUrl extends EventEmitter {
     ignoreAuth = false,
   ) {
     let tinyLink = !ignoreCustomUrl ? this.readCustomUrl(link) : link;
+    const FETCH_TIMEOUT = getFetchTimeout(queueId);
+
     const options = {
       method: 'GET',
       headers: {},
-      signal:
-        __ENV_APP__.MXC_FETCH_TIMEOUT > 0
-          ? AbortSignal.timeout(__ENV_APP__.MXC_FETCH_TIMEOUT)
-          : undefined,
+      signal: FETCH_TIMEOUT > 0 ? AbortSignal.timeout(FETCH_TIMEOUT) : undefined,
     };
 
     if (typeof type === 'string' && type.length > 0) {
