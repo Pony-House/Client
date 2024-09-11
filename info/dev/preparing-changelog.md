@@ -1,3 +1,4 @@
 - Service worker cache time updated.
 - Embed script updated.
 - env value added --> MXC_FETCH_WAITER.
+- queueId support to mxcUrl added.

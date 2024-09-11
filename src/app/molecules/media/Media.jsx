@@ -36,14 +36,26 @@ async function getUrl(contentType, fileType, link, type, decryptData, roomId /* 
     const resultById = blobUrlManager.getById(blobSettings.id);
     if (fileType !== 'unknown') {
       if (!resultById) {
-        const blob = await initMatrix.mxcUrl.focusFetchBlob(link, fileType, type, decryptData);
+        const blob = await initMatrix.mxcUrl.focusFetchBlob(
+          link,
+          fileType,
+          type,
+          decryptData,
+          'media',
+        );
         const result = await blobUrlManager.insert(blob, blobSettings);
         return result;
       } else {
         return resultById;
       }
     } else {
-      const blob = await initMatrix.mxcUrl.focusFetchBlob(link, fileType, type, decryptData);
+      const blob = await initMatrix.mxcUrl.focusFetchBlob(
+        link,
+        fileType,
+        type,
+        decryptData,
+        'media',
+      );
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(blob);

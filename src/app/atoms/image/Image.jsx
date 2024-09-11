@@ -67,6 +67,7 @@ const Img = React.forwardRef(
       bgColor = 0,
       animParentsCount = 0,
       draggable = 'false',
+      queueId = 'default',
       style = null,
       height = null,
       width = null,
@@ -194,7 +195,7 @@ const Img = React.forwardRef(
               // Add loading progress...
               isLoadingProgress++;
               mxcUrl
-                .focusFetchBlob(tinySrc, 'image', null, null, ignoreAuth)
+                .focusFetchBlob(tinySrc, 'image', null, null, queueId, ignoreAuth)
                 .then((blobFromFetch) => {
                   const mime =
                     typeof blobFromFetch.type === 'string' ? blobFromFetch.type.split('/') : [];
@@ -538,6 +539,7 @@ const Img = React.forwardRef(
 );
 
 const imgPropTypes = {
+  queueId: PropTypes.string,
   ignoreAuth: PropTypes.bool,
   onLoadingChange: PropTypes.func,
   getDefaultImage: PropTypes.func,
@@ -579,6 +581,7 @@ function ImgJquery({
   bgColor = 0,
   animParentsCount = 0,
   draggable = 'false',
+  queueId = 'default',
   style = null,
   height = null,
   width = null,
@@ -801,7 +804,7 @@ function ImgJquery({
           // Add loading progress...
           isLoadingProgress++;
           mxcUrl
-            .focusFetchBlob(tinySrc, 'image', null, null, ignoreAuth)
+            .focusFetchBlob(tinySrc, 'image', null, null, queueId, ignoreAuth)
             .then((blobFromFetch) => {
               const mime =
                 typeof blobFromFetch.type === 'string' ? blobFromFetch.type.split('/') : [];
