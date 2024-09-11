@@ -202,8 +202,8 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
               roomId={roomId}
               threadId={threadId}
               className="embed-thumb"
-              width={imgWidth}
-              height={imgHeight}
+              width={72}
+              height={72}
               link={mxcUrl.toHttp(imgUrl, 2000, 2000)}
               linkAnim={mxcUrl.toHttp(imgUrl)}
             />
