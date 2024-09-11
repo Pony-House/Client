@@ -4,17 +4,17 @@
  * If image not found responds with fallback
  */
 
-var INVALIDATION_INTERVAL = Number(24 * 60 * 60 * 1000) * 7; // 7 days
-var NS = 'MAGE';
-var SEPARATOR = '|';
-var VERSION = Math.ceil(now() / INVALIDATION_INTERVAL);
+const INVALIDATION_INTERVAL = Number(24 * 60 * 60 * 1000) * 31; // 31 days
+const NS = 'MAGE';
+const SEPARATOR = '|';
+const VERSION = Math.ceil(now() / INVALIDATION_INTERVAL);
 
 /**
  * Helper to get current timestamp
  * @returns {Number}
  */
 function now() {
-  var d = new Date();
+  const d = new Date();
   return d.getTime();
 }
 
@@ -41,7 +41,7 @@ function buildKey(url) {
  * @returns {RecordKey}
  */
 function parseKey(key) {
-  var parts = key.split(SEPARATOR);
+  const parts = key.split(SEPARATOR);
   return {
     ns: parts[0],
     key: parts[1],
@@ -60,7 +60,7 @@ function purgeExpiredRecords(caches) {
   return caches.keys().then(function (keys) {
     return Promise.all(
       keys.map(function (key) {
-        var record = parseKey(key);
+        const record = parseKey(key);
         if (record.ns === NS && record.ver !== VERSION) {
           console.log('[PWA] [service-worker] deleting', key);
           return caches.delete(key);
@@ -78,7 +78,7 @@ function purgeExpiredRecords(caches) {
  * @returns {Promise}
  */
 function proxyRequest(caches, request) {
-  var key = buildKey(request.url);
+  const key = buildKey(request.url);
   // set namespace
   return caches.open(key).then(function (cache) {
     // check cache
