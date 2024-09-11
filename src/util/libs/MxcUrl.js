@@ -89,7 +89,7 @@ class MxcUrl extends EventEmitter {
             }
 
             // Check again
-            tinyThis._checkFetchQueue();
+            tinyThis._checkFetchQueue(queueId);
           };
 
           // Fetch
