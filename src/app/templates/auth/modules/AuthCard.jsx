@@ -48,7 +48,7 @@ function AuthCard({ type = 'login', setType }) {
         ) : null)}
 
       {objType(hsConfig, 'object') && hsWellKnown.getBaseUrl() && (
-        <center className="noselect">
+        <center className="noselect mt-2">
           {type === 'login' && (
             <a
               className="very-small"

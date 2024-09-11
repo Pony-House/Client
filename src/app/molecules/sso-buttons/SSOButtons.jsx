@@ -13,6 +13,25 @@ import {
   updateLocalStore,
 } from '../../../client/action/auth';
 
+/* idp.icon ? (
+    <Tooltip placement="top" content={<div className="small">{idp.name}</div>}>
+      <button
+        key={idp.id}
+        type="button"
+        className="sso-btn"
+        onClick={() => handleClick(idp.id)}
+      >
+        <Img
+          customMxcUrl={mxcUrl}
+          className="sso-btn__img rounded-circle"
+          src={mxcUrl.toHttp(idp.icon)}
+          alt={idp.name}
+          ignoreAuth
+        />
+      </button>
+    </Tooltip>
+  ) */
+
 import Button from '../../atoms/button/Button';
 
 function SSOButtons({ type, identityProviders, baseUrl }) {
@@ -28,31 +47,17 @@ function SSOButtons({ type, identityProviders, baseUrl }) {
           if (typeof idp.icon !== 'string') return -1;
           return idp.name.toLowerCase() > idp2.name.toLowerCase() ? 1 : -1;
         })
-        .map((idp) =>
-          idp.icon ? (
-            <Tooltip placement="top" content={<div className="small">{idp.name}</div>}>
-              <button
-                key={idp.id}
-                type="button"
-                className="sso-btn"
-                onClick={() => handleClick(idp.id)}
-              >
-                <Img
-                  customMxcUrl={mxcUrl}
-                  className="sso-btn__img rounded-circle"
-                  src={mxcUrl.toHttp(idp.icon)}
-                  alt={idp.name}
-                />
-              </button>
-            </Tooltip>
-          ) : (
-            <Button
-              key={idp.id}
-              className="sso-btn__text-only"
-              onClick={() => handleClick(idp.id)}
-            >{`Login with ${idp.name}`}</Button>
-          ),
-        )}
+        .map((idp) => (
+          <Button
+            variant="theme"
+            key={idp.id}
+            className="sso-btn__text-only"
+            onClick={() => handleClick(idp.id)}
+          >
+            <i className={`fa-brands fa-${idp.name.toLowerCase().trim().replace(/ /g, '')} me-2`} />
+            {`Login with ${idp.name}`}
+          </Button>
+        ))}
       {__ENV_APP__.GUEST_ACCOUNT && (
         <Button
           className="sso-btn__text-only"

@@ -136,7 +136,7 @@ class MxcUrl extends EventEmitter {
   }
 
   // Fetch Url
-  fetch(link = null, type = null, ignoreCustomUrl = false) {
+  fetch(link = null, type = null, ignoreCustomUrl = false, ignoreAuth = false) {
     let tinyLink = !ignoreCustomUrl ? this.readCustomUrl(link) : link;
     const options = {
       method: 'GET',
@@ -154,7 +154,7 @@ class MxcUrl extends EventEmitter {
       tinyLink += `ph_mxc_type=${type}`;
     }
 
-    if (this._isAuth && link.startsWith(`${this.mx.baseUrl}/`)) {
+    if (!ignoreAuth && this._isAuth && this.mx && link.startsWith(`${this.mx.baseUrl}/`)) {
       const accessToken = typeof this.mx.getAccessToken === 'function' && this.mx.getAccessToken();
       if (accessToken) options.headers['Authorization'] = `Bearer ${accessToken}`;
     }
@@ -186,20 +186,32 @@ class MxcUrl extends EventEmitter {
   }
 
   // Fetch Blob
-  async fetchBlob(link = null, fileType = 'unknown', type = null, decryptData = null) {
+  async fetchBlob(
+    link = null,
+    fileType = 'unknown',
+    type = null,
+    decryptData = null,
+    ignoreAuth = false,
+  ) {
     const tinyLink = this.readCustomUrl(link);
-    const response = await this.fetch(tinyLink, fileType, true);
+    const response = await this.fetch(tinyLink, fileType, true, ignoreAuth);
     return this.getBlob(response, type, tinyLink, decryptData);
   }
 
   // Focus Fetch Blob
-  async focusFetchBlob(link = null, fileType = 'unknown', type = null, decryptData = null) {
+  async focusFetchBlob(
+    link = null,
+    fileType = 'unknown',
+    type = null,
+    decryptData = null,
+    ignoreAuth = false,
+  ) {
     const tinyThis = this;
     return new Promise((resolve, reject) => {
       if (!tinyThis._fetchWait[link]) {
         tinyThis._fetchWait[link] = true;
         tinyThis
-          .fetchBlob(link, fileType, type, decryptData)
+          .fetchBlob(link, fileType, type, decryptData, ignoreAuth)
           // Complete
           .then((result) => {
             tinyThis.emit(`fetchBlob:then:${link}:${fileType}`, result);
