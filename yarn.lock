@@ -579,10 +579,10 @@
   resolved "https://registry.yarnpkg.com/@khanacademy/perseus-core/-/perseus-core-1.5.0.tgz#decc7e8a8ecb0632e757c4283e63f894aa5dc4c2"
   integrity sha512-QR9tGBr8nAUFuARSbzgzL6ZkyjDur0Cz9tgQREjC0L+Sug5aj0DHuK86lhosZAbtgAzitX3KVRAsOMbKqU2fYg==
 
-"@khanacademy/simple-markdown@0.13.0":
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/@khanacademy/simple-markdown/-/simple-markdown-0.13.0.tgz#9f65c733e7f021f57b544866452f398fbc67eaf0"
-  integrity sha512-ZELHs/zRnWYko27MpnGtoMvltx/Dg3L2MpeMx5TKP1W6AngEszrol/GGxwNZdM+tqArGlH93J2P5xoQ8NZw2ZA==
+"@khanacademy/simple-markdown@0.13.1":
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/@khanacademy/simple-markdown/-/simple-markdown-0.13.1.tgz#ffe101c9f52b3ddd663d91c4656a52e9da3c6499"
+  integrity sha512-SE66jhlq8BgXO2xmpVhyWpqYUk+Ksd8/K4U5J/MaC/+z3oBm5GBLS9o7Kw0YQjxAxBnS/nSZ1PEPLbd+Dd08gQ==
   dependencies:
     "@khanacademy/perseus-core" "1.5.0"
 
