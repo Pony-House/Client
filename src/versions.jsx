@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const softwareVersions = {
   1: {
     3: [
