@@ -16,7 +16,7 @@ import settings from '@src/client/state/settings';
 import matrixAppearance from '@src/util/libs/appearance';
 import soundFiles from '@src/util/soundFiles';
 import storageManager from '@src/util/libs/Localstorage';
-import matrixProxy from '@src/util/libs/proxy';
+import matrixProxy, { canProxy } from '@src/util/libs/proxy';
 
 import { initHotkeys } from '../../../client/event/hotkeys';
 import { initRoomListListener } from '../../../client/event/roomList';
@@ -377,7 +377,9 @@ function Client({ isDevToolsOpen = false }) {
                     <MenuItem onClick={() => initMatrix.clearCacheAndReload()}>
                       Clear cache & reload
                     </MenuItem>
-                    <MenuItem onClick={() => openProxyModal()}>Proxy Settings</MenuItem>
+                    {canProxy() ? (
+                      <MenuItem onClick={() => openProxyModal()}>Proxy Settings</MenuItem>
+                    ) : null}
                     <MenuItem onClick={() => initMatrix.logout()}>Logout</MenuItem>
                   </>
                 }
@@ -474,7 +476,9 @@ function Client({ isDevToolsOpen = false }) {
                 <MenuItem onClick={() => initMatrix.clearCacheAndReload()}>
                   Clear cache & reload
                 </MenuItem>
-                <MenuItem onClick={() => openProxyModal()}>Proxy Settings</MenuItem>
+                {canProxy() ? (
+                  <MenuItem onClick={() => openProxyModal()}>Proxy Settings</MenuItem>
+                ) : null}
                 <MenuItem onClick={() => initMatrix.logout()}>Logout</MenuItem>
               </>
             }

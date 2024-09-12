@@ -7,6 +7,8 @@ import storageManager from './Localstorage';
   system - In system mode the proxy configuration is taken from the operating system. Note that the system mode is different from setting no proxy configuration. In the latter case, Electron falls back to the system settings only if no command-line options influence the proxy configuration.    
 */
 
+export const canProxy = () => __ENV_APP__.ELECTRON_MODE && global.electronWindow;
+
 // Emitter
 class MatrixProxy extends EventEmitter {
   constructor() {
@@ -24,10 +26,14 @@ class MatrixProxy extends EventEmitter {
     ];
   }
 
+  canProxy(type) {
+    return canProxy(type);
+  }
+
   // Get Proxy
   getProxyConfig() {
     // Elecron Mode
-    if (__ENV_APP__.ELECTRON_MODE && global.electronWindow) {
+    if (this.canProxy()) {
       const proxySettings = {};
       if (this.content.enabled) {
         if (this.content.mode === 'system') proxySettings.mode = 'system';
@@ -52,7 +58,7 @@ class MatrixProxy extends EventEmitter {
   updateProxy() {
     if (this.proxyInit) {
       // Electron Mode
-      if (__ENV_APP__.ELECTRON_MODE && global.electronWindow) {
+      if (this.canProxy('electron')) {
         global.electronWindow.setProxy(this.getProxyConfig());
       }
       return;
@@ -68,7 +74,7 @@ class MatrixProxy extends EventEmitter {
         tinyThis.proxyInit = true;
         tinyThis._start();
         // Elecron Mode
-        if (__ENV_APP__.ELECTRON_MODE && global.electronWindow) {
+        if (tinyThis.canProxy('electron')) {
           global.electronWindow.once('setProxy', (data) => {
             resolve();
             tinyThis.emit('setProxy', { type: 'electron', data });

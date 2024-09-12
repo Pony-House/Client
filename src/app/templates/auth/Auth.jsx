@@ -5,6 +5,7 @@ import storageManager from '@src/util/libs/Localstorage';
 import urlParams from '@src/util/libs/urlParams';
 
 import ProxyModal from '@src/app/organisms/proxy-modal/ProxyModal';
+import { canProxy } from '@src/util/libs/proxy';
 import { openProxyModal } from '@src/client/action/navigation';
 
 import * as auth from '../../../client/action/auth';
@@ -106,7 +107,7 @@ function Auth({ isDevToolsOpen = false }) {
 
                       <section className="border-top border-bg py-4 footer noselect">
                         <div className="row text-center d-flex justify-content-center">
-                          <div className={`col-md-${__ENV_APP__.ELECTRON_MODE ? '3' : '4'} small`}>
+                          <div className={`col-md-${canProxy() ? '3' : '4'} small`}>
                             <a
                               href="https://github.com/Pony-House/Client/releases"
                               rel="noreferrer"
@@ -115,7 +116,7 @@ function Auth({ isDevToolsOpen = false }) {
                             >{`Version ${cons.version}`}</a>
                           </div>
 
-                          {__ENV_APP__.ELECTRON_MODE ? (
+                          {canProxy() ? (
                             <div className={`col-md-3 small`}>
                               <a
                                 href="#!"
@@ -130,7 +131,7 @@ function Auth({ isDevToolsOpen = false }) {
                             </div>
                           ) : null}
 
-                          <div className={`col-md-${__ENV_APP__.ELECTRON_MODE ? '3' : '4'} small`}>
+                          <div className={`col-md-${canProxy() ? '3' : '4'} small`}>
                             <a
                               href="https://twitter.com/JasminDreasond"
                               target="_blank"
@@ -141,7 +142,7 @@ function Auth({ isDevToolsOpen = false }) {
                             </a>
                           </div>
 
-                          <div className={`col-md-${__ENV_APP__.ELECTRON_MODE ? '3' : '4'} small`}>
+                          <div className={`col-md-${canProxy() ? '3' : '4'} small`}>
                             <a
                               href="https://matrix.org"
                               target="_blank"

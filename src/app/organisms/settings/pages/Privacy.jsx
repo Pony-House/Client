@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAppearance } from '@src/util/libs/appearance';
 import matrixProxy, {
+  canProxy,
   getProxyStorage,
   setProxyStorage,
   toggleProxyAction,
@@ -50,7 +51,7 @@ function PrivacySection() {
 
   return (
     <div>
-      {__ENV_APP__.ELECTRON_MODE ? (
+      {canProxy() ? (
         <div className="card noselect mt-3">
           <ul className="list-group list-group-flush">
             <li className="list-group-item very-small text-gray">Proxy</li>
