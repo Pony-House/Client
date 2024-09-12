@@ -38,6 +38,18 @@ class MatrixProxy extends EventEmitter {
     else return null;
   }
 
+  // Send Proxy Update
+  updateProxy() {
+    if (this.Initialized) {
+      // Electron Mode
+      if (__ENV_APP__.ELECTRON_MODE && global.electronWindow) {
+        global.electronWindow.setProxy(this.getProxyConfig());
+      }
+      return;
+    }
+    throw new Error('Proxy is not initialized!');
+  }
+
   // Start Proxy
   startProxy() {
     const tinyThis = this;
