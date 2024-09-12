@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { getAppearance } from '@src/util/libs/appearance';
+import matrixProxy, {
+  getProxyStorage,
+  setProxyStorage,
+  toggleProxyAction,
+} from '@src/util/libs/proxy';
+
+import SettingNumber from '@src/app/molecules/setting-number/SettingNumber';
+import SettingText from '@src/app/molecules/setting-text/SettingText';
+import SegmentedControls from '@src/app/atoms/segmented-controls/SegmentedControls';
 
 import initMatrix from '../../../../client/initMatrix';
 import Toggle from '../../../atoms/button/Toggle';
@@ -13,7 +22,11 @@ function PrivacySection() {
   const [sendReadReceipts, setSendReadReceipts] = useState(false);
   const [autoEncryptCreateDM, setAutoEncryptCreateDM] = useState(true);
 
-  const [proxyEnabled, setProxyEnabled] = useState(false);
+  const [proxyEnabled, setProxyEnabled] = useState(getProxyStorage('enabled'));
+  const [proxyProtocol, setProxyProtocol] = useState(getProxyStorage('protocol'));
+  const [proxyAddress, setProxyAddress] = useState(getProxyStorage('address'));
+  const [proxyPort, setProxyPort] = useState(getProxyStorage('port'));
+  const [proxyMode, setProxyMode] = useState(getProxyStorage('mode'));
 
   const basicUserMode = getAppearance('basicUserMode');
 
@@ -43,11 +56,120 @@ function PrivacySection() {
 
             <SettingTile
               title="Enabled"
-              options={<Toggle className="d-inline-flex" isActive={proxyEnabled} />}
+              options={
+                <Toggle
+                  className="d-inline-flex"
+                  onToggle={toggleProxyAction('enabled', setProxyEnabled)}
+                  isActive={proxyEnabled}
+                />
+              }
               content={
-                <div className="very-small text-gray">Enable your defined proxy settings.</div>
+                <div className="very-small text-gray">
+                  Enable your defined proxy settings. Remember that you need to refresh the proxy
+                  for the settings to be applied!
+                </div>
               }
             />
+
+            <SettingTile
+              title="Mode"
+              content={
+                <>
+                  <div className="mt-2">
+                    <SegmentedControls
+                      type="select"
+                      selected={matrixProxy.modes.findIndex((mode) => mode.value === proxyMode)}
+                      segments={matrixProxy.modes}
+                      onEmpty={() => {
+                        matrixProxy.reset('mode');
+                        setProxyMode(matrixProxy.get('mode'));
+                      }}
+                      onSelect={(index) => {
+                        const mode = matrixProxy.modes[index];
+                        if (mode && typeof mode.value === 'string') {
+                          matrixProxy.set('mode', mode.value);
+                          setProxyMode(mode.value);
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className="very-small text-gray">
+                    The proxy mode. In system mode the proxy configuration is taken from the
+                    operating system. In custom mode the proxy configuration is specified in the
+                    software settings.
+                  </div>
+                </>
+              }
+            />
+
+            {proxyMode !== 'system' ? (
+              <>
+                <SettingTile
+                  title="Protocol"
+                  content={
+                    <>
+                      <div className="mt-2">
+                        <SegmentedControls
+                          type="select"
+                          selected={matrixProxy.protocols.findIndex(
+                            (protocol) => protocol.value === proxyProtocol,
+                          )}
+                          segments={matrixProxy.protocols}
+                          onEmpty={() => {
+                            matrixProxy.reset('protocol');
+                            setProxyProtocol(matrixProxy.get('protocol'));
+                          }}
+                          onSelect={(index) => {
+                            const protocol = matrixProxy.protocols[index];
+                            if (protocol && typeof protocol.value === 'string') {
+                              matrixProxy.set('protocol', protocol.value);
+                              setProxyProtocol(protocol.value);
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="very-small text-gray">The proxy protocol.</div>
+                    </>
+                  }
+                />
+
+                <SettingTile
+                  title="Address"
+                  content={
+                    <>
+                      <SettingText
+                        value={proxyAddress}
+                        onChange={(value) => {
+                          setProxyStorage('address', value);
+                          setProxyAddress(value);
+                        }}
+                        maxLength={100}
+                      />
+                      <div className="very-small text-gray">
+                        IP address or domain of your proxy.
+                      </div>
+                    </>
+                  }
+                />
+
+                <SettingTile
+                  title="Port"
+                  content={
+                    <>
+                      <SettingNumber
+                        onChange={(value) => {
+                          setProxyStorage('port', value);
+                          setProxyPort(value);
+                        }}
+                        value={proxyPort}
+                        min={0}
+                      />
+                      <div className="very-small text-gray">The proxy port.</div>
+                    </>
+                  }
+                />
+              </>
+            ) : null}
           </ul>
         </div>
       ) : null}

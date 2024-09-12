@@ -12,6 +12,15 @@ class MatrixProxy extends EventEmitter {
   constructor() {
     super();
     this.Initialized = false;
+    this.protocols = [
+      { value: 'socks5', text: 'Socks5' },
+      { value: 'http', text: 'Http' },
+      { value: 'https', text: 'Https' },
+    ];
+    this.modes = [
+      { value: 'system', text: 'System' },
+      { value: 'fixed_servers', text: 'Custom' },
+    ];
   }
 
   // Get Proxy
@@ -81,19 +90,48 @@ class MatrixProxy extends EventEmitter {
 
       // Get Content
       this.content = storageManager.getJson('ponyHouse-proxy', 'obj');
+      this.contentDefault = {};
 
       // Prepare settings
+      this.contentDefault.enabled = false;
       this.content.enabled =
-        typeof this.content.enabled === 'boolean' ? this.content.enabled : false;
-      this.content.mode = typeof this.content.mode === 'string' ? this.content.mode : 'system';
+        typeof this.content.enabled === 'boolean'
+          ? this.content.enabled
+          : this.contentDefault.enabled;
 
+      this.contentDefault.mode = 'system';
+      this.content.mode =
+        typeof this.content.mode === 'string' ? this.content.mode : this.contentDefault.mode;
+
+      this.contentDefault.protocol = 'socks5';
       this.content.protocol =
-        typeof this.content.protocol === 'string' ? this.content.protocol : 'socks5';
+        typeof this.content.protocol === 'string'
+          ? this.content.protocol
+          : this.contentDefault.protocol;
 
+      this.contentDefault.address = '127.0.0.1';
       this.content.address =
-        typeof this.content.address === 'string' ? this.content.address : '127.0.0.1';
+        typeof this.content.address === 'string'
+          ? this.content.address
+          : this.contentDefault.address;
 
-      this.content.port = typeof this.content.port === 'number' ? this.content.port : 9050;
+      this.contentDefault.port = 9050;
+      this.content.port =
+        typeof this.content.port === 'number' ? this.content.port : this.contentDefault.port;
+    }
+  }
+
+  reset(folder) {
+    if (typeof this.contentDefault[folder] !== 'undefined') {
+      this.content[folder] = this.contentDefault[folder];
+      storageManager.setJson('ponyHouse-proxy', this.content);
+      this.emit(folder, value);
+    }
+  }
+
+  resetAll() {
+    for (const folder in this.contentDefault) {
+      this.reset(folder);
     }
   }
 
