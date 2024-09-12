@@ -16,7 +16,9 @@ import settings from '@src/client/state/settings';
 import matrixAppearance from '@src/util/libs/appearance';
 import soundFiles from '@src/util/soundFiles';
 import storageManager from '@src/util/libs/Localstorage';
+
 import matrixProxy, { canProxy } from '@src/util/libs/proxy';
+import ProxyModal from '@src/app/organisms/proxy-modal/ProxyModal';
 
 import { initHotkeys } from '../../../client/event/hotkeys';
 import { initRoomListListener } from '../../../client/event/roomList';
@@ -366,6 +368,7 @@ function Client({ isDevToolsOpen = false }) {
       return (
         <>
           <ElectronSidebar isDevToolsOpen={isDevToolsOpen} />
+          <ProxyModal />
           <div
             className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}${isDevToolsOpen ? ' devtools-open' : ''}`}
           >
@@ -465,6 +468,7 @@ function Client({ isDevToolsOpen = false }) {
   return (
     <>
       <ElectronSidebar isDevToolsOpen={isDevToolsOpen} />
+      <ProxyModal />
       <div
         className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}${isDevToolsOpen ? ' devtools-open' : ''}`}
       >
