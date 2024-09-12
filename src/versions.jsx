@@ -67,5 +67,6 @@ export const softwareVersions = {
       { date: 1725375600 },
       { date: 1725980400 },
     ],
+    5: [{ date: 0 }],
   },
 };

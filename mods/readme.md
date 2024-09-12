@@ -295,6 +295,10 @@ Use the msgOptions.custom object to customize the final result of your message. 
     originalRoomid
     isId
 
+### changelogOpened (Not ready for production)
+
+    version
+
 ### settingsOpened (Not ready for production)
 
     tabText

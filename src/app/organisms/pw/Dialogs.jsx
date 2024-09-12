@@ -12,6 +12,7 @@ import JoinAlias from '../join-alias/JoinAlias';
 import EmojiVerification from '../emoji-verification/EmojiVerification';
 
 import ReusableDialog from '../../molecules/dialog/ReusableDialog';
+import Changelog from '../changelog/Changelog';
 
 function Dialogs() {
   return (
@@ -19,6 +20,7 @@ function Dialogs() {
       <ReadReceipts />
       <ViewSource />
       <ProfileViewer />
+      <Changelog />
       <RoomViewer />
       <ShortcutSpaces />
       <CreateRoom />

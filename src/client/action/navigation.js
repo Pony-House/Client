@@ -142,6 +142,13 @@ export function openSettings(tabText) {
   });
 }
 
+export function openChangelog(version) {
+  appDispatcher.dispatch({
+    type: cons.actions.navigation.OPEN_CHANGELOG,
+    version,
+  });
+}
+
 export function openEmojiBoard(roomId, cords, dom, requestEmojiCallback) {
   appDispatcher.dispatch({
     type: cons.actions.navigation.OPEN_EMOJIBOARD,

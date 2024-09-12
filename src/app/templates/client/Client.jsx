@@ -48,6 +48,7 @@ import Mods from './Mods';
 import LoadingPage from './Loading';
 import urlParams from '../../../util/libs/urlParams';
 import {
+  openChangelog,
   openRoomViewer,
   selectRoom,
   selectRoomMode,
@@ -302,6 +303,18 @@ function Client({ isDevToolsOpen = false }) {
         });
       } else {
         window.Notification?.requestPermission();
+      }
+
+      // Changelog time
+      const version = cons.version.split('.');
+      const cacheVersion = storageManager.getJson('changelog-version', 'array');
+      if (
+        version[0] !== cacheVersion[0] ||
+        version[1] !== cacheVersion[1] ||
+        version[2] !== cacheVersion[2]
+      ) {
+        setTimeout(() => openChangelog(cons.version), 1000);
+        storageManager.setJson('changelog-version', version);
       }
     });
 
