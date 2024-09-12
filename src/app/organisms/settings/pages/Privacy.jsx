@@ -15,6 +15,7 @@ import Toggle from '../../../atoms/button/Toggle';
 import SettingTile from '../../../molecules/setting-tile/SettingTile';
 
 import { toggleAction } from '../Api';
+import Button from '@src/app/atoms/button/Button';
 
 function PrivacySection() {
   const [hideTypingWarn, setHideTypingWarn] = useState(false);
@@ -165,6 +166,29 @@ function PrivacySection() {
                         min={0}
                       />
                       <div className="very-small text-gray">The proxy port.</div>
+                    </>
+                  }
+                />
+
+                <SettingTile
+                  title="Applying your new proxy settings"
+                  content={
+                    <>
+                      <div className='mt-2 mb-1'>
+                        <Button
+                          onClick={() => {
+                            matrixProxy.updateProxy();
+                            alert('Your proxy has been successfully updated.', 'Proxy alert');
+                          }}
+                          variant="theme"
+                        >
+                          Refresh Proxy
+                        </Button>
+                      </div>
+                      <div className="very-small text-gray">
+                        Click the button to refresh the proxy. If you configure an incorrect proxy,
+                        you will lose the client connection.
+                      </div>
                     </>
                   }
                 />
