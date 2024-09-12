@@ -98,7 +98,7 @@ function Changelog() {
           !isLoading ? (
             <>
               <h4>
-                Version {vp1}.{vp2}.{vp3}
+                Version {vp1}.{vp2}.{version3Fix !== String(vp3) ? vp3 : version[2]}
               </h4>
               <div className="text-freedom">
                 {content
