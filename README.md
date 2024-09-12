@@ -78,6 +78,8 @@ If you are trying to edit application image files, you are looking for the `publ
 
 If you want to modify the manifest file, it is present in `public/manifest.json`.
 
+Changelog manager: `src/versions.jsx` and `public/changelog` folder.
+
 Things more related to the mobile version of the application I recommend you use the <a href="https://marketplace.visualstudio.com/items?itemName=ionic.ionic" target="_blank">Ionic extension</a> from Visual Studio Code.
 
 ## Auto select custom domain
