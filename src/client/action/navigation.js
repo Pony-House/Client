@@ -149,6 +149,12 @@ export function openChangelog(version) {
   });
 }
 
+export function openProxyModal() {
+  appDispatcher.dispatch({
+    type: cons.actions.navigation.OPEN_PROXY_MODAL,
+  });
+}
+
 export function openEmojiBoard(roomId, cords, dom, requestEmojiCallback) {
   appDispatcher.dispatch({
     type: cons.actions.navigation.OPEN_EMOJIBOARD,
@@ -244,4 +250,29 @@ export function updateEmojiListData(roomId) {
     type: cons.actions.navigation.UPDATE_EMOJI_LIST_DATA,
     roomId,
   });
+}
+
+if (__ENV_APP__.MODE === 'development') {
+  global.navigationApi = {
+    openProxyModal,
+    openRoomViewer,
+    openProfileViewer,
+    openInviteList,
+    openPublicRooms,
+    openShortcutSpaces,
+    openSpaceManage,
+    selectSpace,
+    selectRoom,
+    openNavigation,
+    openChangelog,
+    openReadReceipts,
+    openViewSource,
+    openSearch,
+    openSpaceSettings,
+    openSpaceAddExisting,
+    openCreateRoom,
+    openJoinAlias,
+    openInviteUser,
+    openSettings,
+  };
 }

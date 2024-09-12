@@ -174,7 +174,7 @@ function PrivacySection() {
                   title="Applying your new proxy settings"
                   content={
                     <>
-                      <div className='mt-2 mb-1'>
+                      <div className="mt-2 mb-1">
                         <Button
                           onClick={() => {
                             matrixProxy.updateProxy();
