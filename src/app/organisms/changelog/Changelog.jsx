@@ -9,6 +9,7 @@ import navigation from '../../../client/state/navigation';
 
 import Dialog from '../../molecules/dialog/Dialog';
 import { markdown } from '@src/util/markdown';
+import Spinner from '@src/app/atoms/spinner/Spinner';
 
 function Changelog() {
   const [isOpen, setIsOpen] = useState(false);
@@ -95,7 +96,12 @@ function Changelog() {
                 : null}
             </div>
           </>
-        ) : null}
+        ) : (
+          <div className="tiny-form-align-center">
+            <Spinner size="small" className="me-3" />
+            Loading data...
+          </div>
+        )}
       </div>
     </Dialog>
   );
