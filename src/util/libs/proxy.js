@@ -12,6 +12,7 @@ class MatrixProxy extends EventEmitter {
   constructor() {
     super();
     this.Initialized = false;
+    this.proxyInit = false;
     this.protocols = [
       { value: 'socks5', text: 'Socks5' },
       { value: 'http', text: 'Http' },
@@ -49,7 +50,7 @@ class MatrixProxy extends EventEmitter {
 
   // Send Proxy Update
   updateProxy() {
-    if (this.Initialized) {
+    if (this.proxyInit) {
       // Electron Mode
       if (__ENV_APP__.ELECTRON_MODE && global.electronWindow) {
         global.electronWindow.setProxy(this.getProxyConfig());
@@ -63,7 +64,8 @@ class MatrixProxy extends EventEmitter {
   startProxy() {
     const tinyThis = this;
     return new Promise((resolve) => {
-      if (!tinyThis.Initialized) {
+      if (!tinyThis.proxyInit) {
+        tinyThis.proxyInit = true;
         tinyThis._start();
         // Elecron Mode
         if (__ENV_APP__.ELECTRON_MODE && global.electronWindow) {
@@ -122,6 +124,7 @@ class MatrixProxy extends EventEmitter {
   }
 
   reset(folder) {
+    this._start();
     if (typeof this.contentDefault[folder] !== 'undefined') {
       this.content[folder] = this.contentDefault[folder];
       storageManager.setJson('ponyHouse-proxy', this.content);
@@ -137,6 +140,7 @@ class MatrixProxy extends EventEmitter {
 
   // Config
   get(folder) {
+    this._start();
     if (typeof folder === 'string' && folder.length > 0) {
       if (typeof this.content[folder] !== 'undefined') return this.content[folder];
       return null;
@@ -145,6 +149,7 @@ class MatrixProxy extends EventEmitter {
   }
 
   set(folder, value) {
+    this._start();
     if (typeof folder === 'string') {
       this.content[folder] = value;
       storageManager.setJson('ponyHouse-proxy', this.content);

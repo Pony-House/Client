@@ -4,6 +4,9 @@ import WelcomePage from '@mods/WelcomePage';
 import storageManager from '@src/util/libs/Localstorage';
 import urlParams from '@src/util/libs/urlParams';
 
+import ProxyModal from '@src/app/organisms/proxy-modal/ProxyModal';
+import { openProxyModal } from '@src/client/action/navigation';
+
 import * as auth from '../../../client/action/auth';
 import cons from '../../../client/state/cons';
 import { getUrlParams } from '../../../util/common';
@@ -79,6 +82,7 @@ function Auth({ isDevToolsOpen = false }) {
   return (
     <>
       <ElectronSidebar isDevToolsOpen={isDevToolsOpen} />
+      <ProxyModal />
       <LoadingPage />
       <section className={`vh-100 auth-base${isDevToolsOpen ? ' devtools-open' : ''}`}>
         <div className="container py-5 h-100">
@@ -102,7 +106,7 @@ function Auth({ isDevToolsOpen = false }) {
 
                       <section className="border-top border-bg py-4 footer noselect">
                         <div className="row text-center d-flex justify-content-center">
-                          <div className="col-md-4 small">
+                          <div className={`col-md-${__ENV_APP__.ELECTRON_MODE ? '3' : '4'} small`}>
                             <a
                               href="https://github.com/Pony-House/Client/releases"
                               rel="noreferrer"
@@ -111,7 +115,22 @@ function Auth({ isDevToolsOpen = false }) {
                             >{`Version ${cons.version}`}</a>
                           </div>
 
-                          <div className="col-md-4 small">
+                          {__ENV_APP__.ELECTRON_MODE ? (
+                            <div className={`col-md-3 small`}>
+                              <a
+                                href="#!"
+                                className="text-bg-force"
+                                onClick={(e) => {
+                                  openProxyModal();
+                                  e.preventDefault();
+                                }}
+                              >
+                                Proxy Settings
+                              </a>
+                            </div>
+                          ) : null}
+
+                          <div className={`col-md-${__ENV_APP__.ELECTRON_MODE ? '3' : '4'} small`}>
                             <a
                               href="https://twitter.com/JasminDreasond"
                               target="_blank"
@@ -122,7 +141,7 @@ function Auth({ isDevToolsOpen = false }) {
                             </a>
                           </div>
 
-                          <div className="col-md-4 small">
+                          <div className={`col-md-${__ENV_APP__.ELECTRON_MODE ? '3' : '4'} small`}>
                             <a
                               href="https://matrix.org"
                               target="_blank"
