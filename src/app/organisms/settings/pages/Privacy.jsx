@@ -13,6 +13,8 @@ function PrivacySection() {
   const [sendReadReceipts, setSendReadReceipts] = useState(false);
   const [autoEncryptCreateDM, setAutoEncryptCreateDM] = useState(true);
 
+  const [proxyEnabled, setProxyEnabled] = useState(false);
+
   const basicUserMode = getAppearance('basicUserMode');
 
   useEffect(() => {
@@ -34,6 +36,22 @@ function PrivacySection() {
 
   return (
     <div>
+      {__ENV_APP__.ELECTRON_MODE ? (
+        <div className="card noselect mt-3">
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item very-small text-gray">Proxy</li>
+
+            <SettingTile
+              title="Enabled"
+              options={<Toggle className="d-inline-flex" isActive={proxyEnabled} />}
+              content={
+                <div className="very-small text-gray">Enable your defined proxy settings.</div>
+              }
+            />
+          </ul>
+        </div>
+      ) : null}
+
       <div className="card noselect mt-3">
         <ul className="list-group list-group-flush">
           <li className="list-group-item very-small text-gray">Rooms</li>
@@ -94,8 +112,10 @@ function PrivacySection() {
             }
           />
         </ul>
+      </div>
 
-        {!__ENV_APP__.DISABLE_ENCRYPT_SETTINGS ? (
+      {!__ENV_APP__.DISABLE_ENCRYPT_SETTINGS ? (
+        <div className="card noselect mt-3">
           <ul className="list-group list-group-flush">
             <li className="list-group-item very-small text-gray">DMs</li>
 
@@ -119,8 +139,8 @@ function PrivacySection() {
               }
             />
           </ul>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
     </div>
   );
 }

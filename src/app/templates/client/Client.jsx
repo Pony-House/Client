@@ -16,6 +16,7 @@ import settings from '@src/client/state/settings';
 import matrixAppearance from '@src/util/libs/appearance';
 import soundFiles from '@src/util/soundFiles';
 import storageManager from '@src/util/libs/Localstorage';
+import matrixProxy from '@src/util/libs/proxy';
 
 import { initHotkeys } from '../../../client/event/hotkeys';
 import { initRoomListListener } from '../../../client/event/roomList';
@@ -318,46 +319,27 @@ function Client({ isDevToolsOpen = false }) {
       }
     });
 
-    /* 
-
-      electronWindow.setProxy({});
-
-      direct - In direct mode all connections are created directly, without any proxy involved.
-      fixed_servers - In fixed_servers mode the proxy configuration is specified in proxyRules. This is the default mode if proxyRules is specified.
-      system - In system mode the proxy configuration is taken from the operating system. Note that the system mode is different from setting no proxy configuration. In the latter case, Electron falls back to the system settings only if no command-line options influence the proxy configuration.
-
-      {
-        mode: 'system',
-      }
-
-      {
-        mode: 'direct',
-      }
-
-      {
-        proxyRules: 'socks5://114.215.193.156:1080',
-        mode: 'fixed_servers',
-      }
-        
-    */
-
-    initMatrix
-      .init()
-      .then((tinyResult) => {
-        if (tinyResult.err && typeof tinyResult.err.message === 'string') {
-          setErrorMessage(tinyResult.err.message);
+    // Proxy
+    matrixProxy.startProxy().then(() => {
+      // Start Client
+      initMatrix
+        .init()
+        .then((tinyResult) => {
+          if (tinyResult.err && typeof tinyResult.err.message === 'string') {
+            setErrorMessage(tinyResult.err.message);
+            playFatalBeep();
+          }
+          setStartWorked(tinyResult.userId !== null);
+        })
+        .catch((err) => {
+          console.error(err);
+          if (typeof err.message === 'string')
+            setErrorMessage(`${err.message}${err.code ? ` CODE: ${err.code}` : ''}`);
+          else setErrorMessage(`Unknown Error ${err.code ? err.code : '???'}`);
           playFatalBeep();
-        }
-        setStartWorked(tinyResult.userId !== null);
-      })
-      .catch((err) => {
-        console.error(err);
-        if (typeof err.message === 'string')
-          setErrorMessage(`${err.message}${err.code ? ` CODE: ${err.code}` : ''}`);
-        else setErrorMessage(`Unknown Error ${err.code ? err.code : '???'}`);
-        playFatalBeep();
-        setStartWorked(null);
-      });
+          setStartWorked(null);
+        });
+    });
   }, []);
 
   useEffect(() => {
