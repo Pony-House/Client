@@ -41,22 +41,24 @@ class MatrixProxy extends EventEmitter {
   // Start Proxy
   startProxy() {
     const tinyThis = this;
-    this._start();
     return new Promise((resolve) => {
-      // Elecron Mode
-      if (__ENV_APP__.ELECTRON_MODE && global.electronWindow) {
-        global.electronWindow.once('setProxy', (data) => {
-          resolve();
-          tinyThis.emit('setProxy', { type: 'electron', data });
-          global.electronWindow.on('setProxy', (data2) => {
-            tinyThis.emit('setProxy', { type: 'electron', data: data2 });
+      if (!tinyThis.Initialized) {
+        tinyThis._start();
+        // Elecron Mode
+        if (__ENV_APP__.ELECTRON_MODE && global.electronWindow) {
+          global.electronWindow.once('setProxy', (data) => {
+            resolve();
+            tinyThis.emit('setProxy', { type: 'electron', data });
+            global.electronWindow.on('setProxy', (data2) => {
+              tinyThis.emit('setProxy', { type: 'electron', data: data2 });
+            });
           });
-        });
-        global.electronWindow.setProxy(tinyThis.getProxyConfig());
-      }
+          global.electronWindow.setProxy(tinyThis.getProxyConfig());
+        }
 
-      // Normal
-      else resolve();
+        // Normal
+        else resolve();
+      } else resolve();
     });
   }
 
