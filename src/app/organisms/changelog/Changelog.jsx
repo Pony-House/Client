@@ -85,7 +85,7 @@ function Changelog() {
       onAfterClose={afterClose}
       onRequestClose={closeDialog}
     >
-      <div className="p-3">
+      <div className="p-4">
         {!isLoading ? (
           <>
             <h4>Version {cons.version}</h4>
