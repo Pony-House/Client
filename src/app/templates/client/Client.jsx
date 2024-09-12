@@ -50,6 +50,7 @@ import LoadingPage from './Loading';
 import urlParams from '../../../util/libs/urlParams';
 import {
   openChangelog,
+  openProxyModal,
   openRoomViewer,
   selectRoom,
   selectRoomMode,
@@ -376,6 +377,7 @@ function Client({ isDevToolsOpen = false }) {
                     <MenuItem onClick={() => initMatrix.clearCacheAndReload()}>
                       Clear cache & reload
                     </MenuItem>
+                    <MenuItem onClick={() => openProxyModal()}>Proxy Settings</MenuItem>
                     <MenuItem onClick={() => initMatrix.logout()}>Logout</MenuItem>
                   </>
                 }
@@ -472,6 +474,7 @@ function Client({ isDevToolsOpen = false }) {
                 <MenuItem onClick={() => initMatrix.clearCacheAndReload()}>
                   Clear cache & reload
                 </MenuItem>
+                <MenuItem onClick={() => openProxyModal()}>Proxy Settings</MenuItem>
                 <MenuItem onClick={() => initMatrix.logout()}>Logout</MenuItem>
               </>
             }
