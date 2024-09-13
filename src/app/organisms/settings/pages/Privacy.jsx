@@ -52,7 +52,7 @@ function PrivacySection() {
   return (
     <div>
       {canProxy() ? (
-        <div className="card noselect mt-3">
+        <div className="card noselect">
           <ul className="list-group list-group-flush">
             <li className="list-group-item very-small text-gray">Proxy</li>
 

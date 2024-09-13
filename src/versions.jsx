@@ -144,6 +144,8 @@ export const softwareVersions = [
     [
       // 1.5.0
       { date: 1726112331000 },
+      // 1.5.1
+      { date: 0 },
     ],
   ],
 ];
