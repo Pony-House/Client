@@ -101,9 +101,10 @@ If you don't have nodejs, please install this:
 
 https://nodejs.org/
 
-If you don't have yarn installed on your computer, it is recommended that you install it:
+If you don't have yarn and asar installed on your computer, it is recommended that you install it:
 ```sh
 npm install yarn -g
+npm install asar -g
 ```
 
 Execute the following commands to start a development server (or a Ionic environment):
