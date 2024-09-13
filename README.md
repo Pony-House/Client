@@ -57,6 +57,11 @@ Just like IPFS, you can use your own instance hosted on your machine, or some th
 ### Yjs
 Yjs is a shared editing framework. It exposes Shared Types that can be manipulated like any other data type. But they are synced automatically using the room events.
 
+### Tor (Or any other proxy)
+Available only for desktop versions. You can natively configure a proxy to run within your client.
+
+The configuration is available on the login screen, on the loading screen, and on the client's `Security` tab.
+
 ## Custom App Style
 Would you like to customize your login page to your website? Then you can check out some values available in the `config/custom-css.scss` file.
 
