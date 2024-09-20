@@ -401,7 +401,7 @@ class RoomsInput extends EventEmitter {
     const room = initMatrix.matrixClient.getRoom(roomId);
 
     if (fileType === 'image') {
-      // let imgData;
+      let imgData;
       if (!isMobile(true)) {
         imgData = await blobToBase64(file);
       } else {
