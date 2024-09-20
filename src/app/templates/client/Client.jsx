@@ -430,7 +430,7 @@ function Client({ isDevToolsOpen = false }) {
         <ElectronSidebar isDevToolsOpen={isDevToolsOpen} />
         <LoadingPage />
         {tinyMod}
-        <DragDrop />
+        {!isMobile() ? <DragDrop /> : null}
         <div
           ref={navWrapperRef}
           className={`${__ENV_APP__.ELECTRON_MODE ? 'root-electron-style ' : ''}client-container ${classesDragDrop.join(' ')}${navigationSidebarHidden ? ' disable-navigation-wrapper' : ''}${isDevToolsOpen ? ' devtools-open' : ''}`}
