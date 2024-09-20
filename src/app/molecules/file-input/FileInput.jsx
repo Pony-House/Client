@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
 
-// import { Capacitor } from '@capacitor/core';
-// import { Filesystem } from '@capacitor/filesystem';
-// import { FilePicker } from '@capawesome/capacitor-file-picker';
+import { Capacitor } from '@capacitor/core';
+import { Filesystem } from '@capacitor/filesystem';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 import { objType } from 'for-promise/utils/lib.mjs';
 import initMatrix from '@src/client/initMatrix';
@@ -24,8 +24,7 @@ const FileInput = React.forwardRef(
     ref,
   ) => {
     const inputRef = useRef(null);
-    // const isNativeMobile = Capacitor.isNativePlatform();
-    const isNativeMobile = false;
+    const isNativeMobile = Capacitor.isNativePlatform();
 
     // Effect
     useEffect(() => {
@@ -80,34 +79,31 @@ const uploadContent = (file, ops, forceDefault = false) => {
     }
   }
 
-  // if (!Capacitor.isNativePlatform() || forceDefault) {
-  return initMatrix.matrixClient.uploadContent(file, tinyOps);
-  // }
+  if (!Capacitor.isNativePlatform() || forceDefault) {
+    return initMatrix.matrixClient.uploadContent(file, tinyOps);
+  }
 
   if (file) {
     if (typeof file.type === 'string') tinyOps.type = file.type;
     if (typeof file.name === 'string') tinyOps.name = file.name;
   }
 
-  /* return initMatrix.matrixClient.uploadContent(Buffer.from(file.data, 'base64'), tinyOps); */
+  return initMatrix.matrixClient.uploadContent(Buffer.from(file.data, 'base64'), tinyOps);
 };
 
-/* const createObjectURL = (file, groupId, forceDefault = false) => {
+const createObjectURL = (file, groupId, forceDefault = false) => {
   if (!Capacitor.isNativePlatform() || forceDefault) {
-  return blobUrlManager.insert(file, groupId);
+    return blobUrlManager.insert(file, groupId);
   }
   return blobUrlManager.insert(file.data, groupId);
-}; */
-const createObjectURL = (file, groupId) => blobUrlManager.insert(file, groupId);
+};
 
-/* const convertToBase64Mobile = (file) => {
+const convertToBase64Mobile = (file) => {
   if (!Capacitor.isNativePlatform()) {
-  return file;
+    return file;
   }
   return file.data;
-}; */
-
-const convertToBase64Mobile = (file) => file;
+};
 
 const fileReader = (file, readerType = 'readAsText') =>
   new Promise((resolve, reject) => {
@@ -116,9 +112,9 @@ const fileReader = (file, readerType = 'readAsText') =>
       reader.onload = (event) => resolve(event.target.result);
       reader.onerror = (err) => reject(err);
 
-      // if (!Capacitor.isNativePlatform()) {
-      reader[readerType](file);
-      /* } else {
+      if (!Capacitor.isNativePlatform()) {
+        reader[readerType](file);
+      } else {
         if (readerType === 'readAsText') {
           resolve(file.atob());
         }
@@ -127,7 +123,7 @@ const fileReader = (file, readerType = 'readAsText') =>
         if (readerType === 'readAsDataURL') {
           resolve(file.atob());
         }
-      } */
+      }
     } catch (err) {
       reject(err);
     }
@@ -136,12 +132,12 @@ const fileReader = (file, readerType = 'readAsText') =>
 // Click open file
 const fileInputClick = async (inputRef /* , onChange */) => {
   // Normal
-  // if (!Capacitor.isNativePlatform()) {
-  if (inputRef.current) inputRef.current.click();
-  // }
+  if (!Capacitor.isNativePlatform()) {
+    if (inputRef.current) inputRef.current.click();
+  }
 
   // Mobile
-  /* else if (inputRef.current) {
+  else if (inputRef.current) {
     let perm = await Filesystem.checkPermissions();
     if (perm && perm.publicStorage === 'prompt') perm = await Filesystem.requestPermissions();
     if (perm && perm.publicStorage !== 'granted') {
@@ -183,21 +179,21 @@ const fileInputClick = async (inputRef /* , onChange */) => {
       };
       onChange(inputRef.current, changeFunc);
     }
-  } */
+  }
 };
 
 // Get file value
 const fileInputValue = (inputRef, value) => {
   if (typeof value !== 'undefined') {
-    // if (!Capacitor.isNativePlatform()) {
-    if (inputRef.current) inputRef.current.value = value;
-    // }
+    if (!Capacitor.isNativePlatform()) {
+      if (inputRef.current) inputRef.current.value = value;
+    }
   } else {
-    // if (!Capacitor.isNativePlatform()) {
-    if (inputRef.current) return inputRef.current.value;
+    if (!Capacitor.isNativePlatform()) {
+      if (inputRef.current) return inputRef.current.value;
+      return null;
+    }
     return null;
-    // }
-    // return null;
   }
 };
 

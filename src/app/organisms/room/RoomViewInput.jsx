@@ -1097,16 +1097,13 @@ function RoomViewInput({ roomId, threadId, roomTimeline, viewEvent, refRoomInput
   // Insert File
   useEffect(() => {
     if (!fileSrc && attachment) {
-      /* if (!isMobile(true)) {
+      if (!isMobile(true)) {
         blobToBase64(attachment).then((tinySrc) => {
-          setFileSrc(`data:${attachment.type};base64, ${tinySrc}`);
+          setFileSrc(tinySrc);
         });
       } else {
         setFileSrc(`data:${attachment.type};base64, ${attachment.data}`);
-      } */
-      blobToBase64(attachment).then((tinySrc) => {
-        setFileSrc(tinySrc);
-      });
+      }
     } else if (fileSrc && !attachment) {
       setFileSrc(null);
     }

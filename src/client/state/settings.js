@@ -1,4 +1,4 @@
-// import { StatusBar } from '@capacitor/status-bar';
+import { StatusBar } from '@capacitor/status-bar';
 import $ from 'jquery';
 
 import EventEmitter from 'events';
@@ -253,12 +253,12 @@ class Settings extends EventEmitter {
   }
 
   changeMobileBackground(/* value = 'default' */) {
-    // const data = this.themes[this.themeIndex]?.data;
+    const data = this.themes[this.themeIndex]?.data;
     return new Promise((resolve, reject) => {
       if (isMobile(true)) {
         try {
-          // StatusBar.setBackgroundColor({ color: data.statusBar.backgroundColor[value] });
-          // StatusBar.setStyle({ style: data.statusBar.style });
+          StatusBar.setBackgroundColor({ color: data.statusBar.backgroundColor[value] });
+          StatusBar.setStyle({ style: data.statusBar.style });
         } catch (err) {
           reject(err);
           return;

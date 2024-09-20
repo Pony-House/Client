@@ -6,7 +6,7 @@ import { EventTimeline } from 'matrix-js-sdk';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import blobUrlManager, { blobToBase64 } from '@src/util/libs/blobUrlManager';
-// import { isMobile } from '@src/util/libs/mobile';
+import { isMobile } from '@src/util/libs/mobile';
 import { fileReader, uploadContent } from '@src/app/molecules/file-input/FileInput';
 import { getAppearance } from '@src/util/libs/appearance';
 
@@ -402,12 +402,11 @@ class RoomsInput extends EventEmitter {
 
     if (fileType === 'image') {
       // let imgData;
-      /* if (!isMobile(true)) {
+      if (!isMobile(true)) {
         imgData = await blobToBase64(file);
       } else {
         imgData = `data:${file.type};base64, ${file.data}`;
-      } */
-      const imgData = await blobToBase64(file);
+      }
 
       const img = await loadImage(imgData);
 

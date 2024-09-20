@@ -1,4 +1,6 @@
 import React from 'react';
+import { openUrl } from '@src/util/message/urlProtection';
+
 import cons from '@src/client/state/cons';
 import Img from '@src/app/atoms/image/Image';
 
@@ -33,7 +35,7 @@ function Welcome() {
               variant="primary"
               size="md"
               className="small"
-              onClick={() => window.open('https://github.com/Pony-House/Client')}
+              onClick={() => openUrl('https://github.com/Pony-House/Client')}
             >
               <i className="fa-solid fa-code me-2" /> Source Code
             </Button>

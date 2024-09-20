@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
 
+import { BlurhashCanvas } from 'react-blurhash';
+
 import Img from '@src/app/atoms/image/Image';
 import initMatrix, { fetchFn } from '@src/client/initMatrix';
 import blobUrlManager from '@src/util/libs/blobUrlManager';
@@ -9,7 +11,8 @@ import blobUrlManager from '@src/util/libs/blobUrlManager';
 import { formatBytes } from '@src/util/tools';
 import { getFileIcon } from '@src/util/icons/files';
 
-import { BlurhashCanvas } from 'react-blurhash';
+import { openUrl } from '@src/util/message/urlProtection';
+
 import imageViewer from '../../../util/imageViewer';
 import Tooltip from '../../atoms/tooltip/Tooltip';
 import Text from '../../atoms/text/Text';
@@ -128,7 +131,7 @@ function FileHeader({
               size="extra-small"
               tooltip="Open in new tab"
               fa="fa-solid fa-arrow-up-right-from-square"
-              onClick={() => window.open(url || link)}
+              onClick={() => openUrl(url || link)}
             />
           )}
           <a href={url || link} download={name} target="_blank" rel="noreferrer">

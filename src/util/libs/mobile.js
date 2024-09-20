@@ -1,6 +1,6 @@
-// import { App } from '@capacitor/app';
-// import { Capacitor } from '@capacitor/core';
-// import { LocalNotifications } from '@capacitor/local-notifications';
+import { App } from '@capacitor/app';
+import { Capacitor } from '@capacitor/core';
+import { LocalNotifications } from '@capacitor/local-notifications';
 import EventEmitter from 'events';
 
 // Emitter
@@ -10,8 +10,8 @@ class MobileEvents extends EventEmitter {
     this.checkingNotificationPerm = false;
     this.allowNotifications = { display: null };
 
-    // const tinyThis = this;
-    /* if (Capacitor.isNativePlatform()) {
+    const tinyThis = this;
+    if (Capacitor.isNativePlatform()) {
       App.addListener('backButton', (data) => tinyThis.emit('backButton', data));
 
       App.addListener('appStateChange', (data) => tinyThis.emit('appStateChange', data));
@@ -38,13 +38,13 @@ class MobileEvents extends EventEmitter {
           console.log('[mobile] Restored state:', data);
         });
       }
-    } */
+    }
   }
 
   checkNotificationPerm() {
-    // const tinyThis = this;
-    return new Promise((resolve /* , reject */) => {
-      /* if (!tinyThis.checkingNotificationPerm && Capacitor.isNativePlatform()) {
+    const tinyThis = this;
+    return new Promise((resolve, reject) => {
+      if (!tinyThis.checkingNotificationPerm && Capacitor.isNativePlatform()) {
         tinyThis.checkingNotificationPerm = true;
         LocalNotifications.checkPermissions()
           .then(async (permStatus) => {
@@ -65,35 +65,34 @@ class MobileEvents extends EventEmitter {
             tinyThis.checkingNotificationPerm = false;
             reject(err);
           });
-      } */
+      }
       resolve(null);
     });
   }
 
   getNotificationPerm() {
-    // if (!Capacitor.isNativePlatform()) {
-    return window.Notification?.permission;
-    // }
-    // return this.allowNotifications.display;
+    if (!Capacitor.isNativePlatform()) {
+      return window.Notification?.permission;
+    }
+    return this.allowNotifications.display;
   }
 }
 
 const mobileEvents = new MobileEvents();
 mobileEvents.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
 
-export function isMobile(/* isNative = false */) {
-  // if (!isNative) {
-  return (
-    // Capacitor.isNativePlatform() ||
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-  );
-  // }
-  // return Capacitor.isNativePlatform();
+export function isMobile(isNative = false) {
+  if (!isNative) {
+    return (
+      Capacitor.isNativePlatform() ||
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    );
+  }
+  return Capacitor.isNativePlatform();
 }
 
 export function notificationStatus() {
-  // const mobileMode = Capacitor.isNativePlatform();
-  const mobileMode = false;
+  const mobileMode = Capacitor.isNativePlatform();
   if (!mobileMode && window.Notification?.permission) {
     return window.Notification?.permission;
   }
@@ -105,12 +104,11 @@ export function notificationStatus() {
 }
 
 export function noNotification() {
-  return /* !Capacitor.isNativePlatform() && */ window.Notification === undefined;
+  return !Capacitor.isNativePlatform() && window.Notification === undefined;
 }
 
 export function requestNotification() {
-  // const mobileMode = Capacitor.isNativePlatform();
-  const mobileMode = false;
+  const mobileMode = Capacitor.isNativePlatform();
   if (!mobileMode) {
     return window.Notification.requestPermission();
   }

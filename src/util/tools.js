@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
-// import { Toast } from '@capacitor/toast';
-// import { Capacitor } from '@capacitor/core';
+import { Toast } from '@capacitor/toast';
+import { Capacitor } from '@capacitor/core';
 import { objType } from 'for-promise/utils/lib.mjs';
 import { compareVersions } from 'compare-versions';
 
@@ -11,7 +11,7 @@ import cons from '@src/client/state/cons';
 
 import tinyAPI from './mods';
 import { twemojify } from './twemojify';
-import mobileEvents /* isMobile*/ from './libs/mobile';
+import mobileEvents, { isMobile } from './libs/mobile';
 import { convertRoomId } from './matrixUtil';
 
 let resizePlace = null;
@@ -98,12 +98,12 @@ export function checkVisibleWindow() {
 }
 
 export function toast(msg, title) {
-  return new Promise((resolve /* reject */) => {
-    /* if (isMobile(true)) {
+  return new Promise((resolve, reject) => {
+    if (isMobile(true)) {
       Toast.show({ text: msg }).then(resolve).catch(reject);
-    } else { */
-    resolve(alert(msg, title));
-    // }
+    } else {
+      resolve(alert(msg, title));
+    }
   });
 }
 
@@ -562,7 +562,7 @@ export function cyrb128(str) {
 }
 
 export function isBrowser() {
-  return !__ENV_APP__.ELECTRON_MODE; // && !Capacitor.isNativePlatform()
+  return !__ENV_APP__.ELECTRON_MODE && !Capacitor.isNativePlatform();
 }
 
 export function getShareUrl(aliasId) {

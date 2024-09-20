@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
 
+import { openUrl } from '@src/util/message/urlProtection';
 import mobileEvents, { isMobile } from '@src/util/libs/mobile';
 
 import appLoadMsg from '@mods/appLoadMsg';
@@ -85,7 +86,7 @@ export const versionChecker = () =>
               $('<center>').append(
                 $('<a>', { href: tinyUrl, class: 'btn btn-primary text-bg-force' })
                   .on('click', () => {
-                    global.open(tinyUrl, '_target');
+                    openUrl(tinyUrl, '_target');
                     tinyModal.hide();
                     return false;
                   })

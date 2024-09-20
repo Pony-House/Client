@@ -7,6 +7,7 @@ import { fetchFn } from '@src/client/initMatrix';
 
 import { btModal, toast } from './tools';
 import blobUrlManager from './libs/blobUrlManager';
+import { openUrl } from './message/urlProtection';
 
 export default function imageViewer(data) {
   return new Promise(async (resolve, reject) => {
@@ -76,7 +77,7 @@ export default function imageViewer(data) {
               isButton: true,
               html: '<i class="fa-solid fa-arrow-up-right-from-square pswp__icn" height="32" width="32"></i>',
               onClick: () => {
-                window.open(url, '_blank').focus();
+                openUrl(url, '_blank').focus();
               },
             });
           }

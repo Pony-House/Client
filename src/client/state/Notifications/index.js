@@ -1,4 +1,4 @@
-// import { LocalNotifications } from '@capacitor/local-notifications';
+import { LocalNotifications } from '@capacitor/local-notifications';
 import $ from 'jquery';
 import { ClientEvent, MatrixEventEvent, NotificationCountType, RoomEvent } from 'matrix-js-sdk';
 import EventEmitter from 'events';
@@ -269,9 +269,9 @@ class Notifications extends EventEmitter {
           notiData.largeBody = data.body;
         }
 
-        /* await LocalNotifications.schedule({
+        await LocalNotifications.schedule({
           notifications: [notiData],
-        }); */
+        });
       }
 
       // Browser and Desktop

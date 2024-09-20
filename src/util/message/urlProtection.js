@@ -1,5 +1,5 @@
 import $ from 'jquery';
-// import { Browser } from '@capacitor/browser';
+import { Browser } from '@capacitor/browser';
 import { objType } from 'for-promise/utils/lib.mjs';
 
 import { btModal } from '../tools';
@@ -7,19 +7,19 @@ import tinyAPI from '../mods';
 import convertProtocols from '../libs/convertProtocols';
 import { setLoadingPage } from '../../app/templates/client/Loading';
 import storageManager from '../libs/Localstorage';
-// import { isMobile } from '../libs/mobile';
+import { isMobile } from '../libs/mobile';
 
 export const openUrl = (url) =>
-  new Promise((resolve /*, reject */) => {
+  new Promise((resolve, reject) => {
     // Mobile
-    /* if (isMobile(true)) {
+    if (isMobile(true)) {
       Browser.open({ url }).then(resolve).catch(reject);
-    } */
+    }
 
     // Browser
-    // else {
-    resolve(global.open(url, '_blank'));
-    // }
+    else {
+      resolve(global.open(url, '_blank'));
+    }
   });
 
 export default async (url, vanillaUrl) => {
