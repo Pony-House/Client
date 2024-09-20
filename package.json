@@ -42,8 +42,10 @@
   },
   "license": "AGPL-3.0-only",
   "dependencies": {
+    "@capacitor/android": "6.1.2",
     "@capacitor/app": "6.0.1",
     "@capacitor/browser": "6.0.2",
+    "@capacitor/cli": "6.1.2",
     "@capacitor/core": "6.1.2",
     "@capacitor/filesystem": "6.0.1",
     "@capacitor/local-notifications": "6.1.0",

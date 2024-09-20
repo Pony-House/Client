@@ -7,6 +7,7 @@
     "xabikos.javascriptsnippets",
     "naumovs.color-highlight",
     "bierner.markdown-preview-github-styles",
-    "sasa.vscode-sass-format"
+    "sasa.vscode-sass-format",
+    "ionic.ionic"
   ]
 }
