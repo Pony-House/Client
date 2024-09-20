@@ -7,6 +7,8 @@ import Modal from 'react-bootstrap/Modal';
 import objectHash from 'object-hash';
 import { objType } from 'for-promise/utils/lib.mjs';
 
+import { Network as MobileNetwork } from '@capacitor/network';
+
 import { getAppearance } from '@src/util/libs/appearance';
 import settings from '@src/client/state/settings';
 import { AvatarJquery } from '@src/app/atoms/avatar/Avatar';
@@ -33,17 +35,23 @@ import { getCurrentState } from '../../../util/matrixUtil';
 import { selectRoomMode } from '../../../client/action/navigation';
 import { setLoadingPage } from '../../templates/client/Loading';
 import PonyRoomEvent from '../space-settings/PonyRoomEvent';
+import { Capacitor } from '@capacitor/core';
 
 // System State
 function useSystemState() {
   // Data
+  const [mobileState, setMobileState] = useState({ status: null });
+  // const [oldMobileState, setOldMobileState] = useState({ status: null });
+
   const [systemState, setSystemState] = useState({ status: null, value: null });
   const [oldSystemState, setOldSystemState] = useState({ status: null, value: null });
+
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
     // State Check
     const handleSystemState = (state) => {
+      console.log(`[connection] ${state}`);
       if (!isRefreshing) {
         if (state === 'ERROR' || state === 'RECONNECTING' || state === 'STOPPED') {
           const tinyStatus = { status: 'Connection lost!', value: state };
@@ -84,16 +92,30 @@ function useSystemState() {
 
     // Insert new old
     if (objectHash(systemState) !== objectHash(oldSystemState)) setOldSystemState(systemState);
+    // if (objectHash(mobileState) !== objectHash(oldMobileState)) setOldMobileState(mobileState);
+
+    // Mobile Checker
+    const mobileChecker = (status) => {
+      // 'wifi' | 'cellular' | 'none' | 'unknown'
+      console.log(`[mobile-connection] ${status}`);
+      setMobileState({
+        status,
+      });
+    };
 
     // Sync
     initMatrix.matrixClient.on(ClientEvent.Sync, handleSystemState);
+    if (Capacitor.isNativePlatform())
+      MobileNetwork.addListener('networkStatusChange', mobileChecker);
     return () => {
       initMatrix.matrixClient.removeListener(ClientEvent.Sync, handleSystemState);
+      if (Capacitor.isNativePlatform())
+        MobileNetwork.removeAllListeners('networkStatusChange', mobileChecker);
     };
-  }, [systemState]);
+  }, [systemState, mobileState]);
 
   // Complete
-  return [systemState];
+  return [systemState, mobileState];
 }
 
 // Drawer

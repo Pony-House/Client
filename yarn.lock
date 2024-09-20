@@ -242,6 +242,11 @@
     tslib "^2.4.0"
     xml2js "^0.5.0"
 
+"@capacitor/clipboard@6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/clipboard/-/clipboard-6.0.1.tgz#277455cef16b2b43af7094e5780f6b1acd090b3b"
+  integrity sha512-aN6QsZD79Z605sK9YA8JtJLuD5vI/WrPzT/RCWUWBWPdFzhnRdT45dbsnQVvL2kzzm5aTsCAPepkdRqpvWwCGA==
+
 "@capacitor/core@6.1.2":
   version "6.1.2"
   resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-6.1.2.tgz#a072e78b46693a6a47047cfc90d5f7cc48299fe9"
@@ -258,6 +263,11 @@
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/@capacitor/local-notifications/-/local-notifications-6.1.0.tgz#990ab614a171dd5b1300047848340c423e438553"
   integrity sha512-EjEnbApdFiZYeJgxKIDtgFRNSmeHySnyAeyoTn6HUTYMkTOaHFGAd7NU964k7gbX4al/CBp0cMA8iMG0c7kh1w==
+
+"@capacitor/network@6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@capacitor/network/-/network-6.0.2.tgz#f05320cc4ba9bf4030a225f6f56a7fcc2f68d006"
+  integrity sha512-c0aZb0vRodvUO7ugZdQfMXr7LHUgZSKaJcOfu53gwuxGuvrIUvqPvaog+GlNLp7SB4Iw74Js7cemnIqsR5yxzw==
 
 "@capacitor/status-bar@6.0.1":
   version "6.0.1"

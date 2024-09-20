@@ -161,3 +161,11 @@ window.speechSynthesis.speak(utterance);
 utterance.onend = function() {
 // do something when the line ends
 };
+
+======================================
+
+Mobile:
+
+File input não funcionando.
+Alguns carregamentos de imagem falhando sobre blur.
+Testar o encrypt

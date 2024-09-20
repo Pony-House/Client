@@ -1,3 +1,5 @@
+import { Clipboard } from '@capacitor/clipboard';
+import { Capacitor } from '@capacitor/core';
 import forPromise from 'for-promise';
 
 // Emitter
@@ -12,8 +14,14 @@ class TinyClipboard {
 
   // Copy text
   copyText(text) {
+    // Mobile API
+    if (Capacitor.isNativePlatform()) {
+      return Clipboard.write({
+        string: text,
+      });
+    }
     // Clipboard API
-    if (this.existNavigator) {
+    else if (this.existNavigator) {
       return navigator.clipboard.writeText(text);
     }
     // Classic API
@@ -35,7 +43,7 @@ class TinyClipboard {
   }
 
   // Copy blob text
-  async copyBlobText(text) {
+  /* async copyBlobText(text) {
     const tinyThis = this;
     return new Promise((resolve, reject) => {
       if (tinyThis.existNavigator) {
@@ -47,7 +55,7 @@ class TinyClipboard {
         reject(new Error('Clipboard API not found!'));
       }
     });
-  }
+  } */
 
   // Copy blob data
   copyBlob(blob) {
@@ -62,8 +70,10 @@ class TinyClipboard {
           ])
           .then(resolve)
           .catch(reject);
-      } else {
+      } else if (!Capacitor.isNativePlatform()) {
         reject(new Error('Clipboard API not found!'));
+      } else {
+        resolve(null);
       }
     });
   }
