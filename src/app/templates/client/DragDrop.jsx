@@ -45,12 +45,12 @@ function DragDrop() {
     } else {
       setIsDropping(false);
     }
-    e.preventDefault();
+    // event.preventDefault();
   }
 
   function handleDragLeave() {
     setIsDropping(false);
-    e.preventDefault();
+    // event.preventDefault();
   }
 
   function handleDrop(event) {

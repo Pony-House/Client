@@ -252,7 +252,9 @@ const Img = React.forwardRef(
         // Normal image
         if (
           !tinyImageUrl ||
-          (!tinyImageUrl.startsWith('blob:') && !tinyImageUrl.startsWith('./'))
+          (!tinyImageUrl.startsWith('blob:') &&
+            !tinyImageUrl.startsWith('data:') &&
+            !tinyImageUrl.startsWith('./'))
         ) {
           if (!usingFreezePlugin) progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
           else if (tinyImageUrl) {
@@ -366,7 +368,9 @@ const Img = React.forwardRef(
         // Anim image
         if (
           !tinyImageAnimUrl ||
-          (!tinyImageAnimUrl.startsWith('blob:') && !tinyImageAnimUrl.startsWith('./'))
+          (!tinyImageAnimUrl.startsWith('blob:') &&
+            !tinyImageAnimUrl.startsWith('data:') &&
+            !tinyImageAnimUrl.startsWith('./'))
         ) {
           progressLoad(tinyImageAnimUrl, setBlobAnimSrc, setImgMimeAnim, true);
         } else {
@@ -433,7 +437,9 @@ const Img = React.forwardRef(
     if (isLoading >= 2) {
       const theImage =
         blobSrc &&
-        ((Array.isArray(imgMime) && imgMime[0] === 'image') || tinyImageUrl.startsWith('blob:'))
+        ((Array.isArray(imgMime) && imgMime[0] === 'image') ||
+          tinyImageUrl.startsWith('blob:') ||
+          tinyImageUrl.startsWith('data:'))
           ? !blobAnimSrc ||
             blobAnimSrc === blobSrc ||
             !useAnimation ||
@@ -854,7 +860,12 @@ function ImgJquery({
     // Execute the image loading
 
     // Normal image
-    if (!tinyImageUrl || (!tinyImageUrl.startsWith('blob:') && !tinyImageUrl.startsWith('./'))) {
+    if (
+      !tinyImageUrl ||
+      (!tinyImageUrl.startsWith('blob:') &&
+        !tinyImageUrl.startsWith('data:') &&
+        !tinyImageUrl.startsWith('./'))
+    ) {
       if (!useFreezePlugin) progressLoad(tinyImageUrl, setBlobSrc, setImgMime, false);
       else if (tinyImageUrl) {
         // Get freeze cache
@@ -960,7 +971,9 @@ function ImgJquery({
     // Anim image
     if (
       !tinyImageAnimUrl ||
-      (!tinyImageAnimUrl.startsWith('blob:') && !tinyImageAnimUrl.startsWith('./'))
+      (!tinyImageAnimUrl.startsWith('blob:') &&
+        !tinyImageAnimUrl.startsWith('data:') &&
+        !tinyImageAnimUrl.startsWith('./'))
     ) {
       progressLoad(tinyImageAnimUrl, setBlobAnimSrc, setImgMimeAnim, true);
     } else {
