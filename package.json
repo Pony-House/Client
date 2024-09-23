@@ -14,7 +14,7 @@
     "electron:start": "git submodule update --init && cross-env ELECTRON_MODE=true vite dev",
     "electron:build": "git submodule update --init && cross-env ELECTRON_MODE=true vite build && electron-builder",
     "mobile:start": "git submodule update --init && ionic capacitor run",
-    "mobile:build": "git submodule update --init && ionic capacitor sync && ionic capacitor build",
+    "mobile:build": "git submodule update --init && ionic capacitor build",
     "mobile:sync": "git submodule update --init && ionic capacitor sync",
     "lint": "yarn check:eslint && yarn check:prettier",
     "check:eslint": "eslint src/* && eslint electron/* && eslint mods/* --no-error-on-unmatched-pattern",
