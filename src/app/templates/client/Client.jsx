@@ -371,7 +371,7 @@ function Client({ isDevToolsOpen = false }) {
           <ElectronSidebar isDevToolsOpen={isDevToolsOpen} />
           <ProxyModal />
           <div
-            className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}${isDevToolsOpen ? ' devtools-open' : ''}`}
+            className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}${isDevToolsOpen ? ' devtools-open' : ''} noselect`}
           >
             <div className="loading__menu">
               <ContextMenu
@@ -471,7 +471,7 @@ function Client({ isDevToolsOpen = false }) {
       <ElectronSidebar isDevToolsOpen={isDevToolsOpen} />
       <ProxyModal />
       <div
-        className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}${isDevToolsOpen ? ' devtools-open' : ''}`}
+        className={`loading-display${__ENV_APP__.ELECTRON_MODE ? ' root-electron-style' : ''}${isDevToolsOpen ? ' devtools-open' : ''} noselect`}
       >
         <div className="loading__menu">
           <ContextMenu
