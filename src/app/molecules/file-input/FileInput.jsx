@@ -154,7 +154,11 @@ const fileInputClick = async (inputRef /* , onChange */) => {
     const result = await FilePicker.pickFiles({
       types: typeof accept === 'string' ? accept.replace(/\, /g, ',').split(',') : null,
       readData: true,
-      multiple,
+      limit:
+        (typeof multiple === 'string' && multiple === 'true') ||
+        (typeof multiple === 'boolean' && multiple)
+          ? 0
+          : 1,
     });
 
     if (objType(result, 'object') && Array.isArray(result.files)) {
