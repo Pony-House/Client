@@ -42,9 +42,18 @@ class StorageManager extends EventEmitter {
         data.age = event.getAge();
         if (date) data.origin_server_ts = date.getTime();
 
+        if (typeof data.age !== 'number') delete data.age;
+        if (typeof data.type !== 'string') delete data.type;
+        if (typeof data.sender !== 'string') delete data.sender;
+        if (typeof data.room_id !== 'string') delete data.room_id;
+
+        if (!objType(data.content, 'object')) delete data.content;
+        if (!objType(data.unsigned, 'object')) delete data.unsigned;
+
         tinyThis.storeConnection
           .insert({
             into: 'timeline',
+            upsert: true,
             values: [data],
           })
           .then(resolve)
@@ -57,28 +66,35 @@ class StorageManager extends EventEmitter {
 
   async startPonyHouseDb() {
     this.storeConnection = new Connection(new Worker('jsstore.worker.min.js'));
-    const isDbCreated = await this.storeConnection.initDb({
-      name: this.dbName,
-      tables: [
-        {
-          name: 'timeline',
-          columns: {
-            event_id: { primaryKey: true, autoIncrement: false },
+    const VERSION = 1;
 
-            type: { notNull: false, dataType: 'string' },
-            sender: { notNull: false, dataType: 'string' },
-            room_id: { notNull: false, dataType: 'string' },
+    const newDb = {
+      1: {
+        name: this.dbName,
+        tables: [
+          {
+            name: 'timeline',
+            columns: {
+              event_id: { primaryKey: true, autoIncrement: false },
 
-            content: { notNull: false, dataType: 'object' },
-            unsigned: { notNull: false, dataType: 'object' },
+              type: { notNull: false, dataType: 'string' },
+              sender: { notNull: false, dataType: 'string' },
+              room_id: { notNull: false, dataType: 'string' },
 
-            age: { notNull: true, dataType: 'number' },
-            origin_server_ts: { notNull: true, dataType: 'number' },
+              content: { notNull: false, dataType: 'object' },
+              unsigned: { notNull: false, dataType: 'object' },
+              embeds: { notNull: false, dataType: 'array' },
+
+              age: { notNull: false, dataType: 'number' },
+              origin_server_ts: { notNull: true, dataType: 'number' },
+            },
           },
-        },
-      ],
-    });
+        ],
+        version: 1,
+      },
+    };
 
+    const isDbCreated = await this.storeConnection.initDb(newDb[VERSION]);
     return isDbCreated;
   }
 
