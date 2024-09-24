@@ -71,6 +71,16 @@ const copyFiles = {
       dest: '',
     },
 
+    {
+      src: 'node_modules/jsstore/dist/jsstore.worker.min.js',
+      dest: '',
+    },
+
+    {
+      src: 'node_modules/jsstore/dist/jsstore.worker.min.js.map',
+      dest: '',
+    },
+
   ],
 }
 

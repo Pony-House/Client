@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import { openDB } from 'idb';
+import { Connection } from 'jsstore';
 
 import { objType } from 'for-promise/utils/lib.mjs';
 
@@ -22,6 +22,7 @@ class StorageManager extends EventEmitter {
   }
 
   addToTimeline(event) {
+    const tinyThis = this;
     return new Promise((resolve, reject) => {
       const data = {};
       const tinyReject = (err) => {
@@ -37,10 +38,15 @@ class StorageManager extends EventEmitter {
         data.room_id = event.getRoomId();
         data.content = event.getContent();
         data.unsigned = event.getUnsigned();
+
+        data.age = event.getAge();
         if (date) data.origin_server_ts = date.getTime();
 
-        const tx = storageManager.db.transaction('timeline', 'readwrite');
-        Promise.all([tx.store.put(data), tx.done])
+        tinyThis.storeConnection
+          .insert({
+            into: 'timeline',
+            values: [data],
+          })
           .then(resolve)
           .catch(tinyReject);
       } catch (err) {
@@ -50,42 +56,30 @@ class StorageManager extends EventEmitter {
   }
 
   async startPonyHouseDb() {
-    this.db = await openDB(this.dbName, this._dbVersion, {
-      async upgrade(db, oldVersion) {
-        const version0 = () => {
-          console.log('[indexedDb] Version detected - 0');
+    this.storeConnection = new Connection(new Worker('jsstore.worker.min.js'));
+    const isDbCreated = await this.storeConnection.initDb({
+      name: this.dbName,
+      tables: [
+        {
+          name: 'timeline',
+          columns: {
+            event_id: { primaryKey: true, autoIncrement: false },
 
-          // Create a store of objects
-          const events = db.createObjectStore('timeline', {
-            // The 'id' property of the object will be the key.
-            keyPath: 'event_id',
-            // If it isn't explicitly set, create a value by auto incrementing.
-            // autoIncrement: false,
-          });
-          // Create an index on the 'date' property of the objects.
-          events.createIndex('origin_server_ts', 'origin_server_ts', { unique: false });
-          events.createIndex('type', 'type', { unique: false });
+            type: { notNull: false, dataType: 'string' },
+            sender: { notNull: false, dataType: 'string' },
+            room_id: { notNull: false, dataType: 'string' },
 
-          events.createIndex('sender', 'sender', { unique: false });
-          events.createIndex('room_id', 'room_id', { unique: false });
+            content: { notNull: false, dataType: 'object' },
+            unsigned: { notNull: false, dataType: 'object' },
 
-          events.createIndex('content', 'content', { unique: false });
-          events.createIndex('unsigned', 'unsigned', { unique: false });
-        };
-
-        const version1 = async () => {
-          // const tx = await db.transaction('timeline', 'readwrite');
-          console.log('[indexedDb] Version detected - 1');
-        };
-
-        switch (oldVersion) {
-          case 0:
-            version0();
-          case 1:
-            await version1();
-        }
-      },
+            age: { notNull: true, dataType: 'number' },
+            origin_server_ts: { notNull: true, dataType: 'number' },
+          },
+        },
+      ],
     });
+
+    return isDbCreated;
   }
 
   getLocalStorage() {
