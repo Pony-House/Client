@@ -137,7 +137,7 @@
     "download-git-repo": "3.0.2",
     "electron": "^32.1.0",
     "electron-builder": "^25.0.5",
-    "eslint": "9.10.0",
+    "eslint": "9.11.1",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.30.0",
