@@ -27,6 +27,7 @@ class StorageManager extends EventEmitter {
       const data = {};
       const tinyReject = (err) => {
         console.log('[indexed-db] ERROR SAVING TIMELINE DATA!', data);
+        tinyThis.emit('dbTimelineInserted-Error', err, data);
         reject(err);
       };
       try {
@@ -38,8 +39,8 @@ class StorageManager extends EventEmitter {
         data.room_id = event.getRoomId();
         data.content = event.getContent();
         data.unsigned = event.getUnsigned();
+        data.redaction = event.isRedaction();
 
-        data.age = event.getAge();
         if (date) data.origin_server_ts = date.getTime();
 
         if (typeof data.age !== 'number') delete data.age;
@@ -56,7 +57,10 @@ class StorageManager extends EventEmitter {
             upsert: true,
             values: [data],
           })
-          .then(resolve)
+          .then((result) => {
+            tinyThis.emit('dbTimelineInserted', result, data);
+            resolve(result);
+          })
           .catch(tinyReject);
       } catch (err) {
         tinyReject(err);
@@ -85,7 +89,7 @@ class StorageManager extends EventEmitter {
               unsigned: { notNull: false, dataType: 'object' },
               embeds: { notNull: false, dataType: 'array' },
 
-              age: { notNull: false, dataType: 'number' },
+              redaction: { notNull: true, dataType: 'boolean' },
               origin_server_ts: { notNull: true, dataType: 'number' },
             },
           },
@@ -95,6 +99,7 @@ class StorageManager extends EventEmitter {
     };
 
     const isDbCreated = await this.storeConnection.initDb(newDb[VERSION]);
+    this.emit('isDbCreated', isDbCreated);
     return isDbCreated;
   }
 
