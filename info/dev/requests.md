@@ -169,3 +169,5 @@ Mobile:
 File input não funcionando.
 Alguns carregamentos de imagem falhando sobre blur.
 Testar o encrypt
+
+insertIntoRoomEventsDB

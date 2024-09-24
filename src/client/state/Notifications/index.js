@@ -11,7 +11,6 @@ import tinyAPI from '@src/util/mods';
 import { getAppearance } from '@src/util/libs/appearance';
 import attemptDecryption from '@src/util/libs/attemptDecryption';
 import soundFiles from '@src/util/soundFiles';
-// import { insertIntoRoomEventsDB } from '@src/util/libs/roomEventsDB';
 import { canSupport, dfAvatarSize } from '@src/util/matrixUtil';
 import initMatrix from '@src/client/initMatrix';
 
@@ -383,14 +382,12 @@ class Notifications extends EventEmitter {
     // Data Prepare
     const userStatus = getAccountStatus('status');
     if (!settings.showNotifications && !settings.isNotificationSounds) {
-      // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
       return;
     }
 
     // Actions
     const actions = this.matrixClient.getPushActionsForEvent(mEvent);
     if (!actions?.notify) {
-      // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
       return;
     }
 
@@ -405,20 +402,16 @@ class Notifications extends EventEmitter {
       document.visibilityState === 'visible' &&
       !$('body').hasClass('windowHidden')
     ) {
-      // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
       return;
     }
 
     if (userStatus === 'dnd' || userStatus === '🔴') {
-      // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
       return;
     }
 
     if (mEvent.getType() === 'm.sticker' && !getAppearance('showStickers')) {
       return;
     }
-
-    // insertIntoRoomEventsDB(mEvent).catch(console.error);
 
     // Show Notification
     if (settings.showNotifications) {
@@ -516,19 +509,16 @@ class Notifications extends EventEmitter {
 
       // Is Classic Crdt
       if (messageIsClassicCrdt(mEvent)) {
-        // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
         stopNotification = true;
       }
 
       // Is Space
       if (!stopNotification && room.isSpaceRoom()) {
-        // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
         stopNotification = true;
       }
 
       // Noti Event
       if (!stopNotification && !isNotifEvent(mEvent)) {
-        // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
         stopNotification = true;
       }
 
@@ -541,14 +531,12 @@ class Notifications extends EventEmitter {
         // Last Id
         const lastTimelineEvent = liveEvents[liveEvents.length - 1];
         if (lastTimelineEvent.getId() !== mEvent.getId()) {
-          // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
           stopNotification = true;
           console.log(`[matrix-noti] Event blocked by last id validator: ${mEvent.getId()}`);
         }
 
         // Sender check
         if (!stopNotification && mEvent.getSender() === this.matrixClient.getUserId()) {
-          // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
           stopNotification = true;
           console.log(`[matrix-noti] Event blocked by is same user: ${mEvent.getId()}`);
         }
@@ -582,7 +570,6 @@ class Notifications extends EventEmitter {
               total ?? 0,
               highlight ?? 0,
             );
-            // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
             stopNotification = true;
             console.log(`[matrix-noti] Event blocked by mute: ${mEvent.getId()}`);
           }
@@ -602,7 +589,6 @@ class Notifications extends EventEmitter {
 
           // Nothing
           if (mEvent.thread && total < 1 && highlight < 1) {
-            // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
             stopNotification = true;
             console.log(`[matrix-noti] Event blocked by no counter: ${mEvent.getId()}`);
           }
@@ -615,11 +601,8 @@ class Notifications extends EventEmitter {
       }
 
       storageManager.addToTimeline(mEvent);
-      if (this.matrixClient.getSyncState() === 'SYNCING') {
+      if (this.matrixClient.getSyncState() === 'SYNCING')
         return this._displayPopupNoti(mEvent, room, stopNotification, total, highlight);
-      } else {
-        // return insertIntoRoomEventsDB(mEvent, true).catch(console.error);
-      }
     };
 
     this.matrixClient.on(RoomEvent.Timeline, (mEvent, room) =>

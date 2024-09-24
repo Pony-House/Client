@@ -2,7 +2,6 @@ import EventEmitter from 'events';
 
 import attemptDecryption from '@src/util/libs/attemptDecryption';
 import storageManager from '@src/util/libs/Localstorage';
-// import { insertIntoRoomEventsDB } from '@src/util/libs/roomEventsDB';
 
 import { Direction, MatrixEventEvent, Room, RoomEvent, RoomMemberEvent } from 'matrix-js-sdk';
 import initMatrix from '../initMatrix';
@@ -124,7 +123,6 @@ class RoomTimeline extends EventEmitter {
 
   // Add to timeline
   addToTimeline(mEvent) {
-    // insertIntoRoomEventsDB(mEvent).catch(console.error);
     const evType = mEvent.getType();
     if (evType !== 'pony.house.crdt' && !messageIsClassicCrdt(mEvent)) {
       // Filter Room Member Event and Matrix CRDT Events
