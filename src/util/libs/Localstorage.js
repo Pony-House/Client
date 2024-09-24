@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
-import { Connection } from 'jsstore';
 
 import { objType } from 'for-promise/utils/lib.mjs';
+import { startDb } from './db/indexedDb';
 
 class StorageManager extends EventEmitter {
   constructor() {
@@ -69,36 +69,7 @@ class StorageManager extends EventEmitter {
   }
 
   async startPonyHouseDb() {
-    this.storeConnection = new Connection(new Worker('jsstore.worker.min.js'));
-    const VERSION = 1;
-
-    const newDb = {
-      1: {
-        name: this.dbName,
-        tables: [
-          {
-            name: 'timeline',
-            columns: {
-              event_id: { primaryKey: true, autoIncrement: false },
-
-              type: { notNull: false, dataType: 'string' },
-              sender: { notNull: false, dataType: 'string' },
-              room_id: { notNull: false, dataType: 'string' },
-
-              content: { notNull: false, dataType: 'object' },
-              unsigned: { notNull: false, dataType: 'object' },
-              embeds: { notNull: false, dataType: 'array' },
-
-              redaction: { notNull: true, dataType: 'boolean' },
-              origin_server_ts: { notNull: true, dataType: 'number' },
-            },
-          },
-        ],
-        version: 1,
-      },
-    };
-
-    const isDbCreated = await this.storeConnection.initDb(newDb[VERSION]);
+    const isDbCreated = await startDb(this);
     this.emit('isDbCreated', isDbCreated);
     return isDbCreated;
   }
