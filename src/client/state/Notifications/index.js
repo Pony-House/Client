@@ -3,6 +3,8 @@ import $ from 'jquery';
 import { ClientEvent, MatrixEventEvent, NotificationCountType, RoomEvent } from 'matrix-js-sdk';
 import EventEmitter from 'events';
 
+import storageManager from '@src/util/libs/Localstorage';
+
 import { isMobile } from '@src/util/libs/mobile';
 import { cyrb128 } from '@src/util/tools';
 import tinyAPI from '@src/util/mods';
@@ -331,11 +333,6 @@ class Notifications extends EventEmitter {
     // Favicon
     favIconManager.checkerFavIcon();
 
-    // Encrypted
-    if (mEvent.isEncrypted()) {
-      await attemptDecryption.exec(mEvent, null, true);
-    }
-
     // Tiny API
     tinyAPI.emit('roomTimeline', mEvent, room);
 
@@ -509,7 +506,7 @@ class Notifications extends EventEmitter {
   }
 
   _listenEvents() {
-    this._listenRoomTimeline = (mEvent, room) => {
+    this._listenRoomTimeline = async (mEvent, room) => {
       if (mEvent.isRedaction()) this._deletePopupNoti(mEvent.event.redacts);
 
       // Total Data
@@ -612,10 +609,16 @@ class Notifications extends EventEmitter {
         }
       }
 
+      // Encrypted
+      if (mEvent.isEncrypted()) {
+        await attemptDecryption.exec(mEvent, null, true);
+      }
+
+      storageManager.addToTimeline(mEvent);
       if (this.matrixClient.getSyncState() === 'SYNCING') {
-        this._displayPopupNoti(mEvent, room, stopNotification, total, highlight);
+        return this._displayPopupNoti(mEvent, room, stopNotification, total, highlight);
       } else {
-        // insertIntoRoomEventsDB(mEvent, true).catch(console.error);
+        // return insertIntoRoomEventsDB(mEvent, true).catch(console.error);
       }
     };
 

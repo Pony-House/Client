@@ -1,6 +1,7 @@
 import EventEmitter from 'events';
 
 import attemptDecryption from '@src/util/libs/attemptDecryption';
+import storageManager from '@src/util/libs/Localstorage';
 // import { insertIntoRoomEventsDB } from '@src/util/libs/roomEventsDB';
 
 import { Direction, MatrixEventEvent, Room, RoomEvent, RoomMemberEvent } from 'matrix-js-sdk';
@@ -159,7 +160,10 @@ class RoomTimeline extends EventEmitter {
   _populateAllLinkedEvents(timeline) {
     const firstTimeline = getFirstLinkedTimeline(timeline);
     iterateLinkedTimelines(firstTimeline, false, (tm) => {
-      tm.getEvents().forEach((mEvent) => this.addToTimeline(mEvent));
+      tm.getEvents().forEach((mEvent) => {
+        storageManager.addToTimeline(mEvent);
+        return this.addToTimeline(mEvent);
+      });
     });
   }
 
@@ -400,6 +404,7 @@ class RoomTimeline extends EventEmitter {
 
       this.addToTimeline(event);
       this.emit(cons.events.roomTimeline.EVENT, event);
+      storageManager.addToTimeline(event);
       tinyFixScrollChat();
     };
 
@@ -417,6 +422,7 @@ class RoomTimeline extends EventEmitter {
 
       this.addToTimeline(event);
       this.emit(cons.events.roomTimeline.EVENT, event);
+      storageManager.addToTimeline(event);
       tinyFixScrollChat();
     };
 
