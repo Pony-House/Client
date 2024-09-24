@@ -1,3 +1,8 @@
+import { openDB } from 'idb';
+
+// https://web.dev/articles/indexeddb?hl=pt-br#versioning
+// https://web.dev/articles/indexeddb?hl=pt-br#stores
+
 export const startPonyHouseDb = async () => {
   this.db = await openDB(this.dbName, this._dbVersion, {
     async upgrade(db, oldVersion) {
