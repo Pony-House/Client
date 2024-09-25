@@ -1,14 +1,18 @@
 import EventEmitter from 'events';
 
 import { objType } from 'for-promise/utils/lib.mjs';
+import initMatrix from '@src/client/initMatrix';
 import { startDb } from './db/indexedDb';
 
 class StorageManager extends EventEmitter {
   constructor() {
     super();
     this.isPersisted = null;
-    this._dbVersion = 1;
+
+    // Db
+    this._dbVersion = 2;
     this.dbName = 'pony-house-database';
+    this._timelineSyncCache = this.getJson('ponyHouse-timeline-sync', 'obj');
 
     // Get Content
     this.content = this.getJson('ponyHouse-storage-manager', 'obj');
@@ -19,6 +23,27 @@ class StorageManager extends EventEmitter {
     window.addEventListener('storage', function (e) {
       tinyThis.emit('storage', e);
     });
+  }
+
+  async _syncTimeline(room, checkpoint = null, timeline = null) {
+    if (room.roomId) {
+      const tm = timeline || room.getLiveTimeline();
+      const roomId = room.roomId;
+
+      const checkPoint =
+        typeof checkpoint === 'string' && checkpoint.length > 0
+          ? checkpoint
+          : objType(this._timelineSyncCache[roomId], 'object') &&
+              typeof this._timelineSyncCache[roomId].last === 'string' &&
+              this._timelineSyncCache[roomId].last.length > 0
+            ? this._timelineSyncCache[roomId].last
+            : null;
+    }
+    return null;
+  }
+
+  syncTimeline(roomId, checkpoint = null) {
+    return this._syncTimeline(initMatrix.matrixClient.getRoom(roomId), checkpoint);
   }
 
   addToTimeline(event) {
@@ -32,6 +57,8 @@ class StorageManager extends EventEmitter {
       };
       try {
         const date = event.getDate();
+        const thread = event.getThread();
+        const threadId = thread && typeof thread.id === 'string' ? thread.id : null;
 
         data.event_id = event.getId();
         data.type = event.getType();
@@ -41,6 +68,7 @@ class StorageManager extends EventEmitter {
         data.unsigned = event.getUnsigned();
         data.redaction = event.isRedaction();
 
+        if (typeof threadId === 'string') data.thread_id = threadId;
         if (date) data.origin_server_ts = date.getTime();
 
         if (typeof data.age !== 'number') delete data.age;
