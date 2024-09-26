@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import $ from 'jquery';
 
 import storageManager from '@src/util/libs/Localstorage';
+import RatioScreen from '@src/app/atoms/video/RatioScreen';
 
 import VolumeMeter from '../../../../../util/libs/volumeMeter';
 import SettingTile from '../../../../molecules/setting-tile/SettingTile';
@@ -461,7 +462,7 @@ function VoiceVideoSection() {
 
           <li className="list-group-item border-0">
             <center>
-              <div className="ratio ratio-16x9 w-50 border border-bg mb-2">
+              <RatioScreen classBase="" className="w-50 border border-bg mb-2">
                 <div
                   ref={videoMonitorRef}
                   className="d-flex justify-content-center align-items-center text-center"
@@ -477,7 +478,7 @@ function VoiceVideoSection() {
                     Test Video
                   </Button>
                 </div>
-              </div>
+              </RatioScreen>
             </center>
 
             <div className="very-small text-uppercase fw-bold mb-2">Camera</div>

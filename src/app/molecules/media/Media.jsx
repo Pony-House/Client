@@ -16,6 +16,8 @@ import { openUrl } from '@src/util/message/urlProtection';
 import VideoEmbed from '@src/app/atoms/video/VideoEmbed';
 import AudioEmbed from '@src/app/atoms/audio/AudioEmbed';
 
+import RatioScreen from '@src/app/atoms/video/RatioScreen';
+
 import imageViewer from '../../../util/imageViewer';
 import Tooltip from '../../atoms/tooltip/Tooltip';
 import Text from '../../atoms/text/Text';
@@ -545,7 +547,7 @@ function Video({
           {isLoading && <Spinner size="small" />}
         </div>
       ) : (
-        <div className="ratio ratio-16x9 video-base">
+        <RatioScreen>
           <VideoEmbed
             autoPlay
             controls
@@ -555,7 +557,7 @@ function Video({
             src={url}
             type={getBlobSafeMimeType(type)}
           />
-        </div>
+        </RatioScreen>
       )}
     </div>
   );
