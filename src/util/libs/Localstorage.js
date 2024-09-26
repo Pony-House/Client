@@ -46,6 +46,40 @@ class StorageManager extends EventEmitter {
     return this._syncTimeline(initMatrix.matrixClient.getRoom(roomId), checkpoint);
   }
 
+  addToMembers(event) {
+    const tinyThis = this;
+    return new Promise((resolve, reject) => {
+      const data = {};
+      const tinyReject = (err) => {
+        console.log('[indexed-db] ERROR SAVING MEMBER DATA!', data);
+        tinyThis.emit('dbMemberInserted-Error', err, data);
+        reject(err);
+      };
+      try {
+        data.user_id;
+        data.room_id;
+        data.type;
+        data.origin_server_ts;
+
+        data.id = `${data.user_id}:${data.room_id}`;
+
+        tinyThis.storeConnection
+          .insert({
+            into: 'members',
+            upsert: true,
+            values: [data],
+          })
+          .then((result) => {
+            tinyThis.emit('dbMemberInserted', result, data);
+            resolve(result);
+          })
+          .catch(tinyReject);
+      } catch (err) {
+        tinyReject(err);
+      }
+    });
+  }
+
   addToTimeline(event) {
     const tinyThis = this;
     return new Promise((resolve, reject) => {
