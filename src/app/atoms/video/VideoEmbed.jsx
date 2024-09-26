@@ -62,7 +62,7 @@ const VideoEmbed = React.forwardRef(
         ref={ref}
         className={className}
         playsInline={playsInline}
-        type={type}
+        type={typeof type === 'string' && videoFormats.indexOf(type) > -1 ? type : null}
       >
         {Array.isArray(src)
           ? src.map((item) => (

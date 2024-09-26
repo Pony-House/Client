@@ -35,7 +35,7 @@ const AudioEmbed = React.forwardRef(
         preload={preload}
         ref={ref}
         className={className}
-        type={type}
+        type={typeof type === 'string' && videoFormats.indexOf(type) > -1 ? type : null}
       >
         {Array.isArray(src)
           ? src.map((item) => (

@@ -1906,6 +1906,101 @@ function Message({
 
   const allowTranslate = translateText === null && libreTranslate.canUse();
 
+  const avatarHtml = (
+    <td className="p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base">
+      {
+        // User Avatar
+        !isBodyOnly ? (
+          <MessageAvatar
+            roomId={roomId}
+            avatarSrc={avatarSrc}
+            avatarAnimSrc={avatarAnimSrc}
+            userId={senderId}
+            username={username}
+            bgColor={color}
+            contextMenu={contextMenuClick}
+          />
+        ) : (
+          <MessageTime className="hc-time" timestamp={mEvent.getTs()} fullTime={fullTime} />
+        )
+      }
+    </td>
+  );
+
+  const msgOptions = !isGuest && !disableActions && roomTimeline && !isEdit && (
+    <MessageOptions
+      allowTranslate={allowTranslate}
+      setTranslateText={setTranslateText}
+      translateText={translateText}
+      haveReactions={haveReactions}
+      refRoomInput={refRoomInput}
+      customHTML={customHTML}
+      body={body}
+      roomid={roomId}
+      threadId={threadId}
+      senderid={senderId}
+      eventid={eventId}
+      msgtype={msgType}
+      roomTimeline={roomTimeline}
+      mEvent={mEvent}
+      edit={edit}
+      reply={reply}
+    />
+  );
+
+  const msgItems = (
+    <>
+      {!isBodyOnly && (
+        <div className="mb-1">
+          <MessageHeader
+            usernameHover={usernameHover}
+            userId={senderId}
+            username={username}
+            roomId={roomId}
+          />
+
+          <MessageTime className="ms-2" timestamp={mEvent.getTs()} fullTime={fullTime} />
+        </div>
+      )}
+
+      {roomTimeline && isReply && (
+        <MessageReplyWrapper roomTimeline={roomTimeline} eventId={mEvent.replyEventId} />
+      )}
+    </>
+  );
+
+  const msgItems2 = (
+    <>
+      {haveReactions && <MessageReactionGroup roomTimeline={roomTimeline} mEvent={mEvent} />}
+
+      {roomTimeline && shouldShowThreadSummary(mEvent, roomTimeline) && (
+        <MessageThreadSummary useManualCheck={useManualCheck} thread={mEvent.thread} />
+      )}
+    </>
+  );
+
+  const editItemBase = isEdit && (
+    <MessageEdit
+      roomId={roomId}
+      eventId={mEvent.getId()}
+      refRoomInput={refRoomInput}
+      body={
+        customHTML
+          ? html(customHTML, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain
+          : plain(body, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain
+      }
+      onSave={(newBody, oldBody) => {
+        if (newBody !== oldBody) {
+          setBodyData(newBody);
+          setEmbeds([]);
+          initMatrix.roomsInput.sendEditedMessage(roomId, threadId, mEvent, newBody);
+        }
+        cancelEdit();
+      }}
+      onCancel={cancelEdit}
+    />
+  );
+
   // Normal Message
   if (msgType !== 'm.bad.encrypted') {
     if (mEvent.getType() !== 'm.sticker' || isStickersVisible) {
@@ -1919,64 +2014,10 @@ function Message({
           msgtype={msgType}
           className={classList.join(' ')}
         >
-          <td className="p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base">
-            {
-              // User Avatar
-              !isBodyOnly ? (
-                <MessageAvatar
-                  roomId={roomId}
-                  avatarSrc={avatarSrc}
-                  avatarAnimSrc={avatarAnimSrc}
-                  userId={senderId}
-                  username={username}
-                  bgColor={color}
-                  contextMenu={contextMenuClick}
-                />
-              ) : (
-                <MessageTime className="hc-time" timestamp={mEvent.getTs()} fullTime={fullTime} />
-              )
-            }
-          </td>
-
+          {avatarHtml}
           <td className="p-0 pe-3 py-1" colSpan={!children ? '2' : ''}>
-            {!isGuest && !disableActions && roomTimeline && !isEdit && (
-              <MessageOptions
-                allowTranslate={allowTranslate}
-                setTranslateText={setTranslateText}
-                translateText={translateText}
-                haveReactions={haveReactions}
-                refRoomInput={refRoomInput}
-                customHTML={customHTML}
-                body={body}
-                roomid={roomId}
-                threadId={threadId}
-                senderid={senderId}
-                eventid={eventId}
-                msgtype={msgType}
-                roomTimeline={roomTimeline}
-                mEvent={mEvent}
-                edit={edit}
-                reply={reply}
-              />
-            )}
-
-            {!isBodyOnly && (
-              <div className="mb-1">
-                <MessageHeader
-                  usernameHover={usernameHover}
-                  userId={senderId}
-                  username={username}
-                  roomId={roomId}
-                />
-
-                <MessageTime className="ms-2" timestamp={mEvent.getTs()} fullTime={fullTime} />
-              </div>
-            )}
-
-            {roomTimeline && isReply && (
-              <MessageReplyWrapper roomTimeline={roomTimeline} eventId={mEvent.replyEventId} />
-            )}
-
+            {msgOptions}
+            {msgItems}
             {!isEdit && (
               <>
                 <MessageBody
@@ -2017,36 +2058,9 @@ function Message({
                 ) : null}
               </>
             )}
-
-            {isEdit && (
-              <MessageEdit
-                roomId={roomId}
-                eventId={mEvent.getId()}
-                refRoomInput={refRoomInput}
-                body={
-                  customHTML
-                    ? html(customHTML, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain
-                    : plain(body, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain
-                }
-                onSave={(newBody, oldBody) => {
-                  if (newBody !== oldBody) {
-                    setBodyData(newBody);
-                    setEmbeds([]);
-                    initMatrix.roomsInput.sendEditedMessage(roomId, threadId, mEvent, newBody);
-                  }
-                  cancelEdit();
-                }}
-                onCancel={cancelEdit}
-              />
-            )}
-
-            {haveReactions && <MessageReactionGroup roomTimeline={roomTimeline} mEvent={mEvent} />}
-
-            {roomTimeline && shouldShowThreadSummary(mEvent, roomTimeline) && (
-              <MessageThreadSummary useManualCheck={useManualCheck} thread={mEvent.thread} />
-            )}
+            {editItemBase}
+            {msgItems2}
           </td>
-
           {children && <td className="p-0 pe-3 py-1">{children}</td>}
         </tr>
       );
@@ -2065,62 +2079,10 @@ function Message({
       msgtype={msgType}
       className={classList.join(' ')}
     >
-      <td className="p-0 ps-2 ps-md-4 py-1 pe-md-2 align-top text-center chat-base">
-        {
-          // User Avatar
-          !isBodyOnly ? (
-            <MessageAvatar
-              roomId={roomId}
-              avatarSrc={avatarSrc}
-              avatarAnimSrc={avatarAnimSrc}
-              userId={senderId}
-              username={username}
-              bgColor={color}
-              contextMenu={contextMenuClick}
-            />
-          ) : (
-            <MessageTime className="hc-time" timestamp={mEvent.getTs()} fullTime={fullTime} />
-          )
-        }
-      </td>
-
+      {avatarHtml}
       <td className="p-0 pe-3 py-1">
-        {!isGuest && !disableActions && roomTimeline && !isEdit && (
-          <MessageOptions
-            allowTranslate={allowTranslate}
-            setTranslateText={setTranslateText}
-            translateText={translateText}
-            haveReactions={haveReactions}
-            refRoomInput={refRoomInput}
-            roomid={roomId}
-            threadId={threadId}
-            senderid={senderId}
-            eventid={eventId}
-            msgtype={msgType}
-            roomTimeline={roomTimeline}
-            mEvent={mEvent}
-            edit={edit}
-            reply={reply}
-          />
-        )}
-
-        {!isBodyOnly && (
-          <div className="mb-1">
-            <MessageHeader
-              usernameHover={usernameHover}
-              userId={senderId}
-              username={username}
-              roomId={roomId}
-            />
-
-            <MessageTime className="ms-2" timestamp={mEvent.getTs()} fullTime={fullTime} />
-          </div>
-        )}
-
-        {roomTimeline && isReply && (
-          <MessageReplyWrapper roomTimeline={roomTimeline} eventId={mEvent.replyEventId} />
-        )}
-
+        {msgOptions}
+        {msgItems}
         {!isEdit && (
           <MessageBody
             roomId={roomId}
@@ -2136,34 +2098,8 @@ function Message({
             messageStatus={messageStatus}
           />
         )}
-
-        {isEdit && (
-          <MessageEdit
-            roomId={roomId}
-            eventId={mEvent.getId()}
-            refRoomInput={refRoomInput}
-            body={
-              customHTML
-                ? html(customHTML, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain
-                : plain(body, roomId, threadId, { kind: 'edit', onlyPlain: true }).plain
-            }
-            onSave={(newBody, oldBody) => {
-              if (newBody !== oldBody) {
-                setBodyData(newBody);
-                setEmbeds([]);
-                initMatrix.roomsInput.sendEditedMessage(roomId, threadId, mEvent, newBody);
-              }
-              cancelEdit();
-            }}
-            onCancel={cancelEdit}
-          />
-        )}
-
-        {haveReactions && <MessageReactionGroup roomTimeline={roomTimeline} mEvent={mEvent} />}
-
-        {roomTimeline && shouldShowThreadSummary(mEvent, roomTimeline) && (
-          <MessageThreadSummary useManualCheck={useManualCheck} thread={mEvent.thread} />
-        )}
+        {editItemBase}
+        {msgItems2}
       </td>
     </tr>
   );
