@@ -28,6 +28,8 @@ import {
 } from '@src/app/molecules/reactions/Reactions';
 import tinyClipboard from '@src/util/libs/Clipboard';
 
+import storageManager from '@src/util/libs/Localstorage';
+
 import Text from '../../atoms/text/Text';
 import { btModal, resizeWindowChecker, toast } from '../../../util/tools';
 import { twemojify, twemojifyReact } from '../../../util/twemojify';
@@ -1635,14 +1637,17 @@ function Message({
   mEvent.setMaxListeners(__ENV_APP__.MAX_LISTENERS);
   mEvent.once(MatrixEventEvent.Status, (e) => {
     setMessageStatus(e.status);
+    storageManager.addToTimeline(mEvent);
   });
 
   mEvent.once(MatrixEventEvent.Decrypted, () => {
     forceUpdate();
+    storageManager.addToTimeline(mEvent);
   });
 
   mEvent.once(MatrixEventEvent.Replaced, () => {
     forceUpdate();
+    storageManager.addToTimeline(mEvent);
   });
 
   const color = colorMXID(senderId);
