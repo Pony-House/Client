@@ -26,7 +26,7 @@ class StorageManager extends EventEmitter {
   }
 
   async _syncTimeline(room, checkpoint = null, timeline = null) {
-    if (room.roomId) {
+    if (room && typeof room.roomId === 'string') {
       const tm = timeline || room.getLiveTimeline();
       const roomId = room.roomId;
 

@@ -13,6 +13,9 @@ import { getFileIcon } from '@src/util/icons/files';
 
 import { openUrl } from '@src/util/message/urlProtection';
 
+import VideoEmbed from '@src/app/atoms/video/VideoEmbed';
+import AudioEmbed from '@src/app/atoms/audio/AudioEmbed';
+
 import imageViewer from '../../../util/imageViewer';
 import Tooltip from '../../atoms/tooltip/Tooltip';
 import Text from '../../atoms/text/Text';
@@ -426,9 +429,7 @@ function Audio({ content = {}, link, file = null, roomId, threadId }) {
           <IconButton onClick={handlePlayAudio} tooltip="Play audio" fa="fa-solid fa-circle-play" />
         )}
         {url !== null && (
-          <audio autoPlay controls>
-            <source src={url} type={getBlobSafeMimeType(type)} />
-          </audio>
+          <AudioEmbed autoPlay controls src={url} type={getBlobSafeMimeType(type)} />
         )}
       </div>
     </div>
@@ -545,9 +546,15 @@ function Video({
         </div>
       ) : (
         <div className="ratio ratio-16x9 video-base">
-          <video srcwidth={width} srcheight={height} autoPlay controls poster={thumbUrl}>
-            <source src={url} type={getBlobSafeMimeType(type)} />
-          </video>
+          <VideoEmbed
+            autoPlay
+            controls
+            poster={thumbUrl}
+            srcwidth={width}
+            srcheight={height}
+            src={url}
+            type={getBlobSafeMimeType(type)}
+          />
         </div>
       )}
     </div>
