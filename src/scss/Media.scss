@@ -48,7 +48,6 @@
 }
 
 .image-container,
-.video-container,
 .audio-container {
   font-size: 0;
   line-height: 0;
@@ -62,8 +61,7 @@
   background-size: cover;
 }
 
-.image-container,
-.video-container {
+.image-container {
   [itemprop='image'],
   .image-container-canvas,
   .img-container {
@@ -83,30 +81,6 @@
   }
 }
 
-.video-container {
-  position: relative;
-  .ic-btn-surface {
-    background-color: var(--bg-surface-low);
-  }
-  .ic-btn-surface,
-  .donut-spinner {
-    position: absolute;
-  }
-  video {
-    width: 100%;
-  }
-  button {
-    position: relative;
-    left: 185px;
-    margin-left: -68px;
-
-    i,
-    i:before,
-    i:after {
-      font-size: 31pt;
-    }
-  }
-}
 .audio-container {
   padding-left: 12px;
   padding-right: 12px;
@@ -142,4 +116,14 @@
   top: 20px;
   left: 17px;
   font-size: 20px !important;
+}
+
+.video-container {
+  .data-vjs-player-container,
+  & {
+    background-color: #000;
+  }
+}
+[data-vjs-player] {
+  background-color: #000;
 }

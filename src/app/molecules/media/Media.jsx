@@ -531,7 +531,7 @@ function Video({
           alt={name}
         />
       )}
-      <RatioScreen>
+      <RatioScreen className="video-container">
         {(url && !isLoading) || thumbUrl
           ? isVisible && (
               <VideoEmbed

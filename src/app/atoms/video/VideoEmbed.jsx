@@ -165,7 +165,7 @@ const VideoEmbed = React.forwardRef(
     }, [playerRef]);
 
     return (
-      <div data-vjs-player onClick={onClick}>
+      <div data-vjs-player className="data-vjs-player-container" onClick={onClick}>
         <div ref={videoRef} />
       </div>
     );
