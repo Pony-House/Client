@@ -465,6 +465,7 @@ function Video({
   const [url, setUrl] = useState(null);
   const [thumbUrl, setThumbUrl] = useState(null);
   const [blur, setBlur] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
   const name = content.body;
   const type = content.info?.mimetype || '';
 
@@ -488,6 +489,7 @@ function Video({
     }
 
     if (thumbnail !== null) fetchUrl();
+    else setThumbUrl('data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
     return () => {
       unmounted = true;
     };
@@ -501,11 +503,6 @@ function Video({
     setIsLoaded(true);
   };
 
-  const handlePlayVideo = () => {
-    setIsLoading(true);
-    loadVideo();
-  };
-
   return (
     <div className={`file-container${url !== null ? ' file-open' : ''}`}>
       <FileHeader
@@ -517,48 +514,49 @@ function Video({
         type={type}
         external
       />
-      {url === null ? (
-        <div className="video-container">
-          {!isLoading && (
-            <IconButton
-              onClick={handlePlayVideo}
-              tooltip="Play video"
-              fa="fa-solid fa-circle-play"
-            />
-          )}
-          {blurhash && blur && <BlurhashCanvas hash={blurhash} punch={1} />}
-          {thumbUrl !== null && (
-            <Img
-              onError={onThumbError}
-              style={{ display: blur ? 'none' : 'unset' }}
-              src={thumbUrl}
-              onLoadingChange={(event) => {
-                tinyFixScrollChat();
-                if (onThumbLoadingChange) onThumbLoadingChange(event);
-              }}
-              onLoad={(event) => {
-                setBlur(false);
-                tinyFixScrollChat();
-                if (onThumbLoad) onThumbLoad(event);
-              }}
-              alt={name}
-            />
-          )}
-          {isLoading && <Spinner size="small" />}
-        </div>
-      ) : (
-        <RatioScreen>
-          <VideoEmbed
-            autoPlay
-            controls
-            poster={thumbUrl}
-            srcwidth={width}
-            srcheight={height}
-            src={url}
-            type={getBlobSafeMimeType(type)}
-          />
-        </RatioScreen>
+      {thumbUrl !== null && blur && (
+        <Img
+          onError={onThumbError}
+          style={{ display: 'none' }}
+          src={thumbUrl}
+          onLoadingChange={(event) => {
+            tinyFixScrollChat();
+            if (onThumbLoadingChange) onThumbLoadingChange(event);
+          }}
+          onLoad={(event) => {
+            setBlur(false);
+            tinyFixScrollChat();
+            if (onThumbLoad) onThumbLoad(event);
+          }}
+          alt={name}
+        />
       )}
+      <RatioScreen>
+        {(url && !isLoading) || thumbUrl
+          ? isVisible && (
+              <VideoEmbed
+                onClick={() => {
+                  if (!url && !isLoading) {
+                    setIsVisible(false);
+                    setIsLoading(true);
+                    loadVideo()
+                      .then(() => setIsVisible(true))
+                      .catch((err) => {
+                        console.error(err);
+                        alert(err.message, 'Video load error!');
+                      });
+                  }
+                }}
+                controls
+                poster={thumbUrl}
+                width={width}
+                height={height}
+                src={url && !isLoading ? url : null}
+                type={url && !isLoading ? getBlobSafeMimeType(type) : null}
+              />
+            )
+          : blurhash && blur && <BlurhashCanvas hash={blurhash} punch={1} />}
+      </RatioScreen>
     </div>
   );
 }

@@ -18,7 +18,7 @@ const AudioEmbed = React.forwardRef(
       src = null,
       track = null,
       type = null,
-      notSupportMessage = null,
+      notSupportedMessage = null,
     },
     ref,
   ) => {
@@ -40,8 +40,8 @@ const AudioEmbed = React.forwardRef(
         {Array.isArray(src)
           ? src.map((item) => (
               <source
-                key={`AudioSrcEmbed:${item.url}:${item.type}`}
-                src={typeof item.url === 'string' ? item.url : null}
+                key={`AudioSrcEmbed:${item.src}:${item.type}`}
+                src={typeof item.src === 'string' ? item.src : null}
                 type={
                   typeof item.type === 'string' && audioFormats.indexOf(item.type) > -1
                     ? item.type
@@ -53,14 +53,14 @@ const AudioEmbed = React.forwardRef(
         {Array.isArray(track)
           ? track.map((item) => (
               <track
-                key={`AudioTrackEmbed:${item.url}:${item.type}`}
-                src={typeof item.url === 'string' ? item.url : null}
+                key={`AudioTrackEmbed:${item.src}:${item.type}`}
+                src={typeof item.src === 'string' ? item.src : null}
                 kind={typeof item.kind === 'string' ? item.kind : null}
                 label={typeof item.label === 'string' ? item.label : null}
               />
             ))
           : null}
-        {notSupportMessage}
+        {notSupportedMessage}
       </audio>
     );
   },
@@ -69,7 +69,7 @@ const AudioEmbed = React.forwardRef(
 AudioEmbed.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
-  notSupportMessage: PropTypes.string,
+  notSupportedMessage: PropTypes.string,
   autoPlay: PropTypes.bool,
   autoBuffer: PropTypes.bool,
   controls: PropTypes.bool,
