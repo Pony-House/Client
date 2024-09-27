@@ -124,9 +124,9 @@ function FileHeader({
 
   return (
     <div className="file-header">
-      <i className={`${getFileIcon(type, name)} me-2 h-100 file-icon`} />
+      <i className={`${getFileIcon(type, name)} me-2 h-100 file-icon d-flex`} />
       <div className="file-name small">
-        <span className="title">{name}</span> <br />
+        <span className="title text-truncate">{name}</span> <br />
         <span className="file-size very-small text-gray">{bytesText}</span>
       </div>
       {link !== null && (
