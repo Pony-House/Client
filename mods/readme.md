@@ -117,7 +117,7 @@ The difference is that the methods below will update the url in real time, and w
 
 `src/client/state/Notifications/index.js`
 
-### roomTimeline
+### roomNotification
 
     mEvent
     room

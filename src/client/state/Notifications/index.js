@@ -333,7 +333,7 @@ class Notifications extends EventEmitter {
     favIconManager.checkerFavIcon();
 
     // Tiny API
-    tinyAPI.emit('roomTimeline', mEvent, room);
+    tinyAPI.emit('roomNotification', mEvent, room);
 
     // Decrypt Notification
     if (!stopNotification && this.hasNoti(room.roomId, mEvent.thread ? mEvent.thread.id : null)) {

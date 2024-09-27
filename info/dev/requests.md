@@ -2,8 +2,6 @@ Quando o upload de arquivo é enviado, ele abre sem nada, mas funciona quando fa
 
 Colocar barra de progresso de download do arquivo.
 
-Ajeitar ícone de imagem no upload.
-
 Ajeitar o text verification (Encrypt code)
 
 Fazer a timeline carregar o embed antes de exibir a mensagem.
@@ -26,8 +24,6 @@ would it be possible to change the order embeds load in? so the most recents mes
 those would be more important than the older embeds
 
 =======================================
-
-=========> Dots invadindo o contador no DM quando a room é encryptada.
 
 Padronizar o profile-image-container
 
@@ -65,17 +61,12 @@ urlParams.set('event_id', eventId, false);
 
 ==============================================================
 
-alright, btw there's a small visual bug i just noticed, it's not breaking anything really, but my laptop has a touchpad with scrolling velocity (so when u scroll and release from the touch pad the scrolling maintains a velocity that slows down over a short period of time), when scrolling down while already at the bottom of the chat it makes the chat kind of.....shudder while the touchpad is still sending those scroll down commands
-
-==============================================================
-
 also i wonder if u could put somewhere in the settings a count of the number of rooms and spaces ur "subscribed" to?
 
 that could be useful for future diagnostics
 
 ==============================================================
 
-Fazer o load de mensagens no thread
 ENS Ethereum
 
 /src/app/organisms/navigation/Directs.jsx
@@ -99,8 +90,7 @@ https://developer.spotify.com/documentation/embeds/reference/oembed
 
 Made by aisa
 
-    1 - Don't mark messages as read if the window isn't focused.
-    2- Don't switch to a room when joined via invite on another session.
+    1- Don't switch to a room when joined via invite on another session.
 
 Made by Me
 
