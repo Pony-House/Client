@@ -466,6 +466,7 @@ function Video({
   const [thumbUrl, setThumbUrl] = useState(null);
   const [blur, setBlur] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
+  const [videoReady, setVideoReady] = useState(false);
   const name = content.body;
   const type = content.info?.mimetype || '';
 
@@ -537,10 +538,15 @@ function Video({
               <VideoEmbed
                 onClick={() => {
                   if (!url && !isLoading) {
+                    tinyFixScrollChat();
                     setIsVisible(false);
                     setIsLoading(true);
                     loadVideo()
-                      .then(() => setIsVisible(true))
+                      .then(() => {
+                        setVideoReady(true);
+                        setIsVisible(true);
+                        tinyFixScrollChat();
+                      })
                       .catch((err) => {
                         console.error(err);
                         alert(err.message, 'Video load error!');
@@ -548,6 +554,7 @@ function Video({
                   }
                 }}
                 controls
+                autoPlay={videoReady}
                 poster={thumbUrl}
                 width={width}
                 height={height}
@@ -555,7 +562,8 @@ function Video({
                 type={url && !isLoading ? getBlobSafeMimeType(type) : null}
               />
             )
-          : blurhash && blur && <BlurhashCanvas hash={blurhash} punch={1} />}
+          : blurhash &&
+            blur && <BlurhashCanvas width={width} height={height} hash={blurhash} punch={1} />}
       </RatioScreen>
     </div>
   );
