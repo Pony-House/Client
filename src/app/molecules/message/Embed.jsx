@@ -135,6 +135,29 @@ function Embed({ embed = {}, url = {}, roomId = null, threadId = null }) {
     while (description.endsWith('\n') || description.endsWith('\r')) {
       description = description.substring(0, description.length - 1);
     }
+
+    let breaklineRemoved = false;
+    const maxBreaklines = 5;
+
+    description = description.split('\n');
+    if (description.length > maxBreaklines)
+      while (description.length > maxBreaklines) {
+        description.pop();
+        breaklineRemoved = true;
+      }
+    description = description.join('\n');
+
+    description = description.split('\r');
+    if (description.length > maxBreaklines)
+      while (description.length > maxBreaklines) {
+        description.pop();
+        breaklineRemoved = true;
+      }
+    description = description.join('\r');
+
+    if (breaklineRemoved) description += '[...]';
+
+    if (description.length > 500) description = `${description.substring(0, 500)}[...]`;
   }
 
   // Site Name

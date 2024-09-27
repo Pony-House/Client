@@ -111,7 +111,7 @@ const VideoEmbed = React.forwardRef(
           audioOnlyMode: false,
           audioPosterMode: false,
           liveui: liveUi,
-          disablePictureInPicture: __ENV_APP__.ELECTRON_MODE || disablePictureInPicture,
+          disablePictureInPicture: disablePictureInPicture,
           fullscreen,
           controls,
           height,
