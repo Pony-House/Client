@@ -123,6 +123,15 @@
   & {
     background-color: #000;
   }
+
+  .data-vjs-player-container {
+    canvas {
+      height: 100%;
+      width: 100%;
+      padding: 0px !important;
+      margin: 0px !important;
+    }
+  }
 }
 [data-vjs-player] {
   background-color: #000;

@@ -518,7 +518,7 @@ function Video({
       {thumbUrl !== null && blur && (
         <Img
           onError={onThumbError}
-          style={{ display: 'none' }}
+          className="d-none"
           src={thumbUrl}
           onLoadingChange={(event) => {
             tinyFixScrollChat();
@@ -564,7 +564,13 @@ function Video({
               />
             )
           : blurhash &&
-            blur && <BlurhashCanvas width={width} height={height} hash={blurhash} punch={1} />}
+            blur && (
+              <div data-vjs-player className={`data-vjs-player-container`}>
+                <div>
+                  <BlurhashCanvas hash={blurhash} punch={1} />
+                </div>
+              </div>
+            )}
       </RatioScreen>
     </div>
   );
