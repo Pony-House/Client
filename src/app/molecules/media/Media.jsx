@@ -553,6 +553,7 @@ function Video({
                       });
                   }
                 }}
+                language="en"
                 controls
                 autoPlay={videoReady}
                 poster={thumbUrl}

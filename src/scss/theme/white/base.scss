@@ -273,6 +273,39 @@
   }
 }
 
+/* Video Player */
+
+/* Change all text and icon colors in the player. */
+.video-js {
+  color: var(--tc-surface-normal) !important;
+}
+
+/* Change the border of the big play button. */
+.vjs-big-play-button {
+  border-color: var(--bg-surface-border) !important;
+  background-color: var(--bg-surface-low-semi-transparent) !important;
+}
+
+.vjs-big-play-button:hover {
+  background-color: var(--bg-surface) !important;
+}
+
+.vjs-big-play-button:active {
+  background-color: var(--bg-surface-low) !important;
+}
+
+/* Change the color of various "bars". */
+.vjs-volume-level,
+.vjs-play-progress,
+.vjs-slider-bar {
+  background: var(--bg-primary) !important;
+}
+
+.vjs-control-bar {
+  background: var(--bg-surface-low-semi-transparent) !important;
+  border-color: var(--bg-surface-low-semi-transparent) !important;
+}
+
 .btn-theme {
   --bs-btn-color: #000;
   --bs-btn-bg: #f8f9fa;
