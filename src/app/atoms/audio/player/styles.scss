@@ -1,7 +1,5 @@
 // https://codepen.io/trevanhetzel/pen/rOVrGK
 
-$themes: dark light;
-
 @mixin rangeThumb {
   width: 15px;
   height: 15px;
@@ -38,110 +36,176 @@ $themes: dark light;
   background-repeat: no-repeat; /* Do not repeat the image */
 }
 
-@each $theme in $themes {
-  // Here are the rules specific to the colors in the theme
-  .r-howler.#{$theme}-themed {
-    &.player {
-      position: relative;
-      display: flex;
-      box-sizing: border-box;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      min-height: 45px;
-      box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
-      background-color: var(--bg-surface);
-      // border-radius: 4px;
+// Here are the rules specific to the colors in the theme
+.r-howler {
+  &.player {
+    position: relative;
+    display: flex;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    min-height: 45px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+    background-color: var(--bg-surface);
+    // border-radius: 4px;
+  }
+
+  .player-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px;
+    flex: 1;
+  }
+
+  button {
+    height: 100%;
+    // min-width: 30px;
+    // min-height: 30px;
+    padding: 6px;
+    border: none;
+    margin: 0;
+    fill: var(--tc-surface-normal);
+    background: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+    box-sizing: border-box;
+    transition:
+      background 0.1s ease-in,
+      fill 0.1s ease-in;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background: var(--bg-primary);
+      fill: var(--bg-surface);
     }
+  }
 
-    .player-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 7px;
-      flex: 1;
-    }
+  .player-rate-btn {
+    color: var(--tc-surface-normal);
+    border-radius: 5px;
+    margin-right: 0;
+    width: 100%;
+    font-size: 9pt;
+  }
 
-    button {
-      height: 100%;
-      // min-width: 30px;
-      // min-height: 30px;
-      padding: 6px;
-      border: none;
-      margin: 0;
-      fill: var(--tc-surface-normal);
-      background: transparent;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-right: 5px;
-      box-sizing: border-box;
-      transition:
-        background 0.1s ease-in,
-        fill 0.1s ease-in;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+  .player-speed {
+    position: relative;
+    min-width: 40px;
+    display: flex;
+    justify-content: center;
+  }
 
-      &:hover {
-        background: var(--bg-primary);
-        fill: var(--bg-surface);
-      }
-    }
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-surface-low-semi-transparent);
+    z-index: 999;
+    position: fixed;
+    border-radius: 4px;
+    left: 0;
+    text-align: center;
+    width: 47px;
 
-    .player-rate-btn {
+    li {
+      font-size: 13px;
+      margin: 0 2.5px;
+      padding: 5px 2.5px;
       color: var(--tc-surface-normal);
-      border-radius: 5px;
-      margin-right: 0;
-      width: 100%;
-      font-size: 9pt;
-    }
+      cursor: pointer;
 
-    .player-speed {
-      position: relative;
-      min-width: 40px;
-      display: flex;
-      justify-content: center;
-    }
-
-    ol {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      background-color: var(--bg-surface-low-semi-transparent);
-      z-index: 999;
-      position: fixed;
-      border-radius: 4px;
-      left: 0;
-      text-align: center;
-      width: 47px;
-
-      li {
-        font-size: 13px;
-        margin: 0 2.5px;
-        padding: 5px 2.5px;
-        color: var(--tc-surface-normal);
-        cursor: pointer;
-
-        &.selected-option {
-          background-color: var(--bg-primary);
-          border-radius: 4px;
-        }
+      &.selected-option {
+        background-color: var(--bg-primary);
+        border-radius: 4px;
       }
     }
+  }
 
-    .rate-btn-hidden {
-      opacity: 0;
+  .rate-btn-hidden {
+    opacity: 0;
+  }
+
+  .progress-bar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .player-progress {
+    // https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/
+    width: 100%;
+    border: 0;
+    padding: 0;
+    -webkit-appearance: none;
+    height: 4px;
+    border-radius: 4px;
+    min-width: 50px;
+    margin: 0;
+    // background: transparent;
+    z-index: 2;
+
+    &::-moz-range-thumb {
+      -webkit-appearance: none;
+      // @include rangeThumb;
+      background: var(--tc-surface-normal);
     }
 
-    .progress-bar {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      position: relative;
+    &::-ms-thumb {
+      -webkit-appearance: none;
+      // @include rangeThumb;
+      background: var(--bg-primary);
     }
 
-    .player-progress {
-      // https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      // @include rangeThumb;
+      background: var(--bg-primary);
+    }
+
+    &:focus {
+      // outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+    }
+
+    // Track
+    &::-webkit-slider-runnable-track {
+      @include rangeTrack;
+      background: linear-gradient(
+        to right,
+        var(--bg-primary),
+        var(--bg-primary) var(--progress-value, 0),
+        var(--bg-primary-border) var(--progress-value, 0)
+      );
+      content: '';
+      // margin-top: -6px;
+    }
+
+    &::-moz-range-track {
+      @include rangeTrack;
+      background: var(--bg-primary-border);
+    }
+
+    &::-ms-track {
+      @include rangeTrack;
+      background: var(--bg-primary-border);
+    }
+
+    &::-moz-range-progress {
+      @include rangeTrackProgress;
+      background: var(--bg-primary);
+    }
+  }
+
+  .volume-control {
+    padding-right: 5px;
+    display: flex;
+    align-items: center;
+    .audio-bar {
       width: 100%;
       border: 0;
       padding: 0;
@@ -149,25 +213,24 @@ $themes: dark light;
       height: 4px;
       border-radius: 4px;
       min-width: 50px;
-      margin: 0;
-      // background: transparent;
-      z-index: 2;
+      max-width: 75px;
+      background: transparent;
 
       &::-moz-range-thumb {
         -webkit-appearance: none;
-        // @include rangeThumb;
-        background: var(--tc-surface-normal);
+        @include rangeThumb;
+        background: var(--bg-primary);
       }
 
       &::-ms-thumb {
         -webkit-appearance: none;
-        // @include rangeThumb;
+        @include rangeThumb;
         background: var(--bg-primary);
       }
 
       &::-webkit-slider-thumb {
         -webkit-appearance: none;
-        // @include rangeThumb;
+        @include rangeThumb;
         background: var(--bg-primary);
       }
 
@@ -177,7 +240,7 @@ $themes: dark light;
 
       // Track
       &::-webkit-slider-runnable-track {
-        @include rangeTrack;
+        @include rangeTrackVolume;
         background: linear-gradient(
           to right,
           var(--bg-primary),
@@ -185,16 +248,15 @@ $themes: dark light;
           var(--bg-primary-border) var(--progress-value, 0)
         );
         content: '';
-        // margin-top: -6px;
       }
 
       &::-moz-range-track {
-        @include rangeTrack;
+        @include rangeTrackVolume;
         background: var(--bg-primary-border);
       }
 
       &::-ms-track {
-        @include rangeTrack;
+        @include rangeTrackVolume;
         background: var(--bg-primary-border);
       }
 
@@ -203,100 +265,34 @@ $themes: dark light;
         background: var(--bg-primary);
       }
     }
+  }
 
-    .volume-control {
-      padding-right: 5px;
-      display: flex;
-      align-items: center;
-      .audio-bar {
-        width: 100%;
-        border: 0;
-        padding: 0;
-        -webkit-appearance: none;
-        height: 4px;
-        border-radius: 4px;
-        min-width: 50px;
-        max-width: 75px;
-        background: transparent;
+  .audio-duration {
+    text-align: center;
+    padding-inline-start: 9px;
+    padding-inline-end: 9px;
+    white-space: nowrap;
+    pointer-events: none;
+    cursor: default;
+    color: var(--tc-surface-normal);
+    font-size: 14px;
+    font-variant-numeric: normal;
+    text-shadow: none;
 
-        &::-moz-range-thumb {
-          -webkit-appearance: none;
-          @include rangeThumb;
-          background: var(--bg-primary);
-        }
-
-        &::-ms-thumb {
-          -webkit-appearance: none;
-          @include rangeThumb;
-          background: var(--bg-primary);
-        }
-
-        &::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          @include rangeThumb;
-          background: var(--bg-primary);
-        }
-
-        &:focus {
-          // outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
-        }
-
-        // Track
-        &::-webkit-slider-runnable-track {
-          @include rangeTrackVolume;
-          background: linear-gradient(
-            to right,
-            var(--bg-primary),
-            var(--bg-primary) var(--progress-value, 0),
-            var(--bg-primary-border) var(--progress-value, 0)
-          );
-          content: '';
-        }
-
-        &::-moz-range-track {
-          @include rangeTrackVolume;
-          background: var(--bg-primary-border);
-        }
-
-        &::-ms-track {
-          @include rangeTrackVolume;
-          background: var(--bg-primary-border);
-        }
-
-        &::-moz-range-progress {
-          @include rangeTrackProgress;
-          background: var(--bg-primary);
-        }
-      }
+    .duration {
+      display: inline-block;
+      white-space: pre;
+      color: var(--tc-surface-low);
     }
+  }
 
-    .audio-duration {
-      text-align: center;
-      padding-inline-start: 9px;
-      padding-inline-end: 9px;
-      white-space: nowrap;
-      pointer-events: none;
-      cursor: default;
-      color: var(--tc-surface-normal);
-      font-size: 14px;
-      font-variant-numeric: normal;
-      text-shadow: none;
-
-      .duration {
-        display: inline-block;
-        white-space: pre;
-        color: var(--tc-surface-low);
-      }
-    }
-
-    input[type='range']:focus {
-    }
-    .prepare {
-      color: var(--bg-secondary);
-      font-weight: bold;
-      font-family: monospace;
-      font-size: 17px;
-    }
+  input[type='range']:focus {
+  }
+  .prepare {
+    color: var(--bg-secondary);
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 17px;
   }
 
   svg {

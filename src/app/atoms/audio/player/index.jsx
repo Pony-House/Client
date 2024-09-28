@@ -499,13 +499,13 @@ class PlayerComponent extends Component {
     const { playerState, progressValue, duration, currentPos, volume, isMute, ratePanel } =
       this.state;
 
-    const { isDark = false, profile = 'generic' } = this.props;
+    const { profile = 'generic' } = this.props;
 
     if (playerState === STATE.PREPARE) {
       return <Prepare {...this.props} />;
     }
 
-    const className = ['player', 'r-howler', isDark ? 'dark-themed' : 'light-themed'].join(' ');
+    const className = ['player', 'r-howler'].join(' ');
 
     let btnFunction = undefined;
     let btnAttrs = {};
@@ -715,7 +715,6 @@ PlayerComponent.propTypes = {
   src: PropTypes.array.isRequired,
   format: PropTypes.array,
   loadingText: PropTypes.string,
-  isDark: PropTypes.bool,
   onTimeUpdate: PropTypes.func,
   onEnd: PropTypes.func,
   onPlay: PropTypes.func,
