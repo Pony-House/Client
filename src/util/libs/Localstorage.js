@@ -46,7 +46,7 @@ class StorageManager extends EventEmitter {
     return this._syncTimeline(initMatrix.matrixClient.getRoom(roomId), checkpoint);
   }
 
-  addToMembers(event) {
+  setMember(event) {
     const tinyThis = this;
     return new Promise((resolve, reject) => {
       const data = {};
@@ -56,11 +56,14 @@ class StorageManager extends EventEmitter {
         reject(err);
       };
       try {
-        data.user_id;
-        data.room_id;
-        data.type;
-        data.origin_server_ts;
+        const content = event.getContent();
+        const date = event.getDate();
 
+        data.user_id = event.getSender();
+        data.room_id = event.getRoomId();
+        data.type = content.membership;
+
+        if (date) data.origin_server_ts = date.getTime();
         data.id = `${data.user_id}:${data.room_id}`;
 
         tinyThis.storeConnection
@@ -112,6 +115,8 @@ class StorageManager extends EventEmitter {
 
         if (!objType(data.content, 'object')) delete data.content;
         if (!objType(data.unsigned, 'object')) delete data.unsigned;
+
+        if (data.type === 'm.room.member') tinyThis.setMember(event);
 
         tinyThis.storeConnection
           .insert({
