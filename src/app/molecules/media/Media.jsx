@@ -415,7 +415,7 @@ function Audio({ content = {}, link, file = null, roomId, threadId }) {
 
   useEffect(() => tinyFixScrollChat());
   return (
-    <div className="file-container">
+    <div className={`file-container${url !== null ? ' file-open' : ''}`}>
       <FileHeader
         content={content}
         threadId={threadId}

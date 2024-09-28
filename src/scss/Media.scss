@@ -48,8 +48,7 @@
   }
 }
 
-.image-container,
-.audio-container {
+.image-container {
   font-size: 0;
   line-height: 0;
 
@@ -79,15 +78,6 @@
   .img-container {
     cursor: pointer;
     object-fit: cover;
-  }
-}
-
-.audio-container {
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-bottom: 12px;
-  audio {
-    width: 100%;
   }
 }
 

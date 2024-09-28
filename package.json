@@ -1,6 +1,6 @@
 {
   "name": "pony-house-matrix",
-  "version": "1.6.0-beta-1",
+  "version": "1.6.0-beta-2",
   "short_name": "Pony House",
   "description": "The open source house, your house, the house for all matrix ponies",
   "main": "dist-electron/main/index.js",
@@ -85,6 +85,7 @@
     "formik": "2.4.6",
     "generate-api-key": "1.0.2",
     "highlight.js": "11.10.0",
+    "howler": "2.2.4",
     "html-react-parser": "5.1.16",
     "ipaddr.js": "2.2.0",
     "jquery": "3.7.1",
