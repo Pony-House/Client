@@ -1,5 +1,7 @@
 import EventEmitter from 'events';
 import { RoomEvent, RoomStateEvent } from 'matrix-js-sdk';
+import storageManager from '@src/util/libs/Localstorage';
+
 import initMatrix from '../initMatrix';
 
 class UserList extends EventEmitter {
@@ -107,6 +109,7 @@ class UserList extends EventEmitter {
   }
 
   _removeRoom(roomId) {
+    storageManager.deleteRoomDb(roomId);
     const roomData = this.rooms.get(roomId);
     if (roomData && roomData.users) {
       const removeData = [];
