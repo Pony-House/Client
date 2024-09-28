@@ -1,57 +1,3 @@
-$primary: (
-  'dark': #37adbf,
-  'light': #37adbf,
-);
-$slider-thumb-color: (
-  'dark': #37adbf,
-  'light': white,
-);
-$secondary: (
-  'dark': grey,
-  'light': grey,
-);
-$background-color: (
-  'dark': rgba(26, 26, 26, 0.8),
-  'light': white,
-);
-$button-bgcolor: (
-  'light': rgba(26, 26, 26, 0.8),
-  'dark': white,
-);
-$range-track-color: (
-  'dark': black,
-  'light': #ccc,
-);
-$range-track-progress-color: (
-  'dark': white,
-  'light': #37adbf,
-);
-$white: (
-  'dark': white,
-  'light': white,
-);
-$audio-duration: (
-  'dark': white,
-  'light': rgba(26, 26, 26, 0.8),
-);
-$duration: (
-  'dark': #929292,
-  'light': #929292,
-);
-
-$rate-color: (
-  'dark': white,
-  'light': rgba(26, 26, 26, 0.8),
-);
-$pannel-color: (
-  'dark': rgba(26, 26, 26, 0.8),
-  'light': white,
-);
-$pannel-bg-color: (
-  'dark': rgba(26, 26, 26, 0.8),
-  'light': lightgrey,
-);
-
 // https://codepen.io/trevanhetzel/pen/rOVrGK
 
 $themes: dark light;
@@ -104,7 +50,7 @@ $themes: dark light;
       overflow: hidden;
       min-height: 45px;
       box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
-      background-color: map-get($background-color, $theme);
+      background-color: var(--bg-surface);
       // border-radius: 4px;
     }
 
@@ -123,7 +69,7 @@ $themes: dark light;
       padding: 6px;
       border: none;
       margin: 0;
-      fill: map-get($button-bgcolor, $theme);
+      fill: var(--tc-surface-normal);
       background: transparent;
       border-radius: 5px;
       cursor: pointer;
@@ -137,13 +83,13 @@ $themes: dark light;
       align-items: center;
 
       &:hover {
-        background: map-get($primary, $theme);
-        fill: map-get($background-color, $theme);
+        background: var(--bg-primary);
+        fill: var(--bg-surface);
       }
     }
 
     .player-rate-btn {
-      color: map-get($rate-color, $theme);
+      color: var(--tc-surface-normal);
       border-radius: 5px;
       margin-right: 0;
       width: 100%;
@@ -161,7 +107,7 @@ $themes: dark light;
       list-style: none;
       margin: 0;
       padding: 0;
-      background-color: map-get($pannel-bg-color, $theme);
+      background-color: var(--bg-surface-low-semi-transparent);
       z-index: 999;
       position: fixed;
       border-radius: 4px;
@@ -173,11 +119,11 @@ $themes: dark light;
         font-size: 13px;
         margin: 0 2.5px;
         padding: 5px 2.5px;
-        color: map-get($button-bgcolor, $theme);
+        color: var(--tc-surface-normal);
         cursor: pointer;
 
         &.selected-option {
-          background-color: map-get($primary, $theme);
+          background-color: var(--bg-primary);
           border-radius: 4px;
         }
       }
@@ -210,19 +156,19 @@ $themes: dark light;
       &::-moz-range-thumb {
         -webkit-appearance: none;
         // @include rangeThumb;
-        background: map-get($slider-thumb-color, $theme);
+        background: var(--tc-surface-normal);
       }
 
       &::-ms-thumb {
         -webkit-appearance: none;
         // @include rangeThumb;
-        background: map-get($slider-thumb-color, $theme);
+        background: var(--bg-primary);
       }
 
       &::-webkit-slider-thumb {
         -webkit-appearance: none;
         // @include rangeThumb;
-        background: map-get($slider-thumb-color, $theme);
+        background: var(--bg-primary);
       }
 
       &:focus {
@@ -234,9 +180,9 @@ $themes: dark light;
         @include rangeTrack;
         background: linear-gradient(
           to right,
-          map-get($range-track-progress-color, $theme),
-          map-get($range-track-progress-color, $theme) var(--progress-value, 0),
-          map-get($range-track-color, $theme) var(--progress-value, 0)
+          var(--bg-primary),
+          var(--bg-primary) var(--progress-value, 0),
+          var(--bg-primary-border) var(--progress-value, 0)
         );
         content: '';
         // margin-top: -6px;
@@ -244,17 +190,17 @@ $themes: dark light;
 
       &::-moz-range-track {
         @include rangeTrack;
-        background: map-get($range-track-color, $theme);
+        background: var(--bg-primary-border);
       }
 
       &::-ms-track {
         @include rangeTrack;
-        background: map-get($range-track-color, $theme);
+        background: var(--bg-primary-border);
       }
 
       &::-moz-range-progress {
         @include rangeTrackProgress;
-        background: map-get($range-track-progress-color, $theme);
+        background: var(--bg-primary);
       }
     }
 
@@ -276,19 +222,19 @@ $themes: dark light;
         &::-moz-range-thumb {
           -webkit-appearance: none;
           @include rangeThumb;
-          background: map-get($slider-thumb-color, $theme);
+          background: var(--bg-primary);
         }
 
         &::-ms-thumb {
           -webkit-appearance: none;
           @include rangeThumb;
-          background: map-get($slider-thumb-color, $theme);
+          background: var(--bg-primary);
         }
 
         &::-webkit-slider-thumb {
           -webkit-appearance: none;
           @include rangeThumb;
-          background: map-get($slider-thumb-color, $theme);
+          background: var(--bg-primary);
         }
 
         &:focus {
@@ -300,26 +246,26 @@ $themes: dark light;
           @include rangeTrackVolume;
           background: linear-gradient(
             to right,
-            map-get($range-track-progress-color, $theme),
-            map-get($range-track-progress-color, $theme) var(--progress-value, 0),
-            map-get($range-track-color, $theme) var(--progress-value, 0)
+            var(--bg-primary),
+            var(--bg-primary) var(--progress-value, 0),
+            var(--bg-primary-border) var(--progress-value, 0)
           );
           content: '';
         }
 
         &::-moz-range-track {
           @include rangeTrackVolume;
-          background: map-get($range-track-color, $theme);
+          background: var(--bg-primary-border);
         }
 
         &::-ms-track {
           @include rangeTrackVolume;
-          background: map-get($range-track-color, $theme);
+          background: var(--bg-primary-border);
         }
 
         &::-moz-range-progress {
           @include rangeTrackProgress;
-          background: map-get($range-track-progress-color, $theme);
+          background: var(--bg-primary);
         }
       }
     }
@@ -331,7 +277,7 @@ $themes: dark light;
       white-space: nowrap;
       pointer-events: none;
       cursor: default;
-      color: map-get($audio-duration, $theme);
+      color: var(--tc-surface-normal);
       font-size: 14px;
       font-variant-numeric: normal;
       text-shadow: none;
@@ -339,14 +285,14 @@ $themes: dark light;
       .duration {
         display: inline-block;
         white-space: pre;
-        color: map-get($duration, $theme);
+        color: var(--tc-surface-low);
       }
     }
 
     input[type='range']:focus {
     }
     .prepare {
-      color: map-get($secondary, $theme);
+      color: var(--bg-secondary);
       font-weight: bold;
       font-family: monospace;
       font-size: 17px;
