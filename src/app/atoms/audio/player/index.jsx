@@ -81,7 +81,6 @@ class PlayerComponent extends Component {
     };
 
     if (mute) this.changeVolume(0);
-
     if (autoPlay) this.playbackPlay();
 
     this.setState(
@@ -101,6 +100,7 @@ class PlayerComponent extends Component {
       onPlay,
       onPause,
       onEnd,
+      loop,
     } = this.props;
 
     if (!src) {
@@ -116,6 +116,12 @@ class PlayerComponent extends Component {
 
     sound.on('end', () => {
       this.playbackEnded();
+
+      // Loop
+      if (loop) {
+        this.playbackPlay();
+        return;
+      }
 
       // onEnd prop
       onEnd && onEnd();
