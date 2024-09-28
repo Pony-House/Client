@@ -1,4 +1,6 @@
 import { NotificationCountType, ReceiptType } from 'matrix-js-sdk';
+import $ from 'jquery';
+
 import favIconManager from '@src/util/libs/favicon';
 
 import initMatrix from '../initMatrix';
