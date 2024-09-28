@@ -6,8 +6,6 @@ import PropTypes from 'prop-types';
 import { isEqual, renderSVGicons } from './func';
 import Prepare from './prepare';
 import keyboardEvents from './events';
-import './styles.scss';
-import './profile.scss';
 
 export const audioFormats = [
   'audio/mpeg',

@@ -1,3 +1,16 @@
+.profile_top_progress,
+.profile_minimal,
+.profile_generic {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  position: relative;
+
+  .player-controls {
+    flex: 1;
+  }
+}
+
 // https://codepen.io/trevanhetzel/pen/rOVrGK
 
 @mixin rangeThumb {
