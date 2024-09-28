@@ -46,6 +46,13 @@ class StorageManager extends EventEmitter {
     return this._syncTimeline(initMatrix.matrixClient.getRoom(roomId), checkpoint);
   }
 
+  async deleteRoomDb(roomId) {
+    const where = { room_id: roomId };
+    const events = await this.storeConnection.remove({ from: 'timeline', where });
+    const members = await this.storeConnection.remove({ from: 'members', where });
+    return { events, members };
+  }
+
   setMember(event) {
     const tinyThis = this;
     return new Promise((resolve, reject) => {
