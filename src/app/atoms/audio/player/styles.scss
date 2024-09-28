@@ -37,6 +37,14 @@
 }
 
 // Here are the rules specific to the colors in the theme
+.r-howler-previewer {
+  background-color: var(--bg-surface);
+  min-height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .r-howler {
   &.player {
     position: relative;
