@@ -67,14 +67,33 @@ class StorageManager extends EventEmitter {
         data.id = `${data.user_id}:${data.room_id}`;
 
         tinyThis.storeConnection
-          .insert({
-            into: 'members',
-            upsert: true,
-            values: [data],
+          .select({
+            from: 'members',
+            limit: 1,
+            where: {
+              id: data.id,
+            },
           })
-          .then((result) => {
-            tinyThis.emit('dbMemberInserted', result, data);
-            resolve(result);
+          .then((oldData) => {
+            const tinyData = oldData[0];
+            if (
+              typeof data.origin_server_ts === 'number' &&
+              (!tinyData ||
+                typeof tinyData.origin_server_ts !== 'number' ||
+                data.origin_server_ts >= tinyData.origin_server_ts)
+            ) {
+              tinyThis.storeConnection
+                .insert({
+                  into: 'members',
+                  upsert: true,
+                  values: [data],
+                })
+                .then((result) => {
+                  tinyThis.emit('dbMemberInserted', result, data);
+                  resolve(result);
+                })
+                .catch(tinyReject);
+            }
           })
           .catch(tinyReject);
       } catch (err) {
