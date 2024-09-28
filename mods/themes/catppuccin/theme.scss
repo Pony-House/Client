@@ -308,10 +308,14 @@
 
   /* Media Audio fix */
   .r-howler {
+    button:hover {
+      background: var(--surface0);
+    }
+
     /* Progress Bar */
     .player-progress {
       &::-moz-range-progress {
-        background: var(--bg-primary);
+        background: var(--blue);
       }
     }
 
@@ -319,16 +323,24 @@
     .volume-control {
       .audio-bar {
         &::-moz-range-thumb {
-          background: var(--bg-primary);
+          background: var(--text);
         }
 
         &::-moz-range-track {
-          background: var(--bg-primary-border);
+          background: var(--subtext1);
         }
 
         &::-moz-range-progress {
-          background: var(--bg-primary);
+          background: var(--blue);
         }
+      }
+    }
+  }
+
+  .vjs-progress-control {
+    .vjs-progress-holder {
+      .vjs-play-progress {
+        background: var(--blue) !important;
       }
     }
   }
@@ -411,6 +423,18 @@
 }
 
 .catppuccin-theme-latte {
+  /* Media Audio fix */
+  .r-howler {
+    /* Volume Ranger */
+    .volume-control {
+      .audio-bar {
+        &::-moz-range-track {
+          background: var(--bg-input);
+        }
+      }
+    }
+  }
+
   #settings-base #setting-tab .nav-link:hover {
     background-color: #ccd0da !important;
   }
