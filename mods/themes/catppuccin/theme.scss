@@ -305,6 +305,33 @@
   .list-group {
     --bs-list-group-bg: var(--base);
   }
+
+  /* Media Audio fix */
+  .r-howler {
+    /* Progress Bar */
+    .player-progress {
+      &::-moz-range-progress {
+        background: var(--bg-primary);
+      }
+    }
+
+    /* Volume Ranger */
+    .volume-control {
+      .audio-bar {
+        &::-moz-range-thumb {
+          background: var(--bg-primary);
+        }
+
+        &::-moz-range-track {
+          background: var(--bg-primary-border);
+        }
+
+        &::-moz-range-progress {
+          background: var(--bg-primary);
+        }
+      }
+    }
+  }
 }
 
 .catppuccin-theme-frappe,
