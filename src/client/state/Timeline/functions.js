@@ -1,4 +1,5 @@
 import { EventTimeline } from 'matrix-js-sdk';
+import attemptDecryption from '@src/util/libs/attemptDecryption';
 
 import settings from '../settings';
 
@@ -8,6 +9,18 @@ export function isEdited(mEvent) {
 
 export function isReaction(mEvent) {
   return mEvent.getType() === 'm.reaction';
+}
+
+// Decrypt Timeline Events
+export function decryptAllEventsOfTimeline(eventTimeline) {
+  const decryptionPromises = eventTimeline
+    .getEvents()
+    // .filter((event) => event.shouldAttemptDecryption())
+    .filter((event) => event.isEncrypted() && !event.clearEvent)
+    .reverse()
+    .map((event) => attemptDecryption.exec(event, { isRetry: true }));
+
+  return Promise.allSettled(decryptionPromises);
 }
 
 export function hideMemberEvents(mEvent) {

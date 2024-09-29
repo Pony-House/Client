@@ -1,7 +1,10 @@
 import EventEmitter from 'events';
 
 import { objType } from 'for-promise/utils/lib.mjs';
+
 import initMatrix from '@src/client/initMatrix';
+import { decryptAllEventsOfTimeline } from '@src/client/state/Timeline/functions';
+
 import { startDb } from './db/indexedDb';
 
 class StorageManager extends EventEmitter {
@@ -38,6 +41,13 @@ class StorageManager extends EventEmitter {
               this._timelineSyncCache[roomId].last.length > 0
             ? this._timelineSyncCache[roomId].last
             : null;
+
+      /*
+        await initMatrix.paginateEventTimeline(tm, {});
+
+              // Decrypt time
+        if (room.hasEncryptionStateEvent()) await decryptAllEventsOfTimeline(this.activeTimeline);
+      */
     }
     return null;
   }

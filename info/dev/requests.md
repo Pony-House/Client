@@ -1,3 +1,7 @@
+const [pageLimit, setPageLimit] = useState(getAppearance('pageLimit'));
+storageManager.syncTimeline
+src/client/state/RoomTimeline.js
+
 Quando o upload de arquivo é enviado, ele abre sem nada, mas funciona quando faz o refresh.
 
 Colocar barra de progresso de download do arquivo.

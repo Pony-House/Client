@@ -1,6 +1,5 @@
 import EventEmitter from 'events';
 
-import attemptDecryption from '@src/util/libs/attemptDecryption';
 import storageManager from '@src/util/libs/Localstorage';
 
 import { Direction, MatrixEventEvent, Room, RoomEvent, RoomMemberEvent } from 'matrix-js-sdk';
@@ -22,6 +21,7 @@ import {
   getLastLinkedTimeline,
   iterateLinkedTimelines,
   isTimelineLinked,
+  decryptAllEventsOfTimeline,
 } from './Timeline/functions';
 import installYjs from './Timeline/yjs';
 
@@ -172,7 +172,7 @@ class RoomTimeline extends EventEmitter {
 
   // Reset
   async _reset() {
-    if (this.isEncrypted()) await this.decryptAllEventsOfTimeline(this.activeTimeline);
+    if (this.isEncrypted()) await decryptAllEventsOfTimeline(this.activeTimeline);
     this._populateTimelines();
 
     if (!this.initialized) {
@@ -244,7 +244,7 @@ class RoomTimeline extends EventEmitter {
       await this.matrixClient.paginateEventTimeline(timelineToPaginate, { backwards, limit });
 
       // Decrypt time
-      if (this.isEncrypted()) await this.decryptAllEventsOfTimeline(this.activeTimeline);
+      if (this.isEncrypted()) await decryptAllEventsOfTimeline(this.activeTimeline);
       this._populateTimelines();
 
       // Loaded Check
@@ -263,18 +263,6 @@ class RoomTimeline extends EventEmitter {
       this.isOngoingPagination = false;
       return false;
     }
-  }
-
-  // Decrypt Events
-  decryptAllEventsOfTimeline(eventTimeline) {
-    const decryptionPromises = eventTimeline
-      .getEvents()
-      // .filter((event) => event.shouldAttemptDecryption())
-      .filter((event) => event.isEncrypted() && !event.clearEvent)
-      .reverse()
-      .map((event) => attemptDecryption.exec(event, { isRetry: true }));
-
-    return Promise.allSettled(decryptionPromises);
   }
 
   // Has Event timeline
