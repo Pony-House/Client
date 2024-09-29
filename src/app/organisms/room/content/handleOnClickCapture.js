@@ -1,3 +1,4 @@
+import initMatrix from '@src/client/initMatrix';
 import { openProfileViewer, openRoomViewer } from '../../../../client/action/navigation';
 import navigation from '../../../../client/state/navigation';
 
