@@ -276,6 +276,7 @@ export default defineConfig(({ command, mode }) => {
       },
       watch: {
         ignored: [
+          "/android/**",
           "**/vendor/**",
           '**/release/**',
           '**/.flatpak/**',
