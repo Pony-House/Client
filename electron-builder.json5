@@ -12,7 +12,7 @@
   files: ['dist-electron', 'dist'],
   linux: {
     icon: 'build/icon.png',
-    target: ['AppImage', 'deb', 'tar.gz'],
+    target: ['AppImage', 'deb', 'tar.gz', 'snap'],
     category: 'Network;Chat;InstantMessaging;',
     desktop: {
       Comment: 'Pony House matrix client',
@@ -35,6 +35,36 @@
       },
     ],
     artifactName: '${productName}_${version}.${ext}',
+  },
+  flatpak: {
+    finishArgs: [
+      // Wayland/X11 Rendering
+      '--socket=wayland',
+      '--socket=x11',
+      '--share=ipc',
+      // Open GL
+      '--device=dri',
+      // Audio output
+      '--socket=pulseaudio',
+      // Read/write home directory access
+      '--filesystem=home',
+      '--filesystem=/tmp',
+      '--filesystem=xdg-cache',
+      '--filesystem=xdg-config',
+      '--filesystem=xdg-download',
+      // Allow communication with network
+      '--share=network',
+      // System notifications with libnotify
+      '--talk-name=org.freedesktop.Notifications',
+    ],
+    license: 'LICENSE',
+  },
+  snap: {
+    autoStart: false,
+    grade: 'stable',
+    compression: 'xz',
+    confinement: 'classic',
+    plugs: ['default'],
   },
   nsis: {
     oneClick: false,
