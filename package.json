@@ -100,7 +100,7 @@
     "matrix-js-sdk": "34.6.0",
     "matrix-widget-api": "1.9.0",
     "md5": "2.3.0",
-    "moment-timezone": "0.5.45",
+    "moment-timezone": "0.5.46",
     "node-fetch": "2",
     "object-hash": "3.0.0",
     "photoswipe": "5.4.4",
