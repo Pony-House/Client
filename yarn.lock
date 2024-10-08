@@ -1677,10 +1677,10 @@
   resolved "https://registry.npmjs.org/@xmtp/user-preferences-bindings-wasm/-/user-preferences-bindings-wasm-0.3.6.tgz"
   integrity sha512-ANi6ikrO6YBaK978sMuEEnpREvFQQnMVaNdlviaLzmc07u4Of4s/VLNnavl4qTb4F4cvwSiBWou0wSYIE5SWYg==
 
-"@xmtp/xmtp-js@13.0.0":
-  version "13.0.0"
-  resolved "https://registry.npmjs.org/@xmtp/xmtp-js/-/xmtp-js-13.0.0.tgz"
-  integrity sha512-nDS7GaichYkf15oaWsj6oAVr9gwdwq1ZjMeDK/iX4HdBnK97FDeMVYZCpZhWJE7RsuyO5/qWoh4mheMNTsOCRQ==
+"@xmtp/xmtp-js@13.0.1":
+  version "13.0.1"
+  resolved "https://registry.yarnpkg.com/@xmtp/xmtp-js/-/xmtp-js-13.0.1.tgz#59da52c68852d1d94cf49625a5bf9dd0cc3ccb21"
+  integrity sha512-hQf1f9Mn9jJ3jvIcUI0EJREukKYEdZO1BounddcYUeDGJ83uMcBrI56OTcYgMa3HNBnj94HrlrSXF1TWw8EagA==
   dependencies:
     "@noble/secp256k1" "1.7.1"
     "@xmtp/consent-proof-signature" "^0.1.3"
