@@ -7356,10 +7356,10 @@ slash@^3.0.0:
   resolved "https://registry.npmjs.org/slash/-/slash-3.0.0.tgz"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
 
-slate-react@0.110.1:
-  version "0.110.1"
-  resolved "https://registry.npmjs.org/slate-react/-/slate-react-0.110.1.tgz"
-  integrity sha512-bx6J0PkY9A50O4w78k4NPqNOXGo49fmSbCRgr8OBDWKKo4BeSt9y3vGXCkQ/Mm4lQ8riyRKr3TrJXzqMY7lRZg==
+slate-react@0.110.2:
+  version "0.110.2"
+  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.110.2.tgz#67ac1e1d8bd29857d0c314b331490921b5c03bea"
+  integrity sha512-J5M4FHFAXmHWdz3wCixhFZcO3/hX6u1VOM6zSlIs7g43hGp0o9woo4zcCm1xgGB8m/BWYucQCq2n2t3g4PIjug==
   dependencies:
     "@juggle/resize-observer" "^3.4.0"
     direction "^1.0.4"
