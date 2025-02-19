@@ -90,6 +90,7 @@ class TimelineCachePagination extends EventEmitter {
               }
 
               // Insert timeline items
+              // console.log(tmc.timeline, tmc.timeline.length, eventId);
               if (tmc.timeline.length < 1) {
                 // Normal mode
                 if (!eventId) {
@@ -258,7 +259,7 @@ class TimelineCachePagination extends EventEmitter {
           if (!tinyCheckEvent.check(mEvent)) return;
 
           const tmc = tinyThis.getData(roomId, threadId);
-          if (!tmc && !mEvent.isRedacted()) return;
+          if (!tmc || !mEvent.isRedacted()) return;
 
           tinyConsole.log(
             `${tinyThis.consoleTag(roomId, threadId)} New message: ${mEvent.getId()}`,
