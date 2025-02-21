@@ -85,6 +85,7 @@ export default {
       'Do you know what an X-Tudo is for brazilians?',
       'The Pony House founder will always want your puddings! Keep your puddings safe!',
       "My biography must be turning into a smaller version of Charlie Chaplin's life.",
+      'Pudding atoms are tiny particles of happiness :3',
 
       'Vires in numerics',
       'Wow! Does he really have the power to control the most valuable dog on the internet?',
