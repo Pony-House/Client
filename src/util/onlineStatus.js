@@ -8,7 +8,7 @@ import { twemojifyToUrl } from './twemojify';
 const statusList = {
   online: 'fa-solid fa-circle',
   offline: 'bi bi-record-circle-fill',
-  unavailable: 'bi bi-record-circle-fill',
+  unavailable: 'fa-solid fa-moon',
   dnd: 'fa-solid fa-circle-minus',
   idle: 'fa-solid fa-moon',
 };
@@ -16,7 +16,7 @@ const statusList = {
 const statusIcons = {
   online: '🟢',
   offline: '🔘',
-  unavailable: '🔘',
+  unavailable: '🟠',
   dnd: '🔴',
   idle: '🟠',
 };
@@ -182,11 +182,7 @@ export function getPresence(user, customValues, canStatus = true, canPresence = 
         customValues,
         content,
       );
-      if (
-        content.presence !== 'offline' &&
-        content.presence !== 'unavailable' &&
-        content.presenceStatusMsg.status
-      ) {
+      if (content.presence !== 'offline' && content.presenceStatusMsg.status) {
         content.presence = content.presenceStatusMsg.status;
         delete content.presenceStatusMsg.status;
       }
@@ -194,14 +190,14 @@ export function getPresence(user, customValues, canStatus = true, canPresence = 
 
     // Is afk?
     if (
-      // Offline?
       typeof content.presence === 'string' &&
-      content.presence !== 'offline' &&
-      content.presence !== 'unavailable' &&
-      // Checking...
-      typeof content.inactiveTime === 'number' &&
-      !Number.isNaN(content.inactiveTime) &&
-      content.inactiveTime > __ENV_APP__.AFK_TIMEOUT
+      // Offline?
+      ((content.presence !== 'offline' &&
+        // Checking...
+        typeof content.inactiveTime === 'number' &&
+        !Number.isNaN(content.inactiveTime) &&
+        content.inactiveTime > __ENV_APP__.AFK_TIMEOUT) ||
+        content.presence === 'unavailable')
     )
       content.isAfk = true;
     // No Afk
@@ -237,5 +233,5 @@ export function getUserStatus(user, tinyData) {
     }
   }
 
-  return `user-presence-unavailable ${statusList.unavailable}`;
+  return `user-presence-offline ${statusList.offline}`;
 }

@@ -10,7 +10,6 @@ export const existsUserStatus = (accountContent) =>
   objType(accountContent, 'object') &&
   objType(accountContent.presenceStatusMsg, 'object') &&
   accountContent.presence !== 'offline' &&
-  accountContent.presence !== 'unavailable' &&
   ((accountContent.presenceStatusMsg.msg === 'string' &&
     accountContent.presenceStatusMsg.msg.length > 0) ||
     (typeof accountContent.presenceStatusMsg.msgIcon === 'string' &&
@@ -53,8 +52,7 @@ const UserCustomStatus = React.forwardRef(
       forceShow ||
       ((existPresenceObject || presenceIsPureText) &&
         accountContent.presence !== 'offline' &&
-        accountContent.presence !== 'invisible' &&
-        accountContent.presence !== 'unavailable');
+        accountContent.presence !== 'invisible');
 
     const tinyClass = `${existMsgPresence ? `${emojiFix} ` : ''}user-custom-status${!existMsgPresence && !disableEmojiOnly ? ' custom-status-emoji-only' : ''}${className ? ` ${className}` : ''}`;
 

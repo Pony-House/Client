@@ -1,8 +1,6 @@
 /* Presence */
 .user-presence-offline,
-.user-presence-unavailable,
-.user-presence-offline:before,
-.user-presence-unavailable:before {
+.user-presence-offline:before {
   color: #bdbdbd !important;
 }
 
@@ -17,7 +15,9 @@
 }
 
 .user-presence-idle,
-.user-presence-idle:before {
+.user-presence-idle:before,
+.user-presence-unavailable,
+.user-presence-unavailable:before {
   color: #b8913b !important;
 }
 
@@ -39,7 +39,8 @@
     right: 3px;
     top: -7px !important;
   }
-  &.user-presence-idle::before {
+  &.user-presence-idle::before,
+  &.user-presence-unavailable::before {
     padding: 1px 3px;
     right: 2px;
   }
