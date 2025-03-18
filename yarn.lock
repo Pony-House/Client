@@ -195,10 +195,10 @@
   resolved "https://registry.yarnpkg.com/@capacitor/browser/-/browser-7.0.0.tgz#90a2d3bb367d81f559da31dc7aa486e0b067ec3b"
   integrity sha512-wM2gclpulyOAvno9HDKI1X6Vxd0qXviO1zFeY5dplsNSR4tm6k6BtVGW7jEqUbQCFXbnDmhKLQgLr39JUwjzcA==
 
-"@capacitor/cli@7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-7.0.1.tgz#0537dde870b6a308b6f5e45098de48eb1f953b32"
-  integrity sha512-KNKT25ZvNL8Gm+zxSxCq8n9FQYUBsZcAGs5lisQKHnDRz7tkTMmMNok+TlNlLn6to78J1k+OtBgpmfbFerpOng==
+"@capacitor/cli@7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-7.1.0.tgz#2cb630a144862005ab3dab5fbe7f1eb4a1bfc92d"
+  integrity sha512-oCjB9VB6KNTnBAlzt8tVIuBW+ZniIOCbrsp+nLoa2EfUIgoOGfMHldS4tG9KlTG3pTi5AzeHjSHJIMZwfiz6gg==
   dependencies:
     "@ionic/cli-framework-output" "^2.2.8"
     "@ionic/utils-subprocess" "^3.0.1"
