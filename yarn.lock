@@ -1532,10 +1532,10 @@
     "@typescript-eslint/types" "8.26.1"
     eslint-visitor-keys "^4.2.0"
 
-"@videojs/http-streaming@^3.16.2":
-  version "3.16.2"
-  resolved "https://registry.yarnpkg.com/@videojs/http-streaming/-/http-streaming-3.16.2.tgz#764f3c18140331ac23478faa6b81acc54fc3d3a5"
-  integrity sha512-fvt4ko7FknxiT9FnjyNQt6q2px+awrkM+Orv7IB/4gldvj94u4fowGfmNHynnvNTPgPkdxHklGmFLGfclYw8HA==
+"@videojs/http-streaming@^3.17.0":
+  version "3.17.0"
+  resolved "https://registry.yarnpkg.com/@videojs/http-streaming/-/http-streaming-3.17.0.tgz#58433aa72206afae2bb65462f023d21afd766bf4"
+  integrity sha512-Ch1P3tvvIEezeZXyK11UfWgp4cWKX4vIhZ30baN/lRinqdbakZ5hiAI3pGjRy3d+q/Epyc8Csz5xMdKNNGYpcw==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@videojs/vhs-utils" "^4.1.1"
@@ -1546,16 +1546,7 @@
     mux.js "7.1.0"
     video.js "^7 || ^8"
 
-"@videojs/vhs-utils@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@videojs/vhs-utils/-/vhs-utils-4.0.0.tgz#4d4dbf5d61a9fbd2da114b84ec747c3a483bc60d"
-  integrity sha512-xJp7Yd4jMLwje2vHCUmi8MOUU76nxiwII3z4Eg3Ucb+6rrkFVGosrXlMgGnaLjq724j3wzNElRZ71D/CKrTtxg==
-  dependencies:
-    "@babel/runtime" "^7.12.5"
-    global "^4.4.0"
-    url-toolkit "^2.2.1"
-
-"@videojs/vhs-utils@^4.1.1":
+"@videojs/vhs-utils@^4.0.0", "@videojs/vhs-utils@^4.1.1":
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/@videojs/vhs-utils/-/vhs-utils-4.1.1.tgz#44226fc5993f577490b5e08951ddc083714405cc"
   integrity sha512-5iLX6sR2ownbv4Mtejw6Ax+naosGvoT9kY+gcuHzANyUZZ+4NpeNdKMUhb6ag0acYej1Y7cmr/F2+4PrggMiVA==
@@ -7683,11 +7674,6 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
-url-toolkit@^2.2.1:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/url-toolkit/-/url-toolkit-2.2.5.tgz#58406b18e12c58803e14624df5e374f638b0f607"
-  integrity sha512-mtN6xk+Nac+oyJ/PrI7tzfmomRVNFIWKUbG8jdYFt52hxbiReFAXIjYskvu64/dvuW71IcB7lV8l0HvZMac6Jg==
-
 utf8-byte-length@^1.0.1:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/utf8-byte-length/-/utf8-byte-length-1.0.5.tgz#f9f63910d15536ee2b2d5dd4665389715eac5c1e"
@@ -7748,13 +7734,13 @@ verror@^1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-video.js@8.21.0, "video.js@^7 || ^8":
-  version "8.21.0"
-  resolved "https://registry.yarnpkg.com/video.js/-/video.js-8.21.0.tgz#ce097aa2cd06dcbada5379215e3781d703d9d16b"
-  integrity sha512-zcwerRb257QAuWfi8NH9yEX7vrGKFthjfcONmOQ4lxFRpDAbAi+u5LAjCjMWqhJda6zEmxkgdDpOMW3Y21QpXA==
+video.js@8.22.0, "video.js@^7 || ^8":
+  version "8.22.0"
+  resolved "https://registry.yarnpkg.com/video.js/-/video.js-8.22.0.tgz#60ee2033025395df708d7cbb71fdfe5f0c4c4f0f"
+  integrity sha512-xge2kpjsvC0zgFJ1cqt+wTqsi21+huFswlonPFh7qiplypsb4FN/D2Rz6bWdG/S9eQaPHfWHsarmJL/7D3DHoA==
   dependencies:
     "@babel/runtime" "^7.12.5"
-    "@videojs/http-streaming" "^3.16.2"
+    "@videojs/http-streaming" "^3.17.0"
     "@videojs/vhs-utils" "^4.1.1"
     "@videojs/xhr" "2.7.0"
     aes-decrypter "^4.0.2"
