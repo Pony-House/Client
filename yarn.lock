@@ -757,10 +757,10 @@
     lodash "^4.17.15"
     tmp-promise "^3.0.2"
 
-"@matrix-org/matrix-sdk-crypto-wasm@^9.0.0":
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/@matrix-org/matrix-sdk-crypto-wasm/-/matrix-sdk-crypto-wasm-9.1.0.tgz#f889653eb4fafaad2a963654d586bd34de62acd5"
-  integrity sha512-CtPoNcoRW6ehwxpRQAksG3tR+NJ7k4DV02nMFYTDwQtie1V4R8OTY77BjEIs97NOblhtS26jU8m1lWsOBEz0Og==
+"@matrix-org/matrix-sdk-crypto-wasm@^14.0.1":
+  version "14.0.1"
+  resolved "https://registry.yarnpkg.com/@matrix-org/matrix-sdk-crypto-wasm/-/matrix-sdk-crypto-wasm-14.0.1.tgz#e258ef84bcc7889f0e7eb3a7dbecf0830a6dd606"
+  integrity sha512-CgLpHs6nTw5pjSsMBi9xbQnBXf2l8YhImQP9cv8nbGSCYdYjFI0FilMXffzjWV5HThpNHri/3pF20ahZtuS3VA==
 
 "@matrix-org/olm@3.2.15":
   version "3.2.15"
@@ -5272,13 +5272,13 @@ matrix-events-sdk@0.0.1:
   resolved "https://registry.yarnpkg.com/matrix-events-sdk/-/matrix-events-sdk-0.0.1.tgz#c8c38911e2cb29023b0bbac8d6f32e0de2c957dd"
   integrity sha512-1QEOsXO+bhyCroIe2/A5OwaxHvBm7EsSQ46DEDn8RBIfQwN5HWBpFvyWWR4QY0KHPPnnJdI99wgRiAl7Ad5qaA==
 
-matrix-js-sdk@34.13.0:
-  version "34.13.0"
-  resolved "https://registry.yarnpkg.com/matrix-js-sdk/-/matrix-js-sdk-34.13.0.tgz#5a7a112cc0c9edd3bd58ae9669070dd220912f51"
-  integrity sha512-AAU8ZdCawca+7ucQfdcC3LA85OtCTV7QeqcjvKt/ZZhU3xL9VoawuoRQ+4R6H8KZnqyJmT4j7bdeC0jG4qcqLg==
+matrix-js-sdk@37.2.0:
+  version "37.2.0"
+  resolved "https://registry.yarnpkg.com/matrix-js-sdk/-/matrix-js-sdk-37.2.0.tgz#9e107b0007036186f512b875fec9707fc52a4cc8"
+  integrity sha512-6JUnm2sorHxeTcL9wlHCSdn1q7Nk198Fk5//gsiy2txJK8oa08OOgiomAi98YeQiwqA+omm99Km3m3dgcFyFVw==
   dependencies:
     "@babel/runtime" "^7.12.5"
-    "@matrix-org/matrix-sdk-crypto-wasm" "^9.0.0"
+    "@matrix-org/matrix-sdk-crypto-wasm" "^14.0.1"
     "@matrix-org/olm" "3.2.15"
     another-json "^0.2.0"
     bs58 "^6.0.0"
