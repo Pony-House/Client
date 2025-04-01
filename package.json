@@ -138,7 +138,7 @@
     "@vitejs/plugin-react": "4.3.4",
     "cross-env": "7.0.3",
     "electron": "^35.0.2",
-    "electron-builder": "^25.1.8",
+    "electron-builder": "^26.0.12",
     "eslint": "9.22.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "10.1.1",
