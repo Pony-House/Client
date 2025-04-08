@@ -240,10 +240,10 @@
   resolved "https://registry.yarnpkg.com/@capacitor/haptics/-/haptics-7.0.0.tgz#b16b8968850ded0c3f0a233fea54321e94f3e199"
   integrity sha512-8uI8rWyAbq8EzkjS+sHZSncyzujHzVbuLKgj8J5H0yUL6+r26F16gVA2iuQuIBvzbSMy7Y0/pUuWlwZr/H8AKg==
 
-"@capacitor/keyboard@7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@capacitor/keyboard/-/keyboard-7.0.0.tgz#c31dcda3faa4158dc63da07e17e8c1ec31382e6d"
-  integrity sha512-Tqwy8wG+sx4UqiFCX4Q+bFw6uKgG7BiHKAPpeefoIgoEB8H8Jf3xZNZoVPnJIMuPsCdSvuyHXZbJXH9IEEirGA==
+"@capacitor/keyboard@7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/keyboard/-/keyboard-7.0.1.tgz#edf212528cd1587494ceb1d260868c1a9540aed1"
+  integrity sha512-Gi064vOARMac+x9/DmEFeywN9oAETMf3OYsMuYm9gA8SvdsDJ3QJqMoFnSEIORYXe21Jzt2SIEdLlpT65P/b2g==
 
 "@capacitor/local-notifications@7.0.0":
   version "7.0.0"
