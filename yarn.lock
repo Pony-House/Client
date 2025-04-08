@@ -260,10 +260,10 @@
   resolved "https://registry.yarnpkg.com/@capacitor/status-bar/-/status-bar-7.0.0.tgz#11a66ac1a34f49d792931f8eca7f2ce3f65ef1b5"
   integrity sha512-wsvPkWkoSOXMIgVHu4c6P1sOuDSZ1ClUo5OpLRwj7u8DYzlV4jlmNzztQn2Lvsiqx1z4kfukSaqe40k1Lo4c9g==
 
-"@capacitor/toast@7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@capacitor/toast/-/toast-7.0.0.tgz#35abb157d60fd763e7befe9014a75436f4aba95c"
-  integrity sha512-HsJ6nn1h+Ucm/actgA9bZhI5FOXKh3oFb3wiDYGB0xdnV+6U8rJu+xR1MUdVwM7opAXHuozjFi06FvnZ6gVO4w==
+"@capacitor/toast@7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/toast/-/toast-7.0.1.tgz#b3a2889c1c40de67ee9f9ec837cd0687abbd23e7"
+  integrity sha512-3GFhejVwKqUjosYnpQVfq5eml7X6B97jcVpncY75lBDiTlCYJeRanj63OChZPuw1KWudkBTYZMcXdRYWguJdKw==
 
 "@capawesome/capacitor-file-picker@7.0.1":
   version "7.0.1"
