@@ -230,10 +230,10 @@
   dependencies:
     tslib "^2.1.0"
 
-"@capacitor/filesystem@7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@capacitor/filesystem/-/filesystem-7.0.0.tgz#3823c5a63dfa2992db401832db1dbe6063f1b1a7"
-  integrity sha512-xMzLq+ZaqYBAincYOKF1eNy/3UWwx1XM6TuvWBTVQTHeRsURzqwwbqBKtfkhbRzk5wnXEprWZz5k5iFo2s2BXw==
+"@capacitor/filesystem@7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/filesystem/-/filesystem-7.0.1.tgz#b0518d781f7640e936f529b80a59724e221d0471"
+  integrity sha512-dxuKNLFoUejm7tBKkQPs1j7+BLpDh5JKPSVu7nT8jgCbA/KXt5FoCLiepfkjWkYfq60X0JNFzGnIquc5FPOLzQ==
 
 "@capacitor/haptics@7.0.0":
   version "7.0.0"
