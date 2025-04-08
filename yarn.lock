@@ -3637,10 +3637,10 @@ events@3.3.0, events@^3.2.0:
   resolved "https://registry.yarnpkg.com/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
   integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
 
-exifreader@4.26.2:
-  version "4.26.2"
-  resolved "https://registry.yarnpkg.com/exifreader/-/exifreader-4.26.2.tgz#ff4d039366df4d0d3c2fbb02177c71b1a94e849e"
-  integrity sha512-+UqmTm2C7fS4u4YnKx7Fod0+UDeUOmmgkslCx4N2p68YNZSPw2AYyklIpNbuhxYmQjpYOS87bt6sPDOvQ+Qvsg==
+exifreader@4.28.0:
+  version "4.28.0"
+  resolved "https://registry.yarnpkg.com/exifreader/-/exifreader-4.28.0.tgz#fa2935e8cf47f85a651f5cefcf895e141f294695"
+  integrity sha512-J24W3CUicreoHLz0KJUP2V6NAVUXnTnu4KG5t2X+cNfT00vP6hjnbTY0opMEhPrTzp03kARMqvIMm0+1B+CPVw==
   optionalDependencies:
     "@xmldom/xmldom" "^0.9.4"
 
