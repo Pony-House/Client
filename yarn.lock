@@ -255,10 +255,10 @@
   resolved "https://registry.yarnpkg.com/@capacitor/network/-/network-7.0.0.tgz#bfbe955fc033457f5f282766c835251834ca643e"
   integrity sha512-cIr0tElqiAKxbRJ7/OGOPssSyaVpyU8ushjcOItdYaGu/L9RAI+4tKdRCoL9cngCycgcUGWn+SkuN9oJCf8iHw==
 
-"@capacitor/status-bar@7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@capacitor/status-bar/-/status-bar-7.0.0.tgz#11a66ac1a34f49d792931f8eca7f2ce3f65ef1b5"
-  integrity sha512-wsvPkWkoSOXMIgVHu4c6P1sOuDSZ1ClUo5OpLRwj7u8DYzlV4jlmNzztQn2Lvsiqx1z4kfukSaqe40k1Lo4c9g==
+"@capacitor/status-bar@7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/status-bar/-/status-bar-7.0.1.tgz#6bd3769ef35158c961ff2a6b571c03e9bce55809"
+  integrity sha512-iDv3mXYo9CdxYRVwt3/pRyuk25p7Sn4GfaS/zMZyVIqTzsvKLCIIH3GdKK+ta+nsNcAVpCw/t5jFEBt1D18ctA==
 
 "@capacitor/toast@7.0.0":
   version "7.0.0"
