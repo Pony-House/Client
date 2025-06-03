@@ -152,7 +152,7 @@
     "prettier": "3.5.3",
     "sass": "1.86.0",
     "typescript": "5.8.2",
-    "typescript-eslint": "8.26.1",
+    "typescript-eslint": "8.33.1",
     "vite": "6.2.2",
     "vite-plugin-electron": "^0.29.0",
     "vite-plugin-electron-renderer": "^0.14.5",
