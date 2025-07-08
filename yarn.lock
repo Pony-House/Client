@@ -230,10 +230,12 @@
   dependencies:
     tslib "^2.1.0"
 
-"@capacitor/filesystem@7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@capacitor/filesystem/-/filesystem-7.0.0.tgz#3823c5a63dfa2992db401832db1dbe6063f1b1a7"
-  integrity sha512-xMzLq+ZaqYBAincYOKF1eNy/3UWwx1XM6TuvWBTVQTHeRsURzqwwbqBKtfkhbRzk5wnXEprWZz5k5iFo2s2BXw==
+"@capacitor/filesystem@7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@capacitor/filesystem/-/filesystem-7.1.2.tgz#f40bbf270a75517b56dea655f7235d636a661f97"
+  integrity sha512-Goy8t8+n58iTMjsq4cQgrvk+JB373BlsshNrPBTFIHgB2ilEasWDeHN1XXCocEZo0sDCEMKq3ujyzunssHjxVw==
+  dependencies:
+    "@capacitor/synapse" "^1.0.3"
 
 "@capacitor/haptics@7.0.0":
   version "7.0.0"
@@ -259,6 +261,11 @@
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@capacitor/status-bar/-/status-bar-7.0.0.tgz#11a66ac1a34f49d792931f8eca7f2ce3f65ef1b5"
   integrity sha512-wsvPkWkoSOXMIgVHu4c6P1sOuDSZ1ClUo5OpLRwj7u8DYzlV4jlmNzztQn2Lvsiqx1z4kfukSaqe40k1Lo4c9g==
+
+"@capacitor/synapse@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@capacitor/synapse/-/synapse-1.0.3.tgz#9cb8629dcbae231813c294e30a37f5515a544b94"
+  integrity sha512-7gGvuQ1NlSCwnjdIMkry+/meyUxHTnsVodRxOTOerLAoAyvtSnCp1rKyLjt9kCz9Lf7Y/wUbCe+AWbAvfxL5bA==
 
 "@capacitor/toast@7.0.0":
   version "7.0.0"
