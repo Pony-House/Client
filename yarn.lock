@@ -735,10 +735,17 @@
   resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
   integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
 
-"@khanacademy/simple-markdown@0.14.0":
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/@khanacademy/simple-markdown/-/simple-markdown-0.14.0.tgz#fd5e3a53aeb82504400289a5ec6439a21d91d5ad"
-  integrity sha512-Kz++CIC/YiCC7CLYl6iuwEZLLD4LsMjzf7pmAVCEsB67VnzsRIFvunQgTw6jxlH1Kjse5Mw4PZLGSu6HCBzCUw==
+"@khanacademy/perseus-utils@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@khanacademy/perseus-utils/-/perseus-utils-2.1.0.tgz#a405f5e740e73a1345f2b172ff34260b6d87f57e"
+  integrity sha512-QgN9qW1hnoCGkErSVwCJ5SmWAqlcgXA3TvtMjsyv8LiYbAS4/ZMQOHIuq5P7u0t1i6tp02w7Qjbz/COsxyHg/A==
+
+"@khanacademy/simple-markdown@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@khanacademy/simple-markdown/-/simple-markdown-2.1.0.tgz#7fcbbcb4d0eda7d0dfb09c2ae35f0b9eb1e07dcf"
+  integrity sha512-U9yemDLqP3ehAhUdBhzVfZe9h10wWbkrIkfFf2ejSO/cUSFZwjt+KRfZtZK6q2HY+RkNYUjALDpwJu7LkrY1gw==
+  dependencies:
+    "@khanacademy/perseus-utils" "2.1.0"
 
 "@malept/cross-spawn-promise@^2.0.0":
   version "2.0.0"
