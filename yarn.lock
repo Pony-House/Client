@@ -250,10 +250,10 @@
   resolved "https://registry.yarnpkg.com/@capacitor/local-notifications/-/local-notifications-7.0.0.tgz#15616348ea71154efc71efede404de0401d4e124"
   integrity sha512-+k93w1W0hZTVxM8rjttEyUKkkHxOW776POFM4snDcwv+sAxWX+YK+oqIwNtln6N5Plp3Z9TkQS0RufwZbl7GUw==
 
-"@capacitor/network@7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@capacitor/network/-/network-7.0.0.tgz#bfbe955fc033457f5f282766c835251834ca643e"
-  integrity sha512-cIr0tElqiAKxbRJ7/OGOPssSyaVpyU8ushjcOItdYaGu/L9RAI+4tKdRCoL9cngCycgcUGWn+SkuN9oJCf8iHw==
+"@capacitor/network@7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@capacitor/network/-/network-7.0.2.tgz#8dd91aba31ab3243052d8f18fb68227f5c82ff11"
+  integrity sha512-KKkiUvGfMVKIcYaG+KlGAxrQtoRnwJtT+9yhTkCFzZWeYrY91sBZKOVOfnNHO8RiOxqbKn5VSUlyFLQQiyyfyg==
 
 "@capacitor/status-bar@7.0.0":
   version "7.0.0"
