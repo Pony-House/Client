@@ -223,10 +223,10 @@
   resolved "https://registry.yarnpkg.com/@capacitor/clipboard/-/clipboard-7.0.0.tgz#2a243d5691fbb2437baa302bbd235fba2c9a3d9c"
   integrity sha512-vASrjIbQq8XsvR3dRuaoDqcltH1S0ZeS/ARVYdQzyVDZLPN+FGYfOCtTRPaOOIw0KJiLRDqwhawJvx15NAEREA==
 
-"@capacitor/core@7.1.0":
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-7.1.0.tgz#afaa414e56295dc4a2a691d8527c31199977ee5a"
-  integrity sha512-I0a4C8gux5sx+HDamJjCiWHEWRdJU3hejwURFOSwJjUmAMkfkrm4hOsI0dgd+S0eCkKKKYKz9WNm7DAIvhm2zw==
+"@capacitor/core@7.4.4":
+  version "7.4.4"
+  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-7.4.4.tgz#b752dd7a12141e40d1c8ce2e37a79571d9f83518"
+  integrity sha512-xzjxpr+d2zwTpCaN0k+C6wKSZzWFAb9OVEUtmO72ihjr/NEDoLvsGl4WLfjWPcCO2zOy0b2X52tfRWjECFUjtw==
   dependencies:
     tslib "^2.1.0"
 
